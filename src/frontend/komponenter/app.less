@@ -1,0 +1,52 @@
+.app {
+    background-color: @navLysGra; 
+    height: 100%;
+    width: 100%;
+    position: fixed;
+
+    /**
+     Setter eksplisitt font-family slik at google sine fonter blir brukt.
+     nav-frontend-typografi har en rar bug hvor fontene blir utydelige på enkelte
+     nettlesere.
+    */
+    & * {
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+
+    .container {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+main.container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.blur {
+    filter: blur(12px);
+    -webkit-filter: blur(12px);
+}
+
+.panel--gra {
+    background-color: @navLysGra !important;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex--space {
+    display: flex;
+
+    > *:not(:first-child) {
+        margin-left: .75rem;
+    }
+}
+
+.ReactCollapse--collapse {
+    transition: height 400ms ease-out;
+    width: 100%;
+}
