@@ -34,8 +34,8 @@ mot dev-gcp clusteret i konsollen.
 
 For å bygge prodversjon kjør `yarn build`. Prodversjonen vil ikke kjøre lokalt med mindre det gjøres en del endringer i forbindelse med uthenting av environment variabler og URLer for uthenting av informasjon.
 
-## Få token mot ba-sak
-For å få token for å gå mot familie-ba-sak kan du kjøre følgende kommando i terminalen med samme verdier for cliend_id, 
+## Få token mot ks-sak
+For å få token for å gå mot familie-ks-sak kan du kjøre følgende kommando i terminalen med samme verdier for cliend_id, 
 client_secret og scope som er definert i forrige avsnitt. 
 
 ``` 
