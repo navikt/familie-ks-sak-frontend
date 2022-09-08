@@ -20,7 +20,7 @@ mot dev-gcp clusteret i konsollen.
     DREK_URL=<any string eller en url for testing>
     
     SESSION_SECRET='<any string of length 32>'
-    BA_SAK_SCOPE=api://dev-gcp.teamfamilie.familie-ks-sak-lokal/.default
+    KS_SAK_SCOPE=api://dev-gcp.teamfamilie.familie-ks-sak-lokal/.default
 
     ENV=local
     APP_VERSION=0.0.1
@@ -28,7 +28,7 @@ mot dev-gcp clusteret i konsollen.
 
 Ønsker du å kjøre mot preprod gjøres det med dette i .env fila.
 ```
- BA_SAK_SCOPE=api://dev-gcp.teamfamilie.familie-ks-sak/.default
+ KS_SAK_SCOPE=api://dev-gcp.teamfamilie.familie-ks-sak/.default
  ENV=lokalt-mot-preprod
 ```
 

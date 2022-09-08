@@ -69,7 +69,7 @@ export const saksbehandlerConfig: IApi = {
     scopes: [`${appConfig.clientId}/.default`],
 };
 
-if (!process.env.BA_SAK_SCOPE) {
+if (!process.env.KS_SAK_SCOPE) {
     throw new Error('Scope mot familie-ks-sak er ikke konfigurert');
 }
 
@@ -79,7 +79,7 @@ if (!process.env.DREK_URL) {
 
 export const oboConfig: IApi = {
     clientId: appConfig.clientId,
-    scopes: [process.env.BA_SAK_SCOPE],
+    scopes: [process.env.KS_SAK_SCOPE],
 };
 
 export const buildPath = env.buildPath;
