@@ -5,7 +5,6 @@ import type { IPar } from './common';
 import type { INavnOgIdent } from './manuell-journalføring';
 
 export interface IFinnOppgaveRequest {
-    behandlingstema?: string;
     behandlingstype?: string;
     oppgavetype?: string;
     enhet?: string;
@@ -66,6 +65,7 @@ export enum EnhetFilter {
     E4833 = 'E4833',
     E4842 = 'E4842',
     E4817 = 'E4817',
+    E4812 = 'E4812',
 }
 
 export const enhetFilter: Record<EnhetFilter, IPar> = {
@@ -76,6 +76,7 @@ export const enhetFilter: Record<EnhetFilter, IPar> = {
     E4833: { id: 'E4833', navn: '4833 Oslo' },
     E4842: { id: 'E4842', navn: '4842 Stord' },
     E4817: { id: 'E4817', navn: '4817 Steinkjer' },
+    E4812: { id: 'E4812', navn: '4812 Bergen' },
 };
 
 export enum SaksbehandlerFilter {

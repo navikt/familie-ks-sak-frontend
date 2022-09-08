@@ -7,6 +7,7 @@ export const behandendeEnheter: IArbeidsfordelingsenhet[] = [
     { enhetId: '4833', enhetNavn: 'NAV Familie- og pensjonsytelser Oslo 1' },
     { enhetId: '4842', enhetNavn: 'NAV Familie- og pensjonsytelser Stord' },
     { enhetId: '4817', enhetNavn: 'NAV Familie- og pensjonsytelser Steinkjer' },
+    { enhetId: '4812', enhetNavn: 'NAV Familie- og pensjonsytelser Bergen' },
 ];
 
 export const enhetsgrupper: Record<string, string> = {
@@ -16,6 +17,7 @@ export const enhetsgrupper: Record<string, string> = {
     '4833': '9cd89ac3-5587-46ba-b571-a625f2af481d',
     '4842': '7af5f216-6a5e-4228-9c99-687658c5b957',
     '4817': '0feaea21-ada1-48c0-9300-3f6aec36b993',
+    '4812': '7342c168-80f4-4978-8a88-68cb43b85675',
 };
 
 export interface IArbeidsfordelingsenhet {
