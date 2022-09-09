@@ -23,7 +23,7 @@ import { utenlandskPeriodeBeløpFeilmeldingId } from '../../../context/Utenlands
 import { valutakursFeilmeldingId } from '../../../context/Valutakurs/ValutakursSkjemaContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../typer/behandling';
-import { BehandlingSteg, Behandlingstype } from '../../../typer/behandling';
+import { BehandlingSteg } from '../../../typer/behandling';
 import type {
     IRestKompetanse,
     IRestUtenlandskPeriodeBeløp,
@@ -38,7 +38,6 @@ import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
 import EndretUtbetalingAndelTabell from './EndretUtbetalingAndelTabell';
 import KompetanseSkjema from './Kompetanse/KompetanseSkjema';
-import MigreringInfoboks from './MigreringInfoboks';
 import { Oppsummeringsboks } from './Oppsummeringsboks';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import UtbetaltAnnetLand from './UtbetaltAnnetLand/UtbetaltAnnetLand';
@@ -164,8 +163,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             }
         });
     };
-    const erMigreringFraInfotrygd = åpenBehandling.type === Behandlingstype.MIGRERING_FRA_INFOTRYGD;
-
     const harKompetanser = toggles[ToggleNavn.brukEøs] && åpenBehandling.kompetanser?.length > 0;
     const harUtenlandskeBeløper =
         toggles[ToggleNavn.brukEøs] && åpenBehandling.utenlandskePeriodebeløp?.length > 0;
@@ -201,9 +198,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                     )}
                     .
                 </StyledAlert>
-            )}
-            {erMigreringFraInfotrygd && (
-                <MigreringInfoboks behandlingId={åpenBehandling.behandlingId} />
             )}
 
             <TilkjentYtelseTidslinje

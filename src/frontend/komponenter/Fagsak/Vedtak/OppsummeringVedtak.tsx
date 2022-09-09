@@ -117,11 +117,9 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
         sendTilBeslutterNesteOnClick((visModal: boolean) => settVisModal(visModal));
     };
 
-    const erMigreringFraInfotrygd = åpenBehandling.type === Behandlingstype.MIGRERING_FRA_INFOTRYGD;
     const erBehandlingMedVedtaksbrevutsending =
         åpenBehandling.type !== Behandlingstype.TEKNISK_ENDRING &&
-        åpenBehandling.årsak !== BehandlingÅrsak.SATSENDRING &&
-        !erMigreringFraInfotrygd;
+        åpenBehandling.årsak !== BehandlingÅrsak.SATSENDRING;
 
     const hentInfostripeTekst = (årsak: BehandlingÅrsak, status: BehandlingStatus): string => {
         if (status === BehandlingStatus.AVSLUTTET) {
@@ -149,7 +147,7 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
                 navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/simulering`)
             }
             nesteOnClick={visSubmitKnapp ? sendTilBeslutter : undefined}
-            nesteKnappTittel={erMigreringFraInfotrygd ? 'Bekreft migrering' : 'Til godkjenning'}
+            nesteKnappTittel={'Til godkjenning'}
             senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
             maxWidthStyle="100%"
             className={'vedtak'}
@@ -277,10 +275,6 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
                         </UIModalWrapper>
                     )}
                 </>
-            ) : erMigreringFraInfotrygd ? (
-                <Alert variant="info">
-                    {`Du er inne på en migreringsbehandling og det sendes ingen vedtaksbrev.`}
-                </Alert>
             ) : (
                 <Alert variant="info">
                     {`Du er inne på en teknisk behandling og det finnes ingen vedtaksbrev.`}

@@ -10,7 +10,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useApp } from '../../../../context/AppContext';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import { Behandlingstype, BehandlingÅrsak } from '../../../../typer/behandling';
+import { BehandlingÅrsak } from '../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
 import type { IPersonInfo } from '../../../../typer/person';
 import { ToggleNavn } from '../../../../typer/toggles';
@@ -106,10 +106,8 @@ const Behandlingsmeny: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
                         !erLesevisning() &&
                         (åpenBehandling.data.årsak === BehandlingÅrsak.NYE_OPPLYSNINGER ||
                             åpenBehandling.data.årsak === BehandlingÅrsak.KLAGE ||
-                            åpenBehandling.data.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
-                            åpenBehandling.data.årsak === BehandlingÅrsak.TEKNISK_ENDRING ||
-                            åpenBehandling.data.type ===
-                                Behandlingstype.MIGRERING_FRA_INFOTRYGD) && (
+                            åpenBehandling.data.årsak ===
+                                BehandlingÅrsak.KORREKSJON_VEDTAKSBREV) && (
                             <li>
                                 <LeggTilBarnPBehandling
                                     onListElementClick={() => settAnker(undefined)}
