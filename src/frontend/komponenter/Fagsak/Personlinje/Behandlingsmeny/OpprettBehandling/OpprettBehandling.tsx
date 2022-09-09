@@ -25,22 +25,15 @@ const OpprettBehandling: React.FC<IProps> = ({ onListElementClick, minimalFagsak
         useState(false);
     const navigate = useNavigate();
 
-    const { onBekreft, opprettBehandlingSkjema, nullstillSkjemaStatus, bruker } =
-        useOpprettBehandling(
-            () => settVisModal(false),
-            () => {
-                settVisModal(false);
-                settVisBekreftelseTilbakekrevingModal(true);
-            }
-        );
-    const {
-        behandlingsårsak,
-        behandlingstype,
-        behandlingstema,
-        migreringsdato,
-        søknadMottattDato,
-        valgteBarn,
-    } = opprettBehandlingSkjema.felter;
+    const { onBekreft, opprettBehandlingSkjema, nullstillSkjemaStatus } = useOpprettBehandling(
+        () => settVisModal(false),
+        () => {
+            settVisModal(false);
+            settVisBekreftelseTilbakekrevingModal(true);
+        }
+    );
+    const { behandlingsårsak, behandlingstype, behandlingstema, søknadMottattDato } =
+        opprettBehandlingSkjema.felter;
 
     const lukkOpprettBehandlingModal = () => {
         nullstillSkjemaStatus();
@@ -101,12 +94,9 @@ const OpprettBehandling: React.FC<IProps> = ({ onListElementClick, minimalFagsak
                         behandlingstype={behandlingstype}
                         behandlingsårsak={behandlingsårsak}
                         behandlingstema={behandlingstema}
-                        migreringsdato={migreringsdato}
                         søknadMottattDato={søknadMottattDato}
                         minimalFagsak={minimalFagsak}
                         visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                        bruker={bruker}
-                        valgteBarn={valgteBarn}
                     />
                 </SkjemaGruppe>
             </UIModalWrapper>

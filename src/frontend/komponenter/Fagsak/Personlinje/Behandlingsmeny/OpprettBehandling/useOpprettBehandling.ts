@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import type { ISelectOption } from '@navikt/familie-form-elements';
 import {
     type Avhengigheter,
     feil,
@@ -78,23 +77,6 @@ const useOpprettBehandling = (
         },
     });
 
-    const migreringsdato = useFelt<FamilieIsoDate | undefined>({
-        verdi: undefined,
-        valideringsfunksjon: (felt: FeltState<FamilieIsoDate | undefined>) =>
-            felt.verdi && erIsoStringGyldig(felt.verdi)
-                ? ok(felt)
-                : feil(felt, 'Du må velge en ny migreringsdato'),
-        avhengigheter: { behandlingstype, behandlingsårsak },
-        skalFeltetVises: avhengigheter => {
-            const { verdi: behandlingstypeVerdi } = avhengigheter.behandlingstype;
-            const { verdi: behandlingsårsakVerdi } = avhengigheter.behandlingsårsak;
-            return (
-                behandlingstypeVerdi === Behandlingstype.MIGRERING_FRA_INFOTRYGD &&
-                behandlingsårsakVerdi in BehandlingÅrsak
-            );
-        },
-    });
-
     const søknadMottattDato = useFelt<FamilieIsoDate | undefined>({
         verdi: undefined,
         valideringsfunksjon: (felt: FeltState<FamilieIsoDate | undefined>) =>
@@ -116,28 +98,12 @@ const useOpprettBehandling = (
         },
     });
 
-    const valgteBarn = useFelt({
-        verdi: [],
-        valideringsfunksjon: (felt: FeltState<ISelectOption[]>) => ok(felt),
-        avhengigheter: { behandlingstype, behandlingsårsak },
-        skalFeltetVises: avhengigheter => {
-            const { verdi: behandlingstypeVerdi } = avhengigheter.behandlingstype;
-            const { verdi: behandlingsårsakVerdi } = avhengigheter.behandlingsårsak;
-            return (
-                behandlingstypeVerdi === Behandlingstype.MIGRERING_FRA_INFOTRYGD &&
-                behandlingsårsakVerdi === BehandlingÅrsak.HELMANUELL_MIGRERING
-            );
-        },
-    });
-
     const { skjema, nullstillSkjema, kanSendeSkjema, onSubmit, settSubmitRessurs } = useSkjema<
         {
             behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | '';
             behandlingsårsak: BehandlingÅrsak | '';
             behandlingstema: IBehandlingstema | undefined;
-            migreringsdato: FamilieIsoDate | undefined;
             søknadMottattDato: FamilieIsoDate | undefined;
-            valgteBarn: ISelectOption[];
         },
         IBehandling
     >({
@@ -145,9 +111,7 @@ const useOpprettBehandling = (
             behandlingstype,
             behandlingsårsak,
             behandlingstema,
-            migreringsdato,
             søknadMottattDato,
-            valgteBarn,
         },
         skjemanavn: 'Opprett behandling modal',
     });
@@ -183,12 +147,6 @@ const useOpprettBehandling = (
                     }
                 );
             } else {
-                const erMigreringFraInfoTrygd =
-                    skjema.felter.behandlingstype.verdi === Behandlingstype.MIGRERING_FRA_INFOTRYGD;
-                const erHelmanuellMigrering =
-                    erMigreringFraInfoTrygd &&
-                    skjema.felter.behandlingsårsak.verdi === BehandlingÅrsak.HELMANUELL_MIGRERING;
-
                 onSubmit<IRestNyBehandling>(
                     {
                         data: {
@@ -199,13 +157,9 @@ const useOpprettBehandling = (
                             behandlingType: behandlingstype.verdi as Behandlingstype,
                             behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,
                             navIdent: innloggetSaksbehandler?.navIdent,
-                            nyMigreringsdato: erMigreringFraInfoTrygd
-                                ? skjema.felter.migreringsdato.verdi
-                                : undefined,
+                            nyMigreringsdato: undefined, //todo: endre dette interfacet?
                             søknadMottattDato: skjema.felter.søknadMottattDato.verdi ?? undefined,
-                            barnasIdenter: erHelmanuellMigrering
-                                ? skjema.felter.valgteBarn.verdi.map(option => option.value)
-                                : undefined,
+                            barnasIdenter: undefined, //todo: endre dette interfacet?
                             fagsakType: fagsakType,
                         },
                         method: 'POST',
