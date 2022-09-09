@@ -5,6 +5,7 @@ import type { IPar } from './common';
 import type { INavnOgIdent } from './manuell-journalføring';
 
 export interface IFinnOppgaveRequest {
+    behandlingstema?: string;
     behandlingstype?: string;
     oppgavetype?: string;
     enhet?: string;

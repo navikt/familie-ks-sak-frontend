@@ -9,6 +9,8 @@ import {
     behandlingstypeFilter,
     EnhetFilter,
     enhetFilter,
+    GjelderFilter,
+    gjelderFilter,
     OppgavetypeFilter,
     oppgaveTypeFilter,
     SaksbehandlerFilter,
@@ -42,6 +44,7 @@ export interface IOppgaveFelt {
 export interface IOppgaveFelter {
     [key: string]: IOppgaveFelt;
     ident: IOppgaveFelt;
+    behandlingstema: IOppgaveFelt;
     behandlingstype: IOppgaveFelt;
     beskrivelse: IOppgaveFelt;
     fristFerdigstillelse: IOppgaveFelt;
@@ -80,6 +83,21 @@ export const initialOppgaveFelter = (innloggetSaksbehandler?: ISaksbehandler): I
                 ),
                 initialValue: OppgavetypeFilter.ALLE,
                 nøkkelPar: oppgaveTypeFilter,
+            },
+            order: FeltSortOrder.NONE,
+        },
+        behandlingstema: {
+            nøkkel: 'behandlingstema',
+            label: 'Gjelder',
+            filter: {
+                type: 'select',
+                selectedValue: hentPar(
+                    searchParams['behandlingstema']?.toString(),
+                    gjelderFilter,
+                    GjelderFilter.ALLE
+                ),
+                initialValue: GjelderFilter.ALLE,
+                nøkkelPar: gjelderFilter,
             },
             order: FeltSortOrder.NONE,
         },
