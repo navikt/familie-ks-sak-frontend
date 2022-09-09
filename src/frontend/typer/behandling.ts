@@ -65,13 +65,14 @@ export enum BehandlingÅrsak {
     ENDRE_MIGRERINGSDATO = 'ENDRE_MIGRERINGSDATO',
     HELMANUELL_MIGRERING = 'HELMANUELL_MIGRERING',
     OMREGNING_SMÅBARNSTILLEGG = 'OMREGNING_SMÅBARNSTILLEGG',
+    BARNEHAGELISTE = 'BARNEHAGELISTE',
 }
 
 export const behandlingÅrsak: Record<BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak, string> = {
     SØKNAD: 'Søknad',
     FØDSELSHENDELSE: 'Fødselshendelse',
     ÅRLIG_KONTROLL: 'Årlig kontroll',
-    DØDSFALL_BRUKER: 'Dødsfall bruker',
+    DØDSFALL_BRUKER: 'Dødsfall',
     NYE_OPPLYSNINGER: 'Nye opplysninger',
     KLAGE: 'Klage',
     TEKNISK_OPPHØR: 'Teknisk opphør',
@@ -85,6 +86,7 @@ export const behandlingÅrsak: Record<BehandlingÅrsak | Tilbakekrevingsbehandli
     MIGRERING: 'Migrering',
     ENDRE_MIGRERINGSDATO: 'Endre migreringsdato',
     HELMANUELL_MIGRERING: 'Manuell migrering',
+    BARNEHAGELISTE: 'Barnehageliste',
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
     REVURDERING_KLAGE_KA: 'Klage omgjort av KA',
