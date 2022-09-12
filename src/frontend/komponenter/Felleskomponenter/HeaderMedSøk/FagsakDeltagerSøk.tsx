@@ -120,20 +120,20 @@ const FagsakDeltagerSøk: React.FC = () => {
                         : søkeresultat.harTilgang && settDeltagerForOpprettFagsak(søkeresultat)
                 }
             />
-            {/*TODO: Legg inn Endringslogg når vi får konfigurert opp innhold for KS i familie-endringslogg (Sanity)*/}
-            {/*{innloggetSaksbehandler && (*/}
-            {/*    <Endringslogg*/}
-            {/*        userId={innloggetSaksbehandler.navIdent}*/}
-            {/*        dataFetchingIntervalSeconds={60 * 15}*/}
-            {/*        appId={'BAKS'}*/}
-            {/*        backendUrl={'/endringslogg'}*/}
-            {/*        dataset={'production'}*/}
-            {/*        maxEntries={50}*/}
-            {/*        appName={'Kontantstøtte'}*/}
-            {/*        alignLeft={true}*/}
-            {/*        stil={'lys'}*/}
-            {/*    />*/}
-            {/*)}*/}
+            {/*TODO: Legg inn Endringslogg når vi får konfigurert opp innhold for KS i familie-endringslogg (Sanity)
+            {innloggetSaksbehandler && (
+                <Endringslogg
+                    userId={innloggetSaksbehandler.navIdent}
+                    dataFetchingIntervalSeconds={60 * 15}
+                    appId={'BAKS'}
+                    backendUrl={'/endringslogg'}
+                    dataset={'production'}
+                    maxEntries={50}
+                    appName={'Kontantstøtte'}
+                    alignLeft={true}
+                    stil={'lys'}
+                />
+            )}*/}
             <OpprettFagsakModal
                 søkeresultat={deltagerForOpprettFagsak}
                 lukkModal={() => settDeltagerForOpprettFagsak(undefined)}
