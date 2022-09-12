@@ -25,13 +25,13 @@ const OpprettBehandling: React.FC<IProps> = ({ onListElementClick, minimalFagsak
         useState(false);
     const navigate = useNavigate();
 
-    const { onBekreft, opprettBehandlingSkjema, nullstillSkjemaStatus } = useOpprettBehandling(
-        () => settVisModal(false),
-        () => {
+    const { onBekreft, opprettBehandlingSkjema, nullstillSkjemaStatus } = useOpprettBehandling({
+        lukkModal: () => settVisModal(false),
+        onOpprettTilbakekrevingSuccess: () => {
             settVisModal(false);
             settVisBekreftelseTilbakekrevingModal(true);
-        }
-    );
+        },
+    });
     const { behandlingsårsak, behandlingstype, behandlingstema, søknadMottattDato } =
         opprettBehandlingSkjema.felter;
 

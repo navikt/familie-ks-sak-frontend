@@ -24,10 +24,13 @@ import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrev
 import type { FamilieIsoDate } from '../../../../../utils/kalender';
 import { erIsoStringGyldig } from '../../../../../utils/kalender';
 
-const useOpprettBehandling = (
-    lukkModal: () => void,
-    onOpprettTilbakekrevingSuccess: () => void
-) => {
+const useOpprettBehandling = ({
+    lukkModal,
+    onOpprettTilbakekrevingSuccess,
+}: {
+    lukkModal: () => void;
+    onOpprettTilbakekrevingSuccess: () => void;
+}) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { settÅpenBehandling } = useBehandling();
     const { bruker: brukerRessurs } = useFagsakRessurser();
