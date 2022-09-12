@@ -13,10 +13,8 @@ export enum BehandlingUnderkategori {
 }
 
 export enum Behandlingstema {
-    NASJONAL_ORDINÆR = 'NASJONAL_ORDINÆR',
-    NASJONAL_UTVIDET = 'NASJONAL_UTVIDET',
-    EØS_ORDINÆR = 'EØS_ORDINÆR',
-    EØS_UTVIDET = 'EØS_UTVIDET',
+    NASJONAL = 'NASJONAL',
+    EØS = 'EØS',
 }
 
 export interface IRestEndreBehandlingUnderkategori {
@@ -40,29 +38,17 @@ export interface IBehandlingstema {
 }
 
 export const behandlingstemaer: Record<Behandlingstema, IBehandlingstema> = {
-    NASJONAL_ORDINÆR: {
+    NASJONAL: {
         kategori: BehandlingKategori.NASJONAL,
-        underkategori: BehandlingUnderkategori.ORDINÆR,
-        navn: 'Nasjonal ordinær',
-        id: 'NASJONAL_ORDINÆR',
+        underkategori: BehandlingUnderkategori.ORDINÆR, //todo: avklaring, skal vi ha med underkategori her?
+        navn: 'Nasjonal',
+        id: 'NASJONAL',
     },
-    NASJONAL_UTVIDET: {
-        kategori: BehandlingKategori.NASJONAL,
-        underkategori: BehandlingUnderkategori.UTVIDET,
-        navn: 'Nasjonal utvidet',
-        id: 'NASJONAL_UTVIDET',
-    },
-    EØS_ORDINÆR: {
+    EØS: {
         kategori: BehandlingKategori.EØS,
-        underkategori: BehandlingUnderkategori.ORDINÆR,
-        navn: 'EØS ordinær',
-        id: 'EØS_ORDINÆR',
-    },
-    EØS_UTVIDET: {
-        kategori: BehandlingKategori.EØS,
-        underkategori: BehandlingUnderkategori.UTVIDET,
-        navn: 'EØS utvidet',
-        id: 'EØS_UTVIDET',
+        underkategori: BehandlingUnderkategori.ORDINÆR, //todo: avklaring, skal vi ha med underkategori her?
+        navn: 'EØS',
+        id: 'EØS',
     },
 };
 
