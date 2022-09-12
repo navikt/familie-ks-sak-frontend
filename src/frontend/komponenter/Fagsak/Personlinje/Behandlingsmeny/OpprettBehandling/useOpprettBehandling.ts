@@ -148,8 +148,6 @@ const useOpprettBehandling = ({
                     {
                         data: {
                             kategori: skjema.felter.behandlingstema.verdi?.kategori ?? null,
-                            underkategori:
-                                skjema.felter.behandlingstema.verdi?.underkategori ?? null,
                             søkersIdent,
                             behandlingType: behandlingstype.verdi as Behandlingstype,
                             behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,

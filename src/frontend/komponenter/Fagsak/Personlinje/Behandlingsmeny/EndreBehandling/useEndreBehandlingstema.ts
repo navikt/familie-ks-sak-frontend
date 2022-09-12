@@ -38,11 +38,11 @@ const useEndreBehandling = (lukkModal: () => void) => {
     const endreBehandlingstema = (behandlingId: number) => {
         const { behandlingstema } = skjema.felter;
         if (behandlingstema.verdi !== undefined) {
-            const { kategori, underkategori } = behandlingstema.verdi;
+            const { kategori } = behandlingstema.verdi;
             settRessurs(byggHenterRessurs());
             request<IRestEndreBehandlingUnderkategori, IBehandling>({
                 method: 'PUT',
-                data: { behandlingUnderkategori: underkategori, behandlingKategori: kategori },
+                data: { behandlingKategori: kategori },
                 url: `/familie-ks-sak/api/behandlinger/${behandlingId}/behandlingstema`,
             }).then((oppdatertFagsak: Ressurs<IBehandling>) => {
                 if (oppdatertFagsak.status === RessursStatus.SUKSESS) {
@@ -57,11 +57,8 @@ const useEndreBehandling = (lukkModal: () => void) => {
 
     const nullstillSkjema = () => {
         if (åpenBehandling.status === RessursStatus.SUKSESS) {
-            const { kategori, underkategori } = åpenBehandling.data;
-
-            skjema.felter.behandlingstema.validerOgSettFelt(
-                tilBehandlingstema(kategori, underkategori)
-            );
+            const { kategori } = åpenBehandling.data;
+            skjema.felter.behandlingstema.validerOgSettFelt(tilBehandlingstema(kategori));
         }
     };
 

@@ -1,12 +1,9 @@
-import type { BehandlingUnderkategori } from './behandlingstema';
-
 export interface IRestRegistrerSøknad {
     søknad: ISøknadDTO;
     bekreftEndringerViaFrontend: boolean;
 }
 
 export interface ISøknadDTO {
-    underkategori: BehandlingUnderkategori;
     søkerMedOpplysninger: ISøkerMedOpplysninger;
     barnaMedOpplysninger: IBarnMedOpplysningerBackend[];
     endringAvOpplysningerBegrunnelse: string;

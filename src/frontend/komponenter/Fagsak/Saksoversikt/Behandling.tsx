@@ -95,7 +95,7 @@ export const Behandling: React.FC<IBehandlingshistorikkProps> = ({ behandling, m
     const kategorier = hentKategorierHvisVisningBehandling(behandling);
 
     const behandlingstema: IBehandlingstema | undefined = kategorier
-        ? tilBehandlingstema(kategorier.kategori, kategorier.underkategori)
+        ? tilBehandlingstema(kategorier.kategori)
         : undefined;
     return (
         <tr key={behandling.behandlingId}>

@@ -31,9 +31,7 @@ interface IInnholdstabell {
 
 const Innholdstabell: React.FC<IInnholdstabell> = ({ minimalFagsak }) => {
     const behandlingstema: IBehandlingstema | undefined =
-        minimalFagsak.løpendeKategori &&
-        minimalFagsak.løpendeUnderkategori &&
-        tilBehandlingstema(minimalFagsak.løpendeKategori, minimalFagsak.løpendeUnderkategori);
+        minimalFagsak.løpendeKategori && tilBehandlingstema(minimalFagsak.løpendeKategori);
     return (
         <table className={'fagsak-panel__tabell'}>
             <thead>

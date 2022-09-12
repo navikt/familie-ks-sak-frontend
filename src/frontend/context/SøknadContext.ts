@@ -10,7 +10,6 @@ import type { Ressurs } from '@navikt/familie-typer';
 
 import useSakOgBehandlingParams from '../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../typer/behandling';
-import { BehandlingUnderkategori } from '../typer/behandlingstema';
 import type { IMinimalFagsak } from '../typer/fagsak';
 import type { IForelderBarnRelasjon } from '../typer/person';
 import { ForelderBarnRelasjonRolle } from '../typer/person';
@@ -60,7 +59,6 @@ const [SøknadProvider, useSøknad] = createUseContext(
 
         const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<
             {
-                underkategori: BehandlingUnderkategori;
                 barnaMedOpplysninger: IBarnMedOpplysninger[];
                 endringAvOpplysningerBegrunnelse: string;
                 målform: Målform | undefined;
@@ -68,12 +66,6 @@ const [SøknadProvider, useSøknad] = createUseContext(
             IBehandling
         >({
             felter: {
-                underkategori: useFelt<BehandlingUnderkategori>({
-                    verdi:
-                        åpenBehandling.underkategori === BehandlingUnderkategori.UTVIDET
-                            ? BehandlingUnderkategori.UTVIDET
-                            : BehandlingUnderkategori.ORDINÆR,
-                }),
                 barnaMedOpplysninger: useFelt<IBarnMedOpplysninger[]>({
                     verdi: [],
                     valideringsfunksjon: (felt, avhengigheter?: Avhengigheter) => {
@@ -141,9 +133,6 @@ const [SøknadProvider, useSøknad] = createUseContext(
                 skjema.felter.målform.validerOgSettFelt(
                     åpenBehandling.søknadsgrunnlag.søkerMedOpplysninger.målform
                 );
-                skjema.felter.underkategori.validerOgSettFelt(
-                    åpenBehandling.søknadsgrunnlag.underkategori
-                );
                 skjema.felter.endringAvOpplysningerBegrunnelse.validerOgSettFelt(
                     åpenBehandling.søknadsgrunnlag.endringAvOpplysningerBegrunnelse
                 );
@@ -165,7 +154,6 @@ const [SøknadProvider, useSøknad] = createUseContext(
                             method: 'POST',
                             data: {
                                 søknad: {
-                                    underkategori: skjema.felter.underkategori.verdi,
                                     søkerMedOpplysninger: {
                                         ident: bruker.data.personIdent,
                                         målform: skjema.felter.målform.verdi,

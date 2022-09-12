@@ -1,6 +1,6 @@
 import type { ISODateString } from '@navikt/familie-form-elements';
 
-import type { BehandlingKategori, BehandlingUnderkategori } from './behandlingstema';
+import type { BehandlingKategori } from './behandlingstema';
 import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
 import type { IRestValutakurs } from './eøsPerioder';
@@ -22,7 +22,6 @@ import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 
 export interface IRestNyBehandling {
     kategori: BehandlingKategori | null;
-    underkategori: BehandlingUnderkategori | null;
     søkersIdent: string;
     behandlingType: Behandlingstype;
     journalpostID?: string;
@@ -196,7 +195,6 @@ export interface IBehandling {
     behandlingId: number;
     endretAv: string;
     kategori: BehandlingKategori;
-    underkategori: BehandlingUnderkategori;
     opprettetTidspunkt: string;
     personResultater: IRestPersonResultat[];
     personer: IGrunnlagPerson[];
@@ -238,7 +236,6 @@ export interface IOpprettBehandlingData {
     kategori: BehandlingKategori;
     navIdent?: string;
     søkersIdent: string;
-    underkategori: BehandlingUnderkategori;
 }
 
 export const behandlerRoller: INøkkelPar = {

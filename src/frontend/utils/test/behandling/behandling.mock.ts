@@ -8,7 +8,7 @@ import {
     Behandlingstype,
     BehandlingÅrsak,
 } from '../../../typer/behandling';
-import { BehandlingKategori, BehandlingUnderkategori } from '../../../typer/behandlingstema';
+import { BehandlingKategori } from '../../../typer/behandlingstema';
 import type { IRestPersonResultat, IRestStegTilstand } from '../../../typer/vilkår';
 import { mockBarn, mockSøker } from '../person/person.mock';
 import { mockRestPersonResultat } from '../vilkårsvurdering/vilkår.mock';
@@ -71,7 +71,6 @@ export const mockBehandling = ({
         resultat: BehandlingResultat.INNVILGET,
         opprettetTidspunkt,
         kategori: BehandlingKategori.NASJONAL,
-        underkategori: BehandlingUnderkategori.ORDINÆR,
         status,
         personResultater: [søkerRestPersonResultat, barnRestPersonResultat],
         fødselshendelsefiltreringResultater: [],
@@ -108,7 +107,6 @@ export const mockVisningBehandling = ({
         resultat: BehandlingResultat.INNVILGET,
         opprettetTidspunkt,
         kategori: BehandlingKategori.NASJONAL,
-        underkategori: BehandlingUnderkategori.ORDINÆR,
         status,
         årsak,
         vedtaksdato: undefined,
