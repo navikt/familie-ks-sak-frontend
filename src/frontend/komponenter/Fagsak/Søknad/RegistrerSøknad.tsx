@@ -17,7 +17,6 @@ import MålformVelger from '../../Felleskomponenter/MålformVelger';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
 import Annet from './Annet';
 import Barna from './Barna';
-import SøknadType from './SøknadType';
 
 const FjernVilkårAdvarsel = styled(Normaltekst)`
     white-space: pre-wrap;
@@ -63,8 +62,6 @@ const RegistrerSøknad: React.FC = () => {
                     <br />
                 </>
             )}
-
-            <SøknadType />
 
             <Barna />
 
