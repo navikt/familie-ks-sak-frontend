@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import Endringslogg from '@navikt/familie-endringslogg';
 import type { ISøkeresultat } from '@navikt/familie-header';
 import { ikoner, Søk } from '@navikt/familie-header';
 import { useHttp } from '@navikt/familie-http';
@@ -16,7 +15,6 @@ import {
 } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useApp } from '../../../context/AppContext';
 import IkkeTilgang from '../../../ikoner/IkkeTilgang';
 import KontorIkonGrønn from '../../../ikoner/KontorIkonGrønn';
 import { FagsakType } from '../../../typer/fagsak';
@@ -29,7 +27,6 @@ const validator = require('@navikt/fnrvalidator');
 
 const FagsakDeltagerSøk: React.FC = () => {
     const { request } = useHttp();
-    const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
 
     const [fagsakDeltagere, settFagsakDeltagere] = React.useState<Ressurs<IFagsakDeltager[]>>(
@@ -123,7 +120,7 @@ const FagsakDeltagerSøk: React.FC = () => {
                         : søkeresultat.harTilgang && settDeltagerForOpprettFagsak(søkeresultat)
                 }
             />
-
+            {/*TODO: Legg inn Endringslogg når vi får konfigurert opp innhold for KS i familie-endringslogg (Sanity)
             {innloggetSaksbehandler && (
                 <Endringslogg
                     userId={innloggetSaksbehandler.navIdent}
@@ -132,11 +129,11 @@ const FagsakDeltagerSøk: React.FC = () => {
                     backendUrl={'/endringslogg'}
                     dataset={'production'}
                     maxEntries={50}
-                    appName={'Barnetrygd'}
+                    appName={'Kontantstøtte'}
                     alignLeft={true}
                     stil={'lys'}
                 />
-            )}
+            )}*/}
             <OpprettFagsakModal
                 søkeresultat={deltagerForOpprettFagsak}
                 lukkModal={() => settDeltagerForOpprettFagsak(undefined)}

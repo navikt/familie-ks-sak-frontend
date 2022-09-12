@@ -89,7 +89,7 @@ const useBehandlingssteg = (
     const kanSendeinnVedtak = () =>
         minstEnPeriodeharBegrunnelseEllerFritekst() ||
         behandling?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
-        behandling?.årsak === BehandlingÅrsak.DØDSFALL_BRUKER;
+        behandling?.årsak === BehandlingÅrsak.DØDSFALL;
 
     const sendTilBeslutterNesteOnClick = (settVisModal: (visModal: boolean) => void) => {
         if (kanSendeinnVedtak()) {

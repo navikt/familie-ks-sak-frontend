@@ -29,7 +29,6 @@ export interface IRestNyBehandling {
     behandlingÅrsak?: BehandlingÅrsak;
     skalBehandlesAutomatisk?: boolean;
     navIdent?: string;
-    barnasIdenter?: string[];
 }
 
 export enum HenleggÅrsak {
@@ -50,7 +49,7 @@ export const henleggÅrsak: Record<HenleggÅrsak, string> = {
 export enum BehandlingÅrsak {
     SØKNAD = 'SØKNAD',
     ÅRLIG_KONTROLL = 'ÅRLIG_KONTROLL',
-    DØDSFALL_BRUKER = 'DØDSFALL_BRUKER',
+    DØDSFALL = 'DØDSFALL',
     NYE_OPPLYSNINGER = 'NYE_OPPLYSNINGER',
     KLAGE = 'KLAGE',
     KORREKSJON_VEDTAKSBREV = 'KORREKSJON_VEDTAKSBREV',
@@ -61,7 +60,7 @@ export enum BehandlingÅrsak {
 export const behandlingÅrsak: Record<BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak, string> = {
     SØKNAD: 'Søknad',
     ÅRLIG_KONTROLL: 'Årlig kontroll',
-    DØDSFALL_BRUKER: 'Dødsfall',
+    DØDSFALL: 'Dødsfall',
     NYE_OPPLYSNINGER: 'Nye opplysninger',
     KLAGE: 'Klage',
     KORREKSJON_VEDTAKSBREV: 'Korrigere vedtak med egen brevmal',

@@ -21,6 +21,6 @@ spec:
   secretName: azuread-familie-ks-sak-frontend-lokal
   claims:
     groups:
-      - id: "54cd86b8-2e23-48b2-8852-b05b5827bb0f"  # VEILEDER_ROLLE
-      - id: "e40090eb-c2fb-400e-b412-e9084019a73b"  # SAKSBEHANDLER_ROLLE
+      - id: "71f503a2-c28f-4394-a05a-8da263ceca4a"  # '0000-GA-Kontantstotte-Veileder' - Veileder
+      - id: "c7e0b108-7ae6-432c-9ab4-946174c240c0"  # '0000-GA-Kontantstotte' - Saksbehandler
       # - id: "9449c153-5a1e-44a7-84c6-7cc7a8867233"  # BESLUTTER_ROLLE

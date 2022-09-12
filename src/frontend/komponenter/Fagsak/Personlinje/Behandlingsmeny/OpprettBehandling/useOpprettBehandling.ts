@@ -24,10 +24,13 @@ import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrev
 import type { FamilieIsoDate } from '../../../../../utils/kalender';
 import { erIsoStringGyldig } from '../../../../../utils/kalender';
 
-const useOpprettBehandling = (
-    lukkModal: () => void,
-    onOpprettTilbakekrevingSuccess: () => void
-) => {
+const useOpprettBehandling = ({
+    lukkModal,
+    onOpprettTilbakekrevingSuccess,
+}: {
+    lukkModal: () => void;
+    onOpprettTilbakekrevingSuccess: () => void;
+}) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { settÅpenBehandling } = useBehandling();
     const { bruker: brukerRessurs } = useFagsakRessurser();
@@ -151,9 +154,7 @@ const useOpprettBehandling = (
                             behandlingType: behandlingstype.verdi as Behandlingstype,
                             behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,
                             navIdent: innloggetSaksbehandler?.navIdent,
-                            nyMigreringsdato: undefined, //todo: endre dette interfacet?
                             søknadMottattDato: skjema.felter.søknadMottattDato.verdi ?? undefined,
-                            barnasIdenter: undefined, //todo: endre dette interfacet?
                             fagsakType: fagsakType,
                         },
                         method: 'POST',
