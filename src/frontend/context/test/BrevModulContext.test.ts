@@ -39,7 +39,7 @@ describe('BrevmodulContext', () => {
         });
 
         const behandlingsårsaker = [
-            BehandlingÅrsak.DØDSFALL_BRUKER,
+            BehandlingÅrsak.DØDSFALL,
             BehandlingÅrsak.KLAGE,
             BehandlingÅrsak.FØDSELSHENDELSE,
             BehandlingÅrsak.SØKNAD,

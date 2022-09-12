@@ -90,7 +90,7 @@ const useBehandlingssteg = (
         minstEnPeriodeharBegrunnelseEllerFritekst() ||
         behandling?.årsak === BehandlingÅrsak.TEKNISK_ENDRING ||
         behandling?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
-        behandling?.årsak === BehandlingÅrsak.DØDSFALL_BRUKER ||
+        behandling?.årsak === BehandlingÅrsak.DØDSFALL ||
         behandling?.type === Behandlingstype.MIGRERING_FRA_INFOTRYGD;
 
     const sendTilBeslutterNesteOnClick = (settVisModal: (visModal: boolean) => void) => {
