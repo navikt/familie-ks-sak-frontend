@@ -30,12 +30,6 @@ describe('sider.ts', () => {
                 SideId.REGISTRERE_SØKNAD
             );
         });
-        test('FILTRERING_FØDSELSHENDELSER returneres ved årsak FØDSELSHENDELSE', () => {
-            const behandling = mockBehandling({ årsak: BehandlingÅrsak.FØDSELSHENDELSE });
-            expect(Object.keys(hentTrinnForBehandling(behandling))).toContain(
-                SideId.FILTRERING_FØDSELSHENDELSER
-            );
-        });
         test('SIMULERING returneres ikke ved automatisk behandling', () => {
             const behandling = mockBehandling({ skalBehandlesAutomatisk: true });
             expect(Object.keys(hentTrinnForBehandling(behandling))).not.toContain(

@@ -13,7 +13,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 
 import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../typer/behandling';
-import { BehandlingResultat, BehandlingÅrsak, Behandlingstype } from '../../typer/behandling';
+import { BehandlingResultat, BehandlingÅrsak } from '../../typer/behandling';
 import { defaultFunksjonellFeil } from '../../typer/feilmeldinger';
 import { useApp } from '../AppContext';
 
@@ -88,10 +88,8 @@ const useBehandlingssteg = (
 
     const kanSendeinnVedtak = () =>
         minstEnPeriodeharBegrunnelseEllerFritekst() ||
-        behandling?.årsak === BehandlingÅrsak.TEKNISK_ENDRING ||
         behandling?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
-        behandling?.årsak === BehandlingÅrsak.DØDSFALL ||
-        behandling?.type === Behandlingstype.MIGRERING_FRA_INFOTRYGD;
+        behandling?.årsak === BehandlingÅrsak.DØDSFALL;
 
     const sendTilBeslutterNesteOnClick = (settVisModal: (visModal: boolean) => void) => {
         if (kanSendeinnVedtak()) {

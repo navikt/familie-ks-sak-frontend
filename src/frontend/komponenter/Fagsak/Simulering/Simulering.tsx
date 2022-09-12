@@ -38,7 +38,6 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
         simuleringsresultat,
         tilbakekrevingSkjema,
         harÅpenTilbakekrevingRessurs,
-        erMigreringMedStoppISimulering,
         erFeilutbetaling,
     } = useSimulering();
     const { erLesevisning, settÅpenBehandling } = useBehandling();
@@ -85,9 +84,7 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
             forrigeOnClick={forrigeOnClick}
             nesteOnClick={nesteOnClick}
             maxWidthStyle={'80rem'}
-            skalViseNesteKnapp={
-                !erMigreringMedStoppISimulering || skalIkkeStoppeMigreringsbehandlinger
-            }
+            skalViseNesteKnapp={skalIkkeStoppeMigreringsbehandlinger}
             steg={BehandlingSteg.VURDER_TILBAKEKREVING}
         >
             {simuleringsresultat?.status === RessursStatus.SUKSESS ? (
@@ -99,21 +96,11 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
                     <>
                         <SimuleringPanel simulering={simuleringsresultat.data} />
                         <SimuleringTabell simulering={simuleringsresultat.data} />
-                        {(!erMigreringMedStoppISimulering ||
-                            skalIkkeStoppeMigreringsbehandlinger) &&
-                            erFeilutbetaling && (
-                                <TilbakekrevingSkjema
-                                    søkerMålform={hentSøkersMålform(åpenBehandling)}
-                                    harÅpenTilbakekrevingRessurs={harÅpenTilbakekrevingRessurs}
-                                />
-                            )}
-                        {erMigreringMedStoppISimulering && (
-                            <Alert variant="error">
-                                Utbetalingen må være lik utbetalingen i Infotrygd.
-                                <br />
-                                Du må tilbake og gjøre nødvendige endringer for å komme videre i
-                                behandlingen
-                            </Alert>
+                        {skalIkkeStoppeMigreringsbehandlinger && erFeilutbetaling && (
+                            <TilbakekrevingSkjema
+                                søkerMålform={hentSøkersMålform(åpenBehandling)}
+                                harÅpenTilbakekrevingRessurs={harÅpenTilbakekrevingRessurs}
+                            />
                         )}
                     </>
                 )

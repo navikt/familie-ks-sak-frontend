@@ -41,10 +41,8 @@ describe('BrevmodulContext', () => {
         const behandlingsårsaker = [
             BehandlingÅrsak.DØDSFALL,
             BehandlingÅrsak.KLAGE,
-            BehandlingÅrsak.FØDSELSHENDELSE,
             BehandlingÅrsak.SØKNAD,
             BehandlingÅrsak.NYE_OPPLYSNINGER,
-            BehandlingÅrsak.OMREGNING_6ÅR,
         ];
         test(
             `Skal returnere liste som inneholder VARSEL_OM_REVURDERING når behandlingstypen er REVURDERING` +

@@ -17,12 +17,7 @@ import {
     sider,
 } from '../../komponenter/Felleskomponenter/Venstremeny/sider';
 import type { BehandlingSteg, IBehandling } from '../../typer/behandling';
-import {
-    BehandlerRolle,
-    BehandlingStatus,
-    Behandlingstype,
-    BehandlingÅrsak,
-} from '../../typer/behandling';
+import { BehandlerRolle, BehandlingStatus, BehandlingÅrsak } from '../../typer/behandling';
 import { harTilgangTilEnhet } from '../../typer/enhet';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
@@ -155,7 +150,6 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
         const innloggetSaksbehandlerSkrivetilgang = harInnloggetSaksbehandlerSkrivetilgang();
         const behandlingsårsak = åpenBehandlingData?.årsak;
         const behandlingsårsakErÅpenForAlleMedTilgangTilÅOppretteÅrsak =
-            behandlingsårsak === BehandlingÅrsak.TEKNISK_ENDRING ||
             behandlingsårsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV;
 
         const saksbehandlerHarTilgangTilEnhet =
@@ -202,10 +196,6 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
         BehandlerRolle.BESLUTTER === hentSaksbehandlerRolle() &&
         innloggetSaksbehandler?.email !== åpenBehandling.data.endretAv;
 
-    const erMigreringsbehandling =
-        åpenBehandling.status === RessursStatus.SUKSESS &&
-        åpenBehandling.data.type === Behandlingstype.MIGRERING_FRA_INFOTRYGD;
-
     const erBehandleneEnhetMidlertidig =
         åpenBehandling.status === RessursStatus.SUKSESS &&
         åpenBehandling.data.arbeidsfordelingPåBehandling.behandlendeEnhetId ===
@@ -233,7 +223,6 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
         settÅpenBehandling,
         oppdaterRegisteropplysninger,
         sendTilBeslutterNesteOnClick,
-        erMigreringsbehandling,
         aktivSettPåVent: hentDataFraRessurs(åpenBehandling)?.aktivSettPåVent,
         erBehandleneEnhetMidlertidig,
         åpenHøyremeny,

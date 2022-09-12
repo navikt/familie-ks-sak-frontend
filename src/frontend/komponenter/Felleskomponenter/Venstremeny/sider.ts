@@ -71,8 +71,8 @@ export const sider: Record<SideId, ISide> = {
         href: 'filtreringsregler',
         navn: 'Filtreringsregler',
         steg: BehandlingSteg.FILTRERING_FØDSELSHENDELSER,
-        visSide: (åpenBehandling: IBehandling) => {
-            return åpenBehandling.årsak === BehandlingÅrsak.FØDSELSHENDELSE;
+        visSide: (_åpenBehandling: IBehandling) => {
+            return false; // todo: Returnerer false for nå, så kan vi rydde denne når vi rydder BehandlingSteg
         },
     },
     VILKÅRSVURDERING: {

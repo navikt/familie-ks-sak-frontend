@@ -57,10 +57,7 @@ const useOpprettBehandling = ({
         },
         skalFeltetVises: (avhengigheter: Avhengigheter) => {
             const behandlingstypeVerdi = avhengigheter.behandlingstype.verdi;
-            return (
-                behandlingstypeVerdi === Behandlingstype.REVURDERING ||
-                behandlingstypeVerdi === Behandlingstype.MIGRERING_FRA_INFOTRYGD
-            );
+            return behandlingstypeVerdi === Behandlingstype.REVURDERING;
         },
         avhengigheter: { behandlingstype },
     });
@@ -121,9 +118,6 @@ const useOpprettBehandling = ({
 
     useEffect(() => {
         switch (skjema.felter.behandlingstype.verdi) {
-            case Behandlingstype.TEKNISK_ENDRING:
-                skjema.felter.behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.TEKNISK_ENDRING);
-                break;
             case Behandlingstype.FØRSTEGANGSBEHANDLING:
                 skjema.felter.behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.SØKNAD);
                 break;

@@ -84,10 +84,7 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
 
     return (
         <Skjemasteg
-            skalViseForrigeKnapp={
-                åpenBehandling.årsak === BehandlingÅrsak.SØKNAD ||
-                åpenBehandling.årsak === BehandlingÅrsak.FØDSELSHENDELSE
-            }
+            skalViseForrigeKnapp={åpenBehandling.årsak === BehandlingÅrsak.SØKNAD}
             tittel={'Vilkårsvurdering'}
             forrigeOnClick={() => {
                 if (åpenBehandling.årsak === BehandlingÅrsak.SØKNAD) {

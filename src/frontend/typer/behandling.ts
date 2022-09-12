@@ -48,43 +48,23 @@ export const henleggÅrsak: Record<HenleggÅrsak, string> = {
 
 export enum BehandlingÅrsak {
     SØKNAD = 'SØKNAD',
-    FØDSELSHENDELSE = 'FØDSELSHENDELSE',
     ÅRLIG_KONTROLL = 'ÅRLIG_KONTROLL',
     DØDSFALL = 'DØDSFALL',
     NYE_OPPLYSNINGER = 'NYE_OPPLYSNINGER',
     KLAGE = 'KLAGE',
-    TEKNISK_OPPHØR = 'TEKNISK_OPPHØR',
-    TEKNISK_ENDRING = 'TEKNISK_ENDRING',
     KORREKSJON_VEDTAKSBREV = 'KORREKSJON_VEDTAKSBREV',
-    OMREGNING_6ÅR = 'OMREGNING_6ÅR',
-    OMREGNING_18ÅR = 'OMREGNING_18ÅR',
-    SMÅBARNSTILLEGG = 'SMÅBARNSTILLEGG',
     SATSENDRING = 'SATSENDRING',
-    MIGRERING = 'MIGRERING',
-    ENDRE_MIGRERINGSDATO = 'ENDRE_MIGRERINGSDATO',
-    HELMANUELL_MIGRERING = 'HELMANUELL_MIGRERING',
-    OMREGNING_SMÅBARNSTILLEGG = 'OMREGNING_SMÅBARNSTILLEGG',
     BARNEHAGELISTE = 'BARNEHAGELISTE',
 }
 
 export const behandlingÅrsak: Record<BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak, string> = {
     SØKNAD: 'Søknad',
-    FØDSELSHENDELSE: 'Fødselshendelse',
     ÅRLIG_KONTROLL: 'Årlig kontroll',
     DØDSFALL: 'Dødsfall',
     NYE_OPPLYSNINGER: 'Nye opplysninger',
     KLAGE: 'Klage',
-    TEKNISK_OPPHØR: 'Teknisk opphør',
-    TEKNISK_ENDRING: 'Teknisk endring',
     KORREKSJON_VEDTAKSBREV: 'Korrigere vedtak med egen brevmal',
-    OMREGNING_6ÅR: 'Omregning 6 år',
-    OMREGNING_18ÅR: 'Omregning 18 år',
-    OMREGNING_SMÅBARNSTILLEGG: 'Omregning småbarnstillegg',
-    SMÅBARNSTILLEGG: 'Småbarnstillegg',
     SATSENDRING: 'Satsendring',
-    MIGRERING: 'Migrering',
-    ENDRE_MIGRERINGSDATO: 'Endre migreringsdato',
-    HELMANUELL_MIGRERING: 'Manuell migrering',
     BARNEHAGELISTE: 'Barnehageliste',
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
@@ -164,9 +144,7 @@ export enum BehandlingStatus {
 
 export enum Behandlingstype {
     FØRSTEGANGSBEHANDLING = 'FØRSTEGANGSBEHANDLING',
-    MIGRERING_FRA_INFOTRYGD = 'MIGRERING_FRA_INFOTRYGD',
     REVURDERING = 'REVURDERING',
-    TEKNISK_OPPHØR = 'TEKNISK_OPPHØR',
     TEKNISK_ENDRING = 'TEKNISK_ENDRING',
 }
 
