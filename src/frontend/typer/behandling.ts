@@ -29,7 +29,6 @@ export interface IRestNyBehandling {
     behandlingÅrsak?: BehandlingÅrsak;
     skalBehandlesAutomatisk?: boolean;
     navIdent?: string;
-    barnasIdenter?: string[];
 }
 
 export enum HenleggÅrsak {

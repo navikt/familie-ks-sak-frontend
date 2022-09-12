@@ -157,9 +157,7 @@ const useOpprettBehandling = (
                             behandlingType: behandlingstype.verdi as Behandlingstype,
                             behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,
                             navIdent: innloggetSaksbehandler?.navIdent,
-                            nyMigreringsdato: undefined, //todo: endre dette interfacet?
                             søknadMottattDato: skjema.felter.søknadMottattDato.verdi ?? undefined,
-                            barnasIdenter: undefined, //todo: endre dette interfacet?
                             fagsakType: fagsakType,
                         },
                         method: 'POST',
