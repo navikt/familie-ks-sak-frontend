@@ -72,7 +72,7 @@ export const behandlingÅrsak: Record<BehandlingÅrsak | Tilbakekrevingsbehandli
     SØKNAD: 'Søknad',
     FØDSELSHENDELSE: 'Fødselshendelse',
     ÅRLIG_KONTROLL: 'Årlig kontroll',
-    DØDSFALL_BRUKER: 'Dødsfall',
+    DØDSFALL: 'Dødsfall',
     NYE_OPPLYSNINGER: 'Nye opplysninger',
     KLAGE: 'Klage',
     TEKNISK_OPPHØR: 'Teknisk opphør',
