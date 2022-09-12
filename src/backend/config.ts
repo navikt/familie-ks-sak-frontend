@@ -26,7 +26,7 @@ const Environment = () => {
             namespace: 'e2e',
             proxyUrl: 'http://familie-ks-sak:8089',
             familieTilbakeUrl: 'http://familie-tilbake-frontend:8000',
-            // redisUrl: 'familie-redis',
+            redisUrl: 'familie-redis',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
         };
     } else if (process.env.ENV === 'preprod') {
@@ -35,7 +35,7 @@ const Environment = () => {
             namespace: 'preprod',
             proxyUrl: 'http://familie-ks-sak',
             familieTilbakeUrl: 'https://familie-tilbake-frontend.dev.intern.nav.no',
-            // redisUrl: 'familie-ks-sak-frontend-redis',
+            redisUrl: 'familie-ks-sak-frontend-redis',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
         };
     }
@@ -46,7 +46,7 @@ const Environment = () => {
         proxyUrl: 'http://familie-ks-sak',
         familieTilbakeUrl: 'https://familietilbakekreving.intern.nav.no',
         endringsloggProxyUrl: 'https://familie-endringslogg.intern.nav.no',
-        // redisUrl: 'familie-ks-sak-frontend-redis',
+        redisUrl: 'familie-ks-sak-frontend-redis',
     };
 };
 const env = Environment();
@@ -55,7 +55,7 @@ export const sessionConfig: ISessionKonfigurasjon = {
     cookieSecret: [`${process.env.COOKIE_KEY1}`, `${process.env.COOKIE_KEY2}`],
     navn: 'familie-ks-sak-v1',
     redisPassord: process.env.REDIS_PASSWORD,
-    // redisUrl: env.redisUrl,
+    redisUrl: env.redisUrl,
     secureCookie: !(
         process.env.ENV === 'local' ||
         process.env.ENV === 'lokalt-mot-preprod' ||
