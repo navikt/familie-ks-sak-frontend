@@ -10,7 +10,7 @@ import { useBehandling } from '../../../../../context/behandlingContext/Behandli
 import type { IBehandling } from '../../../../../typer/behandling';
 import type {
     IBehandlingstema,
-    IRestEndreBehandlingUnderkategori,
+    IRestEndreBehandlingstema,
 } from '../../../../../typer/behandlingstema';
 import { tilBehandlingstema } from '../../../../../typer/behandlingstema';
 
@@ -40,7 +40,7 @@ const useEndreBehandling = (lukkModal: () => void) => {
         if (behandlingstema.verdi !== undefined) {
             const { kategori } = behandlingstema.verdi;
             settRessurs(byggHenterRessurs());
-            request<IRestEndreBehandlingUnderkategori, IBehandling>({
+            request<IRestEndreBehandlingstema, IBehandling>({
                 method: 'PUT',
                 data: { behandlingKategori: kategori },
                 url: `/familie-ks-sak/api/behandlinger/${behandlingId}/behandlingstema`,

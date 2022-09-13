@@ -12,7 +12,7 @@ export enum Behandlingstema {
     EØS = 'EØS',
 }
 
-export interface IRestEndreBehandlingUnderkategori {
+export interface IRestEndreBehandlingstema {
     behandlingKategori: BehandlingKategori;
 }
 export const behandlingKategori: Record<BehandlingKategori, string> = {
