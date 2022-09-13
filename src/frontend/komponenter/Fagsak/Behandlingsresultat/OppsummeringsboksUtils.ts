@@ -1,6 +1,3 @@
-import type { Ressurs } from '@navikt/familie-typer';
-
-import type { IBehandling } from '../../../typer/behandling';
 import { YtelseType } from '../../../typer/beregning';
 import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
 import { kalenderDato, kalenderDatoFraDate, kalenderDiffMåned } from '../../../utils/kalender';
@@ -41,5 +38,3 @@ export const kanLeggeSmåbarnstilleggTilPeriode = (
         !kanFjerneSmåbarnstilleggFraPeriode(utbetalingsperiode)
     );
 };
-
-export const erMigreringsBehandling = (_behandling: Ressurs<IBehandling>): boolean => false; //todo: returnerer false for nå, så kan vi rydde denne når vi rydder resten av migreringslogikk
