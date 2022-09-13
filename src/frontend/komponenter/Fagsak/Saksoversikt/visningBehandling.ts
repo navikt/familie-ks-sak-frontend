@@ -4,7 +4,7 @@ import type {
     Behandlingstype,
     BehandlingÅrsak,
 } from '../../../typer/behandling';
-import type { BehandlingKategori, BehandlingUnderkategori } from '../../../typer/behandlingstema';
+import type { BehandlingKategori } from '../../../typer/behandlingstema';
 
 export interface VisningBehandling {
     aktiv: boolean;
@@ -14,7 +14,6 @@ export interface VisningBehandling {
     status: BehandlingStatus;
     type: Behandlingstype;
     kategori: BehandlingKategori;
-    underkategori: BehandlingUnderkategori;
     vedtaksdato?: string;
     årsak?: BehandlingÅrsak;
 }

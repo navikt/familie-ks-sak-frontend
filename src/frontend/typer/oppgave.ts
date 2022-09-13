@@ -1,6 +1,6 @@
 import type { ISaksbehandler } from '@navikt/familie-typer';
 
-import type { BehandlingKategori, BehandlingUnderkategori } from './behandlingstema';
+import type { BehandlingKategori } from './behandlingstema';
 import type { IPar } from './common';
 import type { INavnOgIdent } from './manuell-journalføring';
 
@@ -191,5 +191,4 @@ export interface IRestLukkOppgaveOgKnyttJournalpost {
     datoMottatt?: string;
     navIdent: string;
     kategori: BehandlingKategori | null;
-    underkategori: BehandlingUnderkategori | null;
 }

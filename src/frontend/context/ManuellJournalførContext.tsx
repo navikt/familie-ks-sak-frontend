@@ -354,7 +354,6 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
                     data: {
                         journalpostTittel: skjema.felter.journalpostTittel.verdi,
                         kategori: behandlingstema?.kategori ?? null,
-                        underkategori: behandlingstema?.underkategori ?? null,
                         bruker: {
                             navn: skjema.felter.bruker.verdi?.navn ?? '',
                             id: skjema.felter.bruker.verdi?.personIdent ?? '',
@@ -463,7 +462,6 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
                             tilknyttedeBehandlingIder:
                                 skjema.felter.tilknyttedeBehandlingIder.verdi,
                             kategori: behandlingstema?.kategori ?? null,
-                            underkategori: behandlingstema?.underkategori ?? null,
                             bruker: {
                                 navn: skjema.felter.bruker.verdi?.navn ?? '',
                                 id: skjema.felter.bruker.verdi?.personIdent ?? '',

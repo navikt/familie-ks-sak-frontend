@@ -12,11 +12,7 @@ import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingStatus, erBehandlingHenlagt } from '../../../typer/behandling';
-import {
-    behandlingKategori,
-    BehandlingKategori,
-    behandlingUnderkategori,
-} from '../../../typer/behandlingstema';
+import { behandlingKategori, BehandlingKategori } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
 import { Vedtaksperiodetype } from '../../../typer/vedtaksperiode';
@@ -225,10 +221,6 @@ export const sakstype = (behandling?: IBehandling) => {
 
     return `${
         behandling?.kategori ? behandlingKategori[behandling?.kategori] : behandling?.kategori
-    }, ${
-        behandling?.underkategori
-            ? behandlingUnderkategori[behandling?.underkategori]
-            : behandling?.underkategori
     }`;
 };
 
