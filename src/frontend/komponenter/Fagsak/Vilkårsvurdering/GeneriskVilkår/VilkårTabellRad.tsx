@@ -17,8 +17,12 @@ import { Resultat, uiResultat, VilkårType } from '../../../../typer/vilkår';
 import { datoformat, formaterIsoDato } from '../../../../utils/formatter';
 import { periodeToString } from '../../../../utils/kalender';
 import { alleRegelverk } from '../../../../utils/vilkår';
-import { BosattIRiket } from '../Vilkår/BosattIRiket/BosattIRiket';
-import { LovligOpphold } from '../Vilkår/LovligOpphold/LovligOpphold';
+import { BorMedSøker } from './Vilkår/BorMedSøker/BorMedSøker';
+import { BosattIRiket } from './Vilkår/BosattIRiket/BosattIRiket';
+import { GiftPartnerskap } from './Vilkår/GiftPartnerskap/GiftPartnerskap';
+import { LovligOpphold } from './Vilkår/LovligOpphold/LovligOpphold';
+import { Under18År } from './Vilkår/Under18År/Under18År';
+import { UtvidetBarnetrygd } from './Vilkår/UtvidetBarnetrygd/UtvidetBarnetrygd';
 import { vilkårFeilmeldingId } from './VilkårTabell';
 
 interface IProps {
@@ -78,7 +82,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
         }
     };
 
-    const renderVilkårSkjema = () => {
+    const VilkårSkjema = () => {
         switch (vilkårResultat.vilkårType) {
             case VilkårType.BOSATT_I_RIKET:
                 return (
@@ -90,7 +94,6 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         lesevisning={erLesevisning()}
                     />
                 );
-                break;
             case VilkårType.LOVLIG_OPPHOLD:
                 return (
                     <LovligOpphold
@@ -101,7 +104,46 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         lesevisning={erLesevisning()}
                     />
                 );
-                break;
+            case VilkårType.UTVIDET_BARNETRYGD:
+                return (
+                    <UtvidetBarnetrygd
+                        vilkårResultat={vilkårResultat}
+                        vilkårFraConfig={vilkårFraConfig}
+                        toggleForm={toggleForm}
+                        person={person}
+                        lesevisning={erLesevisning()}
+                    />
+                );
+            case VilkårType.BOR_MED_SØKER:
+                return (
+                    <BorMedSøker
+                        vilkårResultat={vilkårResultat}
+                        vilkårFraConfig={vilkårFraConfig}
+                        toggleForm={toggleForm}
+                        person={person}
+                        lesevisning={erLesevisning()}
+                    />
+                );
+            case VilkårType.UNDER_18_ÅR:
+                return (
+                    <Under18År
+                        vilkårResultat={vilkårResultat}
+                        vilkårFraConfig={vilkårFraConfig}
+                        toggleForm={toggleForm}
+                        person={person}
+                        lesevisning={erLesevisning()}
+                    />
+                );
+            case VilkårType.GIFT_PARTNERSKAP:
+                return (
+                    <GiftPartnerskap
+                        vilkårResultat={vilkårResultat}
+                        vilkårFraConfig={vilkårFraConfig}
+                        toggleForm={toggleForm}
+                        person={person}
+                        lesevisning={erLesevisning()}
+                    />
+                );
             default:
                 return (
                     <BosattIRiket
@@ -121,7 +163,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
             togglePlacement="right"
             onOpenChange={() => toggleForm(true)}
             id={vilkårFeilmeldingId(vilkårResultat)}
-            content={<>{renderVilkårSkjema()}</>}
+            content={VilkårSkjema()}
         >
             <Table.DataCell>
                 <VurderingCelle>

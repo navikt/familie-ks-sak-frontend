@@ -7,7 +7,7 @@ import type {
     IRestVilkårResultat,
     IVilkårResultat,
 } from '../../typer/vilkår';
-import { AnnenVurderingType, Resultat } from '../../typer/vilkår';
+import { Resultat } from '../../typer/vilkår';
 import {
     kalenderDato,
     kalenderDatoTilDate,
@@ -81,32 +81,20 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                             }
                         )
                     ),
-                    andreVurderinger: [
-                        {
-                            begrunnelse: '',
-                            id: 3214,
-                            resultat: Resultat.IKKE_VURDERT,
-                            endretAv: 'Saksbehandler',
-                            erVurdert: false,
-                            endretTidspunkt: '',
-                            behandlingId: 222,
-                            type: AnnenVurderingType.OPPLYSNINGSPLIKT,
-                        },
-                        ...personResultat.andreVurderinger.map(
-                            (annenVurdering: IRestAnnenVurdering) => {
-                                return {
-                                    begrunnelse: annenVurdering.begrunnelse,
-                                    id: annenVurdering.id,
-                                    resultat: annenVurdering.resultat,
-                                    endretAv: annenVurdering.endretAv,
-                                    erVurdert: annenVurdering.resultat !== Resultat.IKKE_VURDERT,
-                                    endretTidspunkt: annenVurdering.endretTidspunkt,
-                                    behandlingId: annenVurdering.behandlingId,
-                                    type: annenVurdering.type,
-                                };
-                            }
-                        ),
-                    ],
+                    andreVurderinger: personResultat.andreVurderinger.map(
+                        (annenVurdering: IRestAnnenVurdering) => {
+                            return {
+                                begrunnelse: annenVurdering.begrunnelse,
+                                id: annenVurdering.id,
+                                resultat: annenVurdering.resultat,
+                                endretAv: annenVurdering.endretAv,
+                                erVurdert: annenVurdering.resultat !== Resultat.IKKE_VURDERT,
+                                endretTidspunkt: annenVurdering.endretTidspunkt,
+                                behandlingId: annenVurdering.behandlingId,
+                                type: annenVurdering.type,
+                            };
+                        }
+                    ),
                 };
             }
         })

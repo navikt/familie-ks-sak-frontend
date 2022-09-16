@@ -1,20 +1,20 @@
 import { useFelt } from '@navikt/familie-skjema';
 
-import type { IGrunnlagPerson } from '../../../../../typer/person';
-import type { VedtakBegrunnelse } from '../../../../../typer/vedtak';
-import type { IVilkårResultat } from '../../../../../typer/vilkår';
+import type { IGrunnlagPerson } from '../../../../../../typer/person';
+import type { VedtakBegrunnelse } from '../../../../../../typer/vedtak';
+import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type {
     Regelverk as RegelverkType,
     Resultat,
     UtdypendeVilkårsvurdering,
-} from '../../../../../typer/vilkår';
-import type { IYearMonthPeriode } from '../../../../../utils/kalender';
+} from '../../../../../../typer/vilkår';
+import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
 import {
     erAvslagBegrunnelserGyldig,
     erPeriodeGyldig,
     erResultatGyldig,
-} from '../../../../../utils/validators';
-import type { IVilkårSkjemaContext } from '../../GeneriskVilkår/VilkårSkjemaContext';
+} from '../../../../../../utils/validators';
+import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 import {
     erBegrunnelseGyldig,
     erUtdypendeVilkårsvurderingerGyldig,

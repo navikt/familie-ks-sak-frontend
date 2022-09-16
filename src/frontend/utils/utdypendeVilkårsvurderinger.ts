@@ -150,18 +150,5 @@ export const fjernUmuligeAlternativerFraRedigerbartVilkår = (
         utdypendeVilkårsvurderinger.validerOgSettFelt(
             filtrerUtUmuligeAlternativer(utdypendeVilkårsvurderinger.verdi, muligeAlternativer)
         );
-        // validerOgSettRedigerbartVilkår({
-        //     ...utdypendeVilkårsvurderinger,
-        //     verdi: {
-        //         ...utdypendeVilkårsvurderinger.verdi,
-        //         utdypendeVilkårsvurderinger: {
-        //             ...utdypendeVilkårsvurderinger.verdi.utdypendeVilkårsvurderinger,
-        //             verdi: filtrerUtUmuligeAlternativer(
-        //                 utdypendeVilkårsvurderinger.verdi.utdypendeVilkårsvurderinger.verdi,
-        //                 muligeAlternativer
-        //             ),
-        //         },
-        //     },
-        // });
     }
 };

@@ -24,7 +24,7 @@ import { useBehandling } from '../../../../context/behandlingContext/BehandlingC
 import { BehandlingÅrsak } from '../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IVilkårConfig, IVilkårResultat, Regelverk } from '../../../../typer/vilkår';
-import { Resultat, resultater, VilkårType } from '../../../../typer/vilkår';
+import { Resultat, resultater } from '../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../utils/vilkår';
 import IkonKnapp, { IkonPosisjon } from '../../../Felleskomponenter/IkonKnapp/IkonKnapp';
 import AvslagSkjema from './AvslagSkjema';
@@ -69,6 +69,10 @@ export interface IVilkårSkjemaBaseProps {
     vilkårFraConfig: IVilkårConfig;
     person: IGrunnlagPerson;
     toggleForm: (visSkjema: boolean) => void;
+    onResultatJa?: () => Resultat;
+    resultatJaChecked?: (resultat: Resultat) => boolean;
+    onResultatNei?: () => Resultat;
+    resultatNeiChecked?: (resultat: Resultat) => boolean;
 }
 
 export interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjemaBaseProps {
@@ -84,6 +88,10 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     vilkårFraConfig,
     person,
     toggleForm,
+    onResultatJa,
+    resultatJaChecked,
+    onResultatNei,
+    resultatNeiChecked,
     felter,
     children,
 }: IVilkårSkjema<T>) => {
@@ -153,15 +161,13 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         label={'Ja'}
                         name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                         checked={
-                            vilkårResultat.vilkårType === VilkårType.GIFT_PARTNERSKAP
-                                ? skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT
+                            resultatJaChecked
+                                ? resultatJaChecked(skjema.felter.resultat.verdi)
                                 : skjema.felter.resultat.verdi === Resultat.OPPFYLT
                         }
                         onChange={() =>
                             skjema.felter.resultat.validerOgSettFelt(
-                                vilkårResultat.vilkårType === VilkårType.GIFT_PARTNERSKAP
-                                    ? Resultat.IKKE_OPPFYLT
-                                    : Resultat.OPPFYLT
+                                onResultatJa ? onResultatJa() : Resultat.OPPFYLT
                             )
                         }
                     />
@@ -169,15 +175,13 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         label={'Nei'}
                         name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                         checked={
-                            vilkårResultat.vilkårType === VilkårType.GIFT_PARTNERSKAP
-                                ? skjema.felter.resultat.verdi === Resultat.OPPFYLT
+                            resultatNeiChecked
+                                ? resultatNeiChecked(skjema.felter.resultat.verdi)
                                 : skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT
                         }
                         onChange={() =>
                             skjema.felter.resultat.validerOgSettFelt(
-                                vilkårResultat.vilkårType === VilkårType.GIFT_PARTNERSKAP
-                                    ? Resultat.OPPFYLT
-                                    : Resultat.IKKE_OPPFYLT
+                                onResultatNei ? onResultatNei() : Resultat.IKKE_OPPFYLT
                             )
                         }
                     />

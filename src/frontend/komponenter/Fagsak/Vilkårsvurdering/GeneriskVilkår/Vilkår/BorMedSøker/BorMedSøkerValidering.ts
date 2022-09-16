@@ -1,42 +1,39 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
-import { PersonType } from '../../../../../typer/person';
-import type { UtdypendeVilkårsvurdering } from '../../../../../typer/vilkår';
+import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import {
     Regelverk,
     Resultat,
-    UtdypendeVilkårsvurderingEøsBarnBosattIRiket,
-    UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
+    UtdypendeVilkårsvurderingDeltBosted,
+    UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
     UtdypendeVilkårsvurderingGenerell,
-    UtdypendeVilkårsvurderingNasjonal,
-    VilkårType,
-} from '../../../../../typer/vilkår';
+} from '../../../../../../typer/vilkår';
 
 export const bestemMuligeUtdypendeVilkårsvurderinger = (
     regelverk: Regelverk,
-    personType: PersonType,
     resultat: Resultat
 ) => {
     if (regelverk === Regelverk.EØS_FORORDNINGEN) {
         if (resultat === Resultat.IKKE_OPPFYLT) {
             return [];
         }
-        if (personType === PersonType.SØKER) {
-            return [
-                UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING,
-                UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING_UTLAND,
-            ];
-        }
         return [
-            UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_NORGE,
-            UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_EØS,
-            UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_STORBRITANNIA,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_SØKER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_ANNEN_FORELDER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_NORGE_MED_SØKER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_STORBRITANNIA_MED_SØKER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_STORBRITANNIA_MED_ANNEN_FORELDER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_ALENE_I_ANNET_EØS_LAND,
+            UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED,
+            UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED_SKAL_IKKE_DELES,
+            UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
         ];
     }
     return [
         UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
-        UtdypendeVilkårsvurderingNasjonal.VURDERT_MEDLEMSKAP,
+        UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED_SKAL_IKKE_DELES,
+        UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED,
     ];
 };
 
@@ -50,26 +47,33 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
     const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] =
         bestemMuligeUtdypendeVilkårsvurderinger(
             avhengigheter.vurderesEtter,
-            avhengigheter.personType,
             avhengigheter.resultat
         );
 
     if (muligeUtdypendeVilkårsvurderinger.length === 0) {
         return ok(felt);
     }
-
+    console.log(muligeUtdypendeVilkårsvurderinger);
     if (!felt.verdi.every(item => muligeUtdypendeVilkårsvurderinger.includes(item))) {
         return feil(felt, 'Du har valgt en ugyldig kombinasjon');
     }
 
+    const antallValgteAlternativerForDeltBosted = felt.verdi.filter(item =>
+        Object.keys(UtdypendeVilkårsvurderingDeltBosted).includes(item)
+    ).length;
+    if (antallValgteAlternativerForDeltBosted > 1) {
+        return feil(felt, 'Du kan kun velge ett alternativ for delt bosted');
+    }
+
     if (avhengigheter.vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
-        if (avhengigheter.vilkårType === VilkårType.BOSATT_I_RIKET) {
-            if (felt.verdi.length === 0) {
-                return feil(felt, 'Du må velge ett alternativ');
-            }
-            if (felt.verdi.length > 1) {
-                return feil(felt, 'Du kan kun velge ett alternativ');
-            }
+        const antallValgteAlternativerForHvemBarnetBorMed = felt.verdi.filter(item =>
+            Object.keys(UtdypendeVilkårsvurderingEøsBarnBorMedSøker).includes(item)
+        ).length;
+        if (antallValgteAlternativerForHvemBarnetBorMed === 0) {
+            return feil(felt, 'Du må velge ett alternativ for hvem barnet bor med');
+        }
+        if (antallValgteAlternativerForHvemBarnetBorMed > 1) {
+            return feil(felt, 'Du kan kun velge ett alternativ for hvem barnet bor med');
         }
     }
 
@@ -87,7 +91,7 @@ export const erBegrunnelseGyldig = (
     const begrunnelseOppgitt = felt.verdi.length > 0;
 
     if (avhengigheter.vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
-        return begrunnelseOppgitt ? ok(felt) : feil(felt, 'Du må fylle inn en begrunnelse');
+        return ok(felt);
     } else {
         if (begrunnelseOppgitt || avhengigheter?.utdypendeVilkårsvurdering.length === 0) {
             return ok(felt);

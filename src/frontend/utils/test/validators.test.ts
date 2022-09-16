@@ -8,32 +8,10 @@ import generator from '../../testverktøy/fnr/fnr-generator';
 import type { IGrunnlagPerson } from '../../typer/person';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
-import type { UtdypendeVilkårsvurdering } from '../../typer/vilkår';
-import { Regelverk, UtdypendeVilkårsvurderingEøsBarnBorMedSøker } from '../../typer/vilkår';
-import {
-    Resultat,
-    VilkårType,
-    UtdypendeVilkårsvurderingDeltBosted,
-    UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
-    UtdypendeVilkårsvurderingGenerell,
-    UtdypendeVilkårsvurderingNasjonal,
-} from '../../typer/vilkår';
+import { Resultat } from '../../typer/vilkår';
 import type { IPeriode } from '../kalender';
 import { nyPeriode } from '../kalender';
-import type { UtdypendeVilkårsvurderingAvhengigheter } from '../utdypendeVilkårsvurderinger';
-import {
-    erBegrunnelseGyldig,
-    erPeriodeGyldig,
-    erResultatGyldig,
-    erUtdypendeVilkårsvurderingerGyldig,
-    identValidator,
-} from '../validators';
-
-export declare const nyFeltTestState: <T>(
-    verdi: T,
-    /* eslint-disable  @typescript-eslint/no-explicit-any */
-    valideringsfunksjon?: (felt: any, metadata?: any) => any | undefined
-) => FeltState<T>;
+import { erPeriodeGyldig, erResultatGyldig, identValidator } from '../validators';
 
 describe('utils/validators', () => {
     const nyFeltState = <T>(verdi: T): FeltState<T> => ({
@@ -192,141 +170,6 @@ describe('utils/validators', () => {
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
-    test('Begrunnelse må oppgis dersom Utdypende vilkårsvurdering er valgt', () => {
-        const valideringBegrunnelseOppgitt = erBegrunnelseGyldig(nyFeltState('begrunnelse'), {
-            utdypendeVilkårsvurderinger: [UtdypendeVilkårsvurderingNasjonal.VURDERT_MEDLEMSKAP],
-        });
-        expect(valideringBegrunnelseOppgitt.valideringsstatus).toEqual(Valideringsstatus.OK);
-
-        const valideringVurderingIkkeValgt = erBegrunnelseGyldig(nyFeltState(''), {
-            utdypendeVilkårsvurderinger: [],
-        });
-        expect(valideringVurderingIkkeValgt.valideringsstatus).toEqual(Valideringsstatus.OK);
-
-        const valideringMedlemskapVurdertManglerBegrunnelse = erBegrunnelseGyldig(nyFeltState(''), {
-            utdypendeVilkårsvurderinger: [UtdypendeVilkårsvurderingNasjonal.VURDERT_MEDLEMSKAP],
-            regelverk: Regelverk.NASJONALE_REGLER,
-        });
-        expect(valideringMedlemskapVurdertManglerBegrunnelse.valideringsstatus).toEqual(
-            Valideringsstatus.FEIL
-        );
-        expect(valideringMedlemskapVurdertManglerBegrunnelse.feilmelding).toBe(
-            'Du har gjort ett eller flere valg under "Utdypende vilkårsvurdering" og må derfor fylle inn en begrunnelse'
-        );
-
-        const valideringSkjønnsmessigVurderingManglerBegrunnelse = erBegrunnelseGyldig(
-            nyFeltState(''),
-            {
-                utdypendeVilkårsvurderinger: [
-                    UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
-                ],
-                regelverk: Regelverk.NASJONALE_REGLER,
-            }
-        );
-        expect(valideringSkjønnsmessigVurderingManglerBegrunnelse.valideringsstatus).toEqual(
-            Valideringsstatus.FEIL
-        );
-        expect(valideringSkjønnsmessigVurderingManglerBegrunnelse.feilmelding).toBe(
-            'Du har gjort ett eller flere valg under "Utdypende vilkårsvurdering" og må derfor fylle inn en begrunnelse'
-        );
-
-        const valideringDeltBostedManglerBegrunnelse = erBegrunnelseGyldig(nyFeltState(''), {
-            utdypendeVilkårsvurderinger: [UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED],
-            regelverk: Regelverk.NASJONALE_REGLER,
-        });
-        expect(valideringDeltBostedManglerBegrunnelse.valideringsstatus).toEqual(
-            Valideringsstatus.FEIL
-        );
-        expect(valideringDeltBostedManglerBegrunnelse.feilmelding).toBe(
-            'Du har gjort ett eller flere valg under "Utdypende vilkårsvurdering" og må derfor fylle inn en begrunnelse'
-        );
-
-        const valideringManglerBegrunnelseForSøkerMedUtvidetVilkår = erBegrunnelseGyldig(
-            nyFeltState(''),
-            {
-                utdypendeVilkårsvurderinger: [],
-                regelverk: Regelverk.NASJONALE_REGLER,
-                vilkårType: VilkårType.UTVIDET_BARNETRYGD,
-                personType: PersonType.SØKER,
-            }
-        );
-        expect(valideringManglerBegrunnelseForSøkerMedUtvidetVilkår.valideringsstatus).toEqual(
-            Valideringsstatus.FEIL
-        );
-        expect(valideringManglerBegrunnelseForSøkerMedUtvidetVilkår.feilmelding).toBe(
-            'Du må fylle inn en begrunnelse'
-        );
-
-        const valideringBegrunnelseIkkeOppgittNårIngenErValgt = erBegrunnelseGyldig(
-            nyFeltState(''),
-            {
-                utdypendeVilkårsvurderinger: [],
-            }
-        );
-        expect(valideringBegrunnelseIkkeOppgittNårIngenErValgt.valideringsstatus).toEqual(
-            Valideringsstatus.OK
-        );
-    });
-
-    test('Begrunnelse validering for EØS forordningen', () => {
-        const valideringValgfriBegrunnelseForBarn = erBegrunnelseGyldig(nyFeltState(''), {
-            utdypendeVilkårsvurderinger: [
-                UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_SØKER,
-            ],
-            regelverk: Regelverk.EØS_FORORDNINGEN,
-            vilkårType: VilkårType.BOR_MED_SØKER,
-            personType: PersonType.BARN,
-        });
-        expect(valideringValgfriBegrunnelseForBarn.valideringsstatus).toEqual(Valideringsstatus.OK);
-
-        const valideringValgfriBegrunnelseForSøkedMedVilkårTypeLovligOpphold = erBegrunnelseGyldig(
-            nyFeltState(''),
-            {
-                utdypendeVilkårsvurderinger: [],
-                regelverk: Regelverk.EØS_FORORDNINGEN,
-                vilkårType: VilkårType.LOVLIG_OPPHOLD,
-                personType: PersonType.SØKER,
-            }
-        );
-        expect(
-            valideringValgfriBegrunnelseForSøkedMedVilkårTypeLovligOpphold.valideringsstatus
-        ).toEqual(Valideringsstatus.OK);
-
-        const valideringManglerBegrunnelseForSøkerMedVilkårTypeBosattIRiket = erBegrunnelseGyldig(
-            nyFeltState(''),
-            {
-                utdypendeVilkårsvurderinger: [
-                    UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING,
-                ],
-                regelverk: Regelverk.EØS_FORORDNINGEN,
-                vilkårType: VilkårType.BOSATT_I_RIKET,
-                personType: PersonType.SØKER,
-            }
-        );
-        expect(
-            valideringManglerBegrunnelseForSøkerMedVilkårTypeBosattIRiket.valideringsstatus
-        ).toEqual(Valideringsstatus.FEIL);
-        expect(valideringManglerBegrunnelseForSøkerMedVilkårTypeBosattIRiket.feilmelding).toBe(
-            'Du må fylle inn en begrunnelse'
-        );
-
-        const valideringManglerBegrunnelseForSøkerMedUtvidetVilkår = erBegrunnelseGyldig(
-            nyFeltState(''),
-            {
-                utdypendeVilkårsvurderinger: [],
-                regelverk: Regelverk.EØS_FORORDNINGEN,
-                vilkårType: VilkårType.UTVIDET_BARNETRYGD,
-                personType: PersonType.SØKER,
-            }
-        );
-        expect(valideringManglerBegrunnelseForSøkerMedUtvidetVilkår.valideringsstatus).toEqual(
-            Valideringsstatus.FEIL
-        );
-        expect(valideringManglerBegrunnelseForSøkerMedUtvidetVilkår.feilmelding).toBe(
-            'Du må fylle inn en begrunnelse'
-        );
-    });
-
     test('Validering av ident', () => {
         const fnrGenerator = generator(new Date('10.02.2020'));
         const { result } = renderHook(() =>
@@ -367,25 +210,5 @@ describe('utils/validators', () => {
 
         act(() => result.current.onChange(Resultat.OPPFYLT));
         expect(result.current.valider(result.current).valideringsstatus).toBe(Valideringsstatus.OK);
-    });
-    test('Validering av utdypende vilkårsvurdering', () => {
-        const utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = [
-            UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING,
-            UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING_UTLAND,
-        ];
-        const utdypendeVilkårsvurderingAvhengigheter: UtdypendeVilkårsvurderingAvhengigheter = {
-            personType: PersonType.SØKER,
-            vilkårType: VilkårType.BOSATT_I_RIKET,
-            resultat: Resultat.OPPFYLT,
-            vurderesEtter: null,
-            brukEøs: true,
-        };
-        const valideringForMangeValgteAlternativer = erUtdypendeVilkårsvurderingerGyldig(
-            nyFeltState(utdypendeVilkårsvurderinger),
-            utdypendeVilkårsvurderingAvhengigheter
-        );
-        expect(valideringForMangeValgteAlternativer.valideringsstatus).toEqual(
-            Valideringsstatus.FEIL
-        );
     });
 });

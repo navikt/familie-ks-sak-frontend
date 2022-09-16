@@ -1,19 +1,19 @@
 import React from 'react';
 
-import type { IVilkårSkjemaBaseProps } from '../../GeneriskVilkår/VilkårSkjema';
-import { VilkårSkjema } from '../../GeneriskVilkår/VilkårSkjema';
-import { useBosattIRiket } from './BosattIRiketContext';
+import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
+import { VilkårSkjema } from '../../VilkårSkjema';
+import { useLovligOpphold } from './LovligOppholdContext';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
-export const BosattIRiket: React.FC<BosattIRiketProps> = ({
+export const LovligOpphold: React.FC<BosattIRiketProps> = ({
     vilkårResultat,
     vilkårFraConfig,
     toggleForm,
     person,
     lesevisning,
 }: BosattIRiketProps) => {
-    const { felter } = useBosattIRiket(vilkårResultat, person);
+    const { felter } = useLovligOpphold(vilkårResultat, person);
     return (
         <VilkårSkjema
             visVurderesEtter={true}
