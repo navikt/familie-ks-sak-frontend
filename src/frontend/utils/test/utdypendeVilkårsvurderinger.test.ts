@@ -16,7 +16,7 @@ const avhengigheter: UtdypendeVilkårsvurderingAvhengigheter = {
     personType: PersonType.SØKER,
     vilkårType: VilkårType.BOSATT_I_RIKET,
     resultat: Resultat.OPPFYLT,
-    vurderesEtter: null,
+    vurderesEtter: undefined,
     brukEøs: true,
 };
 

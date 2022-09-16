@@ -7,26 +7,19 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { AddCircle } from '@navikt/ds-icons';
 import { Button, Heading } from '@navikt/ds-react';
 import { NavdsSpacing5, NavdsSpacing8, NavdsSpacing16 } from '@navikt/ds-tokens/dist/tokens';
-import type { FeltState } from '@navikt/familie-skjema';
-import { RessursStatus } from '@navikt/familie-typer';
-import type { Ressurs } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import {
-    useVilkårsvurdering,
-    VilkårSubmit,
-} from '../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
-import type { IBehandling } from '../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import { PersonType } from '../../../../typer/person';
 import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
 import { Resultat, VilkårType } from '../../../../typer/vilkår';
+import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
 import FjernUtvidetBarnetrygdVilkår from './FjernUtvidetBarnetrygdVilkår';
 import VilkårTabell from './VilkårTabell';
 
 interface IProps {
     person: IGrunnlagPerson;
-    vilkårResultater: FeltState<IVilkårResultat>[];
+    vilkårResultater: IVilkårResultat[];
     vilkårFraConfig: IVilkårConfig;
     visFeilmeldinger: boolean;
     generiskVilkårKey: string;
@@ -50,11 +43,10 @@ const GeneriskVilkår: React.FC<IProps> = ({
     visFeilmeldinger,
     generiskVilkårKey,
 }) => {
-    const { erLesevisning, settÅpenBehandling } = useBehandling();
-    const { settVilkårSubmit, postVilkår, vilkårSubmit } = useVilkårsvurdering();
+    const { erLesevisning } = useBehandling();
+    const vilkårsvurderingApi = useVilkårsvurderingApi();
 
     const [visFeilmeldingerForVilkår, settVisFeilmeldingerForVilkår] = useState(false);
-    const [feilmelding, settFeilmelding] = useState('');
 
     const leggTilPeriodeKnappId = generiskVilkårKey + '__legg_til_periode';
 
@@ -62,39 +54,12 @@ const GeneriskVilkår: React.FC<IProps> = ({
         document.getElementById(leggTilPeriodeKnappId)?.focus();
     };
 
-    const håndterNyPeriodeVilkårsvurdering = (promise: Promise<Ressurs<IBehandling>>) => {
-        promise
-            .then((oppdatertBehandling: Ressurs<IBehandling>) => {
-                settVisFeilmeldingerForVilkår(false);
-                settVilkårSubmit(VilkårSubmit.NONE);
-                settFeilmelding('');
-                if (oppdatertBehandling.status === RessursStatus.SUKSESS) {
-                    settÅpenBehandling(oppdatertBehandling);
-                } else if (
-                    oppdatertBehandling.status === RessursStatus.FEILET ||
-                    oppdatertBehandling.status === RessursStatus.FUNKSJONELL_FEIL ||
-                    oppdatertBehandling.status === RessursStatus.IKKE_TILGANG
-                ) {
-                    settFeilmelding(oppdatertBehandling.frontendFeilmelding);
-                    settVisFeilmeldingerForVilkår(true);
-                } else {
-                    settFeilmelding(
-                        'En ukjent feil har oppstått, vi har ikke klart å legge til periode.'
-                    );
-                    settVisFeilmeldingerForVilkår(true);
-                }
-            })
-            .catch(() => {
-                settVilkårSubmit(VilkårSubmit.NONE);
-            });
-    };
-
     const skalViseLeggTilKnapp = () => {
         if (erLesevisning()) {
             return false;
         }
         const uvurdertPeriodePåVilkår = vilkårResultater.find(
-            vilkår => vilkår.verdi.resultat.verdi === Resultat.IKKE_VURDERT
+            vilkår => vilkår.resultat === Resultat.IKKE_VURDERT
         );
         return uvurdertPeriodePåVilkår === undefined;
     };
@@ -104,7 +69,7 @@ const GeneriskVilkår: React.FC<IProps> = ({
             return false;
         }
         const utvidetVilkår = vilkårResultater.filter(
-            vilkårResultat => vilkårResultat.verdi.vilkårType === VilkårType.UTVIDET_BARNETRYGD
+            vilkårResultat => vilkårResultat.vilkårType === VilkårType.UTVIDET_BARNETRYGD
         );
         return (
             person.type === PersonType.SØKER &&
@@ -115,7 +80,13 @@ const GeneriskVilkår: React.FC<IProps> = ({
 
     return (
         <Container>
-            <SkjemaGruppe feil={visFeilmeldingerForVilkår ? feilmelding : undefined}>
+            <SkjemaGruppe
+                feil={
+                    visFeilmeldingerForVilkår
+                        ? vilkårsvurderingApi.oppretterVilkårFeilmelding
+                        : undefined
+                }
+            >
                 <Heading size="medium" level="3">
                     {vilkårFraConfig.tittel}
                 </Heading>
@@ -129,15 +100,17 @@ const GeneriskVilkår: React.FC<IProps> = ({
                 {skalViseLeggTilKnapp() && (
                     <UtførKnapp
                         onClick={() => {
-                            const promise = postVilkår(
+                            vilkårsvurderingApi.opprettVilkår(
                                 person.personIdent,
-                                vilkårFraConfig.key as VilkårType
+                                vilkårFraConfig.key as VilkårType,
+                                () => {
+                                    settVisFeilmeldingerForVilkår(true);
+                                }
                             );
-                            håndterNyPeriodeVilkårsvurdering(promise);
                         }}
                         id={leggTilPeriodeKnappId}
-                        loading={vilkårSubmit === VilkårSubmit.POST}
-                        disabled={vilkårSubmit === VilkårSubmit.POST}
+                        loading={vilkårsvurderingApi.oppretterVilkår}
+                        disabled={vilkårsvurderingApi.oppretterVilkår}
                         variant="tertiary"
                         size="small"
                     >

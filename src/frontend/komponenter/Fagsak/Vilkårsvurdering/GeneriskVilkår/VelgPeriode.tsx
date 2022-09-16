@@ -9,19 +9,21 @@ import { Element } from 'nav-frontend-typografi';
 import { HelpText } from '@navikt/ds-react';
 import type { ISODateString } from '@navikt/familie-form-elements';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
-import { Valideringsstatus } from '@navikt/familie-skjema';
-import type { FeltState } from '@navikt/familie-skjema';
+import type { Felt } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IVilkårResultat } from '../../../../typer/vilkår';
 import { Resultat } from '../../../../typer/vilkår';
 import { datoformatNorsk } from '../../../../utils/formatter';
+import type { IYearMonthPeriode } from '../../../../utils/kalender';
 import { nyPeriode } from '../../../../utils/kalender';
 import { vilkårPeriodeFeilmeldingId } from './VilkårTabell';
 
 interface IProps {
-    redigerbartVilkår: FeltState<IVilkårResultat>;
-    validerOgSettRedigerbartVilkår: (redigerbartVilkår: FeltState<IVilkårResultat>) => void;
+    vilkår: IVilkårResultat;
+    periode: Felt<IYearMonthPeriode>;
+    erEksplisittAvslagPåSøknad: Felt<boolean>;
+    resultat: Felt<Resultat>;
     visFeilmeldinger: boolean;
 }
 
@@ -57,23 +59,17 @@ const FlexDiv = styled.div`
 `;
 
 const VelgPeriode: React.FC<IProps> = ({
-    redigerbartVilkår,
-    validerOgSettRedigerbartVilkår,
+    periode,
+    erEksplisittAvslagPåSøknad,
+    resultat,
     visFeilmeldinger,
+    vilkår,
 }) => {
     const { erLesevisning } = useBehandling();
     const lesevisning = erLesevisning();
 
     return (
-        <MarginSkjemaGruppe
-            feilmeldingId={vilkårPeriodeFeilmeldingId(redigerbartVilkår.verdi)}
-            feil={
-                redigerbartVilkår.verdi.periode.valideringsstatus === Valideringsstatus.FEIL &&
-                visFeilmeldinger
-                    ? redigerbartVilkår.verdi.periode.feilmelding
-                    : ''
-            }
-        >
+        <MarginSkjemaGruppe feil={visFeilmeldinger ? periode.feilmelding : ''}>
             {!lesevisning && (
                 <StyledLegend>
                     <StyledElement>Velg periode</StyledElement>
@@ -86,7 +82,7 @@ const VelgPeriode: React.FC<IProps> = ({
             )}
 
             <FlexDiv>
-                {(!lesevisning || redigerbartVilkår.verdi.periode.verdi.fom) && (
+                {(!lesevisning || periode.verdi.fom) && (
                     <div>
                         <FamilieDatovelger
                             allowInvalidDateSelection={false}
@@ -94,60 +90,32 @@ const VelgPeriode: React.FC<IProps> = ({
                                 maxDate: new Date().toISOString(),
                             }}
                             erLesesvisning={lesevisning}
-                            id={`${vilkårPeriodeFeilmeldingId(
-                                redigerbartVilkår.verdi
-                            )}__fastsett-periode-fom`}
+                            id={`${vilkårPeriodeFeilmeldingId(vilkår)}__fastsett-periode-fom`}
                             label={
-                                redigerbartVilkår.verdi.resultat.verdi === Resultat.IKKE_OPPFYLT &&
-                                redigerbartVilkår.verdi.erEksplisittAvslagPåSøknad
+                                resultat.verdi === Resultat.IKKE_OPPFYLT &&
+                                erEksplisittAvslagPåSøknad.verdi
                                     ? 'F.o.m (valgfri)'
                                     : 'F.o.m'
                             }
                             placeholder={datoformatNorsk.DATO}
                             onChange={(dato?: ISODateString) => {
-                                validerOgSettRedigerbartVilkår({
-                                    ...redigerbartVilkår,
-                                    verdi: {
-                                        ...redigerbartVilkår.verdi,
-                                        periode: {
-                                            ...redigerbartVilkår.verdi.periode,
-                                            verdi: nyPeriode(
-                                                dato,
-                                                redigerbartVilkår.verdi.periode.verdi.tom
-                                            ),
-                                        },
-                                    },
-                                });
+                                periode.validerOgSettFelt(nyPeriode(dato, periode.verdi.tom));
                             }}
-                            valgtDato={redigerbartVilkår.verdi.periode.verdi.fom}
+                            valgtDato={periode.verdi.fom}
                         />
                     </div>
                 )}
-                {(!lesevisning || redigerbartVilkår.verdi.periode.verdi.tom) && (
+                {(!lesevisning || periode.verdi.tom) && (
                     <div>
                         <FamilieDatovelger
                             erLesesvisning={lesevisning}
-                            id={`${vilkårPeriodeFeilmeldingId(
-                                redigerbartVilkår.verdi
-                            )}__fastsett-periode-tom`}
+                            id={`${vilkårPeriodeFeilmeldingId(vilkår)}__fastsett-periode-tom`}
                             label={'T.o.m (valgfri)'}
                             placeholder={datoformatNorsk.DATO}
                             onChange={(dato?: ISODateString) => {
-                                validerOgSettRedigerbartVilkår({
-                                    ...redigerbartVilkår,
-                                    verdi: {
-                                        ...redigerbartVilkår.verdi,
-                                        periode: {
-                                            ...redigerbartVilkår.verdi.periode,
-                                            verdi: nyPeriode(
-                                                redigerbartVilkår.verdi.periode.verdi.fom,
-                                                dato
-                                            ),
-                                        },
-                                    },
-                                });
+                                periode.validerOgSettFelt(nyPeriode(periode.verdi.fom, dato));
                             }}
-                            valgtDato={redigerbartVilkår.verdi.periode.verdi.tom}
+                            valgtDato={periode.verdi.tom}
                         />
                     </div>
                 )}

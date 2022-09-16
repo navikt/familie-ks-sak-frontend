@@ -5,15 +5,13 @@ import styled from 'styled-components';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Element, Undertittel } from 'nav-frontend-typografi';
 
-import type { FeltState } from '@navikt/familie-skjema';
-
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../typer/vilkår';
 import AnnenVurderingTabell from './AnnenVurderingTabell';
 
 interface IProps {
     person: IGrunnlagPerson;
-    andreVurderinger: FeltState<IAnnenVurdering>[];
+    andreVurderinger: IAnnenVurdering[];
     annenVurderingConfig: IAnnenVurderingConfig;
     visFeilmeldinger: boolean;
 }

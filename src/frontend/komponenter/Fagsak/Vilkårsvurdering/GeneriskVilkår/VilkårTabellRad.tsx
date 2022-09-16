@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 import { AutomaticSystem, People, Settings } from '@navikt/ds-icons';
 import { BodyShort, Table } from '@navikt/ds-react';
-import type { FeltState } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useApp } from '../../../../context/AppContext';
@@ -14,17 +13,18 @@ import VilkårResultatIkon from '../../../../ikoner/VilkårResultatIkon';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import { ToggleNavn } from '../../../../typer/toggles';
 import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
-import { Resultat, uiResultat } from '../../../../typer/vilkår';
+import { Resultat, uiResultat, VilkårType } from '../../../../typer/vilkår';
 import { datoformat, formaterIsoDato } from '../../../../utils/formatter';
 import { periodeToString } from '../../../../utils/kalender';
 import { alleRegelverk } from '../../../../utils/vilkår';
+import { BosattIRiket } from '../Vilkår/BosattIRiket/BosattIRiket';
+import { LovligOpphold } from '../Vilkår/LovligOpphold/LovligOpphold';
 import { vilkårFeilmeldingId } from './VilkårTabell';
-import VilkårTabellRadEndre from './VilkårTabellRadEndre';
 
 interface IProps {
     person: IGrunnlagPerson;
     vilkårFraConfig: IVilkårConfig;
-    vilkårResultat: FeltState<IVilkårResultat>;
+    vilkårResultat: IVilkårResultat;
     visFeilmeldinger: boolean;
     settFokusPåKnapp: () => void;
 }
@@ -53,29 +53,21 @@ const FlexDiv = styled.div`
     }
 `;
 
-const VilkårTabellRad: React.FC<IProps> = ({
-    person,
-    vilkårFraConfig,
-    vilkårResultat,
-    visFeilmeldinger,
-    settFokusPåKnapp,
-}) => {
+const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårResultat }) => {
     const { toggles } = useApp();
     const { erLesevisning, åpenBehandling, aktivSettPåVent } = useBehandling();
 
     const hentInitiellEkspandering = () =>
-        erLesevisning() || vilkårResultat.verdi.resultat.verdi === Resultat.IKKE_VURDERT;
+        erLesevisning() || vilkårResultat.resultat === Resultat.IKKE_VURDERT;
 
     const [ekspandertVilkår, settEkspandertVilkår] = useState(hentInitiellEkspandering());
-    const [redigerbartVilkår, settRedigerbartVilkår] =
-        useState<FeltState<IVilkårResultat>>(vilkårResultat);
+    const [redigerbartVilkår, settRedigerbartVilkår] = useState<IVilkårResultat>(vilkårResultat);
 
     useEffect(() => {
         settEkspandertVilkår(hentInitiellEkspandering());
     }, [aktivSettPåVent]);
 
-    const periodeErTom =
-        !redigerbartVilkår.verdi.periode.verdi.fom && !redigerbartVilkår.verdi.periode.verdi.tom;
+    const periodeErTom = !redigerbartVilkår.periode.fom && !redigerbartVilkår.periode.tom;
 
     const toggleForm = (visAlert: boolean) => {
         if (ekspandertVilkår && visAlert && !deepEqual(vilkårResultat, redigerbartVilkår)) {
@@ -86,51 +78,71 @@ const VilkårTabellRad: React.FC<IProps> = ({
         }
     };
 
+    const renderVilkårSkjema = () => {
+        switch (vilkårResultat.vilkårType) {
+            case VilkårType.BOSATT_I_RIKET:
+                return (
+                    <BosattIRiket
+                        vilkårResultat={vilkårResultat}
+                        vilkårFraConfig={vilkårFraConfig}
+                        toggleForm={toggleForm}
+                        person={person}
+                        lesevisning={erLesevisning()}
+                    />
+                );
+                break;
+            case VilkårType.LOVLIG_OPPHOLD:
+                return (
+                    <LovligOpphold
+                        vilkårResultat={vilkårResultat}
+                        vilkårFraConfig={vilkårFraConfig}
+                        toggleForm={toggleForm}
+                        person={person}
+                        lesevisning={erLesevisning()}
+                    />
+                );
+                break;
+            default:
+                return (
+                    <BosattIRiket
+                        vilkårResultat={vilkårResultat}
+                        vilkårFraConfig={vilkårFraConfig}
+                        toggleForm={toggleForm}
+                        person={person}
+                        lesevisning={erLesevisning()}
+                    />
+                );
+        }
+    };
+
     return (
         <Table.ExpandableRow
             open={ekspandertVilkår}
             togglePlacement="right"
             onOpenChange={() => toggleForm(true)}
-            id={vilkårFeilmeldingId(vilkårResultat.verdi)}
-            content={
-                <VilkårTabellRadEndre
-                    person={person}
-                    vilkårFraConfig={vilkårFraConfig}
-                    vilkårResultat={vilkårResultat}
-                    visFeilmeldinger={visFeilmeldinger}
-                    toggleForm={toggleForm}
-                    redigerbartVilkår={redigerbartVilkår}
-                    settRedigerbartVilkår={settRedigerbartVilkår}
-                    settEkspandertVilkår={settEkspandertVilkår}
-                    settFokusPåKnapp={settFokusPåKnapp}
-                    lesevisning={erLesevisning()}
-                />
-            }
+            id={vilkårFeilmeldingId(vilkårResultat)}
+            content={<>{renderVilkårSkjema()}</>}
         >
             <Table.DataCell>
                 <VurderingCelle>
-                    <VilkårResultatIkon
-                        resultat={vilkårResultat.verdi.resultat.verdi}
-                        width={20}
-                        height={20}
-                    />
-                    <BodyShort>{uiResultat[vilkårResultat.verdi.resultat.verdi]}</BodyShort>
+                    <VilkårResultatIkon resultat={vilkårResultat.resultat} width={20} height={20} />
+                    <BodyShort>{uiResultat[vilkårResultat.resultat]}</BodyShort>
                 </VurderingCelle>
             </Table.DataCell>
             <Table.DataCell>
                 <BodyShort>
-                    {periodeErTom ? '-' : periodeToString(vilkårResultat.verdi.periode.verdi)}
+                    {periodeErTom ? '-' : periodeToString(vilkårResultat.periode)}
                 </BodyShort>
             </Table.DataCell>
             <Table.DataCell>
-                <BeskrivelseCelle children={vilkårResultat.verdi.begrunnelse.verdi} />
+                <BeskrivelseCelle children={vilkårResultat.begrunnelse} />
             </Table.DataCell>
             <Table.DataCell>
                 {toggles[ToggleNavn.brukEøs] &&
-                    (redigerbartVilkår.verdi.vurderesEtter ? (
+                    (redigerbartVilkår.vurderesEtter ? (
                         <FlexDiv>
-                            {alleRegelverk[redigerbartVilkår.verdi.vurderesEtter].symbol}
-                            <div>{alleRegelverk[redigerbartVilkår.verdi.vurderesEtter].tekst}</div>
+                            {alleRegelverk[redigerbartVilkår.vurderesEtter].symbol}
+                            <div>{alleRegelverk[redigerbartVilkår.vurderesEtter].tekst}</div>
                         </FlexDiv>
                     ) : (
                         <FlexDiv>
@@ -141,7 +153,7 @@ const VilkårTabellRad: React.FC<IProps> = ({
             </Table.DataCell>
             <Table.DataCell>
                 <FlexDiv>
-                    {vilkårResultat.verdi.erAutomatiskVurdert ? (
+                    {vilkårResultat.erAutomatiskVurdert ? (
                         <AutomaticSystem
                             width={24}
                             height={24}
@@ -157,12 +169,11 @@ const VilkårTabellRad: React.FC<IProps> = ({
                         />
                     )}
                     <div>
-                        {åpenBehandling.status === RessursStatus.SUKSESS &&
-                        vilkårResultat.verdi.erVurdert
-                            ? vilkårResultat.verdi.behandlingId === åpenBehandling.data.behandlingId
+                        {åpenBehandling.status === RessursStatus.SUKSESS && vilkårResultat.erVurdert
+                            ? vilkårResultat.behandlingId === åpenBehandling.data.behandlingId
                                 ? 'Vurdert i denne behandlingen'
                                 : `Vurdert ${formaterIsoDato(
-                                      vilkårResultat.verdi.endretTidspunkt,
+                                      vilkårResultat.endretTidspunkt,
                                       datoformat.DATO_FORKORTTET
                                   )}`
                             : ''}

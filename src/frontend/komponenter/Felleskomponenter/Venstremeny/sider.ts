@@ -1,5 +1,3 @@
-import type { FeltState } from '@navikt/familie-skjema';
-
 import { mapFraRestPersonResultatTilPersonResultat } from '../../../context/Vilkårsvurdering/vilkårsvurdering';
 import type { IBehandling } from '../../../typer/behandling';
 import {
@@ -94,11 +92,8 @@ export const sider: Record<SideId, ISide> = {
                         hash: `${index}_${personResultat.person.fødselsdato}`,
                         antallAksjonspunkter: () =>
                             personResultat.vilkårResultater.filter(
-                                (vilkårResultat: FeltState<IVilkårResultat>) => {
-                                    return (
-                                        vilkårResultat.verdi.resultat.verdi ===
-                                        Resultat.IKKE_VURDERT
-                                    );
+                                (vilkårResultat: IVilkårResultat) => {
+                                    return vilkårResultat.resultat === Resultat.IKKE_VURDERT;
                                 }
                             ).length,
                     };

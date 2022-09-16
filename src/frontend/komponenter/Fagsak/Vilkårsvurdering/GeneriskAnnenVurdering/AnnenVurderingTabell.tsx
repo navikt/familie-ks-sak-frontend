@@ -2,8 +2,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import type { FeltState } from '@navikt/familie-skjema';
-
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../typer/vilkår';
 import AnnenVurderingTabellRad from '../GeneriskAnnenVurdering/AnnenVurderingTabellRad';
@@ -11,18 +9,12 @@ import AnnenVurderingTabellRad from '../GeneriskAnnenVurdering/AnnenVurderingTab
 export const annenVurderingFeilmeldingId = (annenVurdering: IAnnenVurdering) =>
     `annen-vurdering_${annenVurdering.type}_${annenVurdering.id}`;
 
-export const annenVurderingResultatFeilmeldingId = (annenVurdering: IAnnenVurdering) =>
-    `annen-vurdering-resultat_${annenVurdering.type}_${annenVurdering.id}`;
-
 export const annenVurderingBegrunnelseFeilmeldingId = (annenVurdering: IAnnenVurdering) =>
     `annen-vurdering-begrunnelse_${annenVurdering.type}_${annenVurdering.id}`;
 
-export const annenVurderingPeriodeFeilmeldingId = (annenVurdering: IAnnenVurdering) =>
-    `annen-vurdering-periode_${annenVurdering.type}_${annenVurdering.id}`;
-
 interface IProps {
     person: IGrunnlagPerson;
-    andreVurderinger: FeltState<IAnnenVurdering>[];
+    andreVurderinger: IAnnenVurdering[];
     annenVurderingConfig: IAnnenVurderingConfig;
     visFeilmeldinger: boolean;
 }
@@ -73,10 +65,10 @@ const AnnenVurderingTabell: React.FC<IProps> = ({
                     <TabellHeader />
                 </tr>
             </thead>
-            {andreVurderinger.map((annenVurdering: FeltState<IAnnenVurdering>, index: number) => {
+            {andreVurderinger.map((annenVurdering: IAnnenVurdering, index: number) => {
                 return (
                     <AnnenVurderingTabellRad
-                        key={`${index}_${person.fødselsdato}_${annenVurdering.verdi.type}`}
+                        key={`${index}_${person.fødselsdato}_${annenVurdering.type}`}
                         annenVurderingConfig={annenVurderingConfig}
                         person={person}
                         annenVurdering={annenVurdering}
