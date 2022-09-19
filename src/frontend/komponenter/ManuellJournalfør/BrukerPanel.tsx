@@ -36,7 +36,6 @@ const StyledEkspanderbartpanelBaseMedMargin = styled(StyledEkspanderbartpanelBas
 
 export const BrukerPanel: React.FC = () => {
     const { skjema, endreBruker, erLesevisning } = useManuellJournalfør();
-    const { toggles } = useApp();
     const [åpen, settÅpen] = useState(false);
     const [feilMelding, settFeilMelding] = useState<string | undefined>('');
     const [spinner, settSpinner] = useState(false);
