@@ -16,7 +16,7 @@ import {
 import type { Ressurs } from '@navikt/familie-typer';
 
 import type { IMinimalFagsak, IInternstatistikk } from '../typer/fagsak';
-import { FagsakType } from '../typer/fagsak';
+import type { FagsakType } from '../typer/fagsak';
 import type { IPersonInfo } from '../typer/person';
 import { sjekkTilgangTilPerson } from '../utils/commons';
 
@@ -85,27 +85,13 @@ const [FagsakProvider, useFagsakRessurser] = createUseContext(() => {
         settBruker(byggHenterRessurs());
         request<void, IPersonInfo>({
             method: 'GET',
-            url: '/familie-ks-sak/api/person',
+            url: '/familie-ba-sak/api/person',
             headers: {
                 personIdent,
             },
             påvirkerSystemLaster: true,
         }).then((hentetPerson: Ressurs<IPersonInfo>) => {
-            const brukerEtterTilgangssjekk = sjekkTilgangTilPerson(hentetPerson);
-            if (brukerEtterTilgangssjekk.status === RessursStatus.FEILET) {
-                settBruker(sjekkTilgangTilPerson(hentetPerson));
-            } else if (brukerEtterTilgangssjekk.status === RessursStatus.SUKSESS) {
-                const brukerMedFagsakId = brukerEtterTilgangssjekk.data;
-                brukerMedFagsakId.fagsakId = new Map<FagsakType, number>();
-                hentFagsakerForPerson(personIdent).then((fagsaker: Ressurs<IMinimalFagsak[]>) => {
-                    if (fagsaker.status === RessursStatus.SUKSESS) {
-                        fagsaker.data.map(it =>
-                            brukerMedFagsakId.fagsakId?.set(it.fagsakType, it.id)
-                        );
-                    }
-                    settBruker(sjekkTilgangTilPerson(byggDataRessurs(brukerMedFagsakId)));
-                });
-            }
+            settBruker(sjekkTilgangTilPerson(hentetPerson));
         });
     };
 
@@ -123,28 +109,15 @@ const [FagsakProvider, useFagsakRessurser] = createUseContext(() => {
             });
     };
 
-    const hentFagsakForPerson = async (personId: string, fagsakType = FagsakType.NORMAL) => {
-        return request<{ personIdent: string }, IMinimalFagsak | undefined>({
+    const hentFagsakForPerson = async (personId: string) => {
+        return request<{ ident: string }, IMinimalFagsak>({
             method: 'POST',
-            url: `/familie-ks-sak/api/fagsaker/hent-fagsak-paa-person`,
+            url: `/familie-ba-sak/api/fagsaker/hent-fagsak-paa-person`,
             data: {
-                personIdent: personId,
-                fagsakType: fagsakType,
+                ident: personId,
             },
-        }).then((fagsak: Ressurs<IMinimalFagsak | undefined>) => {
+        }).then((fagsak: Ressurs<IMinimalFagsak>) => {
             return fagsak;
-        });
-    };
-
-    const hentFagsakerForPerson = async (personId: string) => {
-        return request<{ personIdent: string }, IMinimalFagsak[]>({
-            method: 'POST',
-            url: `/familie-ks-sak/api/fagsaker/hent-fagsaker-paa-person`,
-            data: {
-                personIdent: personId,
-            },
-        }).then((fagsaker: Ressurs<IMinimalFagsak[]>) => {
-            return fagsaker;
         });
     };
 

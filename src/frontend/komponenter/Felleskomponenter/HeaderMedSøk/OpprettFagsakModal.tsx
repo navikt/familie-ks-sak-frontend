@@ -192,7 +192,7 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
                 >
                     <StyledUndertittel tag={'h3'}>
                         {`Personen har ${
-                            (personInfo?.fagsakId?.size || 0) > 0 ? 'en eksisternede' : 'ingen'
+                            personInfo?.fagsakId ? 'en eksisternede' : 'ingen'
                         } tilknyttet fagsak. Ønsker du å opprette fagsak for denne
                             personen?`}
                     </StyledUndertittel>
