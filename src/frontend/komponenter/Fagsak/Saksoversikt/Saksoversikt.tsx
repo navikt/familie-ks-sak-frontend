@@ -156,7 +156,7 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
     return (
         <div className={'saksoversikt'}>
             <Innholdstittel children={'Saksoversikt'} />
-            <StyledTabs tabs={[{ label: ksSakTab.label }, { label: ksSakTab.label }]} />
+            <StyledTabs tabs={[{ label: ksSakTab.label }]} />
             <FagsakLenkepanel minimalFagsak={minimalFagsak} />
             {minimalFagsak.status === FagsakStatus.LØPENDE && (
                 <>
