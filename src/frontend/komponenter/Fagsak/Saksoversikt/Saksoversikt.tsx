@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
@@ -7,7 +7,7 @@ import Tabs from 'nav-frontend-tabs';
 import { Innholdstittel, Systemtittel } from 'nav-frontend-typografi';
 
 import { Alert } from '@navikt/ds-react';
-import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
+import { byggTomRessurs } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
@@ -27,8 +27,6 @@ import {
     periodeOverlapperMedValgtDato,
     serializeIso8601String,
 } from '../../../utils/kalender';
-import { Infotrygdtabeller } from '../../Infotrygd/Infotrygdtabeller';
-import { useInfotrygdRequest } from '../../Infotrygd/useInfotrygd';
 import Behandlinger from './Behandlinger';
 import FagsakLenkepanel from './FagsakLenkepanel';
 import Utbetalinger from './Utbetalinger';
@@ -38,13 +36,7 @@ interface IProps {
     minimalFagsak: IMinimalFagsak;
 }
 
-enum Tabvalg {
-    BASAK,
-    INFOTRYGD,
-}
-
-const basakTab = { label: 'ks-sak', tabnr: 0 };
-const infotrygdTab = { label: 'Infotrygd', tabnr: 1 };
+const ksSakTab = { label: 'KS-sak', tabnr: 0 };
 
 const FlexSpaceBetween = styled.div`
     display: flex;
@@ -63,15 +55,11 @@ const StyledAlert = styled(Alert)`
 `;
 
 const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
-    const [tabvalg, settTabvalg] = useState<Tabvalg>(Tabvalg.BASAK);
-
     const { settÅpenBehandling } = useBehandling();
 
     React.useEffect(() => {
         settÅpenBehandling(byggTomRessurs(), false);
     }, [minimalFagsak.status]);
-
-    const { hentInfotrygdsaker, infotrygdsakerRessurs } = useInfotrygdRequest();
 
     const iverksatteBehandlinger = minimalFagsak.behandlinger.filter(
         (behandling: VisningBehandling) =>
@@ -165,51 +153,18 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
         }
     };
 
-    const visTabell = () => {
-        if (infotrygdsakerRessurs.status === RessursStatus.SUKSESS) {
-            return (
-                <Infotrygdtabeller
-                    ident={minimalFagsak.søkerFødselsnummer}
-                    saker={infotrygdsakerRessurs.data.saker}
-                    minimalFagsak={minimalFagsak}
-                />
-            );
-        } else if (
-            infotrygdsakerRessurs.status === RessursStatus.FUNKSJONELL_FEIL ||
-            infotrygdsakerRessurs.status === RessursStatus.FEILET
-        ) {
-            return <Alert children={infotrygdsakerRessurs.frontendFeilmelding} variant="error" />;
-        }
-    };
-
     return (
         <div className={'saksoversikt'}>
             <Innholdstittel children={'Saksoversikt'} />
-            <StyledTabs
-                tabs={[{ label: basakTab.label }, { label: infotrygdTab.label }]}
-                onChange={(_, tabnr) => {
-                    if (tabnr === basakTab.tabnr) {
-                        settTabvalg(Tabvalg.BASAK);
-                    } else {
-                        settTabvalg(Tabvalg.INFOTRYGD);
-                        hentInfotrygdsaker(minimalFagsak.søkerFødselsnummer);
-                    }
-                }}
-            />
-            {tabvalg === Tabvalg.BASAK ? (
+            <StyledTabs tabs={[{ label: ksSakTab.label }, { label: ksSakTab.label }]} />
+            <FagsakLenkepanel minimalFagsak={minimalFagsak} />
+            {minimalFagsak.status === FagsakStatus.LØPENDE && (
                 <>
-                    <FagsakLenkepanel minimalFagsak={minimalFagsak} />
-                    {minimalFagsak.status === FagsakStatus.LØPENDE && (
-                        <>
-                            <Systemtittel>Løpende månedlig utbetaling</Systemtittel>
-                            {løpendeMånedligUtbetaling()}
-                        </>
-                    )}
-                    <Behandlinger minimalFagsak={minimalFagsak} />
+                    <Systemtittel>Løpende månedlig utbetaling</Systemtittel>
+                    {løpendeMånedligUtbetaling()}
                 </>
-            ) : (
-                visTabell()
             )}
+            <Behandlinger minimalFagsak={minimalFagsak} />
         </div>
     );
 };
