@@ -22,7 +22,6 @@ import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
 import type { IBehandlingstema } from '../typer/behandlingstema';
 import { utredBehandlingstemaFraOppgave } from '../typer/behandlingstema';
 import type { IMinimalFagsak } from '../typer/fagsak';
-import { FagsakType } from '../typer/fagsak';
 import type {
     IDataForManuellJournalføring,
     IRestJournalføring,
@@ -208,11 +207,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
         nullstillSkjema();
     };
 
-    const endreBruker = async (
-        personId: string,
-        erEnsligMindreårig = false,
-        erPåInstitusjon = false
-    ) => {
+    const endreBruker = async (personId: string) => {
         const hentetPerson = await request<void, IPersonInfo>({
             method: 'GET',
             url: '/familie-ks-sak/api/person',
@@ -241,14 +236,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             }
         }
 
-        const restFagsak = await hentFagsakForPerson(
-            hentetPerson.data.personIdent,
-            erEnsligMindreårig
-                ? FagsakType.BARN_ENSLIG_MINDREÅRIG
-                : erPåInstitusjon
-                ? FagsakType.INSTITUSJON
-                : FagsakType.NORMAL
-        );
+        const restFagsak = await hentFagsakForPerson(hentetPerson.data.personIdent);
         skjema.felter.bruker.validerOgSettFelt(hentetPerson.data);
         if (restFagsak.status === RessursStatus.SUKSESS && restFagsak.data) {
             settMinimalFagsak(restFagsak.data);
