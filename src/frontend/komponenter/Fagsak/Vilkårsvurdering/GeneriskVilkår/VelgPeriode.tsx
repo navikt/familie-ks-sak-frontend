@@ -15,13 +15,13 @@ import { useBehandling } from '../../../../context/behandlingContext/BehandlingC
 import type { IVilkårResultat } from '../../../../typer/vilkår';
 import { Resultat } from '../../../../typer/vilkår';
 import { datoformatNorsk } from '../../../../utils/formatter';
-import type { IYearMonthPeriode } from '../../../../utils/kalender';
+import type { IPeriode } from '../../../../utils/kalender';
 import { nyPeriode } from '../../../../utils/kalender';
 import { vilkårPeriodeFeilmeldingId } from './VilkårTabell';
 
 interface IProps {
     vilkår: IVilkårResultat;
-    periode: Felt<IYearMonthPeriode>;
+    periode: Felt<IPeriode>;
     erEksplisittAvslagPåSøknad: Felt<boolean>;
     resultat: Felt<Resultat>;
     visFeilmeldinger: boolean;

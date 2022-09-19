@@ -12,7 +12,7 @@ import {
     kalenderDato,
     kalenderDatoTilDate,
     kalenderDiff,
-    nyYearMonthPeriode,
+    nyPeriode,
     periodeDiff,
 } from '../../utils/kalender';
 
@@ -60,7 +60,7 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                                 return {
                                     begrunnelse: vilkårResultat.begrunnelse,
                                     id: vilkårResultat.id,
-                                    periode: nyYearMonthPeriode(
+                                    periode: nyPeriode(
                                         vilkårResultat.periodeFom,
                                         vilkårResultat.periodeTom
                                     ),

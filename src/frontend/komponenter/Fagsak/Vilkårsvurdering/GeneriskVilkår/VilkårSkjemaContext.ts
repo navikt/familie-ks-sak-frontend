@@ -7,14 +7,14 @@ import type { VedtakBegrunnelse } from '../../../../typer/vedtak';
 import type { IRestPersonResultat, Regelverk } from '../../../../typer/vilkår';
 import type { Resultat, UtdypendeVilkårsvurdering } from '../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../typer/vilkår';
-import type { IYearMonthPeriode } from '../../../../utils/kalender';
+import type { IPeriode } from '../../../../utils/kalender';
 import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
 
 export interface IVilkårSkjemaContext {
     vurderesEtter: Regelverk | undefined;
     resultat: Resultat;
     utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering[];
-    periode: IYearMonthPeriode;
+    periode: IPeriode;
     begrunnelse: string;
     erEksplisittAvslagPåSøknad: boolean;
     avslagBegrunnelser: VedtakBegrunnelse[];
