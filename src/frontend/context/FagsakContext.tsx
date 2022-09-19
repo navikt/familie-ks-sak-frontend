@@ -6,7 +6,6 @@ import deepEqual from 'deep-equal';
 
 import { useHttp } from '@navikt/familie-http';
 import {
-    byggDataRessurs,
     byggFeiletRessurs,
     byggHenterRessurs,
     byggTomRessurs,
@@ -16,7 +15,6 @@ import {
 import type { Ressurs } from '@navikt/familie-typer';
 
 import type { IMinimalFagsak, IInternstatistikk } from '../typer/fagsak';
-import type { FagsakType } from '../typer/fagsak';
 import type { IPersonInfo } from '../typer/person';
 import { sjekkTilgangTilPerson } from '../utils/commons';
 

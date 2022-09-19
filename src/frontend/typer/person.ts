@@ -1,6 +1,5 @@
 import type { kjønnType } from '@navikt/familie-typer';
 
-import type { FagsakType } from './fagsak';
 import type { Målform } from './søknad';
 
 // Enum
