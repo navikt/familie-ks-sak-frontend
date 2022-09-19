@@ -7,7 +7,7 @@ import createUseContext from 'constate';
 import { Knapp } from 'nav-frontend-knapper';
 import { Normaltekst } from 'nav-frontend-typografi';
 
-import { HttpProvider, useHttp, loggFeil } from '@navikt/familie-http';
+import { HttpProvider, useHttp } from '@navikt/familie-http';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { ISaksbehandler } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -21,7 +21,6 @@ import { adressebeskyttelsestyper } from '../typer/person';
 import type { IToggles } from '../typer/toggles';
 import { alleTogglerAv, ToggleNavn } from '../typer/toggles';
 import { gruppeIdTilRolle } from '../utils/behandling';
-import { tilFeilside } from '../utils/commons';
 
 const FEM_MINUTTER = 300000;
 
@@ -219,14 +218,14 @@ const [AppContentProvider, useApp] = createUseContext(() => {
             });
         }
 
-        if (innloggetSaksbehandler && rolle === BehandlerRolle.UKJENT) {
-            loggFeil(
-                undefined,
-                innloggetSaksbehandler,
-                'Saksbehandler tilhører ingen av de definerte tilgangsgruppene.'
-            );
-            tilFeilside();
-        }
+        // if (innloggetSaksbehandler && rolle === BehandlerRolle.UKJENT) {
+        //     loggFeil(
+        //         undefined,
+        //         innloggetSaksbehandler,
+        //         'Saksbehandler tilhører ingen av de definerte tilgangsgruppene.'
+        //     );
+        //     tilFeilside();
+        // }
 
         return rolle;
     };
