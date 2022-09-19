@@ -83,7 +83,7 @@ const [FagsakProvider, useFagsakRessurser] = createUseContext(() => {
         settBruker(byggHenterRessurs());
         request<void, IPersonInfo>({
             method: 'GET',
-            url: '/familie-ba-sak/api/person',
+            url: '/familie-ks-sak/api/person',
             headers: {
                 personIdent,
             },
