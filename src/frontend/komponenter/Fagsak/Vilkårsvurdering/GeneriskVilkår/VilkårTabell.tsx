@@ -13,9 +13,6 @@ import VilkårTabellRad from './VilkårTabellRad';
 export const vilkårFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
     `vilkår_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
 
-export const vilkårResultatFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
-    `vilkår-resultat_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
-
 export const vilkårBegrunnelseFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
     `vilkår-begrunnelse_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
 

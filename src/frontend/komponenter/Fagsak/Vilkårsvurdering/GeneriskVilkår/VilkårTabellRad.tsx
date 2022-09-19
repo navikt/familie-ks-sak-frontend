@@ -145,15 +145,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                     />
                 );
             default:
-                return (
-                    <BosattIRiket
-                        vilkårResultat={vilkårResultat}
-                        vilkårFraConfig={vilkårFraConfig}
-                        toggleForm={toggleForm}
-                        person={person}
-                        lesevisning={erLesevisning()}
-                    />
-                );
+                return null;
         }
     };
 

@@ -53,7 +53,6 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
     if (muligeUtdypendeVilkårsvurderinger.length === 0) {
         return ok(felt);
     }
-    console.log(muligeUtdypendeVilkårsvurderinger);
     if (!felt.verdi.every(item => muligeUtdypendeVilkårsvurderinger.includes(item))) {
         return feil(felt, 'Du har valgt en ugyldig kombinasjon');
     }
