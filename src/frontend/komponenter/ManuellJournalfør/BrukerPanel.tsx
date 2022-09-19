@@ -6,7 +6,6 @@ import { FamilieInput, FamilieKnapp } from '@navikt/familie-form-elements';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useApp } from '../../context/AppContext';
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
 import { KontoSirkel } from '../../ikoner/KontoSirkel';
 import { formaterIdent } from '../../utils/formatter';
