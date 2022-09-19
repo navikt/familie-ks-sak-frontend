@@ -110,7 +110,7 @@ const [FagsakProvider, useFagsakRessurser] = createUseContext(() => {
     const hentFagsakForPerson = async (personId: string) => {
         return request<{ ident: string }, IMinimalFagsak>({
             method: 'POST',
-            url: `/familie-ba-sak/api/fagsaker/hent-fagsak-paa-person`,
+            url: `/familie-ks-sak/api/fagsaker/hent-fagsak-paa-person`,
             data: {
                 ident: personId,
             },
