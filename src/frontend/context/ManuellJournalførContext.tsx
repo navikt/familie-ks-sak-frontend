@@ -207,11 +207,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
         nullstillSkjema();
     };
 
-    const endreBruker = async (
-        personId: string,
-        erEnsligMindreårig = false,
-        erPåInstitusjon = false
-    ) => {
+    const endreBruker = async (personId: string) => {
         const hentetPerson = await request<void, IPersonInfo>({
             method: 'GET',
             url: '/familie-ks-sak/api/person',
