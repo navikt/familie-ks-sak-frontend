@@ -85,8 +85,8 @@ export const profileMock = {
     identifier: 'test@test.no',
     navIdent: 'Z123456',
     groups: [
-        'd21e00a4-969d-4b28-8782-dc818abfae65',
-        '93a26831-9866-4410-927b-74ff51a9107c',
-        '9449c153-5a1e-44a7-84c6-7cc7a8867233',
+        '71f503a2-c28f-4394-a05a-8da263ceca4a',
+        'c7e0b108-7ae6-432c-9ab4-946174c240c0',
+        '52fe1bef-224f-49df-a40a-29f92d4520f8',
     ],
 };
