@@ -19,7 +19,6 @@ import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingPar
 import type { IBehandling, IRestNyBehandling } from '../../../../../typer/behandling';
 import { BehandlingSteg, Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
 import type { IBehandlingstema } from '../../../../../typer/behandlingstema';
-import type { FagsakType } from '../../../../../typer/fagsak';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
 import type { FamilieIsoDate } from '../../../../../utils/kalender';
 import { erIsoStringGyldig } from '../../../../../utils/kalender';
@@ -124,7 +123,7 @@ const useOpprettBehandling = ({
         }
     }, [skjema.felter.behandlingstype.verdi]);
 
-    const onBekreft = (søkersIdent: string, fagsakType: FagsakType) => {
+    const onBekreft = (søkersIdent: string) => {
         const { behandlingstype, behandlingsårsak } = skjema.felter;
         if (kanSendeSkjema()) {
             if (
@@ -153,7 +152,6 @@ const useOpprettBehandling = ({
                             behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,
                             navIdent: innloggetSaksbehandler?.navIdent,
                             søknadMottattDato: skjema.felter.søknadMottattDato.verdi ?? undefined,
-                            fagsakType: fagsakType,
                         },
                         method: 'POST',
                         url: '/familie-ks-sak/api/behandlinger',
