@@ -11,12 +11,10 @@ import { RessursStatus } from '@navikt/familie-typer';
 import useSakOgBehandlingParams from '../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../typer/behandling';
 import { BehandlingSteg } from '../typer/behandling';
-import { FagsakType } from '../typer/fagsak';
 import type { IInstitusjon, IRegistrerInstitusjonOgVerge } from '../typer/institusjon-og-verge';
 import type { IPersonInfo } from '../typer/person';
 import { hentAlder } from '../utils/formatter';
 import { hentFrontendFeilmelding } from '../utils/ressursUtils';
-import { identValidator } from '../utils/validators';
 import { useBehandling } from './behandlingContext/BehandlingContext';
 import { useFagsakRessurser } from './FagsakContext';
 
@@ -57,9 +55,7 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
                         if (avhengigheter?.feilmelding) {
                             return feil(felt, avhengigheter?.feilmelding);
                         } else {
-                            return fagsakType === FagsakType.BARN_ENSLIG_MINDREÅRIG
-                                ? identValidator(felt)
-                                : ok(felt);
+                            return ok(felt);
                         }
                     },
                 }),
