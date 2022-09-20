@@ -13,12 +13,6 @@ export enum FagsakStatus {
     AVSLUTTET = 'AVSLUTTET',
 }
 
-export enum FagsakType {
-    NORMAL = 'NORMAL',
-    BARN_ENSLIG_MINDREÅRIG = 'BARN_ENSLIG_MINDREÅRIG',
-    INSTITUSJON = 'INSTITUSJON',
-}
-
 // Interface
 export interface IBaseFagsak {
     id: number;
@@ -28,7 +22,6 @@ export interface IBaseFagsak {
     søkerFødselsnummer: string;
     underBehandling: boolean;
     løpendeKategori?: BehandlingKategori;
-    fagsakType: FagsakType;
     institusjon?: IInstitusjon;
 }
 

@@ -11,12 +11,10 @@ import { RessursStatus } from '@navikt/familie-typer';
 import useSakOgBehandlingParams from '../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../typer/behandling';
 import { BehandlingSteg } from '../typer/behandling';
-import { FagsakType } from '../typer/fagsak';
 import type { IInstitusjon, IRegistrerInstitusjonOgVerge } from '../typer/institusjon-og-verge';
 import type { IPersonInfo } from '../typer/person';
 import { hentAlder } from '../utils/formatter';
 import { hentFrontendFeilmelding } from '../utils/ressursUtils';
-import { identValidator } from '../utils/validators';
 import { useBehandling } from './behandlingContext/BehandlingContext';
 import { useFagsakRessurser } from './FagsakContext';
 
@@ -36,7 +34,6 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
             minimalFagsak.status !== RessursStatus.SUKSESS
                 ? hentFrontendFeilmelding(minimalFagsak) || 'Ukjent feil ved henting av fagsak'
                 : '';
-        const fagsakType = fagsak?.fagsakType;
 
         const { skjema, onSubmit } = useSkjema<
             {
@@ -57,9 +54,7 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
                         if (avhengigheter?.feilmelding) {
                             return feil(felt, avhengigheter?.feilmelding);
                         } else {
-                            return fagsakType === FagsakType.BARN_ENSLIG_MINDREÅRIG
-                                ? identValidator(felt)
-                                : ok(felt);
+                            return ok(felt);
                         }
                     },
                 }),
@@ -130,9 +125,6 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
         };
 
         const erSkjemaUendret = () => {
-            if (fagsakType === FagsakType.INSTITUSJON) {
-                return skjema.felter.institusjon.verdi === fagsak?.institusjon;
-            }
             return skjema.felter.fødselsnummer.verdi === åpenBehandling.verge?.ident || '';
         };
 
@@ -147,16 +139,8 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
                 onSubmit<IRegistrerInstitusjonOgVerge | undefined>(
                     {
                         data: {
-                            institusjonInfo:
-                                fagsakType === FagsakType.INSTITUSJON
-                                    ? skjema.felter.institusjon.verdi
-                                    : undefined,
-                            vergeInfo:
-                                fagsakType !== FagsakType.INSTITUSJON
-                                    ? {
-                                          ident: skjema.felter.fødselsnummer.verdi,
-                                      }
-                                    : undefined,
+                            institusjonInfo: undefined,
+                            vergeInfo: undefined,
                         },
                         method: 'POST',
                         url: `/familie-ks-sak/api/behandlinger/${åpenBehandling?.behandlingId}/steg/registrer-institusjon-og-verge`,
@@ -180,7 +164,6 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
 
         return {
             fagsakFeilmelding,
-            fagsakType,
             hentPerson,
             onSubmitMottaker,
             skjema,

@@ -65,12 +65,7 @@ const OpprettBehandling: React.FC<IProps> = ({ onListElementClick, minimalFagsak
                             key={'bekreft'}
                             type={'hoved'}
                             mini={true}
-                            onClick={() =>
-                                onBekreft(
-                                    minimalFagsak.søkerFødselsnummer,
-                                    minimalFagsak.fagsakType
-                                )
-                            }
+                            onClick={() => onBekreft(minimalFagsak.søkerFødselsnummer)}
                             children={'Bekreft'}
                             spinner={
                                 opprettBehandlingSkjema.submitRessurs.status ===
