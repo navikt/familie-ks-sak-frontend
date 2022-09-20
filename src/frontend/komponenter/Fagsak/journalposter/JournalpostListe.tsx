@@ -130,7 +130,7 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
 
         request<undefined, IJournalpost[]>({
             method: 'GET',
-            url: `/familie-ks-sak/api/journalpost/for-bruker/${bruker.personIdent}`,
+            url: `/familie-ks-sak/api/journalpost/bruker/${bruker.personIdent}`,
             påvirkerSystemLaster: true,
         }).then(journalposterRessurs => {
             settJournalposterRessurs(journalposterRessurs);
