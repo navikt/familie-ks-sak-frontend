@@ -17,7 +17,7 @@ import { Behandling } from './Behandling';
 import { BehandlingEllerTilbakekreving } from './BehandlingEllerTilbakekreving';
 import type { VisningBehandling } from './visningBehandling';
 
-const SwitchHøyre = styled(Switch)`
+const StyledSwitch = styled(Switch)`
     margin-top: 1rem;
     margin-right: 0.275rem;
     float: right;
@@ -117,7 +117,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                 <Normaltekst children={'Ingen tidligere behandlinger'} />
             )}
             {finnesRadSomKanFiltreresBort && (
-                <SwitchHøyre
+                <StyledSwitch
                     size="small"
                     position="left"
                     id={'vis-henlagte-behandlinger'}
@@ -127,7 +127,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                     }}
                 >
                     Vis henlagte behandlinger
-                </SwitchHøyre>
+                </StyledSwitch>
             )}
         </div>
     );
