@@ -56,31 +56,6 @@ export const useInfotrygdSkjema = () => {
     };
 };
 
-export const useInfotrygdRequest = () => {
-    const { request } = useHttp();
-    const [infotrygdsakerRessurs, settInfotrygdsakerRessurs] = useState<Ressurs<IInfotrygdsaker>>(
-        byggTomRessurs()
-    );
-
-    const hentInfotrygdsaker = (ident: string) => {
-        settInfotrygdsakerRessurs(byggHenterRessurs<IInfotrygdsaker>());
-        request<IInfotrygdsakerRequest, IInfotrygdsaker>(hentInfotrygdsakerRequestConfig(ident))
-            .then((ressurs: Ressurs<IInfotrygdsaker>) => {
-                settInfotrygdsakerRessurs(konverterTilFeiletRessursDersomIkkeTilgang(ressurs));
-            })
-            .catch((_error: AxiosError) => {
-                settInfotrygdsakerRessurs(
-                    byggFeiletRessurs('Ukjent feil ved innhenting av infotrygdsaker')
-                );
-            });
-    };
-
-    return {
-        hentInfotrygdsaker,
-        infotrygdsakerRessurs,
-    };
-};
-
 export const useInfotrygdMigrering = () => {
     const navigate = useNavigate();
     const { request } = useHttp();
