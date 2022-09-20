@@ -34,7 +34,6 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
             minimalFagsak.status !== RessursStatus.SUKSESS
                 ? hentFrontendFeilmelding(minimalFagsak) || 'Ukjent feil ved henting av fagsak'
                 : '';
-        const fagsakType = fagsak?.fagsakType;
 
         const { skjema, onSubmit } = useSkjema<
             {
@@ -165,7 +164,6 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
 
         return {
             fagsakFeilmelding,
-            fagsakType,
             hentPerson,
             onSubmitMottaker,
             skjema,

@@ -20,8 +20,7 @@ const StyledAlert = styled(Alert)`
 `;
 
 const RegistrerMottaker: React.FC = () => {
-    const { fagsakFeilmelding, onSubmitMottaker, submitFeilmelding } =
-        useInstitusjonOgVerge();
+    const { fagsakFeilmelding, onSubmitMottaker, submitFeilmelding } = useInstitusjonOgVerge();
     const { behandlingsstegSubmitressurs, erLesevisning } = useBehandling();
 
     return (

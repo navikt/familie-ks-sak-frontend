@@ -9,7 +9,6 @@ import type { ISøkeresultat } from '@navikt/familie-header';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useApp } from '../../../context/AppContext';
-import { FagsakType } from '../../../typer/fagsak';
 import type { IPersonInfo } from '../../../typer/person';
 import type { ISamhandlerInfo } from '../../../typer/samhandler';
 import { ToggleNavn } from '../../../typer/toggles';
@@ -42,13 +41,11 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
     const { opprettFagsak, feilmelding, senderInn, settSenderInn } = useOpprettFagsak();
     const { sjekkTilgang, toggles } = useApp();
     const visModal = !!søkeresultat || !!personInfo;
-    const [fagsakType, settFagsakType] = useState<FagsakType>(FagsakType.NORMAL);
     const [visFeilmelding, settVisFeilmelding] = useState(false);
     const [valgtSamhandler, settValgtSamhandler] = useState<ISamhandlerInfo | undefined>(undefined);
     const { samhandlerSkjema } = useSamhandlerSkjema();
 
     const onClose = () => {
-        settFagsakType(FagsakType.NORMAL);
         settVisFeilmelding(false);
         settValgtSamhandler(undefined);
         lukkModal();
@@ -84,7 +81,6 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
                                             {
                                                 personIdent: søkeresultat.ident,
                                                 aktørId: null,
-                                                fagsakType: FagsakType.NORMAL,
                                                 institusjon: null,
                                             },
                                             lukkModal
@@ -143,7 +139,6 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
                                                 {
                                                     personIdent: personIdent,
                                                     aktørId: null,
-                                                    fagsakType: fagsakType,
                                                     institusjon: valgtSamhandler
                                                         ? {
                                                               orgNummer: valgtSamhandler.orgNummer,
