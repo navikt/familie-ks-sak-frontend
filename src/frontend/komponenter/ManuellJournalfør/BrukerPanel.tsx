@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { FamilieCheckbox, FamilieInput, FamilieKnapp } from '@navikt/familie-form-elements';
+import { FamilieInput, FamilieKnapp } from '@navikt/familie-form-elements';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useApp } from '../../context/AppContext';
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
 import { KontoSirkel } from '../../ikoner/KontoSirkel';
-import { ToggleNavn } from '../../typer/toggles';
 import { formaterIdent } from '../../utils/formatter';
 import { identValidator } from '../../utils/validators';
 import { SamhandlerTabell } from '../Fagsak/InstitusjonOgVerge/SamhandlerTabell';
@@ -19,10 +17,6 @@ import { StyledEkspanderbartpanelBase } from './StyledEkspanderbartpanelBase';
 
 const StyledDiv = styled.div`
     display: flex;
-`;
-
-const StyledCheckBoxWrapper = styled.div`
-    margin-bottom: 1rem;
 `;
 
 const StyledKnapp = styled(FamilieKnapp)`
@@ -41,7 +35,6 @@ const StyledEkspanderbartpanelBaseMedMargin = styled(StyledEkspanderbartpanelBas
 
 export const BrukerPanel: React.FC = () => {
     const { skjema, endreBruker, erLesevisning } = useManuellJournalfør();
-    const { toggles } = useApp();
     const [åpen, settÅpen] = useState(false);
     const [feilMelding, settFeilMelding] = useState<string | undefined>('');
     const [spinner, settSpinner] = useState(false);
@@ -88,56 +81,6 @@ export const BrukerPanel: React.FC = () => {
                 />
             }
         >
-            {toggles[ToggleNavn.støtterInstitusjon] && (
-                <div>
-                    <StyledCheckBoxWrapper>
-                        <FamilieCheckbox
-                            id={'enslig-mindreårig'}
-                            erLesevisning={false}
-                            label={'Bruker er enslig mindreårig'}
-                            checked={skjema.felter.erEnsligMindreårig.verdi}
-                            disabled={skjema.felter.erPåInstitusjon.verdi}
-                            onChange={() => {
-                                if (erLesevisning()) {
-                                    return;
-                                }
-                                const oppdatertVerdi = !skjema.felter.erEnsligMindreårig.verdi;
-                                skjema.felter.erEnsligMindreårig.validerOgSettFelt(oppdatertVerdi);
-                                if (skjema.felter.bruker.verdi) {
-                                    endreBruker(
-                                        skjema.felter.bruker.verdi?.personIdent,
-                                        oppdatertVerdi,
-                                        skjema.felter.erPåInstitusjon.verdi
-                                    );
-                                }
-                            }}
-                        />
-                    </StyledCheckBoxWrapper>
-                    <StyledCheckBoxWrapper>
-                        <FamilieCheckbox
-                            id={'på-institusjon'}
-                            erLesevisning={false}
-                            label={'Bruker er på institusjon'}
-                            checked={skjema.felter.erPåInstitusjon.verdi}
-                            disabled={skjema.felter.erEnsligMindreårig.verdi}
-                            onChange={() => {
-                                if (erLesevisning()) {
-                                    return;
-                                }
-                                const oppdatertVerdi = !skjema.felter.erPåInstitusjon.verdi;
-                                skjema.felter.erPåInstitusjon.validerOgSettFelt(oppdatertVerdi);
-                                if (skjema.felter.bruker.verdi) {
-                                    endreBruker(
-                                        skjema.felter.bruker.verdi?.personIdent,
-                                        skjema.felter.erEnsligMindreårig.verdi,
-                                        oppdatertVerdi
-                                    );
-                                }
-                            }}
-                        />
-                    </StyledCheckBoxWrapper>
-                </div>
-            )}
             {skjema.felter.erPåInstitusjon.verdi && (
                 <StyledDiv>
                     {!erLesevisning() && (
