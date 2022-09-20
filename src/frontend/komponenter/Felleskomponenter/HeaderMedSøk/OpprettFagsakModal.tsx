@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import { Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 
-import { FamilieCheckbox, FamilieInput, FamilieKnapp } from '@navikt/familie-form-elements';
 import type { ISøkeresultat } from '@navikt/familie-header';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -15,7 +14,6 @@ import type { IPersonInfo } from '../../../typer/person';
 import type { ISamhandlerInfo } from '../../../typer/samhandler';
 import { ToggleNavn } from '../../../typer/toggles';
 import { formaterIdent } from '../../../utils/formatter';
-import { SamhandlerTabell } from '../../Fagsak/InstitusjonOgVerge/SamhandlerTabell';
 import { useSamhandlerSkjema } from '../../Fagsak/InstitusjonOgVerge/useSamhandler';
 import UIModalWrapper from '../Modal/UIModalWrapper';
 import useOpprettFagsak from './useOpprettFagsak';
@@ -26,16 +24,6 @@ export interface IOpprettFagsakModal {
     personInfo?: IPersonInfo;
 }
 
-const StyledDiv = styled.div`
-    display: flex;
-`;
-
-const StyledKnapp = styled(FamilieKnapp)`
-    margin-left: 1rem;
-    margin-top: auto;
-    height: 1rem;
-`;
-
 const StyledUndertittel = styled(Undertittel)`
     font-size: 1rem;
     margin-bottom: 1.5rem;
@@ -44,11 +32,6 @@ const StyledUndertittel = styled(Undertittel)`
 const StyledKnappContainer = styled.div`
     margin-top: 1.2rem;
     margin-bottom: 0.5rem;
-`;
-
-const StyledCheckBoxWrapper = styled.div`
-    margin-top: 1.2rem;
-    margin-bottom: 1rem;
 `;
 
 const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
@@ -62,7 +45,7 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
     const [fagsakType, settFagsakType] = useState<FagsakType>(FagsakType.NORMAL);
     const [visFeilmelding, settVisFeilmelding] = useState(false);
     const [valgtSamhandler, settValgtSamhandler] = useState<ISamhandlerInfo | undefined>(undefined);
-    const { onSubmitWrapper, samhandlerSkjema } = useSamhandlerSkjema();
+    const { samhandlerSkjema } = useSamhandlerSkjema();
 
     const onClose = () => {
         settFagsakType(FagsakType.NORMAL);
@@ -206,67 +189,6 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
                             personInfo.personIdent
                         )})`}</Normaltekst>
                     )}
-                    <StyledCheckBoxWrapper>
-                        <FamilieCheckbox
-                            id={'gjelder-enslig-mindreårig'}
-                            erLesevisning={false}
-                            label={'Gjelder enslig mindreårig'}
-                            checked={fagsakType === FagsakType.BARN_ENSLIG_MINDREÅRIG}
-                            disabled={fagsakType === FagsakType.INSTITUSJON}
-                            onChange={() => {
-                                if (fagsakType === FagsakType.BARN_ENSLIG_MINDREÅRIG) {
-                                    settFagsakType(FagsakType.NORMAL);
-                                } else {
-                                    settFagsakType(FagsakType.BARN_ENSLIG_MINDREÅRIG);
-                                }
-                                settVisFeilmelding(false);
-                            }}
-                        />
-                        <br />
-                        <FamilieCheckbox
-                            id={'gjelder-institusjon'}
-                            erLesevisning={false}
-                            label={'Gjelder institusjon'}
-                            checked={fagsakType === FagsakType.INSTITUSJON}
-                            disabled={fagsakType === FagsakType.BARN_ENSLIG_MINDREÅRIG}
-                            onChange={() => {
-                                if (fagsakType === FagsakType.INSTITUSJON) {
-                                    settFagsakType(FagsakType.NORMAL);
-                                } else {
-                                    settFagsakType(FagsakType.INSTITUSJON);
-                                }
-                                settVisFeilmelding(false);
-                            }}
-                        />
-                        <br />
-                        {fagsakType === FagsakType.INSTITUSJON && (
-                            <StyledDiv>
-                                <FamilieInput
-                                    {...samhandlerSkjema.felter.orgnr.hentNavInputProps(
-                                        samhandlerSkjema.visFeilmeldinger
-                                    )}
-                                    erLesevisning={false}
-                                    id={'hent-samhandler'}
-                                    label={'Institusjonens organisasjonsnummer'}
-                                    bredde={'XL'}
-                                    placeholder={'organisasjonsnummer'}
-                                />
-
-                                <StyledKnapp
-                                    onClick={() => {
-                                        onSubmitWrapper();
-                                    }}
-                                    children={'Hent institusjon'}
-                                    erLesevisning={false}
-                                />
-                            </StyledDiv>
-                        )}
-                        <br />
-
-                        {fagsakType === FagsakType.INSTITUSJON && valgtSamhandler !== undefined && (
-                            <SamhandlerTabell samhandler={valgtSamhandler}></SamhandlerTabell>
-                        )}
-                    </StyledCheckBoxWrapper>
                     {!!feilmelding && visFeilmelding && <Feilmelding children={feilmelding} />}
                 </UIModalWrapper>
             )}

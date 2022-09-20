@@ -130,9 +130,6 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
         };
 
         const erSkjemaUendret = () => {
-            if (fagsakType === FagsakType.INSTITUSJON) {
-                return skjema.felter.institusjon.verdi === fagsak?.institusjon;
-            }
             return skjema.felter.fødselsnummer.verdi === åpenBehandling.verge?.ident || '';
         };
 
@@ -147,16 +144,8 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
                 onSubmit<IRegistrerInstitusjonOgVerge | undefined>(
                     {
                         data: {
-                            institusjonInfo:
-                                fagsakType === FagsakType.INSTITUSJON
-                                    ? skjema.felter.institusjon.verdi
-                                    : undefined,
-                            vergeInfo:
-                                fagsakType !== FagsakType.INSTITUSJON
-                                    ? {
-                                          ident: skjema.felter.fødselsnummer.verdi,
-                                      }
-                                    : undefined,
+                            institusjonInfo: undefined,
+                            vergeInfo: undefined,
                         },
                         method: 'POST',
                         url: `/familie-ks-sak/api/behandlinger/${åpenBehandling?.behandlingId}/steg/registrer-institusjon-og-verge`,

@@ -16,8 +16,6 @@ import {
 import type { Ressurs } from '@navikt/familie-typer';
 
 import IkkeTilgang from '../../../ikoner/IkkeTilgang';
-import KontorIkonGrønn from '../../../ikoner/KontorIkonGrønn';
-import { FagsakType } from '../../../typer/fagsak';
 import type { IFagsakDeltager, ISøkParam } from '../../../typer/fagsakdeltager';
 import { fagsakdeltagerRoller } from '../../../typer/fagsakdeltager';
 import OpprettFagsakModal from './OpprettFagsakModal';
@@ -77,8 +75,8 @@ const FagsakDeltagerSøk: React.FC = () => {
         }
     };
 
-    const mapTilSøkeresultater = (): Ressurs<ISøkeresultat[]> => {
-        return fagsakDeltagere.status === RessursStatus.SUKSESS
+    const mapTilSøkeresultater = (): Ressurs<ISøkeresultat[]> =>
+        fagsakDeltagere.status === RessursStatus.SUKSESS
             ? {
                   ...fagsakDeltagere,
                   data: fagsakDeltagere.data.map((fagsakDeltager: IFagsakDeltager) => {
@@ -89,11 +87,7 @@ const FagsakDeltagerSøk: React.FC = () => {
                           navn: fagsakDeltager.navn,
                           ident: fagsakDeltager.ident,
                           ikon: fagsakDeltager.harTilgang ? (
-                              fagsakDeltager.fagsakType !== FagsakType.INSTITUSJON ? (
-                                  ikoner[`${fagsakDeltager.rolle}_${fagsakDeltager.kjønn}`]
-                              ) : (
-                                  <KontorIkonGrønn height={32} width={32} />
-                              )
+                              ikoner[`${fagsakDeltager.rolle}_${fagsakDeltager.kjønn}`]
                           ) : (
                               <IkkeTilgang height={30} width={30} />
                           ),
@@ -104,7 +98,6 @@ const FagsakDeltagerSøk: React.FC = () => {
                   }),
               }
             : fagsakDeltagere;
-    };
 
     return (
         <>

@@ -35,9 +35,6 @@ const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
             ident={formaterIdent(bruker?.personIdent ?? '')}
             alder={hentAlder(bruker?.fødselsdato ?? '')}
             kjønn={bruker?.kjønn ?? kjønnType.UKJENT}
-            ValgfrittIkon={
-                minimalFagsak?.fagsakType === FagsakType.INSTITUSJON ? KontorIkonGrønn : undefined
-            }
         >
             <div className="visittkort__pipe">|</div>
             <Normaltekst>{`Kommunenr: ${bruker?.kommunenummer ?? 'ukjent'}`}</Normaltekst>
