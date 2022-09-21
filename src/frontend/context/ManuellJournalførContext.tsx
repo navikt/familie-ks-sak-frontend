@@ -285,7 +285,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
 
         hentForhåndsvisning({
             method: 'GET',
-            url: `/familie-ks-sak/api/journalpost/${journalpostId}/hent/${dokumentInfoId}`,
+            url: `/familie-ks-sak/api/journalpost/${journalpostId}/dokument/${dokumentInfoId}`,
             påvirkerSystemLaster: false,
         });
     };
