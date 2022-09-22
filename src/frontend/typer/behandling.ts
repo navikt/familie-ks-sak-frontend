@@ -211,7 +211,6 @@ export interface IBehandling {
     årsak: BehandlingÅrsak;
     tilbakekreving?: ITilbakekreving;
     aktivSettPåVent?: ISettPåVent;
-    migreringsdato?: string;
     søknadMottattDato?: string;
     endringstidspunkt?: string;
     kompetanser: IRestKompetanse[];

@@ -109,14 +109,6 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
             steg={BehandlingSteg.VILKÅRSVURDERING}
         >
             <>
-                {åpenBehandling?.migreringsdato !== null && (
-                    <HentetLabel
-                        children={`Saken ble migrert fra Infotrygd: ${formaterIsoDato(
-                            åpenBehandling?.migreringsdato,
-                            datoformat.DATO
-                        )}`}
-                    />
-                )}
                 <HentetLabelOgKnappDiv>
                     <HentetLabel
                         children={
