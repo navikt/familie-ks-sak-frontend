@@ -29,7 +29,6 @@ interface IProps {
     person: IGrunnlagPerson;
     vilkårFraConfig: IVilkårConfig;
     vilkårResultat: IVilkårResultat;
-    visFeilmeldinger: boolean;
     settFokusPåKnapp: () => void;
 }
 

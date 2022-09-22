@@ -54,6 +54,6 @@ export const useAnnenVurderingSkjema = (
         skjema,
         lagreAnnenVurdering,
         lagrerAnnenVurdering: vilkårsvurderingApi.lagrerAnnenVurdering,
-        lagrerAnnenVurderingFeilmelding: vilkårsvurderingApi.lagrerAnnenVurderingFeilmelding,
+        lagreAnnenVurderingFeilmelding: vilkårsvurderingApi.lagreAnnenVurderingFeilmelding,
     };
 };

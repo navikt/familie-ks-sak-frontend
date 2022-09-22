@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import type { FieldDictionary } from '@navikt/familie-skjema';
 import { useSkjema } from '@navikt/familie-skjema';
 
@@ -36,6 +38,20 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
         skjemanavn: 'Vilkårskjema',
     });
 
+    const [feilmelding, settFeilmelding] = useState<string>('');
+
+    useEffect(() => {
+        return () => {
+            if (vilkårsvurderingApi.slettVilkårFeilmelding !== '') {
+                settFeilmelding(vilkårsvurderingApi.slettVilkårFeilmelding);
+            } else if (vilkårsvurderingApi.lagreVilkårFeilmelding !== '') {
+                settFeilmelding(vilkårsvurderingApi.lagreVilkårFeilmelding);
+            } else {
+                settFeilmelding('');
+            }
+        };
+    }, [vilkårsvurderingApi.slettVilkårFeilmelding, vilkårsvurderingApi.lagreVilkårFeilmelding]);
+
     const lagreVilkår = () => {
         if (kanSendeSkjema()) {
             settVisfeilmeldinger(false);
@@ -70,6 +86,7 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
     };
 
     const slettVilkår = (personIdent: string, vilkårId: number) => {
+        settVisfeilmeldinger(false);
         vilkårsvurderingApi.slettVilkår(personIdent, vilkårId, () => {
             toggleForm(false);
             nullstillSkjema();
@@ -82,5 +99,6 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
         lagrerVilkår: vilkårsvurderingApi.lagrerVilkår,
         slettVilkår,
         sletterVilkår: vilkårsvurderingApi.sletterVilkår,
+        feilmelding,
     };
 };

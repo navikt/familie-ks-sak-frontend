@@ -21,7 +21,6 @@ interface IProps {
     person: IGrunnlagPerson;
     vilkårResultater: IVilkårResultat[];
     vilkårFraConfig: IVilkårConfig;
-    visFeilmeldinger: boolean;
     generiskVilkårKey: string;
 }
 
@@ -40,7 +39,6 @@ const GeneriskVilkår: React.FC<IProps> = ({
     person,
     vilkårFraConfig,
     vilkårResultater,
-    visFeilmeldinger,
     generiskVilkårKey,
 }) => {
     const { erLesevisning } = useBehandling();
@@ -83,7 +81,7 @@ const GeneriskVilkår: React.FC<IProps> = ({
             <SkjemaGruppe
                 feil={
                     visFeilmeldingerForVilkår
-                        ? vilkårsvurderingApi.oppretterVilkårFeilmelding
+                        ? vilkårsvurderingApi.opprettVilkårFeilmelding
                         : undefined
                 }
             >
@@ -94,7 +92,6 @@ const GeneriskVilkår: React.FC<IProps> = ({
                     person={person}
                     vilkårFraConfig={vilkårFraConfig}
                     vilkårResultater={vilkårResultater}
-                    visFeilmeldinger={visFeilmeldinger}
                     settFokusPåKnapp={settFokusPåLeggTilPeriodeKnapp}
                 />
                 {skalViseLeggTilKnapp() && (

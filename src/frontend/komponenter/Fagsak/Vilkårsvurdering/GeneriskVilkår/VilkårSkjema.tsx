@@ -95,12 +95,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     felter,
     children,
 }: IVilkårSkjema<T>) => {
-    const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår } = useVilkårSkjema(
-        vilkårResultat,
-        felter,
-        person,
-        toggleForm
-    );
+    const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding } =
+        useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
 
     const { åpenBehandling } = useBehandling();
     const årsakErSøknad =
@@ -108,7 +104,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
         åpenBehandling.data.årsak === BehandlingÅrsak.SØKNAD;
 
     return (
-        <SkjemaGruppe utenFeilPropagering={true}>
+        <SkjemaGruppe feil={feilmelding}>
             <Container lesevisning={false} vilkårResultat={undefined}>
                 {visVurderesEtter && (
                     <FamilieSelect

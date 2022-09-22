@@ -16,7 +16,6 @@ interface IProps {
     person: IGrunnlagPerson;
     andreVurderinger: IAnnenVurdering[];
     annenVurderingConfig: IAnnenVurderingConfig;
-    visFeilmeldinger: boolean;
 }
 
 const Tabell = styled.table`
@@ -51,7 +50,6 @@ const AnnenVurderingTabell: React.FC<IProps> = ({
     person,
     annenVurderingConfig,
     andreVurderinger,
-    visFeilmeldinger,
 }) => {
     return (
         <Tabell className={'tabell'}>
@@ -72,7 +70,6 @@ const AnnenVurderingTabell: React.FC<IProps> = ({
                         annenVurderingConfig={annenVurderingConfig}
                         person={person}
                         annenVurdering={annenVurdering}
-                        visFeilmeldinger={visFeilmeldinger}
                     />
                 );
             })}

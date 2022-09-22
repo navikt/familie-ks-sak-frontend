@@ -21,10 +21,6 @@ import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
 import { useVilkårsvurderingApi } from './useVilkårsvurderingApi';
 
-interface IVilkårsvurderingSkjema {
-    visFeilmeldinger: boolean;
-}
-
 const PersonLinje = styled.div`
     display: flex;
     justify-content: space-between;
@@ -49,9 +45,7 @@ const VilkårDiv = styled.div`
     }
 `;
 
-const VilkårsvurderingSkjema: React.FunctionComponent<IVilkårsvurderingSkjema> = ({
-    visFeilmeldinger,
-}) => {
+const VilkårsvurderingSkjema: React.FunctionComponent = () => {
     const { vilkårsvurdering } = useVilkårsvurdering();
     const { erLesevisning, aktivSettPåVent, åpenBehandling } = useBehandling();
     const vilkårsvurderingApi = useVilkårsvurderingApi();
@@ -189,7 +183,6 @@ const VilkårsvurderingSkjema: React.FunctionComponent<IVilkårsvurderingSkjema>
                                                     person={personResultat.person}
                                                     vilkårResultater={vilkårResultater}
                                                     vilkårFraConfig={vc}
-                                                    visFeilmeldinger={visFeilmeldinger}
                                                 />
                                             );
                                     })}
@@ -206,7 +199,6 @@ const VilkårsvurderingSkjema: React.FunctionComponent<IVilkårsvurderingSkjema>
                                                 person={personResultat.person}
                                                 andreVurderinger={personResultat.andreVurderinger}
                                                 annenVurderingConfig={annenVurderingConfig}
-                                                visFeilmeldinger={visFeilmeldinger}
                                             />
                                         ))}
                             </IndentertInnhold>

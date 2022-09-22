@@ -23,7 +23,6 @@ interface IProps {
     person: IGrunnlagPerson;
     vilkårResultater: IVilkårResultat[];
     vilkårFraConfig: IVilkårConfig;
-    visFeilmeldinger: boolean;
     settFokusPåKnapp: () => void;
 }
 
@@ -49,7 +48,6 @@ const VilkårTabell: React.FC<IProps> = ({
     person,
     vilkårFraConfig,
     vilkårResultater,
-    visFeilmeldinger,
     settFokusPåKnapp,
 }) => {
     const { toggles } = useApp();
@@ -75,7 +73,6 @@ const VilkårTabell: React.FC<IProps> = ({
                             vilkårFraConfig={vilkårFraConfig}
                             person={person}
                             vilkårResultat={vilkårResultat}
-                            visFeilmeldinger={visFeilmeldinger}
                             settFokusPåKnapp={settFokusPåKnapp}
                         />
                     );

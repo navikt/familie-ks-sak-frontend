@@ -22,12 +22,17 @@ export const useVilkårsvurderingApi = () => {
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
 
     const [lagrerVilkår, settLagrerVilkår] = useState<boolean>(false);
+    const [lagreVilkårFeilmelding, settLagreVilkårFeilmelding] = useState<string>('');
+
     const [oppretterVilkår, settOppretterVilkår] = useState<boolean>(false);
+    const [opprettVilkårFeilmelding, settOpprettVilkårFeilmelding] = useState<string>('');
+
     const [sletterVilkår, settSletterVilkår] = useState<boolean>(false);
+    const [slettVilkårFeilmelding, settSlettVilkårFeilmelding] = useState<string>('');
+
     const [lagrerAnnenVurdering, settLagrerAnnenVurdering] = useState<boolean>(false);
-    const [lagrerAnnenVurderingFeilmelding, settLagrerAnnenVurderingFeilmelding] =
+    const [lagreAnnenVurderingFeilmelding, settLagreAnnenVurderingFeilmelding] =
         useState<string>('');
-    const [oppretterVilkårFeilmelding, settOppretterVilkårFeilmelding] = useState<string>('');
 
     const lagreVilkår = (
         restPersonResultat: IRestPersonResultat,
@@ -36,6 +41,7 @@ export const useVilkårsvurderingApi = () => {
         onFailure?: () => void
     ): void => {
         settLagrerVilkår(true);
+        settLagreVilkårFeilmelding('');
         request<IRestPersonResultat, IBehandling>({
             method: 'PUT',
             url: `/familie-ks-sak/api/vilkaarsvurdering/${behandlingId}/${vilkårId}`,
@@ -48,10 +54,19 @@ export const useVilkårsvurderingApi = () => {
                     if (onSuccess) {
                         onSuccess();
                     }
+                } else if (
+                    response.status === RessursStatus.FEILET ||
+                    response.status === RessursStatus.FUNKSJONELL_FEIL ||
+                    response.status === RessursStatus.IKKE_TILGANG
+                ) {
+                    settLagreVilkårFeilmelding(response.frontendFeilmelding);
                 }
             })
             .catch(() => {
                 settLagrerVilkår(false);
+                settLagreVilkårFeilmelding(
+                    'En ukjent feil har oppstått, vi har ikke klart å lagre vilkåret.'
+                );
                 if (onFailure) {
                     onFailure();
                 }
@@ -65,6 +80,7 @@ export const useVilkårsvurderingApi = () => {
         onFailure?: () => void
     ) => {
         settSletterVilkår(true);
+        settSlettVilkårFeilmelding('');
         request<string, IBehandling>({
             method: 'DELETE',
             url: `/familie-ks-sak/api/vilkaarsvurdering/${behandlingId}/${vilkårId}`,
@@ -77,9 +93,18 @@ export const useVilkårsvurderingApi = () => {
                     if (onSuccess) {
                         onSuccess();
                     }
+                } else if (
+                    response.status === RessursStatus.FEILET ||
+                    response.status === RessursStatus.FUNKSJONELL_FEIL ||
+                    response.status === RessursStatus.IKKE_TILGANG
+                ) {
+                    settSlettVilkårFeilmelding(response.frontendFeilmelding);
                 }
             })
             .catch(() => {
+                settSlettVilkårFeilmelding(
+                    'En ukjent feil har oppstått, vi har ikke klart å slette vilkåret.'
+                );
                 settSletterVilkår(false);
                 if (onFailure) {
                     onFailure();
@@ -89,7 +114,7 @@ export const useVilkårsvurderingApi = () => {
 
     const opprettVilkår = (personIdent: string, vilkårType: VilkårType, onFailure?: () => void) => {
         settOppretterVilkår(true);
-        settOppretterVilkårFeilmelding('');
+        settOpprettVilkårFeilmelding('');
         request<IRestNyttVilkår, IBehandling>({
             method: 'POST',
             url: `/familie-ks-sak/api/vilkaarsvurdering/${behandlingId}`,
@@ -104,12 +129,12 @@ export const useVilkårsvurderingApi = () => {
                     response.status === RessursStatus.FUNKSJONELL_FEIL ||
                     response.status === RessursStatus.IKKE_TILGANG
                 ) {
-                    settOppretterVilkårFeilmelding(response.frontendFeilmelding);
+                    settOpprettVilkårFeilmelding(response.frontendFeilmelding);
                 }
             })
             .catch(() => {
                 settOppretterVilkår(false);
-                settOppretterVilkårFeilmelding(
+                settOpprettVilkårFeilmelding(
                     'En ukjent feil har oppstått, vi har ikke klart å legge til periode.'
                 );
                 if (onFailure) {
@@ -123,7 +148,7 @@ export const useVilkårsvurderingApi = () => {
         onSuccess?: () => void
     ) => {
         settLagrerAnnenVurdering(true);
-        settLagrerAnnenVurderingFeilmelding('');
+        settLagreAnnenVurderingFeilmelding('');
         request<IRestAnnenVurdering, IBehandling>({
             method: 'PUT',
             url: `/familie-ks-sak/api/vilkaarsvurdering/${behandlingId}/annenvurdering/${restAnnenVurdering.id}`,
@@ -141,12 +166,12 @@ export const useVilkårsvurderingApi = () => {
                     response.status === RessursStatus.FUNKSJONELL_FEIL ||
                     response.status === RessursStatus.IKKE_TILGANG
                 ) {
-                    settLagrerAnnenVurderingFeilmelding(response.frontendFeilmelding);
+                    settLagreAnnenVurderingFeilmelding(response.frontendFeilmelding);
                 }
             })
             .catch(() => {
                 settLagrerAnnenVurdering(false);
-                settLagrerAnnenVurderingFeilmelding(
+                settLagreAnnenVurderingFeilmelding(
                     'En ukjent feil har oppstått, vi har ikke klart å lagre endringen.'
                 );
             });
@@ -155,13 +180,15 @@ export const useVilkårsvurderingApi = () => {
     return {
         lagreVilkår,
         lagrerVilkår,
+        lagreVilkårFeilmelding,
         opprettVilkår,
         oppretterVilkår,
-        oppretterVilkårFeilmelding,
+        opprettVilkårFeilmelding,
         slettVilkår,
         sletterVilkår,
+        slettVilkårFeilmelding,
         lagreAnnenVurdering,
         lagrerAnnenVurdering,
-        lagrerAnnenVurderingFeilmelding,
+        lagreAnnenVurderingFeilmelding,
     };
 };

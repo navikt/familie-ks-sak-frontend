@@ -22,7 +22,6 @@ interface IProps {
     person: IGrunnlagPerson;
     annenVurderingConfig: IAnnenVurderingConfig;
     annenVurdering: IAnnenVurdering;
-    visFeilmeldinger: boolean;
 }
 
 interface IEkspanderbarTrProps {

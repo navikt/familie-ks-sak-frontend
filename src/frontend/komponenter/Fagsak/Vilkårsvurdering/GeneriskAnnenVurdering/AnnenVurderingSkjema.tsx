@@ -50,10 +50,10 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
     person,
     toggleForm,
 }: IProps) => {
-    const { skjema, lagreAnnenVurdering, lagrerAnnenVurdering, lagrerAnnenVurderingFeilmelding } =
+    const { skjema, lagreAnnenVurdering, lagrerAnnenVurdering, lagreAnnenVurderingFeilmelding } =
         useAnnenVurderingSkjema(annenVurdering, toggleForm);
     return (
-        <SkjemaGruppe feil={lagrerAnnenVurderingFeilmelding} utenFeilPropagering={true}>
+        <SkjemaGruppe feil={lagreAnnenVurderingFeilmelding} utenFeilPropagering={true}>
             <Container>
                 <FamilieRadioGruppe
                     erLesevisning={lesevinsing}
