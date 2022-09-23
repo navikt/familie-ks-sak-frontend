@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 import type { ActionMeta, ISelectOption } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
-import type { FeltState } from '@navikt/familie-skjema';
+import type { Felt } from '@navikt/familie-skjema';
 
 import { useApp } from '../../../../context/AppContext';
 import type { PersonType } from '../../../../typer/person';
@@ -16,7 +16,12 @@ import {
     UtdypendeVilkårsvurderingGenerell,
     UtdypendeVilkårsvurderingNasjonal,
 } from '../../../../typer/vilkår';
-import type { UtdypendeVilkårsvurdering, IVilkårResultat } from '../../../../typer/vilkår';
+import type {
+    UtdypendeVilkårsvurdering,
+    IVilkårResultat,
+    Regelverk,
+    Resultat,
+} from '../../../../typer/vilkår';
 import type { UtdypendeVilkårsvurderingAvhengigheter } from '../../../../utils/utdypendeVilkårsvurderinger';
 import {
     bestemMuligeUtdypendeVilkårsvurderinger,
@@ -24,8 +29,10 @@ import {
 } from '../../../../utils/utdypendeVilkårsvurderinger';
 
 interface Props {
-    redigerbartVilkår: FeltState<IVilkårResultat>;
-    validerOgSettRedigerbartVilkår: (redigerbartVilkår: FeltState<IVilkårResultat>) => void;
+    vilkårResultat: IVilkårResultat;
+    utdypendeVilkårsvurderinger: Felt<UtdypendeVilkårsvurdering[]>;
+    resultat: Felt<Resultat>;
+    vurderesEtter: Felt<Regelverk | undefined>;
     erLesevisning: boolean;
     personType: PersonType;
     feilhåndtering: ReactNode;
@@ -65,39 +72,12 @@ const mapUtdypendeVilkårsvurderingTilOption = (
     value: utdypendeVilkårsvurdering,
     label: utdypendeVilkårsvurderingTekst[utdypendeVilkårsvurdering],
 });
-const mapOptionTilUtdypendeVilkårsvurdering = (option: ISelectOption): UtdypendeVilkårsvurdering =>
-    option.value as UtdypendeVilkårsvurdering;
-
-const tømUtdypendeVilkårsvurderinger = (vilkårResultat: IVilkårResultat): IVilkårResultat => ({
-    ...vilkårResultat,
-    utdypendeVilkårsvurderinger: {
-        ...vilkårResultat.utdypendeVilkårsvurderinger,
-        verdi: [],
-    },
-});
-
-function mapOgLeggTilUtdypendeVilkårsvurdering(
-    action: ActionMeta<ISelectOption>,
-    vilkår: IVilkårResultat
-): IVilkårResultat {
-    const { option } = action;
-    return option
-        ? {
-              ...vilkår,
-              utdypendeVilkårsvurderinger: {
-                  ...vilkår.utdypendeVilkårsvurderinger,
-                  verdi: [
-                      ...vilkår.utdypendeVilkårsvurderinger.verdi,
-                      mapOptionTilUtdypendeVilkårsvurdering(option),
-                  ],
-              },
-          }
-        : vilkår;
-}
 
 export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
-    redigerbartVilkår,
-    validerOgSettRedigerbartVilkår,
+    vilkårResultat,
+    utdypendeVilkårsvurderinger,
+    resultat,
+    vurderesEtter,
     erLesevisning,
     personType,
     feilhåndtering,
@@ -106,55 +86,43 @@ export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
 
     const utdypendeVilkårsvurderingAvhengigheter: UtdypendeVilkårsvurderingAvhengigheter = {
         personType,
-        vilkårType: redigerbartVilkår.verdi.vilkårType,
-        resultat: redigerbartVilkår.verdi.resultat.verdi,
-        vurderesEtter: redigerbartVilkår.verdi.vurderesEtter,
+        vilkårType: vilkårResultat.vilkårType,
+        resultat: resultat.verdi,
+        vurderesEtter: vurderesEtter.verdi,
         brukEøs: toggles[ToggleNavn.brukEøs],
     };
 
     const muligeUtdypendeVilkårsvurderinger = bestemMuligeUtdypendeVilkårsvurderinger(
         utdypendeVilkårsvurderingAvhengigheter
     );
-
     useEffect(() => {
         fjernUmuligeAlternativerFraRedigerbartVilkår(
-            validerOgSettRedigerbartVilkår,
-            redigerbartVilkår,
+            utdypendeVilkårsvurderinger,
             muligeUtdypendeVilkårsvurderinger
         );
-    }, [redigerbartVilkår, utdypendeVilkårsvurderingAvhengigheter]);
+    }, [vilkårResultat, utdypendeVilkårsvurderingAvhengigheter]);
 
     const håndterEndring = (action: ActionMeta<ISelectOption>) => {
         switch (action.action) {
             case 'select-option':
             case 'set-value':
-                validerOgSettRedigerbartVilkår({
-                    ...redigerbartVilkår,
-                    verdi: mapOgLeggTilUtdypendeVilkårsvurdering(action, redigerbartVilkår.verdi),
-                });
+                utdypendeVilkårsvurderinger.validerOgSettFelt([
+                    ...utdypendeVilkårsvurderinger.verdi,
+                    action.option?.value as UtdypendeVilkårsvurdering,
+                ]);
                 break;
             case 'deselect-option':
             case 'remove-value':
             case 'pop-value': {
-                validerOgSettRedigerbartVilkår({
-                    ...redigerbartVilkår,
-                    verdi: {
-                        ...redigerbartVilkår.verdi,
-                        utdypendeVilkårsvurderinger: {
-                            ...redigerbartVilkår.verdi.utdypendeVilkårsvurderinger,
-                            verdi: [
-                                ...redigerbartVilkår.verdi.utdypendeVilkårsvurderinger.verdi,
-                            ].filter(e => e !== action.removedValue?.value),
-                        },
-                    },
-                });
+                utdypendeVilkårsvurderinger.validerOgSettFelt(
+                    utdypendeVilkårsvurderinger.verdi.filter(
+                        utdypendeVurdering => utdypendeVurdering !== action.removedValue?.value
+                    )
+                );
                 break;
             }
             case 'clear':
-                validerOgSettRedigerbartVilkår({
-                    ...redigerbartVilkår,
-                    verdi: tømUtdypendeVilkårsvurderinger(redigerbartVilkår.verdi),
-                });
+                utdypendeVilkårsvurderinger.validerOgSettFelt([]);
                 break;
             case 'create-option':
                 break;
@@ -169,9 +137,7 @@ export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
         <FamilieReactSelect
             id="UtdypendeVilkarsvurderingMultiselect"
             label="Utdypende vilkårsvurdering"
-            value={redigerbartVilkår.verdi.utdypendeVilkårsvurderinger.verdi.map(
-                mapUtdypendeVilkårsvurderingTilOption
-            )}
+            value={utdypendeVilkårsvurderinger.verdi.map(mapUtdypendeVilkårsvurderingTilOption)}
             propSelectStyles={{
                 menu: (provided: CSSProperties) => ({
                     ...provided,

@@ -2,37 +2,16 @@ import * as React from 'react';
 
 import constate from 'constate';
 
-import { useHttp } from '@navikt/familie-http';
-import { Valideringsstatus } from '@navikt/familie-skjema';
-import type { FeltState } from '@navikt/familie-skjema';
-
 import type { IBehandling } from '../../typer/behandling';
-import type {
-    IAnnenVurdering,
-    IPersonResultat,
-    IRestAnnenVurdering,
-    IRestNyttVilkår,
-    IRestPersonResultat,
-    IVilkårResultat,
-    VilkårType,
-} from '../../typer/vilkår';
+import type { IAnnenVurdering, IPersonResultat, IVilkårResultat } from '../../typer/vilkår';
+import { Resultat } from '../../typer/vilkår';
 import { mapFraRestVilkårsvurderingTilUi } from './vilkårsvurdering';
 
 interface IProps {
     åpenBehandling: IBehandling;
 }
 
-export enum VilkårSubmit {
-    PUT,
-    POST,
-    DELETE,
-    NONE,
-}
-
 const [VilkårsvurderingProvider, useVilkårsvurdering] = constate(({ åpenBehandling }: IProps) => {
-    const { request } = useHttp();
-    const [vilkårSubmit, settVilkårSubmit] = React.useState(VilkårSubmit.NONE);
-
     const [vilkårsvurdering, settVilkårsvurdering] = React.useState<IPersonResultat[]>(
         åpenBehandling
             ? mapFraRestVilkårsvurderingTilUi(
@@ -53,93 +32,17 @@ const [VilkårsvurderingProvider, useVilkårsvurdering] = constate(({ åpenBehan
         );
     }, [åpenBehandling]);
 
-    const putVilkår = (
-        vilkårsvurderingForPerson: IPersonResultat,
-        redigerbartVilkår: FeltState<IVilkårResultat>
-    ) => {
-        settVilkårSubmit(VilkårSubmit.PUT);
-
-        return request<IRestPersonResultat, IBehandling>({
-            method: 'PUT',
-            url: `/familie-ks-sak/api/vilkaarsvurdering/${åpenBehandling?.behandlingId}/${redigerbartVilkår.verdi.id}`,
-            data: {
-                personIdent: vilkårsvurderingForPerson.personIdent,
-                vilkårResultater: [
-                    {
-                        begrunnelse: redigerbartVilkår.verdi.begrunnelse.verdi,
-                        behandlingId: redigerbartVilkår.verdi.behandlingId,
-                        endretAv: redigerbartVilkår.verdi.endretAv,
-                        endretTidspunkt: redigerbartVilkår.verdi.endretTidspunkt,
-                        erAutomatiskVurdert: redigerbartVilkår.verdi.erAutomatiskVurdert,
-                        erVurdert: redigerbartVilkår.verdi.erVurdert,
-                        id: redigerbartVilkår.verdi.id,
-                        periodeFom: redigerbartVilkår.verdi.periode.verdi.fom,
-                        periodeTom: redigerbartVilkår.verdi.periode.verdi.tom,
-                        resultat: redigerbartVilkår.verdi.resultat.verdi,
-                        erEksplisittAvslagPåSøknad:
-                            redigerbartVilkår.verdi.erEksplisittAvslagPåSøknad,
-                        avslagBegrunnelser: redigerbartVilkår.verdi.avslagBegrunnelser.verdi,
-                        vilkårType: redigerbartVilkår.verdi.vilkårType,
-                        vurderesEtter: redigerbartVilkår.verdi.vurderesEtter,
-                        utdypendeVilkårsvurderinger:
-                            redigerbartVilkår.verdi.utdypendeVilkårsvurderinger.verdi,
-                    },
-                ],
-                andreVurderinger: [],
-            },
-        });
-    };
-
-    const putAnnenVurdering = (redigerbartAnnenVurdering: FeltState<IAnnenVurdering>) => {
-        settVilkårSubmit(VilkårSubmit.PUT);
-
-        return request<IRestAnnenVurdering, IBehandling>({
-            method: 'PUT',
-            url: `/familie-ks-sak/api/vilkaarsvurdering/${åpenBehandling?.behandlingId}/annenvurdering/${redigerbartAnnenVurdering.verdi.id}`,
-            data: {
-                id: redigerbartAnnenVurdering.verdi.id,
-                begrunnelse: redigerbartAnnenVurdering.verdi.begrunnelse.verdi,
-                behandlingId: redigerbartAnnenVurdering.verdi.behandlingId,
-                endretAv: redigerbartAnnenVurdering.verdi.endretAv,
-                endretTidspunkt: redigerbartAnnenVurdering.verdi.endretTidspunkt,
-                erVurdert: redigerbartAnnenVurdering.verdi.erVurdert,
-                resultat: redigerbartAnnenVurdering.verdi.resultat.verdi,
-                type: redigerbartAnnenVurdering.verdi.type,
-            },
-        });
-    };
-
-    const deleteVilkår = (personIdent: string, vilkårId: number) => {
-        settVilkårSubmit(VilkårSubmit.DELETE);
-
-        return request<string, IBehandling>({
-            method: 'DELETE',
-            url: `/familie-ks-sak/api/vilkaarsvurdering/${åpenBehandling?.behandlingId}/${vilkårId}`,
-            data: personIdent,
-        });
-    };
-
-    const postVilkår = (personIdent: string, vilkårType: VilkårType) => {
-        settVilkårSubmit(VilkårSubmit.DELETE);
-
-        return request<IRestNyttVilkår, IBehandling>({
-            method: 'POST',
-            url: `/familie-ks-sak/api/vilkaarsvurdering/${åpenBehandling?.behandlingId}`,
-            data: { personIdent, vilkårType },
-        });
-    };
-
     const erVilkårsvurderingenGyldig = (): boolean => {
         return (
             vilkårsvurdering.filter((personResultat: IPersonResultat) => {
                 return (
                     personResultat.vilkårResultater.filter(
-                        (vilkårResultat: FeltState<IVilkårResultat>) =>
-                            vilkårResultat.valideringsstatus !== Valideringsstatus.OK
+                        (vilkårResultat: IVilkårResultat) =>
+                            vilkårResultat.resultat !== Resultat.OPPFYLT
                     ).length > 0 ||
                     personResultat.andreVurderinger.filter(
-                        (annenVurdering: FeltState<IAnnenVurdering>) =>
-                            annenVurdering.valideringsstatus !== Valideringsstatus.OK
+                        (annenVurdering: IAnnenVurdering) =>
+                            annenVurdering.resultat !== Resultat.OPPFYLT
                     ).length > 0
                 );
             }).length === 0
@@ -153,10 +56,10 @@ const [VilkårsvurderingProvider, useVilkårsvurdering] = constate(({ åpenBehan
                     ...accVilkårMedFeil,
                     ...personResultat.vilkårResultater
                         .filter(
-                            (vilkårResultat: FeltState<IVilkårResultat>) =>
-                                vilkårResultat.valideringsstatus === Valideringsstatus.FEIL
+                            (vilkårResultat: IVilkårResultat) =>
+                                vilkårResultat.resultat !== Resultat.OPPFYLT
                         )
-                        .map((vilkårResultat: FeltState<IVilkårResultat>) => vilkårResultat.verdi),
+                        .map((vilkårResultat: IVilkårResultat) => vilkårResultat),
                 ];
             },
             []
@@ -170,28 +73,25 @@ const [VilkårsvurderingProvider, useVilkårsvurdering] = constate(({ åpenBehan
                     ...accAndreVurderingerMedFeil,
                     ...personResultat.andreVurderinger
                         .filter(
-                            (vilkårResultat: FeltState<IAnnenVurdering>) =>
-                                vilkårResultat.valideringsstatus === Valideringsstatus.FEIL
+                            (vilkårResultat: IAnnenVurdering) =>
+                                vilkårResultat.resultat !== Resultat.OPPFYLT
                         )
-                        .map((annenVurdering: FeltState<IAnnenVurdering>) => annenVurdering.verdi),
+                        .map((annenVurdering: IAnnenVurdering) => annenVurdering),
                 ];
             },
             []
         );
     };
 
+    const personResultater = åpenBehandling.personResultater;
+
     return {
-        deleteVilkår,
-        postVilkår,
         erVilkårsvurderingenGyldig,
         hentVilkårMedFeil,
         hentAndreVurderingerMedFeil,
-        vilkårSubmit,
-        putVilkår,
-        putAnnenVurdering,
-        settVilkårSubmit,
         settVilkårsvurdering,
         vilkårsvurdering,
+        personResultater,
     };
 });
 

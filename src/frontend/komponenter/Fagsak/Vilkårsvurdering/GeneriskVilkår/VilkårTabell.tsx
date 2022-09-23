@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Table } from '@navikt/ds-react';
-import type { FeltState } from '@navikt/familie-skjema';
 
 import { useApp } from '../../../../context/AppContext';
 import type { IGrunnlagPerson } from '../../../../typer/person';
@@ -14,9 +13,6 @@ import VilkårTabellRad from './VilkårTabellRad';
 export const vilkårFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
     `vilkår_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
 
-export const vilkårResultatFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
-    `vilkår-resultat_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
-
 export const vilkårBegrunnelseFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
     `vilkår-begrunnelse_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
 
@@ -25,9 +21,8 @@ export const vilkårPeriodeFeilmeldingId = (vilkårResultat: IVilkårResultat) =
 
 interface IProps {
     person: IGrunnlagPerson;
-    vilkårResultater: FeltState<IVilkårResultat>[];
+    vilkårResultater: IVilkårResultat[];
     vilkårFraConfig: IVilkårConfig;
-    visFeilmeldinger: boolean;
     settFokusPåKnapp: () => void;
 }
 
@@ -53,7 +48,6 @@ const VilkårTabell: React.FC<IProps> = ({
     person,
     vilkårFraConfig,
     vilkårResultater,
-    visFeilmeldinger,
     settFokusPåKnapp,
 }) => {
     const { toggles } = useApp();
@@ -72,20 +66,17 @@ const VilkårTabell: React.FC<IProps> = ({
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {vilkårResultater.map(
-                    (vilkårResultat: FeltState<IVilkårResultat>, index: number) => {
-                        return (
-                            <VilkårTabellRad
-                                key={`${index}_${person.fødselsdato}_${vilkårResultat.verdi.vilkårType}_${vilkårResultat.verdi.id}`}
-                                vilkårFraConfig={vilkårFraConfig}
-                                person={person}
-                                vilkårResultat={vilkårResultat}
-                                visFeilmeldinger={visFeilmeldinger}
-                                settFokusPåKnapp={settFokusPåKnapp}
-                            />
-                        );
-                    }
-                )}
+                {vilkårResultater.map((vilkårResultat: IVilkårResultat, index: number) => {
+                    return (
+                        <VilkårTabellRad
+                            key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                            vilkårFraConfig={vilkårFraConfig}
+                            person={person}
+                            vilkårResultat={vilkårResultat}
+                            settFokusPåKnapp={settFokusPåKnapp}
+                        />
+                    );
+                })}
             </Table.Body>
         </Table>
     );

@@ -6,29 +6,23 @@ import navFarger from 'nav-frontend-core';
 import { Alert } from '@navikt/ds-react';
 import type { ActionMeta, ISelectOption } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import type { Felt } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import {
-    useVilkårsvurdering,
-    VilkårSubmit,
-} from '../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import type {
     IRestVedtakBegrunnelseTilknyttetVilkår,
     VedtakBegrunnelse,
 } from '../../../../typer/vedtak';
 import { VedtakBegrunnelseType } from '../../../../typer/vedtak';
 import type { VilkårType } from '../../../../typer/vilkår';
-import type { IPeriode } from '../../../../utils/kalender';
 import { hentBakgrunnsfarge, hentBorderfarge } from '../../../../utils/vedtakUtils';
 import { useVedtaksbegrunnelseTekster } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
 import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
 
 interface IProps {
     vilkårType: VilkårType;
-    periode: IPeriode;
-    begrunnelser: VedtakBegrunnelse[];
-    onChange: (oppdaterteAvslagbegrunnelser: VedtakBegrunnelse[]) => void;
+    begrunnelser: Felt<VedtakBegrunnelse[]>;
 }
 
 interface IOptionType {
@@ -36,16 +30,15 @@ interface IOptionType {
     label: string;
 }
 
-const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnelser, onChange }) => {
+const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnelser }) => {
     const { erLesevisning } = useBehandling();
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
-    const { vilkårSubmit } = useVilkårsvurdering();
 
     const { avslagBegrunnelseTeksterForGjeldendeVilkår } =
         useAvslagBegrunnelseMultiselect(vilkårType);
 
     const valgteBegrunnlser = begrunnelser
-        ? begrunnelser.map((valgtBegrunnelse: VedtakBegrunnelse) => ({
+        ? begrunnelser.verdi.map((valgtBegrunnelse: VedtakBegrunnelse) => ({
               value: valgtBegrunnelse?.toString() ?? '',
               label:
                   avslagBegrunnelseTeksterForGjeldendeVilkår.find(
@@ -60,22 +53,24 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnel
         switch (action.action) {
             case 'select-option':
                 if (action.option) {
-                    valgteBegrunnlser.push(action.option);
-                    onChange(valgteBegrunnlser.map(option => option.value as VedtakBegrunnelse));
+                    begrunnelser.validerOgSettFelt([
+                        ...begrunnelser.verdi,
+                        action.option.value as VedtakBegrunnelse,
+                    ]);
                 } else {
                     throw new Error('Klarer ikke legge til begrunnelse');
                 }
                 break;
             case 'pop-value':
             case 'remove-value':
-                onChange(
-                    valgteBegrunnlser
-                        .filter(option => option.value !== action.removedValue?.value)
-                        .map(option => option.value as VedtakBegrunnelse)
+                begrunnelser.validerOgSettFelt(
+                    begrunnelser.verdi.filter(
+                        begrunnelse => begrunnelse !== action.removedValue?.value
+                    )
                 );
                 break;
             case 'clear':
-                onChange([]);
+                begrunnelser.validerOgSettFelt([]);
                 break;
             default:
                 throw new Error('Ukjent action ved onChange på vedtakbegrunnelser');
@@ -99,8 +94,6 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnel
             label={'Velg standardtekst i brev'}
             creatable={false}
             placeholder={'Velg begrunnelse(r)'}
-            isLoading={vilkårSubmit !== VilkårSubmit.NONE}
-            isDisabled={erLesevisning() || vilkårSubmit !== VilkårSubmit.NONE}
             erLesevisning={erLesevisning()}
             isMulti={true}
             onChange={(_, action: ActionMeta<ISelectOption>) => {

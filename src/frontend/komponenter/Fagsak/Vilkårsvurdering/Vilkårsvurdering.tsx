@@ -156,7 +156,7 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                     <Feilmelding>{hentOpplysningerRessurs.frontendFeilmelding}</Feilmelding>
                 )}
             </>
-            <VilkårsvurderingSkjema visFeilmeldinger={visFeilmeldinger} />
+            <VilkårsvurderingSkjema />
             {uregistrerteBarn.length > 0 && (
                 <Alert variant="info">
                     <Normaltekst>

@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { FamilieCheckbox } from '@navikt/familie-form-elements';
-import { Valideringsstatus } from '@navikt/familie-skjema';
-import type { FeltState } from '@navikt/familie-skjema';
+import type { Felt } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { VedtakBegrunnelse } from '../../../../typer/vedtak';
@@ -15,10 +14,10 @@ import { VedtaksbegrunnelseTeksterProvider } from '../../Vedtak/VedtakBegrunnels
 import AvslagBegrunnelseMultiselect from './AvslagBegrunnelseMultiselect';
 
 interface IProps {
-    redigerbartVilkår: FeltState<IVilkårResultat>;
-    settRedigerbartVilkår: (redigerbartVilkår: FeltState<IVilkårResultat>) => void;
+    vilkår: IVilkårResultat;
+    erEksplisittAvslagPåSøknad: Felt<boolean>;
+    avslagBegrunnelser: Felt<VedtakBegrunnelse[]>;
     visFeilmeldinger: boolean;
-    settVisFeilmeldingerForEttVilkår: (visFeilmeldinger: boolean) => void;
 }
 
 const MarginSkjemaGruppe = styled(SkjemaGruppe)`
@@ -36,61 +35,29 @@ const MarginSkjemaGruppe = styled(SkjemaGruppe)`
 `;
 
 const AvslagSkjema: React.FC<IProps> = ({
-    redigerbartVilkår,
-    settRedigerbartVilkår,
+    erEksplisittAvslagPåSøknad,
+    vilkår,
+    avslagBegrunnelser,
     visFeilmeldinger,
-    settVisFeilmeldingerForEttVilkår,
 }) => {
     const { erLesevisning } = useBehandling();
     const lesevisning = erLesevisning();
 
     return (
-        <MarginSkjemaGruppe
-            feil={
-                redigerbartVilkår.verdi.avslagBegrunnelser.valideringsstatus ===
-                    Valideringsstatus.FEIL && visFeilmeldinger
-                    ? redigerbartVilkår.verdi.avslagBegrunnelser.feilmelding
-                    : ''
-            }
-        >
+        <MarginSkjemaGruppe feil={visFeilmeldinger ? avslagBegrunnelser.feilmelding : ''}>
             <FamilieCheckbox
                 erLesevisning={lesevisning}
                 label={'Vurderingen er et avslag'}
-                checked={redigerbartVilkår.verdi.erEksplisittAvslagPåSøknad}
-                onChange={() => {
-                    settRedigerbartVilkår({
-                        ...redigerbartVilkår,
-                        verdi: {
-                            ...redigerbartVilkår.verdi,
-                            erEksplisittAvslagPåSøknad:
-                                !redigerbartVilkår.verdi.erEksplisittAvslagPåSøknad,
-                            avslagBegrunnelser: {
-                                ...redigerbartVilkår.verdi.avslagBegrunnelser,
-                                verdi: [],
-                            },
-                        },
-                    });
-                    settVisFeilmeldingerForEttVilkår(false);
-                }}
+                checked={erEksplisittAvslagPåSøknad.verdi}
+                onChange={event =>
+                    erEksplisittAvslagPåSøknad.validerOgSettFelt(event.target.checked)
+                }
             />
-            {redigerbartVilkår.verdi.erEksplisittAvslagPåSøknad && (
+            {erEksplisittAvslagPåSøknad.verdi && (
                 <VedtaksbegrunnelseTeksterProvider>
                     <AvslagBegrunnelseMultiselect
-                        vilkårType={redigerbartVilkår.verdi.vilkårType}
-                        periode={redigerbartVilkår.verdi.periode.verdi}
-                        begrunnelser={redigerbartVilkår.verdi.avslagBegrunnelser.verdi}
-                        onChange={(oppdaterteAvslagbegrunnelser: VedtakBegrunnelse[]) => {
-                            settRedigerbartVilkår({
-                                ...redigerbartVilkår,
-                                verdi: {
-                                    ...redigerbartVilkår.verdi,
-                                    avslagBegrunnelser: {
-                                        ...redigerbartVilkår.verdi.avslagBegrunnelser,
-                                        verdi: oppdaterteAvslagbegrunnelser,
-                                    },
-                                },
-                            });
-                        }}
+                        vilkårType={vilkår.vilkårType}
+                        begrunnelser={avslagBegrunnelser}
                     />
                 </VedtaksbegrunnelseTeksterProvider>
             )}

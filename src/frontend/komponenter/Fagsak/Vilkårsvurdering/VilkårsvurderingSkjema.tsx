@@ -6,29 +6,20 @@ import styled from 'styled-components';
 import { AddCircle, ExpandFilled, CollapseFilled } from '@navikt/ds-icons';
 import { Alert, Button } from '@navikt/ds-react';
 import { NavdsSpacing14, NavdsSpacing8 } from '@navikt/ds-tokens/dist/tokens';
-import type { FeltState } from '@navikt/familie-skjema';
-import { hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
-import type { Ressurs } from '@navikt/familie-typer';
+import { hentDataFraRessurs } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import {
-    useVilkårsvurdering,
-    VilkårSubmit,
-} from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
-import type { IBehandling } from '../../../typer/behandling';
+import { useVilkårsvurdering } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import { BehandlingÅrsak } from '../../../typer/behandling';
 import { PersonType } from '../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../typer/vilkår';
-import { vilkårConfig, Resultat, annenVurderingConfig, VilkårType } from '../../../typer/vilkår';
+import { vilkårConfig, Resultat, VilkårType, annenVurderingConfig } from '../../../typer/vilkår';
 import IkonKnapp, { IkonPosisjon } from '../../Felleskomponenter/IkonKnapp/IkonKnapp';
 import PersonInformasjon from '../../Felleskomponenter/PersonInformasjon/PersonInformasjon';
 import GeneriskAnnenVurdering from './GeneriskAnnenVurdering/GeneriskAnnenVurdering';
 import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
-
-interface IVilkårsvurderingSkjema {
-    visFeilmeldinger: boolean;
-}
+import { useVilkårsvurderingApi } from './useVilkårsvurderingApi';
 
 const PersonLinje = styled.div`
     display: flex;
@@ -54,11 +45,10 @@ const VilkårDiv = styled.div`
     }
 `;
 
-const VilkårsvurderingSkjema: React.FunctionComponent<IVilkårsvurderingSkjema> = ({
-    visFeilmeldinger,
-}) => {
-    const { vilkårsvurdering, settVilkårSubmit, postVilkår } = useVilkårsvurdering();
-    const { erLesevisning, settÅpenBehandling, aktivSettPåVent, åpenBehandling } = useBehandling();
+const VilkårsvurderingSkjema: React.FunctionComponent = () => {
+    const { vilkårsvurdering } = useVilkårsvurdering();
+    const { erLesevisning, aktivSettPåVent, åpenBehandling } = useBehandling();
+    const vilkårsvurderingApi = useVilkårsvurderingApi();
 
     const kanLeggeTilUtvidetVilkår =
         hentDataFraRessurs(åpenBehandling)?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
@@ -66,7 +56,7 @@ const VilkårsvurderingSkjema: React.FunctionComponent<IVilkårsvurderingSkjema>
 
     const personHarIkkevurdertVilkår = (personResultat: IPersonResultat) =>
         personResultat.vilkårResultater.some(
-            vilkårResultatFelt => vilkårResultatFelt.verdi.resultat.verdi === Resultat.IKKE_VURDERT
+            vilkårResultatFelt => vilkårResultatFelt.resultat === Resultat.IKKE_VURDERT
         );
 
     const hentEkspantdertePersoner = () =>
@@ -87,23 +77,12 @@ const VilkårsvurderingSkjema: React.FunctionComponent<IVilkårsvurderingSkjema>
         settPersonErEkspandert(hentEkspantdertePersoner());
     }, [aktivSettPåVent]);
 
-    const leggTilVilkårUtvidet = (personIdent: string) => {
-        const promise = postVilkår(personIdent, VilkårType.UTVIDET_BARNETRYGD);
-        promise.then((oppdatertBehandling: Ressurs<IBehandling>) => {
-            settVilkårSubmit(VilkårSubmit.NONE);
-            if (oppdatertBehandling.status === RessursStatus.SUKSESS) {
-                settÅpenBehandling(oppdatertBehandling);
-            }
-        });
-    };
-
     return (
         <>
             {vilkårsvurdering.map((personResultat: IPersonResultat, index: number) => {
                 const andreVurderinger = personResultat.andreVurderinger;
                 const harUtvidet = personResultat.vilkårResultater.find(
-                    vilkårResultat =>
-                        vilkårResultat.verdi.vilkårType === VilkårType.UTVIDET_BARNETRYGD
+                    vilkårResultat => vilkårResultat.vilkårType === VilkårType.UTVIDET_BARNETRYGD
                 );
                 return (
                     <div
@@ -123,7 +102,10 @@ const VilkårsvurderingSkjema: React.FunctionComponent<IVilkårsvurderingSkjema>
                                             erLesevisning={erLesevisning()}
                                             id={`${index}_${personResultat.person.fødselsdato}__legg-til-vilkår-utvidet`}
                                             onClick={() =>
-                                                leggTilVilkårUtvidet(personResultat.personIdent)
+                                                vilkårsvurderingApi.opprettVilkår(
+                                                    personResultat.personIdent,
+                                                    VilkårType.UTVIDET_BARNETRYGD
+                                                )
                                             }
                                             label={`Legg til vilkår utvidet barnetrygd`}
                                             mini={true}
@@ -181,10 +163,10 @@ const VilkårsvurderingSkjema: React.FunctionComponent<IVilkårsvurderingSkjema>
                                         )
                                     )
                                     .map((vc: IVilkårConfig) => {
-                                        const vilkårResultater: FeltState<IVilkårResultat>[] =
+                                        const vilkårResultater: IVilkårResultat[] =
                                             personResultat.vilkårResultater.filter(
-                                                (vilkårResultat: FeltState<IVilkårResultat>) =>
-                                                    vilkårResultat.verdi.vilkårType === vc.key
+                                                (vilkårResultat: IVilkårResultat) =>
+                                                    vilkårResultat.vilkårType === vc.key
                                             );
 
                                         if (
@@ -201,7 +183,6 @@ const VilkårsvurderingSkjema: React.FunctionComponent<IVilkårsvurderingSkjema>
                                                     person={personResultat.person}
                                                     vilkårResultater={vilkårResultater}
                                                     vilkårFraConfig={vc}
-                                                    visFeilmeldinger={visFeilmeldinger}
                                                 />
                                             );
                                     })}
@@ -218,7 +199,6 @@ const VilkårsvurderingSkjema: React.FunctionComponent<IVilkårsvurderingSkjema>
                                                 person={personResultat.person}
                                                 andreVurderinger={personResultat.andreVurderinger}
                                                 annenVurderingConfig={annenVurderingConfig}
-                                                visFeilmeldinger={visFeilmeldinger}
                                             />
                                         ))}
                             </IndentertInnhold>

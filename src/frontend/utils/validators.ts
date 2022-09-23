@@ -3,16 +3,13 @@ import {
     feil,
     type FeltState,
     ok,
-    type ValiderFelt,
     Valideringsstatus,
 } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { VedtakBegrunnelse } from '../typer/vedtak';
-import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
-import { Regelverk } from '../typer/vilkår';
-import { Resultat, VilkårType } from '../typer/vilkår';
+import { Resultat } from '../typer/vilkår';
 import familieDayjs from './familieDayjs';
 import type { IPeriode } from './kalender';
 import {
@@ -28,7 +25,6 @@ import {
     TIDENES_MORGEN,
     valgtDatoErNesteMånedEllerSenere,
 } from './kalender';
-import { bestemFeilmeldingForUtdypendeVilkårsvurdering } from './utdypendeVilkårsvurderinger';
 
 // eslint-disable-next-line
 const validator = require('@navikt/fnrvalidator');
@@ -173,95 +169,4 @@ export const erAvslagBegrunnelserGyldig = (
     return erEksplisittAvslagPåSøknad && !felt.verdi.length
         ? feil(felt, 'Du må velge minst en begrunnelse ved avslag')
         : ok(felt);
-};
-
-const ikkeUtfyltFelt = 'Feltet er påkrevd, men mangler input';
-export const erUtfylt = (felt: FeltState<string>): FeltState<string> => {
-    if (felt.verdi === '') {
-        return feil(felt, ikkeUtfyltFelt);
-    }
-    return ok(felt);
-};
-
-export const lagInitiellFelt = <Value>(
-    value: Value,
-    valideringsfunksjon: ValiderFelt<Value>
-): FeltState<Value> => {
-    return {
-        feilmelding: ikkeUtfyltFelt,
-        valider: valideringsfunksjon,
-        valideringsstatus: Valideringsstatus.IKKE_VALIDERT,
-        verdi: value,
-    };
-};
-
-export const validerFelt = <Value, Context>(
-    nyVerdi: Value,
-    felt: FeltState<Value>,
-    context?: Context
-): FeltState<Value> => {
-    return felt.valider(
-        {
-            ...felt,
-            verdi: nyVerdi,
-        },
-        context ? context : {}
-    );
-};
-
-export const ikkeValider = <Value>(felt: FeltState<Value>): FeltState<Value> => {
-    return ok(felt);
-};
-
-export const erBegrunnelseGyldig = (
-    felt: FeltState<string>,
-    avhengigheter?: Avhengigheter
-): FeltState<string> => {
-    if (avhengigheter?.vilkårType === VilkårType.UTVIDET_BARNETRYGD) {
-        return felt.verdi.length > 0 ? ok(felt) : feil(felt, 'Du må fylle inn en begrunnelse');
-    }
-
-    switch (avhengigheter?.regelverk) {
-        case Regelverk.NASJONALE_REGLER: {
-            if (felt.verdi.length > 0 || avhengigheter?.utdypendeVilkårsvurderinger.length === 0) {
-                return ok(felt);
-            }
-            return feil(
-                felt,
-                'Du har gjort ett eller flere valg under "Utdypende vilkårsvurdering" og må derfor fylle inn en begrunnelse'
-            );
-        }
-        case Regelverk.EØS_FORORDNINGEN: {
-            if (
-                avhengigheter?.regelverk === Regelverk.EØS_FORORDNINGEN &&
-                avhengigheter?.personType === PersonType.SØKER &&
-                avhengigheter?.vilkårType === VilkårType.BOSATT_I_RIKET
-            ) {
-                return felt.verdi.length > 0
-                    ? ok(felt)
-                    : feil(felt, 'Du må fylle inn en begrunnelse');
-            }
-            return ok(felt);
-        }
-        default: {
-            return ok(felt);
-        }
-    }
-};
-
-export const erUtdypendeVilkårsvurderingerGyldig = (
-    felt: FeltState<UtdypendeVilkårsvurdering[]>,
-    avhengigheter?: Avhengigheter
-): FeltState<UtdypendeVilkårsvurdering[]> => {
-    if (!avhengigheter) {
-        return feil(felt, 'Utdypende vilkårsvurdering er ugyldig');
-    }
-    const feilmelding = bestemFeilmeldingForUtdypendeVilkårsvurdering(felt.verdi, {
-        resultat: avhengigheter.resultat,
-        personType: avhengigheter.personType,
-        vilkårType: avhengigheter.vilkårType,
-        vurderesEtter: avhengigheter.vurderesEtter,
-        brukEøs: avhengigheter.brukEøs,
-    });
-    return feilmelding ? feil(felt, feilmelding) : ok(felt);
 };

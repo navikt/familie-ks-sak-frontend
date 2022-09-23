@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Element, Undertittel } from 'nav-frontend-typografi';
-
-import type { FeltState } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../typer/vilkår';
@@ -13,9 +11,8 @@ import AnnenVurderingTabell from './AnnenVurderingTabell';
 
 interface IProps {
     person: IGrunnlagPerson;
-    andreVurderinger: FeltState<IAnnenVurdering>[];
+    andreVurderinger: IAnnenVurdering[];
     annenVurderingConfig: IAnnenVurderingConfig;
-    visFeilmeldinger: boolean;
 }
 
 const Container = styled.div`
@@ -38,14 +35,10 @@ const GeneriskAnnenVurdering: React.FC<IProps> = ({
     person,
     annenVurderingConfig,
     andreVurderinger,
-    visFeilmeldinger,
 }) => {
-    const [visFeilmeldingerForAnnenVurdering] = useState(false);
-    const [feilmelding] = useState('');
-
     return (
         <Container>
-            <SkjemaGruppe feil={visFeilmeldingerForAnnenVurdering ? feilmelding : undefined}>
+            <SkjemaGruppe>
                 <VilkårTittel tag={'h4'}>
                     <Element children={annenVurderingConfig.tittel} />
                 </VilkårTittel>
@@ -53,7 +46,6 @@ const GeneriskAnnenVurdering: React.FC<IProps> = ({
                     person={person}
                     annenVurderingConfig={annenVurderingConfig}
                     andreVurderinger={andreVurderinger}
-                    visFeilmeldinger={visFeilmeldinger}
                 />
             </SkjemaGruppe>
         </Container>

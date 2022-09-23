@@ -1,5 +1,3 @@
-import type { FeltState } from '@navikt/familie-skjema';
-
 import type { FamilieIsoDate, IPeriode } from '../utils/kalender';
 import type { BehandlingSteg, BehandlingStegStatus } from './behandling';
 import type { IGrunnlagPerson } from './person';
@@ -49,36 +47,36 @@ export enum Regelverk {
 // Vilkårsvurdering typer for ui
 export interface IPersonResultat {
     personIdent: string;
-    vilkårResultater: FeltState<IVilkårResultat>[];
-    andreVurderinger: FeltState<IAnnenVurdering>[];
+    vilkårResultater: IVilkårResultat[];
+    andreVurderinger: IAnnenVurdering[];
     person: IGrunnlagPerson;
 }
 export interface IAnnenVurdering {
     id: number;
-    begrunnelse: FeltState<string>;
+    begrunnelse: string;
     behandlingId: number;
     endretAv: string;
     endretTidspunkt: string;
     erVurdert: boolean;
-    resultat: FeltState<Resultat>;
+    resultat: Resultat;
     type: AnnenVurderingType;
 }
 
 export interface IVilkårResultat {
-    begrunnelse: FeltState<string>;
+    begrunnelse: string;
     behandlingId: number;
     endretAv: string;
     endretTidspunkt: string;
     erAutomatiskVurdert: boolean;
     erVurdert: boolean;
     id: number;
-    periode: FeltState<IPeriode>;
-    resultat: FeltState<Resultat>;
+    periode: IPeriode;
+    resultat: Resultat;
     vilkårType: VilkårType;
     erEksplisittAvslagPåSøknad?: boolean;
-    avslagBegrunnelser: FeltState<VedtakBegrunnelse[]>;
-    vurderesEtter: Regelverk | null;
-    utdypendeVilkårsvurderinger: FeltState<UtdypendeVilkårsvurdering[]>;
+    avslagBegrunnelser: VedtakBegrunnelse[];
+    vurderesEtter: Regelverk | undefined;
+    utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
 }
 
 // Vilkårsvurdering typer for api
@@ -107,7 +105,7 @@ export interface IRestVilkårResultat {
     erEksplisittAvslagPåSøknad?: boolean;
     avslagBegrunnelser: VedtakBegrunnelse[];
     vilkårType: VilkårType;
-    vurderesEtter: Regelverk | null;
+    vurderesEtter: Regelverk | undefined;
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
 }
 

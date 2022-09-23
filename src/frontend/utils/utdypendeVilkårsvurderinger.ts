@@ -1,4 +1,4 @@
-import type { FeltState } from '@navikt/familie-skjema';
+import type { Felt } from '@navikt/familie-skjema';
 
 import { PersonType } from '../typer/person';
 import {
@@ -12,13 +12,13 @@ import {
     UtdypendeVilkårsvurderingGenerell,
     UtdypendeVilkårsvurderingNasjonal,
 } from '../typer/vilkår';
-import type { UtdypendeVilkårsvurdering, IVilkårResultat } from '../typer/vilkår';
+import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
 
 export interface UtdypendeVilkårsvurderingAvhengigheter {
     personType: PersonType;
     vilkårType: VilkårType;
     resultat: Resultat;
-    vurderesEtter: Regelverk | null;
+    vurderesEtter: Regelverk | undefined;
     brukEøs: boolean;
 }
 
@@ -143,28 +143,12 @@ export const filtrerUtUmuligeAlternativer = (
 };
 
 export const fjernUmuligeAlternativerFraRedigerbartVilkår = (
-    validerOgSettRedigerbartVilkår: (redigerbartVilkår: FeltState<IVilkårResultat>) => void,
-    redigerbartVilkår: FeltState<IVilkårResultat>,
+    utdypendeVilkårsvurderinger: Felt<UtdypendeVilkårsvurdering[]>,
     muligeAlternativer: UtdypendeVilkårsvurdering[]
 ) => {
-    if (
-        inneholderUmuligeAlternativer(
-            redigerbartVilkår.verdi.utdypendeVilkårsvurderinger.verdi,
-            muligeAlternativer
-        )
-    ) {
-        validerOgSettRedigerbartVilkår({
-            ...redigerbartVilkår,
-            verdi: {
-                ...redigerbartVilkår.verdi,
-                utdypendeVilkårsvurderinger: {
-                    ...redigerbartVilkår.verdi.utdypendeVilkårsvurderinger,
-                    verdi: filtrerUtUmuligeAlternativer(
-                        redigerbartVilkår.verdi.utdypendeVilkårsvurderinger.verdi,
-                        muligeAlternativer
-                    ),
-                },
-            },
-        });
+    if (inneholderUmuligeAlternativer(utdypendeVilkårsvurderinger.verdi, muligeAlternativer)) {
+        utdypendeVilkårsvurderinger.validerOgSettFelt(
+            filtrerUtUmuligeAlternativer(utdypendeVilkårsvurderinger.verdi, muligeAlternativer)
+        );
     }
 };

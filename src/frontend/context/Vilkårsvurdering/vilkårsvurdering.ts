@@ -1,10 +1,8 @@
-import { Valideringsstatus } from '@navikt/familie-skjema';
-import type { FeltState } from '@navikt/familie-skjema';
-
 import type { IGrunnlagPerson } from '../../typer/person';
 import { PersonTypeVisningsRangering } from '../../typer/person';
 import type {
     IPersonResultat,
+    IRestAnnenVurdering,
     IRestPersonResultat,
     IRestVilkårResultat,
     IVilkårResultat,
@@ -17,24 +15,12 @@ import {
     nyPeriode,
     periodeDiff,
 } from '../../utils/kalender';
-import {
-    erAvslagBegrunnelserGyldig,
-    erBegrunnelseGyldig,
-    erPeriodeGyldig,
-    erResultatGyldig,
-    erUtdypendeVilkårsvurderingerGyldig,
-    ikkeValider,
-    lagInitiellFelt,
-} from '../../utils/validators';
-import { kjørValidering, validerAnnenVurdering, validerVilkår } from './validering';
 
 export const sorterVilkårsvurderingForPerson = (
-    vilkårResultater: FeltState<IVilkårResultat>[]
-): FeltState<IVilkårResultat>[] => {
+    vilkårResultater: IVilkårResultat[]
+): IVilkårResultat[] => {
     return vilkårResultater.sort(
-        (a, b) =>
-            a.verdi.vilkårType.localeCompare(b.verdi.vilkårType) ||
-            periodeDiff(a.verdi.periode.verdi, b.verdi.periode.verdi)
+        (a, b) => a.vilkårType.localeCompare(b.vilkårType) || periodeDiff(a.periode, b.periode)
     );
 };
 
@@ -49,7 +35,7 @@ export const mapFraRestVilkårsvurderingTilUi = (
     personResultater: IRestPersonResultat[],
     personer: IGrunnlagPerson[]
 ): IPersonResultat[] => {
-    return kjørValidering(mapFraRestPersonResultatTilPersonResultat(personResultater, personer));
+    return mapFraRestPersonResultatTilPersonResultat(personResultater, personer);
 };
 
 export const mapFraRestPersonResultatTilPersonResultat = (
@@ -69,69 +55,45 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                     person,
                     personIdent: personResultat.personIdent,
                     vilkårResultater: sorterVilkårsvurderingForPerson(
-                        personResultat.vilkårResultater.map((vilkårResultat: IRestVilkårResultat) =>
-                            lagInitiellFelt(
-                                {
-                                    begrunnelse: lagInitiellFelt(
-                                        vilkårResultat.begrunnelse,
-                                        erBegrunnelseGyldig
-                                    ),
+                        personResultat.vilkårResultater.map(
+                            (vilkårResultat: IRestVilkårResultat) => {
+                                return {
+                                    begrunnelse: vilkårResultat.begrunnelse,
                                     id: vilkårResultat.id,
-                                    periode: lagInitiellFelt(
-                                        nyPeriode(
-                                            vilkårResultat.periodeFom,
-                                            vilkårResultat.periodeTom
-                                        ),
-                                        erPeriodeGyldig
+                                    periode: nyPeriode(
+                                        vilkårResultat.periodeFom,
+                                        vilkårResultat.periodeTom
                                     ),
-                                    resultat: lagInitiellFelt(
-                                        vilkårResultat.resultat,
-                                        erResultatGyldig
-                                    ),
+                                    resultat: vilkårResultat.resultat,
                                     vilkårType: vilkårResultat.vilkårType,
                                     endretAv: vilkårResultat.endretAv,
                                     erVurdert: vilkårResultat.erVurdert,
                                     erAutomatiskVurdert: vilkårResultat.erAutomatiskVurdert,
                                     erEksplisittAvslagPåSøknad:
                                         vilkårResultat.erEksplisittAvslagPåSøknad,
-                                    avslagBegrunnelser: lagInitiellFelt(
-                                        vilkårResultat.avslagBegrunnelser,
-                                        erAvslagBegrunnelserGyldig
-                                    ),
+                                    avslagBegrunnelser: vilkårResultat.avslagBegrunnelser,
                                     endretTidspunkt: vilkårResultat.endretTidspunkt,
                                     behandlingId: vilkårResultat.behandlingId,
                                     vurderesEtter: vilkårResultat.vurderesEtter,
-                                    utdypendeVilkårsvurderinger: lagInitiellFelt(
+                                    utdypendeVilkårsvurderinger:
                                         vilkårResultat.utdypendeVilkårsvurderinger,
-                                        erUtdypendeVilkårsvurderingerGyldig
-                                    ),
-                                },
-                                validerVilkår
-                            )
+                                };
+                            }
                         )
                     ),
-                    andreVurderinger: personResultat.andreVurderinger.map(annenVurdering =>
-                        lagInitiellFelt(
-                            {
-                                begrunnelse: {
-                                    feilmelding: '',
-                                    valider: ikkeValider,
-                                    valideringsstatus: Valideringsstatus.OK,
-                                    verdi: annenVurdering.begrunnelse,
-                                },
+                    andreVurderinger: personResultat.andreVurderinger.map(
+                        (annenVurdering: IRestAnnenVurdering) => {
+                            return {
+                                begrunnelse: annenVurdering.begrunnelse,
                                 id: annenVurdering.id,
-                                resultat: lagInitiellFelt(
-                                    annenVurdering.resultat,
-                                    erResultatGyldig
-                                ),
+                                resultat: annenVurdering.resultat,
                                 endretAv: annenVurdering.endretAv,
                                 erVurdert: annenVurdering.resultat !== Resultat.IKKE_VURDERT,
                                 endretTidspunkt: annenVurdering.endretTidspunkt,
                                 behandlingId: annenVurdering.behandlingId,
                                 type: annenVurdering.type,
-                            },
-                            validerAnnenVurdering
-                        )
+                            };
+                        }
                     ),
                 };
             }
