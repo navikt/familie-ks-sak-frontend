@@ -115,9 +115,6 @@ export const sider: Record<SideId, ISide> = {
         href: 'simulering',
         navn: 'Simulering',
         steg: BehandlingSteg.VURDER_TILBAKEKREVING,
-        visSide: (åpenBehandling: IBehandling) => {
-            return !åpenBehandling.skalBehandlesAutomatisk;
-        },
     },
     VEDTAK: {
         href: 'vedtak',
