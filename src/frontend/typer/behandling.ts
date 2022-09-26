@@ -199,7 +199,7 @@ export interface IBehandling {
     resultat: BehandlingResultat;
     status: BehandlingStatus;
     steg: BehandlingSteg;
-    stegTilsantd: IRestStegTilstand[];
+    stegTilstand: IRestStegTilstand[];
     søknadsgrunnlag?: ISøknadDTO;
     totrinnskontroll?: ITotrinnskontroll;
     type: Behandlingstype;

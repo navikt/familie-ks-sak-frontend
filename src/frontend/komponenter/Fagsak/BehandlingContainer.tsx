@@ -17,7 +17,6 @@ import { hentSideHref } from '../../utils/miljø';
 import type { SideId } from '../Felleskomponenter/Venstremeny/sider';
 import { sider } from '../Felleskomponenter/Venstremeny/sider';
 import Behandlingsresultat from './Behandlingsresultat/Behandlingsresultat';
-import Filtreringsregler from './Filtreringsregler/Filtreringsregler';
 import RegistrerMottaker from './InstitusjonOgVerge/RegistrerMottaker';
 import Simulering from './Simulering/Simulering';
 import RegistrerSøknad from './Søknad/RegistrerSøknad';
@@ -58,10 +57,6 @@ const BehandlingContainer: React.FunctionComponent = () => {
                                 <RegistrerSøknad />
                             </SøknadProvider>
                         }
-                    />
-                    <Route
-                        path="/filtreringsregler"
-                        element={<Filtreringsregler åpenBehandling={åpenBehandling.data} />}
                     />
                     <Route
                         path="/vilkaarsvurdering"

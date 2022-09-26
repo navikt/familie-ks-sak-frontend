@@ -87,13 +87,7 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
             skalViseForrigeKnapp={åpenBehandling.årsak === BehandlingÅrsak.SØKNAD}
             tittel={'Vilkårsvurdering'}
             forrigeOnClick={() => {
-                if (åpenBehandling.årsak === BehandlingÅrsak.SØKNAD) {
-                    navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/registrer-soknad`);
-                } else {
-                    navigate(
-                        `/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/filtreringsregler`
-                    );
-                }
+                navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/registrer-soknad`);
             }}
             nesteOnClick={() => {
                 if (erLesevisning()) {
