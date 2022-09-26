@@ -47,7 +47,7 @@ const useEndreBehandlendeEnhet = (lukkModal: () => void) => {
                     enhetId,
                     begrunnelse,
                 },
-                url: `/familie-ks-sak/api/arbeidsfordeling/${behandlingId}`,
+                url: `/familie-ks-sak/api/behandlinger/${behandlingId}/enhet`,
             }).then((oppdatertBehandling: Ressurs<IBehandling>) => {
                 if (oppdatertBehandling.status === RessursStatus.SUKSESS) {
                     settÅpenBehandling(oppdatertBehandling);
