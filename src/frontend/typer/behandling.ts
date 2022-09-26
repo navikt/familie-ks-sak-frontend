@@ -5,7 +5,6 @@ import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
 import type { IRestValutakurs } from './eøsPerioder';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp } from './eøsPerioder';
-import type { IVerge } from './institusjon-og-verge';
 import type { IGrunnlagPerson } from './person';
 import type { ITilbakekreving } from './simulering';
 import type { ISøknadDTO } from './søknad';
@@ -200,7 +199,7 @@ export interface IBehandling {
     resultat: BehandlingResultat;
     status: BehandlingStatus;
     steg: BehandlingSteg;
-    stegTilstand: IRestStegTilstand[];
+    stegTilsantd: IRestStegTilstand[];
     søknadsgrunnlag?: ISøknadDTO;
     totrinnskontroll?: ITotrinnskontroll;
     type: Behandlingstype;
@@ -216,7 +215,6 @@ export interface IBehandling {
     kompetanser: IRestKompetanse[];
     utenlandskePeriodebeløp: IRestUtenlandskPeriodeBeløp[];
     valutakurser: IRestValutakurs[];
-    verge?: IVerge;
     korrigertEtterbetaling?: IRestKorrigertEtterbetaling;
 }
 

@@ -48,7 +48,7 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
         >({
             felter: {
                 fødselsnummer: useFelt<string>({
-                    verdi: åpenBehandling.verge?.ident || '',
+                    verdi: '',
                     avhengigheter: { feilmelding: hentPersonFeilmelding },
                     valideringsfunksjon: (felt, avhengigheter) => {
                         if (avhengigheter?.feilmelding) {
@@ -125,7 +125,7 @@ const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
         };
 
         const erSkjemaUendret = () => {
-            return skjema.felter.fødselsnummer.verdi === åpenBehandling.verge?.ident || '';
+            return skjema.felter.fødselsnummer.verdi === '';
         };
 
         const onSubmitMottaker = () => {
