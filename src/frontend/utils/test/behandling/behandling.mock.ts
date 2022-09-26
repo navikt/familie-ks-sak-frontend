@@ -32,7 +32,6 @@ export const mockBehandling = ({
     status = BehandlingStatus.FATTER_VEDTAK,
     årsak = BehandlingÅrsak.SØKNAD,
     type = Behandlingstype.FØRSTEGANGSBEHANDLING,
-    skalBehandlesAutomatisk = false,
     stegTilstand = [
         {
             behandlingSteg: BehandlingSteg.REGISTRERE_SØKNAD,
@@ -73,7 +72,6 @@ export const mockBehandling = ({
         kategori: BehandlingKategori.NASJONAL,
         status,
         personResultater: [søkerRestPersonResultat, barnRestPersonResultat],
-        fødselshendelsefiltreringResultater: [],
         vedtak: undefined,
         totrinnskontroll: {
             saksbehandler: 'Saksbehandler',
@@ -85,7 +83,6 @@ export const mockBehandling = ({
         endretUtbetalingAndeler: [],
         personerMedAndelerTilkjentYtelse: [],
         årsak: årsak,
-        skalBehandlesAutomatisk,
         kompetanser: [],
         utenlandskePeriodebeløp: [],
         valutakurser: [],

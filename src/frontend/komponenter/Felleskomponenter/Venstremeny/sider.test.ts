@@ -30,12 +30,6 @@ describe('sider.ts', () => {
                 SideId.REGISTRERE_SØKNAD
             );
         });
-        test('SIMULERING returneres ikke ved automatisk behandling', () => {
-            const behandling = mockBehandling({ skalBehandlesAutomatisk: true });
-            expect(Object.keys(hentTrinnForBehandling(behandling))).not.toContain(
-                SideId.SIMULERING
-            );
-        });
         test('VEDTAK returneres ikke ved årsak SATSENDRING', () => {
             const behandling = mockBehandling({ årsak: BehandlingÅrsak.SATSENDRING });
             expect(Object.keys(hentTrinnForBehandling(behandling))).not.toContain(SideId.VEDTAK);
