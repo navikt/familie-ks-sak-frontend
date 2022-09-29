@@ -29,7 +29,7 @@ const StyledEkspanderbartpanelBaseMedMargin = styled(StyledEkspanderbartpanelBas
     & .ekspanderbartPanel__innhold {
         margin-left: 4rem;
         margin-bottom: 1rem;
-        margin-top: 1rem;
+        padding: 0rem 2.75rem 1.5rem 1.6rem;
     }
 `;
 
@@ -42,7 +42,7 @@ export const BrukerPanel: React.FC = () => {
         verdi: '',
         valideringsfunksjon: identValidator,
     });
-    const { onSubmitWrapper, samhandlerSkjema } = useSamhandlerSkjema();
+    const { samhandlerSkjema } = useSamhandlerSkjema();
     useEffect(() => {
         settFeilMelding('');
     }, [nyIdent.verdi]);
@@ -81,34 +81,6 @@ export const BrukerPanel: React.FC = () => {
                 />
             }
         >
-            {skjema.felter.erPåInstitusjon.verdi && (
-                <StyledDiv>
-                    {!erLesevisning() && (
-                        <FamilieInput
-                            {...samhandlerSkjema.felter.orgnr.hentNavInputProps(
-                                samhandlerSkjema.visFeilmeldinger
-                            )}
-                            erLesevisning={erLesevisning()}
-                            id={'hent-samhandler'}
-                            label={'Institusjonens organisasjonsnummer'}
-                            bredde={'XL'}
-                            placeholder={'organisasjonsnummer'}
-                        />
-                    )}
-                    <StyledKnapp
-                        onClick={() => {
-                            settSpinner(true);
-                            onSubmitWrapper();
-                            settSpinner(false);
-                        }}
-                        children={'Hent institusjon'}
-                        spinner={spinner}
-                        mini={true}
-                        erLesevisning={erLesevisning()}
-                    />
-                </StyledDiv>
-            )}
-
             {skjema.felter.samhandler.verdi !== null && (
                 <SamhandlerTabell samhandler={skjema.felter.samhandler.verdi}></SamhandlerTabell>
             )}
