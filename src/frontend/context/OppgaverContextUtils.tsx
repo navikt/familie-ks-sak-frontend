@@ -12,7 +12,6 @@ import type { IPar } from '../typer/common';
 import type {
     BehandlingstypeFilter,
     EnhetFilter,
-    GjelderFilter,
     IOppgave,
     IOppgaveIdent,
     OppgavetypeFilter,
@@ -20,7 +19,6 @@ import type {
 import {
     behandlingstypeFilter,
     enhetFilter,
-    gjelderFilter,
     oppgaveTypeFilter,
     PrioritetFilter,
 } from '../typer/oppgave';
@@ -56,15 +54,6 @@ export const kolonner: ReadonlyArray<Column<IOppgaveRad>> = [
             return oppgavetype
                 ? oppgaveTypeFilter[oppgavetype as OppgavetypeFilter]?.navn ?? oppgavetype
                 : 'Ukjent';
-        },
-    },
-    {
-        accessor: 'behandlingstema',
-        Header: <LitenKnapp>Gjelder</LitenKnapp>,
-        Cell: ({ value: behandlingstema }) => {
-            return behandlingstema
-                ? gjelderFilter[behandlingstema as GjelderFilter]?.navn ?? behandlingstema
-                : 'Ikke satt';
         },
     },
     {
