@@ -1,43 +1,11 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
-import { PersonType } from '../../../../../../typer/person';
-import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
-import {
-    Regelverk,
-    Resultat,
-    UtdypendeVilkårsvurderingEøsBarnBosattIRiket,
-    UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
-    UtdypendeVilkårsvurderingGenerell,
-    UtdypendeVilkårsvurderingNasjonal,
-    VilkårType,
-} from '../../../../../../typer/vilkår';
+import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import { Regelverk, VilkårType } from '../../../../../../typer/vilkår';
 
-export const bestemMuligeUtdypendeVilkårsvurderinger = (
-    regelverk: Regelverk,
-    personType: PersonType,
-    resultat: Resultat
-) => {
-    if (regelverk === Regelverk.EØS_FORORDNINGEN) {
-        if (resultat === Resultat.IKKE_OPPFYLT) {
-            return [];
-        }
-        if (personType === PersonType.SØKER) {
-            return [
-                UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING,
-                UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING_UTLAND,
-            ];
-        }
-        return [
-            UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_NORGE,
-            UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_EØS,
-            UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_STORBRITANNIA,
-        ];
-    }
-    return [
-        UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
-        UtdypendeVilkårsvurderingNasjonal.VURDERT_MEDLEMSKAP,
-    ];
+export const bestemMuligeUtdypendeVilkårsvurderinger = () => {
+    return [UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG];
 };
 
 export const erUtdypendeVilkårsvurderingerGyldig = (
@@ -48,11 +16,7 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
         return feil(felt, 'Utdypende vilkårsvurdering er ugyldig');
     }
     const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] =
-        bestemMuligeUtdypendeVilkårsvurderinger(
-            avhengigheter.vurderesEtter,
-            avhengigheter.personType,
-            avhengigheter.resultat
-        );
+        bestemMuligeUtdypendeVilkårsvurderinger();
 
     if (muligeUtdypendeVilkårsvurderinger.length === 0) {
         return ok(felt);

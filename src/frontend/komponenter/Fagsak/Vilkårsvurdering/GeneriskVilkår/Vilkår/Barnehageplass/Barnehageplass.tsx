@@ -2,21 +2,21 @@ import React from 'react';
 
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
-import { useLovligOpphold } from './LovligOppholdContext';
+import { useBarnehageplass } from './BarnehageplassContext';
 
-type BosattIRiketProps = IVilkårSkjemaBaseProps;
+type Mellom1Og2EllerAdopsjonProps = IVilkårSkjemaBaseProps;
 
-export const LovligOpphold: React.FC<BosattIRiketProps> = ({
+export const Barnehageplass: React.FC<Mellom1Og2EllerAdopsjonProps> = ({
     vilkårResultat,
     vilkårFraConfig,
     toggleForm,
     person,
     lesevisning,
-}: BosattIRiketProps) => {
-    const { felter } = useLovligOpphold(vilkårResultat, person);
+}: Mellom1Og2EllerAdopsjonProps) => {
+    const { felter } = useBarnehageplass(vilkårResultat, person);
     return (
         <VilkårSkjema
-            visVurderesEtter={true}
+            visVurderesEtter={false}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             felter={felter}

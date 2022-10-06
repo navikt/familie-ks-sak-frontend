@@ -2,18 +2,18 @@ import React from 'react';
 
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
-import { useUtvidetBarnetrygd } from './UtvidetBarnetrygdContext';
+import { useMellom1Og2EllerAdopsjon } from './Mellom1Og2EllerAdopsjonContext';
 
-type BosattIRiketProps = IVilkårSkjemaBaseProps;
+type Mellom1Og2EllerAdopsjonProps = IVilkårSkjemaBaseProps;
 
-export const UtvidetBarnetrygd: React.FC<BosattIRiketProps> = ({
+export const Mellom1Og2EllerAdopsjon: React.FC<Mellom1Og2EllerAdopsjonProps> = ({
     vilkårResultat,
     vilkårFraConfig,
     toggleForm,
     person,
     lesevisning,
-}: BosattIRiketProps) => {
-    const { felter } = useUtvidetBarnetrygd(vilkårResultat, person);
+}: Mellom1Og2EllerAdopsjonProps) => {
+    const { felter } = useMellom1Og2EllerAdopsjon(vilkårResultat, person);
     return (
         <VilkårSkjema
             visVurderesEtter={false}

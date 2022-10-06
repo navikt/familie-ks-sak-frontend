@@ -1,11 +1,11 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
-import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
-import { Regelverk, UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
+import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import { Regelverk } from '../../../../../../typer/vilkår';
 
 export const bestemMuligeUtdypendeVilkårsvurderinger = () => {
-    return [UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG];
+    return [UtdypendeVilkårsvurdering.ADOPSJON];
 };
 
 export const erUtdypendeVilkårsvurderingerGyldig = (

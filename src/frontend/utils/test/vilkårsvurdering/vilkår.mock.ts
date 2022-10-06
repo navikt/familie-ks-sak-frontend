@@ -26,7 +26,7 @@ export const mockRestVilkårResultat = ({
     id = 1,
     resultat = Resultat.OPPFYLT,
     behandlingId = 1,
-    vilkårType = VilkårType.LOVLIG_OPPHOLD,
+    vilkårType = VilkårType.MEDLEMSKAP,
     periodeFom = '2000-01-01',
     periodeTom = undefined,
     vurderesEtter = Regelverk.NASJONALE_REGLER,
@@ -50,11 +50,12 @@ export const mockRestVilkårResultat = ({
 export const mockRestPersonResultat = ({
     personIdent = '12345678930',
     vilkårResultater = [
-        VilkårType.LOVLIG_OPPHOLD,
+        VilkårType.MEDLEMSKAP,
         VilkårType.BOSATT_I_RIKET,
-        VilkårType.GIFT_PARTNERSKAP,
-        VilkårType.UNDER_18_ÅR,
+        VilkårType.BARNEHAGEPLASS,
+        VilkårType.MELLOM_1_OG_2_ELLER_ADOPTERT,
         VilkårType.BOR_MED_SØKER,
+        VilkårType.MEDLEMSKAP_ANNEN_FORELDER,
     ].map((vilkårType, index) =>
         mockRestVilkårResultat({
             id: index,

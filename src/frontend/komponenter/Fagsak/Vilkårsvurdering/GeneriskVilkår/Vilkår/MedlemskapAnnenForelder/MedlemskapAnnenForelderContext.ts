@@ -15,12 +15,9 @@ import {
     erResultatGyldig,
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import {
-    erBegrunnelseGyldig,
-    erUtdypendeVilkårsvurderingerGyldig,
-} from './GiftPartnerskapValidering';
+import { erBegrunnelseGyldig } from './MedlemskapAnnenForelderValidering';
 
-export const useGiftPartnerskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
         resultat: vilkår.resultat,
@@ -46,7 +43,6 @@ export const useGiftPartnerskap = (vilkår: IVilkårResultat, person: IGrunnlagP
 
     const utdypendeVilkårsvurdering = useFelt<UtdypendeVilkårsvurdering[]>({
         verdi: vilkårSkjema.utdypendeVilkårsvurdering,
-        valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });
 
     const felter = {
@@ -65,10 +61,6 @@ export const useGiftPartnerskap = (vilkår: IVilkårResultat, person: IGrunnlagP
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,
             valideringsfunksjon: erBegrunnelseGyldig,
-            avhengigheter: {
-                vurderesEtter: vurderesEtter.verdi,
-                utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
-            },
         }),
         erEksplisittAvslagPåSøknad,
         avslagBegrunnelser: useFelt<VedtakBegrunnelse[]>({

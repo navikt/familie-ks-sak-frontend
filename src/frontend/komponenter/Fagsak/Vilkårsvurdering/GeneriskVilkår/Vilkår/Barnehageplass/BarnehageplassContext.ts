@@ -15,9 +15,9 @@ import {
     erResultatGyldig,
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './Under18ÅrValidering';
+import { erBegrunnelseGyldig } from './BarnehageplassValidering';
 
-export const useUnder18År = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
         resultat: vilkår.resultat,
@@ -43,7 +43,6 @@ export const useUnder18År = (vilkår: IVilkårResultat, person: IGrunnlagPerson
 
     const utdypendeVilkårsvurdering = useFelt<UtdypendeVilkårsvurdering[]>({
         verdi: vilkårSkjema.utdypendeVilkårsvurdering,
-        valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });
 
     const felter = {
@@ -64,7 +63,6 @@ export const useUnder18År = (vilkår: IVilkårResultat, person: IGrunnlagPerson
             valideringsfunksjon: erBegrunnelseGyldig,
             avhengigheter: {
                 vurderesEtter: vurderesEtter.verdi,
-                utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
             },
         }),
         erEksplisittAvslagPåSøknad,

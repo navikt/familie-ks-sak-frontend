@@ -3,23 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { Collapse } from 'react-collapse';
 import styled from 'styled-components';
 
-import { AddCircle, ExpandFilled, CollapseFilled } from '@navikt/ds-icons';
+import { ExpandFilled, CollapseFilled } from '@navikt/ds-icons';
 import { Alert, Button } from '@navikt/ds-react';
 import { NavdsSpacing14, NavdsSpacing8 } from '@navikt/ds-tokens/dist/tokens';
-import { hentDataFraRessurs } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useVilkårsvurdering } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
-import { BehandlingÅrsak } from '../../../typer/behandling';
 import { PersonType } from '../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../typer/vilkår';
-import { vilkårConfig, Resultat, VilkårType, annenVurderingConfig } from '../../../typer/vilkår';
-import IkonKnapp, { IkonPosisjon } from '../../Felleskomponenter/IkonKnapp/IkonKnapp';
+import { vilkårConfig, Resultat, annenVurderingConfig } from '../../../typer/vilkår';
 import PersonInformasjon from '../../Felleskomponenter/PersonInformasjon/PersonInformasjon';
 import GeneriskAnnenVurdering from './GeneriskAnnenVurdering/GeneriskAnnenVurdering';
 import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
-import { useVilkårsvurderingApi } from './useVilkårsvurderingApi';
 
 const PersonLinje = styled.div`
     display: flex;
@@ -36,23 +32,9 @@ const IndentertInnhold = styled.div`
     padding-left: ${NavdsSpacing14};
 `;
 
-const VilkårDiv = styled.div`
-    display: flex;
-    align-items: center;
-
-    a.lenke span {
-        margin-left: 10px;
-    }
-`;
-
 const VilkårsvurderingSkjema: React.FunctionComponent = () => {
     const { vilkårsvurdering } = useVilkårsvurdering();
-    const { erLesevisning, aktivSettPåVent, åpenBehandling } = useBehandling();
-    const vilkårsvurderingApi = useVilkårsvurderingApi();
-
-    const kanLeggeTilUtvidetVilkår =
-        hentDataFraRessurs(åpenBehandling)?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
-        hentDataFraRessurs(åpenBehandling)?.årsak === BehandlingÅrsak.KLAGE;
+    const { erLesevisning, aktivSettPåVent } = useBehandling();
 
     const personHarIkkevurdertVilkår = (personResultat: IPersonResultat) =>
         personResultat.vilkårResultater.some(
@@ -81,9 +63,6 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
         <>
             {vilkårsvurdering.map((personResultat: IPersonResultat, index: number) => {
                 const andreVurderinger = personResultat.andreVurderinger;
-                const harUtvidet = personResultat.vilkårResultater.find(
-                    vilkårResultat => vilkårResultat.vilkårType === VilkårType.UTVIDET_BARNETRYGD
-                );
                 return (
                     <div
                         key={`${index}_${personResultat.person.fødselsdato}`}
@@ -91,32 +70,6 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
                     >
                         <PersonLinje>
                             <PersonInformasjon person={personResultat.person} somOverskrift />
-
-                            {!erLesevisning() &&
-                                personErEkspandert[personResultat.personIdent] &&
-                                personResultat.person.type === PersonType.SØKER &&
-                                !harUtvidet &&
-                                kanLeggeTilUtvidetVilkår && (
-                                    <VilkårDiv>
-                                        <IkonKnapp
-                                            erLesevisning={erLesevisning()}
-                                            id={`${index}_${personResultat.person.fødselsdato}__legg-til-vilkår-utvidet`}
-                                            onClick={() =>
-                                                vilkårsvurderingApi.opprettVilkår(
-                                                    personResultat.personIdent,
-                                                    VilkårType.UTVIDET_BARNETRYGD
-                                                )
-                                            }
-                                            label={`Legg til vilkår utvidet barnetrygd`}
-                                            mini={true}
-                                            ikonPosisjon={IkonPosisjon.VENSTRE}
-                                            ikon={
-                                                <AddCircle title="Legg til vilkår utvidet barnetrygd" />
-                                            }
-                                        />
-                                    </VilkårDiv>
-                                )}
-
                             <Button
                                 id={`vis-skjul-vilkårsvurdering-${index}_${personResultat.person.fødselsdato}}`}
                                 variant="tertiary"

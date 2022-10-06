@@ -3,18 +3,18 @@ import React from 'react';
 import { Resultat } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
-import { useGiftPartnerskap } from './GiftPartnerskapContext';
+import { useMedlemskap } from './MedlemskapContext';
 
-type BosattIRiketProps = IVilkårSkjemaBaseProps;
+type MedlemskapProps = IVilkårSkjemaBaseProps;
 
-export const GiftPartnerskap: React.FC<BosattIRiketProps> = ({
+export const Medlemskap: React.FC<MedlemskapProps> = ({
     vilkårResultat,
     vilkårFraConfig,
     toggleForm,
     person,
     lesevisning,
-}: BosattIRiketProps) => {
-    const { felter } = useGiftPartnerskap(vilkårResultat, person);
+}: MedlemskapProps) => {
+    const { felter } = useMedlemskap(vilkårResultat, person);
     return (
         <VilkårSkjema
             visVurderesEtter={false}

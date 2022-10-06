@@ -17,12 +17,12 @@ import { Resultat, uiResultat, VilkårType } from '../../../../typer/vilkår';
 import { datoformat, formaterIsoDato } from '../../../../utils/formatter';
 import { periodeToString } from '../../../../utils/kalender';
 import { alleRegelverk } from '../../../../utils/vilkår';
+import { Barnehageplass } from './Vilkår/Barnehageplass/Barnehageplass';
 import { BorMedSøker } from './Vilkår/BorMedSøker/BorMedSøker';
 import { BosattIRiket } from './Vilkår/BosattIRiket/BosattIRiket';
-import { GiftPartnerskap } from './Vilkår/GiftPartnerskap/GiftPartnerskap';
-import { LovligOpphold } from './Vilkår/LovligOpphold/LovligOpphold';
-import { Under18År } from './Vilkår/Under18År/Under18År';
-import { UtvidetBarnetrygd } from './Vilkår/UtvidetBarnetrygd/UtvidetBarnetrygd';
+import { Medlemskap } from './Vilkår/Medlemskap/Medlemskap';
+import { MedlemskapAnnenForelder } from './Vilkår/MedlemskapAnnenForelder/MedlemskapAnnenForelder';
+import { Mellom1Og2EllerAdopsjon } from './Vilkår/Mellom1Og2EllerAdopsjon/Mellom1Og2EllerAdopsjon';
 import { vilkårFeilmeldingId } from './VilkårTabell';
 
 interface IProps {
@@ -93,9 +93,9 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         lesevisning={erLesevisning()}
                     />
                 );
-            case VilkårType.LOVLIG_OPPHOLD:
+            case VilkårType.MEDLEMSKAP:
                 return (
-                    <LovligOpphold
+                    <Medlemskap
                         vilkårResultat={vilkårResultat}
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}
@@ -103,9 +103,19 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         lesevisning={erLesevisning()}
                     />
                 );
-            case VilkårType.UTVIDET_BARNETRYGD:
+            case VilkårType.BARNEHAGEPLASS:
                 return (
-                    <UtvidetBarnetrygd
+                    <Barnehageplass
+                        vilkårResultat={vilkårResultat}
+                        vilkårFraConfig={vilkårFraConfig}
+                        toggleForm={toggleForm}
+                        person={person}
+                        lesevisning={erLesevisning()}
+                    />
+                );
+            case VilkårType.MEDLEMSKAP_ANNEN_FORELDER:
+                return (
+                    <MedlemskapAnnenForelder
                         vilkårResultat={vilkårResultat}
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}
@@ -123,19 +133,9 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         lesevisning={erLesevisning()}
                     />
                 );
-            case VilkårType.UNDER_18_ÅR:
+            case VilkårType.MELLOM_1_OG_2_ELLER_ADOPTERT:
                 return (
-                    <Under18År
-                        vilkårResultat={vilkårResultat}
-                        vilkårFraConfig={vilkårFraConfig}
-                        toggleForm={toggleForm}
-                        person={person}
-                        lesevisning={erLesevisning()}
-                    />
-                );
-            case VilkårType.GIFT_PARTNERSKAP:
-                return (
-                    <GiftPartnerskap
+                    <Mellom1Og2EllerAdopsjon
                         vilkårResultat={vilkårResultat}
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}

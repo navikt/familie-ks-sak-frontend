@@ -15,9 +15,9 @@ import {
     erResultatGyldig,
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import { erBegrunnelseGyldig } from './UtvidetBarnetrygdValidering';
+import { erBegrunnelseGyldig } from './MedlemskapValidering';
 
-export const useUtvidetBarnetrygd = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
         resultat: vilkår.resultat,
@@ -61,6 +61,9 @@ export const useUtvidetBarnetrygd = (vilkår: IVilkårResultat, person: IGrunnla
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,
             valideringsfunksjon: erBegrunnelseGyldig,
+            avhengigheter: {
+                vurderesEtter: vurderesEtter.verdi,
+            },
         }),
         erEksplisittAvslagPåSøknad,
         avslagBegrunnelser: useFelt<VedtakBegrunnelse[]>({

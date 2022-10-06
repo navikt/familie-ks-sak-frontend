@@ -1,39 +1,17 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
-import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import {
     Regelverk,
-    Resultat,
     UtdypendeVilkårsvurderingDeltBosted,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
-    UtdypendeVilkårsvurderingGenerell,
 } from '../../../../../../typer/vilkår';
 
-export const bestemMuligeUtdypendeVilkårsvurderinger = (
-    regelverk: Regelverk,
-    resultat: Resultat
-) => {
-    if (regelverk === Regelverk.EØS_FORORDNINGEN) {
-        if (resultat === Resultat.IKKE_OPPFYLT) {
-            return [];
-        }
-        return [
-            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_SØKER,
-            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_ANNEN_FORELDER,
-            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_NORGE_MED_SØKER,
-            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_STORBRITANNIA_MED_SØKER,
-            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_STORBRITANNIA_MED_ANNEN_FORELDER,
-            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_ALENE_I_ANNET_EØS_LAND,
-            UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED,
-            UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED_SKAL_IKKE_DELES,
-            UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
-        ];
-    }
+export const bestemMuligeUtdypendeVilkårsvurderinger = () => {
     return [
-        UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
-        UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED_SKAL_IKKE_DELES,
-        UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED,
+        UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG,
+        UtdypendeVilkårsvurdering.DELT_BOSTED,
     ];
 };
 
@@ -45,10 +23,7 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
         return feil(felt, 'Utdypende vilkårsvurdering er ugyldig');
     }
     const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] =
-        bestemMuligeUtdypendeVilkårsvurderinger(
-            avhengigheter.vurderesEtter,
-            avhengigheter.resultat
-        );
+        bestemMuligeUtdypendeVilkårsvurderinger();
 
     if (muligeUtdypendeVilkårsvurderinger.length === 0) {
         return ok(felt);

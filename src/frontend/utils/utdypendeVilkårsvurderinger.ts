@@ -1,18 +1,13 @@
 import type { Felt } from '@navikt/familie-skjema';
 
-import { PersonType } from '../typer/person';
+import type { PersonType } from '../typer/person';
+import type { Resultat } from '../typer/vilkår';
 import {
-    Resultat,
     Regelverk,
-    VilkårType,
-    UtdypendeVilkårsvurderingDeltBosted,
+    UtdypendeVilkårsvurdering,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
-    UtdypendeVilkårsvurderingEøsBarnBosattIRiket,
-    UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
-    UtdypendeVilkårsvurderingGenerell,
-    UtdypendeVilkårsvurderingNasjonal,
+    VilkårType,
 } from '../typer/vilkår';
-import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
 
 export interface UtdypendeVilkårsvurderingAvhengigheter {
     personType: PersonType;
@@ -25,59 +20,20 @@ export interface UtdypendeVilkårsvurderingAvhengigheter {
 export const bestemMuligeUtdypendeVilkårsvurderinger = (
     avhengigheter: UtdypendeVilkårsvurderingAvhengigheter
 ): UtdypendeVilkårsvurdering[] => {
-    const { vilkårType, vurderesEtter, personType, resultat } = avhengigheter;
-
-    if (vilkårType === VilkårType.UTVIDET_BARNETRYGD) {
-        return [];
+    const { vilkårType } = avhengigheter;
+    if (vilkårType === VilkårType.BOSATT_I_RIKET) {
+        return [UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG];
     }
-
-    if (vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
-        if (resultat === Resultat.IKKE_OPPFYLT) {
-            return [];
-        }
-        if (vilkårType === VilkårType.LOVLIG_OPPHOLD) {
-            return [];
-        }
-        if (vilkårType === VilkårType.BOSATT_I_RIKET && personType === PersonType.SØKER) {
-            return [
-                UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING,
-                UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING_UTLAND,
-            ];
-        }
-        if (vilkårType === VilkårType.BOSATT_I_RIKET && personType === PersonType.BARN) {
-            return [
-                UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_NORGE,
-                UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_EØS,
-                UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_STORBRITANNIA,
-            ];
-        }
-        if (vilkårType === VilkårType.BOR_MED_SØKER) {
-            return [
-                UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_SØKER,
-                UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_ANNEN_FORELDER,
-                UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_NORGE_MED_SØKER,
-                UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_STORBRITANNIA_MED_SØKER,
-                UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_STORBRITANNIA_MED_ANNEN_FORELDER,
-                UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_ALENE_I_ANNET_EØS_LAND,
-                UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED,
-                UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED_SKAL_IKKE_DELES,
-                UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
-            ];
-        }
+    if (vilkårType === VilkårType.BOR_MED_SØKER) {
+        return [
+            UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG,
+            UtdypendeVilkårsvurdering.DELT_BOSTED,
+        ];
     }
-
-    return [
-        UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
-        ...(vilkårType === VilkårType.BOSATT_I_RIKET
-            ? [UtdypendeVilkårsvurderingNasjonal.VURDERT_MEDLEMSKAP]
-            : []),
-        ...(vilkårType === VilkårType.BOR_MED_SØKER
-            ? [
-                  UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED_SKAL_IKKE_DELES,
-                  UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED,
-              ]
-            : []),
-    ];
+    if (vilkårType === VilkårType.MELLOM_1_OG_2_ELLER_ADOPTERT) {
+        return [UtdypendeVilkårsvurdering.ADOPSJON];
+    }
+    return [];
 };
 
 export const bestemFeilmeldingForUtdypendeVilkårsvurdering = (
@@ -97,8 +53,8 @@ export const bestemFeilmeldingForUtdypendeVilkårsvurdering = (
     }
 
     if (avhengigheter.vilkårType === VilkårType.BOR_MED_SØKER) {
-        const antallValgteAlternativerForDeltBosted = utdypendeVilkårsvurderinger.filter(item =>
-            Object.keys(UtdypendeVilkårsvurderingDeltBosted).includes(item)
+        const antallValgteAlternativerForDeltBosted = utdypendeVilkårsvurderinger.filter(
+            item => item === UtdypendeVilkårsvurdering.DELT_BOSTED
         ).length;
         if (antallValgteAlternativerForDeltBosted > 1) {
             return 'Du kan kun velge ett alternativ for delt bosted';
