@@ -2,18 +2,18 @@ import React from 'react';
 
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
-import { useUnder18År } from './Under18ÅrContext';
+import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
 
-type BosattIRiketProps = IVilkårSkjemaBaseProps;
+type MedlemskapAnnenForelderProps = IVilkårSkjemaBaseProps;
 
-export const Under18År: React.FC<BosattIRiketProps> = ({
+export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = ({
     vilkårResultat,
     vilkårFraConfig,
     toggleForm,
     person,
     lesevisning,
-}: BosattIRiketProps) => {
-    const { felter } = useUnder18År(vilkårResultat, person);
+}: MedlemskapAnnenForelderProps) => {
+    const { felter } = useMedlemskapAnnenForelder(vilkårResultat, person);
     return (
         <VilkårSkjema
             visVurderesEtter={false}

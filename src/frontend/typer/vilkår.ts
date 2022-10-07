@@ -31,12 +31,12 @@ export enum AnnenVurderingType {
 }
 
 export enum VilkårType {
-    UNDER_18_ÅR = 'UNDER_18_ÅR',
-    BOR_MED_SØKER = 'BOR_MED_SØKER',
-    GIFT_PARTNERSKAP = 'GIFT_PARTNERSKAP',
     BOSATT_I_RIKET = 'BOSATT_I_RIKET',
-    LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
-    UTVIDET_BARNETRYGD = 'UTVIDET_BARNETRYGD',
+    MEDLEMSKAP = 'MEDLEMSKAP',
+    BARNEHAGEPLASS = 'BARNEHAGEPLASS',
+    MEDLEMSKAP_ANNEN_FORELDER = 'MEDLEMSKAP_ANNEN_FORELDER',
+    BOR_MED_SØKER = 'BOR_MED_SØKER',
+    MELLOM_1_OG_2_ELLER_ADOPTERT = 'MELLOM_1_OG_2_ELLER_ADOPTERT',
 }
 
 export enum Regelverk {
@@ -145,39 +145,39 @@ export const vilkårConfig: Record<VilkårType, IVilkårConfig> = {
         spørsmål: (part?: string) => `Er ${part} bosatt i riket?`,
         parterDetteGjelderFor: [PersonType.BARN, PersonType.SØKER],
     },
-    LOVLIG_OPPHOLD: {
-        beskrivelse: 'lovlig opphold',
-        key: 'LOVLIG_OPPHOLD',
-        tittel: 'Lovlig opphold',
-        spørsmål: (part?: string) => `Har ${part} lovlig opphold?`,
-        parterDetteGjelderFor: [PersonType.BARN, PersonType.SØKER],
-    },
-    UTVIDET_BARNETRYGD: {
-        beskrivelse: 'utvidet barnetrygd',
-        key: 'UTVIDET_BARNETRYGD',
-        tittel: 'Utvidet barnetrygd',
-        spørsmål: () => 'Foreligger det rett på utvidet barnetrygd?',
+    MEDLEMSKAP: {
+        beskrivelse: 'Har medlemskap i folketrygden',
+        key: 'MEDLEMSKAP',
+        tittel: 'Medlemskap',
+        spørsmål: () => 'Har søker vært medlem i folketrygden i minst 5 år?',
         parterDetteGjelderFor: [PersonType.SØKER],
     },
+    BARNEHAGEPLASS: {
+        beskrivelse: 'Har barnehageplass',
+        key: 'BARNEHAGEPLASS',
+        tittel: 'Barnehageplass',
+        spørsmål: () => 'Har barnet barnehageplass?',
+        parterDetteGjelderFor: [PersonType.BARN],
+    },
+    MEDLEMSKAP_ANNEN_FORELDER: {
+        beskrivelse: 'Har annen forelder medlemskap i folketrygden',
+        key: 'MEDLEMSKAP_ANNEN_FORELDER',
+        tittel: 'Medlemskap annen forelder',
+        spørsmål: () => 'Har annen forelder vært medlem i folketrygden i minst 5 år?',
+        parterDetteGjelderFor: [PersonType.BARN],
+    },
     BOR_MED_SØKER: {
-        beskrivelse: 'bor med søker',
+        beskrivelse: 'Bor med søker',
         key: 'BOR_MED_SØKER',
-        tittel: 'Bor med søker',
-        spørsmål: () => `Bor barnet med søker?`,
+        tittel: 'Bor fast hos søker',
+        spørsmål: () => 'Bor barnet fast hos søker?',
         parterDetteGjelderFor: [PersonType.BARN],
     },
-    UNDER_18_ÅR: {
-        beskrivelse: 'under 18 år',
-        key: 'UNDER_18_ÅR',
-        tittel: 'Under 18 år',
-        spørsmål: () => `Er barnet under 18 år?`,
-        parterDetteGjelderFor: [PersonType.BARN],
-    },
-    GIFT_PARTNERSKAP: {
-        beskrivelse: 'inngått ekteskap eller partnerskap',
-        key: 'GIFT_PARTNERSKAP',
-        tittel: 'Inngått ekteskap eller partnerskap',
-        spørsmål: () => 'Har barnet inngått ekteskap eller partnerskap?',
+    MELLOM_1_OG_2_ELLER_ADOPTERT: {
+        beskrivelse: 'Barn mellom 1 og 2 år eller adoptert',
+        key: 'MELLOM_1_OG_2_ELLER_ADOPTERT',
+        tittel: 'Mellom 1 og 2 år eller adoptert',
+        spørsmål: () => 'Er barnet mellom 1 og 2 år eller adoptert?',
         parterDetteGjelderFor: [PersonType.BARN],
     },
 };
@@ -200,28 +200,15 @@ export const annenVurderingConfig: Record<AnnenVurderingType, IAnnenVurderingCon
     },
 };
 
-export enum UtdypendeVilkårsvurderingGenerell {
+export enum UtdypendeVilkårsvurdering {
     VURDERING_ANNET_GRUNNLAG = 'VURDERING_ANNET_GRUNNLAG',
-}
-
-export enum UtdypendeVilkårsvurderingNasjonal {
-    VURDERT_MEDLEMSKAP = 'VURDERT_MEDLEMSKAP',
+    DELT_BOSTED = 'DELT_BOSTED',
+    ADOPSJON = 'ADOPSJON',
 }
 
 export enum UtdypendeVilkårsvurderingDeltBosted {
     DELT_BOSTED = 'DELT_BOSTED',
     DELT_BOSTED_SKAL_IKKE_DELES = 'DELT_BOSTED_SKAL_IKKE_DELES',
-}
-
-export enum UtdypendeVilkårsvurderingEøsSøkerBosattIRiket {
-    OMFATTET_AV_NORSK_LOVGIVNING = 'OMFATTET_AV_NORSK_LOVGIVNING',
-    OMFATTET_AV_NORSK_LOVGIVNING_UTLAND = 'OMFATTET_AV_NORSK_LOVGIVNING_UTLAND',
-}
-
-export enum UtdypendeVilkårsvurderingEøsBarnBosattIRiket {
-    BARN_BOR_I_NORGE = 'BARN_BOR_I_NORGE',
-    BARN_BOR_I_EØS = 'BARN_BOR_I_EØS',
-    BARN_BOR_I_STORBRITANNIA = 'BARN_BOR_I_STORBRITANNIA',
 }
 
 export enum UtdypendeVilkårsvurderingEøsBarnBorMedSøker {
@@ -232,11 +219,3 @@ export enum UtdypendeVilkårsvurderingEøsBarnBorMedSøker {
     BARN_BOR_I_STORBRITANNIA_MED_ANNEN_FORELDER = 'BARN_BOR_I_STORBRITANNIA_MED_ANNEN_FORELDER',
     BARN_BOR_ALENE_I_ANNET_EØS_LAND = 'BARN_BOR_ALENE_I_ANNET_EØS_LAND',
 }
-
-export type UtdypendeVilkårsvurdering =
-    | UtdypendeVilkårsvurderingGenerell
-    | UtdypendeVilkårsvurderingNasjonal
-    | UtdypendeVilkårsvurderingDeltBosted
-    | UtdypendeVilkårsvurderingEøsSøkerBosattIRiket
-    | UtdypendeVilkårsvurderingEøsBarnBosattIRiket
-    | UtdypendeVilkårsvurderingEøsBarnBorMedSøker;

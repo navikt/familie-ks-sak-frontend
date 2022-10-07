@@ -10,11 +10,9 @@ import { NavdsSpacing5, NavdsSpacing8, NavdsSpacing16 } from '@navikt/ds-tokens/
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IGrunnlagPerson } from '../../../../typer/person';
-import { PersonType } from '../../../../typer/person';
-import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
-import { Resultat, VilkårType } from '../../../../typer/vilkår';
+import type { IVilkårConfig, IVilkårResultat, VilkårType } from '../../../../typer/vilkår';
+import { Resultat } from '../../../../typer/vilkår';
 import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
-import FjernUtvidetBarnetrygdVilkår from './FjernUtvidetBarnetrygdVilkår';
 import VilkårTabell from './VilkårTabell';
 
 interface IProps {
@@ -62,20 +60,6 @@ const GeneriskVilkår: React.FC<IProps> = ({
         return uvurdertPeriodePåVilkår === undefined;
     };
 
-    const skalViseFjernUtvidetBarnetrygdKnapp = () => {
-        if (erLesevisning()) {
-            return false;
-        }
-        const utvidetVilkår = vilkårResultater.filter(
-            vilkårResultat => vilkårResultat.vilkårType === VilkårType.UTVIDET_BARNETRYGD
-        );
-        return (
-            person.type === PersonType.SØKER &&
-            vilkårFraConfig.key === VilkårType.UTVIDET_BARNETRYGD &&
-            utvidetVilkår.length !== 0
-        );
-    };
-
     return (
         <Container>
             <SkjemaGruppe
@@ -114,12 +98,6 @@ const GeneriskVilkår: React.FC<IProps> = ({
                         <AddCircle />
                         Legg til periode
                     </UtførKnapp>
-                )}
-                {skalViseFjernUtvidetBarnetrygdKnapp() && (
-                    <FjernUtvidetBarnetrygdVilkår
-                        personIdent={person.personIdent}
-                        slettVilkårId={generiskVilkårKey + '__slett-vilkår-utvidet'}
-                    />
                 )}
             </SkjemaGruppe>
         </Container>

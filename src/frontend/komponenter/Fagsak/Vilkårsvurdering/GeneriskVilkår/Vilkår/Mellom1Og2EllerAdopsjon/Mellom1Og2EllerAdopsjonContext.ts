@@ -18,9 +18,9 @@ import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 import {
     erBegrunnelseGyldig,
     erUtdypendeVilkårsvurderingerGyldig,
-} from './LovligOppholdValidering';
+} from './Mellom1Og2EllerAdopsjonValidering';
 
-export const useLovligOpphold = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useMellom1Og2EllerAdopsjon = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
         resultat: vilkår.resultat,
@@ -46,12 +46,6 @@ export const useLovligOpphold = (vilkår: IVilkårResultat, person: IGrunnlagPer
 
     const utdypendeVilkårsvurdering = useFelt<UtdypendeVilkårsvurdering[]>({
         verdi: vilkårSkjema.utdypendeVilkårsvurdering,
-        avhengigheter: {
-            personType: person.type,
-            vurderesEtter: vurderesEtter.verdi,
-            resultat: resultat.verdi,
-            vilkårType: vilkår.vilkårType,
-        },
         valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });
 
