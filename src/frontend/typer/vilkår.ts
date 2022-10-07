@@ -77,6 +77,7 @@ export interface IVilkårResultat {
     avslagBegrunnelser: VedtakBegrunnelse[];
     vurderesEtter: Regelverk | undefined;
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
+    antallTimer?: number;
 }
 
 // Vilkårsvurdering typer for api
@@ -107,6 +108,7 @@ export interface IRestVilkårResultat {
     vilkårType: VilkårType;
     vurderesEtter: Regelverk | undefined;
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
+    antallTimer: number | undefined;
 }
 
 export interface IRestAnnenVurdering {

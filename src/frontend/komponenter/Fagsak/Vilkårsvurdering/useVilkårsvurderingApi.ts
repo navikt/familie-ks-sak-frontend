@@ -38,7 +38,7 @@ export const useVilkårsvurderingApi = () => {
         restPersonResultat: IRestPersonResultat,
         vilkårId: number,
         onSuccess?: () => void,
-        onFailure?: () => void
+        onFailure?: (feilmelding: string) => void
     ): void => {
         settLagrerVilkår(true);
         settLagreVilkårFeilmelding('');
@@ -60,6 +60,9 @@ export const useVilkårsvurderingApi = () => {
                     response.status === RessursStatus.IKKE_TILGANG
                 ) {
                     settLagreVilkårFeilmelding(response.frontendFeilmelding);
+                    if (onFailure) {
+                        onFailure(response.frontendFeilmelding);
+                    }
                 }
             })
             .catch(() => {
@@ -68,7 +71,7 @@ export const useVilkårsvurderingApi = () => {
                     'En ukjent feil har oppstått, vi har ikke klart å lagre vilkåret.'
                 );
                 if (onFailure) {
-                    onFailure();
+                    onFailure(lagreVilkårFeilmelding);
                 }
             });
     };
@@ -77,7 +80,7 @@ export const useVilkårsvurderingApi = () => {
         personIdent: string,
         vilkårId: number,
         onSuccess?: () => void,
-        onFailure?: () => void
+        onFailure?: (feilmelding: string) => void
     ) => {
         settSletterVilkår(true);
         settSlettVilkårFeilmelding('');
@@ -99,6 +102,9 @@ export const useVilkårsvurderingApi = () => {
                     response.status === RessursStatus.IKKE_TILGANG
                 ) {
                     settSlettVilkårFeilmelding(response.frontendFeilmelding);
+                    if (onFailure) {
+                        onFailure(response.frontendFeilmelding);
+                    }
                 }
             })
             .catch(() => {
@@ -107,7 +113,7 @@ export const useVilkårsvurderingApi = () => {
                 );
                 settSletterVilkår(false);
                 if (onFailure) {
-                    onFailure();
+                    onFailure(slettVilkårFeilmelding);
                 }
             });
     };

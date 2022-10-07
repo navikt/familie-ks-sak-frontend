@@ -17,7 +17,6 @@ import {
     FamilieSelect,
     FamilieTextareaControlled,
 } from '@navikt/familie-form-elements';
-import type { FieldDictionary } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
@@ -30,8 +29,7 @@ import IkonKnapp, { IkonPosisjon } from '../../../Felleskomponenter/IkonKnapp/Ik
 import AvslagSkjema from './AvslagSkjema';
 import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
 import VelgPeriode from './VelgPeriode';
-import type { IVilkårSkjemaContext } from './VilkårSkjemaContext';
-import { useVilkårSkjema } from './VilkårSkjemaContext';
+import type { IVilkårSkjemaContext, VilkårSkjemaContextValue } from './VilkårSkjemaContext';
 import { vilkårBegrunnelseFeilmeldingId, vilkårFeilmeldingId } from './VilkårTabell';
 
 const Container = styled.div`
@@ -76,12 +74,13 @@ export interface IVilkårSkjemaBaseProps {
 }
 
 export interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjemaBaseProps {
+    vilkårSkjemaContext: VilkårSkjemaContextValue<T>;
     visVurderesEtter: boolean;
-    felter: FieldDictionary<T>;
     children?: ReactNode;
 }
 
 export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
+    vilkårSkjemaContext,
     visVurderesEtter,
     lesevisning,
     vilkårResultat,
@@ -92,19 +91,16 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     resultatJaChecked,
     onResultatNei,
     resultatNeiChecked,
-    felter,
     children,
 }: IVilkårSkjema<T>) => {
-    const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding } =
-        useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
-
     const { åpenBehandling } = useBehandling();
     const årsakErSøknad =
         åpenBehandling.status !== RessursStatus.SUKSESS ||
         åpenBehandling.data.årsak === BehandlingÅrsak.SØKNAD;
-
+    const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding } =
+        vilkårSkjemaContext;
     return (
-        <SkjemaGruppe feil={feilmelding}>
+        <SkjemaGruppe feil={skjema.visFeilmeldinger ? feilmelding : ''}>
             <Container lesevisning={false} vilkårResultat={undefined}>
                 {visVurderesEtter && (
                     <FamilieSelect

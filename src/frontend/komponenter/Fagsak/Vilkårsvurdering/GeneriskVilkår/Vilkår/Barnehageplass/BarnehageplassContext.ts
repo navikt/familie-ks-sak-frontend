@@ -17,10 +17,15 @@ import {
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 import { erBegrunnelseGyldig } from './BarnehageplassValidering';
 
+export interface IBarnehageplassVilkårSkjemaContext extends IVilkårSkjemaContext {
+    antallTimer: string;
+}
+
 export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
-    const vilkårSkjema: IVilkårSkjemaContext = {
+    const vilkårSkjema: IBarnehageplassVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
         resultat: vilkår.resultat,
+        antallTimer: vilkår.antallTimer ? vilkår.antallTimer.toString() : '',
         utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
         periode: vilkår.periode,
         begrunnelse: vilkår.begrunnelse,
@@ -48,6 +53,12 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
     const felter = {
         vurderesEtter,
         resultat,
+        antallTimer: useFelt<string>({
+            verdi: vilkårSkjema.antallTimer,
+            avhengigheter: {
+                resultat,
+            },
+        }),
         utdypendeVilkårsvurdering,
         periode: useFelt<IYearMonthPeriode>({
             verdi: vilkårSkjema.periode,

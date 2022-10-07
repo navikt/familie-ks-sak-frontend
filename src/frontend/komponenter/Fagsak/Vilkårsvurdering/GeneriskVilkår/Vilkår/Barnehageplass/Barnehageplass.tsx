@@ -1,28 +1,49 @@
 import React from 'react';
 
+import { FamilieInput } from '@navikt/familie-form-elements';
+
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
+import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 import { useBarnehageplass } from './BarnehageplassContext';
 
-type Mellom1Og2EllerAdopsjonProps = IVilkårSkjemaBaseProps;
+type BarnehageplassProps = IVilkårSkjemaBaseProps;
 
-export const Barnehageplass: React.FC<Mellom1Og2EllerAdopsjonProps> = ({
+export const Barnehageplass: React.FC<BarnehageplassProps> = ({
     vilkårResultat,
     vilkårFraConfig,
     toggleForm,
     person,
     lesevisning,
-}: Mellom1Og2EllerAdopsjonProps) => {
+}: BarnehageplassProps) => {
     const { felter } = useBarnehageplass(vilkårResultat, person);
+    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
     return (
         <VilkårSkjema
+            vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={false}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
-            felter={felter}
             toggleForm={toggleForm}
             person={person}
             lesevisning={lesevisning}
-        />
+        >
+            <FamilieInput
+                label={'Antall timer'}
+                type={'number'}
+                erLesevisning={lesevisning}
+                value={vilkårSkjemaContext.skjema.felter.antallTimer.verdi}
+                onChange={event =>
+                    vilkårSkjemaContext.skjema.felter.antallTimer.validerOgSettFelt(
+                        event.target.value
+                    )
+                }
+                feil={
+                    vilkårSkjemaContext.skjema.visFeilmeldinger
+                        ? vilkårSkjemaContext.skjema.felter.antallTimer.feilmelding
+                        : ''
+                }
+            />
+        </VilkårSkjema>
     );
 };

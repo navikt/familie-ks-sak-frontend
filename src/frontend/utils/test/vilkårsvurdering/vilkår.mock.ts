@@ -45,6 +45,7 @@ export const mockRestVilkårResultat = ({
     avslagBegrunnelser: [],
     vurderesEtter: erIkkeGenereltVilkår(vilkårType) ? vurderesEtter : undefined,
     utdypendeVilkårsvurderinger: [],
+    antallTimer: undefined,
 });
 
 export const mockRestPersonResultat = ({
