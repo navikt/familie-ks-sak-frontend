@@ -15,7 +15,7 @@ import {
     erResultatGyldig,
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import { erBegrunnelseGyldig } from './BarnehageplassValidering';
+import { erAntallTimerGyldig } from './BarnehageplassValidering';
 
 export interface IBarnehageplassVilkårSkjemaContext extends IVilkårSkjemaContext {
     antallTimer: string;
@@ -58,6 +58,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             avhengigheter: {
                 resultat,
             },
+            valideringsfunksjon: erAntallTimerGyldig,
         }),
         utdypendeVilkårsvurdering,
         periode: useFelt<IYearMonthPeriode>({
@@ -65,16 +66,12 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-                er18ÅrsVilkår: false,
+                erMellom1Og2EllerAdoptertVilkår: false,
             },
             valideringsfunksjon: erPeriodeGyldig,
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,
-            valideringsfunksjon: erBegrunnelseGyldig,
-            avhengigheter: {
-                vurderesEtter: vurderesEtter.verdi,
-            },
         }),
         erEksplisittAvslagPåSøknad,
         avslagBegrunnelser: useFelt<VedtakBegrunnelse[]>({

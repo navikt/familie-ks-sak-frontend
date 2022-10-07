@@ -20,6 +20,7 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={true}
+            visSpørsmål={true}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             toggleForm={toggleForm}

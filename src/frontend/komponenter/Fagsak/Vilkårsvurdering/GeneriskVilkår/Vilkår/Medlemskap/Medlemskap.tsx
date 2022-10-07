@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Resultat } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -21,15 +20,12 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={false}
+            visSpørsmål={true}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             toggleForm={toggleForm}
             person={person}
             lesevisning={lesevisning}
-            onResultatJa={() => Resultat.IKKE_OPPFYLT}
-            resultatJaChecked={resultat => resultat === Resultat.IKKE_OPPFYLT}
-            onResultatNei={() => Resultat.OPPFYLT}
-            resultatNeiChecked={resultat => resultat === Resultat.OPPFYLT}
         />
     );
 };

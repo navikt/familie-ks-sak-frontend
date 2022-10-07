@@ -20,6 +20,7 @@ export const Mellom1Og2EllerAdopsjon: React.FC<Mellom1Og2EllerAdopsjonProps> = (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={false}
+            visSpørsmål={true}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             toggleForm={toggleForm}

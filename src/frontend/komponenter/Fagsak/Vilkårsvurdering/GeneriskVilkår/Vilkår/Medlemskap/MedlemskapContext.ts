@@ -54,7 +54,7 @@ export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-                er18ÅrsVilkår: false,
+                erMellom1Og2EllerAdoptertVilkår: false,
             },
             valideringsfunksjon: erPeriodeGyldig,
         }),
