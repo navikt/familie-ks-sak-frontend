@@ -5,7 +5,6 @@ import type { IPar } from './common';
 import type { INavnOgIdent } from './manuell-journalføring';
 
 export interface IFinnOppgaveRequest {
-    behandlingstema?: string;
     behandlingstype?: string;
     oppgavetype?: string;
     enhet?: string;
@@ -95,22 +94,6 @@ export const saksbehandlerFilter = (
     FORDELTE: { id: 'FORDELTE', navn: 'Fordelte' },
     UFORDELTE: { id: 'UFORDELTE', navn: 'Ufordelte' },
 });
-
-export enum GjelderFilter {
-    ALLE = 'ALLE',
-    ab0270 = 'ab0270',
-    ab0180 = 'ab0180',
-    ab0096 = 'ab0096',
-    ab0058 = 'ab0058',
-}
-
-export const gjelderFilter: Record<GjelderFilter, IPar> = {
-    ALLE: { id: 'ALLE', navn: 'Alle' },
-    ab0270: { id: 'ab0270', navn: 'Uspesifisert' },
-    ab0180: { id: 'ab0180', navn: 'Ordinær' },
-    ab0096: { id: 'ab0096', navn: 'Utvidet' },
-    ab0058: { id: 'ab0058', navn: 'EØS' },
-};
 
 export enum BehandlingstypeFilter {
     ALLE = 'ALLE',
