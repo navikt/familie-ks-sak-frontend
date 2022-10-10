@@ -17,7 +17,6 @@ import {
     FamilieSelect,
     FamilieTextareaControlled,
 } from '@navikt/familie-form-elements';
-import type { FieldDictionary } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
@@ -30,8 +29,7 @@ import IkonKnapp, { IkonPosisjon } from '../../../Felleskomponenter/IkonKnapp/Ik
 import AvslagSkjema from './AvslagSkjema';
 import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
 import VelgPeriode from './VelgPeriode';
-import type { IVilkårSkjemaContext } from './VilkårSkjemaContext';
-import { useVilkårSkjema } from './VilkårSkjemaContext';
+import type { IVilkårSkjemaContext, VilkårSkjemaContextValue } from './VilkårSkjemaContext';
 import { vilkårBegrunnelseFeilmeldingId, vilkårFeilmeldingId } from './VilkårTabell';
 
 const Container = styled.div`
@@ -69,42 +67,34 @@ export interface IVilkårSkjemaBaseProps {
     vilkårFraConfig: IVilkårConfig;
     person: IGrunnlagPerson;
     toggleForm: (visSkjema: boolean) => void;
-    onResultatJa?: () => Resultat;
-    resultatJaChecked?: (resultat: Resultat) => boolean;
-    onResultatNei?: () => Resultat;
-    resultatNeiChecked?: (resultat: Resultat) => boolean;
 }
 
 export interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjemaBaseProps {
-    visVurderesEtter: boolean;
-    felter: FieldDictionary<T>;
-    children?: ReactNode;
+    vilkårSkjemaContext: VilkårSkjemaContextValue<T>;
+    visVurderesEtter?: boolean;
+    visSpørsmål?: boolean;
+    children?: ReactNode[];
 }
 
 export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
+    vilkårSkjemaContext,
     visVurderesEtter,
+    visSpørsmål,
     lesevisning,
     vilkårResultat,
     vilkårFraConfig,
     person,
     toggleForm,
-    onResultatJa,
-    resultatJaChecked,
-    onResultatNei,
-    resultatNeiChecked,
-    felter,
     children,
 }: IVilkårSkjema<T>) => {
-    const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding } =
-        useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
-
     const { åpenBehandling } = useBehandling();
     const årsakErSøknad =
         åpenBehandling.status !== RessursStatus.SUKSESS ||
         åpenBehandling.data.årsak === BehandlingÅrsak.SØKNAD;
-
+    const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding } =
+        vilkårSkjemaContext;
     return (
-        <SkjemaGruppe feil={feilmelding}>
+        <SkjemaGruppe feil={feilmelding} utenFeilPropagering={true}>
             <Container lesevisning={false} vilkårResultat={undefined}>
                 {visVurderesEtter && (
                     <FamilieSelect
@@ -143,45 +133,35 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         )}
                     </FamilieSelect>
                 )}
-                <FamilieRadioGruppe
-                    erLesevisning={lesevisning}
-                    verdi={resultater[skjema.felter.resultat.verdi]}
-                    legend={
-                        vilkårFraConfig.spørsmål
-                            ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
-                            : ''
-                    }
-                    feil={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
-                >
-                    <Radio
-                        label={'Ja'}
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                        checked={
-                            resultatJaChecked
-                                ? resultatJaChecked(skjema.felter.resultat.verdi)
-                                : skjema.felter.resultat.verdi === Resultat.OPPFYLT
+                {visSpørsmål && (
+                    <FamilieRadioGruppe
+                        erLesevisning={lesevisning}
+                        verdi={resultater[skjema.felter.resultat.verdi]}
+                        legend={
+                            vilkårFraConfig.spørsmål
+                                ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
+                                : ''
                         }
-                        onChange={() =>
-                            skjema.felter.resultat.validerOgSettFelt(
-                                onResultatJa ? onResultatJa() : Resultat.OPPFYLT
-                            )
-                        }
-                    />
-                    <Radio
-                        label={'Nei'}
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                        checked={
-                            resultatNeiChecked
-                                ? resultatNeiChecked(skjema.felter.resultat.verdi)
-                                : skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT
-                        }
-                        onChange={() =>
-                            skjema.felter.resultat.validerOgSettFelt(
-                                onResultatNei ? onResultatNei() : Resultat.IKKE_OPPFYLT
-                            )
-                        }
-                    />
-                </FamilieRadioGruppe>
+                        feil={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
+                    >
+                        <Radio
+                            label={'Ja'}
+                            name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                            checked={skjema.felter.resultat.verdi === Resultat.OPPFYLT}
+                            onChange={() =>
+                                skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT)
+                            }
+                        />
+                        <Radio
+                            label={'Nei'}
+                            name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                            checked={skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT}
+                            onChange={() =>
+                                skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)
+                            }
+                        />
+                    </FamilieRadioGruppe>
+                )}
                 {children}
                 <UtdypendeVilkårsvurderingMultiselect
                     vilkårResultat={vilkårResultat}

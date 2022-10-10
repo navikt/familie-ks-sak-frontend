@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import type { FieldDictionary } from '@navikt/familie-skjema';
+import type { FieldDictionary, ISkjema } from '@navikt/familie-skjema';
 import { useSkjema } from '@navikt/familie-skjema';
 
 import type { IBehandling } from '../../../../typer/behandling';
@@ -20,6 +20,16 @@ export interface IVilkårSkjemaContext {
     begrunnelse: string;
     erEksplisittAvslagPåSøknad: boolean;
     avslagBegrunnelser: VedtakBegrunnelse[];
+    antallTimer?: string;
+}
+
+export interface VilkårSkjemaContextValue<T extends IVilkårSkjemaContext> {
+    skjema: ISkjema<T, IBehandling>;
+    lagreVilkår: () => void;
+    lagrerVilkår: boolean;
+    slettVilkår: (personIdent: string, vilkårId: number) => void;
+    sletterVilkår: boolean;
+    feilmelding: string;
 }
 
 export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
@@ -39,18 +49,6 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
     });
 
     const [feilmelding, settFeilmelding] = useState<string>('');
-
-    useEffect(() => {
-        return () => {
-            if (vilkårsvurderingApi.slettVilkårFeilmelding !== '') {
-                settFeilmelding(vilkårsvurderingApi.slettVilkårFeilmelding);
-            } else if (vilkårsvurderingApi.lagreVilkårFeilmelding !== '') {
-                settFeilmelding(vilkårsvurderingApi.lagreVilkårFeilmelding);
-            } else {
-                settFeilmelding('');
-            }
-        };
-    }, [vilkårsvurderingApi.slettVilkårFeilmelding, vilkårsvurderingApi.lagreVilkårFeilmelding]);
 
     const lagreVilkår = () => {
         if (kanSendeSkjema()) {
@@ -74,23 +72,36 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
                         vilkårType: vilkår.vilkårType,
                         vurderesEtter: skjema.felter.vurderesEtter.verdi,
                         utdypendeVilkårsvurderinger: skjema.felter.utdypendeVilkårsvurdering.verdi,
+                        antallTimer: skjema.felter.antallTimer
+                            ? Number(skjema.felter.antallTimer.verdi)
+                            : undefined,
                     },
                 ],
                 andreVurderinger: [],
             };
-            vilkårsvurderingApi.lagreVilkår(restPersonResultat, vilkår.id, () => {
-                toggleForm(false);
-                nullstillSkjema();
-            });
+            vilkårsvurderingApi.lagreVilkår(
+                restPersonResultat,
+                vilkår.id,
+                () => {
+                    toggleForm(false);
+                    nullstillSkjema();
+                },
+                lagreVilkårFeilmelding => settFeilmelding(lagreVilkårFeilmelding)
+            );
         }
     };
 
     const slettVilkår = (personIdent: string, vilkårId: number) => {
         settVisfeilmeldinger(false);
-        vilkårsvurderingApi.slettVilkår(personIdent, vilkårId, () => {
-            toggleForm(false);
-            nullstillSkjema();
-        });
+        vilkårsvurderingApi.slettVilkår(
+            personIdent,
+            vilkårId,
+            () => {
+                toggleForm(false);
+                nullstillSkjema();
+            },
+            slettVilkårFeilmelding => settFeilmelding(slettVilkårFeilmelding)
+        );
     };
 
     return {

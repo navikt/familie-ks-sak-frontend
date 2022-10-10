@@ -77,6 +77,7 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                                     vurderesEtter: vilkårResultat.vurderesEtter,
                                     utdypendeVilkårsvurderinger:
                                         vilkårResultat.utdypendeVilkårsvurderinger,
+                                    antallTimer: vilkårResultat.antallTimer,
                                 };
                             }
                         )

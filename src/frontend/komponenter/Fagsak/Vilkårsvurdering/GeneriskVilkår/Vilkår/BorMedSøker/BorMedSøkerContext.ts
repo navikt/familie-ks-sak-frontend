@@ -59,7 +59,7 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-                er18ÅrsVilkår: false,
+                erMellom1Og2EllerAdoptertVilkår: false,
             },
             valideringsfunksjon: erPeriodeGyldig,
         }),

@@ -58,7 +58,7 @@ export const useMellom1Og2EllerAdopsjon = (vilkår: IVilkårResultat, person: IG
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-                er18ÅrsVilkår: false,
+                erMellom1Og2EllerAdoptertVilkår: true,
             },
             valideringsfunksjon: erPeriodeGyldig,
         }),

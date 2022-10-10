@@ -1,27 +1,28 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
-import { Regelverk } from '../../../../../../typer/vilkår';
+import { Resultat } from '../../../../../../typer/vilkår';
+import { tellAntallDesimaler } from '../../../../../../utils/eøsValidators';
 
-export const erBegrunnelseGyldig = (
+export const erAntallTimerGyldig = (
     felt: FeltState<string>,
     avhengigheter?: Avhengigheter
 ): FeltState<string> => {
-    if (!avhengigheter) {
-        return feil(felt, 'Begrunnelse er ugyldig');
-    }
-
-    const begrunnelseOppgitt = felt.verdi.length > 0;
-
-    if (avhengigheter.vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
-        return ok(felt);
-    } else {
-        if (begrunnelseOppgitt) {
-            return ok(felt);
+    if (felt.verdi !== '') {
+        const antallTimer = Number(felt.verdi);
+        if (antallTimer > 122) {
+            return feil(felt, 'Antall timer med barnehageplass kan ikke overstige 122');
         }
-        return feil(
-            felt,
-            'Du har gjort ett eller flere valg under "Utdypende vilkårsvurdering" og må derfor fylle inn en begrunnelse'
-        );
+        if (tellAntallDesimaler(felt.verdi) > 2) {
+            return feil(
+                felt,
+                'Antall timer med barnehageplass kan maksimalt oppgis med 2 desimaler'
+            );
+        }
+        return ok(felt);
     }
+    if (avhengigheter?.resultat !== Resultat.OPPFYLT) {
+        return feil(felt, 'Antall timer med barnehageplass må fylles ut');
+    }
+    return ok(felt);
 };
