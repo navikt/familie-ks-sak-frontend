@@ -9,13 +9,9 @@ import type {
     UtdypendeVilkårsvurdering,
 } from '../../../../../../typer/vilkår';
 import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
-import {
-    erAvslagBegrunnelserGyldig,
-    erPeriodeGyldig,
-    erResultatGyldig,
-} from '../../../../../../utils/validators';
+import { erAvslagBegrunnelserGyldig, erResultatGyldig } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import { erBegrunnelseGyldig } from './MedlemskapAnnenForelderValidering';
+import { erPeriodeGyldig } from './MedlemskapAnnenForelderValidering';
 
 export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
@@ -53,6 +49,7 @@ export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IG
             verdi: vilkårSkjema.periode,
             avhengigheter: {
                 person,
+                resultat,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
                 erMellom1Og2EllerAdoptertVilkår: false,
             },
@@ -60,7 +57,6 @@ export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IG
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,
-            valideringsfunksjon: erBegrunnelseGyldig,
         }),
         erEksplisittAvslagPåSøknad,
         avslagBegrunnelser: useFelt<VedtakBegrunnelse[]>({
