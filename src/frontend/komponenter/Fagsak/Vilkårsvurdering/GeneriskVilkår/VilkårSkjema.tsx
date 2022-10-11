@@ -73,7 +73,7 @@ export interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkå
     vilkårSkjemaContext: VilkårSkjemaContextValue<T>;
     visVurderesEtter?: boolean;
     visSpørsmål?: boolean;
-    children?: ReactNode[];
+    children?: ReactNode;
 }
 
 export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
