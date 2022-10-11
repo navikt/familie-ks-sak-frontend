@@ -73,6 +73,7 @@ export interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkå
     vilkårSkjemaContext: VilkårSkjemaContextValue<T>;
     visVurderesEtter?: boolean;
     visSpørsmål?: boolean;
+    periodeChildren?: ReactNode;
     children?: ReactNode;
 }
 
@@ -86,6 +87,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     person,
     toggleForm,
     children,
+    periodeChildren,
 }: IVilkårSkjema<T>) => {
     const { åpenBehandling } = useBehandling();
     const årsakErSøknad =
@@ -190,6 +192,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     erEksplisittAvslagPåSøknad={skjema.felter.erEksplisittAvslagPåSøknad}
                     resultat={skjema.felter.resultat}
                     visFeilmeldinger={skjema.visFeilmeldinger}
+                    children={periodeChildren}
                 />
                 <FamilieTextareaControlled
                     tekstLesevisning={''}

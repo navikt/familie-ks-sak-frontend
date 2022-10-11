@@ -2,12 +2,12 @@ import { useFelt } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { VedtakBegrunnelse } from '../../../../../../typer/vedtak';
-import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type {
+    IVilkårResultat,
     Regelverk as RegelverkType,
-    Resultat,
     UtdypendeVilkårsvurdering,
 } from '../../../../../../typer/vilkår';
+import { Resultat } from '../../../../../../typer/vilkår';
 import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
 import {
     erAvslagBegrunnelserGyldig,
@@ -15,7 +15,6 @@ import {
     erResultatGyldig,
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import { erBegrunnelseGyldig } from './MedlemskapValidering';
 
 export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
@@ -27,6 +26,9 @@ export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson
         erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: vilkår.avslagBegrunnelser,
     };
+
+    const skalViseDatoVarsel =
+        vilkår.resultat === Resultat.IKKE_VURDERT && vilkår.periode.fom !== undefined;
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
         verdi: vilkårSkjema.vurderesEtter,
@@ -60,10 +62,6 @@ export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,
-            valideringsfunksjon: erBegrunnelseGyldig,
-            avhengigheter: {
-                vurderesEtter: vurderesEtter.verdi,
-            },
         }),
         erEksplisittAvslagPåSøknad,
         avslagBegrunnelser: useFelt<VedtakBegrunnelse[]>({
@@ -77,5 +75,6 @@ export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson
 
     return {
         felter,
+        skalViseDatoVarsel,
     };
 };

@@ -64,6 +64,7 @@ const VelgPeriode: React.FC<IProps> = ({
     resultat,
     visFeilmeldinger,
     vilkår,
+    children,
 }) => {
     const { erLesevisning } = useBehandling();
     const lesevisning = erLesevisning();
@@ -120,6 +121,7 @@ const VelgPeriode: React.FC<IProps> = ({
                     </div>
                 )}
             </FlexDiv>
+            {children}
         </MarginSkjemaGruppe>
     );
 };
