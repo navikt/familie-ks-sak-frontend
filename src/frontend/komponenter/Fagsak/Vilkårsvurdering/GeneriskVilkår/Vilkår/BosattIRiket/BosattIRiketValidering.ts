@@ -2,7 +2,7 @@ import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
 import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
-import { Regelverk, VilkårType } from '../../../../../../typer/vilkår';
+import { Regelverk } from '../../../../../../typer/vilkår';
 
 export const bestemMuligeUtdypendeVilkårsvurderinger = () => {
     return [UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG];
@@ -18,22 +18,16 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
     const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] =
         bestemMuligeUtdypendeVilkårsvurderinger();
 
-    if (muligeUtdypendeVilkårsvurderinger.length === 0) {
-        return ok(felt);
-    }
-
     if (!felt.verdi.every(item => muligeUtdypendeVilkårsvurderinger.includes(item))) {
         return feil(felt, 'Du har valgt en ugyldig kombinasjon');
     }
 
     if (avhengigheter.vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
-        if (avhengigheter.vilkårType === VilkårType.BOSATT_I_RIKET) {
-            if (felt.verdi.length === 0) {
-                return feil(felt, 'Du må velge ett alternativ');
-            }
-            if (felt.verdi.length > 1) {
-                return feil(felt, 'Du kan kun velge ett alternativ');
-            }
+        if (felt.verdi.length === 0) {
+            return feil(felt, 'Du må velge ett alternativ');
+        }
+        if (felt.verdi.length > 1) {
+            return feil(felt, 'Du kan kun velge ett alternativ');
         }
     }
 
