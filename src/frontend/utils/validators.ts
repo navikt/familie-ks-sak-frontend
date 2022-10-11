@@ -9,7 +9,7 @@ import {
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { VedtakBegrunnelse } from '../typer/vedtak';
-import { Resultat } from '../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import familieDayjs from './familieDayjs';
 import type { IPeriode } from './kalender';
 import {
@@ -78,6 +78,17 @@ const finnesDatoEtterFødselsdatoPluss2 = (person: IGrunnlagPerson, fom: string,
     );
 };
 
+const tomEtterAugustÅretBarnetFyller6 = (person: IGrunnlagPerson, tom?: string): boolean => {
+    const datoAugustÅretBarnetFyller6 = leggTil(
+        kalenderDato(person.fødselsdato),
+        6,
+        KalenderEnhet.ÅR
+    );
+    datoAugustÅretBarnetFyller6.måned = 8;
+    const tomDato = tom ? kalenderDato(tom) : undefined;
+    return tomDato ? erEtter(tomDato, datoAugustÅretBarnetFyller6) : false;
+};
+
 const finnesDatoFørFødselsdatoPluss1År = (person: IGrunnlagPerson, fom: string, tom?: string) => {
     const fødselsdatoPluss1År = leggTil(kalenderDato(person.fødselsdato), 1, KalenderEnhet.ÅR);
     const fomDato = kalenderDato(fom);
@@ -102,6 +113,9 @@ export const erPeriodeGyldig = (
     const erMellom1Og2EllerAdoptertVilkår: boolean | undefined =
         avhengigheter?.erMellom1Og2EllerAdoptertVilkår;
 
+    const utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering | undefined =
+        avhengigheter?.utdypendeVilkårsvurdering;
+
     if (fom) {
         if (!erIsoStringGyldig(fom)) {
             return feil(felt, 'Ugyldig f.o.m.');
@@ -114,14 +128,20 @@ export const erPeriodeGyldig = (
                 if (finnesDatoFørFødselsdatoPluss1År(person, fom, tom)) {
                     return feil(felt, 'Du kan ikke legge til periode før barnet har fylt 1 år');
                 }
-                if (
-                    erMellom1Og2EllerAdoptertVilkår &&
-                    finnesDatoEtterFødselsdatoPluss2(person, fom, tom)
-                ) {
-                    return feil(
-                        felt,
-                        'Du kan ikke legge til periode på dette vilkåret fra barnet har fylt 2 år'
-                    );
+                if (erMellom1Og2EllerAdoptertVilkår) {
+                    if (utdypendeVilkårsvurdering?.includes(UtdypendeVilkårsvurdering.ADOPSJON)) {
+                        if (tomEtterAugustÅretBarnetFyller6(person, tom)) {
+                            return feil(
+                                felt,
+                                'Du kan ikke sette t.o.m på dette vilkåret etter august året barnet fyller 6 år'
+                            );
+                        }
+                    } else if (finnesDatoEtterFødselsdatoPluss2(person, fom, tom)) {
+                        return feil(
+                            felt,
+                            'Du kan ikke legge til periode på dette vilkåret fra barnet har fylt 2 år'
+                        );
+                    }
                 }
             }
         }

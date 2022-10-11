@@ -18,9 +18,9 @@ import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 import {
     erBegrunnelseGyldig,
     erUtdypendeVilkårsvurderingerGyldig,
-} from './Mellom1Og2EllerAdopsjonValidering';
+} from './Mellom1Og2EllerAdoptertValidering';
 
-export const useMellom1Og2EllerAdopsjon = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useMellom1Og2EllerAdoptert = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
         resultat: vilkår.resultat,
@@ -59,6 +59,7 @@ export const useMellom1Og2EllerAdopsjon = (vilkår: IVilkårResultat, person: IG
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
                 erMellom1Og2EllerAdoptertVilkår: true,
+                utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
             },
             valideringsfunksjon: erPeriodeGyldig,
         }),
