@@ -147,7 +147,7 @@ describe('utils/validators', () => {
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual(
-            'Du kan ikke legge til periode på dette vilkåret fra barnet har fylt 2 år'
+            'T.o.m datoen må være lik barnets 2 års dag'
         );
     });
 
@@ -161,7 +161,7 @@ describe('utils/validators', () => {
     });
 
     test('Periode med innenfor 1-2 år gir ok på Mellom1Og2EllerAdoptert-vilkåret', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2001-05-17', '2002-05-16'));
+        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2001-05-17', '2002-05-17'));
         const valideringsresultat = erPeriodeGyldig(periode, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,

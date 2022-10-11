@@ -11,7 +11,7 @@ import { PersonType } from '../typer/person';
 import type { VedtakBegrunnelse } from '../typer/vedtak';
 import { Resultat, UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import familieDayjs from './familieDayjs';
-import type { IPeriode } from './kalender';
+import type { DagMånedÅr, IPeriode } from './kalender';
 import {
     erEtter,
     erFør,
@@ -66,14 +66,14 @@ export const orgnummerValidator = (orgnummerFelt: FeltState<string>): FeltState<
 };
 
 const tomEtterAugustÅretBarnetFyller6 = (person: IGrunnlagPerson, tom?: string): boolean => {
-    const datoAugustÅretBarnetFyller6 = leggTil(
-        kalenderDato(person.fødselsdato),
-        6,
-        KalenderEnhet.ÅR
-    );
-    datoAugustÅretBarnetFyller6.måned = 7;
+    const datoBarnetFyller6 = leggTil(kalenderDato(person.fødselsdato), 6, KalenderEnhet.ÅR);
+    const datoSeptemberÅretBarnetFyller6: DagMånedÅr = {
+        år: datoBarnetFyller6.år,
+        måned: 8,
+        dag: 1,
+    };
     const tomDato = tom ? kalenderDato(tom) : undefined;
-    return tomDato ? erEtter(tomDato, datoAugustÅretBarnetFyller6) : false;
+    return tomDato ? erEtter(tomDato, datoSeptemberÅretBarnetFyller6) : false;
 };
 
 const datoErPersonsXÅrsdag = (person: IGrunnlagPerson, datoString: string, antallÅr: number) => {
@@ -81,10 +81,10 @@ const datoErPersonsXÅrsdag = (person: IGrunnlagPerson, datoString: string, anta
     return erSamme(kalenderDato(datoString), personsXÅrsdag);
 };
 
-const datoDifferanseUlik1År = (fom: string, tom: string) => {
+const datoDifferanseMerEnn1År = (fom: string, tom: string) => {
     const fomDatoPluss1År = leggTil(kalenderDato(fom), 1, KalenderEnhet.ÅR);
     const tomDato = kalenderDato(tom);
-    return !erSamme(fomDatoPluss1År, tomDato);
+    return erFør(fomDatoPluss1År, tomDato);
 };
 
 const finnesDatoFørFødselsdatoPluss1År = (person: IGrunnlagPerson, fom: string, tom?: string) => {
@@ -128,7 +128,7 @@ export const erPeriodeGyldig = (
                 }
                 if (erMellom1Og2EllerAdoptertVilkår) {
                     if (utdypendeVilkårsvurdering?.includes(UtdypendeVilkårsvurdering.ADOPSJON)) {
-                        if (tom && datoDifferanseUlik1År(fom, tom)) {
+                        if (tom && datoDifferanseMerEnn1År(fom, tom)) {
                             return feil(
                                 felt,
                                 'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
