@@ -2,11 +2,7 @@ import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
 import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
-import {
-    Regelverk,
-    UtdypendeVilkårsvurderingDeltBosted,
-    UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
-} from '../../../../../../typer/vilkår';
+import { Regelverk } from '../../../../../../typer/vilkår';
 
 export const bestemMuligeUtdypendeVilkårsvurderinger = () => {
     return [
@@ -32,22 +28,12 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
         return feil(felt, 'Du har valgt en ugyldig kombinasjon');
     }
 
-    const antallValgteAlternativerForDeltBosted = felt.verdi.filter(item =>
-        Object.keys(UtdypendeVilkårsvurderingDeltBosted).includes(item)
-    ).length;
-    if (antallValgteAlternativerForDeltBosted > 1) {
-        return feil(felt, 'Du kan kun velge ett alternativ for delt bosted');
-    }
-
     if (avhengigheter.vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
-        const antallValgteAlternativerForHvemBarnetBorMed = felt.verdi.filter(item =>
-            Object.keys(UtdypendeVilkårsvurderingEøsBarnBorMedSøker).includes(item)
-        ).length;
-        if (antallValgteAlternativerForHvemBarnetBorMed === 0) {
-            return feil(felt, 'Du må velge ett alternativ for hvem barnet bor med');
+        if (felt.verdi.length === 0) {
+            return feil(felt, 'Du må velge ett alternativ');
         }
-        if (antallValgteAlternativerForHvemBarnetBorMed > 1) {
-            return feil(felt, 'Du kan kun velge ett alternativ for hvem barnet bor med');
+        if (felt.verdi.length > 1) {
+            return feil(felt, 'Du kan kun velge ett alternativ');
         }
     }
 
@@ -65,7 +51,7 @@ export const erBegrunnelseGyldig = (
     const begrunnelseOppgitt = felt.verdi.length > 0;
 
     if (avhengigheter.vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
-        return ok(felt);
+        return begrunnelseOppgitt ? ok(felt) : feil(felt, 'Du må fylle inn en begrunnelse');
     } else {
         if (begrunnelseOppgitt || avhengigheter?.utdypendeVilkårsvurdering.length === 0) {
             return ok(felt);
