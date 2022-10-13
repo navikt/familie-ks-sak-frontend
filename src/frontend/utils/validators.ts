@@ -9,9 +9,9 @@ import {
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { VedtakBegrunnelse } from '../typer/vedtak';
-import { Resultat } from '../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import familieDayjs from './familieDayjs';
-import type { IPeriode } from './kalender';
+import type { DagMånedÅr, IPeriode } from './kalender';
 import {
     erEtter,
     erFør,
@@ -65,17 +65,26 @@ export const orgnummerValidator = (orgnummerFelt: FeltState<string>): FeltState<
     return ok(orgnummerFelt);
 };
 
-const finnesDatoEtterFødselsdatoPluss2 = (person: IGrunnlagPerson, fom: string, tom?: string) => {
-    const fødselsdatoPluss2 = leggTil(kalenderDato(person.fødselsdato), 2, KalenderEnhet.ÅR);
-    const fomDato = kalenderDato(fom);
-    const tomDato = kalenderDatoMedFallback(tom, TIDENES_ENDE);
-    return (
-        erSamme(fomDato, fødselsdatoPluss2) ||
-        erEtter(fomDato, fødselsdatoPluss2) ||
-        (tomDato
-            ? erSamme(tomDato, fødselsdatoPluss2) || erEtter(tomDato, fødselsdatoPluss2)
-            : false)
-    );
+const tomEtterAugustÅretBarnetFyller6 = (person: IGrunnlagPerson, tom?: string): boolean => {
+    const datoBarnetFyller6 = leggTil(kalenderDato(person.fødselsdato), 6, KalenderEnhet.ÅR);
+    const datoSeptemberÅretBarnetFyller6: DagMånedÅr = {
+        år: datoBarnetFyller6.år,
+        måned: 8,
+        dag: 1,
+    };
+    const tomDato = tom ? kalenderDato(tom) : undefined;
+    return tomDato ? erEtter(tomDato, datoSeptemberÅretBarnetFyller6) : false;
+};
+
+const datoErPersonsXÅrsdag = (person: IGrunnlagPerson, datoString: string, antallÅr: number) => {
+    const personsXÅrsdag = leggTil(kalenderDato(person.fødselsdato), antallÅr, KalenderEnhet.ÅR);
+    return erSamme(kalenderDato(datoString), personsXÅrsdag);
+};
+
+const datoDifferanseMerEnn1År = (fom: string, tom: string) => {
+    const fomDatoPluss1År = leggTil(kalenderDato(fom), 1, KalenderEnhet.ÅR);
+    const tomDato = kalenderDato(tom);
+    return erFør(fomDatoPluss1År, tomDato);
 };
 
 const finnesDatoFørFødselsdatoPluss1År = (person: IGrunnlagPerson, fom: string, tom?: string) => {
@@ -102,6 +111,9 @@ export const erPeriodeGyldig = (
     const erMellom1Og2EllerAdoptertVilkår: boolean | undefined =
         avhengigheter?.erMellom1Og2EllerAdoptertVilkår;
 
+    const utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering | undefined =
+        avhengigheter?.utdypendeVilkårsvurdering;
+
     if (fom) {
         if (!erIsoStringGyldig(fom)) {
             return feil(felt, 'Ugyldig f.o.m.');
@@ -114,14 +126,28 @@ export const erPeriodeGyldig = (
                 if (finnesDatoFørFødselsdatoPluss1År(person, fom, tom)) {
                     return feil(felt, 'Du kan ikke legge til periode før barnet har fylt 1 år');
                 }
-                if (
-                    erMellom1Og2EllerAdoptertVilkår &&
-                    finnesDatoEtterFødselsdatoPluss2(person, fom, tom)
-                ) {
-                    return feil(
-                        felt,
-                        'Du kan ikke legge til periode på dette vilkåret fra barnet har fylt 2 år'
-                    );
+                if (erMellom1Og2EllerAdoptertVilkår) {
+                    if (utdypendeVilkårsvurdering?.includes(UtdypendeVilkårsvurdering.ADOPSJON)) {
+                        if (tom && datoDifferanseMerEnn1År(fom, tom)) {
+                            return feil(
+                                felt,
+                                'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
+                            );
+                        }
+                        if (tomEtterAugustÅretBarnetFyller6(person, tom)) {
+                            return feil(
+                                felt,
+                                'Du kan ikke sette en t.o.m dato som er etter august året barnet fyller 6 år'
+                            );
+                        }
+                    } else {
+                        if (!datoErPersonsXÅrsdag(person, fom, 1)) {
+                            return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
+                        }
+                        if (tom && !datoErPersonsXÅrsdag(person, tom, 2)) {
+                            return feil(felt, 'T.o.m datoen må være lik barnets 2 års dag');
+                        }
+                    }
                 }
             }
         }
