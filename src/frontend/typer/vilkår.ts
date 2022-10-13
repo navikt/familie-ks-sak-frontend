@@ -90,6 +90,12 @@ export interface IRestPersonResultat {
     andreVurderinger: IRestAnnenVurdering[];
 }
 
+// Vilkårsvurdering typer for api
+export interface IEndreVilkårResultat {
+    personIdent: string;
+    endretVilkårResultat: IRestVilkårResultat;
+}
+
 export interface IRestNyttVilkår {
     personIdent: string;
     vilkårType: string;

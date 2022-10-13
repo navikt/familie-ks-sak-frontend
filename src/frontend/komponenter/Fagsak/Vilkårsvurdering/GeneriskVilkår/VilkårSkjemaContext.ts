@@ -6,7 +6,7 @@ import { useSkjema } from '@navikt/familie-skjema';
 import type { IBehandling } from '../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { VedtakBegrunnelse } from '../../../../typer/vedtak';
-import type { IRestPersonResultat, Regelverk } from '../../../../typer/vilkår';
+import type { IEndreVilkårResultat, Regelverk } from '../../../../typer/vilkår';
 import type { Resultat, UtdypendeVilkårsvurdering } from '../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../typer/vilkår';
 import type { IPeriode } from '../../../../utils/kalender';
@@ -53,35 +53,31 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
     const lagreVilkår = () => {
         if (kanSendeSkjema()) {
             settVisfeilmeldinger(false);
-            const restPersonResultat: IRestPersonResultat = {
+            const endreVilkårResultat: IEndreVilkårResultat = {
                 personIdent: person.personIdent,
-                vilkårResultater: [
-                    {
-                        begrunnelse: skjema.felter.begrunnelse.verdi,
-                        behandlingId: vilkår.behandlingId,
-                        endretAv: vilkår.endretAv,
-                        endretTidspunkt: vilkår.endretTidspunkt,
-                        erAutomatiskVurdert: vilkår.erAutomatiskVurdert,
-                        erVurdert: vilkår.erVurdert,
-                        id: vilkår.id,
-                        periodeFom: skjema.felter.periode.verdi.fom,
-                        periodeTom: skjema.felter.periode.verdi.tom,
-                        resultat: skjema.felter.resultat.verdi,
-                        erEksplisittAvslagPåSøknad: skjema.felter.erEksplisittAvslagPåSøknad.verdi,
-                        avslagBegrunnelser: skjema.felter.avslagBegrunnelser.verdi,
-                        vilkårType: vilkår.vilkårType,
-                        vurderesEtter: skjema.felter.vurderesEtter.verdi,
-                        utdypendeVilkårsvurderinger: skjema.felter.utdypendeVilkårsvurdering.verdi,
-                        antallTimer: skjema.felter.antallTimer
-                            ? Number(skjema.felter.antallTimer.verdi)
-                            : undefined,
-                    },
-                ],
-                andreVurderinger: [],
+                endretVilkårResultat: {
+                    begrunnelse: skjema.felter.begrunnelse.verdi,
+                    behandlingId: vilkår.behandlingId,
+                    endretAv: vilkår.endretAv,
+                    endretTidspunkt: vilkår.endretTidspunkt,
+                    erAutomatiskVurdert: vilkår.erAutomatiskVurdert,
+                    erVurdert: vilkår.erVurdert,
+                    id: vilkår.id,
+                    periodeFom: skjema.felter.periode.verdi.fom,
+                    periodeTom: skjema.felter.periode.verdi.tom,
+                    resultat: skjema.felter.resultat.verdi,
+                    erEksplisittAvslagPåSøknad: skjema.felter.erEksplisittAvslagPåSøknad.verdi,
+                    avslagBegrunnelser: skjema.felter.avslagBegrunnelser.verdi,
+                    vilkårType: vilkår.vilkårType,
+                    vurderesEtter: skjema.felter.vurderesEtter.verdi,
+                    utdypendeVilkårsvurderinger: skjema.felter.utdypendeVilkårsvurdering.verdi,
+                    antallTimer: skjema.felter.antallTimer
+                        ? Number(skjema.felter.antallTimer.verdi)
+                        : undefined,
+                },
             };
             vilkårsvurderingApi.lagreVilkår(
-                restPersonResultat,
-                vilkår.id,
+                endreVilkårResultat,
                 () => {
                     toggleForm(false);
                     nullstillSkjema();
