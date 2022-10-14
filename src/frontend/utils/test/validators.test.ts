@@ -103,7 +103,7 @@ describe('utils/validators', () => {
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual(
-            'Du kan ikke legge til periode før barnet har fylt 1 år'
+            'Du kan ikke legge til periode før barnets fødselsdato'
         );
     });
 
