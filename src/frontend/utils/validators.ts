@@ -87,15 +87,12 @@ const datoDifferanseMerEnn1År = (fom: string, tom: string) => {
     return erFør(fomDatoPluss1År, tomDato);
 };
 
-const finnesDatoFørFødselsdatoPluss1År = (person: IGrunnlagPerson, fom: string, tom?: string) => {
-    const fødselsdatoPluss1År = leggTil(kalenderDato(person.fødselsdato), 1, KalenderEnhet.ÅR);
+const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: string, tom?: string) => {
+    const fødselsdato = kalenderDato(person.fødselsdato);
     const fomDato = kalenderDato(fom);
     const tomDato = tom ? kalenderDato(tom) : undefined;
 
-    return (
-        erFør(fomDato, fødselsdatoPluss1År) ||
-        (tomDato ? erFør(tomDato, fødselsdatoPluss1År) : false)
-    );
+    return erFør(fomDato, fødselsdato) || (tomDato ? erFør(tomDato, fødselsdato) : false);
 };
 
 export const erPeriodeGyldig = (
@@ -123,8 +120,8 @@ export const erPeriodeGyldig = (
 
         if (!erEksplisittAvslagPåSøknad) {
             if (person && person.type === PersonType.BARN) {
-                if (finnesDatoFørFødselsdatoPluss1År(person, fom, tom)) {
-                    return feil(felt, 'Du kan ikke legge til periode før barnet har fylt 1 år');
+                if (finnesDatoFørFødselsdato(person, fom, tom)) {
+                    return feil(felt, 'Du kan ikke legge til periode før barnets fødselsdato');
                 }
                 if (erMellom1Og2EllerAdoptertVilkår) {
                     if (utdypendeVilkårsvurdering?.includes(UtdypendeVilkårsvurdering.ADOPSJON)) {

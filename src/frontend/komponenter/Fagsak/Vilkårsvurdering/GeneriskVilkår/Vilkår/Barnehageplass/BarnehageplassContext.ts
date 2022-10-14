@@ -56,7 +56,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         antallTimer: useFelt<string>({
             verdi: vilkårSkjema.antallTimer,
             avhengigheter: {
-                resultat,
+                resultat: resultat.verdi,
             },
             valideringsfunksjon: erAntallTimerGyldig,
         }),
