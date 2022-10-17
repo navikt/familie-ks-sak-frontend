@@ -18,7 +18,7 @@ const [VedtaksbegrunnelseTeksterProvider, useVedtaksbegrunnelseTekster] = consta
     useEffect(() => {
         request<void, VedtaksbegrunnelseTekster>({
             method: 'GET',
-            url: `/familie-ks-sak/api/vilkaarsvurdering/vilkaarsbegrunnelser`,
+            url: `/familie-ks-sak/api/vilkårsvurdering/vilkaarsbegrunnelser`,
             påvirkerSystemLaster: true,
         }).then((data: Ressurs<VedtaksbegrunnelseTekster>) => {
             settVedtaksbegrunnelseTekster(data);
