@@ -7,9 +7,9 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
 import type {
+    IEndreVilkårResultat,
     IRestAnnenVurdering,
     IRestNyttVilkår,
-    IRestPersonResultat,
     VilkårType,
 } from '../../../typer/vilkår';
 
@@ -35,17 +35,16 @@ export const useVilkårsvurderingApi = () => {
         useState<string>('');
 
     const lagreVilkår = (
-        restPersonResultat: IRestPersonResultat,
-        vilkårId: number,
+        endreVilkårResultat: IEndreVilkårResultat,
         onSuccess?: () => void,
         onFailure?: (feilmelding: string) => void
     ): void => {
         settLagrerVilkår(true);
         settLagreVilkårFeilmelding('');
-        request<IRestPersonResultat, IBehandling>({
+        request<IEndreVilkårResultat, IBehandling>({
             method: 'PUT',
-            url: `/familie-ks-sak/api/vilkårsvurdering/${behandlingId}/${vilkårId}`,
-            data: restPersonResultat,
+            url: `/familie-ks-sak/api/vilkårsvurdering/${behandlingId}`,
+            data: endreVilkårResultat,
         })
             .then((response: Ressurs<IBehandling>) => {
                 settLagrerVilkår(false);
