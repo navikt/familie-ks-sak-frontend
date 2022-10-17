@@ -241,7 +241,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
             hentForhåndsvisning<IManueltBrevRequestPåFagsak>({
                 method: 'POST',
                 data: skjemaData,
-                url: `/familie-ks-sak/api/dokument/fagsak/${fagsakId}/forhaandsvis-brev`,
+                url: `/familie-ks-sak/api/brev/fagsak/${fagsakId}/forhåndsvis-brev`,
             });
         };
 
@@ -250,7 +250,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                 {
                     method: 'POST',
                     data: hentSkjemaData(),
-                    url: `/familie-ks-sak/api/dokument/fagsak/${fagsakId}/send-brev`,
+                    url: `/familie-ks-sak/api/brev/fagsak/${fagsakId}/send-brev`,
                 },
                 () => {
                     settVisInnsendtBrevModal(true);
