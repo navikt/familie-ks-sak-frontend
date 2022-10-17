@@ -402,7 +402,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                             hentForhåndsvisning<IManueltBrevRequestPåBehandling>({
                                 method: 'POST',
                                 data: hentSkjemaData(),
-                                url: `/familie-ks-sak/api/dokument/forhaandsvis-brev/${behandlingId}`,
+                                url: `/familie-ks-sak/api/brev/forhåndsvis-brev/${behandlingId}`,
                             });
                         }
                     }}
@@ -424,7 +424,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                 {
                                     method: 'POST',
                                     data: hentSkjemaData(),
-                                    url: `/familie-ks-sak/api/dokument/send-brev/${åpenBehandling.data.behandlingId}`,
+                                    url: `/familie-ks-sak/api/brev/send-brev/${åpenBehandling.data.behandlingId}`,
                                 },
                                 (ressurs: Ressurs<IBehandling>) => {
                                     onSubmitSuccess();
