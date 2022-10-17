@@ -43,7 +43,7 @@ export const useVilkårsvurderingApi = () => {
         settLagreVilkårFeilmelding('');
         request<IEndreVilkårResultat, IBehandling>({
             method: 'PUT',
-            url: `/familie-ks-sak/api/vilkaarsvurdering/${behandlingId}`,
+            url: `/familie-ks-sak/api/vilkårsvurdering/${behandlingId}`,
             data: endreVilkårResultat,
         })
             .then((response: Ressurs<IBehandling>) => {
@@ -85,7 +85,7 @@ export const useVilkårsvurderingApi = () => {
         settSlettVilkårFeilmelding('');
         request<string, IBehandling>({
             method: 'DELETE',
-            url: `/familie-ks-sak/api/vilkaarsvurdering/${behandlingId}/${vilkårId}`,
+            url: `/familie-ks-sak/api/vilkårsvurdering/${behandlingId}/${vilkårId}`,
             data: personIdent,
         })
             .then((response: Ressurs<IBehandling>) => {
@@ -122,7 +122,7 @@ export const useVilkårsvurderingApi = () => {
         settOpprettVilkårFeilmelding('');
         request<IRestNyttVilkår, IBehandling>({
             method: 'POST',
-            url: `/familie-ks-sak/api/vilkaarsvurdering/${behandlingId}`,
+            url: `/familie-ks-sak/api/vilkårsvurdering/${behandlingId}`,
             data: { personIdent, vilkårType },
         })
             .then((response: Ressurs<IBehandling>) => {
@@ -156,7 +156,7 @@ export const useVilkårsvurderingApi = () => {
         settLagreAnnenVurderingFeilmelding('');
         request<IRestAnnenVurdering, IBehandling>({
             method: 'PUT',
-            url: `/familie-ks-sak/api/vilkaarsvurdering/${behandlingId}/annenvurdering/${restAnnenVurdering.id}`,
+            url: `/familie-ks-sak/api/vilkårsvurdering/${behandlingId}/annenvurdering/${restAnnenVurdering.id}`,
             data: restAnnenVurdering,
         })
             .then((response: Ressurs<IBehandling>) => {
