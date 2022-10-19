@@ -38,11 +38,11 @@ const [VilkårsvurderingProvider, useVilkårsvurdering] = constate(({ åpenBehan
                 return (
                     personResultat.vilkårResultater.filter(
                         (vilkårResultat: IVilkårResultat) =>
-                            vilkårResultat.resultat !== Resultat.IKKE_VURDERT
+                            vilkårResultat.resultat === Resultat.IKKE_VURDERT
                     ).length > 0 ||
                     personResultat.andreVurderinger.filter(
                         (annenVurdering: IAnnenVurdering) =>
-                            annenVurdering.resultat !== Resultat.IKKE_VURDERT
+                            annenVurdering.resultat === Resultat.IKKE_VURDERT
                     ).length > 0
                 );
             }).length === 0
