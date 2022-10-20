@@ -57,7 +57,7 @@ const [VilkårsvurderingProvider, useVilkårsvurdering] = constate(({ åpenBehan
                     ...personResultat.vilkårResultater
                         .filter(
                             (vilkårResultat: IVilkårResultat) =>
-                                vilkårResultat.resultat !== Resultat.OPPFYLT
+                                vilkårResultat.resultat === Resultat.IKKE_VURDERT
                         )
                         .map((vilkårResultat: IVilkårResultat) => vilkårResultat),
                 ];
@@ -74,7 +74,7 @@ const [VilkårsvurderingProvider, useVilkårsvurdering] = constate(({ åpenBehan
                     ...personResultat.andreVurderinger
                         .filter(
                             (vilkårResultat: IAnnenVurdering) =>
-                                vilkårResultat.resultat !== Resultat.OPPFYLT
+                                vilkårResultat.resultat === Resultat.IKKE_OPPFYLT
                         )
                         .map((annenVurdering: IAnnenVurdering) => annenVurdering),
                 ];
