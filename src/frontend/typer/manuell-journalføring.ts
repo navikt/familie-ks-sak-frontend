@@ -6,7 +6,6 @@ import type { INøkkelPar } from './common';
 import type { IMinimalFagsak } from './fagsak';
 import type { IOppgave } from './oppgave';
 import type { IPersonInfo } from './person';
-import type { Tilbakekrevingsbehandlingstype } from './tilbakekrevingsbehandling';
 
 export interface IDataForManuellJournalføring {
     journalpost: IJournalpost;
@@ -50,7 +49,7 @@ export interface IRestJournalføring {
     tilknyttedeBehandlingIder: number[];
     dokumenter?: IRestJournalpostDokument[];
     navIdent: string;
-    nyBehandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype;
+    nyBehandlingstype: Behandlingstype;
     nyBehandlingsårsak: BehandlingÅrsak;
     journalførendeEnhet: string;
 }
