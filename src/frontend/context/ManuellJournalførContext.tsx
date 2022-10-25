@@ -326,7 +326,10 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             const erDigitalKanal =
                 dataForManuellJournalføring.data.journalpost.kanal === JournalpostKanal.NAV_NO;
 
-            const nyBehandlingstype = skjema.felter.behandlingstype.verdi;
+            const nyBehandlingstype =
+                skjema.felter.behandlingstype.verdi === ''
+                    ? Behandlingstype.FØRSTEGANGSBEHANDLING
+                    : (skjema.felter.behandlingstype.verdi as Behandlingstype);
             const nyBehandlingsårsak = skjema.felter.behandlingsårsak.verdi;
             const { verdi: behandlingstema } = skjema.felter.behandlingstema;
 
@@ -334,11 +337,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             onSubmit<IRestJournalføring>(
                 {
                     method: 'POST',
-                    url: `/familie-ks-sak/api/journalpost/${
-                        dataForManuellJournalføring.data.journalpost.journalpostId
-                    }/journalfør/${oppgaveId}?journalfoerendeEnhet=${
-                        innloggetSaksbehandler?.enhet ?? '9999'
-                    }&ferdigstill=true`,
+                    url: `/familie-ks-sak/api/journalpost/${dataForManuellJournalføring.data.journalpost.journalpostId}/journalfør/${oppgaveId}`,
                     data: {
                         journalpostTittel: skjema.felter.journalpostTittel.verdi,
                         kategori: behandlingstema?.kategori ?? null,
@@ -382,10 +381,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
                         opprettOgKnyttTilNyBehandling: skjema.felter.knyttTilNyBehandling.verdi,
 
                         // TODO her bør vi forbedre APIET slik at disse verdiene ikke er påkrevd. Blir kun brukt om opprettOgKnyttTilNyBehandling=true
-                        nyBehandlingstype:
-                            nyBehandlingstype === ''
-                                ? Behandlingstype.FØRSTEGANGSBEHANDLING
-                                : nyBehandlingstype,
+                        nyBehandlingstype: nyBehandlingstype,
                         nyBehandlingsårsak:
                             nyBehandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING
                                 ? BehandlingÅrsak.SØKNAD
@@ -394,15 +390,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
                                 : nyBehandlingsårsak,
 
                         navIdent: innloggetSaksbehandler?.navIdent ?? '',
-                        erEnsligMindreårig: skjema.felter.erEnsligMindreårig.verdi,
-                        erPåInstitusjon: skjema.felter.erPåInstitusjon.verdi,
-                        institusjon:
-                            skjema.felter.samhandler && skjema.felter.samhandler.verdi?.orgNummer
-                                ? {
-                                      orgNummer: skjema.felter.samhandler.verdi?.orgNummer,
-                                      tssEksternId: skjema.felter.samhandler.verdi?.tssEksternId,
-                                  }
-                                : null,
+                        journalførendeEnhet: innloggetSaksbehandler?.enhet ?? '9999',
                     },
                 },
                 (fagsakId: Ressurs<string>) => {
