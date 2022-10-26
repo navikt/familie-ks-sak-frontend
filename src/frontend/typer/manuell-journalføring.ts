@@ -1,5 +1,6 @@
 import type { IJournalpost } from '@navikt/familie-typer';
 
+import type { Behandlingstype, BehandlingÅrsak } from './behandling';
 import type { BehandlingKategori } from './behandlingstema';
 import type { INøkkelPar } from './common';
 import type { IMinimalFagsak } from './fagsak';
@@ -42,14 +43,15 @@ export interface IRestJournalføring {
     bruker: INavnOgIdent;
     datoMottatt?: string;
     journalpostTittel?: string;
-    dokumenter?: IRestJournalpostDokument[];
-    knyttTilFagsak: boolean;
-    tilknyttedeBehandlingIder: number[];
-    opprettOgKnyttTilNyBehandling: boolean;
-    navIdent: string;
     kategori: BehandlingKategori | null;
-    erEnsligMindreårig: boolean;
-    erPåInstitusjon: boolean;
+    knyttTilFagsak: boolean;
+    opprettOgKnyttTilNyBehandling: boolean;
+    tilknyttedeBehandlingIder: number[];
+    dokumenter?: IRestJournalpostDokument[];
+    navIdent: string;
+    nyBehandlingstype: Behandlingstype;
+    nyBehandlingsårsak: BehandlingÅrsak;
+    journalførendeEnhet: string;
 }
 
 export interface ILogiskVedlegg {
