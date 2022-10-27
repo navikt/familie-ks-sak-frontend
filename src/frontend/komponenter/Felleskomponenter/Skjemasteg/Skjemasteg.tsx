@@ -84,7 +84,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
         erBehandleneEnhetMidlertidig,
         erBehandlingAvsluttet,
     } = useBehandling();
-    const erBehandlingSattPåVent = hentDataFraRessurs(åpenBehandling)?.aktivSettPåVent;
+    const erBehandlingSattPåVent = hentDataFraRessurs(åpenBehandling)?.behandlingPåVent;
 
     useEffect(() => {
         const element = document.getElementById('skjemasteg');

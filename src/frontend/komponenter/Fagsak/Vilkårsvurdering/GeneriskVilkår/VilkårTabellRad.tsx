@@ -58,7 +58,7 @@ const FlexDiv = styled.div`
 
 const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårResultat }) => {
     const { toggles } = useApp();
-    const { erLesevisning, åpenBehandling, aktivSettPåVent } = useBehandling();
+    const { erLesevisning, åpenBehandling, behandlingPåVent } = useBehandling();
 
     const hentInitiellEkspandering = () =>
         erLesevisning() || vilkårResultat.resultat === Resultat.IKKE_VURDERT;
@@ -68,7 +68,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
 
     useEffect(() => {
         settEkspandertVilkår(hentInitiellEkspandering());
-    }, [aktivSettPåVent]);
+    }, [behandlingPåVent]);
 
     const periodeErTom = !redigerbartVilkår.periode.fom && !redigerbartVilkår.periode.tom;
 

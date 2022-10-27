@@ -116,7 +116,7 @@ const Behandlingsmeny: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
                             </li>
                         )}
                     {åpenBehandling.status === RessursStatus.SUKSESS &&
-                        åpenBehandling.data.aktivSettPåVent && (
+                        åpenBehandling.data.behandlingPåVent && (
                             <li>
                                 <TaBehandlingAvVent
                                     onListElementClick={() => settAnker(undefined)}

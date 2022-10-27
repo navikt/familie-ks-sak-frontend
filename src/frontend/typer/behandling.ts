@@ -209,7 +209,7 @@ export interface IBehandling {
     personerMedAndelerTilkjentYtelse: IPersonMedAndelerTilkjentYtelse[];
     årsak: BehandlingÅrsak;
     tilbakekreving?: ITilbakekreving;
-    aktivSettPåVent?: ISettPåVent;
+    behandlingPåVent?: IBehandlingPåVent;
     søknadMottattDato?: string;
     endringstidspunkt?: string;
     kompetanser: IRestKompetanse[];
@@ -322,7 +322,7 @@ export const behandlingsstatuser: Record<BehandlingStatus, string> = {
     AVSLUTTET: 'Avsluttet',
 };
 
-export interface ISettPåVent {
+export interface IBehandlingPåVent {
     frist: ISODateString;
     årsak: SettPåVentÅrsak;
 }
