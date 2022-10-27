@@ -19,7 +19,7 @@ import { hentAlleÅrsaker, validerSettPåVentFrist } from './settPåVentUtils';
 const STANDARD_ANTALL_DAGER_FRIST = 3 * 7;
 
 export const useSettPåVentSkjema = (
-    settPåVent: IBehandlingPåVent | undefined,
+    behandlingPåVent: IBehandlingPåVent | undefined,
     modalVises: boolean
 ) => {
     const standardfrist = serializeIso8601String(
@@ -36,11 +36,11 @@ export const useSettPåVentSkjema = (
     >({
         felter: {
             frist: useFelt<FamilieIsoDate | undefined>({
-                verdi: settPåVent?.frist ?? standardfrist,
+                verdi: behandlingPåVent?.frist ?? standardfrist,
                 valideringsfunksjon: validerSettPåVentFrist,
             }),
             årsak: useFelt<SettPåVentÅrsak | undefined>({
-                verdi: settPåVent?.årsak ?? undefined,
+                verdi: behandlingPåVent?.årsak ?? undefined,
                 valideringsfunksjon: felt =>
                     felt.verdi === undefined || !årsaker.includes(felt.verdi)
                         ? feil(felt, 'Du må velge en årsak')
@@ -57,9 +57,9 @@ export const useSettPåVentSkjema = (
     };
 
     useEffect(() => {
-        if (modalVises && settPåVent) {
-            settPåVentSkjema.skjema.felter.frist.validerOgSettFelt(settPåVent.frist);
-            settPåVentSkjema.skjema.felter.årsak.validerOgSettFelt(settPåVent.årsak);
+        if (modalVises && behandlingPåVent) {
+            settPåVentSkjema.skjema.felter.frist.validerOgSettFelt(behandlingPåVent.frist);
+            settPåVentSkjema.skjema.felter.årsak.validerOgSettFelt(behandlingPåVent.årsak);
         } else {
             fyllInnStandardverdier();
         }
