@@ -140,7 +140,7 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
         skalIgnorereOmEnhetErMidlertidig = false
     ): boolean => {
         const åpenBehandlingData = hentDataFraRessurs(åpenBehandling);
-        if (åpenBehandlingData?.aktivSettPåVent) {
+        if (åpenBehandlingData?.behandlingPåVent) {
             return true;
         }
         if (erBehandleneEnhetMidlertidig && !skalIgnorereOmEnhetErMidlertidig) {
@@ -223,7 +223,7 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
         settÅpenBehandling,
         oppdaterRegisteropplysninger,
         sendTilBeslutterNesteOnClick,
-        aktivSettPåVent: hentDataFraRessurs(åpenBehandling)?.aktivSettPåVent,
+        behandlingPåVent: hentDataFraRessurs(åpenBehandling)?.behandlingPåVent,
         erBehandleneEnhetMidlertidig,
         åpenHøyremeny,
         settÅpenHøyremeny,
