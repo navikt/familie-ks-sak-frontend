@@ -34,7 +34,7 @@ const IndentertInnhold = styled.div`
 
 const VilkårsvurderingSkjema: React.FunctionComponent = () => {
     const { vilkårsvurdering } = useVilkårsvurdering();
-    const { erLesevisning, aktivSettPåVent } = useBehandling();
+    const { erLesevisning, behandlingPåVent } = useBehandling();
 
     const personHarIkkevurdertVilkår = (personResultat: IPersonResultat) =>
         personResultat.vilkårResultater.some(
@@ -57,7 +57,7 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
 
     useEffect(() => {
         settPersonErEkspandert(hentEkspantdertePersoner());
-    }, [aktivSettPåVent]);
+    }, [behandlingPåVent]);
 
     return (
         <>

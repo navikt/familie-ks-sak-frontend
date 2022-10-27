@@ -17,13 +17,16 @@ interface IProps {
 
 const SettEllerOppdaterVenting: React.FC<IProps> = ({ onListElementClick, behandling }) => {
     const { settÅpenBehandling } = useBehandling();
-    const [visModal, settVisModal] = useState<boolean>(!!behandling.aktivSettPåVent);
+    const [visModal, settVisModal] = useState<boolean>(!!behandling.behandlingPåVent);
     const { skjema, kanSendeSkjema, onSubmit } = useSettPåVentSkjema(
-        behandling.aktivSettPåVent,
+        behandling.behandlingPåVent,
         visModal
     );
 
-    const erBehandlingAlleredePåVent = !!behandling.aktivSettPåVent;
+    const erBehandlingAlleredePåVent = !!behandling.behandlingPåVent;
+    const url = erBehandlingAlleredePåVent
+        ? `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent/oppdater`
+        : `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent`;
 
     const settBehandlingPåVent = () => {
         if (kanSendeSkjema()) {
@@ -31,7 +34,7 @@ const SettEllerOppdaterVenting: React.FC<IProps> = ({ onListElementClick, behand
                 {
                     method: erBehandlingAlleredePåVent ? 'PUT' : 'POST',
                     data: { frist: skjema.felter.frist.verdi, årsak: skjema.felter.årsak.verdi },
-                    url: `/familie-ks-sak/api/sett-på-vent/${behandling.behandlingId}`,
+                    url: url,
                 },
                 (ressurs: Ressurs<IBehandling>) => {
                     settÅpenBehandling(ressurs);

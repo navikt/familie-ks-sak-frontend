@@ -50,7 +50,7 @@ const TaBehandlingAvVent: React.FC<IProps> = ({ onListElementClick, behandling }
 
         request<undefined, IBehandling>({
             method: 'PUT',
-            url: `/familie-ks-sak/api/sett-på-vent/${behandling.behandlingId}/fortsettbehandling`,
+            url: `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent/gjenoppta`,
         })
             .then((ressurs: Ressurs<IBehandling>) => {
                 settÅpenBehandling(ressurs, true);
@@ -98,12 +98,12 @@ const TaBehandlingAvVent: React.FC<IProps> = ({ onListElementClick, behandling }
             >
                 <Normaltekst>
                     Behandlingen er satt på vent.
-                    {behandling?.aktivSettPåVent &&
-                        ` Årsak: ${settPåVentÅrsaker[behandling?.aktivSettPåVent?.årsak]}. `}
+                    {behandling?.behandlingPåVent &&
+                        ` Årsak: ${settPåVentÅrsaker[behandling?.behandlingPåVent?.årsak]}. `}
                 </Normaltekst>
                 <StyledNormaltekst>
                     {`Frist: ${formaterIsoDato(
-                        behandling?.aktivSettPåVent?.frist,
+                        behandling?.behandlingPåVent?.frist,
                         datoformat.DATO
                     )}. `}
                     Gå via meny for å endre årsak og frist på ventende behandling.

@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 
-import type { IBehandling, ISettPåVent, SettPåVentÅrsak } from '../../../../../typer/behandling';
+import type {
+    IBehandling,
+    IBehandlingPåVent,
+    SettPåVentÅrsak,
+} from '../../../../../typer/behandling';
 import type { FamilieIsoDate } from '../../../../../utils/kalender';
 import {
     iDag,
@@ -14,7 +18,10 @@ import { hentAlleÅrsaker, validerSettPåVentFrist } from './settPåVentUtils';
 
 const STANDARD_ANTALL_DAGER_FRIST = 3 * 7;
 
-export const useSettPåVentSkjema = (settPåVent: ISettPåVent | undefined, modalVises: boolean) => {
+export const useSettPåVentSkjema = (
+    settPåVent: IBehandlingPåVent | undefined,
+    modalVises: boolean
+) => {
     const standardfrist = serializeIso8601String(
         leggTil(iDag(), STANDARD_ANTALL_DAGER_FRIST, KalenderEnhet.DAG)
     );
