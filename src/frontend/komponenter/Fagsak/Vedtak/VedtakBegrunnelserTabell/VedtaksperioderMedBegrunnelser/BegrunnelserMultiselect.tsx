@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
@@ -8,9 +7,8 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import type {
     ActionMeta,
     FormatOptionLabelMeta,
-    GroupType,
+    GroupBase,
     ISelectOption,
-    MultiValueProps,
 } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -67,19 +65,20 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
             id={`${id}`}
             value={standardbegrunnelser}
             propSelectStyles={{
-                container: (provided: CSSProperties) => ({
+                container: provided => ({
                     ...provided,
                     maxWidth: '50rem',
                 }),
-                groupHeading: (provided: CSSProperties) => ({
+                groupHeading: provided => ({
                     ...provided,
                     textTransform: 'none',
                 }),
-                multiValue: (provided: CSSProperties, props: MultiValueProps<ISelectOption>) => {
+                multiValue: (provided, props) => {
+                    const currentOption = props.data as ISelectOption;
                     const vedtakBegrunnelseType: VedtakBegrunnelseType | undefined =
                         finnVedtakBegrunnelseType(
                             vedtaksbegrunnelseTekster,
-                            props.data.value as VedtakBegrunnelse
+                            currentOption.value as VedtakBegrunnelse
                         );
 
                     return {
@@ -89,7 +88,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
                         borderRadius: '0.5rem',
                     };
                 },
-                multiValueLabel: (provided: CSSProperties) => ({
+                multiValueLabel: provided => ({
                     ...provided,
                     whiteSpace: 'pre-wrap',
                     textOverflow: 'hidden',
@@ -113,7 +112,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
             }}
             formatOptionLabel={(
                 option: ISelectOption,
-                formatOptionLabelMeta: FormatOptionLabelMeta<ISelectOption, true>
+                formatOptionLabelMeta: FormatOptionLabelMeta<ISelectOption>
             ) => {
                 const vedtakBegrunnelseType = finnVedtakBegrunnelseType(
                     vedtaksbegrunnelseTekster,
@@ -132,7 +131,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
                     return <Normaltekst>{option.label}</Normaltekst>;
                 }
             }}
-            formatGroupLabel={(group: GroupType<ISelectOption>) => {
+            formatGroupLabel={(group: GroupBase<ISelectOption>) => {
                 return (
                     <GroupLabel>
                         <Element>{group.label}</Element>

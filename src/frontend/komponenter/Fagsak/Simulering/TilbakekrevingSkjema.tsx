@@ -210,7 +210,7 @@ const TilbakekrevingSkjema: React.FC<{
                         tilbakekrevingSkjema.visFeilmeldinger
                     )}
                     erLesevisning={erLesevisning()}
-                    verdi={
+                    value={
                         tilbakekrevingsvalg.verdi
                             ? visTilbakekrevingsvalg[tilbakekrevingsvalg.verdi]
                             : undefined

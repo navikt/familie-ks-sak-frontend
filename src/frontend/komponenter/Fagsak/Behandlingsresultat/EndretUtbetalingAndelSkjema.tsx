@@ -271,7 +271,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     <FamilieRadioGruppe
                         legend={<Element>Utbetaling</Element>}
                         erLesevisning={erLesevisning()}
-                        verdi={skjema.felter.periodeSkalUtbetalesTilSøker.verdi ? 'Ja' : 'Nei'}
+                        value={skjema.felter.periodeSkalUtbetalesTilSøker.verdi ? 'Ja' : 'Nei'}
                     >
                         <Radio
                             label={'Perioden skal utbetales'}

@@ -97,7 +97,8 @@ export const JournalpostSkjema: React.FC = () => {
 
             <Knapperekke>
                 <FamilieKnapp
-                    mini={true}
+                    size="small"
+                    variant={'secondary'}
                     erLesevisning={false}
                     onClick={() => navigate(`/oppgaver`)}
                     disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
@@ -105,8 +106,8 @@ export const JournalpostSkjema: React.FC = () => {
                     {erLesevisning() ? tilbakeKnappInnhold : 'Avbryt'}
                 </FamilieKnapp>
                 <FamilieKnapp
-                    mini={true}
-                    type={'hoved'}
+                    size="small"
+                    variant="primary"
                     erLesevisning={erLesevisning()}
                     onClick={journalfør}
                     spinner={skjema.submitRessurs.status === RessursStatus.HENTER}
@@ -116,8 +117,8 @@ export const JournalpostSkjema: React.FC = () => {
                 </FamilieKnapp>
 
                 <FamilieKnapp
-                    mini={true}
-                    type={'hoved'}
+                    size="small"
+                    variant="primary"
                     onClick={lukkOppgaveOgKnyttJournalpostTilBehandling}
                     erLesevisning={!erLesevisning() || !kanKnytteJournalpostTilBehandling()}
                     spinner={skjema.submitRessurs.status === RessursStatus.HENTER}

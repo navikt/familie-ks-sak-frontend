@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import { Feilmelding } from 'nav-frontend-typografi';
 
+import { Button, ErrorMessage } from '@navikt/ds-react';
 import type { ISODateString } from '@navikt/familie-form-elements';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
@@ -14,7 +14,6 @@ import Slett from '../../../../ikoner/Slett';
 import type { IBarnMedOpplysninger } from '../../../../typer/søknad';
 import { datoformatNorsk } from '../../../../utils/formatter';
 import { erIsoStringGyldig } from '../../../../utils/kalender';
-import IkonKnapp, { IkonPosisjon } from '../../../Felleskomponenter/IkonKnapp/IkonKnapp';
 
 interface IProps {
     barn: IBarnMedOpplysninger;
@@ -27,6 +26,9 @@ const Container = styled.div`
 `;
 
 export const StyledFamilieDatovelger = styled(FamilieDatovelger)<{ feil: boolean }>`
+    .nav-datovelger {
+        margin-top: 0.5rem;
+    }
     .nav-datovelger__input {
         border-color: ${({ feil }) => (feil ? navFarger.redError : navFarger.navBla)};
         box-shadow: ${({ feil }) => (feil ? '0 0 0 1px #ba3a26' : '0 0 0 0')};
@@ -50,15 +52,15 @@ const DatovelgerOgSlettknapp = styled.div<{ feil: boolean }>`
     }
 `;
 
-export const StyledFeilmelding = styled(Feilmelding)`
+export const StyledFeilmelding = styled(ErrorMessage)`
     margin-bottom: 1rem;
 `;
 
-const FjernAvtaleKnapp = styled(IkonKnapp)`
+const FjernAvtaleKnapp = styled(Button)`
     margin-left: 1rem;
 `;
 
-const LeggTilAvtaleKnapp = styled(IkonKnapp)`
+const LeggTilAvtaleKnapp = styled(Button)`
     margin: 1rem 0;
 `;
 
@@ -122,11 +124,10 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
                             />
                             {index !== 0 && (
                                 <FjernAvtaleKnapp
-                                    erLesevisning={false}
+                                    variant={'tertiary'}
                                     id={`fjern_avtale__${barn.ident}`}
-                                    mini={true}
-                                    ikon={<Slett />}
-                                    ikonPosisjon={IkonPosisjon.VENSTRE}
+                                    size={'small'}
+                                    icon={<Slett />}
                                     onClick={() => {
                                         avtalerOmDeltBostedPerBarnFelt.validerOgSettFelt({
                                             ...avtalerOmDeltBostedPerBarnFelt.verdi,
@@ -146,8 +147,9 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
                                             ),
                                         });
                                     }}
-                                    label={'Fjern'}
-                                />
+                                >
+                                    {'Fjern'}
+                                </FjernAvtaleKnapp>
                             )}
                         </DatovelgerOgSlettknapp>
 
@@ -158,19 +160,19 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
 
             {barn.merket && (
                 <LeggTilAvtaleKnapp
-                    erLesevisning={false}
+                    variant={'tertiary'}
                     id={`legg_til_avtale__${barn.ident}`}
-                    mini={true}
-                    ikon={<Pluss />}
-                    ikonPosisjon={IkonPosisjon.VENSTRE}
+                    size={'small'}
+                    icon={<Pluss />}
                     onClick={() =>
                         avtalerOmDeltBostedPerBarnFelt.validerOgSettFelt({
                             ...avtalerOmDeltBostedPerBarnFelt.verdi,
                             [barn.ident]: [...avtalerOmDeltBosted, ''],
                         })
                     }
-                    label={'Legg til dato for avtale'}
-                />
+                >
+                    {'Legg til dato for avtale'}
+                </LeggTilAvtaleKnapp>
             )}
         </Container>
     );

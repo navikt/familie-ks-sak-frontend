@@ -92,11 +92,13 @@ const KanSøkeFritekst = ({
                                     erLesevisning={false}
                                     key={`fritekst-${fritekstId}`}
                                     id={`${fritekstId}`}
-                                    textareaClass={'fritekst-textarea'}
+                                    className={'fritekst-textarea'}
                                     value={fritekst.verdi.tekst}
+                                    label={`Kulepunkt ${fritekstId}`}
+                                    hideLabel={true}
                                     maxLength={makslengdeFritekst}
                                     onChange={event => onChangeFritekst(event, fritekstId)}
-                                    feil={skjema.visFeilmeldinger && fritekst.feilmelding}
+                                    error={skjema.visFeilmeldinger && fritekst.feilmelding}
                                     /* eslint-disable-next-line jsx-a11y/no-autofocus */
                                     autoFocus
                                 />

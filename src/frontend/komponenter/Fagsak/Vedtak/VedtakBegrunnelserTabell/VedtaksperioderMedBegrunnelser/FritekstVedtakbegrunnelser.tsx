@@ -174,11 +174,14 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                                             erLesevisning={false}
                                             key={`fritekst-${fritekstId}`}
                                             id={`${fritekstId}`}
-                                            textareaClass={'fritekst-textarea'}
+                                            className={'fritekst-textarea'}
+                                            label={`Kulepunkt ${fritekstId}`}
+                                            hideLabel
+                                            resize
                                             value={fritekst.verdi.tekst}
                                             maxLength={makslengdeFritekst}
                                             onChange={event => onChangeFritekst(event, fritekstId)}
-                                            feil={skjema.visFeilmeldinger && fritekst.feilmelding}
+                                            error={skjema.visFeilmeldinger && fritekst.feilmelding}
                                             /* eslint-disable-next-line jsx-a11y/no-autofocus */
                                             autoFocus
                                         />
@@ -222,9 +225,9 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                             onClick={() => {
                                 putVedtaksperiodeMedFritekster();
                             }}
-                            mini={true}
-                            type={'standard'}
-                            spinner={skjema.submitRessurs.status === RessursStatus.HENTER}
+                            size="small"
+                            variant="secondary"
+                            loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                             disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                         >
                             Lagre
@@ -234,8 +237,8 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                             onClick={() => {
                                 onPanelClose(false);
                             }}
-                            mini={true}
-                            type={'flat'}
+                            size="small"
+                            variant="tertiary"
                         >
                             Avbryt
                         </FamilieKnapp>

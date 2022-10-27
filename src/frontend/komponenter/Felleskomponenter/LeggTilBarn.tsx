@@ -8,7 +8,7 @@ import Lenke from 'nav-frontend-lenker';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { ExternalLink } from '@navikt/ds-icons';
-import { HelpText, BodyLong, Heading } from '@navikt/ds-react';
+import { HelpText, BodyLong, Heading, Button } from '@navikt/ds-react';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
@@ -24,12 +24,7 @@ import type { IBarnMedOpplysninger } from '../../typer/søknad';
 import type { FamilieIsoDate } from '../../utils/kalender';
 import { identValidator } from '../../utils/validators';
 import LeggTilUregistrertBarn from '../Fagsak/Søknad/LeggTilUregistrertBarn';
-import IkonKnapp, { IkonPosisjon } from './IkonKnapp/IkonKnapp';
 import UIModalWrapper from './Modal/UIModalWrapper';
-
-const LeggTilBarnKnapp = styled(IkonKnapp)`
-    margin-left: 1rem;
-`;
 
 const StyledUIModalWrapper = styled(UIModalWrapper)`
     min-height: 20rem !important;
@@ -232,17 +227,17 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
 
     return (
         <>
-            <LeggTilBarnKnapp
+            <Button
                 id={'legg-til-barn'}
-                mini
-                erLesevisning={false}
+                variant={'tertiary'}
+                size={'medium'}
                 onClick={() => {
                     settVisModal(true);
                 }}
-                ikon={<Pluss />}
-                label={'Legg til barn'}
-                ikonPosisjon={IkonPosisjon.VENSTRE}
-            />
+                icon={<Pluss />}
+            >
+                {'Legg til barn'}
+            </Button>
 
             <StyledUIModalWrapper
                 modal={{
@@ -319,7 +314,7 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                         }
                         label={'Fødselsnummer / D-nummer'}
                         placeholder={'11 siffer'}
-                        inputRef={fnrInputRef}
+                        ref={fnrInputRef}
                     />
                     <DrekLenkeContainer>
                         <Lenke
