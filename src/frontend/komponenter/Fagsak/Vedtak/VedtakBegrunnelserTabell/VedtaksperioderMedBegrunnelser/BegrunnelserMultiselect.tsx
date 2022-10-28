@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+import type { GroupBase } from 'react-select';
 import styled from 'styled-components';
 
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-
+import { BodyShort, Label } from '@navikt/ds-react';
 import type {
     ActionMeta,
     FormatOptionLabelMeta,
-    GroupBase,
     ISelectOption,
 } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
@@ -123,18 +122,18 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
                     const type =
                         vedtakBegrunnelseTyper[vedtakBegrunnelseType as VedtakBegrunnelseType];
                     return (
-                        <Normaltekst>
+                        <BodyShort>
                             <b>{type}</b>: {option.label}
-                        </Normaltekst>
+                        </BodyShort>
                     );
                 } else {
-                    return <Normaltekst>{option.label}</Normaltekst>;
+                    return <BodyShort>{option.label}</BodyShort>;
                 }
             }}
             formatGroupLabel={(group: GroupBase<ISelectOption>) => {
                 return (
                     <GroupLabel>
-                        <Element>{group.label}</Element>
+                        <Label>{group.label}</Label>
                         <hr />
                     </GroupLabel>
                 );

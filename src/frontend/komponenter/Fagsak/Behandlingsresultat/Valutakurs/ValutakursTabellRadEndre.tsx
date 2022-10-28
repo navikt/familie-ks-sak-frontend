@@ -230,7 +230,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                             onClick={() => sendInnSkjema()}
                             size="small"
                             variant={valideringErOk() ? 'primary' : 'secondary'}
-                            spinner={skjema.submitRessurs.status === RessursStatus.HENTER}
+                            loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                             disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                         >
                             Ferdig

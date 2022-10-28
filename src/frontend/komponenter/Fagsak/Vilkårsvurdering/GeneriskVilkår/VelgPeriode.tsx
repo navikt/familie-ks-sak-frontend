@@ -4,9 +4,8 @@ import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
-import { Element } from 'nav-frontend-typografi';
 
-import { HelpText } from '@navikt/ds-react';
+import { HelpText, Label } from '@navikt/ds-react';
 import type { ISODateString } from '@navikt/familie-form-elements';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
@@ -34,7 +33,7 @@ const StyledLegend = styled.legend`
     }
 `;
 
-const StyledElement = styled(Element)`
+const StyledLabel = styled(Label)`
     margin-right: 0.5rem;
 `;
 
@@ -73,7 +72,7 @@ const VelgPeriode: React.FC<IProps> = ({
         <MarginSkjemaGruppe feil={visFeilmeldinger ? periode.feilmelding : ''}>
             {!lesevisning && (
                 <StyledLegend>
-                    <StyledElement>Velg periode</StyledElement>
+                    <StyledLabel>Velg periode</StyledLabel>
                     <HelpText title="Hvordan fastsette periode">
                         Oppgi startdato/periode hvor vilkåret er oppfylt/ikke oppfylt.
                         Virkningstidspunktet vil bli beregnet ut fra dette. Dersom vurderingen

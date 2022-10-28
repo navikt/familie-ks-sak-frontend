@@ -207,7 +207,6 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 />
                 <FamilieTextarea
                     erLesevisning={lesevisning}
-                    defaultValue={skjema.felter.begrunnelse.verdi}
                     id={vilkårBegrunnelseFeilmeldingId(vilkårResultat)}
                     label={`Begrunnelse (valgfri)`}
                     className={'begrunnelse-textarea'}

@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import { Knapp } from 'nav-frontend-knapper';
 import { Label, SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { AddCircle, Delete } from '@navikt/ds-icons';
+import { AddCircle, Delete, FileContent } from '@navikt/ds-icons';
 import { Button, Tag } from '@navikt/ds-react';
 import {
     FamilieInput,
@@ -22,7 +21,6 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { useBrevModul } from '../../../../context/BrevModulContext';
 import useDokument from '../../../../hooks/useDokument';
-import { DokumentIkon } from '../../../../ikoner/DokumentIkon';
 import type { IBehandling } from '../../../../typer/behandling';
 import { BehandlingSteg, hentStegNummer } from '../../../../typer/behandling';
 import type { IManueltBrevRequestPåBehandling } from '../../../../typer/dokument';
@@ -35,7 +33,6 @@ import type { IFritekstFelt } from '../../../../utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
 import { FamilieDatovelgerWrapper } from '../../../../utils/skjema/FamilieDatovelgerWrapper';
 import DeltBostedSkjema from '../../../Fagsak/Dokumentutsending/DeltBosted/DeltBostedSkjema';
-import IkonKnapp, { IkonPosisjon } from '../../IkonKnapp/IkonKnapp';
 import Knapperekke from '../../Knapperekke';
 import PdfVisningModal from '../../PdfVisningModal/PdfVisningModal';
 import SkjultLegend from '../../SkjultLegend';
@@ -399,28 +396,31 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 )}
             </SkjemaGruppe>
             <Knapperekke>
-                <IkonKnapp
-                    id={'forhandsvis-vedtaksbrev'}
-                    erLesevisning={erLesevisning()}
-                    label={'Forhåndsvis'}
-                    ikonPosisjon={IkonPosisjon.VENSTRE}
-                    ikon={<DokumentIkon />}
-                    mini={true}
-                    spinner={hentetDokument.status === RessursStatus.HENTER}
-                    disabled={skjemaErLåst}
-                    onClick={() => {
-                        if (kanSendeSkjema()) {
-                            hentForhåndsvisning<IManueltBrevRequestPåBehandling>({
-                                method: 'POST',
-                                data: hentSkjemaData(),
-                                url: `/familie-ks-sak/api/brev/forhåndsvis-brev/${behandlingId}`,
-                            });
-                        }
-                    }}
-                />
-                <Knapp
-                    mini
-                    spinner={skjema.submitRessurs.status === RessursStatus.HENTER}
+                {!erLesevisning() && (
+                    <Button
+                        id={'forhandsvis-vedtaksbrev'}
+                        variant={'tertiary'}
+                        size={'medium'}
+                        icon={<FileContent />}
+                        loading={hentetDokument.status === RessursStatus.HENTER}
+                        disabled={skjemaErLåst}
+                        onClick={() => {
+                            if (kanSendeSkjema()) {
+                                hentForhåndsvisning<IManueltBrevRequestPåBehandling>({
+                                    method: 'POST',
+                                    data: hentSkjemaData(),
+                                    url: `/familie-ks-sak/api/brev/forhåndsvis-brev/${behandlingId}`,
+                                });
+                            }
+                        }}
+                    >
+                        {'Forhåndsvis'}
+                    </Button>
+                )}
+                <Button
+                    variant={'secondary'}
+                    size={'medium'}
+                    loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                     disabled={skjemaErLåst}
                     onClick={() => {
                         if (åpenBehandling.status === RessursStatus.SUKSESS) {
@@ -447,7 +447,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                     }}
                 >
                     Send brev
-                </Knapp>
+                </Button>
             </Knapperekke>
         </div>
     );

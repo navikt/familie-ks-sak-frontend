@@ -29,7 +29,7 @@ const DatoVelgerContainer = styled.div`
 
 const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     .nav-datovelger {
-        padding-top: 0.5rem;
+        padding-top: 0.4rem;
     }
 `;
 

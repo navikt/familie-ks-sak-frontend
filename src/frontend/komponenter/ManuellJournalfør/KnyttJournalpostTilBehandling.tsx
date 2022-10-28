@@ -3,9 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { Undertittel } from 'nav-frontend-typografi';
-
-import { Alert, BodyShort, Checkbox } from '@navikt/ds-react';
+import { Alert, BodyShort, Checkbox, Heading } from '@navikt/ds-react';
 
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
 import type { BehandlingÅrsak } from '../../typer/behandling';
@@ -58,7 +56,9 @@ export const KnyttJournalpostTilBehandling: React.FC = () => {
         <KnyttDiv>
             {!!minimalFagsak?.behandlinger.length && (
                 <>
-                    <Undertittel>Knytt til tidligere behandling(er)</Undertittel>
+                    <Heading size={'small'} level={'2'}>
+                        Knytt til tidligere behandling(er)
+                    </Heading>
                     <table className="tabell">
                         <thead className="tabell__head">
                             <tr className="tabell__head__tr">

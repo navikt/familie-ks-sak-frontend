@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { Delete } from '@navikt/ds-icons';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Button } from '@navikt/ds-react';
 import {
     FamilieKnapp,
     FamilieReactSelect,
@@ -30,7 +30,6 @@ import {
     søkersAktiviteter,
 } from '../../../../typer/eøsPerioder';
 import { ToggleNavn } from '../../../../typer/toggles';
-import IkonKnapp, { IkonPosisjon } from '../../../Felleskomponenter/IkonKnapp/IkonKnapp';
 import EøsPeriodeSkjema from '../EøsPeriode/EøsPeriodeSkjema';
 import { FamilieLandvelger } from '../EøsPeriode/FamilieLandvelger';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsPeriode/fellesKomponenter';
@@ -51,6 +50,14 @@ interface IProps {
 
 const StyledAlert = styled(Alert)`
     margin-bottom: 1.5rem;
+`;
+
+const StyledFamilieLandvelger = styled(FamilieLandvelger)`
+    margin-top: 1.5rem;
+`;
+
+const StyledFamilieSelect = styled(FamilieSelect)`
+    margin-top: 1.5rem;
 `;
 
 const KompetanseTabellRadEndre: React.FC<IProps> = ({
@@ -128,7 +135,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                         );
                     })}
                 </FamilieSelect>
-                <FamilieSelect
+                <StyledFamilieSelect
                     className="unset-margin-bottom"
                     {...skjema.felter.annenForeldersAktivitet.hentNavInputProps(
                         skjema.visFeilmeldinger
@@ -155,14 +162,14 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                             </option>
                         );
                     })}
-                </FamilieSelect>
+                </StyledFamilieSelect>
                 {skjema.felter.annenForeldersAktivitet.verdi ===
                     AnnenForelderAktivitet.IKKE_AKTUELT && (
                     <StyledAlert variant="info" size="small" inline>
                         Søker har enten aleneomsorg for egne barn eller forsørger andre barn
                     </StyledAlert>
                 )}
-                <FamilieLandvelger
+                <StyledFamilieLandvelger
                     erLesevisning={lesevisning}
                     id={'søkersAktivitetsland'}
                     label={'Søkers aktivitetsland'}
@@ -298,20 +305,20 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                         </FamilieKnapp>
                     </div>
 
-                    {skjema.felter.status.verdi !== EøsPeriodeStatus.IKKE_UTFYLT && (
-                        <IkonKnapp
-                            erLesevisning={lesevisning}
+                    {skjema.felter.status.verdi !== EøsPeriodeStatus.IKKE_UTFYLT && !lesevisning && (
+                        <Button
+                            variant={'tertiary'}
                             onClick={() => slettKompetanse()}
                             id={`slett_kompetanse_${skjema.felter.barnIdenter.verdi.map(
                                 barn => `${barn}-`
                             )}_${skjema.felter.initielFom.verdi}`}
-                            spinner={skjema.submitRessurs.status === RessursStatus.HENTER}
+                            loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                             disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
-                            mini={true}
-                            label={'Fjern'}
-                            ikonPosisjon={IkonPosisjon.VENSTRE}
-                            ikon={<Delete />}
-                        />
+                            size={'small'}
+                            icon={<Delete />}
+                        >
+                            {'Fjern'}
+                        </Button>
                     )}
                 </Knapperad>
             </EøsPeriodeSkjemaContainer>

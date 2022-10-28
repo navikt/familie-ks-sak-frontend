@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import { Normaltekst } from 'nav-frontend-typografi';
 
+import { BodyShort } from '@navikt/ds-react';
 import { FamilieDatovelger, FamilieSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 
@@ -33,12 +33,25 @@ const FixedDatoVelger = styled(FamilieDatovelger)`
     .nav-datovelger__kalenderknapp {
         z-index: 0;
     }
+    margin-top: 2rem;
 `;
 
-const FeltFeilmelding = styled(Normaltekst)`
+const FeltFeilmelding = styled(BodyShort)`
     margin-top: 0.5rem;
     font-weight: 600;
     color: ${navFarger.redError};
+`;
+
+const StyledFamilieSelect = styled(FamilieSelect)`
+    label {
+        margin-top: 2rem;
+    }
+`;
+
+const StyledBehandlingstemaSelect = styled(BehandlingstemaSelect)`
+    label {
+        margin-top: 2rem;
+    }
 `;
 
 interface IProps {
@@ -139,7 +152,7 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
             </FamilieSelect>
 
             {behandlingsårsak.erSynlig && (
-                <FamilieSelect
+                <StyledFamilieSelect
                     {...behandlingsårsak.hentNavBaseSkjemaProps(visFeilmeldinger)}
                     erLesevisning={erLesevisning}
                     name={'Behandlingsårsak'}
@@ -169,11 +182,11 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                                 </option>
                             );
                         })}
-                </FamilieSelect>
+                </StyledFamilieSelect>
             )}
 
             {behandlingstema.erSynlig && (
-                <BehandlingstemaSelect
+                <StyledBehandlingstemaSelect
                     behandlingstema={behandlingstema}
                     erLesevisning={erLesevisning}
                     visFeilmeldinger={visFeilmeldinger}

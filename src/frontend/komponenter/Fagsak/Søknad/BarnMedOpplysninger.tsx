@@ -4,17 +4,13 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { Knapp } from 'nav-frontend-knapper';
-import { Normaltekst } from 'nav-frontend-typografi';
-
-import { BodyShort, Checkbox } from '@navikt/ds-react';
+import { BodyShort, Button, Checkbox } from '@navikt/ds-react';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useSøknad } from '../../../context/SøknadContext';
 import Slett from '../../../ikoner/Slett';
 import type { IBarnMedOpplysninger } from '../../../typer/søknad';
 import { formaterIdent, hentAlderSomString } from '../../../utils/formatter';
-import IkonKnapp, { IkonPosisjon } from '../../Felleskomponenter/IkonKnapp/IkonKnapp';
 import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
 
 interface IProps {
@@ -44,7 +40,7 @@ const LabelTekst = styled.p`
     overflow: hidden;
 `;
 
-const FjernBarnKnapp = styled(IkonKnapp)`
+const FjernBarnKnapp = styled(Button)`
     margin-left: 1rem;
 `;
 
@@ -110,13 +106,12 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                     </LabelContent>
                 </StyledCheckbox>
             )}
-            {barn.manueltRegistrert && (
+            {barn.manueltRegistrert && !erLesevisning() && (
                 <FjernBarnKnapp
-                    erLesevisning={erLesevisning()}
+                    variant={'tertiary'}
                     id={`fjern__${barn.ident}`}
-                    mini={true}
-                    ikon={<Slett />}
-                    ikonPosisjon={IkonPosisjon.VENSTRE}
+                    size={'small'}
+                    icon={<Slett />}
                     onClick={() => {
                         skjema.felter.barnaMedOpplysninger.validerOgSettFelt([
                             ...skjema.felter.barnaMedOpplysninger.verdi.filter(
@@ -127,8 +122,9 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                             ),
                         ]);
                     }}
-                    label={'Fjern barn'}
-                />
+                >
+                    {'Fjern barn'}
+                </FjernBarnKnapp>
             )}
             <UIModalWrapper
                 modal={{
@@ -136,17 +132,19 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                     lukkKnapp: true,
                     visModal: visHarLøpendeModal,
                     actions: [
-                        <Knapp
+                        <Button
+                            variant={'secondary'}
                             key={'avbryt'}
-                            mini={true}
+                            size={'small'}
                             onClick={() => {
                                 settVisHarLøpendeModal(false);
                             }}
                             children={'Avbryt'}
                         />,
-                        <Knapp
+                        <Button
+                            variant={'secondary'}
                             key={'velg-barnet'}
-                            mini={true}
+                            size={'small'}
                             onClick={() => {
                                 settVisHarLøpendeModal(false);
                                 oppdaterBarnMerket(true);
@@ -156,10 +154,10 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                     ],
                 }}
             >
-                <Normaltekst>
+                <BodyShort>
                     Barnet ({formaterIdent(barn.ident)}) har løpende barnetrygd. Du skal kun velge
                     barn som det ikke utbetales barnetrygd for.
-                </Normaltekst>
+                </BodyShort>
             </UIModalWrapper>
         </CheckboxOgSlettknapp>
     );

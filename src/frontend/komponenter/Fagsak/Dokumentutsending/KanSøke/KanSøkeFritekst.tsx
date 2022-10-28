@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Label, SkjemaGruppe } from 'nav-frontend-skjema';
 
+import { Button } from '@navikt/ds-react';
 import { FamilieTextarea } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
 
@@ -16,8 +17,6 @@ import {
     lagInitiellFritekst,
 } from '../../../../utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
-import IkonKnapp, { IkonPosisjon } from '../../../Felleskomponenter/IkonKnapp/IkonKnapp';
-import SkjultLegend from '../../../Felleskomponenter/SkjultLegend';
 
 const StyledFamilieFritekstFelt = styled.div`
     display: flex;
@@ -34,7 +33,7 @@ const FamilieTextareaBegrunnelseFritekst = styled(FamilieTextarea)`
     }
 `;
 
-const SletteKnapp = styled(IkonKnapp)`
+const SletteKnapp = styled(Button)`
     margin-left: 0.5rem;
     height: 2.75rem;
 `;
@@ -87,7 +86,6 @@ const KanSøkeFritekst = ({
 
                         return (
                             <StyledFamilieFritekstFelt key={`fritekst-${fritekstId}`}>
-                                <SkjultLegend>{`Kulepunkt ${fritekstId}`}</SkjultLegend>
                                 <FamilieTextareaBegrunnelseFritekst
                                     erLesevisning={false}
                                     key={`fritekst-${fritekstId}`}
@@ -104,7 +102,7 @@ const KanSøkeFritekst = ({
                                 />
 
                                 <SletteKnapp
-                                    erLesevisning={false}
+                                    variant={'tertiary'}
                                     onClick={() => {
                                         friteksterFelt.validerOgSettFelt([
                                             ...friteksterFelt.verdi.filter(
@@ -114,26 +112,28 @@ const KanSøkeFritekst = ({
                                         ]);
                                     }}
                                     id={`fjern_fritekst-${fritekstId}`}
-                                    mini={true}
-                                    label={'Fjern'}
+                                    size={'small'}
                                     aria-label={'Fjern fritekst'}
-                                    ikon={<Slett />}
-                                />
+                                    icon={<Slett />}
+                                    iconPosition={'right'}
+                                >
+                                    {'Fjern'}
+                                </SletteKnapp>
                             </StyledFamilieFritekstFelt>
                         );
                     })}
                 </SkjemaGruppe>
 
                 {!erMaksAntallKulepunkter && (
-                    <IkonKnapp
+                    <Button
+                        variant={'tertiary'}
                         onClick={leggTilFritekst}
                         id={`legg-til-fritekst`}
-                        ikon={<Pluss />}
-                        ikonPosisjon={IkonPosisjon.VENSTRE}
-                        label={'Legg til fritekst'}
-                        mini={true}
-                        erLesevisning={false}
-                    />
+                        size={'small'}
+                        icon={<Pluss />}
+                    >
+                        {'Legg til fritekst'}
+                    </Button>
                 )}
             </>
         </>

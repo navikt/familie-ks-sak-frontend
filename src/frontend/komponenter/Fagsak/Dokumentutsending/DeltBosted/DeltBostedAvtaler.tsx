@@ -52,7 +52,7 @@ const DatovelgerOgSlettknapp = styled.div<{ feil: boolean }>`
     }
 `;
 
-export const StyledFeilmelding = styled(ErrorMessage)`
+export const StyledErrorMessage = styled(ErrorMessage)`
     margin-bottom: 1rem;
 `;
 
@@ -153,7 +153,7 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
                             )}
                         </DatovelgerOgSlettknapp>
 
-                        {feilmelding && <StyledFeilmelding>{feilmelding}</StyledFeilmelding>}
+                        {feilmelding && <StyledErrorMessage>{feilmelding}</StyledErrorMessage>}
                     </div>
                 );
             })}
