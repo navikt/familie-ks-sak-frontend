@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Xknapp } from 'nav-frontend-ikonknapper';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 
-import { Alert } from '@navikt/ds-react';
+import { Alert, BodyShort } from '@navikt/ds-react';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { useTidslinje } from '../../../context/TidslinjeContext';
@@ -199,26 +199,26 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                                     return (
                                         <tr key={index}>
                                             <td>
-                                                <Normaltekst>{`${
+                                                <BodyShort>{`${
                                                     detalj.person.navn
                                                 } (${hentAlderSomString(
                                                     detalj.person.fødselsdato
                                                 )}) | ${formaterIdent(
                                                     detalj.person.personIdent
-                                                )}`}</Normaltekst>
+                                                )}`}</BodyShort>
                                             </td>
                                             <td>
-                                                <Normaltekst>
+                                                <BodyShort>
                                                     {ytelsetype[detalj.ytelseType].navn}
-                                                </Normaltekst>
+                                                </BodyShort>
                                             </td>
                                             <TableDataAlignedRight>
                                                 {utbetalingsBeløpStatusMap.get(
                                                     detalj.person.personIdent
                                                 ) ? (
-                                                    <Normaltekst>
+                                                    <BodyShort>
                                                         {formaterBeløp(detalj.utbetaltPerMnd)}
-                                                    </Normaltekst>
+                                                    </BodyShort>
                                                 ) : (
                                                     <AlertAlignedRight
                                                         variant="warning"

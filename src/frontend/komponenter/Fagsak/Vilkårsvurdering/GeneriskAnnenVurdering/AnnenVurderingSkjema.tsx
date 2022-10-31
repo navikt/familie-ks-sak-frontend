@@ -5,11 +5,7 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { Radio, SkjemaGruppe } from 'nav-frontend-skjema';
 
-import {
-    FamilieKnapp,
-    FamilieRadioGruppe,
-    FamilieTextareaControlled,
-} from '@navikt/familie-form-elements';
+import { FamilieKnapp, FamilieRadioGruppe, FamilieTextarea } from '@navikt/familie-form-elements';
 
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../typer/vilkår';
@@ -57,13 +53,13 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
             <Container>
                 <FamilieRadioGruppe
                     erLesevisning={lesevinsing}
-                    verdi={resultater[skjema.felter.resultat.verdi]}
+                    value={resultater[skjema.felter.resultat.verdi]}
                     legend={
                         annenVurderingConfig.spørsmål
                             ? annenVurderingConfig.spørsmål(person.type.toLowerCase())
                             : annenVurderingConfig.beskrivelse
                     }
-                    feil={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
+                    error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
                 >
                     <Radio
                         label={'Ja'}
@@ -81,17 +77,17 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
                     />
                 </FamilieRadioGruppe>
 
-                <FamilieTextareaControlled
+                <FamilieTextarea
                     tekstLesevisning={''}
                     erLesevisning={lesevinsing}
                     defaultValue={skjema.felter.begrunnelse.verdi}
                     id={annenVurderingBegrunnelseFeilmeldingId(annenVurdering)}
                     label={'Begrunnelse (valgfri)'}
-                    textareaClass={'begrunnelse-textarea'}
+                    className={'begrunnelse-textarea'}
                     placeholder={'Begrunn hvorfor det er gjort endringer på annen vurdering'}
                     value={skjema.felter.begrunnelse.verdi}
-                    feil={skjema.visFeilmeldinger ? skjema.felter.begrunnelse.feilmelding : ''}
-                    onBlur={(event: React.FocusEvent<HTMLTextAreaElement>) => {
+                    error={skjema.visFeilmeldinger ? skjema.felter.begrunnelse.feilmelding : ''}
+                    onChange={(event: React.FocusEvent<HTMLTextAreaElement>) => {
                         skjema.felter.begrunnelse.validerOgSettFelt(event.target.value);
                     }}
                 />
@@ -101,9 +97,9 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
                         <FamilieKnapp
                             erLesevisning={lesevinsing}
                             onClick={lagreAnnenVurdering}
-                            mini={true}
-                            type={'standard'}
-                            spinner={lagrerAnnenVurdering}
+                            size="small"
+                            variant="secondary"
+                            loading={lagrerAnnenVurdering}
                             disabled={lagrerAnnenVurdering}
                         >
                             Ferdig
@@ -112,8 +108,8 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
                             style={{ marginLeft: '1rem' }}
                             erLesevisning={lesevinsing}
                             onClick={() => toggleForm(false)}
-                            mini={true}
-                            type={'flat'}
+                            size="small"
+                            variant="tertiary"
                         >
                             Avbryt
                         </FamilieKnapp>

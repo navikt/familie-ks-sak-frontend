@@ -2,9 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import styled from 'styled-components';
 
-import { Normaltekst } from 'nav-frontend-typografi';
-
-import { Alert, Button } from '@navikt/ds-react';
+import { Alert, BodyShort, Button } from '@navikt/ds-react';
 import type { ISaksbehandler } from '@navikt/familie-typer';
 
 import { useApp } from '../../context/AppContext';
@@ -19,7 +17,7 @@ interface IOppgavelisteSaksbehandler {
     innloggetSaksbehandler?: ISaksbehandler;
 }
 
-const StyledNormaltekst = styled(Normaltekst)`
+const StyledNormaltekst = styled(BodyShort)`
     width: 5rem;
     margin-right: 2.5rem;
     text-align: left;

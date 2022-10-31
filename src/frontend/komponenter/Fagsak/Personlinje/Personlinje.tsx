@@ -1,9 +1,8 @@
 import React from 'react';
 
 import Lenke from 'nav-frontend-lenker';
-import { Normaltekst } from 'nav-frontend-typografi';
 
-import { Tag } from '@navikt/ds-react';
+import { BodyShort, Tag } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
 import Visittkort from '@navikt/familie-visittkort';
 
@@ -35,7 +34,7 @@ const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
             kjønn={bruker?.kjønn ?? kjønnType.UKJENT}
         >
             <div className="visittkort__pipe">|</div>
-            <Normaltekst>{`Kommunenr: ${bruker?.kommunenummer ?? 'ukjent'}`}</Normaltekst>
+            <BodyShort>{`Kommunenr: ${bruker?.kommunenummer ?? 'ukjent'}`}</BodyShort>
             {bruker?.dødsfallDato?.length && (
                 <>
                     <div className="visittkort__pipe"></div>
@@ -61,13 +60,13 @@ const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
                         className={'visittkort__lenke'}
                         href={`/fagsak/${minimalFagsak.id}/saksoversikt`}
                     >
-                        <Normaltekst>Saksoversikt</Normaltekst>
+                        <BodyShort>Saksoversikt</BodyShort>
                     </Lenke>
                     <Lenke
                         className={'visittkort__lenke'}
                         href={`/fagsak/${minimalFagsak.id}/dokumenter`}
                     >
-                        <Normaltekst>Dokumenter</Normaltekst>
+                        <BodyShort>Dokumenter</BodyShort>
                     </Lenke>
                     {harInnloggetSaksbehandlerSkrivetilgang() && (
                         <Behandlingsmeny bruker={bruker} minimalFagsak={minimalFagsak} />
