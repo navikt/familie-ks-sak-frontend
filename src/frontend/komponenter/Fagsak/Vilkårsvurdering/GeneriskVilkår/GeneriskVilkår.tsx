@@ -93,9 +93,9 @@ const GeneriskVilkår: React.FC<IProps> = ({
                         loading={vilkårsvurderingApi.oppretterVilkår}
                         disabled={vilkårsvurderingApi.oppretterVilkår}
                         variant="tertiary"
-                        size="small"
+                        size="medium"
+                        icon={<AddCircle />}
                     >
-                        <AddCircle />
                         Legg til periode
                     </UtførKnapp>
                 )}
