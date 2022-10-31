@@ -98,7 +98,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
     }, [forrigeÅpneSide]);
 
     const kanGåVidereILesevisning = behandlingErEtterSteg(
-        BehandlingSteg.VURDER_TILBAKEKREVING,
+        BehandlingSteg.SIMULERING,
         hentDataFraRessurs(åpenBehandling)
     );
     return (
