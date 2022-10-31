@@ -4,7 +4,8 @@ import classNames from 'classnames';
 
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import Panel from 'nav-frontend-paneler';
-import { Normaltekst } from 'nav-frontend-typografi';
+
+import { BodyShort } from '@navikt/ds-react';
 
 import { BehandlingStatus } from '../../../typer/behandling';
 import type { IBehandlingstema } from '../../../typer/behandlingstema';
@@ -30,20 +31,20 @@ const Innholdstabell: React.FC<IInnholdstabell> = ({ minimalFagsak }) => {
             <thead>
                 <tr>
                     <th>
-                        <Normaltekst>Behandlingstema</Normaltekst>
+                        <BodyShort>Behandlingstema</BodyShort>
                     </th>
                     <th>
-                        <Normaltekst>Status</Normaltekst>
+                        <BodyShort>Status</BodyShort>
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>
-                        <Normaltekst>{behandlingstema ? behandlingstema.navn : '-'}</Normaltekst>
+                        <BodyShort>{behandlingstema ? behandlingstema.navn : '-'}</BodyShort>
                     </td>
                     <td>
-                        <Normaltekst>{hentFagsakStatusVisning(minimalFagsak)}</Normaltekst>
+                        <BodyShort>{hentFagsakStatusVisning(minimalFagsak)}</BodyShort>
                     </td>
                 </tr>
             </tbody>

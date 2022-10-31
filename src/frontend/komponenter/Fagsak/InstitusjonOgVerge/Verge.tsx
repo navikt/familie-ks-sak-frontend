@@ -48,9 +48,9 @@ const Verge: React.FunctionComponent<IProps> = ({ erLesevisning }) => {
                     });
                 }}
                 children={'Hent informasjon fra folkeregisteret'}
-                spinner={spinner}
-                mini={true}
-                kompakt={true}
+                loading={spinner}
+                size="small"
+                variant="secondary"
                 erLesevisning={false}
             />
             <StyledFamilieInput
@@ -72,7 +72,7 @@ const Verge: React.FunctionComponent<IProps> = ({ erLesevisning }) => {
                 erLesevisning={true}
                 id={'verge-postnummer'}
                 label={'Postnummer'}
-                bredde={'S'}
+                size={'small'}
                 tekstLesevisning={''}
             />
             <StyledFamilieInput

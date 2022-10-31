@@ -1,10 +1,11 @@
 import React from 'react';
 
+import classNames from 'classnames';
 import styled from 'styled-components';
 
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { FamilieCheckbox } from '@navikt/familie-form-elements';
+import { BodyShort, Checkbox } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
@@ -45,14 +46,24 @@ const AvslagSkjema: React.FC<IProps> = ({
 
     return (
         <MarginSkjemaGruppe feil={visFeilmeldinger ? avslagBegrunnelser.feilmelding : ''}>
-            <FamilieCheckbox
-                erLesevisning={lesevisning}
-                label={'Vurderingen er et avslag'}
-                checked={erEksplisittAvslagPåSøknad.verdi}
-                onChange={event =>
-                    erEksplisittAvslagPåSøknad.validerOgSettFelt(event.target.checked)
-                }
-            />
+            {lesevisning ? (
+                erEksplisittAvslagPåSøknad.verdi && (
+                    <BodyShort
+                        className={classNames('skjemaelement', 'lese-felt')}
+                        children={'Vurderingen er et avslag'}
+                    />
+                )
+            ) : (
+                <Checkbox
+                    value={'Vurderingen er et avslag'}
+                    checked={erEksplisittAvslagPåSøknad.verdi}
+                    onChange={event =>
+                        erEksplisittAvslagPåSøknad.validerOgSettFelt(event.target.checked)
+                    }
+                >
+                    {'Vurderingen er et avslag'}
+                </Checkbox>
+            )}
             {erEksplisittAvslagPåSøknad.verdi && (
                 <VedtaksbegrunnelseTeksterProvider>
                     <AvslagBegrunnelseMultiselect

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Feiloppsummering } from 'nav-frontend-skjema';
-import { Undertittel } from 'nav-frontend-typografi';
 
 import { Back } from '@navikt/ds-icons';
 import { Alert, Heading } from '@navikt/ds-react';
@@ -69,11 +68,11 @@ export const JournalpostSkjema: React.FC = () => {
             )}
             <Journalpost />
             <StyledSectionDiv>
-                <Undertittel children={'Dokumenter'} />
+                <Heading size={'small'} level={'2'} children={'Dokumenter'} />
                 <Dokumenter />
             </StyledSectionDiv>
             <StyledSectionDiv>
-                <Undertittel children={'Bruker og avsender'} />
+                <Heading size={'small'} level={'2'} children={'Bruker og avsender'} />
                 <BrukerPanel />
                 <br />
                 <AvsenderPanel />
@@ -97,7 +96,8 @@ export const JournalpostSkjema: React.FC = () => {
 
             <Knapperekke>
                 <FamilieKnapp
-                    mini={true}
+                    size="small"
+                    variant={'secondary'}
                     erLesevisning={false}
                     onClick={() => navigate(`/oppgaver`)}
                     disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
@@ -105,8 +105,8 @@ export const JournalpostSkjema: React.FC = () => {
                     {erLesevisning() ? tilbakeKnappInnhold : 'Avbryt'}
                 </FamilieKnapp>
                 <FamilieKnapp
-                    mini={true}
-                    type={'hoved'}
+                    size="small"
+                    variant="primary"
                     erLesevisning={erLesevisning()}
                     onClick={journalfør}
                     spinner={skjema.submitRessurs.status === RessursStatus.HENTER}
@@ -116,8 +116,8 @@ export const JournalpostSkjema: React.FC = () => {
                 </FamilieKnapp>
 
                 <FamilieKnapp
-                    mini={true}
-                    type={'hoved'}
+                    size="small"
+                    variant="primary"
                     onClick={lukkOppgaveOgKnyttJournalpostTilBehandling}
                     erLesevisning={!erLesevisning() || !kanKnytteJournalpostTilBehandling()}
                     spinner={skjema.submitRessurs.status === RessursStatus.HENTER}

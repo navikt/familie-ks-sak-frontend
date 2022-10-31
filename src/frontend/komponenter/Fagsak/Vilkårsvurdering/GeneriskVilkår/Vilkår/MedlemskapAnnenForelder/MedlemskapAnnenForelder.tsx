@@ -34,7 +34,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
         >
             <FamilieRadioGruppe
                 legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål() : ''}
-                feil={
+                error={
                     vilkårSkjemaContext.skjema.visFeilmeldinger
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
                         : ''

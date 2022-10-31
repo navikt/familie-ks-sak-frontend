@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Radio, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { Delete } from '@navikt/ds-icons';
+import { Button, Label } from '@navikt/ds-react';
 import {
     NavdsSemanticColorBorderMuted,
     NavdsSemanticColorFeedbackWarningBorder,
@@ -15,7 +16,7 @@ import {
     FamilieKnapp,
     FamilieRadioGruppe,
     FamilieSelect,
-    FamilieTextareaControlled,
+    FamilieTextarea,
 } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -25,7 +26,6 @@ import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IVilkårConfig, IVilkårResultat, Regelverk } from '../../../../typer/vilkår';
 import { Resultat, resultater } from '../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../utils/vilkår';
-import IkonKnapp, { IkonPosisjon } from '../../../Felleskomponenter/IkonKnapp/IkonKnapp';
 import AvslagSkjema from './AvslagSkjema';
 import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
 import VelgPeriode from './VelgPeriode';
@@ -59,6 +59,15 @@ const Knapperad = styled.div`
     display: flex;
     justify-content: space-between;
     margin: 1rem 0;
+`;
+
+const StyledFamilieRadioGruppe = styled(FamilieRadioGruppe)`
+    && {
+        margin: 1rem 0;
+        legend {
+            margin-bottom: 0rem;
+        }
+    }
 `;
 
 export interface IVilkårSkjemaBaseProps {
@@ -136,15 +145,17 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     </FamilieSelect>
                 )}
                 {visSpørsmål && (
-                    <FamilieRadioGruppe
+                    <StyledFamilieRadioGruppe
                         erLesevisning={lesevisning}
-                        verdi={resultater[skjema.felter.resultat.verdi]}
+                        value={resultater[skjema.felter.resultat.verdi]}
                         legend={
-                            vilkårFraConfig.spørsmål
-                                ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
-                                : ''
+                            <Label>
+                                {vilkårFraConfig.spørsmål
+                                    ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
+                                    : ''}
+                            </Label>
                         }
-                        feil={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
+                        error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
                     >
                         <Radio
                             label={'Ja'}
@@ -162,7 +173,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                                 skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)
                             }
                         />
-                    </FamilieRadioGruppe>
+                    </StyledFamilieRadioGruppe>
                 )}
                 {children}
                 <UtdypendeVilkårsvurderingMultiselect
@@ -194,17 +205,15 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     visFeilmeldinger={skjema.visFeilmeldinger}
                     children={periodeChildren}
                 />
-                <FamilieTextareaControlled
-                    tekstLesevisning={''}
+                <FamilieTextarea
                     erLesevisning={lesevisning}
-                    defaultValue={skjema.felter.begrunnelse.verdi}
                     id={vilkårBegrunnelseFeilmeldingId(vilkårResultat)}
                     label={`Begrunnelse (valgfri)`}
-                    textareaClass={'begrunnelse-textarea'}
+                    className={'begrunnelse-textarea'}
                     placeholder={'Begrunn hvorfor det er gjort endringer på vilkåret.'}
                     value={skjema.felter.begrunnelse.verdi}
-                    feil={skjema.visFeilmeldinger ? skjema.felter.begrunnelse.feilmelding : ''}
-                    onBlur={(event: React.FocusEvent<HTMLTextAreaElement>) => {
+                    error={skjema.visFeilmeldinger ? skjema.felter.begrunnelse.feilmelding : ''}
+                    onChange={(event: React.FocusEvent<HTMLTextAreaElement>) => {
                         skjema.felter.begrunnelse.validerOgSettFelt(event.target.value);
                     }}
                 />
@@ -213,9 +222,9 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         <FamilieKnapp
                             erLesevisning={lesevisning}
                             onClick={lagreVilkår}
-                            mini={true}
-                            type={'standard'}
-                            spinner={lagrerVilkår}
+                            size="medium"
+                            variant="secondary"
+                            loading={lagrerVilkår}
                             disabled={lagrerVilkår}
                         >
                             Ferdig
@@ -224,24 +233,26 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                             style={{ marginLeft: '1rem' }}
                             erLesevisning={lesevisning}
                             onClick={() => toggleForm(false)}
-                            mini={true}
-                            type={'flat'}
+                            size="medium"
+                            variant="tertiary"
                         >
                             Avbryt
                         </FamilieKnapp>
                     </div>
 
-                    <IkonKnapp
-                        erLesevisning={lesevisning}
-                        onClick={() => slettVilkår(person.personIdent, vilkårResultat.id)}
-                        id={vilkårFeilmeldingId(vilkårResultat)}
-                        spinner={sletterVilkår}
-                        disabled={sletterVilkår}
-                        mini={true}
-                        label={'Fjern'}
-                        ikonPosisjon={IkonPosisjon.VENSTRE}
-                        ikon={<Delete />}
-                    />
+                    {!lesevisning && (
+                        <Button
+                            onClick={() => slettVilkår(person.personIdent, vilkårResultat.id)}
+                            id={vilkårFeilmeldingId(vilkårResultat)}
+                            loading={sletterVilkår}
+                            disabled={sletterVilkår}
+                            size={'medium'}
+                            variant={'tertiary'}
+                            icon={<Delete />}
+                        >
+                            {'Fjern'}
+                        </Button>
+                    )}
                 </Knapperad>
             </Container>
         </SkjemaGruppe>
