@@ -41,8 +41,8 @@ const AvslagSkjema: React.FC<IProps> = ({
     avslagBegrunnelser,
     visFeilmeldinger,
 }) => {
-    const { erLesevisning } = useBehandling();
-    const lesevisning = erLesevisning();
+    const { vurderErLesevisning } = useBehandling();
+    const lesevisning = vurderErLesevisning();
 
     return (
         <MarginSkjemaGruppe feil={visFeilmeldinger ? avslagBegrunnelser.feilmelding : ''}>

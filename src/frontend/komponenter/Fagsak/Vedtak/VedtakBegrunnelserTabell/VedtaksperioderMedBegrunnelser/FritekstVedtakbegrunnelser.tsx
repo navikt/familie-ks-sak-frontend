@@ -82,7 +82,7 @@ const ItalicText = styled(BodyLong)`
 `;
 
 const FritekstVedtakbegrunnelser: React.FC = () => {
-    const { erLesevisning, søkersMålform } = useBehandling();
+    const { vurderErLesevisning, søkersMålform } = useBehandling();
     const {
         skjema,
         leggTilFritekst,
@@ -148,7 +148,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                 </StyledTag>
             </InfoBoks>
 
-            {erLesevisning() ? (
+            {vurderErLesevisning() ? (
                 <StyledList id={skjemaGruppeId}>
                     {skjema.felter.fritekster.verdi.map((fritekst: FeltState<IFritekstFelt>) => (
                         <li>{fritekst.verdi.tekst}</li>
@@ -207,7 +207,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                             }
                         )}
                     </SkjemaGruppe>
-                    {!erMaksAntallKulepunkter && !erLesevisning() && (
+                    {!erMaksAntallKulepunkter && !vurderErLesevisning() && (
                         <Button
                             variant={'tertiary'}
                             onClick={leggTilFritekst}
@@ -220,7 +220,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                     )}
                     <Knapperekke>
                         <FamilieKnapp
-                            erLesevisning={erLesevisning()}
+                            erLesevisning={vurderErLesevisning()}
                             onClick={() => {
                                 putVedtaksperiodeMedFritekster();
                             }}
@@ -232,7 +232,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                             Lagre
                         </FamilieKnapp>
                         <FamilieKnapp
-                            erLesevisning={erLesevisning()}
+                            erLesevisning={vurderErLesevisning()}
                             onClick={() => {
                                 onPanelClose(false);
                             }}
@@ -245,7 +245,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                 </>
             )}
         </FritekstContainer>
-    ) : !erLesevisning() ? (
+    ) : !vurderErLesevisning() ? (
         <Button
             variant={'tertiary'}
             onClick={leggTilFritekst}

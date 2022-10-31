@@ -65,8 +65,8 @@ const VelgPeriode: React.FC<IProps> = ({
     vilkår,
     children,
 }) => {
-    const { erLesevisning } = useBehandling();
-    const lesevisning = erLesevisning();
+    const { vurderErLesevisning } = useBehandling();
+    const lesevisning = vurderErLesevisning();
 
     return (
         <MarginSkjemaGruppe feil={visFeilmeldinger ? periode.feilmelding : ''}>

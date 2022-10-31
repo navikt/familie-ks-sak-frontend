@@ -106,8 +106,8 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
     toggleForm,
     slettUtenlandskPeriodeBeløp,
 }) => {
-    const { erLesevisning } = useBehandling();
-    const lesevisning = erLesevisning(true);
+    const { vurderErLesevisning } = useBehandling();
+    const lesevisning = vurderErLesevisning(true);
 
     const visUtbetaltBeløpGruppeFeilmelding = (): React.ReactNode => {
         if (skjema.felter.beløp?.valideringsstatus === Valideringsstatus.FEIL) {

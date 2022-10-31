@@ -26,7 +26,7 @@ const StyledSkjemasteg = styled(Skjemasteg)`
 `;
 
 const RegistrerSøknad: React.FC = () => {
-    const { erLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandling();
 
     const {
         hentFeilTilOppsummering,
@@ -44,11 +44,11 @@ const RegistrerSøknad: React.FC = () => {
             nesteOnClick={() => {
                 nesteAction(false);
             }}
-            nesteKnappTittel={erLesevisning() ? 'Neste' : 'Bekreft og fortsett'}
+            nesteKnappTittel={vurderErLesevisning() ? 'Neste' : 'Bekreft og fortsett'}
             senderInn={skjema.submitRessurs.status === RessursStatus.HENTER}
             steg={BehandlingSteg.REGISTRERE_SØKNAD}
         >
-            {søknadErLastetFraBackend && !erLesevisning() && (
+            {søknadErLastetFraBackend && !vurderErLesevisning() && (
                 <>
                     <br />
                     <Alert
@@ -66,7 +66,7 @@ const RegistrerSøknad: React.FC = () => {
             <MålformVelger
                 målformFelt={skjema.felter.målform}
                 visFeilmeldinger={skjema.visFeilmeldinger}
-                erLesevisning={erLesevisning()}
+                erLesevisning={vurderErLesevisning()}
             />
 
             <Annet />
