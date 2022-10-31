@@ -34,7 +34,7 @@ const IndentertInnhold = styled.div`
 
 const VilkårsvurderingSkjema: React.FunctionComponent = () => {
     const { vilkårsvurdering } = useVilkårsvurdering();
-    const { erLesevisning, aktivSettPåVent } = useBehandling();
+    const { erLesevisning, behandlingPåVent } = useBehandling();
 
     const personHarIkkevurdertVilkår = (personResultat: IPersonResultat) =>
         personResultat.vilkårResultater.some(
@@ -57,7 +57,7 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
 
     useEffect(() => {
         settPersonErEkspandert(hentEkspantdertePersoner());
-    }, [aktivSettPåVent]);
+    }, [behandlingPåVent]);
 
     return (
         <>
@@ -80,18 +80,18 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
                                             !personErEkspandert[personResultat.personIdent],
                                     })
                                 }
+                                icon={
+                                    personErEkspandert[personResultat.personIdent] ? (
+                                        <CollapseFilled aria-hidden />
+                                    ) : (
+                                        <ExpandFilled aria-hidden />
+                                    )
+                                }
+                                iconPosition="right"
                             >
-                                {personErEkspandert[personResultat.personIdent] ? (
-                                    <>
-                                        Skjul vilkårsvurdering
-                                        <CollapseFilled />
-                                    </>
-                                ) : (
-                                    <>
-                                        Vis vilkårsvurdering
-                                        <ExpandFilled />
-                                    </>
-                                )}
+                                {personErEkspandert[personResultat.personIdent]
+                                    ? 'Skjul vilkårsvurdering'
+                                    : 'Vis vilkårsvurdering'}
                             </Button>
                         </PersonLinje>
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import KnappBase from 'nav-frontend-knapper';
-
+import { Dropdown } from '@navikt/ds-react-internal';
 import type { Ressurs } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
@@ -11,19 +10,21 @@ import { SettBehandlingPåVentModal } from './SettBehandlingPåVentModal';
 import { useSettPåVentSkjema } from './useSettPåVentSkjema';
 
 interface IProps {
-    onListElementClick: () => void;
     behandling: IBehandling;
 }
 
-const SettEllerOppdaterVenting: React.FC<IProps> = ({ onListElementClick, behandling }) => {
+const SettEllerOppdaterVenting: React.FC<IProps> = ({ behandling }) => {
     const { settÅpenBehandling } = useBehandling();
-    const [visModal, settVisModal] = useState<boolean>(!!behandling.aktivSettPåVent);
+    const [visModal, settVisModal] = useState<boolean>(!!behandling.behandlingPåVent);
     const { skjema, kanSendeSkjema, onSubmit } = useSettPåVentSkjema(
-        behandling.aktivSettPåVent,
+        behandling.behandlingPåVent,
         visModal
     );
 
-    const erBehandlingAlleredePåVent = !!behandling.aktivSettPåVent;
+    const erBehandlingAlleredePåVent = !!behandling.behandlingPåVent;
+    const url = erBehandlingAlleredePåVent
+        ? `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent/oppdater`
+        : `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent`;
 
     const settBehandlingPåVent = () => {
         if (kanSendeSkjema()) {
@@ -31,7 +32,7 @@ const SettEllerOppdaterVenting: React.FC<IProps> = ({ onListElementClick, behand
                 {
                     method: erBehandlingAlleredePåVent ? 'PUT' : 'POST',
                     data: { frist: skjema.felter.frist.verdi, årsak: skjema.felter.årsak.verdi },
-                    url: `/familie-ks-sak/api/sett-på-vent/${behandling.behandlingId}`,
+                    url: url,
                 },
                 (ressurs: Ressurs<IBehandling>) => {
                     settÅpenBehandling(ressurs);
@@ -43,18 +44,14 @@ const SettEllerOppdaterVenting: React.FC<IProps> = ({ onListElementClick, behand
 
     return (
         <>
-            <KnappBase
-                mini={true}
-                onClick={() => {
-                    settVisModal(true);
-                    onListElementClick();
-                }}
+            <Dropdown.Menu.List.Item
+                onClick={() => settVisModal(true)}
                 disabled={behandling.status !== BehandlingStatus.UTREDES}
             >
                 {erBehandlingAlleredePåVent
                     ? 'Endre ventende behandling'
                     : 'Sett behandling på vent'}
-            </KnappBase>
+            </Dropdown.Menu.List.Item>
 
             <SettBehandlingPåVentModal
                 visModal={visModal}

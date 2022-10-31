@@ -69,7 +69,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
         >
             <FamilieRadioGruppe
                 legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål() : ''}
-                feil={
+                error={
                     vilkårSkjemaContext.skjema.visFeilmeldinger
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
                         : ''
@@ -112,7 +112,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                         );
                         onAntallTimerOppdatert(event.target.value);
                     }}
-                    feil={
+                    error={
                         vilkårSkjemaContext.skjema.visFeilmeldinger
                             ? vilkårSkjemaContext.skjema.felter.antallTimer.feilmelding
                             : ''
