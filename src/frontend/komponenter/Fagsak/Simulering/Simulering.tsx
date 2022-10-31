@@ -53,7 +53,7 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
                 {
                     data: hentSkjemadata(),
                     method: 'POST',
-                    url: `/familie-ks-sak/api/behandlinger/${åpenBehandling.behandlingId}/steg/tilbakekreving`,
+                    url: `/familie-ks-sak/api/behandlinger/${åpenBehandling.behandlingId}/steg/simulering`,
                 },
                 (ressurs: Ressurs<IBehandling>) => {
                     if (ressurs.status === RessursStatus.SUKSESS) {
