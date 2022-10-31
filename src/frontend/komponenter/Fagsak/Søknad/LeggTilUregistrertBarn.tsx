@@ -1,10 +1,12 @@
 import React from 'react';
 
+import classNames from 'classnames';
 import styled from 'styled-components';
 
 import { Element } from 'nav-frontend-typografi';
 
-import { FamilieCheckbox, FamilieDatovelger, FamilieInput } from '@navikt/familie-form-elements';
+import { BodyShort, Checkbox } from '@navikt/ds-react';
+import { FamilieDatovelger, FamilieInput } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
@@ -28,18 +30,28 @@ const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
 
     return (
         <Container>
-            <FamilieCheckbox
-                id={registrerBarnSkjema.felter.erFolkeregistrert.id}
-                erLesevisning={erLesevisning()}
-                label={'Barnet er ikke folkeregistrert / har ikke fødselsnummer'}
-                checked={!registrerBarnSkjema.felter.erFolkeregistrert.verdi}
-                onChange={() => {
-                    registrerBarnSkjema.felter.erFolkeregistrert.validerOgSettFelt(
-                        !registrerBarnSkjema.felter.erFolkeregistrert.verdi
-                    );
-                    registrerBarnSkjema.felter.ident.nullstill();
-                }}
-            />
+            {erLesevisning() ? (
+                !registrerBarnSkjema.felter.erFolkeregistrert.verdi && (
+                    <BodyShort
+                        children={'Barnet er ikke folkeregistrert / har ikke fødselsnummer'}
+                        className={classNames('skjemaelement', 'lese-felt')}
+                    />
+                )
+            ) : (
+                <Checkbox
+                    id={registrerBarnSkjema.felter.erFolkeregistrert.id}
+                    value={'Barnet er ikke folkeregistrert / har ikke fødselsnummer'}
+                    checked={!registrerBarnSkjema.felter.erFolkeregistrert.verdi}
+                    onChange={() => {
+                        registrerBarnSkjema.felter.erFolkeregistrert.validerOgSettFelt(
+                            !registrerBarnSkjema.felter.erFolkeregistrert.verdi
+                        );
+                        registrerBarnSkjema.felter.ident.nullstill();
+                    }}
+                >
+                    {'Barnet er ikke folkeregistrert / har ikke fødselsnummer'}
+                </Checkbox>
+            )}
 
             {registrerBarnSkjema.felter.uregistrertBarnFødselsdato.erSynlig &&
                 registrerBarnSkjema.felter.uregistrertBarnNavn.erSynlig && (

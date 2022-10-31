@@ -1,5 +1,7 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import React, { useEffect } from 'react';
+
+import styled from 'styled-components';
 
 import type { ActionMeta, ISelectOption } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
@@ -31,6 +33,10 @@ const utdypendeVilkårsvurderingTekst: Record<UtdypendeVilkårsvurdering, string
     [UtdypendeVilkårsvurdering.DELT_BOSTED]: 'Delt bosted: skal deles',
     [UtdypendeVilkårsvurdering.ADOPSJON]: 'Adopsjon',
 };
+
+const StyledFamilieReactSelect = styled(FamilieReactSelect)`
+    margin-top: 0.75rem;
+`;
 
 const mapUtdypendeVilkårsvurderingTilOption = (
     utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering
@@ -71,7 +77,6 @@ export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
     const håndterEndring = (action: ActionMeta<ISelectOption>) => {
         switch (action.action) {
             case 'select-option':
-            case 'set-value':
                 utdypendeVilkårsvurderinger.validerOgSettFelt([
                     ...utdypendeVilkårsvurderinger.verdi,
                     action.option?.value as UtdypendeVilkårsvurdering,
@@ -100,14 +105,14 @@ export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
     }
 
     return (
-        <FamilieReactSelect
+        <StyledFamilieReactSelect
             id="UtdypendeVilkarsvurderingMultiselect"
             label="Utdypende vilkårsvurdering"
             value={utdypendeVilkårsvurderinger.verdi.map(mapUtdypendeVilkårsvurderingTilOption)}
             propSelectStyles={{
-                menu: (provided: CSSProperties) => ({
+                menu: provided => ({
                     ...provided,
-                    zIndex: '3',
+                    ZIndex: '3',
                 }),
             }}
             creatable={false}

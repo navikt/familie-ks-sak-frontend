@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-
-import { Switch } from '@navikt/ds-react';
+import { BodyShort, Heading, Switch } from '@navikt/ds-react';
 
 import type { BehandlingResultat } from '../../../typer/behandling';
 import { erBehandlingHenlagt } from '../../../typer/behandling';
@@ -17,10 +15,14 @@ import { Behandling } from './Behandling';
 import { BehandlingEllerTilbakekreving } from './BehandlingEllerTilbakekreving';
 import type { VisningBehandling } from './visningBehandling';
 
-const StyledSwitch = styled(Switch)`
+const SwitchHøyre = styled(Switch)`
     margin-top: 1rem;
     margin-right: 0.275rem;
     float: right;
+`;
+
+const StyledHeading = styled(Heading)`
+    margin-top: 3.75rem;
 `;
 
 const StyledOpprettetKolonne = styled.th`
@@ -79,7 +81,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
 
     return (
         <div className={'saksoversikt__behandlingshistorikk'}>
-            <Systemtittel children={'Behandlinger'} />
+            <StyledHeading level="2" size={'medium'} children={'Behandlinger'} spacing />
             {behandlinger.length > 0 ? (
                 <table
                     className={classNames('tabell', 'saksoversikt__behandlingshistorikk__tabell')}
@@ -114,10 +116,10 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                     </tbody>
                 </table>
             ) : (
-                <Normaltekst children={'Ingen tidligere behandlinger'} />
+                <BodyShort children={'Ingen tidligere behandlinger'} />
             )}
             {finnesRadSomKanFiltreresBort && (
-                <StyledSwitch
+                <SwitchHøyre
                     size="small"
                     position="left"
                     id={'vis-henlagte-behandlinger'}
@@ -127,7 +129,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                     }}
                 >
                     Vis henlagte behandlinger
-                </StyledSwitch>
+                </SwitchHøyre>
             )}
         </div>
     );

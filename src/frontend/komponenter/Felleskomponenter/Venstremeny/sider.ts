@@ -109,7 +109,7 @@ export const sider: Record<SideId, ISide> = {
     SIMULERING: {
         href: 'simulering',
         navn: 'Simulering',
-        steg: BehandlingSteg.VURDER_TILBAKEKREVING,
+        steg: BehandlingSteg.SIMULERING,
     },
     VEDTAK: {
         href: 'vedtak',

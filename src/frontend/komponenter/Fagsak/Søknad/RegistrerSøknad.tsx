@@ -2,11 +2,9 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { Knapp } from 'nav-frontend-knapper';
 import { Feiloppsummering } from 'nav-frontend-skjema';
-import { Normaltekst } from 'nav-frontend-typografi';
 
-import { Alert } from '@navikt/ds-react';
+import { Alert, BodyShort, Button } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
@@ -18,7 +16,7 @@ import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
 import Annet from './Annet';
 import Barna from './Barna';
 
-const FjernVilkårAdvarsel = styled(Normaltekst)`
+const FjernVilkårAdvarsel = styled(BodyShort)`
     white-space: pre-wrap;
     padding-bottom: 3.5rem;
 `;
@@ -92,24 +90,25 @@ const RegistrerSøknad: React.FC = () => {
                         lukkKnapp: false,
                         visModal: visBekreftModal,
                         actions: [
-                            <Knapp
+                            <Button
+                                variant={'secondary'}
                                 key={'nei'}
-                                mini={true}
+                                size={'small'}
                                 onClick={() => {
                                     settVisBekreftModal(false);
                                 }}
                                 children={'Nei'}
                             />,
-                            <Knapp
+                            <Button
                                 key={'ja'}
-                                type={'hoved'}
-                                mini={true}
+                                variant={'primary'}
+                                size={'small'}
                                 onClick={() => {
                                     settVisBekreftModal(false);
                                     nesteAction(true);
                                 }}
                                 children={'Ja'}
-                                spinner={skjema.submitRessurs.status === RessursStatus.HENTER}
+                                loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                                 disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                             />,
                         ],

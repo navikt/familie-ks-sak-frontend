@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import { Knapp } from 'nav-frontend-knapper';
 import { Label, SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { Tag } from '@navikt/ds-react';
+import { AddCircle, Delete, FileContent } from '@navikt/ds-icons';
+import { Button, Tag } from '@navikt/ds-react';
 import {
     FamilieInput,
     FamilieReactSelect,
@@ -21,9 +21,6 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { useBrevModul } from '../../../../context/BrevModulContext';
 import useDokument from '../../../../hooks/useDokument';
-import { DokumentIkon } from '../../../../ikoner/DokumentIkon';
-import Pluss from '../../../../ikoner/Pluss';
-import Slett from '../../../../ikoner/Slett';
 import type { IBehandling } from '../../../../typer/behandling';
 import { BehandlingSteg, hentStegNummer } from '../../../../typer/behandling';
 import type { IManueltBrevRequestPåBehandling } from '../../../../typer/dokument';
@@ -36,7 +33,6 @@ import type { IFritekstFelt } from '../../../../utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
 import { FamilieDatovelgerWrapper } from '../../../../utils/skjema/FamilieDatovelgerWrapper';
 import DeltBostedSkjema from '../../../Fagsak/Dokumentutsending/DeltBosted/DeltBostedSkjema';
-import IkonKnapp, { IkonPosisjon } from '../../IkonKnapp/IkonKnapp';
 import Knapperekke from '../../Knapperekke';
 import PdfVisningModal from '../../PdfVisningModal/PdfVisningModal';
 import SkjultLegend from '../../SkjultLegend';
@@ -53,24 +49,27 @@ const StyledList = styled.ul`
     margin: 0;
 `;
 
+const StyledFamilieSelect = styled(FamilieSelect)`
+    margin-top: 1rem;
+`;
+
 const StyledFamilieFritekstFelt = styled.div`
     display: flex;
-
-    .textarea__container {
+    .navds-form-field {
         width: 100% !important;
     }
 `;
 
 const FamilieTextareaBegrunnelseFritekst = styled(FamilieTextarea)`
-    .skjemaelement {
+    .navds-textarea__wrapper {
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
     }
 `;
 
-const SletteKnapp = styled(IkonKnapp)`
-    margin-left: 0.5rem;
-    height: 2.75rem;
+const StyledButton = styled(Button)`
+    height: fit-content;
+    align-self: center;
 `;
 
 const StyledTag = styled(Tag)`
@@ -81,10 +80,15 @@ const StyledTag = styled(Tag)`
 const LabelOgEtikett = styled.div`
     display: flex;
     justify-content: space-between;
+    margin-top: 1rem;
 `;
 
 const FritekstWrapper = styled.div`
     margin-bottom: 1rem;
+`;
+
+const StyledFamilieInput = styled(FamilieInput)`
+    width: fit-content;
 `;
 
 const Brevskjema = ({ onSubmitSuccess }: IProps) => {
@@ -189,7 +193,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                             );
                         })}
                 </FamilieSelect>
-                <FamilieSelect
+                <StyledFamilieSelect
                     {...skjema.felter.brevmal.hentNavInputProps(skjema.visFeilmeldinger)}
                     label={'Velg brevmal'}
                     placeholder={'Velg brevmal'}
@@ -210,7 +214,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                             </option>
                         );
                     })}
-                </FamilieSelect>
+                </StyledFamilieSelect>
 
                 {skjema.felter.dokumenter.erSynlig && (
                     <FamilieReactSelect
@@ -277,13 +281,16 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                                         erLesevisning={false}
                                                         key={`fritekst-${fritekstId}`}
                                                         id={`${fritekstId}`}
-                                                        textareaClass={'fritekst-textarea'}
+                                                        label={`Kulepunkt ${fritekstId}`}
+                                                        hideLabel
+                                                        size={'small'}
+                                                        className={'fritekst-textarea'}
                                                         value={fritekst.verdi.tekst}
                                                         maxLength={makslengdeFritekst}
                                                         onChange={event =>
                                                             onChangeFritekst(event, fritekstId)
                                                         }
-                                                        feil={
+                                                        error={
                                                             skjema.visFeilmeldinger &&
                                                             fritekst.feilmelding
                                                         }
@@ -295,8 +302,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                                             skjema.felter.brevmal.verdi as Brevmal
                                                         ) && index === 0
                                                     ) && (
-                                                        <SletteKnapp
-                                                            erLesevisning={false}
+                                                        <StyledButton
                                                             onClick={() => {
                                                                 skjema.felter.fritekster.validerOgSettFelt(
                                                                     [
@@ -310,11 +316,13 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                                                 );
                                                             }}
                                                             id={`fjern_fritekst-${fritekstId}`}
-                                                            mini={true}
-                                                            label={'Fjern'}
+                                                            size={'small'}
+                                                            variant={'tertiary'}
                                                             aria-label={'Fjern fritekst'}
-                                                            ikon={<Slett />}
-                                                        />
+                                                            icon={<Delete />}
+                                                        >
+                                                            {'Fjern'}
+                                                        </StyledButton>
                                                     )}
                                                 </StyledFamilieFritekstFelt>
                                             );
@@ -322,16 +330,16 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                     )}
                                 </SkjemaGruppe>
 
-                                {!erMaksAntallKulepunkter && (
-                                    <IkonKnapp
-                                        erLesevisning={erLesevisning()}
+                                {!erMaksAntallKulepunkter && !erLesevisning() && (
+                                    <Button
                                         onClick={() => leggTilFritekst()}
                                         id={`legg-til-fritekst`}
-                                        ikon={<Pluss />}
-                                        ikonPosisjon={IkonPosisjon.VENSTRE}
-                                        label={'Legg til kulepunkt'}
-                                        mini={true}
-                                    />
+                                        size={'small'}
+                                        variant={'tertiary'}
+                                        icon={<AddCircle />}
+                                    >
+                                        {'Legg til kulepunkt'}
+                                    </Button>
                                 )}
                             </>
                         )}
@@ -378,38 +386,41 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                     />
                 )}
                 {skjema.felter.brevmal.verdi === Brevmal.FORLENGET_SVARTIDSBREV && (
-                    <FamilieInput
+                    <StyledFamilieInput
                         {...skjema.felter.antallUkerSvarfrist.hentNavInputProps(
                             skjema.visFeilmeldinger
                         )}
                         label={'Antall uker svarfrist'}
-                        bredde={'S'}
+                        size={'small'}
                     />
                 )}
             </SkjemaGruppe>
             <Knapperekke>
-                <IkonKnapp
-                    id={'forhandsvis-vedtaksbrev'}
-                    erLesevisning={erLesevisning()}
-                    label={'Forhåndsvis'}
-                    ikonPosisjon={IkonPosisjon.VENSTRE}
-                    ikon={<DokumentIkon />}
-                    mini={true}
-                    spinner={hentetDokument.status === RessursStatus.HENTER}
-                    disabled={skjemaErLåst}
-                    onClick={() => {
-                        if (kanSendeSkjema()) {
-                            hentForhåndsvisning<IManueltBrevRequestPåBehandling>({
-                                method: 'POST',
-                                data: hentSkjemaData(),
-                                url: `/familie-ks-sak/api/brev/forhåndsvis-brev/${behandlingId}`,
-                            });
-                        }
-                    }}
-                />
-                <Knapp
-                    mini
-                    spinner={skjema.submitRessurs.status === RessursStatus.HENTER}
+                {!erLesevisning() && (
+                    <Button
+                        id={'forhandsvis-vedtaksbrev'}
+                        variant={'tertiary'}
+                        size={'medium'}
+                        icon={<FileContent />}
+                        loading={hentetDokument.status === RessursStatus.HENTER}
+                        disabled={skjemaErLåst}
+                        onClick={() => {
+                            if (kanSendeSkjema()) {
+                                hentForhåndsvisning<IManueltBrevRequestPåBehandling>({
+                                    method: 'POST',
+                                    data: hentSkjemaData(),
+                                    url: `/familie-ks-sak/api/brev/forhåndsvis-brev/${behandlingId}`,
+                                });
+                            }
+                        }}
+                    >
+                        {'Forhåndsvis'}
+                    </Button>
+                )}
+                <Button
+                    variant={'secondary'}
+                    size={'medium'}
+                    loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                     disabled={skjemaErLåst}
                     onClick={() => {
                         if (åpenBehandling.status === RessursStatus.SUKSESS) {
@@ -436,7 +447,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                     }}
                 >
                     Send brev
-                </Knapp>
+                </Button>
             </Knapperekke>
         </div>
     );
