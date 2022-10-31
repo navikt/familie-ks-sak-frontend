@@ -98,7 +98,7 @@ describe('sider.ts', () => {
 
             const behandling2 = mockBehandling({
                 årsak: BehandlingÅrsak.SØKNAD,
-                steg: BehandlingSteg.VURDER_TILBAKEKREVING,
+                steg: BehandlingSteg.SIMULERING,
             });
             expect(finnSideForBehandlingssteg(behandling2)).toEqual(sider.SIMULERING);
         });
