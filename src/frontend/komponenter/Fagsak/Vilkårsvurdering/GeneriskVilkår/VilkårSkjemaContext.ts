@@ -72,7 +72,9 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
                     vurderesEtter: skjema.felter.vurderesEtter.verdi,
                     utdypendeVilkårsvurderinger: skjema.felter.utdypendeVilkårsvurdering.verdi,
                     antallTimer: skjema.felter.antallTimer
-                        ? Number(skjema.felter.antallTimer.verdi)
+                        ? skjema.felter.antallTimer.verdi !== ''
+                            ? Number(skjema.felter.antallTimer.verdi)
+                            : undefined
                         : undefined,
                 },
             };

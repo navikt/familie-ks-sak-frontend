@@ -10,6 +10,9 @@ export const erAntallTimerGyldig = (
 ): FeltState<string> => {
     if (felt.verdi !== '') {
         const antallTimer = Number(felt.verdi);
+        if (antallTimer <= 0) {
+            return feil(felt, 'Antall timer med barnehageplass må være større enn 0');
+        }
         if (antallTimer > 122) {
             return feil(felt, 'Antall timer med barnehageplass kan ikke overstige 122');
         }
