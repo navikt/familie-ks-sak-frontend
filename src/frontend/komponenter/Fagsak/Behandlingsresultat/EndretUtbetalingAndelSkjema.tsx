@@ -85,7 +85,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
     avbrytEndringAvUtbetalingsperiode,
 }) => {
     const { request } = useHttp();
-    const { erLesevisning, settÅpenBehandling } = useBehandling();
+    const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
     const { toggles } = useApp();
 
     const {
@@ -185,7 +185,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         onChange={(event): void => {
                             skjema.felter.person.validerOgSettFelt(event.target.value);
                         }}
-                        erLesevisning={erLesevisning()}
+                        erLesevisning={vurderErLesevisning()}
                     >
                         <option value={undefined}>Velg person</option>
                         {åpenBehandling.personer
@@ -221,7 +221,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                     skjema.felter.fom.validerOgSettFelt(dato);
                                 }
                             }}
-                            lesevisning={erLesevisning()}
+                            lesevisning={vurderErLesevisning()}
                         />
                     </Feltmargin>
                     <MånedÅrVelger
@@ -237,7 +237,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 skjema.felter.tom.validerOgSettFelt(dato);
                             }
                         }}
-                        lesevisning={erLesevisning()}
+                        lesevisning={vurderErLesevisning()}
                     />
                 </Feltmargin>
 
@@ -252,7 +252,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 event.target.value as IEndretUtbetalingAndelÅrsak
                             );
                         }}
-                        erLesevisning={erLesevisning()}
+                        erLesevisning={vurderErLesevisning()}
                         lesevisningVerdi={
                             skjema.felter.årsak.verdi ? årsakTekst[skjema.felter.årsak.verdi] : ''
                         }
@@ -267,7 +267,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 </Feltmargin>
 
                 <Feltmargin>
-                    {erLesevisning() ? (
+                    {vurderErLesevisning() ? (
                         <>
                             <Label>Utbetaling</Label>
                             <BodyShort>
@@ -318,7 +318,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         onChange={(dato?: ISODateString) =>
                             skjema.felter.søknadstidspunkt.validerOgSettFelt(dato)
                         }
-                        erLesesvisning={erLesevisning()}
+                        erLesesvisning={vurderErLesevisning()}
                     />
                     {skjema.felter.søknadstidspunkt.feilmelding && skjema.visFeilmeldinger && (
                         <StyledErrorMessage>
@@ -347,7 +347,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                             onChange={(dato?: ISODateString) =>
                                 skjema.felter.avtaletidspunktDeltBosted.validerOgSettFelt(dato)
                             }
-                            erLesesvisning={erLesevisning()}
+                            erLesesvisning={vurderErLesevisning()}
                         />
                         {skjema.felter.avtaletidspunktDeltBosted.feilmelding &&
                             skjema.visFeilmeldinger && (
@@ -396,7 +396,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 <Feltmargin>
                     <StyledFamilieTextarea
                         {...skjema.felter.begrunnelse.hentNavInputProps(skjema.visFeilmeldinger)}
-                        erLesevisning={erLesevisning()}
+                        erLesevisning={vurderErLesevisning()}
                         placeholder={'Begrunn hvorfor utbetalingsperioden er endret.'}
                         label={'Begrunnelse'}
                         value={
@@ -410,7 +410,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         }}
                     />
                 </Feltmargin>
-                {!erLesevisning() && (
+                {!vurderErLesevisning() && (
                     <Knapperekke>
                         <KnapperekkeVenstre>
                             <StyledFerdigKnapp
@@ -431,7 +431,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                             </Button>
                         </KnapperekkeVenstre>
 
-                        {!erLesevisning() && (
+                        {!vurderErLesevisning() && (
                             <Button
                                 variant={'tertiary'}
                                 id={`sletteknapp-endret-utbetaling-andel-${endretUtbetalingAndel.id}`}

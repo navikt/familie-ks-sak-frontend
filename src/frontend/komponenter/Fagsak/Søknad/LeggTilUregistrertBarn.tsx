@@ -26,11 +26,11 @@ const UregistrertBarnInputs = styled.div`
 `;
 
 const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
-    const { erLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandling();
 
     return (
         <Container>
-            {erLesevisning() ? (
+            {vurderErLesevisning() ? (
                 !registrerBarnSkjema.felter.erFolkeregistrert.verdi && (
                     <BodyShort
                         children={'Barnet er ikke folkeregistrert / har ikke fødselsnummer'}

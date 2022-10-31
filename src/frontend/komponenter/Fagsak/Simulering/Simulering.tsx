@@ -40,13 +40,13 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
         harÅpenTilbakekrevingRessurs,
         erFeilutbetaling,
     } = useSimulering();
-    const { erLesevisning, settÅpenBehandling } = useBehandling();
+    const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
     const { toggles } = useApp();
     const skalIkkeStoppeMigreringsbehandlinger =
         toggles[ToggleNavn.skalIkkeStoppeMigreringsbehandlig];
 
     const nesteOnClick = () => {
-        if (erLesevisning()) {
+        if (vurderErLesevisning()) {
             navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/vedtak`);
         } else {
             onSubmit<ITilbakekreving | undefined>(

@@ -22,7 +22,7 @@ const StyledHeader = styled.header`
 `;
 
 const Header = ({ aktivTab, settAktivTab, skalViseTotrinnskontroll }: IProps) => {
-    const { erLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandling();
 
     return (
         <StyledHeader>
@@ -42,7 +42,7 @@ const Header = ({ aktivTab, settAktivTab, skalViseTotrinnskontroll }: IProps) =>
             />
             <Meldingerknapp
                 aktiv={aktivTab === Tabs.Meldinger}
-                disabled={erLesevisning()}
+                disabled={vurderErLesevisning()}
                 onClick={() => settAktivTab(Tabs.Meldinger)}
             />
         </StyledHeader>

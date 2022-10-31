@@ -92,7 +92,7 @@ const StyledFamilieInput = styled(FamilieInput)`
 `;
 
 const Brevskjema = ({ onSubmitSuccess }: IProps) => {
-    const { åpenBehandling, settÅpenBehandling, erLesevisning, hentLogg } = useBehandling();
+    const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } = useBehandling();
     const { hentForhåndsvisning, hentetDokument } = useDokument();
 
     const {
@@ -236,7 +236,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                             </LabelOgEtikett>
                         }
                         creatable={false}
-                        erLesevisning={erLesevisning()}
+                        erLesevisning={vurderErLesevisning()}
                         isMulti={true}
                         onChange={valgteOptions => {
                             skjema.felter.dokumenter.onChange(
@@ -251,7 +251,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 {skjema.felter.fritekster.erSynlig && (
                     <FritekstWrapper>
                         <Label htmlFor={skjemaGruppeId}>Legg til kulepunkt</Label>
-                        {erLesevisning() ? (
+                        {vurderErLesevisning() ? (
                             <StyledList id={skjemaGruppeId}>
                                 {skjema.felter.fritekster.verdi.map(
                                     (fritekst: FeltState<IFritekstFelt>) => (
@@ -330,7 +330,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                     )}
                                 </SkjemaGruppe>
 
-                                {!erMaksAntallKulepunkter && !erLesevisning() && (
+                                {!erMaksAntallKulepunkter && !vurderErLesevisning() && (
                                     <Button
                                         onClick={() => leggTilFritekst()}
                                         id={`legg-til-fritekst`}
@@ -396,7 +396,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 )}
             </SkjemaGruppe>
             <Knapperekke>
-                {!erLesevisning() && (
+                {!vurderErLesevisning() && (
                     <Button
                         id={'forhandsvis-vedtaksbrev'}
                         variant={'tertiary'}

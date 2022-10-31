@@ -46,7 +46,7 @@ export const hentBarnMedLøpendeUtbetaling = (minimalFagsak: IMinimalFagsak) =>
 
 const [SøknadProvider, useSøknad] = createUseContext(
     ({ åpenBehandling }: { åpenBehandling: IBehandling }) => {
-        const { erLesevisning, settÅpenBehandling } = useBehandling();
+        const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
         const { fagsakId } = useSakOgBehandlingParams();
         const navigate = useNavigate();
         const { bruker, minimalFagsak } = useFagsakRessurser();
@@ -144,7 +144,7 @@ const [SøknadProvider, useSøknad] = createUseContext(
 
         const nesteAction = (bekreftEndringerViaFrontend: boolean) => {
             if (bruker.status === RessursStatus.SUKSESS) {
-                if (erLesevisning()) {
+                if (vurderErLesevisning()) {
                     navigate(
                         `/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/vilkaarsvurdering`
                     );

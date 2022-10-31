@@ -69,8 +69,8 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
     toggleForm,
     slettKompetanse,
 }) => {
-    const { erLesevisning } = useBehandling();
-    const lesevisning = erLesevisning(true);
+    const { vurderErLesevisning } = useBehandling();
+    const lesevisning = vurderErLesevisning(true);
     const { toggles } = useApp();
 
     const visSubmitFeilmelding = () => {

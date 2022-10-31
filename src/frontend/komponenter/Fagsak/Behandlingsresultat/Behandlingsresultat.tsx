@@ -95,7 +95,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
     };
 
     const {
-        erLesevisning,
+        vurderErLesevisning,
         behandlingresultatNesteOnClick,
         behandlingsstegSubmitressurs,
         settÅpenBehandling,
@@ -176,7 +176,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             className="behandlingsresultat"
             forrigeOnClick={forrigeOnClick}
             nesteOnClick={() => {
-                if (erLesevisning()) {
+                if (vurderErLesevisning()) {
                     navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/simulering`);
                 } else if (harEøs && !erEøsInformasjonGyldig()) {
                     settVisFeilmeldinger(true);
@@ -202,7 +202,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                 grunnlagPersoner={grunnlagPersoner}
                 tidslinjePersoner={tidslinjePersoner}
             />
-            {!erLesevisning() && (
+            {!vurderErLesevisning() && (
                 <EndretUtbetalingAndel>
                     <Button
                         variant="tertiary"
