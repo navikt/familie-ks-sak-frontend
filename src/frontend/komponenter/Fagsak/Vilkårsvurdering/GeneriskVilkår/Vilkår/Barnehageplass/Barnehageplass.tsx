@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import styled from 'styled-components';
+
 import { Radio } from 'nav-frontend-skjema';
 
 import { FamilieInput, FamilieRadioGruppe } from '@navikt/familie-form-elements';
@@ -9,6 +11,10 @@ import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 import { useBarnehageplass } from './BarnehageplassContext';
+
+const StyledFamilieInput = styled(FamilieInput)`
+    margin-bottom: 1rem;
+`;
 
 type BarnehageplassProps = IVilkårSkjemaBaseProps;
 
@@ -101,7 +107,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                 />
             </FamilieRadioGruppe>
             {harBarnehageplass && (
-                <FamilieInput
+                <StyledFamilieInput
                     label={'Antall timer'}
                     type={'number'}
                     erLesevisning={lesevisning}
