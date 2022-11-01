@@ -8,7 +8,7 @@ import { Button } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useApp } from '../../context/AppContext';
-import { useFagsakRessurser } from '../../context/FagsakContext';
+import { useFagsakContext } from '../../context/FagsakContext';
 import type { IOppgave } from '../../typer/oppgave';
 import { oppgaveTypeFilter, OppgavetypeFilter } from '../../typer/oppgave';
 import { ToggleNavn } from '../../typer/toggles';
@@ -21,7 +21,7 @@ interface IOppgaveDirektelenke {
 
 const OppgaveDirektelenke: React.FC<IOppgaveDirektelenke> = ({ oppgave }) => {
     const { settToast } = useApp();
-    const { hentFagsakForPerson } = useFagsakRessurser();
+    const { hentFagsakForPerson } = useFagsakContext();
     const { sjekkTilgang, toggles } = useApp();
     const [laster, settLaster] = useState<boolean>(false);
     const navigate = useNavigate();

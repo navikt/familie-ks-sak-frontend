@@ -16,12 +16,12 @@ import type { IPersonInfo } from '../typer/person';
 import { hentAlder } from '../utils/formatter';
 import { hentFrontendFeilmelding } from '../utils/ressursUtils';
 import { useBehandling } from './behandlingContext/BehandlingContext';
-import { useFagsakRessurser } from './FagsakContext';
+import { useFagsakContext } from './FagsakContext';
 
 const [InstitusjonOgVergeProvider, useInstitusjonOgVerge] = createUseContext(
     ({ åpenBehandling }: { åpenBehandling: IBehandling }) => {
         const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
-        const { minimalFagsak } = useFagsakRessurser();
+        const { minimalFagsak } = useFagsakContext();
         const { fagsakId } = useSakOgBehandlingParams();
         const navigate = useNavigate();
         const { request } = useHttp();
