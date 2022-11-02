@@ -9,8 +9,8 @@ import { Feiloppsummering } from 'nav-frontend-skjema';
 import { Edit } from '@navikt/ds-icons';
 import { Alert, Button, ErrorMessage, Label } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
-import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
