@@ -26,7 +26,7 @@ import {
     TIDENES_ENDE,
 } from '../utils/kalender';
 import { useBehandling } from './behandlingContext/BehandlingContext';
-import { useFagsakRessurser } from './FagsakContext';
+import { useFagsakContext } from './FagsakContext';
 
 export const hentBarnMedLøpendeUtbetaling = (minimalFagsak: IMinimalFagsak) =>
     minimalFagsak.gjeldendeUtbetalingsperioder
@@ -49,7 +49,7 @@ const [SøknadProvider, useSøknad] = createUseContext(
         const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
         const { fagsakId } = useSakOgBehandlingParams();
         const navigate = useNavigate();
-        const { bruker, minimalFagsak } = useFagsakRessurser();
+        const { bruker, minimalFagsak } = useFagsakContext();
         const [visBekreftModal, settVisBekreftModal] = React.useState<boolean>(false);
 
         const barnMedLøpendeUtbetaling =
