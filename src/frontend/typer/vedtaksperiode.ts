@@ -1,5 +1,4 @@
 import type { FamilieIsoDate } from '../utils/kalender';
-import type { YtelseType } from './beregning';
 import { ytelsetype } from './beregning';
 import type { IGrunnlagPerson } from './person';
 import type { VedtakBegrunnelse, VedtakBegrunnelseType } from './vedtak';
@@ -39,7 +38,6 @@ export type Vedtaksperiode =
           periodeTom?: FamilieIsoDate;
           vedtaksperiodetype: Vedtaksperiodetype.UTBETALING;
           utbetalingsperiodeDetaljer: IUtbetalingsperiodeDetalj[];
-          ytelseTyper: YtelseType[];
           antallBarn: number;
           utbetaltPerMnd: number;
       }
@@ -65,14 +63,12 @@ export type Utbetalingsperiode = {
     periodeTom?: FamilieIsoDate;
     vedtaksperiodetype: Vedtaksperiodetype.UTBETALING;
     utbetalingsperiodeDetaljer: IUtbetalingsperiodeDetalj[];
-    ytelseTyper: YtelseType[];
     antallBarn: number;
     utbetaltPerMnd: number;
 };
 
 export interface IUtbetalingsperiodeDetalj {
     person: IGrunnlagPerson;
-    ytelseType: YtelseType;
     utbetaltPerMnd: number;
     antallTimer: number;
     prosent: number;

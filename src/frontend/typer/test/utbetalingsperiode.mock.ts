@@ -1,5 +1,5 @@
 import { mockSøker } from '../../utils/test/person/person.mock';
-import { YtelseType } from '../beregning';
+import type { YtelseType } from '../beregning';
 import type { IGrunnlagPerson } from '../person';
 import type { IUtbetalingsperiodeDetalj } from '../vedtaksperiode';
 
@@ -14,14 +14,12 @@ interface IMockUtbetalingsperiodeDetalj {
 
 export const lagUtbetalingsperiodeDetalj = ({
     person = mockSøker(),
-    ytelseType = YtelseType.ORDINÆR_KONTANTSTØTTE,
     utbetaltPerMnd = 0,
     erPåvirketAvEndring = false,
     antallTimer = 0,
     prosent = 100,
 }: IMockUtbetalingsperiodeDetalj = {}): IUtbetalingsperiodeDetalj => ({
     person: person,
-    ytelseType: ytelseType,
     utbetaltPerMnd: utbetaltPerMnd,
     erPåvirketAvEndring: erPåvirketAvEndring,
     antallTimer: antallTimer,

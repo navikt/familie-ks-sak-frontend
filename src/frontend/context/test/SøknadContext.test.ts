@@ -1,6 +1,5 @@
 import { kjønnType } from '@navikt/familie-typer';
 
-import { YtelseType } from '../../typer/beregning';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
 import { Vedtaksperiodetype } from '../../typer/vedtaksperiode';
@@ -37,14 +36,12 @@ describe('SøknadContext', () => {
                                 ...person,
                                 personIdent: '12345678911',
                             },
-                            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
                             utbetaltPerMnd: 1054,
                             erPåvirketAvEndring: false,
                             antallTimer: 7,
                             prosent: 80,
                         },
                     ],
-                    ytelseTyper: [YtelseType.ORDINÆR_KONTANTSTØTTE],
                     antallBarn: 1,
                     utbetaltPerMnd: 1054,
                 },
@@ -57,14 +54,12 @@ describe('SøknadContext', () => {
                     utbetalingsperiodeDetaljer: [
                         {
                             person,
-                            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
                             utbetaltPerMnd: 1054,
                             erPåvirketAvEndring: false,
                             antallTimer: 7,
                             prosent: 80,
                         },
                     ],
-                    ytelseTyper: [YtelseType.ORDINÆR_KONTANTSTØTTE],
                     antallBarn: 1,
                     utbetaltPerMnd: 1054,
                 },
