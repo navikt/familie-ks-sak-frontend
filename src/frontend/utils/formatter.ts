@@ -1,4 +1,3 @@
-import { YtelseType } from '../typer/beregning';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
@@ -121,15 +120,10 @@ export const sorterUtbetaling = (
     utbetalingsperiodeDetaljA: IUtbetalingsperiodeDetalj,
     utbetalingsperiodeDetaljB: IUtbetalingsperiodeDetalj
 ) => {
-    if (utbetalingsperiodeDetaljA.ytelseType === YtelseType.UTVIDET_BARNETRYGD) return -1;
-    else if (utbetalingsperiodeDetaljB.ytelseType === YtelseType.UTVIDET_BARNETRYGD) return 1;
-    else if (utbetalingsperiodeDetaljA.ytelseType === YtelseType.SMÅBARNSTILLEGG) return -1;
-    else if (utbetalingsperiodeDetaljB.ytelseType === YtelseType.SMÅBARNSTILLEGG) return 1;
-    else
-        return sorterFødselsdato(
-            utbetalingsperiodeDetaljA.person.fødselsdato,
-            utbetalingsperiodeDetaljB.person.fødselsdato
-        );
+    return sorterFødselsdato(
+        utbetalingsperiodeDetaljA.person.fødselsdato,
+        utbetalingsperiodeDetaljB.person.fødselsdato
+    );
 };
 
 export const slåSammenListeTilStreng = (liste: string[]) => {
