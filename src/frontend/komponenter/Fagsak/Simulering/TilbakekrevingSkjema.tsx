@@ -272,7 +272,7 @@ const TilbakekrevingSkjema: React.FC<{
                                     name={'tilbakekreving'}
                                     id={'Opprett-tilbakekreving-send-varsel'}
                                 >
-                                    {'Opprett tilbakekreving, send varsel'}
+                                    Opprett tilbakekreving, send varsel
                                 </Radio>
                                 {fritekstVarsel.erSynlig && (
                                     <FritekstVarsel>
@@ -364,7 +364,7 @@ const TilbakekrevingSkjema: React.FC<{
                                                 size={'small'}
                                                 icon={<DokumentIkon />}
                                             >
-                                                {'Forhåndsvis varsel'}
+                                                Forhåndsvis varsel
                                             </Button>
                                         </ForhåndsvisVarselKnappContainer>
                                     </FritekstVarsel>
@@ -376,14 +376,14 @@ const TilbakekrevingSkjema: React.FC<{
                             name={'tilbakekreving'}
                             id={'Opprett-tilbakekreving-ikke-send-varsel'}
                         >
-                            {'Opprett tilbakekreving, ikke send varsel'}
+                            Opprett tilbakekreving, ikke send varsel
                         </Radio>
                         <Radio
                             value={Tilbakekrevingsvalg.IGNORER_TILBAKEKREVING}
                             name={'tilbakekreving'}
                             id={'avvent-tilbakekreving'}
                         >
-                            {'Avvent tilbakekreving'}
+                            Avvent tilbakekreving
                         </Radio>
                     </RadioGroup>
                 )}

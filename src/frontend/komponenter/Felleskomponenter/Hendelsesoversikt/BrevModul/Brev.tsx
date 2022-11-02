@@ -55,8 +55,9 @@ const Brev = ({ onIModalClick }: IProps) => {
                                 onIModalClick();
                                 navigate('/oppgaver');
                             }}
-                            children={'Se oppgavebenk'}
-                        />
+                        >
+                            Se oppgavebenk
+                        </Button>
                         <KnappHøyre
                             variant={'secondary'}
                             key={'til saksoversikt'}
@@ -66,8 +67,9 @@ const Brev = ({ onIModalClick }: IProps) => {
                                 navigate(`/fagsak/${fagsakId}/saksoversikt`);
                                 settVisInnsendtBrevModal(false);
                             }}
-                            children={'Se saksoversikt'}
-                        />
+                        >
+                            Se saksoversikt
+                        </KnappHøyre>
                     </Knapperad>
                 </Modal.Content>
             </Modal>
