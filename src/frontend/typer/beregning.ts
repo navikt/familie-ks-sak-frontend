@@ -1,5 +1,5 @@
 import type { YearMonth } from '../utils/kalender';
-import type { INøkkelPar } from './common';
+import type { IPar } from './common';
 
 export interface IPersonMedAndelerTilkjentYtelse {
     personIdent: string;
@@ -18,22 +18,12 @@ export interface IYtelsePeriode {
 }
 
 export enum YtelseType {
-    ORDINÆR_BARNETRYGD = 'ORDINÆR_BARNETRYGD',
-    UTVIDET_BARNETRYGD = 'UTVIDET_BARNETRYGD',
-    SMÅBARNSTILLEGG = 'SMÅBARNSTILLEGG',
+    ORDINÆR_KONTANTSTØTTE = 'ORDINÆR_KONTANTSTØTTE',
 }
 
-export const ytelsetype: INøkkelPar = {
-    ORDINÆR_BARNETRYGD: {
-        id: 'ORDINÆR_BARNETRYGD',
+export const ytelsetype: Record<YtelseType, IPar> = {
+    ORDINÆR_KONTANTSTØTTE: {
+        id: 'ORDINÆR_KONTANTSTØTTE',
         navn: 'Ordinær',
-    },
-    UTVIDET_BARNETRYGD: {
-        id: 'UTVIDET_BARNETRYGD',
-        navn: 'Utvidet',
-    },
-    SMÅBARNSTILLEGG: {
-        id: 'SMÅBARNSTILLEGG',
-        navn: 'Småbarnstillegg',
     },
 };
