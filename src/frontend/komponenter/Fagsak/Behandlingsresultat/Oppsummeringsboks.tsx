@@ -3,13 +3,11 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { Xknapp } from 'nav-frontend-ikonknapper';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 
-import { Alert, BodyShort } from '@navikt/ds-react';
+import { Alert, BodyShort, Label } from '@navikt/ds-react';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { useTidslinje } from '../../../context/TidslinjeContext';
-import { ytelsetype } from '../../../typer/beregning';
 import type {
     IEøsPeriodeStatus,
     IRestEøsPeriode,
@@ -28,6 +26,7 @@ import {
     sorterUtbetaling,
 } from '../../../utils/formatter';
 import { kalenderDatoFraDate, serializeIso8601String } from '../../../utils/kalender';
+import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
 
 const TableHeaderAlignedRight = styled.th`
     text-align: right;
@@ -50,14 +49,14 @@ const UtbetalingsbeløpTable = styled.table`
     padding-bottom: 1rem;
 `;
 
-const VenstreTekst = styled(Normaltekst)`
+const VenstreTekst = styled(BodyShort)`
     text-align: left;
     font-weight: bold;
     width: 50%;
     margin: 1.25rem 0;
 `;
 
-const HøyreTekst = styled(Normaltekst)`
+const HøyreTekst = styled(BodyShort)`
     text-align: right;
     font-weight: bold;
     width: 50%;
@@ -164,11 +163,9 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
         <div className={'behandlingsresultat-informasjonsboks'}>
             <div className={'behandlingsresultat-informasjonsboks__header'}>
                 <div className={'behandlingsresultat-informasjonsboks__header__info'}>
-                    <Element>{månedNavnOgÅr()}</Element>
+                    <Label>{månedNavnOgÅr()}</Label>
 
-                    {utbetalingsperiode === undefined && (
-                        <Normaltekst>Ingen utbetalinger</Normaltekst>
-                    )}
+                    {utbetalingsperiode === undefined && <BodyShort>Ingen utbetalinger</BodyShort>}
                 </div>
                 <Xknapp
                     onClick={() => {
@@ -181,15 +178,10 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                     <UtbetalingsbeløpTable>
                         <thead>
                             <tr>
-                                <th>
-                                    <Normaltekst>Person</Normaltekst>
-                                </th>
-                                <th>
-                                    <Normaltekst>Sats</Normaltekst>
-                                </th>
-                                <TableHeaderAlignedRight>
-                                    <Normaltekst>Beløp</Normaltekst>
-                                </TableHeaderAlignedRight>
+                                <th>Person</th>
+                                <th>Barnehageplass</th>
+                                <th>Kontantstøtte</th>
+                                <TableHeaderAlignedRight>Beløp</TableHeaderAlignedRight>
                             </tr>
                         </thead>
                         <tbody>
@@ -209,8 +201,13 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                                             </td>
                                             <td>
                                                 <BodyShort>
-                                                    {ytelsetype[detalj.ytelseType].navn}
+                                                    {hentBarnehageplassBeskrivelse(
+                                                        detalj.antallTimer
+                                                    )}
                                                 </BodyShort>
+                                            </td>
+                                            <td>
+                                                <BodyShort>{detalj.prosent + '%'}</BodyShort>
                                             </td>
                                             <TableDataAlignedRight>
                                                 {utbetalingsBeløpStatusMap.get(
