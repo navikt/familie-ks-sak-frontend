@@ -5,7 +5,6 @@ import createUseContext from 'constate';
 import type { Periode, Etikett } from '@navikt/familie-tidslinje';
 
 import type { IPersonMedAndelerTilkjentYtelse, IYtelsePeriode } from '../typer/beregning';
-import { YtelseType } from '../typer/beregning';
 import type { IGrunnlagPerson } from '../typer/person';
 import { sorterPersonTypeOgFødselsdato } from '../utils/formatter';
 import {
@@ -18,7 +17,6 @@ import {
     trekkFra,
     nesteMåned,
 } from '../utils/kalender';
-import { splittUtvidetVedEndringerPåSmåbarnstillegg } from '../utils/tidslinje';
 
 export interface ITidslinjeVindu {
     id: number;
@@ -114,28 +112,7 @@ const [TidslinjeProvider, useTidslinje] = createUseContext(() => {
                                   }_${fom.getMonth()}_${fom.getDay()}`,
                                   status: ytelsePeriode.skalUtbetales ? 'suksess' : 'feil',
                               };
-
-                              if (ytelsePeriode.ytelseType === YtelseType.UTVIDET_BARNETRYGD) {
-                                  const småbarnstilleggAndeler =
-                                      personMedAndelerTilkjentYtelse.ytelsePerioder.filter(
-                                          ytelsePeriodeFilter =>
-                                              ytelsePeriodeFilter.ytelseType ===
-                                              YtelseType.SMÅBARNSTILLEGG
-                                      );
-
-                                  return [
-                                      ...acc,
-                                      ...splittUtvidetVedEndringerPåSmåbarnstillegg(
-                                          periode,
-                                          ytelsePeriode,
-                                          småbarnstilleggAndeler
-                                      ),
-                                  ];
-                              } else if (ytelsePeriode.ytelseType !== YtelseType.SMÅBARNSTILLEGG) {
-                                  return [...acc, periode];
-                              } else {
-                                  return acc;
-                              }
+                              return [...acc, periode];
                           },
                           []
                       );
