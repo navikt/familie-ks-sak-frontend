@@ -2,7 +2,6 @@ import React from 'react';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { YtelseType, ytelsetype } from '../../../typer/beregning';
 import type { IUtbetalingsperiodeDetalj } from '../../../typer/vedtaksperiode';
 import { formaterBeløp, hentAlder } from '../../../utils/formatter';
 import DashedHr from '../../Felleskomponenter/DashedHr/DashedHr';
@@ -24,12 +23,9 @@ const PersonUtbetaling: React.FC<IPersonUtbetalingProps> = ({ utbetalingsperiode
                     return (
                         <div key={index} className={'saksoversikt__utbetalinger__ytelselinje'}>
                             <BodyShort>
-                                {utbetalingsperiodeDetalj.ytelseType ===
-                                YtelseType.ORDINÆR_BARNETRYGD
-                                    ? genererTekstForOrdinær(
-                                          utbetalingsperiodeDetalj.person.fødselsdato
-                                      )
-                                    : ytelsetype[utbetalingsperiodeDetalj.ytelseType].navn}
+                                {genererTekstForOrdinær(
+                                    utbetalingsperiodeDetalj.person.fødselsdato
+                                )}
                             </BodyShort>
                             <BodyShort>
                                 {formaterBeløp(utbetalingsperiodeDetalj.utbetaltPerMnd)}
