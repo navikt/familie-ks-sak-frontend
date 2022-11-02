@@ -9281,10 +9281,10 @@ lazy-ass@^1.6.0:
   resolved "https://registry.yarnpkg.com/lazy-ass/-/lazy-ass-1.6.0.tgz#7999655e8646c17f089fdd187d150d3324d54513"
   integrity sha1-eZllXoZGwX8In90YfRUNMyTVRRM=
 
-less-loader@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-11.0.0.tgz#a31b2bc5cdfb62f1c7de9b2d01cd944c22b1a024"
-  integrity sha512-9+LOWWjuoectIEx3zrfN83NAGxSUB5pWEabbbidVQVgZhN+wN68pOvuyirVlH1IK4VT1f3TmlyvAnCXh8O5KEw==
+less-loader@^11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-11.1.0.tgz#a452384259bdf8e4f6d5fdcc39543609e6313f82"
+  integrity sha512-C+uDBV7kS7W5fJlUjq5mPBeBVhYpTIm5gB09APT9o3n/ILeaXVsiSFTbZpTJCJwQ/Crczfn3DmfQFwxYusWFug==
   dependencies:
     klona "^2.0.4"
 
@@ -11793,15 +11793,10 @@ slice-ansi@^5.0.0:
     ansi-styles "^6.0.0"
     is-fullwidth-code-point "^4.0.0"
 
-snyk@^1.1040.0:
-  version "1.1044.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1044.0.tgz#b852d3dc65e8d7bdb0fadd7f9f1591fd09e351bb"
-  integrity sha512-mi9kF6tAPZFj1USYFJoAYxFUE4z/J2ZMJ0D8cXqlMIBewrR+r3RIBI3CNQfsOHvoWhfHZaVNh392TVAtIL2V2Q==
-
-snyk@^1.473.0:
-  version "1.985.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.985.0.tgz#14025f4687316af7d7826b0f91f5c503ff452182"
-  integrity sha512-znT9qMRf5VuZeRb4y4OoMjBeUkgeXyIkvb8KC2i6JPckKCiKgqInzB/uXRVieYlWQjUlMGlktfMizN3lJ/9vuQ==
+snyk@^1.1048.0, snyk@^1.473.0:
+  version "1.1048.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1048.0.tgz#e71c66e5e917bd268cd36bd864c36be284172997"
+  integrity sha512-vDTZfras0X43PIWeU+p8HwfnX48XUp5zAHtQ7ii6fON30NBliGgm0AEXqhYuX+DOX/RWlzbvBY5IMI3XX9js5g==
 
 source-list-map@^2.0.0:
   version "2.0.1"
