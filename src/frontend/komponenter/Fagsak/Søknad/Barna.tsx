@@ -8,7 +8,7 @@ import { Alert, Heading, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { useFagsakRessurser } from '../../../context/FagsakContext';
+import { useFagsakContext } from '../../../context/FagsakContext';
 import { useSøknad } from '../../../context/SøknadContext';
 import RødError from '../../../ikoner/RødError';
 import type { IForelderBarnRelasjonMaskert } from '../../../typer/person';
@@ -43,7 +43,7 @@ const IngenBarnRegistrertInfo = styled(Alert)`
 const Barna: React.FunctionComponent = () => {
     const { vurderErLesevisning } = useBehandling();
     const lesevisning = vurderErLesevisning();
-    const { bruker } = useFagsakRessurser();
+    const { bruker } = useFagsakContext();
     const { skjema } = useSøknad();
 
     const sorterteBarnMedOpplysninger = skjema.felter.barnaMedOpplysninger.verdi.sort(
