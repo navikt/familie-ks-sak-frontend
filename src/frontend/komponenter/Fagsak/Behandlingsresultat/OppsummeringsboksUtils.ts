@@ -1,14 +1,14 @@
-export const hentBarnehageplassBeskrivelse = (antallTimer: number) => {
+export const hentBarnehageplassBeskrivelse = (prosent: number) => {
     switch (true) {
-        case antallTimer === 0:
+        case prosent === 100:
             return 'Ingen plass';
-        case antallTimer < 9:
+        case prosent === 80:
             return 'Under 9 timer';
-        case antallTimer < 17:
+        case prosent === 60:
             return 'Mellom 9 og 16 timer';
-        case antallTimer < 25:
+        case prosent === 40:
             return 'Mellom 17 og 24 timer';
-        case antallTimer < 33:
+        case prosent === 20:
             return 'Mellom 25 og 32 timer';
         default:
             return 'Over 33 timer';

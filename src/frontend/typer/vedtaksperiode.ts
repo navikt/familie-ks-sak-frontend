@@ -70,7 +70,6 @@ export type Utbetalingsperiode = {
 export interface IUtbetalingsperiodeDetalj {
     person: IGrunnlagPerson;
     utbetaltPerMnd: number;
-    antallTimer: number;
     prosent: number;
     erPåvirketAvEndring: boolean;
 }
