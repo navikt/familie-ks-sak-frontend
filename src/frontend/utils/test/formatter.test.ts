@@ -10,7 +10,7 @@ import {
     sorterUtbetaling,
 } from '../formatter';
 import { iDag, KalenderEnhet, leggTil, serializeIso8601String, trekkFra } from '../kalender';
-import { mockBarn, mockSøker } from './person/person.mock';
+import { mockBarn } from './person/person.mock';
 
 describe('utils/formatter', () => {
     test('Skal formatere ident', () => {
@@ -97,28 +97,12 @@ describe('utils/formatter', () => {
         test('Skal gi riktig rekkefølge på utbetalinger', () => {
             const utbetalingBarn = lagUtbetalingsperiodeDetalj({
                 person: mockBarn,
-                ytelseType: YtelseType.ORDINÆR_BARNETRYGD,
+                ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
             });
 
-            const utbetalingSmåbarnstillegg = lagUtbetalingsperiodeDetalj({
-                person: mockSøker(),
-                ytelseType: YtelseType.SMÅBARNSTILLEGG,
-            });
+            const sorterteUtbetalingsperiodedetaljer = [utbetalingBarn].sort(sorterUtbetaling);
 
-            const utbetalingUtvidet = lagUtbetalingsperiodeDetalj({
-                person: mockSøker(),
-                ytelseType: YtelseType.UTVIDET_BARNETRYGD,
-            });
-
-            const sorterteUtbetalingsperiodedetaljer = [
-                utbetalingBarn,
-                utbetalingSmåbarnstillegg,
-                utbetalingUtvidet,
-            ].sort(sorterUtbetaling);
-
-            expect(sorterteUtbetalingsperiodedetaljer[0]).toEqual(utbetalingUtvidet);
-            expect(sorterteUtbetalingsperiodedetaljer[1]).toEqual(utbetalingSmåbarnstillegg);
-            expect(sorterteUtbetalingsperiodedetaljer[2]).toEqual(utbetalingBarn);
+            expect(sorterteUtbetalingsperiodedetaljer[0]).toEqual(utbetalingBarn);
         });
     });
 });

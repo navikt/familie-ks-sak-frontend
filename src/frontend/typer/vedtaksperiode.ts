@@ -1,5 +1,6 @@
 import type { FamilieIsoDate } from '../utils/kalender';
-import { ytelsetype, YtelseType } from './beregning';
+import type { YtelseType } from './beregning';
+import { ytelsetype } from './beregning';
 import type { IGrunnlagPerson } from './person';
 import type { VedtakBegrunnelse, VedtakBegrunnelseType } from './vedtak';
 
@@ -73,6 +74,8 @@ export interface IUtbetalingsperiodeDetalj {
     person: IGrunnlagPerson;
     ytelseType: YtelseType;
     utbetaltPerMnd: number;
+    antallTimer: number;
+    prosent: number;
     erPåvirketAvEndring: boolean;
 }
 
@@ -81,29 +84,13 @@ export const hentVedtaksperiodeTittel = (
 ) => {
     const { type, utbetalingsperiodeDetaljer } = vedtaksperiodeMedBegrunnelser;
 
-    const ytelseTyperUtenEndring =
-        utbetalingsperiodeDetaljer
-            .filter(utbetalingsperiodeDetalj => !utbetalingsperiodeDetalj.erPåvirketAvEndring)
-            .map(utbetalingsperiodeDetalj => utbetalingsperiodeDetalj.ytelseType) ?? [];
-
     if (
         (type === Vedtaksperiodetype.UTBETALING ||
             type === Vedtaksperiodetype.UTBETALING_MED_REDUKSJON_FRA_SIST_IVERKSATTE_BEHANDLING ||
             type === Vedtaksperiodetype.FORTSATT_INNVILGET) &&
         utbetalingsperiodeDetaljer.length > 0
     ) {
-        if (
-            ytelseTyperUtenEndring.includes(YtelseType.UTVIDET_BARNETRYGD) &&
-            ytelseTyperUtenEndring.includes(YtelseType.SMÅBARNSTILLEGG)
-        ) {
-            return `${ytelsetype[YtelseType.UTVIDET_BARNETRYGD].navn} og ${ytelsetype[
-                YtelseType.SMÅBARNSTILLEGG
-            ].navn.toLowerCase()}`;
-        } else if (ytelseTyperUtenEndring.includes(YtelseType.UTVIDET_BARNETRYGD)) {
-            return ytelsetype[YtelseType.UTVIDET_BARNETRYGD].navn;
-        } else {
-            return ytelsetype[YtelseType.ORDINÆR_BARNETRYGD].navn;
-        }
+        return ytelsetype.ORDINÆR_KONTANTSTØTTE.navn;
     }
 
     switch (type) {

@@ -1,40 +1,16 @@
-import { YtelseType } from '../../../typer/beregning';
-import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
-import { kalenderDato, kalenderDatoFraDate, kalenderDiffMåned } from '../../../utils/kalender';
-
-export const kanFjerneSmåbarnstilleggFraPeriode = (
-    utbetalingsperiode: Utbetalingsperiode
-): boolean => {
-    return utbetalingsperiode.utbetalingsperiodeDetaljer.some(
-        detalj => detalj.ytelseType === YtelseType.SMÅBARNSTILLEGG
-    );
-};
-
-const sjekkOmTilOgMed3ÅrIPeriode = (fødselsdato: string, periode: Date): boolean => {
-    const antallMndForskjell = kalenderDiffMåned(
-        kalenderDato(fødselsdato),
-        kalenderDatoFraDate(periode)
-    );
-
-    return antallMndForskjell <= 36;
-};
-
-export const kanLeggeSmåbarnstilleggTilPeriode = (
-    utbetalingsperiode: Utbetalingsperiode,
-    periode: Date
-): boolean => {
-    const harUtvidetYtelse = utbetalingsperiode.ytelseTyper.some(
-        ytelsetype => ytelsetype === YtelseType.UTVIDET_BARNETRYGD
-    );
-
-    const harPersonTilOgMed3ÅrIPeriode = utbetalingsperiode.utbetalingsperiodeDetaljer.some(
-        utbetalingsPerideDetalj =>
-            sjekkOmTilOgMed3ÅrIPeriode(utbetalingsPerideDetalj.person.fødselsdato, periode)
-    );
-
-    return (
-        harUtvidetYtelse &&
-        harPersonTilOgMed3ÅrIPeriode &&
-        !kanFjerneSmåbarnstilleggFraPeriode(utbetalingsperiode)
-    );
+export const hentBarnehageplassBeskrivelse = (antallTimer: number) => {
+    switch (true) {
+        case antallTimer === 0:
+            return 'Ingen plass';
+        case antallTimer < 9:
+            return 'Under 9 timer';
+        case antallTimer < 17:
+            return 'Mellom 9 og 16 timer';
+        case antallTimer < 25:
+            return 'Mellom 17 og 24 timer';
+        case antallTimer < 33:
+            return 'Mellom 25 og 32 timer';
+        default:
+            return 'Over 33 timer';
+    }
 };
