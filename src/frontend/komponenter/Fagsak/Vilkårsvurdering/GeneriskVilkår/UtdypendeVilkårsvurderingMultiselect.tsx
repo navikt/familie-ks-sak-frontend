@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
@@ -7,20 +7,14 @@ import type { ActionMeta, ISelectOption } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 
-import { useApp } from '../../../../context/AppContext';
 import type { PersonType } from '../../../../typer/person';
-import { ToggleNavn } from '../../../../typer/toggles';
 import { UtdypendeVilkårsvurdering } from '../../../../typer/vilkår';
 import type { IVilkårResultat, Regelverk, Resultat } from '../../../../typer/vilkår';
-import type { UtdypendeVilkårsvurderingAvhengigheter } from '../../../../utils/utdypendeVilkårsvurderinger';
-import {
-    bestemMuligeUtdypendeVilkårsvurderinger,
-    fjernUmuligeAlternativerFraRedigerbartVilkår,
-} from '../../../../utils/utdypendeVilkårsvurderinger';
 
 interface Props {
     vilkårResultat: IVilkårResultat;
     utdypendeVilkårsvurderinger: Felt<UtdypendeVilkårsvurdering[]>;
+    muligeUtdypendeVilkårsvurderinger?: UtdypendeVilkårsvurdering[];
     resultat: Felt<Resultat>;
     vurderesEtter: Felt<Regelverk | undefined>;
     erLesevisning: boolean;
@@ -32,6 +26,7 @@ const utdypendeVilkårsvurderingTekst: Record<UtdypendeVilkårsvurdering, string
     [UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG]: 'Vurdering annet grunnlag',
     [UtdypendeVilkårsvurdering.DELT_BOSTED]: 'Delt bosted: skal deles',
     [UtdypendeVilkårsvurdering.ADOPSJON]: 'Adopsjon',
+    [UtdypendeVilkårsvurdering.SOMMERFERIE]: 'Sommerferie',
 };
 
 const StyledFamilieReactSelect = styled(FamilieReactSelect)`
@@ -46,34 +41,11 @@ const mapUtdypendeVilkårsvurderingTilOption = (
 });
 
 export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
-    vilkårResultat,
     utdypendeVilkårsvurderinger,
-    resultat,
-    vurderesEtter,
+    muligeUtdypendeVilkårsvurderinger,
     erLesevisning,
-    personType,
     feilhåndtering,
 }) => {
-    const { toggles } = useApp();
-
-    const utdypendeVilkårsvurderingAvhengigheter: UtdypendeVilkårsvurderingAvhengigheter = {
-        personType,
-        vilkårType: vilkårResultat.vilkårType,
-        resultat: resultat.verdi,
-        vurderesEtter: vurderesEtter.verdi,
-        brukEøs: toggles[ToggleNavn.brukEøs],
-    };
-
-    const muligeUtdypendeVilkårsvurderinger = bestemMuligeUtdypendeVilkårsvurderinger(
-        utdypendeVilkårsvurderingAvhengigheter
-    );
-    useEffect(() => {
-        fjernUmuligeAlternativerFraRedigerbartVilkår(
-            utdypendeVilkårsvurderinger,
-            muligeUtdypendeVilkårsvurderinger
-        );
-    }, [vilkårResultat, utdypendeVilkårsvurderingAvhengigheter]);
-
     const håndterEndring = (action: ActionMeta<ISelectOption>) => {
         switch (action.action) {
             case 'select-option':
@@ -100,7 +72,7 @@ export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
         }
     };
 
-    if (muligeUtdypendeVilkårsvurderinger.length === 0) {
+    if (!muligeUtdypendeVilkårsvurderinger || muligeUtdypendeVilkårsvurderinger.length === 0) {
         return null;
     }
 

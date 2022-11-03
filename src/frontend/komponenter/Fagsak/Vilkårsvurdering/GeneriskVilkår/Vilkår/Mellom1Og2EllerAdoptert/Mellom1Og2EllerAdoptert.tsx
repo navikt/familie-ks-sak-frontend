@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -21,6 +22,7 @@ export const Mellom1Og2EllerAdoptert: React.FC<Mellom1Og2EllerAdopsjonProps> = (
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={false}
             visSpørsmål={true}
+            utdypendeVilkårsvurderinger={[UtdypendeVilkårsvurdering.ADOPSJON]}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             toggleForm={toggleForm}

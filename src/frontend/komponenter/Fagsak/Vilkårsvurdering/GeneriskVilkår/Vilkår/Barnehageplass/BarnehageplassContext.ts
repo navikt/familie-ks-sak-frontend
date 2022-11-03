@@ -57,6 +57,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             verdi: vilkårSkjema.antallTimer,
             avhengigheter: {
                 resultat: resultat.verdi,
+                utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
             },
             valideringsfunksjon: erAntallTimerGyldig,
         }),

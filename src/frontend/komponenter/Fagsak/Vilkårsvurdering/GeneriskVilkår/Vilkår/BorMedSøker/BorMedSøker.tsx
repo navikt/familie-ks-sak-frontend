@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -21,6 +22,10 @@ export const BorMedSøker: React.FC<BosattIRiketProps> = ({
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={true}
             visSpørsmål={true}
+            utdypendeVilkårsvurderinger={[
+                UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG,
+                UtdypendeVilkårsvurdering.DELT_BOSTED,
+            ]}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             toggleForm={toggleForm}

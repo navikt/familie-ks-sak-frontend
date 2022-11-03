@@ -24,7 +24,11 @@ export const erAntallTimerGyldig = (
         }
         return ok(felt);
     }
-    if (avhengigheter?.resultat !== Resultat.OPPFYLT) {
+    console.log(avhengigheter?.utdypendeVilkårsvurdering);
+    if (
+        avhengigheter?.resultat !== Resultat.OPPFYLT &&
+        avhengigheter?.utdypendeVilkårsvurdering.length <= 0
+    ) {
         return feil(felt, 'Antall timer med barnehageplass må fylles ut');
     }
     return ok(felt);

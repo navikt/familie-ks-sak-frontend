@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 
@@ -6,11 +6,16 @@ import { Radio } from 'nav-frontend-skjema';
 
 import { FamilieInput, FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
-import { Resultat } from '../../../../../../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 import { useBarnehageplass } from './BarnehageplassContext';
+import {
+    antallTimerKvalifiserer,
+    vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie,
+    vilkårOppfyltOgAntallTimerKvalifiserer,
+} from './BarnehageplassUtils';
 
 const StyledFamilieInput = styled(FamilieInput)`
     margin-bottom: 1rem;
@@ -28,22 +33,22 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
     const { felter } = useBarnehageplass(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
 
-    const antallTimerKvalifiserer = (antallTimer: number) => {
-        const kvalifiserer = antallTimer > 0 && antallTimer < 33;
-        return kvalifiserer;
-    };
-
     const [harBarnehageplass, settHarBarnehageplass] = useState(
-        vilkårSkjemaContext.skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT ||
-            (vilkårSkjemaContext.skjema.felter.resultat.verdi === Resultat.OPPFYLT &&
-                antallTimerKvalifiserer(
-                    Number(vilkårSkjemaContext.skjema.felter.antallTimer.verdi)
-                ))
+        vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(vilkårSkjemaContext.skjema) ||
+            vilkårOppfyltOgAntallTimerKvalifiserer(vilkårSkjemaContext.skjema)
     );
 
     const oppdaterResultat = (barnehageplass: boolean, antallTimer: string) => {
         if (!barnehageplass) {
-            vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
+            if (
+                vilkårSkjemaContext.skjema.felter.utdypendeVilkårsvurdering.verdi.find(
+                    utdypende => utdypende === UtdypendeVilkårsvurdering.SOMMERFERIE
+                )
+            ) {
+                vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
+            } else {
+                vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
+            }
         } else {
             if (antallTimerKvalifiserer(Number(antallTimer))) {
                 vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
@@ -62,11 +67,18 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
         oppdaterResultat(barnehageplass, vilkårSkjemaContext.skjema.felter.antallTimer.verdi);
     };
 
+    useEffect(() => {
+        oppdaterResultat(harBarnehageplass, vilkårSkjemaContext.skjema.felter.antallTimer.verdi);
+    }, [vilkårSkjemaContext.skjema.felter.utdypendeVilkårsvurdering]);
+
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={false}
             visSpørsmål={false}
+            utdypendeVilkårsvurderinger={
+                harBarnehageplass ? [] : [UtdypendeVilkårsvurdering.SOMMERFERIE]
+            }
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             toggleForm={toggleForm}
