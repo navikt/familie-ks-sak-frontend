@@ -185,13 +185,9 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 )}
                 {children}
                 <UtdypendeVilkårsvurderingMultiselect
-                    vilkårResultat={vilkårResultat}
                     utdypendeVilkårsvurderinger={skjema.felter.utdypendeVilkårsvurdering}
                     muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
-                    resultat={skjema.felter.resultat}
-                    vurderesEtter={skjema.felter.vurderesEtter}
                     erLesevisning={lesevisning}
-                    personType={person.type}
                     feilhåndtering={
                         skjema.visFeilmeldinger
                             ? skjema.felter.utdypendeVilkårsvurdering.feilmelding

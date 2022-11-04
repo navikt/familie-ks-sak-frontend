@@ -7,18 +7,12 @@ import type { ActionMeta, ISelectOption } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 
-import type { PersonType } from '../../../../typer/person';
 import { UtdypendeVilkårsvurdering } from '../../../../typer/vilkår';
-import type { IVilkårResultat, Regelverk, Resultat } from '../../../../typer/vilkår';
 
 interface Props {
-    vilkårResultat: IVilkårResultat;
     utdypendeVilkårsvurderinger: Felt<UtdypendeVilkårsvurdering[]>;
     muligeUtdypendeVilkårsvurderinger?: UtdypendeVilkårsvurdering[];
-    resultat: Felt<Resultat>;
-    vurderesEtter: Felt<Regelverk | undefined>;
     erLesevisning: boolean;
-    personType: PersonType;
     feilhåndtering: ReactNode;
 }
 
