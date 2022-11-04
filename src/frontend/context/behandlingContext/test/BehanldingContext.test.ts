@@ -13,7 +13,7 @@ describe('BehandlingContext', () => {
                 )
             ).toBeTruthy();
         });
-        test('Skal returnere false dersom behandling er avsluttet.', () => {
+        test('Skal returnere true dersom behandling er avsluttet.', () => {
             expect(
                 saksbehandlerHarKunLesevisning(
                     true,
