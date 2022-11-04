@@ -173,7 +173,6 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                             Velg
                         </option>
                         {Object.values(HenleggÅrsak)
-                            .filter(årsak => årsak !== HenleggÅrsak.FØDSELSHENDELSE_UGYLDIG_UTFALL)
                             .filter(
                                 årsak =>
                                     (årsak !== HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&

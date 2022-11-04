@@ -158,12 +158,14 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
                 innloggetSaksbehandler?.groups ?? []
             ) || behandlingsårsakErÅpenForAlleMedTilgangTilÅOppretteÅrsak;
 
-        const steg = hentStegPåÅpenBehandling();
+        const steg = åpenBehandlingData?.steg;
+        const status = åpenBehandlingData?.status;
 
         return saksbehandlerHarKunLesevisning(
             innloggetSaksbehandlerSkrivetilgang,
             saksbehandlerHarTilgangTilEnhet,
             steg,
+            status,
             sjekkTilgangTilEnhet
         );
     };
