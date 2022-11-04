@@ -70,7 +70,6 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-                erMellom1Og2EllerAdoptertVilkår: false,
             },
             valideringsfunksjon: erPeriodeGyldig,
         }),
