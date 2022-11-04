@@ -87,7 +87,7 @@ export interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkå
     vilkårSkjemaContext: VilkårSkjemaContextValue<T>;
     visVurderesEtter?: boolean;
     visSpørsmål?: boolean;
-    utdypendeVilkårsvurderinger?: UtdypendeVilkårsvurdering[];
+    muligeUtdypendeVilkårsvurderinger?: UtdypendeVilkårsvurdering[];
     periodeChildren?: ReactNode;
     children?: ReactNode;
 }
@@ -96,7 +96,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     vilkårSkjemaContext,
     visVurderesEtter,
     visSpørsmål,
-    utdypendeVilkårsvurderinger,
+    muligeUtdypendeVilkårsvurderinger,
     lesevisning,
     vilkårResultat,
     vilkårFraConfig,
@@ -112,7 +112,6 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding } =
         vilkårSkjemaContext;
 
-    console.log(skjema);
     return (
         <SkjemaGruppe feil={feilmelding} utenFeilPropagering={true}>
             <Container lesevisning={false} vilkårResultat={undefined}>
@@ -188,7 +187,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 <UtdypendeVilkårsvurderingMultiselect
                     vilkårResultat={vilkårResultat}
                     utdypendeVilkårsvurderinger={skjema.felter.utdypendeVilkårsvurdering}
-                    muligeUtdypendeVilkårsvurderinger={utdypendeVilkårsvurderinger}
+                    muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
                     resultat={skjema.felter.resultat}
                     vurderesEtter={skjema.felter.vurderesEtter}
                     erLesevisning={lesevisning}

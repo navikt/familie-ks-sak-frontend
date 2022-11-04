@@ -1,8 +1,10 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
+import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import { Resultat } from '../../../../../../typer/vilkår';
 import { tellAntallDesimaler } from '../../../../../../utils/eøsValidators';
+import { muligeUtdypendeVilkårsvurderinger } from './BarnehageplassContext';
 
 export const erAntallTimerGyldig = (
     felt: FeltState<string>,
@@ -24,12 +26,24 @@ export const erAntallTimerGyldig = (
         }
         return ok(felt);
     }
-    console.log(avhengigheter?.utdypendeVilkårsvurdering);
     if (
         avhengigheter?.resultat !== Resultat.OPPFYLT &&
         avhengigheter?.utdypendeVilkårsvurdering.length <= 0
     ) {
         return feil(felt, 'Antall timer med barnehageplass må fylles ut');
     }
+    return ok(felt);
+};
+
+export const erUtdypendeVilkårsvurderingerGyldig = (
+    felt: FeltState<UtdypendeVilkårsvurdering[]>
+): FeltState<UtdypendeVilkårsvurdering[]> => {
+    if (muligeUtdypendeVilkårsvurderinger.length === 0) {
+        return ok(felt);
+    }
+    if (!felt.verdi.every(item => muligeUtdypendeVilkårsvurderinger.includes(item))) {
+        return feil(felt, 'Du har valgt en ugyldig kombinasjon');
+    }
+
     return ok(felt);
 };

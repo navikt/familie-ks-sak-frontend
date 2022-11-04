@@ -2,12 +2,9 @@ import { useFelt } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { VedtakBegrunnelse } from '../../../../../../typer/vedtak';
+import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
-import type {
-    Regelverk as RegelverkType,
-    Resultat,
-    UtdypendeVilkårsvurdering,
-} from '../../../../../../typer/vilkår';
+import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
 import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
 import {
     erAvslagBegrunnelserGyldig,
@@ -15,7 +12,12 @@ import {
     erResultatGyldig,
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import { erAntallTimerGyldig } from './BarnehageplassValidering';
+import {
+    erAntallTimerGyldig,
+    erUtdypendeVilkårsvurderingerGyldig,
+} from './BarnehageplassValidering';
+
+export const muligeUtdypendeVilkårsvurderinger = [UtdypendeVilkårsvurdering.SOMMERFERIE];
 
 export interface IBarnehageplassVilkårSkjemaContext extends IVilkårSkjemaContext {
     antallTimer: string;
@@ -48,6 +50,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
 
     const utdypendeVilkårsvurdering = useFelt<UtdypendeVilkårsvurdering[]>({
         verdi: vilkårSkjema.utdypendeVilkårsvurdering,
+        valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });
 
     const felter = {

@@ -10,7 +10,7 @@ import { Resultat, UtdypendeVilkårsvurdering } from '../../../../../../typer/vi
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
-import { useBarnehageplass } from './BarnehageplassContext';
+import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import {
     antallTimerKvalifiserer,
     vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie,
@@ -76,8 +76,8 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={false}
             visSpørsmål={false}
-            utdypendeVilkårsvurderinger={
-                harBarnehageplass ? [] : [UtdypendeVilkårsvurdering.SOMMERFERIE]
+            muligeUtdypendeVilkårsvurderinger={
+                harBarnehageplass ? [] : muligeUtdypendeVilkårsvurderinger
             }
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
