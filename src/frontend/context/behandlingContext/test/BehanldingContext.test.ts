@@ -21,7 +21,7 @@ describe('BehandlingContext', () => {
                     BehandlingSteg.REGISTRERE_SØKNAD,
                     BehandlingStatus.AVSLUTTET
                 )
-            ).toBeFalsy();
+            ).toBeTruthy();
         });
         test('Skal returnere false dersom saksbehandler har skrivetilgang og steget er før beslutte vedtak.', () => {
             expect(
