@@ -36,7 +36,7 @@ export const hentFeilIVilkårsvurdering = (
         return [
             ...hentIkkeVurderteVilkårFeil(personResultat),
             ...hentIkkeVurderteAndreVurderingerFeil(personResultat),
-            ...hentForSenBarnehageplassFeil(
+            ...hentBarnehageplassPeriodeStarterForSentFeil(
                 oppfylteMellom1Og2EllerAdoptertVilkårResultater,
                 barnehageplassVilkårResultater
             ),
@@ -74,7 +74,7 @@ const hentIkkeVurderteVilkårFeil = (personResultat: IPersonResultat): Feiloppsu
             skjemaelementId: vilkårFeilmeldingId(vilkårResultat),
         }));
 
-const hentForSenBarnehageplassFeil = (
+const hentBarnehageplassPeriodeStarterForSentFeil = (
     oppfylteMellom1Og2EllerAdoptertVilkårResultater: IVilkårResultat[],
     barnehageplassVilkårResultater: IVilkårResultat[]
 ): FeiloppsummeringFeil[] => {
@@ -89,16 +89,20 @@ const hentForSenBarnehageplassFeil = (
             undefined
         );
 
-    return barnehageplassPeriodeStarterEtterMellom1Og2EllerAdoptertPeriode(
-        barnehageplassVilkårResultater,
-        sisteOppfylteMellom1Og2EllerAdoptertVilkårResultat?.periode
-    ).map(vilkårResultat => ({
-        skjemaelementId: vilkårFeilmeldingId(vilkårResultat),
-        feilmelding:
-            'Du har lagt til en periode på barnehageplassvilkåret ' +
-            'som starter etter at barnet har fylt 2 år eller startet på skolen. ' +
-            'Du må fjerne denne perioden for å kunne fortsette.',
-    }));
+    return barnehageplassVilkårResultater
+        .filter(barnehageplassVilkårResultat =>
+            starterEtter(
+                barnehageplassVilkårResultat.periode,
+                sisteOppfylteMellom1Og2EllerAdoptertVilkårResultat?.periode
+            )
+        )
+        .map(vilkårResultat => ({
+            skjemaelementId: vilkårFeilmeldingId(vilkårResultat),
+            feilmelding:
+                'Du har lagt til en periode på barnehageplassvilkåret ' +
+                'som starter etter at barnet har fylt 2 år eller startet på skolen. ' +
+                'Du må fjerne denne perioden for å kunne fortsette.',
+        }));
 };
 
 const hentMellom1Og2EllerAdoptertVikårManglerBarnehagePeriodeFeil = (
@@ -124,7 +128,7 @@ const hentMellom1Og2EllerAdoptertVikårManglerBarnehagePeriodeFeil = (
 const mellom1Og2EllerAdoptertPeriodeManglerBarnehagePeriode = (
     mellom1og2EllerAdoptertPeriode: IPeriode,
     barnehagePerioder: IPeriode[]
-) => {
+): boolean => {
     const sammenSlåtteBarnehageperioder =
         slåSammenPerioderSomLiggerInntilHveranre(barnehagePerioder);
 
@@ -142,20 +146,19 @@ const mellom1Og2EllerAdoptertPeriodeManglerBarnehagePeriode = (
     });
 };
 
-const barnehageplassPeriodeStarterEtterMellom1Og2EllerAdoptertPeriode = (
-    barnehageplass: IVilkårResultat[],
+function starterEtter(
+    barnehageplassVilkårResultat: IPeriode | undefined,
     mellom1og2EllerAdoptertPeriode: IPeriode | undefined
-): IVilkårResultat[] =>
-    barnehageplass.filter(barnehageplassVilkårResultat =>
-        erEtter(
-            parseIso8601String(
-                barnehageplassVilkårResultat.periode.fom ?? serializeIso8601String(TIDENES_MORGEN)
-            ),
-            parseIso8601String(
-                mellom1og2EllerAdoptertPeriode?.tom ?? serializeIso8601String(TIDENES_ENDE)
-            )
+) {
+    return erEtter(
+        parseIso8601String(
+            barnehageplassVilkårResultat?.fom ?? serializeIso8601String(TIDENES_MORGEN)
+        ),
+        parseIso8601String(
+            mellom1og2EllerAdoptertPeriode?.tom ?? serializeIso8601String(TIDENES_ENDE)
         )
     );
+}
 
 const slåSammenPerioderSomLiggerInntilHveranre = (perioder: IPeriode[]): IPeriode[] => {
     return perioder.reduce((acc: IPeriode[], periode) => {
