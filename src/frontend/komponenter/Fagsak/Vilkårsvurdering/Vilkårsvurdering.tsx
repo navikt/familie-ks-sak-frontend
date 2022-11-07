@@ -86,12 +86,10 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
             nesteOnClick={() => {
                 if (vurderErLesevisning()) {
                     navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/tilkjent-ytelse`);
+                } else if (!erFeilISkjema) {
+                    vilkårsvurderingNesteOnClick();
                 } else {
-                    if (!erFeilISkjema) {
-                        vilkårsvurderingNesteOnClick();
-                    } else {
-                        settVisFeilmeldinger(true);
-                    }
+                    settVisFeilmeldinger(true);
                 }
             }}
             maxWidthStyle={'80rem'}
