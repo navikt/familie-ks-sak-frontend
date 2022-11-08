@@ -111,8 +111,6 @@ const hentMellom1Og2EllerAdoptertVikårManglerBarnehagePeriodeFeil = (
 ): FeiloppsummeringFeil[] =>
     oppfylteMellom1Og2EllerAdoptertVilkårResultater
         .filter(mellom1og2EllerAdoptertPeriode => {
-            console.log(mellom1og2EllerAdoptertPeriode);
-            console.log(barnehageplassVilkårResultater);
             return mellom1Og2EllerAdoptertPeriodeManglerBarnehagePeriode(
                 mellom1og2EllerAdoptertPeriode.periode,
                 barnehageplassVilkårResultater.map(vilkårResultat => vilkårResultat.periode)
