@@ -3,7 +3,7 @@ import React from 'react';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
-import { useBosattIRiket } from './BosattIRiketContext';
+import { muligeUtdypendeVilkårsvurderinger, useBosattIRiket } from './BosattIRiketContext';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
@@ -21,6 +21,7 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={true}
             visSpørsmål={true}
+            muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             toggleForm={toggleForm}

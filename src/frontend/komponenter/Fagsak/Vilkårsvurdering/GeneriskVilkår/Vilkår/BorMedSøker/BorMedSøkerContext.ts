@@ -2,12 +2,9 @@ import { useFelt } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { VedtakBegrunnelse } from '../../../../../../typer/vedtak';
+import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
-import type {
-    Regelverk as RegelverkType,
-    Resultat,
-    UtdypendeVilkårsvurdering,
-} from '../../../../../../typer/vilkår';
+import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
 import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
 import {
     erAvslagBegrunnelserGyldig,
@@ -16,6 +13,11 @@ import {
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BorMedSøkerValidering';
+
+export const muligeUtdypendeVilkårsvurderinger = [
+    UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG,
+    UtdypendeVilkårsvurdering.DELT_BOSTED,
+];
 
 export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
@@ -45,7 +47,6 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
         verdi: vilkårSkjema.utdypendeVilkårsvurdering,
         avhengigheter: {
             vurderesEtter: vurderesEtter.verdi,
-            resultat: resultat.verdi,
         },
         valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });

@@ -2,12 +2,9 @@ import { useFelt } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { VedtakBegrunnelse } from '../../../../../../typer/vedtak';
+import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
-import type {
-    Regelverk as RegelverkType,
-    Resultat,
-    UtdypendeVilkårsvurdering,
-} from '../../../../../../typer/vilkår';
+import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
 import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
 import {
     erAvslagBegrunnelserGyldig,
@@ -16,6 +13,10 @@ import {
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BosattIRiketValidering';
+
+export const muligeUtdypendeVilkårsvurderinger = [
+    UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG,
+];
 
 export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
@@ -44,10 +45,7 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
     const utdypendeVilkårsvurdering = useFelt<UtdypendeVilkårsvurdering[]>({
         verdi: vilkårSkjema.utdypendeVilkårsvurdering,
         avhengigheter: {
-            personType: person.type,
             vurderesEtter: vurderesEtter.verdi,
-            resultat: resultat.verdi,
-            vilkårType: vilkår.vilkårType,
         },
         valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });
