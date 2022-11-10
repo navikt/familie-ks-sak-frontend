@@ -2,12 +2,9 @@ import { useFelt } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { VedtakBegrunnelse } from '../../../../../../typer/vedtak';
+import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
-import type {
-    Regelverk as RegelverkType,
-    Resultat,
-    UtdypendeVilkårsvurdering,
-} from '../../../../../../typer/vilkår';
+import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
 import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
 import {
     erAvslagBegrunnelserGyldig,
@@ -19,6 +16,8 @@ import {
     erBegrunnelseGyldig,
     erUtdypendeVilkårsvurderingerGyldig,
 } from './Mellom1Og2EllerAdoptertValidering';
+
+export const muligeUtdypendeVilkårsvurderinger = [UtdypendeVilkårsvurdering.ADOPSJON];
 
 export const useMellom1Og2EllerAdoptert = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {

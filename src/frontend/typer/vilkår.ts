@@ -215,6 +215,7 @@ export enum UtdypendeVilkårsvurdering {
     VURDERING_ANNET_GRUNNLAG = 'VURDERING_ANNET_GRUNNLAG',
     DELT_BOSTED = 'DELT_BOSTED',
     ADOPSJON = 'ADOPSJON',
+    SOMMERFERIE = 'SOMMERFERIE',
 }
 
 export enum UtdypendeVilkårsvurderingDeltBosted {

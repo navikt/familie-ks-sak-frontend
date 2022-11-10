@@ -1,10 +1,9 @@
-import * as React from 'react';
-
 import constate from 'constate';
 
+import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
+
 import type { IBehandling } from '../../typer/behandling';
-import type { IAnnenVurdering, IPersonResultat, IVilkårResultat } from '../../typer/vilkår';
-import { Resultat } from '../../typer/vilkår';
+import { hentFeilIVilkårsvurdering } from './hentFeilIVilkårsvurdering';
 import { mapFraRestVilkårsvurderingTilUi } from './vilkårsvurdering';
 
 interface IProps {
@@ -12,87 +11,19 @@ interface IProps {
 }
 
 const [VilkårsvurderingProvider, useVilkårsvurdering] = constate(({ åpenBehandling }: IProps) => {
-    const [vilkårsvurdering, settVilkårsvurdering] = React.useState<IPersonResultat[]>(
-        åpenBehandling
-            ? mapFraRestVilkårsvurderingTilUi(
-                  åpenBehandling.personResultater,
-                  åpenBehandling.personer
-              )
-            : []
-    );
-
-    React.useEffect(() => {
-        settVilkårsvurdering(
-            åpenBehandling
-                ? mapFraRestVilkårsvurderingTilUi(
-                      åpenBehandling.personResultater,
-                      åpenBehandling.personer
-                  )
-                : []
-        );
-    }, [åpenBehandling]);
-
-    const erVilkårsvurderingenGyldig = (): boolean => {
-        return (
-            vilkårsvurdering.filter((personResultat: IPersonResultat) => {
-                return (
-                    personResultat.vilkårResultater.filter(
-                        (vilkårResultat: IVilkårResultat) =>
-                            vilkårResultat.resultat === Resultat.IKKE_VURDERT
-                    ).length > 0 ||
-                    personResultat.andreVurderinger.filter(
-                        (annenVurdering: IAnnenVurdering) =>
-                            annenVurdering.resultat === Resultat.IKKE_VURDERT
-                    ).length > 0
-                );
-            }).length === 0
-        );
-    };
-
-    const hentVilkårMedFeil = (): IVilkårResultat[] => {
-        return vilkårsvurdering.reduce(
-            (accVilkårMedFeil: IVilkårResultat[], personResultat: IPersonResultat) => {
-                return [
-                    ...accVilkårMedFeil,
-                    ...personResultat.vilkårResultater
-                        .filter(
-                            (vilkårResultat: IVilkårResultat) =>
-                                vilkårResultat.resultat === Resultat.IKKE_VURDERT
-                        )
-                        .map((vilkårResultat: IVilkårResultat) => vilkårResultat),
-                ];
-            },
-            []
-        );
-    };
-
-    const hentAndreVurderingerMedFeil = (): IAnnenVurdering[] => {
-        return vilkårsvurdering.reduce(
-            (accAndreVurderingerMedFeil: IAnnenVurdering[], personResultat: IPersonResultat) => {
-                return [
-                    ...accAndreVurderingerMedFeil,
-                    ...personResultat.andreVurderinger
-                        .filter(
-                            (vilkårResultat: IAnnenVurdering) =>
-                                vilkårResultat.resultat === Resultat.IKKE_OPPFYLT
-                        )
-                        .map((annenVurdering: IAnnenVurdering) => annenVurdering),
-                ];
-            },
-            []
-        );
-    };
+    const vilkårsvurdering = åpenBehandling
+        ? mapFraRestVilkårsvurderingTilUi(åpenBehandling.personResultater, åpenBehandling.personer)
+        : [];
 
     const personResultater = åpenBehandling.personResultater;
 
+    const feiloppsummeringFeil: FeiloppsummeringFeil[] =
+        hentFeilIVilkårsvurdering(vilkårsvurdering);
+
     return {
-        erVilkårsvurderingenGyldig,
-        hentVilkårMedFeil,
-        hentAndreVurderingerMedFeil,
-        settVilkårsvurdering,
+        feiloppsummeringFeil,
         vilkårsvurdering,
         personResultater,
     };
 });
-
 export { VilkårsvurderingProvider, useVilkårsvurdering };

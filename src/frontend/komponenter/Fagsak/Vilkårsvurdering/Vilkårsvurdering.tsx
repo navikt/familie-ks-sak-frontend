@@ -10,21 +10,17 @@ import { Refresh } from '@navikt/ds-icons';
 import { Alert, BodyShort, ErrorMessage } from '@navikt/ds-react';
 import { NavdsSpacing2 } from '@navikt/ds-tokens/dist/tokens';
 import { FamilieKnapp } from '@navikt/familie-form-elements';
-import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useVilkårsvurdering } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingSteg, BehandlingÅrsak } from '../../../typer/behandling';
-import type { IAnnenVurdering, IVilkårResultat } from '../../../typer/vilkår';
-import { annenVurderingConfig, vilkårConfig } from '../../../typer/vilkår';
 import { datoformat, formaterIsoDato } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
-import { annenVurderingFeilmeldingId } from './GeneriskAnnenVurdering/AnnenVurderingTabell';
-import { vilkårFeilmeldingId } from './GeneriskVilkår/VilkårTabell';
 import { HentetLabel } from './Registeropplysninger/HentetLabel';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 
@@ -36,9 +32,11 @@ const HentetLabelOgKnappDiv = styled.div`
     display: flex;
     justify-content: left;
     align-items: center;
+
     .knapp__spinner {
         margin: 0 !important;
     }
+
     margin-bottom: ${NavdsSpacing2};
 `;
 
@@ -49,12 +47,7 @@ interface IProps {
 const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling }) => {
     const { fagsakId } = useSakOgBehandlingParams();
 
-    const {
-        erVilkårsvurderingenGyldig,
-        hentVilkårMedFeil,
-        hentAndreVurderingerMedFeil,
-        vilkårsvurdering,
-    } = useVilkårsvurdering();
+    const { vilkårsvurdering, feiloppsummeringFeil } = useVilkårsvurdering();
     const {
         vurderErLesevisning,
         oppdaterRegisteropplysninger,
@@ -79,6 +72,8 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
         return <div>Finner ingen vilkår på behandlingen.</div>;
     }
 
+    const erFeilISkjema = feiloppsummeringFeil.length > 0;
+
     const skjemaFeilmelding = hentFrontendFeilmelding(behandlingsstegSubmitressurs);
 
     return (
@@ -91,7 +86,7 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
             nesteOnClick={() => {
                 if (vurderErLesevisning()) {
                     navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/tilkjent-ytelse`);
-                } else if (erVilkårsvurderingenGyldig()) {
+                } else if (!erFeilISkjema) {
                     vilkårsvurderingNesteOnClick();
                 } else {
                     settVisFeilmeldinger(true);
@@ -163,28 +158,12 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                     <BodyShort>Dette vil føre til avslag for barna i listen.</BodyShort>
                 </Alert>
             )}
-            {(hentVilkårMedFeil().length > 0 || hentAndreVurderingerMedFeil().length > 0) &&
-                visFeilmeldinger && (
-                    <Feiloppsummering
-                        tittel={'For å gå videre må du rette opp følgende:'}
-                        feil={[
-                            ...hentVilkårMedFeil().map((vilkårResultat: IVilkårResultat) => ({
-                                feilmelding: `Et vilkår av typen '${
-                                    vilkårConfig[vilkårResultat.vilkårType].tittel
-                                }' er ikke fullstendig`,
-                                skjemaelementId: vilkårFeilmeldingId(vilkårResultat),
-                            })),
-                            ...hentAndreVurderingerMedFeil().map(
-                                (annenVurdering: IAnnenVurdering) => ({
-                                    feilmelding: `Et vilkår av typen '${
-                                        annenVurderingConfig[annenVurdering.type].tittel
-                                    }' er ikke fullstendig`,
-                                    skjemaelementId: annenVurderingFeilmeldingId(annenVurdering),
-                                })
-                            ),
-                        ]}
-                    />
-                )}
+            {erFeilISkjema && visFeilmeldinger && (
+                <Feiloppsummering
+                    tittel={'For å gå videre må du rette opp følgende:'}
+                    feil={feiloppsummeringFeil}
+                />
+            )}
             {skjemaFeilmelding !== '' && skjemaFeilmelding !== undefined && (
                 <ErrorMessage>{skjemaFeilmelding}</ErrorMessage>
             )}
