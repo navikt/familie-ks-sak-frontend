@@ -31,15 +31,12 @@ export interface IRestNyBehandling {
 export enum HenleggÅrsak {
     SØKNAD_TRUKKET = 'SØKNAD_TRUKKET',
     FEILAKTIG_OPPRETTET = 'FEILAKTIG_OPPRETTET',
-    FØDSELSHENDELSE_UGYLDIG_UTFALL = 'FØDSELSHENDELSE_UGYLDIG_UTFALL',
     TEKNISK_VEDLIKEHOLD = 'TEKNISK_VEDLIKEHOLD',
 }
 
 export const henleggÅrsak: Record<HenleggÅrsak, string> = {
     SØKNAD_TRUKKET: 'Søknaden er trukket',
     FEILAKTIG_OPPRETTET: 'Behandlingen er feilaktig opprettet',
-    FØDSELSHENDELSE_UGYLDIG_UTFALL:
-        'Automatisk henlagt på grunn av ugyldig utfall fra fødselshendelse',
     TEKNISK_VEDLIKEHOLD: 'Teknisk vedlikehold',
 };
 

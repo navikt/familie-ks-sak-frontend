@@ -45,7 +45,7 @@ export const parseIso8601String = (dato: FamilieIsoDate): DagMånedÅr => {
     const dag: number = parseInt(dato.substr(8, 10), 10);
     const logDato = dato.substr(0, 10);
 
-    if (år < 1800 || år > 2500) {
+    if (år < 1000 || år > 3000) {
         throw new Error(`År fra dato '${logDato}' er '${år}' og er sannsynligvis feil`);
     }
 
