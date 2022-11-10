@@ -1,25 +1,17 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
-import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import { Regelverk } from '../../../../../../typer/vilkår';
-
-export const bestemMuligeUtdypendeVilkårsvurderinger = () => {
-    return [
-        UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG,
-        UtdypendeVilkårsvurdering.DELT_BOSTED,
-    ];
-};
+import { muligeUtdypendeVilkårsvurderinger } from './BorMedSøkerContext';
 
 export const erUtdypendeVilkårsvurderingerGyldig = (
     felt: FeltState<UtdypendeVilkårsvurdering[]>,
     avhengigheter?: Avhengigheter
 ): FeltState<UtdypendeVilkårsvurdering[]> => {
-    if (!avhengigheter) {
+    if (!avhengigheter || !avhengigheter?.vurderesEtter) {
         return feil(felt, 'Utdypende vilkårsvurdering er ugyldig');
     }
-    const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] =
-        bestemMuligeUtdypendeVilkårsvurderinger();
 
     if (muligeUtdypendeVilkårsvurderinger.length === 0) {
         return ok(felt);
