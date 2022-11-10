@@ -113,7 +113,7 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                                 hentForhåndsvisning({
                                     method: 'POST',
                                     data: hentSkjemaData(),
-                                    url: `/familie-ba-sak/api/dokument/forhaandsvis-brev/${behandlingId}`,
+                                    url: `/familie-ks-sak/api/dokument/forhåndsvis-brev/${behandlingId}`,
                                 });
                             }}
                             visLenke={skjema.felter.årsak.verdi === HenleggÅrsak.SØKNAD_TRUKKET}
@@ -173,7 +173,6 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                             Velg
                         </option>
                         {Object.values(HenleggÅrsak)
-                            .filter(årsak => årsak !== HenleggÅrsak.FØDSELSHENDELSE_UGYLDIG_UTFALL)
                             .filter(
                                 årsak =>
                                     (årsak !== HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&

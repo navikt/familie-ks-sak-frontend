@@ -46,7 +46,7 @@ const useHenleggBehandling = (lukkModal: () => void) => {
                     årsak: skjema.felter.årsak.verdi,
                     begrunnelse: skjema.felter.begrunnelse.verdi,
                 },
-                url: `/familie-ks-sak/api/behandlinger/${behandlingId}/steg/henlegg`,
+                url: `/familie-ks-sak/api/behandlinger/${behandlingId}/henlegg`,
             },
             (ressurs: Ressurs<IBehandling>) => {
                 settÅpenBehandling(ressurs);

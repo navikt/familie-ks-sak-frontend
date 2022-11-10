@@ -105,8 +105,11 @@ export const erPeriodeGyldig = (
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
     const erEksplisittAvslagPåSøknad: boolean | undefined =
         avhengigheter?.erEksplisittAvslagPåSøknad;
-    const erMellom1Og2EllerAdoptertVilkår: boolean | undefined =
-        avhengigheter?.erMellom1Og2EllerAdoptertVilkår;
+    const erMellom1Og2EllerAdoptertVilkår: boolean =
+        avhengigheter?.erMellom1Og2EllerAdoptertVilkår ?? false;
+
+    const erMedlemskapAnnenForelderVilkår: boolean =
+        avhengigheter?.erMedlemskapAnnenForelderVilkår ?? false;
 
     const utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering | undefined =
         avhengigheter?.utdypendeVilkårsvurdering;
@@ -119,7 +122,7 @@ export const erPeriodeGyldig = (
         }
 
         if (!erEksplisittAvslagPåSøknad) {
-            if (person && person.type === PersonType.BARN) {
+            if (person && person.type === PersonType.BARN && !erMedlemskapAnnenForelderVilkår) {
                 if (finnesDatoFørFødselsdato(person, fom, tom)) {
                     return feil(felt, 'Du kan ikke legge til periode før barnets fødselsdato');
                 }
