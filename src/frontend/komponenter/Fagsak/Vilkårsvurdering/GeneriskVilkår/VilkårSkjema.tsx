@@ -23,7 +23,12 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak } from '../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../typer/person';
-import type { IVilkårConfig, IVilkårResultat, Regelverk } from '../../../../typer/vilkår';
+import type {
+    IVilkårConfig,
+    IVilkårResultat,
+    Regelverk,
+    UtdypendeVilkårsvurdering,
+} from '../../../../typer/vilkår';
 import { Resultat, resultater } from '../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../utils/vilkår';
 import AvslagSkjema from './AvslagSkjema';
@@ -82,6 +87,7 @@ export interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkå
     vilkårSkjemaContext: VilkårSkjemaContextValue<T>;
     visVurderesEtter?: boolean;
     visSpørsmål?: boolean;
+    muligeUtdypendeVilkårsvurderinger?: UtdypendeVilkårsvurdering[];
     periodeChildren?: ReactNode;
     children?: ReactNode;
 }
@@ -90,6 +96,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     vilkårSkjemaContext,
     visVurderesEtter,
     visSpørsmål,
+    muligeUtdypendeVilkårsvurderinger,
     lesevisning,
     vilkårResultat,
     vilkårFraConfig,
@@ -104,6 +111,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
         åpenBehandling.data.årsak === BehandlingÅrsak.SØKNAD;
     const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding } =
         vilkårSkjemaContext;
+
     return (
         <SkjemaGruppe feil={feilmelding} utenFeilPropagering={true}>
             <Container lesevisning={false} vilkårResultat={undefined}>
@@ -177,12 +185,9 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 )}
                 {children}
                 <UtdypendeVilkårsvurderingMultiselect
-                    vilkårResultat={vilkårResultat}
                     utdypendeVilkårsvurderinger={skjema.felter.utdypendeVilkårsvurdering}
-                    resultat={skjema.felter.resultat}
-                    vurderesEtter={skjema.felter.vurderesEtter}
+                    muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
                     erLesevisning={lesevisning}
-                    personType={person.type}
                     feilhåndtering={
                         skjema.visFeilmeldinger
                             ? skjema.felter.utdypendeVilkårsvurdering.feilmelding

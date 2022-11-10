@@ -1,23 +1,16 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
-import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import { Regelverk } from '../../../../../../typer/vilkår';
-
-export const bestemMuligeUtdypendeVilkårsvurderinger = () => {
-    return [UtdypendeVilkårsvurdering.ADOPSJON];
-};
+import { muligeUtdypendeVilkårsvurderinger } from './Mellom1Og2EllerAdoptertContext';
 
 export const erUtdypendeVilkårsvurderingerGyldig = (
     felt: FeltState<UtdypendeVilkårsvurdering[]>
 ): FeltState<UtdypendeVilkårsvurdering[]> => {
-    const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] =
-        bestemMuligeUtdypendeVilkårsvurderinger();
-
     if (muligeUtdypendeVilkårsvurderinger.length === 0) {
         return ok(felt);
     }
-
     if (!felt.verdi.every(item => muligeUtdypendeVilkårsvurderinger.includes(item))) {
         return feil(felt, 'Du har valgt en ugyldig kombinasjon');
     }

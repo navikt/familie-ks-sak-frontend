@@ -24,7 +24,7 @@
     "typecheck": "tsc --noEmit -p src/frontend/tsconfig.json"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css}": [
+    "src/**/*.{js,jsx,ts,tsx,css}": [
       "prettier --check",
       "eslint --max-warnings=0"
     ]
