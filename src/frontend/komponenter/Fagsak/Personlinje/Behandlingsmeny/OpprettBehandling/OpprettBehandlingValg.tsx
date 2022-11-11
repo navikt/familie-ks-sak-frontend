@@ -202,6 +202,9 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                         valgtDato={søknadMottattDato.verdi}
                         label={'Mottatt dato'}
                         placeholder={'DD.MM.ÅÅÅÅ'}
+                        limitations={{
+                            maxDate: new Date().toISOString(),
+                        }}
                     />
                     {søknadMottattDato.feilmelding && visFeilmeldinger && (
                         <FeltFeilmelding>{søknadMottattDato.feilmelding}</FeltFeilmelding>
