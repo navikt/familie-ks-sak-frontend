@@ -12,7 +12,7 @@ export enum Status {
     ADVARSEL,
     FEIL,
     OK,
-    IKKE_AKTUELT = 3,
+    IKKE_AKTUELT,
 }
 
 const StatusIkon: React.FC<IProps> = ({ status, height = 24, width = 24 }) => {
