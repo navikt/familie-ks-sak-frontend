@@ -79,7 +79,7 @@ export enum BehandlingSteg {
     BEHANDLINGSRESULTAT = 'BEHANDLINGSRESULTAT',
     SIMULERING = 'SIMULERING',
     SEND_TIL_BESLUTTER = 'SEND_TIL_BESLUTTER',
-    BESLUTTE_VEDTAK = 'BESLUTTE_VEDTAK',
+    VEDTAK = 'VEDTAK',
     IVERKSETT_MOT_OPPDRAG = 'IVERKSETT_MOT_OPPDRAG',
     VENTE_PÅ_STATUS_FRA_ØKONOMI = 'VENTE_PÅ_STATUS_FRA_ØKONOMI',
     JOURNALFØR_VEDTAKSBREV = 'JOURNALFØR_VEDTAKSBREV',
@@ -109,7 +109,7 @@ export const hentStegNummer = (steg: BehandlingSteg): number => {
             return 5;
         case BehandlingSteg.SEND_TIL_BESLUTTER:
             return 6;
-        case BehandlingSteg.BESLUTTE_VEDTAK:
+        case BehandlingSteg.VEDTAK:
             return 7;
         case BehandlingSteg.IVERKSETT_MOT_OPPDRAG:
             return 8;

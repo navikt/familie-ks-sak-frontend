@@ -114,7 +114,7 @@ export const sider: Record<SideId, ISide> = {
     VEDTAK: {
         href: 'vedtak',
         navn: 'Vedtak',
-        steg: BehandlingSteg.SEND_TIL_BESLUTTER,
+        steg: BehandlingSteg.VEDTAK,
         visSide: (åpenBehandling: IBehandling) => {
             return åpenBehandling.årsak !== BehandlingÅrsak.SATSENDRING;
         },
@@ -131,7 +131,6 @@ export const erSidenAktiv = (side: ISide, behandling: IBehandling): boolean => {
     if (!steg) {
         return false;
     }
-
     return hentStegNummer(side.steg) <= hentStegNummer(steg);
 };
 

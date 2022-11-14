@@ -7,14 +7,12 @@ import { Alert } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useSimulering } from '../../../context/SimuleringContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingSteg } from '../../../typer/behandling';
 import type { ITilbakekreving } from '../../../typer/simulering';
-import { ToggleNavn } from '../../../typer/toggles';
 import { hentSøkersMålform } from '../../../utils/behandling';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
 import SimuleringPanel from './SimuleringPanel';
@@ -41,9 +39,6 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
         erFeilutbetaling,
     } = useSimulering();
     const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
-    const { toggles } = useApp();
-    const skalIkkeStoppeMigreringsbehandlinger =
-        toggles[ToggleNavn.skalIkkeStoppeMigreringsbehandlig];
 
     const nesteOnClick = () => {
         if (vurderErLesevisning()) {
@@ -84,7 +79,6 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
             forrigeOnClick={forrigeOnClick}
             nesteOnClick={nesteOnClick}
             maxWidthStyle={'80rem'}
-            skalViseNesteKnapp={skalIkkeStoppeMigreringsbehandlinger}
             steg={BehandlingSteg.SIMULERING}
         >
             {simuleringsresultat?.status === RessursStatus.SUKSESS ? (
@@ -96,7 +90,7 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
                     <>
                         <SimuleringPanel simulering={simuleringsresultat.data} />
                         <SimuleringTabell simulering={simuleringsresultat.data} />
-                        {skalIkkeStoppeMigreringsbehandlinger && erFeilutbetaling && (
+                        {erFeilutbetaling && (
                             <TilbakekrevingSkjema
                                 søkerMålform={hentSøkersMålform(åpenBehandling)}
                                 harÅpenTilbakekrevingRessurs={harÅpenTilbakekrevingRessurs}
