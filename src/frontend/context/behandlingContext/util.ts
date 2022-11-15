@@ -16,7 +16,7 @@ export const saksbehandlerHarKunLesevisning = (
     } else if (!innloggetSaksbehandlerSkrivetilgang) {
         return true;
     }
-    if (steg && hentStegNummer(steg) < hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK)) {
+    if (steg && hentStegNummer(steg) < hentStegNummer(BehandlingSteg.VEDTAK)) {
         return false;
     } else {
         // Default til lesevisning dersom vi er usikre

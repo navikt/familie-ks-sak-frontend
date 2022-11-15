@@ -52,7 +52,7 @@ const EndreBehandlendeEnhet: React.FC = () => {
         const steg = åpenBehandlingData?.steg;
         if (
             steg &&
-            hentStegNummer(steg) === hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK) &&
+            hentStegNummer(steg) === hentStegNummer(BehandlingSteg.VEDTAK) &&
             innloggetSaksbehandler?.displayName !==
                 åpenBehandlingData?.totrinnskontroll?.saksbehandler
         ) {
