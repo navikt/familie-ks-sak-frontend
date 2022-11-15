@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { Normaltekst } from 'nav-frontend-typografi';
 
-import { FileContent, InformationColored, Notes } from '@navikt/ds-icons';
+import { FileContent } from '@navikt/ds-icons';
 import { Alert, Button, Heading } from '@navikt/ds-react';
 import { FamilieSelect, FlexDiv } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -223,26 +223,6 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
                             icon={<FileContent aria-hidden />}
                         >
                             Vis vedtaksbrev
-                        </Button>
-                        <Button
-                            id={'korriger-etterbetaling'}
-                            variant={'tertiary'}
-                            size={'small'}
-                            style={{ float: 'right' }}
-                            onClick={() => setVisKorrigerEtterbetalingModal(true)}
-                            icon={
-                                åpenBehandling.korrigertEtterbetaling ? (
-                                    <InformationColored aria-hidden />
-                                ) : (
-                                    <Notes aria-hidden />
-                                )
-                            }
-                        >
-                            {åpenBehandling.korrigertEtterbetaling ? (
-                                <>Vis korrigert etterbetaling</>
-                            ) : (
-                                <>Korriger etterbetaling</>
-                            )}
                         </Button>
                     </Container>
                     {visModal && (
