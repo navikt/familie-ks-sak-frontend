@@ -17,6 +17,7 @@ import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './Bor
 export const muligeUtdypendeVilkårsvurderinger = [
     UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG,
     UtdypendeVilkårsvurdering.DELT_BOSTED,
+    UtdypendeVilkårsvurdering.DELT_BOSTED_SKAL_IKKE_DELES,
 ];
 
 export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
