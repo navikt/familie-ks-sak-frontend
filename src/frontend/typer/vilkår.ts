@@ -214,6 +214,7 @@ export const annenVurderingConfig: Record<AnnenVurderingType, IAnnenVurderingCon
 export enum UtdypendeVilkårsvurdering {
     VURDERING_ANNET_GRUNNLAG = 'VURDERING_ANNET_GRUNNLAG',
     DELT_BOSTED = 'DELT_BOSTED',
+    DELT_BOSTED_SKAL_IKKE_DELES = 'DELT_BOSTED_SKAL_IKKE_DELES',
     ADOPSJON = 'ADOPSJON',
     SOMMERFERIE = 'SOMMERFERIE',
 }
