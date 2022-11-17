@@ -190,7 +190,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         >
             {personerMedUgyldigEtterbetalingsperiode.length > 0 && (
                 <StyledAlert variant={'warning'}>
-                    Du har perioder som kan føre til etterbetaling utover 3 år for person{' '}
+                    Du har perioder som kan føre til etterbetaling utover 3 måneder for person{' '}
                     {slåSammenListeTilStreng(
                         personerMedUgyldigEtterbetalingsperiode.map(ident => formaterIdent(ident))
                     )}
