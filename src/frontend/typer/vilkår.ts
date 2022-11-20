@@ -186,7 +186,7 @@ export const vilkårConfig: Record<VilkårType, IVilkårConfig> = {
     },
     BARNETS_ALDER: {
         beskrivelse: 'Barn mellom 1 og 2 år eller adoptert',
-        key: 'MELLOM_1_OG_2_ELLER_ADOPTERT',
+        key: 'BARNETS_ALDER',
         tittel: 'Barnets alder',
         spørsmål: () => 'Er barnet mellom 1 og 2 år eller adoptert?',
         parterDetteGjelderFor: [PersonType.BARN],

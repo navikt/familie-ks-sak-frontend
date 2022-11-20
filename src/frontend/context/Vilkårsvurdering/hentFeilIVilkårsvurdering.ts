@@ -22,12 +22,11 @@ export const hentFeilIVilkårsvurdering = (
     personResultater: IPersonResultat[]
 ): FeiloppsummeringFeil[] => {
     return personResultater.flatMap(personResultat => {
-        const oppfylteMellom1Og2EllerAdoptertVilkårResultater =
-            personResultat.vilkårResultater.filter(
-                vilkårResultat =>
-                    vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER &&
-                    vilkårResultat.resultat === Resultat.OPPFYLT
-            );
+        const oppfylteBarnetsAlderVilkårResultater = personResultat.vilkårResultater.filter(
+            vilkårResultat =>
+                vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER &&
+                vilkårResultat.resultat === Resultat.OPPFYLT
+        );
 
         const barnehageplassVilkårResultater = personResultat.vilkårResultater.filter(
             vilkårResultat => vilkårResultat.vilkårType === VilkårType.BARNEHAGEPLASS
@@ -37,11 +36,11 @@ export const hentFeilIVilkårsvurdering = (
             ...hentIkkeVurderteVilkårFeil(personResultat),
             ...hentIkkeVurderteAndreVurderingerFeil(personResultat),
             ...hentBarnehageplassPeriodeStarterForSentFeil(
-                oppfylteMellom1Og2EllerAdoptertVilkårResultater,
+                oppfylteBarnetsAlderVilkårResultater,
                 barnehageplassVilkårResultater
             ),
-            ...hentMellom1Og2EllerAdoptertVikårManglerBarnehagePeriodeFeil(
-                oppfylteMellom1Og2EllerAdoptertVilkårResultater,
+            ...hentBarnetsalderVilkårManglerBarnehagePeriodeFeil(
+                oppfylteBarnetsAlderVilkårResultater,
                 barnehageplassVilkårResultater
             ),
         ];
@@ -75,25 +74,24 @@ const hentIkkeVurderteVilkårFeil = (personResultat: IPersonResultat): Feiloppsu
         }));
 
 const hentBarnehageplassPeriodeStarterForSentFeil = (
-    oppfylteMellom1Og2EllerAdoptertVilkårResultater: IVilkårResultat[],
+    oppfylteBarnetsAlderVilkårResultater: IVilkårResultat[],
     barnehageplassVilkårResultater: IVilkårResultat[]
 ): FeiloppsummeringFeil[] => {
-    const sisteOppfylteMellom1Og2EllerAdoptertVilkårResultat =
-        oppfylteMellom1Og2EllerAdoptertVilkårResultater.reduce(
-            (senesteVilkårResultat: IVilkårResultat | undefined, vilkårResultat) => {
-                return parseFraOgMedDato(senesteVilkårResultat?.periode.fom) >
-                    parseFraOgMedDato(vilkårResultat.periode.fom)
-                    ? senesteVilkårResultat
-                    : vilkårResultat;
-            },
-            undefined
-        );
+    const sisteOppfylteBarnetsAlderVilkårResultat = oppfylteBarnetsAlderVilkårResultater.reduce(
+        (senesteVilkårResultat: IVilkårResultat | undefined, vilkårResultat) => {
+            return parseFraOgMedDato(senesteVilkårResultat?.periode.fom) >
+                parseFraOgMedDato(vilkårResultat.periode.fom)
+                ? senesteVilkårResultat
+                : vilkårResultat;
+        },
+        undefined
+    );
 
     return barnehageplassVilkårResultater
         .filter(barnehageplassVilkårResultat =>
             starterEtter(
                 barnehageplassVilkårResultat.periode,
-                sisteOppfylteMellom1Og2EllerAdoptertVilkårResultat?.periode
+                sisteOppfylteBarnetsAlderVilkårResultat?.periode
             )
         )
         .map(vilkårResultat => ({
@@ -105,14 +103,14 @@ const hentBarnehageplassPeriodeStarterForSentFeil = (
         }));
 };
 
-const hentMellom1Og2EllerAdoptertVikårManglerBarnehagePeriodeFeil = (
-    oppfylteMellom1Og2EllerAdoptertVilkårResultater: IVilkårResultat[],
+const hentBarnetsalderVilkårManglerBarnehagePeriodeFeil = (
+    oppfylteBarnetsAlderVilkårResultater: IVilkårResultat[],
     barnehageplassVilkårResultater: IVilkårResultat[]
 ): FeiloppsummeringFeil[] =>
-    oppfylteMellom1Og2EllerAdoptertVilkårResultater
-        .filter(mellom1og2EllerAdoptertPeriode => {
-            return mellom1Og2EllerAdoptertPeriodeManglerBarnehagePeriode(
-                mellom1og2EllerAdoptertPeriode.periode,
+    oppfylteBarnetsAlderVilkårResultater
+        .filter(barnetsAlderPeriode => {
+            return barnetsAlderPeriodeManglerBarnehagePeriode(
+                barnetsAlderPeriode.periode,
                 barnehageplassVilkårResultater.map(vilkårResultat => vilkårResultat.periode)
             );
         })
@@ -123,8 +121,8 @@ const hentMellom1Og2EllerAdoptertVikårManglerBarnehagePeriodeFeil = (
                 'Hele eller deler av perioden der barnet er mellom 1 og 2 år er ikke vurdert.',
         }));
 
-const mellom1Og2EllerAdoptertPeriodeManglerBarnehagePeriode = (
-    mellom1og2EllerAdoptertPeriode: IPeriode,
+const barnetsAlderPeriodeManglerBarnehagePeriode = (
+    barnetsAlderPeriode: IPeriode,
     barnehagePerioder: IPeriode[]
 ): boolean => {
     const sammenSlåtteBarnehageperioder =
@@ -134,11 +132,11 @@ const mellom1Og2EllerAdoptertPeriodeManglerBarnehagePeriode = (
         return (
             erFørEllerSamme(
                 parseFraOgMedDato(sammenslåttBarnehageperiode.fom),
-                parseFraOgMedDato(mellom1og2EllerAdoptertPeriode.fom)
+                parseFraOgMedDato(barnetsAlderPeriode.fom)
             ) &&
             erEtterEllerSamme(
                 parseTilOgMedDato(sammenslåttBarnehageperiode.tom),
-                parseTilOgMedDato(mellom1og2EllerAdoptertPeriode.tom)
+                parseTilOgMedDato(barnetsAlderPeriode.tom)
             )
         );
     });
@@ -146,15 +144,13 @@ const mellom1Og2EllerAdoptertPeriodeManglerBarnehagePeriode = (
 
 function starterEtter(
     barnehageplassVilkårResultat: IPeriode | undefined,
-    mellom1og2EllerAdoptertPeriode: IPeriode | undefined
+    barnetsAlderPeriode: IPeriode | undefined
 ) {
     return erEtter(
         parseIso8601String(
             barnehageplassVilkårResultat?.fom ?? serializeIso8601String(TIDENES_MORGEN)
         ),
-        parseIso8601String(
-            mellom1og2EllerAdoptertPeriode?.tom ?? serializeIso8601String(TIDENES_ENDE)
-        )
+        parseIso8601String(barnetsAlderPeriode?.tom ?? serializeIso8601String(TIDENES_ENDE))
     );
 }
 
