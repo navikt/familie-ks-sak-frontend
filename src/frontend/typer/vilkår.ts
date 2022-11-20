@@ -39,7 +39,7 @@ export enum VilkårType {
     BARNEHAGEPLASS = 'BARNEHAGEPLASS',
     MEDLEMSKAP_ANNEN_FORELDER = 'MEDLEMSKAP_ANNEN_FORELDER',
     BOR_MED_SØKER = 'BOR_MED_SØKER',
-    MELLOM_1_OG_2_ELLER_ADOPTERT = 'MELLOM_1_OG_2_ELLER_ADOPTERT',
+    BARNETS_ALDER = 'BARNETS_ALDER',
 }
 
 export enum Regelverk {
@@ -184,10 +184,10 @@ export const vilkårConfig: Record<VilkårType, IVilkårConfig> = {
         spørsmål: () => 'Bor barnet fast hos søker?',
         parterDetteGjelderFor: [PersonType.BARN],
     },
-    MELLOM_1_OG_2_ELLER_ADOPTERT: {
+    BARNETS_ALDER: {
         beskrivelse: 'Barn mellom 1 og 2 år eller adoptert',
         key: 'MELLOM_1_OG_2_ELLER_ADOPTERT',
-        tittel: 'Mellom 1 og 2 år eller adoptert',
+        tittel: 'Barnets alder',
         spørsmål: () => 'Er barnet mellom 1 og 2 år eller adoptert?',
         parterDetteGjelderFor: [PersonType.BARN],
     },

@@ -25,7 +25,7 @@ export const hentFeilIVilkårsvurdering = (
         const oppfylteMellom1Og2EllerAdoptertVilkårResultater =
             personResultat.vilkårResultater.filter(
                 vilkårResultat =>
-                    vilkårResultat.vilkårType === VilkårType.MELLOM_1_OG_2_ELLER_ADOPTERT &&
+                    vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER &&
                     vilkårResultat.resultat === Resultat.OPPFYLT
             );
 

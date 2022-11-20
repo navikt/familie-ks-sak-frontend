@@ -3,21 +3,18 @@ import React from 'react';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
-import {
-    muligeUtdypendeVilkårsvurderinger,
-    useMellom1Og2EllerAdoptert,
-} from './Mellom1Og2EllerAdoptertContext';
+import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
 
-type Mellom1Og2EllerAdopsjonProps = IVilkårSkjemaBaseProps;
+type BarnetsAlderProps = IVilkårSkjemaBaseProps;
 
-export const Mellom1Og2EllerAdoptert: React.FC<Mellom1Og2EllerAdopsjonProps> = ({
+export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     vilkårResultat,
     vilkårFraConfig,
     toggleForm,
     person,
     lesevisning,
-}: Mellom1Og2EllerAdopsjonProps) => {
-    const { felter } = useMellom1Og2EllerAdoptert(vilkårResultat, person);
+}: BarnetsAlderProps) => {
+    const { felter } = useBarnetsAlder(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
     return (
         <VilkårSkjema

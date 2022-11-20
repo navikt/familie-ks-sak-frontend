@@ -3,10 +3,10 @@ import { hentFeilIVilkårsvurdering } from '../hentFeilIVilkårsvurdering';
 import barnehageperiodeStarterEtter2årEllerSkole from './testcaser/barnehageperiodeStarterEtter2årEllerSkole.json';
 import bosattIRiketIkkeUtfylt from './testcaser/bosattIRiketIkkeUtfylt.json';
 import happyCase from './testcaser/happyCase.json';
-import manglerBarnehageplassMellom1Og2ÅrVilkårsvurdering from './testcaser/manglerBarnehageplassMellom1Og2ÅrVilkårsvurdering.json';
+import manglerBarnehageplassMellom1Og2ÅrVilkårsvurdering from './testcaser/manglerBarnehageplassBarnetsAlderVilkårsvurdering.json';
 
 describe('hentFeilIVilkårsvurdering', () => {
-    test('Skal gi feilmelding dersom "mellom 1 og 2 år"-vilkåret ikke har en barnehageperiode i samme tidsrom', () => {
+    test('Skal gi feilmelding dersom "Barnets alder"-vilkåret ikke har en barnehageperiode i samme tidsrom', () => {
         const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
             manglerBarnehageplassMellom1Og2ÅrVilkårsvurdering as unknown as IPersonResultat[]
         );
