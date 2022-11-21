@@ -156,18 +156,11 @@ export const vilkårConfig: Record<VilkårType, IVilkårConfig> = {
         spørsmål: (part?: string) => `Er ${part} bosatt i riket?`,
         parterDetteGjelderFor: [PersonType.BARN, PersonType.SØKER],
     },
-    MEDLEMSKAP: {
-        beskrivelse: 'Har medlemskap i folketrygden',
-        key: 'MEDLEMSKAP',
-        tittel: 'Medlemskap',
-        spørsmål: () => 'Har søker vært medlem i folketrygden i minst 5 år?',
-        parterDetteGjelderFor: [PersonType.SØKER],
-    },
-    BARNEHAGEPLASS: {
-        beskrivelse: 'Har barnehageplass',
-        key: 'BARNEHAGEPLASS',
-        tittel: 'Barnehageplass',
-        spørsmål: () => 'Har barnet barnehageplass?',
+    BOR_MED_SØKER: {
+        beskrivelse: 'Bor med søker',
+        key: 'BOR_MED_SØKER',
+        tittel: 'Bor fast hos søker',
+        spørsmål: () => 'Bor barnet fast hos søker?',
         parterDetteGjelderFor: [PersonType.BARN],
     },
     MEDLEMSKAP_ANNEN_FORELDER: {
@@ -177,12 +170,19 @@ export const vilkårConfig: Record<VilkårType, IVilkårConfig> = {
         spørsmål: () => 'Har annen forelder vært medlem i folketrygden i minst 5 år?',
         parterDetteGjelderFor: [PersonType.BARN],
     },
-    BOR_MED_SØKER: {
-        beskrivelse: 'Bor med søker',
-        key: 'BOR_MED_SØKER',
-        tittel: 'Bor fast hos søker',
-        spørsmål: () => 'Bor barnet fast hos søker?',
+    BARNEHAGEPLASS: {
+        beskrivelse: 'Har barnehageplass',
+        key: 'BARNEHAGEPLASS',
+        tittel: 'Barnehageplass',
+        spørsmål: () => 'Har barnet barnehageplass?',
         parterDetteGjelderFor: [PersonType.BARN],
+    },
+    MEDLEMSKAP: {
+        beskrivelse: 'Har medlemskap i folketrygden',
+        key: 'MEDLEMSKAP',
+        tittel: 'Medlemskap',
+        spørsmål: () => 'Har søker vært medlem i folketrygden i minst 5 år?',
+        parterDetteGjelderFor: [PersonType.SØKER],
     },
     MELLOM_1_OG_2_ELLER_ADOPTERT: {
         beskrivelse: 'Barn mellom 1 og 2 år eller adoptert',
