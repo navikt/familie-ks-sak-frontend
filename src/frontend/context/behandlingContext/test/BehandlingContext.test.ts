@@ -48,7 +48,7 @@ describe('BehandlingContext', () => {
                 saksbehandlerHarKunLesevisning(
                     true,
                     true,
-                    BehandlingSteg.VEDTAK,
+                    BehandlingSteg.BESLUTTE_VEDTAK,
                     BehandlingStatus.FATTER_VEDTAK
                 )
             ).toBeTruthy();
@@ -58,7 +58,7 @@ describe('BehandlingContext', () => {
                 saksbehandlerHarKunLesevisning(
                     true,
                     false,
-                    BehandlingSteg.VEDTAK,
+                    BehandlingSteg.BESLUTTE_VEDTAK,
                     BehandlingStatus.FATTER_VEDTAK
                 )
             ).toBeTruthy();
