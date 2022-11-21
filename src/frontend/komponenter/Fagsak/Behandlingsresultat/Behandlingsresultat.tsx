@@ -6,8 +6,7 @@ import styled from 'styled-components';
 
 import { Feiloppsummering } from 'nav-frontend-skjema';
 
-import { Edit } from '@navikt/ds-icons';
-import { Alert, Button, ErrorMessage, Label } from '@navikt/ds-react';
+import { Alert } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -28,7 +27,6 @@ import type {
     IRestValutakurs,
 } from '../../../typer/eøsPerioder';
 import { ToggleNavn } from '../../../typer/toggles';
-import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
 import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../utils/formatter';
 import { periodeOverlapperMedValgtDato } from '../../../utils/kalender';
@@ -40,16 +38,6 @@ import { Oppsummeringsboks } from './Oppsummeringsboks';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import UtbetaltAnnetLand from './UtbetaltAnnetLand/UtbetaltAnnetLand';
 import Valutakurser from './Valutakurs/Valutakurser';
-
-const EndretUtbetalingAndel = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-`;
-
-const StyledEditIkon = styled(Edit)`
-    margin-right: 0.5rem;
-`;
 
 const StyledAlert = styled(Alert)`
     margin-bottom: 1rem;
@@ -71,7 +59,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
     const { toggles } = useApp();
 
     const [visFeilmeldinger, settVisFeilmeldinger] = React.useState(false);
-    const [opprettelseFeilmelding, settOpprettelseFeilmelding] = React.useState('');
     const [personerMedUgyldigEtterbetalingsperiode, settPersonerMedUgyldigEtterbetalingsperiode] =
         useState<string[]>([]);
 
@@ -94,12 +81,8 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         });
     };
 
-    const {
-        vurderErLesevisning,
-        behandlingresultatNesteOnClick,
-        behandlingsstegSubmitressurs,
-        settÅpenBehandling,
-    } = useBehandling();
+    const { vurderErLesevisning, behandlingresultatNesteOnClick, behandlingsstegSubmitressurs } =
+        useBehandling();
     const {
         erEøsInformasjonGyldig,
         kompetanser,
@@ -142,25 +125,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         åpenBehandling.personerMedAndelerTilkjentYtelse
     );
 
-    const opprettEndretUtbetaling = () => {
-        request<IRestEndretUtbetalingAndel, IBehandling>({
-            method: 'POST',
-            url: `/familie-ks-sak/api/endretutbetalingandel/${åpenBehandling.behandlingId}`,
-            påvirkerSystemLaster: true,
-            data: {},
-        }).then((response: Ressurs<IBehandling>) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                settVisFeilmeldinger(false);
-                settÅpenBehandling(response);
-            } else if (
-                response.status === RessursStatus.FUNKSJONELL_FEIL ||
-                response.status === RessursStatus.FEILET
-            ) {
-                settVisFeilmeldinger(true);
-                settOpprettelseFeilmelding(response.frontendFeilmelding);
-            }
-        });
-    };
     const harKompetanser = toggles[ToggleNavn.brukEøs] && åpenBehandling.kompetanser?.length > 0;
     const harUtenlandskeBeløper =
         toggles[ToggleNavn.brukEøs] && åpenBehandling.utenlandskePeriodebeløp?.length > 0;
@@ -202,21 +166,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                 grunnlagPersoner={grunnlagPersoner}
                 tidslinjePersoner={tidslinjePersoner}
             />
-            {!vurderErLesevisning() && (
-                <EndretUtbetalingAndel>
-                    <Button
-                        variant="tertiary"
-                        size="small"
-                        onClick={() => opprettEndretUtbetaling()}
-                        icon={<StyledEditIkon />}
-                    >
-                        <Label>Endre utbetalingsperiode</Label>
-                    </Button>
-                    {visFeilmeldinger && opprettelseFeilmelding !== '' && (
-                        <ErrorMessage>{opprettelseFeilmelding}</ErrorMessage>
-                    )}
-                </EndretUtbetalingAndel>
-            )}
             {aktivEtikett && (
                 <Oppsummeringsboks
                     utbetalingsperiode={finnUtbetalingsperiodeForAktivEtikett(
