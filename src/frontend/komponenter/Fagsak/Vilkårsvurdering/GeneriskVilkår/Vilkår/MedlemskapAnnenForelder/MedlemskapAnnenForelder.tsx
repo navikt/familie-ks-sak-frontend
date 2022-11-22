@@ -64,7 +64,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                     }}
                 />
                 <Radio
-                    label={'Ikke aktuelt'}
+                    label={'Bor ikke sammen'}
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                     checked={
                         vilkårSkjemaContext.skjema.felter.resultat.verdi === Resultat.IKKE_AKTUELT
