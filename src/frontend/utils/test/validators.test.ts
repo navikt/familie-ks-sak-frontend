@@ -138,12 +138,12 @@ describe('utils/validators', () => {
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
-    test('Periode med etter barnets fødselsdato pluss 2 år gir feil på Mellom1Og2EllerAdoptert-vilkåret', () => {
+    test('Periode med etter barnets fødselsdato pluss 2 år gir feil på BarnetsAlder-vilkåret', () => {
         const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2001-05-17', '2018-05-17'));
         const valideringsresultat = erPeriodeGyldig(periode, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
-            erMellom1Og2EllerAdoptertVilkår: true,
+            erBarnetsAlderVilkår: true,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual(
@@ -160,12 +160,12 @@ describe('utils/validators', () => {
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
-    test('Periode med innenfor 1-2 år gir ok på Mellom1Og2EllerAdoptert-vilkåret', () => {
+    test('Periode med innenfor 1-2 år gir ok på BarnetsAlder-vilkåret', () => {
         const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2001-05-17', '2002-05-17'));
         const valideringsresultat = erPeriodeGyldig(periode, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
-            erMellom1Og2EllerAdoptertVilkår: true,
+            erBarnetsAlderVilkår: true,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
