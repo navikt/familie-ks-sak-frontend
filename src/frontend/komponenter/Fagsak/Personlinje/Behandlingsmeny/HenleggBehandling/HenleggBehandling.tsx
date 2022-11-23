@@ -83,7 +83,7 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
         BehandlingSteg.VILKÅRSVURDERING,
         BehandlingSteg.BEHANDLINGSRESULTAT,
         BehandlingSteg.SIMULERING,
-        BehandlingSteg.SEND_TIL_BESLUTTER,
+        BehandlingSteg.VEDTAK,
     ].includes(behandling.steg);
 
     const harTilgangTilTekniskVedlikeholdHenleggelse =
