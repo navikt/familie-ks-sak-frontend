@@ -18,11 +18,11 @@ import { datoformat, formaterIsoDato } from '../../../../utils/formatter';
 import { periodeToString } from '../../../../utils/kalender';
 import { alleRegelverk } from '../../../../utils/vilkår';
 import { Barnehageplass } from './Vilkår/Barnehageplass/Barnehageplass';
+import { BarnetsAlder } from './Vilkår/BarnetsAlder/BarnetsAlder';
 import { BorMedSøker } from './Vilkår/BorMedSøker/BorMedSøker';
 import { BosattIRiket } from './Vilkår/BosattIRiket/BosattIRiket';
 import { Medlemskap } from './Vilkår/Medlemskap/Medlemskap';
 import { MedlemskapAnnenForelder } from './Vilkår/MedlemskapAnnenForelder/MedlemskapAnnenForelder';
-import { Mellom1Og2EllerAdoptert } from './Vilkår/Mellom1Og2EllerAdoptert/Mellom1Og2EllerAdoptert';
 import { vilkårFeilmeldingId } from './VilkårTabell';
 
 interface IProps {
@@ -133,9 +133,9 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         lesevisning={vurderErLesevisning()}
                     />
                 );
-            case VilkårType.MELLOM_1_OG_2_ELLER_ADOPTERT:
+            case VilkårType.BARNETS_ALDER:
                 return (
-                    <Mellom1Og2EllerAdoptert
+                    <BarnetsAlder
                         vilkårResultat={vilkårResultat}
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}

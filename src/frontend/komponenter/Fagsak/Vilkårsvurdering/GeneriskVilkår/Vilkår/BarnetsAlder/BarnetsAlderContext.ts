@@ -12,14 +12,11 @@ import {
     erResultatGyldig,
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import {
-    erBegrunnelseGyldig,
-    erUtdypendeVilkårsvurderingerGyldig,
-} from './Mellom1Og2EllerAdoptertValidering';
+import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BarnetsAlderValidering';
 
 export const muligeUtdypendeVilkårsvurderinger = [UtdypendeVilkårsvurdering.ADOPSJON];
 
-export const useMellom1Og2EllerAdoptert = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
         resultat: vilkår.resultat,
@@ -57,7 +54,7 @@ export const useMellom1Og2EllerAdoptert = (vilkår: IVilkårResultat, person: IG
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-                erMellom1Og2EllerAdoptertVilkår: true,
+                erBarnetsAlderVilkår: true,
                 utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
             },
             valideringsfunksjon: erPeriodeGyldig,

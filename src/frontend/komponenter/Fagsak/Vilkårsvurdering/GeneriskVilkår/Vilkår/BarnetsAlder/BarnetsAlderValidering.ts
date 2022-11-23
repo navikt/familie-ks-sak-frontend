@@ -3,7 +3,7 @@ import { feil, ok } from '@navikt/familie-skjema';
 
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import { Regelverk } from '../../../../../../typer/vilkår';
-import { muligeUtdypendeVilkårsvurderinger } from './Mellom1Og2EllerAdoptertContext';
+import { muligeUtdypendeVilkårsvurderinger } from './BarnetsAlderContext';
 
 export const erUtdypendeVilkårsvurderingerGyldig = (
     felt: FeltState<UtdypendeVilkårsvurdering[]>
