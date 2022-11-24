@@ -9,7 +9,7 @@ import { BodyShort, Checkbox } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import type { VedtakBegrunnelse } from '../../../../typer/vedtak';
+import type { Begrunnelse } from '../../../../typer/vedtak';
 import type { IVilkårResultat } from '../../../../typer/vilkår';
 import { VedtaksbegrunnelseTeksterProvider } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
 import AvslagBegrunnelseMultiselect from './AvslagBegrunnelseMultiselect';
@@ -17,7 +17,7 @@ import AvslagBegrunnelseMultiselect from './AvslagBegrunnelseMultiselect';
 interface IProps {
     vilkår: IVilkårResultat;
     erEksplisittAvslagPåSøknad: Felt<boolean>;
-    avslagBegrunnelser: Felt<VedtakBegrunnelse[]>;
+    avslagBegrunnelser: Felt<Begrunnelse[]>;
     visFeilmeldinger: boolean;
 }
 

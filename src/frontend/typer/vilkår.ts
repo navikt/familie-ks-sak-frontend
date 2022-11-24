@@ -2,11 +2,7 @@ import type { FamilieIsoDate, IPeriode } from '../utils/kalender';
 import type { BehandlingSteg, BehandlingStegStatus } from './behandling';
 import type { IGrunnlagPerson } from './person';
 import { PersonType } from './person';
-import type {
-    IRestVedtakBegrunnelseTilknyttetVilkår,
-    VedtakBegrunnelse,
-    VedtakBegrunnelseType,
-} from './vedtak';
+import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse, BegrunnelseType } from './vedtak';
 
 export enum Resultat {
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
@@ -77,7 +73,7 @@ export interface IVilkårResultat {
     resultat: Resultat;
     vilkårType: VilkårType;
     erEksplisittAvslagPåSøknad?: boolean;
-    avslagBegrunnelser: VedtakBegrunnelse[];
+    avslagBegrunnelser: Begrunnelse[];
     vurderesEtter: Regelverk | undefined;
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
     antallTimer?: number;
@@ -113,7 +109,7 @@ export interface IRestVilkårResultat {
     periodeTom?: FamilieIsoDate;
     resultat: Resultat;
     erEksplisittAvslagPåSøknad?: boolean;
-    avslagBegrunnelser: VedtakBegrunnelse[];
+    avslagBegrunnelser: Begrunnelse[];
     vilkårType: VilkårType;
     vurderesEtter: Regelverk | undefined;
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
@@ -137,7 +133,7 @@ export interface IRestStegTilstand {
 }
 
 export type VedtaksbegrunnelseTekster = {
-    [key in VedtakBegrunnelseType]: IRestVedtakBegrunnelseTilknyttetVilkår[];
+    [key in BegrunnelseType]: IRestBegrunnelseTilknyttetVilkår[];
 };
 
 export interface IVilkårConfig {

@@ -3,7 +3,7 @@ import React from 'react';
 import { BodyShort, ErrorMessage, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 
-import { Standardbegrunnelse, VedtakBegrunnelseType } from '../../../../../typer/vedtak';
+import { Standardbegrunnelse, BegrunnelseType } from '../../../../../typer/vedtak';
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
 import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
@@ -43,7 +43,7 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
             vedtaksBegrunnelse =>
                 !ugyldigeReduksjonsteksterForÅTriggeFritekst.includes(
                     vedtaksBegrunnelse.begrunnelse as Standardbegrunnelse
-                ) && vedtaksBegrunnelse.vedtakBegrunnelseType === VedtakBegrunnelseType.REDUKSJON
+                ) && vedtaksBegrunnelse.begrunnelseType === BegrunnelseType.REDUKSJON
         ).length > 0;
 
     return (

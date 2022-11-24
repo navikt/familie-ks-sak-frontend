@@ -5,11 +5,8 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import type { IBehandling } from '../../../../../typer/behandling';
-import type {
-    IRestVedtakBegrunnelseTilknyttetVilkår,
-    VedtakBegrunnelse,
-} from '../../../../../typer/vedtak';
-import { VedtakBegrunnelseType, vedtakBegrunnelseTyper } from '../../../../../typer/vedtak';
+import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../../../../../typer/vedtak';
+import { BegrunnelseType, begrunnelseTyper } from '../../../../../typer/vedtak';
 import type {
     IRestVedtaksbegrunnelse,
     IVedtaksperiodeMedBegrunnelser,
@@ -28,77 +25,75 @@ export const useVilkårBegrunnelser = ({
 }) => {
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
 
-    const vedtaksperiodeTilVedtakBegrunnelseTyper = () => {
+    const vedtaksperiodeTilBegrunnelseTyper = () => {
         switch (vedtaksperiodeMedBegrunnelser.type) {
             case Vedtaksperiodetype.UTBETALING:
                 return [
-                    VedtakBegrunnelseType.INNVILGET,
-                    VedtakBegrunnelseType.EØS_INNVILGET,
-                    VedtakBegrunnelseType.REDUKSJON,
-                    VedtakBegrunnelseType.FORTSATT_INNVILGET,
-                    VedtakBegrunnelseType.ETTER_ENDRET_UTBETALING,
-                    Vedtaksperiodetype.ENDRET_UTBETALING,
+                    BegrunnelseType.INNVILGET,
+                    BegrunnelseType.EØS_INNVILGET,
+                    BegrunnelseType.REDUKSJON,
+                    BegrunnelseType.FORTSATT_INNVILGET,
+                    BegrunnelseType.ETTER_ENDRET_UTBETALING,
+                    BegrunnelseType.ENDRET_UTBETALING,
                 ];
             case Vedtaksperiodetype.FORTSATT_INNVILGET:
-                return [VedtakBegrunnelseType.FORTSATT_INNVILGET];
+                return [BegrunnelseType.FORTSATT_INNVILGET];
             case Vedtaksperiodetype.UTBETALING_MED_REDUKSJON_FRA_SIST_IVERKSATTE_BEHANDLING:
                 return [
-                    VedtakBegrunnelseType.REDUKSJON,
-                    VedtakBegrunnelseType.INNVILGET,
-                    VedtakBegrunnelseType.EØS_INNVILGET,
-                    VedtakBegrunnelseType.ETTER_ENDRET_UTBETALING,
-                    Vedtaksperiodetype.ENDRET_UTBETALING,
+                    BegrunnelseType.REDUKSJON,
+                    BegrunnelseType.INNVILGET,
+                    BegrunnelseType.EØS_INNVILGET,
+                    BegrunnelseType.ETTER_ENDRET_UTBETALING,
+                    BegrunnelseType.ENDRET_UTBETALING,
                 ];
             case Vedtaksperiodetype.OPPHØR:
                 return [
-                    VedtakBegrunnelseType.OPPHØR,
-                    VedtakBegrunnelseType.EØS_OPPHØR,
-                    VedtakBegrunnelseType.ETTER_ENDRET_UTBETALING,
+                    BegrunnelseType.OPPHØR,
+                    BegrunnelseType.EØS_OPPHØR,
+                    BegrunnelseType.ETTER_ENDRET_UTBETALING,
                 ];
             case Vedtaksperiodetype.ENDRET_UTBETALING:
-                return [VedtakBegrunnelseType.ENDRET_UTBETALING];
+                return [BegrunnelseType.ENDRET_UTBETALING];
             default:
                 return [];
         }
     };
 
-    const vedtakBegrunnelseTyperKnyttetTilVedtaksperiodetype =
-        vedtaksperiodeTilVedtakBegrunnelseTyper();
+    const begrunnelseTyperKnyttetTilVedtaksperiodetype = vedtaksperiodeTilBegrunnelseTyper();
 
     const grupperteBegrunnelserFraBackend =
         vedtaksbegrunnelseTekster.status === RessursStatus.SUKSESS
             ? Object.keys(vedtaksbegrunnelseTekster.data)
-                  .filter((vedtakBegrunnelseType: string) =>
-                      vedtakBegrunnelseTyperKnyttetTilVedtaksperiodetype.includes(
-                          vedtakBegrunnelseType as VedtakBegrunnelseType
+                  .filter((begrunnelseType: string) =>
+                      begrunnelseTyperKnyttetTilVedtaksperiodetype.includes(
+                          begrunnelseType as BegrunnelseType
                       )
                   )
-                  .reduce((acc: GroupBase<ISelectOption>[], vedtakBegrunnelseType: string) => {
+                  .reduce((acc: GroupBase<ISelectOption>[], begrunnelseType: string) => {
                       return [
                           ...acc,
                           {
-                              label: vedtakBegrunnelseTyper[
-                                  vedtakBegrunnelseType as VedtakBegrunnelseType
-                              ],
+                              label: begrunnelseTyper[begrunnelseType as BegrunnelseType],
                               options: vedtaksperiodeMedBegrunnelser.gyldigeBegrunnelser
-                                  .filter((vedtakBegrunnelse: VedtakBegrunnelse) => {
+                                  .filter((begrunnelse: Begrunnelse) => {
                                       return (
                                           vedtaksbegrunnelseTekster.data[
-                                              vedtakBegrunnelseType as VedtakBegrunnelseType
+                                              begrunnelseType as BegrunnelseType
                                           ].find(
-                                              begrunnelse => begrunnelse.id === vedtakBegrunnelse
+                                              begrunnelseTilknyttetVilkår =>
+                                                  begrunnelseTilknyttetVilkår.id === begrunnelse
                                           ) !== undefined
                                       );
                                   })
-                                  .map((vedtakBegrunnelse: VedtakBegrunnelse) => ({
+                                  .map((begrunnelse: Begrunnelse) => ({
                                       label:
                                           vedtaksbegrunnelseTekster.data[
-                                              vedtakBegrunnelseType as VedtakBegrunnelseType
+                                              begrunnelseType as BegrunnelseType
                                           ].find(
-                                              vedtaksbegrunnelsestekst =>
-                                                  vedtaksbegrunnelsestekst.id === vedtakBegrunnelse
-                                          )?.navn ?? vedtakBegrunnelse,
-                                      value: vedtakBegrunnelse,
+                                              begrunnelseTilknyttetVilkår =>
+                                                  begrunnelseTilknyttetVilkår.id === begrunnelse
+                                          )?.navn ?? begrunnelse,
+                                      value: begrunnelse,
                                   })),
                           },
                       ];
@@ -116,7 +111,7 @@ export const mapBegrunnelserTilSelectOptions = (
         (begrunnelse: IRestVedtaksbegrunnelse) => ({
             value: begrunnelse.begrunnelse.toString(),
             label: hentLabelForOption(
-                begrunnelse.vedtakBegrunnelseType,
+                begrunnelse.begrunnelseType,
                 begrunnelse.begrunnelse,
                 vilkårBegrunnelser
             ),
@@ -125,13 +120,13 @@ export const mapBegrunnelserTilSelectOptions = (
 };
 
 const hentLabelForOption = (
-    vedtakBegrunnelseType: VedtakBegrunnelseType,
-    begrunnelse: VedtakBegrunnelse,
+    begrunnelseType: BegrunnelseType,
+    begrunnelse: Begrunnelse,
     vilkårBegrunnelser: Ressurs<VedtaksbegrunnelseTekster>
 ) => {
     return vilkårBegrunnelser.status === RessursStatus.SUKSESS
-        ? vilkårBegrunnelser.data[vedtakBegrunnelseType].find(
-              (restVedtakBegrunnelseTilknyttetVilkår: IRestVedtakBegrunnelseTilknyttetVilkår) =>
+        ? vilkårBegrunnelser.data[begrunnelseType].find(
+              (restVedtakBegrunnelseTilknyttetVilkår: IRestBegrunnelseTilknyttetVilkår) =>
                   restVedtakBegrunnelseTilknyttetVilkår.id === begrunnelse
           )?.navn ?? ''
         : '';

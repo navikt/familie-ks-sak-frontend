@@ -1,7 +1,7 @@
 import type { FamilieIsoDate } from '../utils/kalender';
 import { ytelsetype } from './beregning';
 import type { IGrunnlagPerson } from './person';
-import type { VedtakBegrunnelse, VedtakBegrunnelseType } from './vedtak';
+import type { Begrunnelse, BegrunnelseType } from './vedtak';
 
 export interface IVedtaksperiodeMedBegrunnelser {
     id: number;
@@ -10,13 +10,13 @@ export interface IVedtaksperiodeMedBegrunnelser {
     type: Vedtaksperiodetype;
     begrunnelser: IRestVedtaksbegrunnelse[];
     fritekster: string[];
-    gyldigeBegrunnelser: VedtakBegrunnelse[];
+    gyldigeBegrunnelser: Begrunnelse[];
     utbetalingsperiodeDetaljer: IUtbetalingsperiodeDetalj[];
 }
 
 export interface IRestVedtaksbegrunnelse {
-    begrunnelse: VedtakBegrunnelse;
-    vedtakBegrunnelseType: VedtakBegrunnelseType;
+    begrunnelse: Begrunnelse;
+    begrunnelseType: BegrunnelseType;
 }
 
 export interface IRestPutVedtaksperiodeMedFritekster {

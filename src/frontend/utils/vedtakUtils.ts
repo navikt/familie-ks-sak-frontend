@@ -4,8 +4,8 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingResultat, BehandlingStatus } from '../typer/behandling';
-import type { IRestVedtakBegrunnelseTilknyttetVilkår, VedtakBegrunnelse } from '../typer/vedtak';
-import { VedtakBegrunnelseType } from '../typer/vedtak';
+import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../typer/vedtak';
+import { BegrunnelseType } from '../typer/vedtak';
 import type { IVedtaksperiodeMedBegrunnelser } from '../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../typer/vedtaksperiode';
 import type { VedtaksbegrunnelseTekster, VilkårType } from '../typer/vilkår';
@@ -72,33 +72,31 @@ const hentSisteOpphørsperiode = (sortertePerioder: IVedtaksperiodeMedBegrunnels
     return sisteOpphørsPeriode ? [sisteOpphørsPeriode] : [];
 };
 
-export const finnVedtakBegrunnelseType = (
+export const finnBegrunnelseType = (
     vilkårBegrunnelser: Ressurs<VedtaksbegrunnelseTekster>,
-    vedtakBegrunnelse: VedtakBegrunnelse
-): VedtakBegrunnelseType | undefined => {
+    begrunnelse: Begrunnelse
+): BegrunnelseType | undefined => {
     return vilkårBegrunnelser.status === RessursStatus.SUKSESS
-        ? (Object.keys(vilkårBegrunnelser.data).find(vedtakBegrunnelseType => {
+        ? (Object.keys(vilkårBegrunnelser.data).find(begrunnelseType => {
               return (
-                  vilkårBegrunnelser.data[vedtakBegrunnelseType as VedtakBegrunnelseType].find(
-                      (vedtakBegrunnelseTilknyttetVilkår: IRestVedtakBegrunnelseTilknyttetVilkår) =>
-                          vedtakBegrunnelseTilknyttetVilkår.id === vedtakBegrunnelse
+                  vilkårBegrunnelser.data[begrunnelseType as BegrunnelseType].find(
+                      (begrunnelseTilknyttetVilkår: IRestBegrunnelseTilknyttetVilkår) =>
+                          begrunnelseTilknyttetVilkår.id === begrunnelse
                   ) !== undefined
               );
-          }) as VedtakBegrunnelseType)
+          }) as BegrunnelseType)
         : undefined;
 };
 
 export const finnVedtakBegrunnelseVilkår = (
     vilkårBegrunnelser: Ressurs<VedtaksbegrunnelseTekster>,
-    vedtakBegrunnelse: VedtakBegrunnelse
+    begrunnelse: Begrunnelse
 ): VilkårType | undefined => {
     if (vilkårBegrunnelser.status === RessursStatus.SUKSESS) {
-        Object.keys(vilkårBegrunnelser.data).forEach(vedtakBegrunnelseType => {
-            const match = vilkårBegrunnelser.data[
-                vedtakBegrunnelseType as VedtakBegrunnelseType
-            ].find(
-                (vedtakBegrunnelseTilknyttetVilkår: IRestVedtakBegrunnelseTilknyttetVilkår) =>
-                    vedtakBegrunnelseTilknyttetVilkår.id === vedtakBegrunnelse
+        Object.keys(vilkårBegrunnelser.data).forEach(begrunnelseType => {
+            const match = vilkårBegrunnelser.data[begrunnelseType as BegrunnelseType].find(
+                (begrunnelseTilknyttetVilkår: IRestBegrunnelseTilknyttetVilkår) =>
+                    begrunnelseTilknyttetVilkår.id === begrunnelse
             );
             if (match !== undefined) return match.vilkår;
         });
@@ -106,32 +104,32 @@ export const finnVedtakBegrunnelseVilkår = (
     return undefined;
 };
 
-export const hentBakgrunnsfarge = (vedtakBegrunnelseType?: VedtakBegrunnelseType) => {
-    switch (vedtakBegrunnelseType) {
-        case VedtakBegrunnelseType.INNVILGET:
-        case VedtakBegrunnelseType.FORTSATT_INNVILGET:
+export const hentBakgrunnsfarge = (begrunnelseType?: BegrunnelseType) => {
+    switch (begrunnelseType) {
+        case BegrunnelseType.INNVILGET:
+        case BegrunnelseType.FORTSATT_INNVILGET:
             return navFarger.navGronnLighten80;
-        case VedtakBegrunnelseType.AVSLAG:
+        case BegrunnelseType.AVSLAG:
             return navFarger.redErrorLighten80;
-        case VedtakBegrunnelseType.REDUKSJON:
+        case BegrunnelseType.REDUKSJON:
             return navFarger.navOransjeLighten80;
-        case VedtakBegrunnelseType.OPPHØR:
+        case BegrunnelseType.OPPHØR:
             return navFarger.navLysGra;
         default:
             return navFarger.navBlaLighten80;
     }
 };
 
-export const hentBorderfarge = (vedtakBegrunnelseType?: VedtakBegrunnelseType) => {
-    switch (vedtakBegrunnelseType) {
-        case VedtakBegrunnelseType.INNVILGET:
-        case VedtakBegrunnelseType.FORTSATT_INNVILGET:
+export const hentBorderfarge = (begrunnelseType?: BegrunnelseType) => {
+    switch (begrunnelseType) {
+        case BegrunnelseType.INNVILGET:
+        case BegrunnelseType.FORTSATT_INNVILGET:
             return navFarger.navGronn;
-        case VedtakBegrunnelseType.AVSLAG:
+        case BegrunnelseType.AVSLAG:
             return navFarger.redErrorDarken20;
-        case VedtakBegrunnelseType.REDUKSJON:
+        case BegrunnelseType.REDUKSJON:
             return navFarger.navOransjeDarken20;
-        case VedtakBegrunnelseType.OPPHØR:
+        case BegrunnelseType.OPPHØR:
             return navFarger.navGra60;
         default:
             return navFarger.navBlaLighten80;

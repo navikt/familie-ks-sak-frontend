@@ -18,7 +18,7 @@ import {
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { Behandlingstype } from '../../../../../typer/behandling';
-import type { VedtakBegrunnelse } from '../../../../../typer/vedtak';
+import type { Begrunnelse } from '../../../../../typer/vedtak';
 import type {
     IRestPutVedtaksperiodeMedFritekster,
     IVedtaksperiodeMedBegrunnelser,
@@ -125,7 +125,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
                             ...vedtaksperiodeMedBegrunnelser.begrunnelser.map(
                                 vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse
                             ),
-                            action.option?.value as VedtakBegrunnelse,
+                            action.option?.value as Begrunnelse,
                         ]);
                     }
                     break;
@@ -137,7 +137,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
                                 ...vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
                                     persistertBegrunnelse =>
                                         persistertBegrunnelse.begrunnelse !==
-                                        (action.removedValue?.value as VedtakBegrunnelse)
+                                        (action.removedValue?.value as Begrunnelse)
                                 ),
                             ].map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse)
                         );
@@ -152,9 +152,9 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
             }
         };
 
-        const oppdaterBegrunnelser = (begrunnelser: VedtakBegrunnelse[]) => {
+        const oppdaterBegrunnelser = (begrunnelser: Begrunnelse[]) => {
             settBegrunnelserPut(byggHenterRessurs());
-            request<{ begrunnelser: VedtakBegrunnelse[] }, IBehandling>({
+            request<{ begrunnelser: Begrunnelse[] }, IBehandling>({
                 method: 'PUT',
                 url: `/familie-ks-sak/api/vedtaksperioder/begrunnelser/${vedtaksperiodeMedBegrunnelser.id}`,
                 data: { begrunnelser },
