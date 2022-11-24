@@ -46,7 +46,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
                 vedtaksperiodeMedBegrunnelser.begrunnelser.length === 0 &&
                 vedtaksperiodeMedBegrunnelser.fritekster.length === 0
         );
-        const [standardBegrunnelserPut, settStandardBegrunnelserPut] = useState(byggTomRessurs());
+        const [begrunnelserPut, settBegrunnelserPut] = useState(byggTomRessurs());
         const [genererteBrevbegrunnelser, settGenererteBrevbegrunnelser] = useState<
             Ressurs<string[]>
         >(byggTomRessurs());
@@ -121,9 +121,9 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
             switch (action.action) {
                 case 'select-option':
                     if (action.option) {
-                        oppdaterStandardbegrunnelser([
+                        oppdaterBegrunnelser([
                             ...vedtaksperiodeMedBegrunnelser.begrunnelser.map(
-                                begrunnelse => begrunnelse.standardbegrunnelse
+                                vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse
                             ),
                             action.option?.value as VedtakBegrunnelse,
                         ]);
@@ -132,42 +132,40 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
                 case 'pop-value':
                 case 'remove-value':
                     if (action.removedValue) {
-                        oppdaterStandardbegrunnelser(
+                        oppdaterBegrunnelser(
                             [
                                 ...vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
                                     persistertBegrunnelse =>
-                                        persistertBegrunnelse.standardbegrunnelse !==
+                                        persistertBegrunnelse.begrunnelse !==
                                         (action.removedValue?.value as VedtakBegrunnelse)
                                 ),
-                            ].map(begrunnelse => begrunnelse.standardbegrunnelse)
+                            ].map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse)
                         );
                     }
 
                     break;
                 case 'clear':
-                    oppdaterStandardbegrunnelser([]);
+                    oppdaterBegrunnelser([]);
                     break;
                 default:
                     throw new Error('Ukjent action ved onChange på vedtakbegrunnelser');
             }
         };
 
-        const oppdaterStandardbegrunnelser = (standardbegrunnelser: VedtakBegrunnelse[]) => {
-            settStandardBegrunnelserPut(byggHenterRessurs());
-            request<{ standardbegrunnelser: VedtakBegrunnelse[] }, IBehandling>({
+        const oppdaterBegrunnelser = (begrunnelser: VedtakBegrunnelse[]) => {
+            settBegrunnelserPut(byggHenterRessurs());
+            request<{ begrunnelser: VedtakBegrunnelse[] }, IBehandling>({
                 method: 'PUT',
-                url: `/familie-ks-sak/api/vedtaksperioder/standardbegrunnelser/${vedtaksperiodeMedBegrunnelser.id}`,
-                data: { standardbegrunnelser },
+                url: `/familie-ks-sak/api/vedtaksperioder/begrunnelser/${vedtaksperiodeMedBegrunnelser.id}`,
+                data: { begrunnelser },
             }).then((behandling: Ressurs<IBehandling>) => {
                 if (behandling.status === RessursStatus.SUKSESS) {
                     settÅpenBehandling(behandling);
-                    settStandardBegrunnelserPut(byggTomRessurs());
+                    settBegrunnelserPut(byggTomRessurs());
                 } else if (behandling.status === RessursStatus.FUNKSJONELL_FEIL) {
-                    settStandardBegrunnelserPut(byggFeiletRessurs(behandling.frontendFeilmelding));
+                    settBegrunnelserPut(byggFeiletRessurs(behandling.frontendFeilmelding));
                 } else {
-                    settStandardBegrunnelserPut(
-                        byggFeiletRessurs('Klarte ikke oppdatere standardbegrunnelser')
-                    );
+                    settBegrunnelserPut(byggFeiletRessurs('Klarte ikke oppdatere begrunnelser'));
                 }
             });
         };
@@ -252,7 +250,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
             putVedtaksperiodeMedFritekster,
             skjema,
             åpenBehandling,
-            standardBegrunnelserPut,
+            begrunnelserPut,
             genererteBrevbegrunnelser,
         };
     }

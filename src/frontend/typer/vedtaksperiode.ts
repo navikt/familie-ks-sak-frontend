@@ -15,7 +15,7 @@ export interface IVedtaksperiodeMedBegrunnelser {
 }
 
 export interface IRestVedtaksbegrunnelse {
-    standardbegrunnelse: VedtakBegrunnelse;
+    begrunnelse: VedtakBegrunnelse;
     vedtakBegrunnelseType: VedtakBegrunnelseType;
 }
 

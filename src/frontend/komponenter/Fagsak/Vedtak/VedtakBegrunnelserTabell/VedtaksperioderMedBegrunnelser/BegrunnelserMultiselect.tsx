@@ -42,16 +42,16 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
         id,
         onChangeBegrunnelse,
         grupperteBegrunnelser,
-        standardBegrunnelserPut,
+        begrunnelserPut,
         vedtaksperiodeMedBegrunnelser,
     } = useVedtaksperiodeMedBegrunnelser();
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
 
-    const [standardbegrunnelser, settStandardbegrunnelser] = useState<ISelectOption[]>([]);
+    const [begrunnelser, settBegrunnelser] = useState<ISelectOption[]>([]);
 
     useEffect(() => {
         if (vedtaksbegrunnelseTekster.status === RessursStatus.SUKSESS) {
-            settStandardbegrunnelser(
+            settBegrunnelser(
                 mapBegrunnelserTilSelectOptions(
                     vedtaksperiodeMedBegrunnelser,
                     vedtaksbegrunnelseTekster
@@ -63,7 +63,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
     return (
         <FamilieReactSelect
             id={`${id}`}
-            value={standardbegrunnelser}
+            value={begrunnelser}
             propSelectStyles={{
                 container: provided => ({
                     ...provided,
@@ -96,11 +96,11 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
                 }),
             }}
             placeholder={'Velg begrunnelse(r)'}
-            isDisabled={skalIkkeEditeres || standardBegrunnelserPut.status === RessursStatus.HENTER}
+            isDisabled={skalIkkeEditeres || begrunnelserPut.status === RessursStatus.HENTER}
             feil={
-                standardBegrunnelserPut.status === RessursStatus.FUNKSJONELL_FEIL ||
-                standardBegrunnelserPut.status === RessursStatus.FEILET
-                    ? standardBegrunnelserPut.frontendFeilmelding
+                begrunnelserPut.status === RessursStatus.FUNKSJONELL_FEIL ||
+                begrunnelserPut.status === RessursStatus.FEILET
+                    ? begrunnelserPut.frontendFeilmelding
                     : undefined
             }
             label="Velg standardtekst i brev"
