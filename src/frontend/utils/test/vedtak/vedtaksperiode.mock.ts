@@ -1,4 +1,4 @@
-import { VedtakBegrunnelseType } from '../../../typer/vedtak';
+import { BegrunnelseType } from '../../../typer/vedtak';
 import type {
     IRestVedtaksbegrunnelse,
     IVedtaksperiodeMedBegrunnelser,
@@ -14,8 +14,8 @@ interface IMockVedtaksperiode {
 
 const mockBegrunnelse = (): IRestVedtaksbegrunnelse => {
     return {
-        standardbegrunnelse: 'Test',
-        vedtakBegrunnelseType: VedtakBegrunnelseType.INNVILGET,
+        begrunnelse: 'Test',
+        begrunnelseType: BegrunnelseType.INNVILGET,
     };
 };
 

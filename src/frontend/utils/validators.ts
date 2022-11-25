@@ -8,7 +8,7 @@ import {
 
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
-import type { VedtakBegrunnelse } from '../typer/vedtak';
+import type { Begrunnelse } from '../typer/vedtak';
 import { Resultat, UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import familieDayjs from './familieDayjs';
 import type { DagMånedÅr, IPeriode } from './kalender';
@@ -197,9 +197,9 @@ export const erResultatGyldig = (felt: FeltState<Resultat>): FeltState<Resultat>
 };
 
 export const erAvslagBegrunnelserGyldig = (
-    felt: FeltState<VedtakBegrunnelse[]>,
+    felt: FeltState<Begrunnelse[]>,
     avhengigheter?: Avhengigheter
-): FeltState<VedtakBegrunnelse[]> => {
+): FeltState<Begrunnelse[]> => {
     const erEksplisittAvslagPåSøknad: boolean | undefined =
         avhengigheter?.erEksplisittAvslagPåSøknad;
     return erEksplisittAvslagPåSøknad && !felt.verdi.length
