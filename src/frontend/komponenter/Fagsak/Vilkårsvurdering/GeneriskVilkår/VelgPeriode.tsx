@@ -57,12 +57,6 @@ const FlexDiv = styled.div`
     }
 `;
 
-const StyledFamilieDatovelger = styled(FamilieDatovelger)`
-    .nav-datovelger__kalenderknapp {
-        z-index: 0;
-    }
-`;
-
 const VelgPeriode: React.FC<IProps> = ({
     periode,
     erEksplisittAvslagPåSøknad,
@@ -90,7 +84,7 @@ const VelgPeriode: React.FC<IProps> = ({
             <FlexDiv>
                 {(!lesevisning || periode.verdi.fom) && (
                     <div>
-                        <StyledFamilieDatovelger
+                        <FamilieDatovelger
                             allowInvalidDateSelection={false}
                             limitations={{
                                 maxDate: new Date().toISOString(),
@@ -113,7 +107,7 @@ const VelgPeriode: React.FC<IProps> = ({
                 )}
                 {(!lesevisning || periode.verdi.tom) && (
                     <div>
-                        <StyledFamilieDatovelger
+                        <FamilieDatovelger
                             erLesesvisning={lesevisning}
                             id={`${vilkårPeriodeFeilmeldingId(vilkår)}__fastsett-periode-tom`}
                             label={'T.o.m (valgfri)'}
