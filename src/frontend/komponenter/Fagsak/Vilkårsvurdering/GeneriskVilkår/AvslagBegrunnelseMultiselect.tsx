@@ -9,11 +9,8 @@ import type { Felt } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import type {
-    IRestVedtakBegrunnelseTilknyttetVilkår,
-    VedtakBegrunnelse,
-} from '../../../../typer/vedtak';
-import { VedtakBegrunnelseType } from '../../../../typer/vedtak';
+import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../../../../typer/vedtak';
+import { BegrunnelseType } from '../../../../typer/vedtak';
 import type { VilkårType } from '../../../../typer/vilkår';
 import { hentBakgrunnsfarge, hentBorderfarge } from '../../../../utils/vedtakUtils';
 import { useVedtaksbegrunnelseTekster } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
@@ -21,7 +18,7 @@ import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
 
 interface IProps {
     vilkårType: VilkårType;
-    begrunnelser: Felt<VedtakBegrunnelse[]>;
+    begrunnelser: Felt<Begrunnelse[]>;
 }
 
 interface IOptionType {
@@ -37,13 +34,12 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnel
         useAvslagBegrunnelseMultiselect(vilkårType);
 
     const valgteBegrunnlser = begrunnelser
-        ? begrunnelser.verdi.map((valgtBegrunnelse: VedtakBegrunnelse) => ({
+        ? begrunnelser.verdi.map((valgtBegrunnelse: Begrunnelse) => ({
               value: valgtBegrunnelse?.toString() ?? '',
               label:
                   avslagBegrunnelseTeksterForGjeldendeVilkår.find(
-                      (
-                          restVedtakBegrunnelseTilknyttetVilkår: IRestVedtakBegrunnelseTilknyttetVilkår
-                      ) => restVedtakBegrunnelseTilknyttetVilkår.id === valgtBegrunnelse
+                      (restVedtakBegrunnelseTilknyttetVilkår: IRestBegrunnelseTilknyttetVilkår) =>
+                          restVedtakBegrunnelseTilknyttetVilkår.id === valgtBegrunnelse
                   )?.navn ?? '',
           }))
         : [];
@@ -54,7 +50,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnel
                 if (action.option) {
                     begrunnelser.validerOgSettFelt([
                         ...begrunnelser.verdi,
-                        action.option.value as VedtakBegrunnelse,
+                        action.option.value as Begrunnelse,
                     ]);
                 } else {
                     throw new Error('Klarer ikke legge til begrunnelse');
@@ -77,7 +73,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnel
     };
 
     const muligeOptions: IOptionType[] = avslagBegrunnelseTeksterForGjeldendeVilkår.map(
-        (begrunnelse: IRestVedtakBegrunnelseTilknyttetVilkår) => ({
+        (begrunnelse: IRestBegrunnelseTilknyttetVilkår) => ({
             value: begrunnelse.id,
             label: begrunnelse.navn,
         })
@@ -111,8 +107,8 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnel
                 multiValue: provided => {
                     return {
                         ...provided,
-                        backgroundColor: hentBakgrunnsfarge(VedtakBegrunnelseType.AVSLAG),
-                        border: `1px solid ${hentBorderfarge(VedtakBegrunnelseType.AVSLAG)}`,
+                        backgroundColor: hentBakgrunnsfarge(BegrunnelseType.AVSLAG),
+                        border: `1px solid ${hentBorderfarge(BegrunnelseType.AVSLAG)}`,
                         borderRadius: '0.5rem',
                     };
                 },

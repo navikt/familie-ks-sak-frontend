@@ -214,7 +214,7 @@
           "tom": "2022-12-12"
         },
         "resultat": "OPPFYLT",
-        "vilkårType": "MELLOM_1_OG_2_ELLER_ADOPTERT",
+        "vilkårType": "BARNETS_ALDER",
         "endretAv": "Z994294",
         "erVurdert": true,
         "erAutomatiskVurdert": false,

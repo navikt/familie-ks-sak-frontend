@@ -2,11 +2,7 @@ import type { FamilieIsoDate, IPeriode } from '../utils/kalender';
 import type { BehandlingSteg, BehandlingStegStatus } from './behandling';
 import type { IGrunnlagPerson } from './person';
 import { PersonType } from './person';
-import type {
-    IRestVedtakBegrunnelseTilknyttetVilkår,
-    VedtakBegrunnelse,
-    VedtakBegrunnelseType,
-} from './vedtak';
+import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse, BegrunnelseType } from './vedtak';
 
 export enum Resultat {
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
@@ -39,7 +35,7 @@ export enum VilkårType {
     BARNEHAGEPLASS = 'BARNEHAGEPLASS',
     MEDLEMSKAP_ANNEN_FORELDER = 'MEDLEMSKAP_ANNEN_FORELDER',
     BOR_MED_SØKER = 'BOR_MED_SØKER',
-    MELLOM_1_OG_2_ELLER_ADOPTERT = 'MELLOM_1_OG_2_ELLER_ADOPTERT',
+    BARNETS_ALDER = 'BARNETS_ALDER',
 }
 
 export enum Regelverk {
@@ -77,7 +73,7 @@ export interface IVilkårResultat {
     resultat: Resultat;
     vilkårType: VilkårType;
     erEksplisittAvslagPåSøknad?: boolean;
-    avslagBegrunnelser: VedtakBegrunnelse[];
+    avslagBegrunnelser: Begrunnelse[];
     vurderesEtter: Regelverk | undefined;
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
     antallTimer?: number;
@@ -113,7 +109,7 @@ export interface IRestVilkårResultat {
     periodeTom?: FamilieIsoDate;
     resultat: Resultat;
     erEksplisittAvslagPåSøknad?: boolean;
-    avslagBegrunnelser: VedtakBegrunnelse[];
+    avslagBegrunnelser: Begrunnelse[];
     vilkårType: VilkårType;
     vurderesEtter: Regelverk | undefined;
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
@@ -137,7 +133,7 @@ export interface IRestStegTilstand {
 }
 
 export type VedtaksbegrunnelseTekster = {
-    [key in VedtakBegrunnelseType]: IRestVedtakBegrunnelseTilknyttetVilkår[];
+    [key in BegrunnelseType]: IRestBegrunnelseTilknyttetVilkår[];
 };
 
 export interface IVilkårConfig {
@@ -184,10 +180,10 @@ export const vilkårConfig: Record<VilkårType, IVilkårConfig> = {
         spørsmål: () => 'Har søker vært medlem i folketrygden i minst 5 år?',
         parterDetteGjelderFor: [PersonType.SØKER],
     },
-    MELLOM_1_OG_2_ELLER_ADOPTERT: {
+    BARNETS_ALDER: {
         beskrivelse: 'Barn mellom 1 og 2 år eller adoptert',
-        key: 'MELLOM_1_OG_2_ELLER_ADOPTERT',
-        tittel: 'Mellom 1 og 2 år eller adoptert',
+        key: 'BARNETS_ALDER',
+        tittel: 'Barnets alder',
         spørsmål: () => 'Er barnet mellom 1 og 2 år eller adoptert?',
         parterDetteGjelderFor: [PersonType.BARN],
     },

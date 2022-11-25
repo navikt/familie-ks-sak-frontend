@@ -8,7 +8,7 @@ import {
 
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
-import type { VedtakBegrunnelse } from '../typer/vedtak';
+import type { Begrunnelse } from '../typer/vedtak';
 import { Resultat, UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import familieDayjs from './familieDayjs';
 import type { DagMånedÅr, IPeriode } from './kalender';
@@ -105,8 +105,7 @@ export const erPeriodeGyldig = (
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
     const erEksplisittAvslagPåSøknad: boolean | undefined =
         avhengigheter?.erEksplisittAvslagPåSøknad;
-    const erMellom1Og2EllerAdoptertVilkår: boolean =
-        avhengigheter?.erMellom1Og2EllerAdoptertVilkår ?? false;
+    const erBarnetsAlderVilkår: boolean = avhengigheter?.erBarnetsAlderVilkår ?? false;
 
     const erMedlemskapAnnenForelderVilkår: boolean =
         avhengigheter?.erMedlemskapAnnenForelderVilkår ?? false;
@@ -126,7 +125,7 @@ export const erPeriodeGyldig = (
                 if (finnesDatoFørFødselsdato(person, fom, tom)) {
                     return feil(felt, 'Du kan ikke legge til periode før barnets fødselsdato');
                 }
-                if (erMellom1Og2EllerAdoptertVilkår) {
+                if (erBarnetsAlderVilkår) {
                     if (utdypendeVilkårsvurdering?.includes(UtdypendeVilkårsvurdering.ADOPSJON)) {
                         if (tom && datoDifferanseMerEnn1År(fom, tom)) {
                             return feil(
@@ -162,7 +161,7 @@ export const erPeriodeGyldig = (
         const idag = kalenderDatoMedFallback(familieDayjs().toISOString(), TIDENES_ENDE);
         if (
             tom &&
-            !erMellom1Og2EllerAdoptertVilkår &&
+            !erBarnetsAlderVilkår &&
             valgtDatoErNesteMånedEllerSenere(tomKalenderDato, idag)
         ) {
             return feil(
@@ -198,9 +197,9 @@ export const erResultatGyldig = (felt: FeltState<Resultat>): FeltState<Resultat>
 };
 
 export const erAvslagBegrunnelserGyldig = (
-    felt: FeltState<VedtakBegrunnelse[]>,
+    felt: FeltState<Begrunnelse[]>,
     avhengigheter?: Avhengigheter
-): FeltState<VedtakBegrunnelse[]> => {
+): FeltState<Begrunnelse[]> => {
     const erEksplisittAvslagPåSøknad: boolean | undefined =
         avhengigheter?.erEksplisittAvslagPåSøknad;
     return erEksplisittAvslagPåSøknad && !felt.verdi.length

@@ -3,7 +3,7 @@ import React from 'react';
 import { BodyShort, ErrorMessage, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 
-import { Standardbegrunnelse, VedtakBegrunnelseType } from '../../../../../typer/vedtak';
+import { Standardbegrunnelse, BegrunnelseType } from '../../../../../typer/vedtak';
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
 import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
@@ -30,8 +30,8 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
 
     const vedtaksperiodeInneholderEtterbetaling3ÅrBegrunnelse = () =>
         vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
-            begrunnelse =>
-                (begrunnelse.standardbegrunnelse as Standardbegrunnelse) ===
+            vedtaksBegrunnelser =>
+                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
                 Standardbegrunnelse.ETTER_ENDRET_UTBETALING_ETTERBETALING
         ).length > 0;
 
@@ -40,10 +40,10 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
             vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.ENDRET_UTBETALING) ||
         vedtaksperiodeInneholderEtterbetaling3ÅrBegrunnelse() ||
         vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
-            begrunnelse =>
+            vedtaksBegrunnelse =>
                 !ugyldigeReduksjonsteksterForÅTriggeFritekst.includes(
-                    begrunnelse.standardbegrunnelse as Standardbegrunnelse
-                ) && begrunnelse.vedtakBegrunnelseType === VedtakBegrunnelseType.REDUKSJON
+                    vedtaksBegrunnelse.begrunnelse as Standardbegrunnelse
+                ) && vedtaksBegrunnelse.begrunnelseType === BegrunnelseType.REDUKSJON
         ).length > 0;
 
     return (

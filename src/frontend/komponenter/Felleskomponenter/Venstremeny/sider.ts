@@ -157,7 +157,7 @@ export const hentTrinnForBehandling = (
 export const finnSideForBehandlingssteg = (behandling: IBehandling): ISide | undefined => {
     const steg = finnSteg(behandling);
 
-    if (hentStegNummer(steg) >= hentStegNummer(BehandlingSteg.SEND_TIL_BESLUTTER)) {
+    if (hentStegNummer(steg) >= hentStegNummer(BehandlingSteg.VEDTAK)) {
         return sider.VEDTAK.visSide && sider.VEDTAK.visSide(behandling)
             ? sider.VEDTAK
             : sider.SIMULERING;
@@ -196,8 +196,7 @@ const finnSteg = (behandling: IBehandling): BehandlingSteg => {
     const erHenlagt = inneholderSteg(behandling, BehandlingSteg.HENLEGG_BEHANDLING);
 
     if (erHenlagt) {
-        if (inneholderSteg(behandling, BehandlingSteg.SEND_TIL_BESLUTTER))
-            return BehandlingSteg.SEND_TIL_BESLUTTER;
+        if (inneholderSteg(behandling, BehandlingSteg.VEDTAK)) return BehandlingSteg.VEDTAK;
         if (inneholderSteg(behandling, BehandlingSteg.VILKÅRSVURDERING))
             return BehandlingSteg.VILKÅRSVURDERING;
         if (inneholderSteg(behandling, BehandlingSteg.FILTRERING_FØDSELSHENDELSER))

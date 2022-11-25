@@ -3,18 +3,16 @@ import { hentFeilIVilkårsvurdering } from '../hentFeilIVilkårsvurdering';
 import barnehageperiodeStarterEtter2årEllerSkole from './testcaser/barnehageperiodeStarterEtter2årEllerSkole.json';
 import bosattIRiketIkkeUtfylt from './testcaser/bosattIRiketIkkeUtfylt.json';
 import happyCase from './testcaser/happyCase.json';
-import manglerBarnehageplassMellom1Og2ÅrVilkårsvurdering from './testcaser/manglerBarnehageplassMellom1Og2ÅrVilkårsvurdering.json';
+import manglerBarnehageplassBarnetsAlderVilkårsvurdering from './testcaser/manglerBarnehageplassBarnetsAlderVilkårsvurdering.json';
 
 describe('hentFeilIVilkårsvurdering', () => {
-    test('Skal gi feilmelding dersom "mellom 1 og 2 år"-vilkåret ikke har en barnehageperiode i samme tidsrom', () => {
+    test('Skal gi feilmelding dersom "Barnets alder"-vilkåret ikke har en barnehageperiode i samme tidsrom', () => {
         const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
-            manglerBarnehageplassMellom1Og2ÅrVilkårsvurdering as unknown as IPersonResultat[]
+            manglerBarnehageplassBarnetsAlderVilkårsvurdering as unknown as IPersonResultat[]
         );
 
         expect(feilIVilkåarsvurdering.length).toEqual(1);
-        expect(
-            feilIVilkåarsvurdering[0].skjemaelementId.includes('MELLOM_1_OG_2_ELLER_ADOPTERT')
-        ).toBe(true);
+        expect(feilIVilkåarsvurdering[0].skjemaelementId.includes('BARNETS_ALDER')).toBe(true);
     });
 
     test('Skal gi feilmelding dersom en barnehageperiode starter etter siste periode for "mellom 1 og 2 år"-vilkåret', () => {
