@@ -5,7 +5,7 @@ import { useSkjema } from '@navikt/familie-skjema';
 
 import type { IBehandling } from '../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../typer/person';
-import type { VedtakBegrunnelse } from '../../../../typer/vedtak';
+import type { Begrunnelse } from '../../../../typer/vedtak';
 import type { IEndreVilkårResultat, Regelverk } from '../../../../typer/vilkår';
 import type { Resultat, UtdypendeVilkårsvurdering } from '../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../typer/vilkår';
@@ -19,7 +19,7 @@ export interface IVilkårSkjemaContext {
     periode: IPeriode;
     begrunnelse: string;
     erEksplisittAvslagPåSøknad: boolean;
-    avslagBegrunnelser: VedtakBegrunnelse[];
+    avslagBegrunnelser: Begrunnelse[];
     antallTimer?: string;
 }
 

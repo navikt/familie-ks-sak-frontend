@@ -1,7 +1,7 @@
 import { useFelt } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import type { VedtakBegrunnelse } from '../../../../../../typer/vedtak';
+import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type {
     Regelverk as RegelverkType,
@@ -59,7 +59,7 @@ export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IG
             verdi: vilkårSkjema.begrunnelse,
         }),
         erEksplisittAvslagPåSøknad,
-        avslagBegrunnelser: useFelt<VedtakBegrunnelse[]>({
+        avslagBegrunnelser: useFelt<Begrunnelse[]>({
             verdi: vilkårSkjema.avslagBegrunnelser,
             valideringsfunksjon: erAvslagBegrunnelserGyldig,
             avhengigheter: {

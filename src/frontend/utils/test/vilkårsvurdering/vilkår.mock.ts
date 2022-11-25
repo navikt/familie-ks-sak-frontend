@@ -54,7 +54,7 @@ export const mockRestPersonResultat = ({
         VilkårType.MEDLEMSKAP,
         VilkårType.BOSATT_I_RIKET,
         VilkårType.BARNEHAGEPLASS,
-        VilkårType.MELLOM_1_OG_2_ELLER_ADOPTERT,
+        VilkårType.BARNETS_ALDER,
         VilkårType.BOR_MED_SØKER,
         VilkårType.MEDLEMSKAP_ANNEN_FORELDER,
     ].map((vilkårType, index) =>

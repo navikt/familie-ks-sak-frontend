@@ -1,7 +1,7 @@
 import { useFelt } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import type { VedtakBegrunnelse } from '../../../../../../typer/vedtak';
+import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
@@ -77,7 +77,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             verdi: vilkårSkjema.begrunnelse,
         }),
         erEksplisittAvslagPåSøknad,
-        avslagBegrunnelser: useFelt<VedtakBegrunnelse[]>({
+        avslagBegrunnelser: useFelt<Begrunnelse[]>({
             verdi: vilkårSkjema.avslagBegrunnelser,
             valideringsfunksjon: erAvslagBegrunnelserGyldig,
             avhengigheter: {

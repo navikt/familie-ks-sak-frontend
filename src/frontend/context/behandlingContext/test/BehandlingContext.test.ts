@@ -43,12 +43,12 @@ describe('BehandlingContext', () => {
                 )
             ).toBeTruthy();
         });
-        test('Skal returnere true dersom saksbehandler har skrivetilgang, men steget er likt eller etter beslutte vedtak.', () => {
+        test('Skal returnere true dersom saksbehandler har skrivetilgang, men steget er etter beslutte vedtak.', () => {
             expect(
                 saksbehandlerHarKunLesevisning(
                     true,
                     true,
-                    BehandlingSteg.VEDTAK,
+                    BehandlingSteg.IVERKSETT_MOT_OPPDRAG,
                     BehandlingStatus.FATTER_VEDTAK
                 )
             ).toBeTruthy();
@@ -58,7 +58,7 @@ describe('BehandlingContext', () => {
                 saksbehandlerHarKunLesevisning(
                     true,
                     false,
-                    BehandlingSteg.VEDTAK,
+                    BehandlingSteg.BESLUTTE_VEDTAK,
                     BehandlingStatus.FATTER_VEDTAK
                 )
             ).toBeTruthy();

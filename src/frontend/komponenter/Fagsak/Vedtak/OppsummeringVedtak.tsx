@@ -97,12 +97,12 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
         const genererBrevUnderBehandling =
             rolle &&
             rolle > BehandlerRolle.VEILEDER &&
-            hentStegNummer(åpenBehandling.steg) < hentStegNummer(BehandlingSteg.VEDTAK);
+            hentStegNummer(åpenBehandling.steg) < hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK);
 
         const genererBrevUnderBeslutning =
             rolle &&
             rolle === BehandlerRolle.BESLUTTER &&
-            hentStegNummer(åpenBehandling.steg) === hentStegNummer(BehandlingSteg.VEDTAK);
+            hentStegNummer(åpenBehandling.steg) === hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK);
 
         const httpMethod =
             genererBrevUnderBehandling || genererBrevUnderBeslutning ? 'POST' : 'GET';
@@ -152,7 +152,7 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
             maxWidthStyle="100%"
             className={'vedtak'}
             feilmelding={hentFrontendFeilmelding(behandlingsstegSubmitressurs)}
-            steg={BehandlingSteg.VEDTAK}
+            steg={BehandlingSteg.BESLUTTE_VEDTAK}
         >
             {erBehandlingMedVedtaksbrevutsending ? (
                 <>
