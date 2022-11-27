@@ -19,14 +19,14 @@ export enum IEndretUtbetalingAndelÅrsak {
     DELT_BOSTED = 'DELT_BOSTED',
     ENDRE_MOTTAKER = 'ENDRE_MOTTAKER',
     ALLEREDE_UTBETALT = 'ALLEREDE_UTBETALT',
-    ETTERBETALING_3ÅR = 'ETTERBETALING_3ÅR',
+    ETTERBETALING_3MND = 'ETTERBETALING_3MND',
 }
 
 export const årsakTekst: { [key in IEndretUtbetalingAndelÅrsak]: string } = {
     DELT_BOSTED: 'Delt bosted',
     ENDRE_MOTTAKER: 'Foreldrene bor sammen, endret mottaker',
     ALLEREDE_UTBETALT: 'Allerede utbetalt',
-    ETTERBETALING_3ÅR: 'Etterbetaling 3 år',
+    ETTERBETALING_3MND: 'Etterbetaling 3 måned',
 };
 
 export interface ÅrsakOption extends OptionType {
