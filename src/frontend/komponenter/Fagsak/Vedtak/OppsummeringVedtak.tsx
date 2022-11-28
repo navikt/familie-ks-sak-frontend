@@ -68,7 +68,7 @@ interface FortsattInnvilgetPerioderSelect extends HTMLSelectElement {
 const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehandling }) => {
     const { hentSaksbehandlerRolle } = useApp();
     const { fagsakId } = useSakOgBehandlingParams();
-    const { vurderErLesevisning, sendTilBeslutterNesteOnClick, behandlingsstegSubmitressurs } =
+    const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } =
         useBehandling();
 
     const { overstyrFortsattInnvilgetVedtaksperioder, periodetypeIVedtaksbrev } = useVedtak({
@@ -113,8 +113,8 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
         });
     };
 
-    const sendTilBeslutter = () => {
-        sendTilBeslutterNesteOnClick((visModal: boolean) => settVisModal(visModal));
+    const foreslåVedtak = () => {
+        foreslåVedtakNesteOnClick((visModal: boolean) => settVisModal(visModal));
     };
 
     const erBehandlingMedVedtaksbrevutsending =
@@ -146,7 +146,7 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
             forrigeOnClick={() =>
                 navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/simulering`)
             }
-            nesteOnClick={visSubmitKnapp ? sendTilBeslutter : undefined}
+            nesteOnClick={visSubmitKnapp ? foreslåVedtak : undefined}
             nesteKnappTittel={'Til godkjenning'}
             senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
             maxWidthStyle="100%"
