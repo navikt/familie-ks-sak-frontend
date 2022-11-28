@@ -122,7 +122,7 @@ const Totrinnskontroll: React.FunctionComponent<IProps> = ({ åpenBehandling }) 
                         return side.navn;
                     }),
                 },
-                url: `/familie-ks-sak/api/behandlinger/${åpenBehandling.behandlingId}/steg/iverksett-vedtak`,
+                url: `/familie-ks-sak/api/behandlinger/${åpenBehandling.behandlingId}/steg/beslutt-vedtak`,
             })
                 .then((response: Ressurs<IBehandling>) => {
                     settInnsendtVedtak(response);
