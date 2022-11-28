@@ -32,8 +32,8 @@ spec:
       claims:
         groups:
           - id: "54cd86b8-2e23-48b2-8852-b05b5827bb0f"  # '0000-GA-Kontantstotte-Veileder' - Veileder
-          - id: "e40090eb-c2fb-400e-b412-e9084019a73b"  # '0000-GA-Kontantstotte' - Saksbehandler
-          # - id: "7a271f87-39fb-468b-a9ee-6cf3c070f548"  # BESLUTTER_ROLLE Denne må bestilles opp
+          - id: "e40090eb-c2fb-400e-b412-e9084019a73b"  # '0000-GA-Kontantstotte-Saksbehandler' - Saksbehandler
+          - id: "4e7f23d9-5db1-45c0-acec-89c86a9ec678"  # '0000-GA-Kontantstotte-Beslutter' - Beslutter
           - id: "833f1f77-b64b-4708-b479-389ca4009af5"  # MEDLEM: 2103 NAV Vikafossen
           - id: "c2cf4114-1f5d-47f2-bb6e-c7a06fd26412"  # MEDLEM: 4806 NAV Familie- og pensjonsytelser Drammen
           - id: "6c8c5d93-0e08-4bd8-960c-5c4c0ce5c609"  # MEDLEM: 4820 NAV Familie- og pensjonsytelser Vadsø
