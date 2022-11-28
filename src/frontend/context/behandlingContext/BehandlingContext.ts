@@ -224,7 +224,7 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
         behandlingresultatNesteOnClick,
         settÅpenBehandling,
         oppdaterRegisteropplysninger,
-        foreslåVedtakNesteOnClick: foreslåVedtakNesteOnClick,
+        foreslåVedtakNesteOnClick,
         behandlingPåVent: hentDataFraRessurs(åpenBehandling)?.behandlingPåVent,
         erBehandleneEnhetMidlertidig,
         åpenHøyremeny,
