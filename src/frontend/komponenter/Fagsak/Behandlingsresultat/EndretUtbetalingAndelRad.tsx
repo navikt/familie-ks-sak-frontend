@@ -70,7 +70,7 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
             case IEndretUtbetalingAndelÅrsak.DELT_BOSTED:
             case IEndretUtbetalingAndelÅrsak.ENDRE_MOTTAKER:
             case IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT:
-            case IEndretUtbetalingAndelÅrsak.ETTERBETALING_3ÅR:
+            case IEndretUtbetalingAndelÅrsak.ETTERBETALING_3MND:
                 return fraProsentTilTekstDefault(prosent);
             default:
                 throw new Error(`Ukjent årsak ${årsak}`);
