@@ -174,7 +174,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
             settGenererteBrevbegrunnelser(byggHenterRessurs());
             request<void, string[]>({
                 method: 'GET',
-                url: `/familie-ks-sak/api/vedtaksperioder/brevbegrunnelser/${vedtaksperiodeId}`,
+                url: `/familie-ks-sak/api/vedtaksperioder/${vedtaksperiodeId}/brevbegrunnelser`,
             }).then((hentedeBegrunnelser: Ressurs<string[]>) => {
                 if (hentedeBegrunnelser.status === RessursStatus.SUKSESS) {
                     settGenererteBrevbegrunnelser(hentedeBegrunnelser);
