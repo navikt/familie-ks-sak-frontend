@@ -92,25 +92,23 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
         !vurderErLesevisning() && åpenBehandling?.status === BehandlingStatus.UTREDES;
 
     const hentVedtaksbrev = () => {
-        const vedtak = åpenBehandling.vedtak;
         const rolle = hentSaksbehandlerRolle();
-        const genererBrevUnderBehandling =
+        const skalOgsåLagreBrevPåVedtak =
             rolle &&
             rolle > BehandlerRolle.VEILEDER &&
-            hentStegNummer(åpenBehandling.steg) < hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK);
+            hentStegNummer(åpenBehandling.steg) <= hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK);
 
-        const genererBrevUnderBeslutning =
-            rolle &&
-            rolle === BehandlerRolle.BESLUTTER &&
-            hentStegNummer(åpenBehandling.steg) === hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK);
-
-        const httpMethod =
-            genererBrevUnderBehandling || genererBrevUnderBeslutning ? 'POST' : 'GET';
-
-        hentForhåndsvisning({
-            method: httpMethod,
-            url: `/familie-ks-sak/api/dokument/vedtaksbrev/${vedtak?.id}`,
-        });
+        if (skalOgsåLagreBrevPåVedtak) {
+            hentForhåndsvisning({
+                method: 'POST',
+                url: `/familie-ks-sak/api/brev/forhåndsvis-og-lagre-vedtaksbrev/${åpenBehandling.behandlingId}`,
+            });
+        } else {
+            hentForhåndsvisning({
+                method: 'GET',
+                url: `/familie-ks-sak/api/brev/forhåndsvis-vedtaksbrev/${åpenBehandling.behandlingId}`,
+            });
+        }
     };
 
     const foreslåVedtak = () => {
