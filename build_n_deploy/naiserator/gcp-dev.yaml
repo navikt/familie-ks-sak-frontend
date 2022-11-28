@@ -33,8 +33,8 @@ spec:
       claims:
         groups:
           - id: "71f503a2-c28f-4394-a05a-8da263ceca4a"  # '0000-GA-Kontantstotte-Veileder' - Veileder
-          - id: "c7e0b108-7ae6-432c-9ab4-946174c240c0"  # '0000-GA-Kontantstotte' - Saksbehandler
-          # - id: "9449c153-5a1e-44a7-84c6-7cc7a8867233"  # BESLUTTER_ROLLE
+          - id: "c7e0b108-7ae6-432c-9ab4-946174c240c0"  # '0000-GA-Kontantstotte-Saksbehandler' - Saksbehandler
+          - id: "52fe1bef-224f-49df-a40a-29f92d4520f8"  # '0000-GA-Kontantstotte-Beslutter' - Beslutter
   resources:
     limits:
       cpu: 2000m
