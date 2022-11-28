@@ -50,7 +50,7 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
         submitRessurs: behandlingsstegSubmitressurs,
         vilkårsvurderingNesteOnClick,
         behandlingresultatNesteOnClick,
-        sendTilBeslutterNesteOnClick,
+        foreslåVedtakNesteOnClick,
         settSubmitRessurs: settBehandlingsstegSubmitressurs,
     } = useBehandlingssteg(settÅpenBehandling, hentDataFraRessurs(åpenBehandling));
 
@@ -224,7 +224,7 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
         behandlingresultatNesteOnClick,
         settÅpenBehandling,
         oppdaterRegisteropplysninger,
-        sendTilBeslutterNesteOnClick,
+        foreslåVedtakNesteOnClick,
         behandlingPåVent: hentDataFraRessurs(åpenBehandling)?.behandlingPåVent,
         erBehandleneEnhetMidlertidig,
         åpenHøyremeny,

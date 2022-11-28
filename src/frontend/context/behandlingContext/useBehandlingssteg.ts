@@ -86,21 +86,19 @@ const useBehandlingssteg = (
         );
     };
 
-    const kanSendeinnVedtak = () =>
+    const kanForeslåVedtak = () =>
         minstEnPeriodeharBegrunnelseEllerFritekst() ||
         behandling?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
         behandling?.årsak === BehandlingÅrsak.DØDSFALL;
 
-    const sendTilBeslutterNesteOnClick = (settVisModal: (visModal: boolean) => void) => {
-        if (kanSendeinnVedtak()) {
+    const foreslåVedtakNesteOnClick = (settVisModal: (visModal: boolean) => void) => {
+        if (kanForeslåVedtak()) {
             settSubmitRessurs(byggHenterRessurs());
             request<void, IBehandling>({
                 method: 'POST',
                 url: `/familie-ks-sak/api/behandlinger/${
                     behandling?.behandlingId
-                }/steg/send-til-beslutter?behandlendeEnhet=${
-                    innloggetSaksbehandler?.enhet ?? '9999'
-                }`,
+                }/steg/foreslå-vedtak?behandlendeEnhet=${innloggetSaksbehandler?.enhet ?? '9999'}`,
             }).then((response: Ressurs<IBehandling>) => {
                 settSubmitRessurs(response);
 
@@ -124,7 +122,7 @@ const useBehandlingssteg = (
         submitRessurs,
         vilkårsvurderingNesteOnClick,
         behandlingresultatNesteOnClick,
-        sendTilBeslutterNesteOnClick,
+        foreslåVedtakNesteOnClick: foreslåVedtakNesteOnClick,
         settSubmitRessurs,
     };
 };
