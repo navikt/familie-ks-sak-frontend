@@ -156,7 +156,7 @@ export const useVilkårsvurderingApi = () => {
         settLagreAnnenVurderingFeilmelding('');
         request<IRestAnnenVurdering, IBehandling>({
             method: 'PUT',
-            url: `/familie-ks-sak/api/vilkårsvurdering/${behandlingId}/annenvurdering/${restAnnenVurdering.id}`,
+            url: `/familie-ks-sak/api/vilkårsvurdering/${behandlingId}/annenvurdering`,
             data: restAnnenVurdering,
         })
             .then((response: Ressurs<IBehandling>) => {
