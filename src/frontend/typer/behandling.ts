@@ -86,7 +86,7 @@ export enum BehandlingSteg {
     JOURNALFØR_VEDTAKSBREV = 'JOURNALFØR_VEDTAKSBREV',
     DISTRIBUER_VEDTAKSBREV = 'DISTRIBUER_VEDTAKSBREV',
     FERDIGSTILLE_BEHANDLING = 'FERDIGSTILLE_BEHANDLING',
-    BEHANDLING_AVSLUTTET = 'BEHANDLING_AVSLUTTET',
+    AVSLUTT_BEHANDLING = 'AVSLUTT_BEHANDLING',
 }
 
 export enum BehandlingStegStatus {
@@ -122,7 +122,7 @@ export const hentStegNummer = (steg: BehandlingSteg): number => {
             return 11;
         case BehandlingSteg.FERDIGSTILLE_BEHANDLING:
             return 12;
-        case BehandlingSteg.BEHANDLING_AVSLUTTET:
+        case BehandlingSteg.AVSLUTT_BEHANDLING:
             return 13;
         default:
             return 0;
