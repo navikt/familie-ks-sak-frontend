@@ -201,7 +201,10 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                                             </td>
                                             <td>
                                                 <BodyShort>
-                                                    {hentBarnehageplassBeskrivelse(detalj.prosent)}
+                                                    {hentBarnehageplassBeskrivelse(
+                                                        detalj.prosent,
+                                                        detalj.erPåvirketAvEndring
+                                                    )}
                                                 </BodyShort>
                                             </td>
                                             <td>
