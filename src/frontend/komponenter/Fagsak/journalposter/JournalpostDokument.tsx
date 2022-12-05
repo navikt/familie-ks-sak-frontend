@@ -57,7 +57,7 @@ export const JournalpostDokument: React.FC<IProps> = ({
                 </EllipsisBodyShort>
 
                 <StyledLink
-                    href={`/familie-ks-sak/api/journalpost/${journalpostId}/dokument/${dokument.dokumentInfoId}`}
+                    href={`/familie-ks-sak/api/journalpost/${journalpostId}/dokument/${dokument.dokumentInfoId}/pdf`}
                     target="_blank"
                     aria-label="Åpne dokument i ny fane"
                     title="Åpne dokument i ny fane"
