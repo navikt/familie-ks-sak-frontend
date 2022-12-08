@@ -23,12 +23,12 @@ spec:
     enabled: true
     path: /metrics
   ingresses:
-    - https://kontantstøtte.intern.nav.no
+    - https://kontantstotte.intern.nav.no
   azure:
     application:
       enabled: true
       replyURLs:
-        - https://kontantstøtte.intern.nav.no/auth/openid/callback
+        - https://kontantstotte.intern.nav.no/auth/openid/callback
       claims:
         groups:
           - id: "54cd86b8-2e23-48b2-8852-b05b5827bb0f"  # '0000-GA-Kontantstotte-Veileder' - Veileder

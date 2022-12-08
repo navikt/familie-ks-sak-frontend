@@ -23,13 +23,13 @@ spec:
     enabled: true
     path: /metrics
   ingresses:
-    - https://kontantstøtte.dev.intern.nav.no
+    - https://kontantstotte.dev.intern.nav.no
   azure:
     application:
       enabled: true
       tenant: trygdeetaten.no
       replyURLs:
-        - https://kontantstøtte.dev.intern.nav.no/auth/openid/callback
+        - https://kontantstotte.dev.intern.nav.no/auth/openid/callback
       claims:
         groups:
           - id: "71f503a2-c28f-4394-a05a-8da263ceca4a"  # '0000-GA-Kontantstotte-Veileder' - Veileder
