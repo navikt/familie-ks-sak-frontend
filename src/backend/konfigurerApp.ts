@@ -11,7 +11,7 @@ const settAzureAdPropsFraEnv = () => {
 };
 
 export const konfigurerAzure = () => {
-    const host = 'ks';
+    const host = 'kontantstotte';
     logInfo(`ENV=${process.env.ENV}, CLUSTER=${process.env.CLUSTER}`);
     switch (process.env.ENV) {
         case 'lokalt-mot-preprod':
