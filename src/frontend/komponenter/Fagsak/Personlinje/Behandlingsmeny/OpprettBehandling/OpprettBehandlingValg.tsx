@@ -6,9 +6,10 @@ import navFarger from 'nav-frontend-core';
 
 import { BodyShort } from '@navikt/ds-react';
 import { FamilieDatovelger, FamilieSelect } from '@navikt/familie-form-elements';
-import type { Felt } from '@navikt/familie-skjema';
+import type { ISkjema } from '@navikt/familie-skjema';
 
 import { useApp } from '../../../../../context/AppContext';
+import type { IBehandling } from '../../../../../typer/behandling';
 import {
     BehandlingStatus,
     Behandlingstype,
@@ -16,15 +17,14 @@ import {
     behandlingÅrsak,
     erBehandlingHenlagt,
 } from '../../../../../typer/behandling';
-import type { IBehandlingstema } from '../../../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { FagsakStatus } from '../../../../../typer/fagsak';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
 import { ToggleNavn } from '../../../../../typer/toggles';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../../../utils/fagsak';
-import type { FamilieIsoDate } from '../../../../../utils/kalender';
 import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
 import type { VisningBehandling } from '../../../Saksoversikt/visningBehandling';
+import type { IOpprettBehandlingSkjemaFelter } from './useOpprettBehandling';
 
 const FixedDatoVelger = styled(FamilieDatovelger)`
     .nav-datovelger__kalenderPortal__content {
@@ -55,12 +55,8 @@ const StyledBehandlingstemaSelect = styled(BehandlingstemaSelect)`
 `;
 
 interface IProps {
-    behandlingstype: Felt<Behandlingstype | Tilbakekrevingsbehandlingstype | ''>;
-    behandlingsårsak: Felt<BehandlingÅrsak | ''>;
-    behandlingstema: Felt<IBehandlingstema | undefined>;
-    søknadMottattDato?: Felt<FamilieIsoDate | undefined>;
+    opprettBehandlingSkjema: ISkjema<IOpprettBehandlingSkjemaFelter, IBehandling>;
     minimalFagsak?: IMinimalFagsak;
-    visFeilmeldinger: boolean;
     erLesevisning?: boolean;
     manuellJournalfør?: boolean;
 }
@@ -74,16 +70,13 @@ interface BehandlingÅrsakSelect extends HTMLSelectElement {
 }
 
 const OpprettBehandlingValg: React.FC<IProps> = ({
-    behandlingstype,
-    behandlingsårsak,
-    behandlingstema,
-    søknadMottattDato = undefined,
+    opprettBehandlingSkjema,
     minimalFagsak,
-    visFeilmeldinger,
     erLesevisning = false,
     manuellJournalfør = false,
 }) => {
     const { toggles } = useApp();
+
     const aktivBehandling: VisningBehandling | undefined = minimalFagsak
         ? hentAktivBehandlingPåMinimalFagsak(minimalFagsak)
         : undefined;
@@ -101,10 +94,22 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
         kanOppretteRevurdering && toggles[ToggleNavn.kanBehandleTekniskEndring];
     const kanOppretteTilbakekreving = !manuellJournalfør;
 
+    const visFeilmeldinger = opprettBehandlingSkjema.visFeilmeldinger;
+
+    const {
+        behandlingsårsak,
+        behandlingstype,
+        behandlingstema,
+        søknadMottattDato,
+        kravMotattDato,
+    } = opprettBehandlingSkjema.felter;
+
     return (
         <>
             <FamilieSelect
-                {...behandlingstype.hentNavBaseSkjemaProps(visFeilmeldinger)}
+                {...behandlingstype.hentNavBaseSkjemaProps(
+                    opprettBehandlingSkjema.visFeilmeldinger
+                )}
                 erLesevisning={erLesevisning}
                 name={'Behandling'}
                 label={'Velg type behandling'}
@@ -149,6 +154,15 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                 >
                     Tilbakekreving
                 </option>
+
+                {toggles[ToggleNavn.kanBehandleKlage] && (
+                    <option
+                        aria-selected={behandlingstype.verdi === Behandlingstype.KLAGE}
+                        value={Behandlingstype.KLAGE}
+                    >
+                        Klage
+                    </option>
+                )}
             </FamilieSelect>
 
             {behandlingsårsak.erSynlig && (
@@ -189,7 +203,7 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                 <StyledBehandlingstemaSelect
                     behandlingstema={behandlingstema}
                     erLesevisning={erLesevisning}
-                    visFeilmeldinger={visFeilmeldinger}
+                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                     name="Behandlingstema"
                     label="Velg behandlingstema"
                 />
@@ -198,7 +212,9 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
             {søknadMottattDato?.erSynlig && (
                 <>
                     <FixedDatoVelger
-                        {...søknadMottattDato.hentNavInputProps(visFeilmeldinger)}
+                        {...søknadMottattDato.hentNavInputProps(
+                            opprettBehandlingSkjema.visFeilmeldinger
+                        )}
                         valgtDato={søknadMottattDato.verdi}
                         label={'Mottatt dato'}
                         placeholder={'DD.MM.ÅÅÅÅ'}
@@ -206,8 +222,27 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                             maxDate: new Date().toISOString(),
                         }}
                     />
-                    {søknadMottattDato.feilmelding && visFeilmeldinger && (
+                    {søknadMottattDato.feilmelding && opprettBehandlingSkjema.visFeilmeldinger && (
                         <FeltFeilmelding>{søknadMottattDato.feilmelding}</FeltFeilmelding>
+                    )}
+                </>
+            )}
+
+            {kravMotattDato?.erSynlig && (
+                <>
+                    <FixedDatoVelger
+                        {...kravMotattDato.hentNavInputProps(
+                            opprettBehandlingSkjema.visFeilmeldinger
+                        )}
+                        valgtDato={kravMotattDato.verdi}
+                        label={'Mottatt dato'}
+                        placeholder={'DD.MM.ÅÅÅÅ'}
+                        limitations={{
+                            maxDate: new Date().toISOString(),
+                        }}
+                    />
+                    {kravMotattDato.feilmelding && opprettBehandlingSkjema.visFeilmeldinger && (
+                        <FeltFeilmelding>{kravMotattDato.feilmelding}</FeltFeilmelding>
                     )}
                 </>
             )}
