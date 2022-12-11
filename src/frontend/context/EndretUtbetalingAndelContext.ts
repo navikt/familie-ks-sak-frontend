@@ -38,6 +38,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 avtaletidspunktDeltBosted: FamilieIsoDate | undefined;
                 fullSats: boolean | undefined;
                 begrunnelse: string | undefined;
+                erEksplisittAvslagPåSøknad: boolean | undefined;
             },
             IBehandling
         >({
@@ -106,6 +107,9 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                     valideringsfunksjon: felt =>
                         felt.verdi ? ok(felt) : feil(felt, 'Du må oppgi en begrunnelse.'),
                 }),
+                erEksplisittAvslagPåSøknad: useFelt<boolean | undefined>({
+                    verdi: endretUtbetalingAndel.erEksplisittAvslagPåSøknad,
+                }),
             },
             skjemanavn: 'Endre utbetalingsperiode',
         });
@@ -126,6 +130,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 begrunnelse,
                 søknadstidspunkt,
                 avtaletidspunktDeltBosted,
+                erEksplisittAvslagPåSøknad,
             } = skjema.felter;
             return {
                 id: endretUtbetalingAndel.id,
@@ -138,6 +143,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 søknadstidspunkt: søknadstidspunkt.verdi,
                 avtaletidspunktDeltBosted: avtaletidspunktDeltBosted.verdi,
                 erTilknyttetAndeler: endretUtbetalingAndel.erTilknyttetAndeler,
+                erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             };
         };
 

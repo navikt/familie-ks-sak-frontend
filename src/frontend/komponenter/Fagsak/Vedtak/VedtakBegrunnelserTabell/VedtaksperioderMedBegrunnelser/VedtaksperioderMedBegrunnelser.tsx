@@ -70,7 +70,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
                 vedtaksperioderMedBegrunnelser={avslagOgResterende[0]}
                 overskrift={'Begrunnelser for avslag i vedtaksbrev'}
                 hjelpetekst={
-                    'Her har vi hentet begrunnelsestekster for avslag som du har satt i vilkårsvurderingen.'
+                    'Her har vi hentet begrunnelser for avslag som er satt tidligere i behandlingen.'
                 }
                 åpenBehandling={åpenBehandling}
             />
