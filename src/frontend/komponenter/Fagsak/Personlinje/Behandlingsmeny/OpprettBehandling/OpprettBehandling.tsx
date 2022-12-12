@@ -14,6 +14,7 @@ import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
 import { KravDatoFelt } from './KravDatoFelt';
 import OpprettBehandlingValg from './OpprettBehandlingValg';
+import { SøknadMottattDatoFelt } from './SøknadMottattDatoFelt';
 import useOpprettBehandling from './useOpprettBehandling';
 
 interface IProps {
@@ -85,6 +86,10 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                     />
                     <KravDatoFelt
                         kravMotattDato={opprettBehandlingSkjema.felter.kravMotattDato}
+                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                    />
+                    <SøknadMottattDatoFelt
+                        søknadMottattDato={opprettBehandlingSkjema.felter.søknadMottattDato}
                         visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                     />
                 </SkjemaGruppe>

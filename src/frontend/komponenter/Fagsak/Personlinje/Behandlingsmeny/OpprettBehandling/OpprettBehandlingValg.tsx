@@ -102,12 +102,6 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
     const visFeilmeldinger = opprettBehandlingSkjema.visFeilmeldinger;
 
     const { behandlingsårsak, behandlingstype, behandlingstema } = opprettBehandlingSkjema.felter;
-    const erOpprettBehandlingSkjema = (
-        opprettBehandlingSkjema:
-            | ISkjema<IOpprettBehandlingSkjemaFelter, IBehandling>
-            | ISkjema<ManuellJounalføringSkjemaFelter, string>
-    ): opprettBehandlingSkjema is ISkjema<IOpprettBehandlingSkjemaFelter, IBehandling> =>
-        'kravMotattDato' in opprettBehandlingSkjema.felter;
 
     return (
         <>
@@ -213,34 +207,6 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                     label="Velg behandlingstema"
                 />
             )}
-
-            {erOpprettBehandlingSkjema(opprettBehandlingSkjema) &&
-                opprettBehandlingSkjema.felter.søknadMottattDato?.erSynlig && (
-                    <>
-                        <FixedDatoVelger
-                            {...opprettBehandlingSkjema.felter.søknadMottattDato.hentNavInputProps(
-                                opprettBehandlingSkjema.visFeilmeldinger
-                            )}
-                            valgtDato={opprettBehandlingSkjema.felter.søknadMottattDato.verdi}
-                            label={'Mottatt dato'}
-                            placeholder={'DD.MM.ÅÅÅÅ'}
-                            limitations={{
-                                maxDate: new Date().toISOString(),
-                            }}
-                            onChange={input =>
-                                opprettBehandlingSkjema.felter.søknadMottattDato
-                                    .hentNavInputProps(opprettBehandlingSkjema.visFeilmeldinger)
-                                    .onChange(input ?? '')
-                            }
-                        />
-                        {opprettBehandlingSkjema.felter.søknadMottattDato.feilmelding &&
-                            opprettBehandlingSkjema.visFeilmeldinger && (
-                                <FeltFeilmelding>
-                                    {opprettBehandlingSkjema.felter.søknadMottattDato.feilmelding}
-                                </FeltFeilmelding>
-                            )}
-                    </>
-                )}
         </>
     );
 };
