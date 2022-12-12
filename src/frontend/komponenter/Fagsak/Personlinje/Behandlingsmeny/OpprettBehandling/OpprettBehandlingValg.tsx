@@ -8,20 +8,14 @@ import type { ISkjema } from '@navikt/familie-skjema';
 import { useApp } from '../../../../../context/AppContext';
 import type { ManuellJournalføringSkjemaFelter } from '../../../../../context/ManuellJournalførContext';
 import type { IBehandling } from '../../../../../typer/behandling';
-import {
-    BehandlingStatus,
-    Behandlingstype,
-    BehandlingÅrsak,
-    behandlingÅrsak,
-    erBehandlingHenlagt,
-} from '../../../../../typer/behandling';
+import { Behandlingstype, BehandlingÅrsak, behandlingÅrsak } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
-import { FagsakStatus } from '../../../../../typer/fagsak';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
 import { ToggleNavn } from '../../../../../typer/toggles';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../../../utils/fagsak';
 import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
 import type { VisningBehandling } from '../../../Saksoversikt/visningBehandling';
+import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opprettBehandlingUtils';
 import type { IOpprettBehandlingSkjemaFelter } from './useOpprettBehandling';
 
 export const FixedDatoVelger = styled(FamilieDatovelger)`
@@ -77,17 +71,10 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
         ? hentAktivBehandlingPåMinimalFagsak(minimalFagsak)
         : undefined;
 
-    const kanOppretteBehandling =
-        !aktivBehandling || aktivBehandling?.status === BehandlingStatus.AVSLUTTET;
-    const kanOppretteFørstegangsbehandling = !minimalFagsak
-        ? true
-        : minimalFagsak.status !== FagsakStatus.LØPENDE && kanOppretteBehandling;
-    const kanOppretteRevurdering = !minimalFagsak
-        ? false
-        : minimalFagsak.behandlinger.filter(behandling => !erBehandlingHenlagt(behandling.resultat))
-              .length > 0 && kanOppretteBehandling;
     const kanOppretteTekniskEndring =
-        kanOppretteRevurdering && toggles[ToggleNavn.kanBehandleTekniskEndring];
+        kanOppretteRevurdering(minimalFagsak, aktivBehandling) &&
+        toggles[ToggleNavn.kanBehandleTekniskEndring];
+
     const kanOppretteTilbakekreving = !manuellJournalfør;
 
     const visFeilmeldinger = opprettBehandlingSkjema.visFeilmeldinger;
@@ -110,25 +97,28 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                 <option disabled={true} value={''}>
                     Velg
                 </option>
-                <option
-                    aria-selected={behandlingstype.verdi === Behandlingstype.FØRSTEGANGSBEHANDLING}
-                    disabled={!kanOppretteFørstegangsbehandling}
-                    value={Behandlingstype.FØRSTEGANGSBEHANDLING}
-                >
-                    Førstegangsbehandling
-                </option>
-                <option
-                    aria-selected={behandlingstype.verdi === Behandlingstype.REVURDERING}
-                    disabled={!kanOppretteRevurdering}
-                    value={Behandlingstype.REVURDERING}
-                >
-                    Revurdering
-                </option>
+                {kanOppretteFørstegangsbehandling(minimalFagsak, aktivBehandling) && (
+                    <option
+                        aria-selected={
+                            behandlingstype.verdi === Behandlingstype.FØRSTEGANGSBEHANDLING
+                        }
+                        value={Behandlingstype.FØRSTEGANGSBEHANDLING}
+                    >
+                        Førstegangsbehandling
+                    </option>
+                )}
+                {kanOppretteRevurdering(minimalFagsak, aktivBehandling) && (
+                    <option
+                        aria-selected={behandlingstype.verdi === Behandlingstype.REVURDERING}
+                        value={Behandlingstype.REVURDERING}
+                    >
+                        Revurdering
+                    </option>
+                )}
 
                 {kanOppretteTekniskEndring && (
                     <option
                         aria-selected={behandlingstype.verdi === Behandlingstype.TEKNISK_ENDRING}
-                        disabled={!kanOppretteRevurdering}
                         value={Behandlingstype.TEKNISK_ENDRING}
                     >
                         Teknisk endring
