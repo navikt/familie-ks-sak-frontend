@@ -38,6 +38,22 @@ import { kalenderDiff } from '../utils/kalender';
 import { useApp } from './AppContext';
 import { useFagsakContext } from './FagsakContext';
 
+export interface ManuellJounalføringSkjemaFelter {
+    behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | '';
+    behandlingsårsak: BehandlingÅrsak | '';
+    behandlingstema: IBehandlingstema | undefined;
+    journalpostTittel: string;
+    dokumenter: IDokumentInfo[];
+    bruker: IPersonInfo | undefined;
+    avsenderNavn: string;
+    avsenderIdent: string;
+    knyttTilNyBehandling: boolean;
+    tilknyttedeBehandlingIder: number[];
+    erEnsligMindreårig: boolean;
+    erPåInstitusjon: boolean;
+    samhandler: ISamhandlerInfo | null;
+}
+
 const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() => {
     const { innloggetSaksbehandler, toggles } = useApp();
     const { hentFagsakForPerson } = useFagsakContext();
@@ -94,21 +110,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
 
     const [valgtDokumentId, settValgtDokumentId] = React.useState<string | undefined>(undefined);
     const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<
-        {
-            journalpostTittel: string;
-            behandlingstema: IBehandlingstema | undefined;
-            dokumenter: IDokumentInfo[];
-            bruker: IPersonInfo | undefined;
-            avsenderNavn: string;
-            avsenderIdent: string;
-            knyttTilNyBehandling: boolean;
-            behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | '';
-            behandlingsårsak: BehandlingÅrsak | '';
-            tilknyttedeBehandlingIder: number[];
-            erEnsligMindreårig: boolean;
-            erPåInstitusjon: boolean;
-            samhandler: ISamhandlerInfo | null;
-        },
+        ManuellJounalføringSkjemaFelter,
         string
     >({
         felter: {

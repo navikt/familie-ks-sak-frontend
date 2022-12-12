@@ -23,13 +23,13 @@ import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrev
 import type { FamilieIsoDate } from '../../../../../utils/kalender';
 import { erIsoStringGyldig } from '../../../../../utils/kalender';
 
-export type IOpprettBehandlingSkjemaFelter = {
+export interface IOpprettBehandlingSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | '';
     behandlingsårsak: BehandlingÅrsak | '';
     behandlingstema: IBehandlingstema | undefined;
     søknadMottattDato: FamilieIsoDate;
     kravMotattDato: FamilieIsoDate;
-};
+}
 
 const useOpprettBehandling = ({
     lukkModal,

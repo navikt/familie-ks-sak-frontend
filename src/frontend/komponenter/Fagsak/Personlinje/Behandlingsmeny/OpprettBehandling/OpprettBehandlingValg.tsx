@@ -9,6 +9,7 @@ import { FamilieDatovelger, FamilieSelect } from '@navikt/familie-form-elements'
 import type { ISkjema } from '@navikt/familie-skjema';
 
 import { useApp } from '../../../../../context/AppContext';
+import type { ManuellJounalføringSkjemaFelter } from '../../../../../context/ManuellJournalførContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import {
     BehandlingStatus,
@@ -30,9 +31,11 @@ const FixedDatoVelger = styled(FamilieDatovelger)`
     .nav-datovelger__kalenderPortal__content {
         position: fixed;
     }
+
     .nav-datovelger__kalenderknapp {
         z-index: 0;
     }
+
     margin-top: 2rem;
 `;
 
@@ -55,7 +58,9 @@ const StyledBehandlingstemaSelect = styled(BehandlingstemaSelect)`
 `;
 
 interface IProps {
-    opprettBehandlingSkjema: ISkjema<IOpprettBehandlingSkjemaFelter, IBehandling>;
+    opprettBehandlingSkjema:
+        | ISkjema<IOpprettBehandlingSkjemaFelter, IBehandling>
+        | ISkjema<ManuellJounalføringSkjemaFelter, string>;
     minimalFagsak?: IMinimalFagsak;
     erLesevisning?: boolean;
     manuellJournalfør?: boolean;
@@ -96,13 +101,13 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
 
     const visFeilmeldinger = opprettBehandlingSkjema.visFeilmeldinger;
 
-    const {
-        behandlingsårsak,
-        behandlingstype,
-        behandlingstema,
-        søknadMottattDato,
-        kravMotattDato,
-    } = opprettBehandlingSkjema.felter;
+    const { behandlingsårsak, behandlingstype, behandlingstema } = opprettBehandlingSkjema.felter;
+    const erOpprettBehandlingSkjema = (
+        opprettBehandlingSkjema:
+            | ISkjema<IOpprettBehandlingSkjemaFelter, IBehandling>
+            | ISkjema<ManuellJounalføringSkjemaFelter, string>
+    ): opprettBehandlingSkjema is ISkjema<IOpprettBehandlingSkjemaFelter, IBehandling> =>
+        'kravMotattDato' in opprettBehandlingSkjema.felter;
 
     return (
         <>
@@ -209,43 +214,61 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                 />
             )}
 
-            {søknadMottattDato?.erSynlig && (
-                <>
-                    <FixedDatoVelger
-                        {...søknadMottattDato.hentNavInputProps(
-                            opprettBehandlingSkjema.visFeilmeldinger
-                        )}
-                        valgtDato={søknadMottattDato.verdi}
-                        label={'Mottatt dato'}
-                        placeholder={'DD.MM.ÅÅÅÅ'}
-                        limitations={{
-                            maxDate: new Date().toISOString(),
-                        }}
-                    />
-                    {søknadMottattDato.feilmelding && opprettBehandlingSkjema.visFeilmeldinger && (
-                        <FeltFeilmelding>{søknadMottattDato.feilmelding}</FeltFeilmelding>
-                    )}
-                </>
-            )}
+            {erOpprettBehandlingSkjema(opprettBehandlingSkjema) &&
+                opprettBehandlingSkjema.felter.søknadMottattDato?.erSynlig && (
+                    <>
+                        <FixedDatoVelger
+                            {...opprettBehandlingSkjema.felter.søknadMottattDato.hentNavInputProps(
+                                opprettBehandlingSkjema.visFeilmeldinger
+                            )}
+                            valgtDato={opprettBehandlingSkjema.felter.søknadMottattDato.verdi}
+                            label={'Mottatt dato'}
+                            placeholder={'DD.MM.ÅÅÅÅ'}
+                            limitations={{
+                                maxDate: new Date().toISOString(),
+                            }}
+                            onChange={input =>
+                                opprettBehandlingSkjema.felter.søknadMottattDato
+                                    .hentNavInputProps(opprettBehandlingSkjema.visFeilmeldinger)
+                                    .onChange(input ?? '')
+                            }
+                        />
+                        {opprettBehandlingSkjema.felter.søknadMottattDato.feilmelding &&
+                            opprettBehandlingSkjema.visFeilmeldinger && (
+                                <FeltFeilmelding>
+                                    {opprettBehandlingSkjema.felter.søknadMottattDato.feilmelding}
+                                </FeltFeilmelding>
+                            )}
+                    </>
+                )}
 
-            {kravMotattDato?.erSynlig && (
-                <>
-                    <FixedDatoVelger
-                        {...kravMotattDato.hentNavInputProps(
-                            opprettBehandlingSkjema.visFeilmeldinger
-                        )}
-                        valgtDato={kravMotattDato.verdi}
-                        label={'Mottatt dato'}
-                        placeholder={'DD.MM.ÅÅÅÅ'}
-                        limitations={{
-                            maxDate: new Date().toISOString(),
-                        }}
-                    />
-                    {kravMotattDato.feilmelding && opprettBehandlingSkjema.visFeilmeldinger && (
-                        <FeltFeilmelding>{kravMotattDato.feilmelding}</FeltFeilmelding>
-                    )}
-                </>
-            )}
+            {erOpprettBehandlingSkjema(opprettBehandlingSkjema) &&
+                opprettBehandlingSkjema.felter.kravMotattDato?.erSynlig && (
+                    <>
+                        <FixedDatoVelger
+                            {...opprettBehandlingSkjema.felter.kravMotattDato.hentNavInputProps(
+                                opprettBehandlingSkjema.visFeilmeldinger
+                            )}
+                            valgtDato={opprettBehandlingSkjema.felter.kravMotattDato.verdi}
+                            label={'Mottatt dato'}
+                            placeholder={'DD.MM.ÅÅÅÅ'}
+                            limitations={{
+                                maxDate: new Date().toISOString(),
+                            }}
+                            onChange={input =>
+                                opprettBehandlingSkjema.felter.kravMotattDato
+                                    .hentNavInputProps(opprettBehandlingSkjema.visFeilmeldinger)
+                                    .onChange(input ?? '')
+                            }
+                        />
+                        {opprettBehandlingSkjema.felter.kravMotattDato.feilmelding &&
+                            opprettBehandlingSkjema.visFeilmeldinger && (
+                                <FeltFeilmelding>
+                                    {opprettBehandlingSkjema.felter.kravMotattDato.feilmelding}
+                                </FeltFeilmelding>
+                            )}
+                    </>
+                )}
         </>
     );
 };
