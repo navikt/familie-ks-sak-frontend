@@ -12,6 +12,7 @@ import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
+import { KravDatoFelt } from './KravDatoFelt';
 import OpprettBehandlingValg from './OpprettBehandlingValg';
 import useOpprettBehandling from './useOpprettBehandling';
 
@@ -81,6 +82,10 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                     <OpprettBehandlingValg
                         opprettBehandlingSkjema={opprettBehandlingSkjema}
                         minimalFagsak={minimalFagsak}
+                    />
+                    <KravDatoFelt
+                        kravMotattDato={opprettBehandlingSkjema.felter.kravMotattDato}
+                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                     />
                 </SkjemaGruppe>
             </UIModalWrapper>

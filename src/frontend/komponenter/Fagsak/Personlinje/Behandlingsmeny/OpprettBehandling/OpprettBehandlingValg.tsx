@@ -27,7 +27,7 @@ import { BehandlingstemaSelect } from '../../../../Felleskomponenter/Behandlings
 import type { VisningBehandling } from '../../../Saksoversikt/visningBehandling';
 import type { IOpprettBehandlingSkjemaFelter } from './useOpprettBehandling';
 
-const FixedDatoVelger = styled(FamilieDatovelger)`
+export const FixedDatoVelger = styled(FamilieDatovelger)`
     .nav-datovelger__kalenderPortal__content {
         position: fixed;
     }
@@ -39,7 +39,7 @@ const FixedDatoVelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
 `;
 
-const FeltFeilmelding = styled(BodyShort)`
+export const FeltFeilmelding = styled(BodyShort)`
     margin-top: 0.5rem;
     font-weight: 600;
     color: ${navFarger.redError};
@@ -237,34 +237,6 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                             opprettBehandlingSkjema.visFeilmeldinger && (
                                 <FeltFeilmelding>
                                     {opprettBehandlingSkjema.felter.søknadMottattDato.feilmelding}
-                                </FeltFeilmelding>
-                            )}
-                    </>
-                )}
-
-            {erOpprettBehandlingSkjema(opprettBehandlingSkjema) &&
-                opprettBehandlingSkjema.felter.kravMotattDato?.erSynlig && (
-                    <>
-                        <FixedDatoVelger
-                            {...opprettBehandlingSkjema.felter.kravMotattDato.hentNavInputProps(
-                                opprettBehandlingSkjema.visFeilmeldinger
-                            )}
-                            valgtDato={opprettBehandlingSkjema.felter.kravMotattDato.verdi}
-                            label={'Mottatt dato'}
-                            placeholder={'DD.MM.ÅÅÅÅ'}
-                            limitations={{
-                                maxDate: new Date().toISOString(),
-                            }}
-                            onChange={input =>
-                                opprettBehandlingSkjema.felter.kravMotattDato
-                                    .hentNavInputProps(opprettBehandlingSkjema.visFeilmeldinger)
-                                    .onChange(input ?? '')
-                            }
-                        />
-                        {opprettBehandlingSkjema.felter.kravMotattDato.feilmelding &&
-                            opprettBehandlingSkjema.visFeilmeldinger && (
-                                <FeltFeilmelding>
-                                    {opprettBehandlingSkjema.felter.kravMotattDato.feilmelding}
                                 </FeltFeilmelding>
                             )}
                     </>
