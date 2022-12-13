@@ -181,7 +181,7 @@ const useOpprettBehandling = ({
         );
     };
 
-    function opprettTilbakekreving() {
+    const opprettTilbakekreving = () => {
         onSubmit(
             {
                 method: 'GET',
@@ -194,7 +194,7 @@ const useOpprettBehandling = ({
                 }
             }
         );
-    }
+    };
 
     const opprettKontantstøttebehandling = (søkersIdent: string) => {
         onSubmit<IRestNyBehandling>(
