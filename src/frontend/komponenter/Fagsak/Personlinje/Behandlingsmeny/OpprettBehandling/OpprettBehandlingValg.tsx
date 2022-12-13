@@ -9,7 +9,7 @@ import { FamilieDatovelger, FamilieSelect } from '@navikt/familie-form-elements'
 import type { ISkjema } from '@navikt/familie-skjema';
 
 import { useApp } from '../../../../../context/AppContext';
-import type { ManuellJounalføringSkjemaFelter } from '../../../../../context/ManuellJournalførContext';
+import type { ManuellJournalføringSkjemaFelter } from '../../../../../context/ManuellJournalførContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import {
     BehandlingStatus,
@@ -60,7 +60,7 @@ const StyledBehandlingstemaSelect = styled(BehandlingstemaSelect)`
 interface IProps {
     opprettBehandlingSkjema:
         | ISkjema<IOpprettBehandlingSkjemaFelter, IBehandling>
-        | ISkjema<ManuellJounalføringSkjemaFelter, string>;
+        | ISkjema<ManuellJournalføringSkjemaFelter, string>;
     minimalFagsak?: IMinimalFagsak;
     erLesevisning?: boolean;
     manuellJournalfør?: boolean;

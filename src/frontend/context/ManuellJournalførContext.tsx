@@ -38,7 +38,7 @@ import { kalenderDiff } from '../utils/kalender';
 import { useApp } from './AppContext';
 import { useFagsakContext } from './FagsakContext';
 
-export interface ManuellJounalføringSkjemaFelter {
+export interface ManuellJournalføringSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | '';
     behandlingsårsak: BehandlingÅrsak | '';
     behandlingstema: IBehandlingstema | undefined;
@@ -110,7 +110,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
 
     const [valgtDokumentId, settValgtDokumentId] = React.useState<string | undefined>(undefined);
     const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<
-        ManuellJounalføringSkjemaFelter,
+        ManuellJournalføringSkjemaFelter,
         string
     >({
         felter: {

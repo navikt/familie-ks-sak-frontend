@@ -84,9 +84,9 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                         opprettBehandlingSkjema={opprettBehandlingSkjema}
                         minimalFagsak={minimalFagsak}
                     />
-                    {opprettBehandlingSkjema.felter.kravMotattDato.erSynlig && (
+                    {opprettBehandlingSkjema.felter.kravMottattDato.erSynlig && (
                         <KravDatoFelt
-                            kravMotattDato={opprettBehandlingSkjema.felter.kravMotattDato}
+                            kravMottattDato={opprettBehandlingSkjema.felter.kravMottattDato}
                             visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                         />
                     )}
