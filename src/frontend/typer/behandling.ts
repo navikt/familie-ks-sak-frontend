@@ -49,6 +49,7 @@ export enum BehandlingÅrsak {
     KORREKSJON_VEDTAKSBREV = 'KORREKSJON_VEDTAKSBREV',
     SATSENDRING = 'SATSENDRING',
     BARNEHAGELISTE = 'BARNEHAGELISTE',
+    TEKNISK_ENDRING = 'TEKNISK_ENDRING',
 }
 
 export const behandlingÅrsak: Record<BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak, string> = {
@@ -67,6 +68,7 @@ export const behandlingÅrsak: Record<BehandlingÅrsak | Tilbakekrevingsbehandli
     REVURDERING_OPPLYSNINGER_OM_FORELDELSE: 'Nye opplysninger',
     REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT:
         'Feilutbetalt beløp helt eller delvis bortfalt',
+    TEKNISK_ENDRING: 'Teknisk Endring',
 };
 
 export enum BehandlingSteg {
