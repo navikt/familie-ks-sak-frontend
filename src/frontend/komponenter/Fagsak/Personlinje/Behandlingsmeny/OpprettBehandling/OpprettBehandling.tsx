@@ -84,14 +84,18 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                         opprettBehandlingSkjema={opprettBehandlingSkjema}
                         minimalFagsak={minimalFagsak}
                     />
-                    <KravDatoFelt
-                        kravMotattDato={opprettBehandlingSkjema.felter.kravMotattDato}
-                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                    />
-                    <SøknadMottattDatoFelt
-                        søknadMottattDato={opprettBehandlingSkjema.felter.søknadMottattDato}
-                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                    />
+                    {opprettBehandlingSkjema.felter.kravMotattDato.erSynlig && (
+                        <KravDatoFelt
+                            kravMotattDato={opprettBehandlingSkjema.felter.kravMotattDato}
+                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                        />
+                    )}
+                    {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
+                        <SøknadMottattDatoFelt
+                            søknadMottattDato={opprettBehandlingSkjema.felter.søknadMottattDato}
+                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                        />
+                    )}
                 </SkjemaGruppe>
             </UIModalWrapper>
 
