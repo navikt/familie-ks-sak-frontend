@@ -128,7 +128,7 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
             )}
             <UIModalWrapper
                 modal={{
-                    tittel: 'Søker mottar allerede barnetrygd for dette barnet',
+                    tittel: 'Søker mottar allerede kontantstøtte for dette barnet',
                     lukkKnapp: true,
                     visModal: visHarLøpendeModal,
                     actions: [
@@ -155,8 +155,8 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                 }}
             >
                 <BodyShort>
-                    Barnet ({formaterIdent(barn.ident)}) har løpende barnetrygd. Du skal kun velge
-                    barn som det ikke utbetales barnetrygd for.
+                    Barnet ({formaterIdent(barn.ident)}) har løpende kontantstøtte. Du skal kun
+                    velge barn som det ikke utbetales kontantstøtte for.
                 </BodyShort>
             </UIModalWrapper>
         </CheckboxOgSlettknapp>
