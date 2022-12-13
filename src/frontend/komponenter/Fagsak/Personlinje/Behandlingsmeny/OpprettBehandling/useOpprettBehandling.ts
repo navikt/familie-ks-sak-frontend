@@ -98,7 +98,7 @@ const useOpprettBehandling = ({
             }
 
             if (erIFremtiden) {
-                return feil(felt, 'Du kan ikke sette en mottatt dato som er frem i tid.');
+                return feil(felt, 'Du kan ikke sette en mottattdato som er frem i tid.');
             }
 
             return ok(felt);
@@ -130,7 +130,7 @@ const useOpprettBehandling = ({
             }
 
             if (erIFremtiden) {
-                return feil(felt, 'Du kan ikke sette en mottatt dato som er frem i tid.');
+                return feil(felt, 'Du kan ikke sette en mottattdato som er frem i tid.');
             }
 
             return ok(felt);
