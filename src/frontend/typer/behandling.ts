@@ -61,6 +61,7 @@ export const behandlingÅrsak: Record<BehandlingÅrsak | Tilbakekrevingsbehandli
     KORREKSJON_VEDTAKSBREV: 'Korrigere vedtak med egen brevmal',
     SATSENDRING: 'Satsendring',
     BARNEHAGELISTE: 'Barnehageliste',
+    TEKNISK_ENDRING: 'Teknisk Endring',
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
     REVURDERING_KLAGE_KA: 'Klage omgjort av KA',
@@ -68,7 +69,6 @@ export const behandlingÅrsak: Record<BehandlingÅrsak | Tilbakekrevingsbehandli
     REVURDERING_OPPLYSNINGER_OM_FORELDELSE: 'Nye opplysninger',
     REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT:
         'Feilutbetalt beløp helt eller delvis bortfalt',
-    TEKNISK_ENDRING: 'Teknisk Endring',
 };
 
 export enum BehandlingSteg {
