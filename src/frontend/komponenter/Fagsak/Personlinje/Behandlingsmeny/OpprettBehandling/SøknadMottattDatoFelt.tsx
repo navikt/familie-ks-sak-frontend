@@ -18,7 +18,6 @@ export const SøknadMottattDatoFelt: React.FC<IProps> = ({
         {...søknadMottattDato.hentNavInputProps(visFeilmeldinger)}
         valgtDato={søknadMottattDato.verdi}
         label={'Mottatt dato'}
-        placeholder={'DD.MM.ÅÅÅÅ'}
         limitations={{
             maxDate: new Date().toISOString(),
         }}

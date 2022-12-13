@@ -14,8 +14,7 @@ export const KravDatoFelt: React.FC<IProps> = ({ kravMottattDato, visFeilmelding
     <FixedDatoVelger
         {...kravMottattDato.hentNavInputProps(visFeilmeldinger)}
         valgtDato={kravMottattDato.verdi}
-        label={'Krav dato'}
-        placeholder={'DD.MM.ÅÅÅÅ'}
+        label={'Krav mottatt'}
         limitations={{
             maxDate: new Date().toISOString(),
         }}
