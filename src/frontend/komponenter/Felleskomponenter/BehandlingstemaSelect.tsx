@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import type { IFamilieSelectProps } from '@navikt/familie-form-elements/src/select/FamilieSelect';
 import type { Felt } from '@navikt/familie-skjema';
@@ -17,6 +19,12 @@ interface EgneProps {
 
 type Props = EgneProps & Omit<IFamilieSelectProps, 'children'>;
 
+const StyledFamilieSelect = styled(FamilieSelect)`
+    label {
+        margin-top: 2rem;
+    }
+`;
+
 export const BehandlingstemaSelect = ({
     behandlingstema,
     visFeilmeldinger = false,
@@ -26,7 +34,7 @@ export const BehandlingstemaSelect = ({
     const { toggles } = useApp();
     const { verdi } = behandlingstema;
     return (
-        <FamilieSelect
+        <StyledFamilieSelect
             {...familieSelectProps}
             {...behandlingstema.hentNavInputProps(visFeilmeldinger)}
             value={verdi !== undefined ? verdi.id : ''}
@@ -62,6 +70,6 @@ export const BehandlingstemaSelect = ({
                     </option>
                 );
             })}
-        </FamilieSelect>
+        </StyledFamilieSelect>
     );
 };

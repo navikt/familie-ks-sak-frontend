@@ -8,7 +8,9 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { BodyShort, Checkbox, Heading } from '@navikt/ds-react';
 
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
-import OpprettBehandlingValg from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/OpprettBehandlingValg';
+import BehandlingstypeFelt from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingstypeFelt';
+import { BehandlingårsakFelt } from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingsårsakFelt';
+import { BehandlingstemaSelect } from '../Felleskomponenter/BehandlingstemaSelect';
 
 const StyledCheckboxDiv = styled.div`
     width: 20rem;
@@ -21,7 +23,7 @@ const StyledCheckboxDiv = styled.div`
  */
 export const KnyttTilNyBehandling: React.FC = () => {
     const { skjema, minimalFagsak, kanKnytteJournalpostTilBehandling } = useManuellJournalfør();
-    const { knyttTilNyBehandling, behandlingstype } = skjema.felter;
+    const { knyttTilNyBehandling, behandlingstype, behandlingstema } = skjema.felter;
     return (
         <SkjemaGruppe>
             <Heading size={'small'} level={'2'}>
@@ -49,11 +51,30 @@ export const KnyttTilNyBehandling: React.FC = () => {
                 )}
             </StyledCheckboxDiv>
             {behandlingstype.erSynlig && (
-                <OpprettBehandlingValg
-                    opprettBehandlingSkjema={skjema}
+                <BehandlingstypeFelt
+                    behandlingstype={skjema.felter.behandlingstype}
+                    visFeilmeldinger={skjema.visFeilmeldinger}
                     minimalFagsak={minimalFagsak}
                     erLesevisning={!kanKnytteJournalpostTilBehandling()}
                     manuellJournalfør
+                />
+            )}
+
+            {skjema.felter.behandlingsårsak.erSynlig && (
+                <BehandlingårsakFelt
+                    behandlingsårsak={skjema.felter.behandlingsårsak}
+                    visFeilmeldinger={skjema.visFeilmeldinger}
+                    erLesevisning={!kanKnytteJournalpostTilBehandling()}
+                />
+            )}
+
+            {behandlingstema.erSynlig && (
+                <BehandlingstemaSelect
+                    behandlingstema={behandlingstema}
+                    erLesevisning={!kanKnytteJournalpostTilBehandling()}
+                    visFeilmeldinger={skjema.visFeilmeldinger}
+                    name="Behandlingstema"
+                    label="Velg behandlingstema"
                 />
             )}
         </SkjemaGruppe>
