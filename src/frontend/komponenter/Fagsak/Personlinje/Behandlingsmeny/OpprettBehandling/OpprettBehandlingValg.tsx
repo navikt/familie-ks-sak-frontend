@@ -2,9 +2,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
-
-import { BodyShort } from '@navikt/ds-react';
 import { FamilieDatovelger, FamilieSelect } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 
@@ -37,12 +34,6 @@ export const FixedDatoVelger = styled(FamilieDatovelger)`
     }
 
     margin-top: 2rem;
-`;
-
-export const FeltFeilmelding = styled(BodyShort)`
-    margin-top: 0.5rem;
-    font-weight: 600;
-    color: ${navFarger.redError};
 `;
 
 const StyledFamilieSelect = styled(FamilieSelect)`
