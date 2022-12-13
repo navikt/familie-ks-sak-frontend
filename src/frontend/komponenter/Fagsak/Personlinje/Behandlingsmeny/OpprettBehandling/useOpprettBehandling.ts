@@ -169,7 +169,7 @@ const useOpprettBehandling = ({
         onSubmit<{ kravMottattDato: FamilieIsoDate }>(
             {
                 method: 'POST',
-                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/opprett-klage`,
+                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/opprett-klagebehandling`,
                 data: { kravMottattDato: kravMottattDato.verdi },
             },
             response => {
