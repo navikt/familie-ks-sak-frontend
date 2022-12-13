@@ -49,6 +49,7 @@ export enum BehandlingÅrsak {
     KORREKSJON_VEDTAKSBREV = 'KORREKSJON_VEDTAKSBREV',
     SATSENDRING = 'SATSENDRING',
     BARNEHAGELISTE = 'BARNEHAGELISTE',
+    TEKNISK_ENDRING = 'TEKNISK_ENDRING',
 }
 
 export const behandlingÅrsak: Record<BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak, string> = {
@@ -60,6 +61,7 @@ export const behandlingÅrsak: Record<BehandlingÅrsak | Tilbakekrevingsbehandli
     KORREKSJON_VEDTAKSBREV: 'Korrigere vedtak med egen brevmal',
     SATSENDRING: 'Satsendring',
     BARNEHAGELISTE: 'Barnehageliste',
+    TEKNISK_ENDRING: 'Teknisk Endring',
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
     REVURDERING_KLAGE_KA: 'Klage omgjort av KA',

@@ -135,6 +135,9 @@ const useOpprettBehandling = ({
             case Behandlingstype.FØRSTEGANGSBEHANDLING:
                 skjema.felter.behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.SØKNAD);
                 break;
+            case Behandlingstype.TEKNISK_ENDRING:
+                skjema.felter.behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.TEKNISK_ENDRING);
+                break;
         }
     }, [skjema.felter.behandlingstype.verdi]);
 
