@@ -12,7 +12,9 @@ import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
+import { KravDatoFelt } from './KravDatoFelt';
 import OpprettBehandlingValg from './OpprettBehandlingValg';
+import { SøknadMottattDatoFelt } from './SøknadMottattDatoFelt';
 import useOpprettBehandling from './useOpprettBehandling';
 
 interface IProps {
@@ -32,8 +34,6 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
             settVisBekreftelseTilbakekrevingModal(true);
         },
     });
-    const { behandlingsårsak, behandlingstype, behandlingstema, søknadMottattDato } =
-        opprettBehandlingSkjema.felter;
 
     const lukkOpprettBehandlingModal = () => {
         nullstillSkjemaStatus();
@@ -81,13 +81,21 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                 <SkjemaGruppe feil={hentFrontendFeilmelding(opprettBehandlingSkjema.submitRessurs)}>
                     <SkjultLegend>Opprett ny behandling</SkjultLegend>
                     <OpprettBehandlingValg
-                        behandlingstype={behandlingstype}
-                        behandlingsårsak={behandlingsårsak}
-                        behandlingstema={behandlingstema}
-                        søknadMottattDato={søknadMottattDato}
+                        opprettBehandlingSkjema={opprettBehandlingSkjema}
                         minimalFagsak={minimalFagsak}
-                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                     />
+                    {opprettBehandlingSkjema.felter.kravMottattDato.erSynlig && (
+                        <KravDatoFelt
+                            kravMottattDato={opprettBehandlingSkjema.felter.kravMottattDato}
+                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                        />
+                    )}
+                    {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
+                        <SøknadMottattDatoFelt
+                            søknadMottattDato={opprettBehandlingSkjema.felter.søknadMottattDato}
+                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                        />
+                    )}
                 </SkjemaGruppe>
             </UIModalWrapper>
 

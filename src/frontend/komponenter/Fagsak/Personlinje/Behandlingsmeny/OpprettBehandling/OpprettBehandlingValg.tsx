@@ -2,13 +2,12 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
-
-import { BodyShort } from '@navikt/ds-react';
 import { FamilieDatovelger, FamilieSelect } from '@navikt/familie-form-elements';
-import type { Felt } from '@navikt/familie-skjema';
+import type { ISkjema } from '@navikt/familie-skjema';
 
 import { useApp } from '../../../../../context/AppContext';
+import type { ManuellJournalføringSkjemaFelter } from '../../../../../context/ManuellJournalførContext';
+import type { IBehandling } from '../../../../../typer/behandling';
 import {
     BehandlingStatus,
     Behandlingstype,
@@ -16,30 +15,25 @@ import {
     behandlingÅrsak,
     erBehandlingHenlagt,
 } from '../../../../../typer/behandling';
-import type { IBehandlingstema } from '../../../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { FagsakStatus } from '../../../../../typer/fagsak';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
 import { ToggleNavn } from '../../../../../typer/toggles';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../../../utils/fagsak';
-import type { FamilieIsoDate } from '../../../../../utils/kalender';
 import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
 import type { VisningBehandling } from '../../../Saksoversikt/visningBehandling';
+import type { IOpprettBehandlingSkjemaFelter } from './useOpprettBehandling';
 
-const FixedDatoVelger = styled(FamilieDatovelger)`
+export const FixedDatoVelger = styled(FamilieDatovelger)`
     .nav-datovelger__kalenderPortal__content {
         position: fixed;
     }
+
     .nav-datovelger__kalenderknapp {
         z-index: 0;
     }
-    margin-top: 2rem;
-`;
 
-const FeltFeilmelding = styled(BodyShort)`
-    margin-top: 0.5rem;
-    font-weight: 600;
-    color: ${navFarger.redError};
+    margin-top: 2rem;
 `;
 
 const StyledFamilieSelect = styled(FamilieSelect)`
@@ -55,12 +49,10 @@ const StyledBehandlingstemaSelect = styled(BehandlingstemaSelect)`
 `;
 
 interface IProps {
-    behandlingstype: Felt<Behandlingstype | Tilbakekrevingsbehandlingstype | ''>;
-    behandlingsårsak: Felt<BehandlingÅrsak | ''>;
-    behandlingstema: Felt<IBehandlingstema | undefined>;
-    søknadMottattDato?: Felt<FamilieIsoDate | undefined>;
+    opprettBehandlingSkjema:
+        | ISkjema<IOpprettBehandlingSkjemaFelter, IBehandling>
+        | ISkjema<ManuellJournalføringSkjemaFelter, string>;
     minimalFagsak?: IMinimalFagsak;
-    visFeilmeldinger: boolean;
     erLesevisning?: boolean;
     manuellJournalfør?: boolean;
 }
@@ -74,16 +66,13 @@ interface BehandlingÅrsakSelect extends HTMLSelectElement {
 }
 
 const OpprettBehandlingValg: React.FC<IProps> = ({
-    behandlingstype,
-    behandlingsårsak,
-    behandlingstema,
-    søknadMottattDato = undefined,
+    opprettBehandlingSkjema,
     minimalFagsak,
-    visFeilmeldinger,
     erLesevisning = false,
     manuellJournalfør = false,
 }) => {
     const { toggles } = useApp();
+
     const aktivBehandling: VisningBehandling | undefined = minimalFagsak
         ? hentAktivBehandlingPåMinimalFagsak(minimalFagsak)
         : undefined;
@@ -101,10 +90,16 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
         kanOppretteRevurdering && toggles[ToggleNavn.kanBehandleTekniskEndring];
     const kanOppretteTilbakekreving = !manuellJournalfør;
 
+    const visFeilmeldinger = opprettBehandlingSkjema.visFeilmeldinger;
+
+    const { behandlingsårsak, behandlingstype, behandlingstema } = opprettBehandlingSkjema.felter;
+
     return (
         <>
             <FamilieSelect
-                {...behandlingstype.hentNavBaseSkjemaProps(visFeilmeldinger)}
+                {...behandlingstype.hentNavBaseSkjemaProps(
+                    opprettBehandlingSkjema.visFeilmeldinger
+                )}
                 erLesevisning={erLesevisning}
                 name={'Behandling'}
                 label={'Velg type behandling'}
@@ -149,6 +144,15 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                 >
                     Tilbakekreving
                 </option>
+
+                {toggles[ToggleNavn.kanBehandleKlage] && (
+                    <option
+                        aria-selected={behandlingstype.verdi === Behandlingstype.KLAGE}
+                        value={Behandlingstype.KLAGE}
+                    >
+                        Klage
+                    </option>
+                )}
             </FamilieSelect>
 
             {behandlingsårsak.erSynlig && (
@@ -190,27 +194,10 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                 <StyledBehandlingstemaSelect
                     behandlingstema={behandlingstema}
                     erLesevisning={erLesevisning}
-                    visFeilmeldinger={visFeilmeldinger}
+                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                     name="Behandlingstema"
                     label="Velg behandlingstema"
                 />
-            )}
-
-            {søknadMottattDato?.erSynlig && (
-                <>
-                    <FixedDatoVelger
-                        {...søknadMottattDato.hentNavInputProps(visFeilmeldinger)}
-                        valgtDato={søknadMottattDato.verdi}
-                        label={'Mottatt dato'}
-                        placeholder={'DD.MM.ÅÅÅÅ'}
-                        limitations={{
-                            maxDate: new Date().toISOString(),
-                        }}
-                    />
-                    {søknadMottattDato.feilmelding && visFeilmeldinger && (
-                        <FeltFeilmelding>{søknadMottattDato.feilmelding}</FeltFeilmelding>
-                    )}
-                </>
             )}
         </>
     );
