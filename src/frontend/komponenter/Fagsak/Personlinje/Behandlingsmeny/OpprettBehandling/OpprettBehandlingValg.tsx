@@ -172,6 +172,7 @@ const OpprettBehandlingValg: React.FC<IProps> = ({
                         .filter(
                             årsak =>
                                 årsak !== BehandlingÅrsak.SATSENDRING &&
+                                årsak !== BehandlingÅrsak.TEKNISK_ENDRING &&
                                 (årsak !== BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
                                     toggles[ToggleNavn.kanManueltKorrigereMedVedtaksbrev])
                         )
