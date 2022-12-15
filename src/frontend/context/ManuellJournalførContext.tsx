@@ -49,8 +49,6 @@ export interface ManuellJournalføringSkjemaFelter {
     avsenderIdent: string;
     knyttTilNyBehandling: boolean;
     tilknyttedeBehandlingIder: number[];
-    erEnsligMindreårig: boolean;
-    erPåInstitusjon: boolean;
     samhandler: ISamhandlerInfo | null;
 }
 
@@ -161,12 +159,6 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             behandlingsårsak,
             tilknyttedeBehandlingIder: useFelt<number[]>({
                 verdi: [],
-            }),
-            erEnsligMindreårig: useFelt<boolean>({
-                verdi: false,
-            }),
-            erPåInstitusjon: useFelt<boolean>({
-                verdi: false,
             }),
             samhandler: useFelt<ISamhandlerInfo | null>({
                 verdi: null,
