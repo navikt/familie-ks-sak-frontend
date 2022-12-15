@@ -143,6 +143,7 @@ export enum Behandlingstype {
     FØRSTEGANGSBEHANDLING = 'FØRSTEGANGSBEHANDLING',
     REVURDERING = 'REVURDERING',
     TEKNISK_ENDRING = 'TEKNISK_ENDRING',
+    KLAGE = 'KLAGE',
 }
 
 export enum BehandlingResultat {

@@ -23,6 +23,14 @@ import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrev
 import type { FamilieIsoDate } from '../../../../../utils/kalender';
 import { erIsoStringGyldig } from '../../../../../utils/kalender';
 
+export interface IOpprettBehandlingSkjemaFelter {
+    behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | '';
+    behandlingsårsak: BehandlingÅrsak | '';
+    behandlingstema: IBehandlingstema | undefined;
+    søknadMottattDato: FamilieIsoDate;
+    kravMottattDato: FamilieIsoDate;
+}
+
 const useOpprettBehandling = ({
     lukkModal,
     onOpprettTilbakekrevingSuccess,
@@ -76,9 +84,9 @@ const useOpprettBehandling = ({
         },
     });
 
-    const søknadMottattDato = useFelt<FamilieIsoDate | undefined>({
-        verdi: undefined,
-        valideringsfunksjon: (felt: FeltState<FamilieIsoDate | undefined>) => {
+    const søknadMottattDato = useFelt<FamilieIsoDate>({
+        verdi: '',
+        valideringsfunksjon: (felt: FeltState<FamilieIsoDate>) => {
             const erGyldigIsoString = felt.verdi && erIsoStringGyldig(felt.verdi);
             const erIFremtiden = felt.verdi && erDatoFremITid(felt.verdi);
 
@@ -90,7 +98,7 @@ const useOpprettBehandling = ({
             }
 
             if (erIFremtiden) {
-                return feil(felt, 'Du kan ikke sette en mottatt dato som er frem i tid.');
+                return feil(felt, 'Du kan ikke sette en dato som er frem i tid.');
             }
 
             return ok(felt);
@@ -108,17 +116,37 @@ const useOpprettBehandling = ({
         },
     });
 
+    const kravMottattDato = useFelt<FamilieIsoDate>({
+        verdi: '',
+        valideringsfunksjon: (felt: FeltState<FamilieIsoDate>) => {
+            const erGyldigIsoString = erIsoStringGyldig(felt.verdi);
+            const erIFremtiden = erDatoFremITid(felt.verdi);
+
+            if (!erGyldigIsoString) {
+                return feil(
+                    felt,
+                    'Mottatt dato for klagen må registreres ved manuell opprettelse av klagebehandling'
+                );
+            }
+
+            if (erIFremtiden) {
+                return feil(felt, 'Du kan ikke sette en dato som er frem i tid.');
+            }
+
+            return ok(felt);
+        },
+
+        avhengigheter: { behandlingstype },
+        skalFeltetVises: avhengigheter =>
+            avhengigheter.behandlingstype.verdi === Behandlingstype.KLAGE,
+    });
+
     const erDatoFremITid = (dato: FamilieIsoDate): boolean => {
         return Date.parse(dato.toString()) > new Date().getTime();
     };
 
     const { skjema, nullstillSkjema, kanSendeSkjema, onSubmit, settSubmitRessurs } = useSkjema<
-        {
-            behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | '';
-            behandlingsårsak: BehandlingÅrsak | '';
-            behandlingstema: IBehandlingstema | undefined;
-            søknadMottattDato: FamilieIsoDate | undefined;
-        },
+        IOpprettBehandlingSkjemaFelter,
         IBehandling
     >({
         felter: {
@@ -126,78 +154,96 @@ const useOpprettBehandling = ({
             behandlingsårsak,
             behandlingstema,
             søknadMottattDato,
+            kravMottattDato: kravMottattDato,
         },
         skjemanavn: 'Opprett behandling modal',
     });
 
     useEffect(() => {
-        switch (skjema.felter.behandlingstype.verdi) {
-            case Behandlingstype.FØRSTEGANGSBEHANDLING:
-                skjema.felter.behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.SØKNAD);
-                break;
-            case Behandlingstype.TEKNISK_ENDRING:
-                skjema.felter.behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.TEKNISK_ENDRING);
-                break;
+        if (behandlingstype.verdi === Behandlingstype.FØRSTEGANGSBEHANDLING) {
+            behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.SØKNAD);
+        } else if (behandlingstype.verdi === Behandlingstype.TEKNISK_ENDRING) {
+            behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.TEKNISK_ENDRING);
         }
-    }, [skjema.felter.behandlingstype.verdi]);
+    }, [behandlingstype.verdi]);
+
+    const opprettKlagebehandling = () => {
+        onSubmit<{ kravMottattDato: FamilieIsoDate }>(
+            {
+                method: 'POST',
+                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/opprett-klagebehandling`,
+                data: { kravMottattDato: kravMottattDato.verdi },
+            },
+            response => {
+                if (response.status === RessursStatus.SUKSESS) {
+                    lukkModal();
+                    nullstillSkjema();
+                }
+            }
+        );
+    };
+
+    const opprettTilbakekreving = () => {
+        onSubmit(
+            {
+                method: 'GET',
+                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/opprett-tilbakekreving`,
+            },
+            response => {
+                if (response.status === RessursStatus.SUKSESS) {
+                    nullstillSkjemaStatus();
+                    onOpprettTilbakekrevingSuccess();
+                }
+            }
+        );
+    };
+
+    const opprettKontantstøttebehandling = (søkersIdent: string) => {
+        onSubmit<IRestNyBehandling>(
+            {
+                data: {
+                    kategori: skjema.felter.behandlingstema.verdi?.kategori ?? null,
+                    søkersIdent,
+                    behandlingType: behandlingstype.verdi as Behandlingstype,
+                    behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,
+                    navIdent: innloggetSaksbehandler?.navIdent,
+                    søknadMottattDato: skjema.felter.søknadMottattDato.verdi ?? undefined,
+                },
+                method: 'POST',
+                url: '/familie-ks-sak/api/behandlinger',
+            },
+            response => {
+                if (response.status === RessursStatus.SUKSESS) {
+                    lukkModal();
+                    nullstillSkjema();
+
+                    settÅpenBehandling(response);
+                    const behandling: IBehandling | undefined = hentDataFraRessurs(response);
+
+                    if (behandling && behandling.årsak === BehandlingÅrsak.SØKNAD) {
+                        navigate(
+                            behandling.steg === BehandlingSteg.REGISTRERE_INSTITUSJON_OG_VERGE
+                                ? `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-mottaker`
+                                : `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`
+                        );
+                    } else {
+                        navigate(
+                            `/fagsak/${fagsakId}/${behandling?.behandlingId}/vilkaarsvurdering`
+                        );
+                    }
+                }
+            }
+        );
+    };
 
     const onBekreft = (søkersIdent: string) => {
-        const { behandlingstype, behandlingsårsak } = skjema.felter;
         if (kanSendeSkjema()) {
-            if (
-                skjema.felter.behandlingstype.verdi ===
-                Tilbakekrevingsbehandlingstype.TILBAKEKREVING
-            ) {
-                onSubmit(
-                    {
-                        method: 'GET',
-                        url: `/familie-ks-sak/api/fagsaker/${fagsakId}/opprett-tilbakekreving`,
-                    },
-                    response => {
-                        if (response.status === RessursStatus.SUKSESS) {
-                            nullstillSkjemaStatus();
-                            onOpprettTilbakekrevingSuccess();
-                        }
-                    }
-                );
+            if (behandlingstype.verdi === Behandlingstype.KLAGE) {
+                opprettKlagebehandling();
+            } else if (behandlingstype.verdi === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) {
+                opprettTilbakekreving();
             } else {
-                onSubmit<IRestNyBehandling>(
-                    {
-                        data: {
-                            kategori: skjema.felter.behandlingstema.verdi?.kategori ?? null,
-                            søkersIdent,
-                            behandlingType: behandlingstype.verdi as Behandlingstype,
-                            behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,
-                            navIdent: innloggetSaksbehandler?.navIdent,
-                            søknadMottattDato: skjema.felter.søknadMottattDato.verdi ?? undefined,
-                        },
-                        method: 'POST',
-                        url: '/familie-ks-sak/api/behandlinger',
-                    },
-                    response => {
-                        if (response.status === RessursStatus.SUKSESS) {
-                            lukkModal();
-                            nullstillSkjema();
-
-                            settÅpenBehandling(response);
-                            const behandling: IBehandling | undefined =
-                                hentDataFraRessurs(response);
-
-                            if (behandling && behandling.årsak === BehandlingÅrsak.SØKNAD) {
-                                navigate(
-                                    behandling.steg ===
-                                        BehandlingSteg.REGISTRERE_INSTITUSJON_OG_VERGE
-                                        ? `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-mottaker`
-                                        : `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`
-                                );
-                            } else {
-                                navigate(
-                                    `/fagsak/${fagsakId}/${behandling?.behandlingId}/vilkaarsvurdering`
-                                );
-                            }
-                        }
-                    }
-                );
+                opprettKontantstøttebehandling(søkersIdent);
             }
         }
     };
