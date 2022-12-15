@@ -88,6 +88,7 @@ const useBehandlingssteg = (
 
     const kanForeslåVedtak = () =>
         minstEnPeriodeharBegrunnelseEllerFritekst() ||
+        behandling?.årsak === BehandlingÅrsak.TEKNISK_ENDRING ||
         behandling?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
         behandling?.årsak === BehandlingÅrsak.DØDSFALL;
 

@@ -162,6 +162,8 @@ const useOpprettBehandling = ({
     useEffect(() => {
         if (behandlingstype.verdi === Behandlingstype.FØRSTEGANGSBEHANDLING) {
             behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.SØKNAD);
+        } else if (behandlingstype.verdi === Behandlingstype.TEKNISK_ENDRING) {
+            behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.TEKNISK_ENDRING);
         }
     }, [behandlingstype.verdi]);
 
