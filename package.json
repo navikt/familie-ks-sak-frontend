@@ -34,7 +34,7 @@
     "@navikt/ds-css": "1.3.x",
     "@navikt/ds-icons": "1.3.x",
     "@navikt/ds-react": "1.3.x",
-    "@navikt/ds-react-internal": "1.3.x",
+    "@navikt/ds-react-internal": "1.5.10",
     "@navikt/ds-tokens": "1.3.x",
     "@navikt/familie-backend": "^7.0.4",
     "@navikt/familie-clipboard": "6.0.2",
