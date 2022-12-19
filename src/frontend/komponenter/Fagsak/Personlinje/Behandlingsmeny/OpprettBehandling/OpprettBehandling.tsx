@@ -10,10 +10,12 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
+import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
 import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
+import BehandlingstypeFelt from './BehandlingstypeFelt';
+import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
 import { KravDatoFelt } from './KravDatoFelt';
-import OpprettBehandlingValg from './OpprettBehandlingValg';
 import { SøknadMottattDatoFelt } from './SøknadMottattDatoFelt';
 import useOpprettBehandling from './useOpprettBehandling';
 
@@ -80,10 +82,28 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
             >
                 <SkjemaGruppe feil={hentFrontendFeilmelding(opprettBehandlingSkjema.submitRessurs)}>
                     <SkjultLegend>Opprett ny behandling</SkjultLegend>
-                    <OpprettBehandlingValg
-                        opprettBehandlingSkjema={opprettBehandlingSkjema}
+                    <BehandlingstypeFelt
+                        behandlingstype={opprettBehandlingSkjema.felter.behandlingstype}
+                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                         minimalFagsak={minimalFagsak}
                     />
+
+                    {opprettBehandlingSkjema.felter.behandlingsårsak.erSynlig && (
+                        <BehandlingårsakFelt
+                            behandlingsårsak={opprettBehandlingSkjema.felter.behandlingsårsak}
+                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                        />
+                    )}
+
+                    {opprettBehandlingSkjema.felter.behandlingstema.erSynlig && (
+                        <BehandlingstemaSelect
+                            behandlingstema={opprettBehandlingSkjema.felter.behandlingstema}
+                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                            name="Behandlingstema"
+                            label="Velg behandlingstema"
+                        />
+                    )}
+
                     {opprettBehandlingSkjema.felter.kravMottattDato.erSynlig && (
                         <KravDatoFelt
                             kravMottattDato={opprettBehandlingSkjema.felter.kravMottattDato}
