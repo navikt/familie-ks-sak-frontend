@@ -25,7 +25,7 @@ import type { VisningBehandling } from './visningBehandling';
 
 export enum Saksoversiktstype {
     KONTANTSTØTTE = 'KONTANTSTØTTE',
-    TIlBAKEBETALING = 'TILBAKBETALING',
+    TILBAKEBETALING = 'TILBAKBETALING',
     KLAGE = 'KLAGE',
 }
 
@@ -34,7 +34,7 @@ export type Saksoversiktsbehandling =
           saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE;
       })
     | (ITilbakekrevingsbehandling & {
-          saksoversiktstype: Saksoversiktstype.TIlBAKEBETALING;
+          saksoversiktstype: Saksoversiktstype.TILBAKEBETALING;
       })
     | (IKlagebehandling & {
           saksoversiktstype: Saksoversiktstype.KLAGE;
@@ -55,7 +55,7 @@ export const skalRadVises = (
 export const hentOpprettetTidspunkt = (saksoversiktsbehandling: Saksoversiktsbehandling) => {
     switch (saksoversiktsbehandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
-        case Saksoversiktstype.TIlBAKEBETALING:
+        case Saksoversiktstype.TILBAKEBETALING:
             return saksoversiktsbehandling.opprettetTidspunkt;
         case Saksoversiktstype.KLAGE:
             return saksoversiktsbehandling.opprettet;
@@ -65,7 +65,7 @@ export const hentOpprettetTidspunkt = (saksoversiktsbehandling: Saksoversiktsbeh
 export const hentBehandlingId = (saksoversiktsbehandling: Saksoversiktsbehandling) => {
     switch (saksoversiktsbehandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
-        case Saksoversiktstype.TIlBAKEBETALING:
+        case Saksoversiktstype.TILBAKEBETALING:
             return saksoversiktsbehandling.behandlingId;
         case Saksoversiktstype.KLAGE:
             return saksoversiktsbehandling.id;
@@ -85,7 +85,7 @@ export const hentBehandlingerTilSaksoversikten = (
     const tilbakekrevingsbehandlinger: Saksoversiktsbehandling[] =
         minimalFagsak.tilbakekrevingsbehandlinger.map(behandling => ({
             ...behandling,
-            saksoversiktstype: Saksoversiktstype.TIlBAKEBETALING,
+            saksoversiktstype: Saksoversiktstype.TILBAKEBETALING,
         }));
     const saksoversiktKlagebehandlinger: Saksoversiktsbehandling[] = klagebehandlinger.map(
         behandling => ({
@@ -114,7 +114,7 @@ export const lagLenkePåType = (
                     {behandlingstyper[behandling.type].navn}
                 </Link>
             );
-        case Saksoversiktstype.TIlBAKEBETALING:
+        case Saksoversiktstype.TILBAKEBETALING:
             return (
                 <Link
                     href={`/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsakId}/behandling/${behandling.behandlingId}`}
@@ -156,7 +156,7 @@ export const lagLenkePåResultat = (
                 );
             }
             return behandlingsresultater[behandling.resultat];
-        case Saksoversiktstype.TIlBAKEBETALING:
+        case Saksoversiktstype.TILBAKEBETALING:
             return (
                 <Link
                     href={`/redirect/familie-tilbake/fagsystem/KS/fagsak/${minimalFagsak.id}/behandling/${behandling.behandlingId}`}
@@ -183,7 +183,7 @@ export const lagLenkePåResultat = (
 
 export const finnÅrsak = (saksoversikstbehandling: Saksoversiktsbehandling): ReactNode => {
     if (
-        saksoversikstbehandling.saksoversiktstype === Saksoversiktstype.TIlBAKEBETALING &&
+        saksoversikstbehandling.saksoversiktstype === Saksoversiktstype.TILBAKEBETALING &&
         saksoversikstbehandling.type === Tilbakekrevingsbehandlingstype.TILBAKEKREVING
     ) {
         return 'Feilutbetaling';
@@ -197,7 +197,7 @@ export const hentBehandlingstema = (
     switch (saksoversiktsbehandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
             return tilBehandlingstema(saksoversiktsbehandling.kategori);
-        case Saksoversiktstype.TIlBAKEBETALING:
+        case Saksoversiktstype.TILBAKEBETALING:
         case Saksoversiktstype.KLAGE:
             return undefined;
     }
