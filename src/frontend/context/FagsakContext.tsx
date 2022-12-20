@@ -143,6 +143,7 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
             request<void, IKlagebehandling[]>({
                 method: 'GET',
                 url: `/familie-ks-sak/api/fagsaker/${fagsakId}/hent-klagebehandlinger`,
+                påvirkerSystemLaster: true,
             }).then(klagebehandlingerRessurs =>
                 settKlagebehandlinger(hentDataFraRessurs(klagebehandlingerRessurs) ?? [])
             );
