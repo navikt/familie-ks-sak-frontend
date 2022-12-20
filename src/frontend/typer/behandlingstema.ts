@@ -1,5 +1,3 @@
-import type { Saksoversiktsbehanlding } from '../komponenter/Fagsak/Saksoversikt/Behandlinger';
-import { Saksoversiktstype } from '../komponenter/Fagsak/Saksoversikt/Behandlinger';
 import type { IOppgave } from './oppgave';
 
 export enum BehandlingKategori {
@@ -55,12 +53,4 @@ export const utredBehandlingstemaFraOppgave = (oppgave: IOppgave): IBehandlingst
     return behandlingstype in kodeTilBehandlingKategoriMap
         ? tilBehandlingstema(kodeTilBehandlingKategoriMap[behandlingstype])
         : undefined;
-};
-
-export const hentKategorierHvisVisningBehandling = (
-    saksoversiktsbehanlding: Saksoversiktsbehanlding
-): BehandlingKategori | undefined => {
-    if (saksoversiktsbehanlding.saksoversiktstype === Saksoversiktstype.KONTANTSTØTTE) {
-        return saksoversiktsbehanlding.kategori;
-    } else return undefined;
 };

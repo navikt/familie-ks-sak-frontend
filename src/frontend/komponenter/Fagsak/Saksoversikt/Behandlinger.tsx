@@ -6,14 +6,16 @@ import styled from 'styled-components';
 import { BodyShort, Heading, Switch } from '@navikt/ds-react';
 
 import { useFagsakContext } from '../../../context/FagsakContext';
-import { erBehandlingHenlagt } from '../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
-import type { IKlagebehandling } from '../../../typer/klage';
-import type { ITilbakekrevingsbehandling } from '../../../typer/tilbakekrevingsbehandling';
-import { Behandlingsresultatstype } from '../../../typer/tilbakekrevingsbehandling';
 import { kalenderDiff } from '../../../utils/kalender';
 import { Behandling } from './Behandling';
-import type { VisningBehandling } from './visningBehandling';
+import type { Saksoversiktsbehanlding } from './utils';
+import {
+    hentBehandlingerTilSaksoversikten,
+    hentBehandlingId,
+    hentOpprettetTidspunkt,
+    skalRadVises,
+} from './utils';
 
 const SwitchHøyre = styled(Switch)`
     margin-top: 1rem;
@@ -37,81 +39,13 @@ interface IBehandlingshistorikkProps {
     minimalFagsak: IMinimalFagsak;
 }
 
-export enum Saksoversiktstype {
-    KONTANTSTØTTE = 'KONTANTSTØTTE',
-    TIlBAKEBETALING = 'TILBAKBETALING',
-    KLAGE = 'KLAGE',
-}
-
-export type Saksoversiktsbehanlding =
-    | (VisningBehandling & {
-          saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE;
-      })
-    | (ITilbakekrevingsbehandling & {
-          saksoversiktstype: Saksoversiktstype.TIlBAKEBETALING;
-      })
-    | (IKlagebehandling & {
-          saksoversiktstype: Saksoversiktstype.KLAGE;
-      });
-
-const visRad = (behandling: Saksoversiktsbehanlding, visHenlagteBehandlinger: boolean) => {
-    if (visHenlagteBehandlinger) return true;
-    if (!behandling.resultat) return true;
-    if (behandling.saksoversiktstype === Saksoversiktstype.KONTANTSTØTTE) {
-        return !erBehandlingHenlagt(behandling.resultat);
-    }
-    return Behandlingsresultatstype.HENLAGT !== behandling.resultat;
-};
-
-export const hentOpprettetTidspunkt = (saksoversiktsbehandling: Saksoversiktsbehanlding) => {
-    switch (saksoversiktsbehandling.saksoversiktstype) {
-        case Saksoversiktstype.KONTANTSTØTTE:
-        case Saksoversiktstype.TIlBAKEBETALING:
-            return saksoversiktsbehandling.opprettetTidspunkt;
-        case Saksoversiktstype.KLAGE:
-            return saksoversiktsbehandling.opprettet;
-    }
-};
-
-export const hentBehandlingId = (saksoversiktsbehandling: Saksoversiktsbehanlding) => {
-    switch (saksoversiktsbehandling.saksoversiktstype) {
-        case Saksoversiktstype.KONTANTSTØTTE:
-        case Saksoversiktstype.TIlBAKEBETALING:
-            return saksoversiktsbehandling.behandlingId;
-        case Saksoversiktstype.KLAGE:
-            return saksoversiktsbehandling.id;
-    }
-};
-
-const hentBehandlingerTilSaksoversikten = (
-    minimalFagsak: IMinimalFagsak,
-    klagebehandlinger: IKlagebehandling[]
-): Saksoversiktsbehanlding[] => {
-    const kontantstøtteBehandlinger: Saksoversiktsbehanlding[] = minimalFagsak.behandlinger.map(
-        behandling => ({
-            ...behandling,
-            saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE,
-        })
-    );
-    const tilbakekrevingsbehandlinger: Saksoversiktsbehanlding[] =
-        minimalFagsak.tilbakekrevingsbehandlinger.map(behandling => ({
-            ...behandling,
-            saksoversiktstype: Saksoversiktstype.TIlBAKEBETALING,
-        }));
-    const klagebehanldinger: Saksoversiktsbehanlding[] = klagebehandlinger.map(behandling => ({
-        ...behandling,
-        saksoversiktstype: Saksoversiktstype.KLAGE,
-    }));
-    return [...kontantstøtteBehandlinger, ...tilbakekrevingsbehandlinger, ...klagebehanldinger];
-};
-
 const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) => {
     const { klagebehandlinger } = useFagsakContext();
 
     const behandlinger = hentBehandlingerTilSaksoversikten(minimalFagsak, klagebehandlinger);
 
     const finnesRadSomKanFiltreresBort = behandlinger.some(
-        (behandling: Saksoversiktsbehanlding) => !visRad(behandling, false)
+        (behandling: Saksoversiktsbehanlding) => !skalRadVises(behandling, false)
     );
 
     const [visHenlagteBehandlinger, setVisHenlagteBehandlinger] = useState(false);
@@ -136,7 +70,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                     </thead>
                     <tbody>
                         {behandlinger
-                            .filter(behandling => visRad(behandling, visHenlagteBehandlinger))
+                            .filter(behandling => skalRadVises(behandling, visHenlagteBehandlinger))
                             .sort((a, b) =>
                                 kalenderDiff(
                                     new Date(hentOpprettetTidspunkt(b)),
