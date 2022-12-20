@@ -9,7 +9,7 @@ import { useFagsakContext } from '../../../context/FagsakContext';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { kalenderDiff } from '../../../utils/kalender';
 import { Behandling } from './Behandling';
-import type { Saksoversiktsbehanlding } from './utils';
+import type { Saksoversiktsbehandling } from './utils';
 import {
     hentBehandlingerTilSaksoversikten,
     hentBehandlingId,
@@ -45,7 +45,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
     const behandlinger = hentBehandlingerTilSaksoversikten(minimalFagsak, klagebehandlinger);
 
     const finnesRadSomKanFiltreresBort = behandlinger.some(
-        (behandling: Saksoversiktsbehanlding) => !skalRadVises(behandling, false)
+        (behandling: Saksoversiktsbehandling) => !skalRadVises(behandling, false)
     );
 
     const [visHenlagteBehandlinger, setVisHenlagteBehandlinger] = useState(false);
@@ -77,7 +77,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                                     new Date(hentOpprettetTidspunkt(a))
                                 )
                             )
-                            .map((behandling: Saksoversiktsbehanlding) => (
+                            .map((behandling: Saksoversiktsbehandling) => (
                                 <Behandling
                                     key={hentBehandlingId(behandling)}
                                     saksoversiktsbehandling={behandling}

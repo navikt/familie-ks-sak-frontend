@@ -29,7 +29,7 @@ export enum Saksoversiktstype {
     KLAGE = 'KLAGE',
 }
 
-export type Saksoversiktsbehanlding =
+export type Saksoversiktsbehandling =
     | (VisningBehandling & {
           saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE;
       })
@@ -41,7 +41,7 @@ export type Saksoversiktsbehanlding =
       });
 
 export const skalRadVises = (
-    behandling: Saksoversiktsbehanlding,
+    behandling: Saksoversiktsbehandling,
     visHenlagteBehandlinger: boolean
 ): boolean => {
     if (visHenlagteBehandlinger) return true;
@@ -52,7 +52,7 @@ export const skalRadVises = (
     return Behandlingsresultatstype.HENLAGT !== behandling.resultat;
 };
 
-export const hentOpprettetTidspunkt = (saksoversiktsbehandling: Saksoversiktsbehanlding) => {
+export const hentOpprettetTidspunkt = (saksoversiktsbehandling: Saksoversiktsbehandling) => {
     switch (saksoversiktsbehandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
         case Saksoversiktstype.TIlBAKEBETALING:
@@ -62,7 +62,7 @@ export const hentOpprettetTidspunkt = (saksoversiktsbehandling: Saksoversiktsbeh
     }
 };
 
-export const hentBehandlingId = (saksoversiktsbehandling: Saksoversiktsbehanlding) => {
+export const hentBehandlingId = (saksoversiktsbehandling: Saksoversiktsbehandling) => {
     switch (saksoversiktsbehandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
         case Saksoversiktstype.TIlBAKEBETALING:
@@ -75,19 +75,19 @@ export const hentBehandlingId = (saksoversiktsbehandling: Saksoversiktsbehanldin
 export const hentBehandlingerTilSaksoversikten = (
     minimalFagsak: IMinimalFagsak,
     klagebehandlinger: IKlagebehandling[]
-): Saksoversiktsbehanlding[] => {
-    const kontantstøtteBehandlinger: Saksoversiktsbehanlding[] = minimalFagsak.behandlinger.map(
+): Saksoversiktsbehandling[] => {
+    const kontantstøtteBehandlinger: Saksoversiktsbehandling[] = minimalFagsak.behandlinger.map(
         behandling => ({
             ...behandling,
             saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE,
         })
     );
-    const tilbakekrevingsbehandlinger: Saksoversiktsbehanlding[] =
+    const tilbakekrevingsbehandlinger: Saksoversiktsbehandling[] =
         minimalFagsak.tilbakekrevingsbehandlinger.map(behandling => ({
             ...behandling,
             saksoversiktstype: Saksoversiktstype.TIlBAKEBETALING,
         }));
-    const klagebehanldinger: Saksoversiktsbehanlding[] = klagebehandlinger.map(behandling => ({
+    const klagebehanldinger: Saksoversiktsbehandling[] = klagebehandlinger.map(behandling => ({
         ...behandling,
         saksoversiktstype: Saksoversiktstype.KLAGE,
     }));
@@ -96,7 +96,7 @@ export const hentBehandlingerTilSaksoversikten = (
 
 export const lagLenkePåType = (
     fagsakId: number,
-    behanlding: Saksoversiktsbehanlding
+    behanlding: Saksoversiktsbehandling
 ): ReactNode => {
     switch (behanlding.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
@@ -135,7 +135,7 @@ export const lagLenkePåType = (
 
 export const lagLenkePåResultat = (
     minimalFagsak: IMinimalFagsak,
-    behandling: Saksoversiktsbehanlding
+    behandling: Saksoversiktsbehandling
 ): ReactNode => {
     if (!behandling.resultat) {
         return '-';
@@ -175,7 +175,7 @@ export const lagLenkePåResultat = (
     }
 };
 
-export const finnÅrsak = (saksoversikstbehandling: Saksoversiktsbehanlding): ReactNode => {
+export const finnÅrsak = (saksoversikstbehandling: Saksoversiktsbehandling): ReactNode => {
     if (
         saksoversikstbehandling.saksoversiktstype === Saksoversiktstype.TIlBAKEBETALING &&
         saksoversikstbehandling.type === Tilbakekrevingsbehandlingstype.TILBAKEKREVING
@@ -186,7 +186,7 @@ export const finnÅrsak = (saksoversikstbehandling: Saksoversiktsbehanlding): Re
 };
 
 export const hentBehandlingstema = (
-    saksoversiktsbehandling: Saksoversiktsbehanlding
+    saksoversiktsbehandling: Saksoversiktsbehandling
 ): IBehandlingstema | undefined => {
     switch (saksoversiktsbehandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
