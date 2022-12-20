@@ -1,6 +1,6 @@
-import type { VisningBehandling } from '../komponenter/Fagsak/Saksoversikt/visningBehandling';
+import type { Saksoversiktsbehanlding } from '../komponenter/Fagsak/Saksoversikt/Behandlinger';
+import { Saksoversiktstype } from '../komponenter/Fagsak/Saksoversikt/Behandlinger';
 import type { IOppgave } from './oppgave';
-import type { ITilbakekrevingsbehandling } from './tilbakekrevingsbehandling';
 
 export enum BehandlingKategori {
     NASJONAL = 'NASJONAL',
@@ -58,8 +58,9 @@ export const utredBehandlingstemaFraOppgave = (oppgave: IOppgave): IBehandlingst
 };
 
 export const hentKategorierHvisVisningBehandling = (
-    behandling?: VisningBehandling | ITilbakekrevingsbehandling
-) => {
-    const kategori: BehandlingKategori | undefined = (behandling as VisningBehandling)?.kategori;
-    return kategori ? { kategori } : undefined;
+    saksoversiktsbehanlding: Saksoversiktsbehanlding
+): BehandlingKategori | undefined => {
+    if (saksoversiktsbehanlding.saksoversiktstype === Saksoversiktstype.KONTANTSTØTTE) {
+        return saksoversiktsbehanlding.kategori;
+    } else return undefined;
 };

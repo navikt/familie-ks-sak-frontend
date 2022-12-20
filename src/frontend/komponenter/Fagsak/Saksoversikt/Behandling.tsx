@@ -17,101 +17,137 @@ import {
     tilBehandlingstema,
 } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
-import type { ITilbakekrevingsbehandling } from '../../../typer/tilbakekrevingsbehandling';
-import {
-    Tilbakekrevingsbehandlingstype,
-    tilbakekrevingstyper,
-} from '../../../typer/tilbakekrevingsbehandling';
+import { Klagebehandlingstype } from '../../../typer/klage';
+import { Tilbakekrevingsbehandlingstype } from '../../../typer/tilbakekrevingsbehandling';
 import { datoformat, formaterIsoDato } from '../../../utils/formatter';
-import type { VisningBehandling } from './visningBehandling';
+import type { Saksoversiktsbehanlding } from './Behandlinger';
+import { hentBehandlingId, hentOpprettetTidspunkt, Saksoversiktstype } from './Behandlinger';
 
 interface IBehandlingshistorikkProps {
     minimalFagsak: IMinimalFagsak;
-    behandling: VisningBehandling | ITilbakekrevingsbehandling;
+    saksoversiktsbehandling: Saksoversiktsbehanlding;
 }
 
-const erTilbakekrevingsbetaling = (behandling: VisningBehandling | ITilbakekrevingsbehandling) => {
-    return tilbakekrevingstyper.some(type => type === behandling.type);
-};
+const lagLenkePåType = (fagsakId: number, behanlding: Saksoversiktsbehanlding): ReactNode => {
+    if (behanlding.status === BehandlingStatus.AVSLUTTET) {
+        const behandlingstype = behanlding.type;
+        return behandlingstyper[behandlingstype].navn;
+    }
 
-const lagLenkePåType = (
-    fagsakId: number,
-    behandling: VisningBehandling | ITilbakekrevingsbehandling
-): ReactNode =>
-    behandling.status === BehandlingStatus.AVSLUTTET ? (
-        behandlingstyper[behandling.type].navn
-    ) : erTilbakekrevingsbetaling(behandling) ? (
-        <Link
-            href={`/redirect/familie-tilbake/fagsystem/BA/fagsak/${fagsakId}/behandling/${behandling.behandlingId}`}
-            onMouseDown={e => e.preventDefault()}
-            target="_blank"
-        >
-            <span>{behandlingstyper[behandling.type].navn}</span>
-            <ExternalLink />
-        </Link>
-    ) : (
-        <Link href={`/fagsak/${fagsakId}/${behandling.behandlingId}`}>
-            {behandlingstyper[behandling.type].navn}
-        </Link>
-    );
+    switch (behanlding.saksoversiktstype) {
+        case Saksoversiktstype.KONTANTSTØTTE:
+            return (
+                <Link href={`/fagsak/${fagsakId}/${behanlding.behandlingId}`}>
+                    {behandlingstyper[behanlding.type].navn}
+                </Link>
+            );
+        case Saksoversiktstype.TIlBAKEBETALING:
+            return (
+                <Link
+                    href={`/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsakId}/behandling/${behanlding.behandlingId}`}
+                    onMouseDown={e => e.preventDefault()}
+                    target="_blank"
+                >
+                    <span>{behandlingstyper[behanlding.type].navn}</span>
+                    <ExternalLink />
+                </Link>
+            );
+        case Saksoversiktstype.KLAGE:
+            return (
+                <Link
+                    href={`/redirect/familie-klage/behandling/${behanlding.id}`}
+                    onMouseDown={e => e.preventDefault()}
+                    target="_blank"
+                >
+                    <span>{behandlingstyper[Klagebehandlingstype.KLAGE].navn}</span>
+                    <ExternalLink />
+                </Link>
+            );
+    }
+};
 
 const lagLenkePåResultat = (
     minimalFagsak: IMinimalFagsak,
-    behandling: VisningBehandling | ITilbakekrevingsbehandling
+    behandling: Saksoversiktsbehanlding
 ): ReactNode => {
     if (!behandling.resultat) {
         return '-';
     }
-    if (erTilbakekrevingsbetaling(behandling)) {
-        return (
-            <Link
-                href={`/redirect/familie-tilbake/fagsystem/BA/fagsak/${minimalFagsak.id}/behandling/${behandling.behandlingId}`}
-                onMouseDown={e => e.preventDefault()}
-                target="_blank"
-            >
-                <span>{behandlingsresultater[behandling.resultat]}</span>
-                <ExternalLink />
-            </Link>
-        );
-    } else if (behandling.status === BehandlingStatus.AVSLUTTET) {
-        return (
-            <Link href={`/fagsak/${minimalFagsak.id}/${behandling.behandlingId}`}>
-                {behandling ? behandlingsresultater[behandling.resultat] : '-'}
-            </Link>
-        );
-    } else {
-        return behandlingsresultater[behandling.resultat];
+    switch (behandling.saksoversiktstype) {
+        case Saksoversiktstype.TIlBAKEBETALING:
+            return (
+                <Link
+                    href={`/redirect/familie-tilbake/fagsystem/KS/fagsak/${minimalFagsak.id}/behandling/${behandling.behandlingId}`}
+                    onMouseDown={e => e.preventDefault()}
+                    target="_blank"
+                >
+                    <span>{behandlingsresultater[behandling.resultat]}</span>
+                    <ExternalLink />
+                </Link>
+            );
+        case Saksoversiktstype.KONTANTSTØTTE:
+            if (behandling.status === BehandlingStatus.AVSLUTTET) {
+                return (
+                    <Link href={`/fagsak/${minimalFagsak.id}/${behandling.behandlingId}`}>
+                        {behandling ? behandlingsresultater[behandling.resultat] : '-'}
+                    </Link>
+                );
+            } else {
+                return behandlingsresultater[behandling.resultat];
+            }
+        case Saksoversiktstype.KLAGE:
+            return (
+                <Link
+                    href={`/redirect/familie-klage/behandling/${behandling.id}`}
+                    onMouseDown={e => e.preventDefault()}
+                    target="_blank"
+                >
+                    <span>{behandlingsresultater[behandling.resultat]}</span>
+                    <ExternalLink />
+                </Link>
+            );
     }
 };
 
-const finnÅrsak = (behandling: VisningBehandling | ITilbakekrevingsbehandling): ReactNode => {
-    if (behandling.type === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) {
+const finnÅrsak = (saksoversikstbehandling: Saksoversiktsbehanlding): ReactNode => {
+    if (
+        saksoversikstbehandling.saksoversiktstype === Saksoversiktstype.TIlBAKEBETALING &&
+        saksoversikstbehandling.type === Tilbakekrevingsbehandlingstype.TILBAKEKREVING
+    ) {
         return 'Feilutbetaling';
     }
-    return behandling.årsak ? behandlingÅrsak[behandling.årsak] : '-';
+    return saksoversikstbehandling.årsak ? behandlingÅrsak[saksoversikstbehandling.årsak] : '-';
 };
 
-export const Behandling: React.FC<IBehandlingshistorikkProps> = ({ behandling, minimalFagsak }) => {
-    const kategorier = hentKategorierHvisVisningBehandling(behandling);
+export const Behandling: React.FC<IBehandlingshistorikkProps> = ({
+    saksoversiktsbehandling,
+    minimalFagsak,
+}) => {
+    const kategori = hentKategorierHvisVisningBehandling(saksoversiktsbehandling);
 
-    const behandlingstema: IBehandlingstema | undefined = kategorier
-        ? tilBehandlingstema(kategorier.kategori)
+    const behandlingstema: IBehandlingstema | undefined = kategori
+        ? tilBehandlingstema(kategori)
         : undefined;
     return (
-        <tr key={behandling.behandlingId}>
-            <td children={`${formaterIsoDato(behandling.opprettetTidspunkt, datoformat.DATO)}`} />
-            <td>{finnÅrsak(behandling)}</td>
-            <td>{lagLenkePåType(minimalFagsak.id, behandling)}</td>
+        <tr key={hentBehandlingId(saksoversiktsbehandling)}>
+            <td
+                children={`${formaterIsoDato(
+                    hentOpprettetTidspunkt(saksoversiktsbehandling),
+                    datoformat.DATO
+                )}`}
+            />
+            <td>{finnÅrsak(saksoversiktsbehandling)}</td>
+            <td>{lagLenkePåType(minimalFagsak.id, saksoversiktsbehandling)}</td>
             <td>{behandlingstema ? behandlingstema.navn : '-'}</td>
-            <td>{behandlingsstatuser[behandling.status]}</td>
+            <td>{behandlingsstatuser[saksoversiktsbehandling.status]}</td>
             <td
                 children={
-                    behandling.vedtaksdato
-                        ? formaterIsoDato(behandling.vedtaksdato, datoformat.DATO)
+                    saksoversiktsbehandling.vedtaksdato
+                        ? formaterIsoDato(saksoversiktsbehandling.vedtaksdato, datoformat.DATO)
                         : '-'
                 }
             />
-            <td>{lagLenkePåResultat(minimalFagsak, behandling)}</td>
+            <td>{lagLenkePåResultat(minimalFagsak, saksoversiktsbehandling)}</td>
         </tr>
     );
 };

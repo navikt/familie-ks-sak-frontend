@@ -6,6 +6,7 @@ import type { Felt } from '@navikt/familie-skjema';
 import { useApp } from '../../../../../context/AppContext';
 import { Behandlingstype } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
+import { Klagebehandlingstype } from '../../../../../typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
 import { ToggleNavn } from '../../../../../typer/toggles';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../../../utils/fagsak';
@@ -13,7 +14,9 @@ import type { VisningBehandling } from '../../../Saksoversikt/visningBehandling'
 import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opprettBehandlingUtils';
 
 interface IProps {
-    behandlingstype: Felt<Behandlingstype | Tilbakekrevingsbehandlingstype | ''>;
+    behandlingstype: Felt<
+        Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''
+    >;
     visFeilmeldinger: boolean;
     minimalFagsak?: IMinimalFagsak;
     erLesevisning?: boolean;
@@ -95,8 +98,8 @@ const BehandlingstypeFelt: React.FC<IProps> = ({
 
             {toggles[ToggleNavn.kanBehandleKlage] && (
                 <option
-                    aria-selected={behandlingstype.verdi === Behandlingstype.KLAGE}
-                    value={Behandlingstype.KLAGE}
+                    aria-selected={behandlingstype.verdi === Klagebehandlingstype.KLAGE}
+                    value={Klagebehandlingstype.KLAGE}
                 >
                     Klage
                 </option>
