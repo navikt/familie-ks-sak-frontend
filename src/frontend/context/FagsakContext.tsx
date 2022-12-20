@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import type { AxiosError } from 'axios';
 import createUseContext from 'constate';
@@ -16,6 +16,7 @@ import {
 import type { Ressurs } from '@navikt/familie-typer';
 
 import type { IMinimalFagsak, IInternstatistikk } from '../typer/fagsak';
+import type { IKlagebehandling } from '../typer/klage';
 import type { IPersonInfo } from '../typer/person';
 import { sjekkTilgangTilPerson } from '../utils/commons';
 
@@ -28,6 +29,8 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const [internstatistikk, settInternstatistikk] = React.useState<Ressurs<IInternstatistikk>>(
         byggTomRessurs()
     );
+    const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[]>([]);
+
     const { request } = useHttp();
 
     React.useEffect(() => {
@@ -42,6 +45,8 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
                 hentDataFraRessurs(minimalFagsak)?.søkerFødselsnummer
             );
         }
+
+        oppdaterKlagebehandlingerPåFagsak();
     }, [minimalFagsak]);
 
     const hentMinimalFagsak = (fagsakId: string | number, påvirkerSystemLaster = true): void => {
@@ -131,6 +136,19 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         });
     };
 
+    const oppdaterKlagebehandlingerPåFagsak = () => {
+        const fagsakId = hentDataFraRessurs(minimalFagsak)?.id;
+
+        if (fagsakId) {
+            request<void, IKlagebehandling[]>({
+                method: 'GET',
+                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/hent-klagebehandlinger`,
+            }).then(klagebehandlingerRessurs =>
+                settKlagebehandlinger(hentDataFraRessurs(klagebehandlingerRessurs) ?? [])
+            );
+        }
+    };
+
     return {
         bruker,
         hentFagsakForPerson,
@@ -140,6 +158,8 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         minimalFagsak,
         settMinimalFagsak,
         hentBruker,
+        klagebehandlinger,
+        oppdaterKlagebehandlingerPåFagsak,
     };
 });
 
