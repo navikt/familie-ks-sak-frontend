@@ -19,12 +19,13 @@ import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingPar
 import type { IBehandling, IRestNyBehandling } from '../../../../../typer/behandling';
 import { BehandlingSteg, Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
 import type { IBehandlingstema } from '../../../../../typer/behandlingstema';
+import { Klagebehandlingstype } from '../../../../../typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
 import type { FamilieIsoDate } from '../../../../../utils/kalender';
 import { erIsoStringGyldig } from '../../../../../utils/kalender';
 
 export interface IOpprettBehandlingSkjemaFelter {
-    behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | '';
+    behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
     behandlingsårsak: BehandlingÅrsak | '';
     behandlingstema: IBehandlingstema | undefined;
     søknadMottattDato: FamilieIsoDate;
@@ -42,11 +43,14 @@ const useOpprettBehandling = ({
     const { settÅpenBehandling } = useBehandling();
     const { bruker: brukerRessurs } = useFagsakContext();
     const { innloggetSaksbehandler } = useApp();
+    const { oppdaterKlagebehandlingerPåFagsak } = useFagsakContext();
     const navigate = useNavigate();
 
     const bruker = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data : undefined;
 
-    const behandlingstype = useFelt<Behandlingstype | Tilbakekrevingsbehandlingstype | ''>({
+    const behandlingstype = useFelt<
+        Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''
+    >({
         verdi: '',
         valideringsfunksjon: felt => {
             return felt.verdi !== ''
@@ -138,7 +142,7 @@ const useOpprettBehandling = ({
 
         avhengigheter: { behandlingstype },
         skalFeltetVises: avhengigheter =>
-            avhengigheter.behandlingstype.verdi === Behandlingstype.KLAGE,
+            avhengigheter.behandlingstype.verdi === Klagebehandlingstype.KLAGE,
     });
 
     const erDatoFremITid = (dato: FamilieIsoDate): boolean => {
@@ -176,6 +180,7 @@ const useOpprettBehandling = ({
             },
             response => {
                 if (response.status === RessursStatus.SUKSESS) {
+                    oppdaterKlagebehandlingerPåFagsak();
                     lukkModal();
                     nullstillSkjema();
                 }
@@ -238,7 +243,7 @@ const useOpprettBehandling = ({
 
     const onBekreft = (søkersIdent: string) => {
         if (kanSendeSkjema()) {
-            if (behandlingstype.verdi === Behandlingstype.KLAGE) {
+            if (behandlingstype.verdi === Klagebehandlingstype.KLAGE) {
                 opprettKlagebehandling();
             } else if (behandlingstype.verdi === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) {
                 opprettTilbakekreving();
