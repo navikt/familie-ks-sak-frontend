@@ -87,42 +87,48 @@ export const hentBehandlingerTilSaksoversikten = (
             ...behandling,
             saksoversiktstype: Saksoversiktstype.TIlBAKEBETALING,
         }));
-    const klagebehanldinger: Saksoversiktsbehandling[] = klagebehandlinger.map(behandling => ({
-        ...behandling,
-        saksoversiktstype: Saksoversiktstype.KLAGE,
-    }));
-    return [...kontantstøtteBehandlinger, ...tilbakekrevingsbehandlinger, ...klagebehanldinger];
+    const saksoversiktKlagebehandlinger: Saksoversiktsbehandling[] = klagebehandlinger.map(
+        behandling => ({
+            ...behandling,
+            saksoversiktstype: Saksoversiktstype.KLAGE,
+        })
+    );
+    return [
+        ...kontantstøtteBehandlinger,
+        ...tilbakekrevingsbehandlinger,
+        ...saksoversiktKlagebehandlinger,
+    ];
 };
 
 export const lagLenkePåType = (
     fagsakId: number,
-    behanlding: Saksoversiktsbehandling
+    behandling: Saksoversiktsbehandling
 ): ReactNode => {
-    switch (behanlding.saksoversiktstype) {
+    switch (behandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
-            if (behanlding.status === BehandlingStatus.AVSLUTTET) {
-                return behandlingstyper[behanlding.type].navn;
+            if (behandling.status === BehandlingStatus.AVSLUTTET) {
+                return behandlingstyper[behandling.type].navn;
             }
             return (
-                <Link href={`/fagsak/${fagsakId}/${behanlding.behandlingId}`}>
-                    {behandlingstyper[behanlding.type].navn}
+                <Link href={`/fagsak/${fagsakId}/${behandling.behandlingId}`}>
+                    {behandlingstyper[behandling.type].navn}
                 </Link>
             );
         case Saksoversiktstype.TIlBAKEBETALING:
             return (
                 <Link
-                    href={`/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsakId}/behandling/${behanlding.behandlingId}`}
+                    href={`/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsakId}/behandling/${behandling.behandlingId}`}
                     onMouseDown={e => e.preventDefault()}
                     target="_blank"
                 >
-                    <span>{behandlingstyper[behanlding.type].navn}</span>
+                    <span>{behandlingstyper[behandling.type].navn}</span>
                     <ExternalLink />
                 </Link>
             );
         case Saksoversiktstype.KLAGE:
             return (
                 <Link
-                    href={`/redirect/familie-klage/behandling/${behanlding.id}`}
+                    href={`/redirect/familie-klage/behandling/${behandling.id}`}
                     onMouseDown={e => e.preventDefault()}
                     target="_blank"
                 >

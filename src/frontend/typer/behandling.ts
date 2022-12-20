@@ -326,7 +326,7 @@ export const behandlingsresultater: Record<
     DELVIS_TILBAKEBETALING: 'Delvis tilbakebetaling',
     FULL_TILBAKEBETALING: 'Full tilbakebetaling',
 
-    /** For klagebehanldinger: **/
+    /** For klagebehandlinger: **/
     HENLAGT: 'Henlagt',
     IKKE_MEDHOLD: 'Ikke medhold',
     IKKE_MEDHOLD_FORMKRAV_AVVIST: 'Ikke medhold formkrav avvist',
@@ -344,7 +344,7 @@ export const behandlingsstatuser: Record<
     IVERKSETTER_VEDTAK: 'Iverksetter vedtak',
     AVSLUTTET: 'Avsluttet',
 
-    /** For klagebehanldinger: **/
+    /** For klagebehandlinger: **/
     VENTER: 'Venter',
     FERDIGSTILT: 'Ferdigstilt',
 };
