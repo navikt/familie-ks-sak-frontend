@@ -26,7 +26,7 @@ import {
     TIDENES_ENDE,
 } from '../utils/kalender';
 import { useBehandling } from './behandlingContext/BehandlingContext';
-import { useFagsakContext } from './FagsakContext';
+import { useFagsakContext } from './fagsak/FagsakContext';
 
 export const hentBarnMedLøpendeUtbetaling = (minimalFagsak: IMinimalFagsak) =>
     minimalFagsak.gjeldendeUtbetalingsperioder

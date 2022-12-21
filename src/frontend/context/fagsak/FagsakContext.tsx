@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import type { AxiosError } from 'axios';
 import createUseContext from 'constate';
@@ -15,9 +15,11 @@ import {
 } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import type { IMinimalFagsak, IInternstatistikk } from '../typer/fagsak';
-import type { IPersonInfo } from '../typer/person';
-import { sjekkTilgangTilPerson } from '../utils/commons';
+import type { IMinimalFagsak, IInternstatistikk } from '../../typer/fagsak';
+import type { IKlagebehandling } from '../../typer/klage';
+import type { IPersonInfo } from '../../typer/person';
+import { sjekkTilgangTilPerson } from '../../utils/commons';
+import { useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 
 const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const [minimalFagsak, settMinimalFagsak] = React.useState<Ressurs<IMinimalFagsak>>(
@@ -28,21 +30,9 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const [internstatistikk, settInternstatistikk] = React.useState<Ressurs<IInternstatistikk>>(
         byggTomRessurs()
     );
-    const { request } = useHttp();
+    const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[]>([]);
 
-    React.useEffect(() => {
-        if (
-            minimalFagsak.status !== RessursStatus.SUKSESS &&
-            minimalFagsak.status !== RessursStatus.HENTER
-        ) {
-            settBruker(byggTomRessurs());
-        } else {
-            oppdaterBrukerHvisFagsakEndres(
-                bruker,
-                hentDataFraRessurs(minimalFagsak)?.søkerFødselsnummer
-            );
-        }
-    }, [minimalFagsak]);
+    const { request } = useHttp();
 
     const hentMinimalFagsak = (fagsakId: string | number, påvirkerSystemLaster = true): void => {
         if (påvirkerSystemLaster) {
@@ -131,6 +121,28 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         });
     };
 
+    const oppdaterKlagebehandlingerPåFagsak = () => {
+        const fagsakId = hentDataFraRessurs(minimalFagsak)?.id;
+
+        if (fagsakId) {
+            request<void, IKlagebehandling[]>({
+                method: 'GET',
+                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/hent-klagebehandlinger`,
+                påvirkerSystemLaster: true,
+            }).then(klagebehandlingerRessurs =>
+                settKlagebehandlinger(hentDataFraRessurs(klagebehandlingerRessurs) ?? [])
+            );
+        }
+    };
+
+    useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg({
+        minimalFagsak,
+        settBruker,
+        oppdaterBrukerHvisFagsakEndres,
+        bruker,
+        oppdaterKlagebehandlingerPåFagsak,
+    });
+
     return {
         bruker,
         hentFagsakForPerson,
@@ -140,6 +152,8 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         minimalFagsak,
         settMinimalFagsak,
         hentBruker,
+        klagebehandlinger,
+        oppdaterKlagebehandlingerPåFagsak,
     };
 });
 

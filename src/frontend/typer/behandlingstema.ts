@@ -1,6 +1,4 @@
-import type { VisningBehandling } from '../komponenter/Fagsak/Saksoversikt/visningBehandling';
 import type { IOppgave } from './oppgave';
-import type { ITilbakekrevingsbehandling } from './tilbakekrevingsbehandling';
 
 export enum BehandlingKategori {
     NASJONAL = 'NASJONAL',
@@ -55,11 +53,4 @@ export const utredBehandlingstemaFraOppgave = (oppgave: IOppgave): IBehandlingst
     return behandlingstype in kodeTilBehandlingKategoriMap
         ? tilBehandlingstema(kodeTilBehandlingKategoriMap[behandlingstype])
         : undefined;
-};
-
-export const hentKategorierHvisVisningBehandling = (
-    behandling?: VisningBehandling | ITilbakekrevingsbehandling
-) => {
-    const kategori: BehandlingKategori | undefined = (behandling as VisningBehandling)?.kategori;
-    return kategori ? { kategori } : undefined;
 };

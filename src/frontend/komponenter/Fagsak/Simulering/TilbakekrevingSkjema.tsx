@@ -24,7 +24,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { useFagsakContext } from '../../../context/FagsakContext';
+import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import { useSimulering } from '../../../context/SimuleringContext';
 import useDokument from '../../../hooks/useDokument';
 import { DokumentIkon } from '../../../ikoner/DokumentIkon';

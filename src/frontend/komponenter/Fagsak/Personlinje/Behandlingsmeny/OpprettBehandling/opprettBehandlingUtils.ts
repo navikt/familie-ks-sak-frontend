@@ -17,9 +17,9 @@ export const kanOppretteRevurdering = (
     minimalFagsak: IMinimalFagsak | undefined,
     aktivBehandling: VisningBehandling | undefined
 ) => {
-    const alleBehanldingerErHenlagt = minimalFagsak?.behandlinger.every(behandling =>
+    const alleBehandlingerErHenlagt = minimalFagsak?.behandlinger.every(behandling =>
         erBehandlingHenlagt(behandling.resultat)
     );
 
-    return minimalFagsak && !alleBehanldingerErHenlagt && kanOppretteNyBehandling(aktivBehandling);
+    return minimalFagsak && !alleBehandlingerErHenlagt && kanOppretteNyBehandling(aktivBehandling);
 };

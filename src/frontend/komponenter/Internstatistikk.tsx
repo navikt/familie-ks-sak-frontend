@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Heading, BodyShort, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useFagsakContext } from '../context/FagsakContext';
+import { useFagsakContext } from '../context/fagsak/FagsakContext';
 import { behandlingÅrsak } from '../typer/behandling';
 
 const Container = styled.div`

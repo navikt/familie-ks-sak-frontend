@@ -4,8 +4,15 @@ import type { Express, Request, Response } from 'express';
 import expressStaticGzip from 'express-static-gzip';
 
 import { logInfo } from '@navikt/familie-logging';
+import { byggDataRessurs } from '@navikt/familie-typer';
 
-import { fagsakMock, oppgaveMock, personMock, profileMock } from './mock-data';
+import {
+    fagsakMock,
+    klagebehandlingFixture,
+    oppgaveMock,
+    personMock,
+    profileMock,
+} from './mock-data';
 
 // eslint-disable-next-line
 import express from 'express';
@@ -18,6 +25,10 @@ app.use('/assets', expressStaticGzip(path.join(process.cwd(), 'frontend_producti
 
 app.post('/familie-ks-sak/api/oppgave/hent-oppgaver', (_, res) => {
     res.status(200).send(oppgaveMock);
+});
+
+app.get('/familie-ks-sak/api/fagsaker/*/hent-klagebehandlinger', (_, res) => {
+    res.status(200).send(byggDataRessurs([klagebehandlingFixture()]));
 });
 app.get('/familie-ks-sak/api/fagsaker/*', (_, res) => {
     res.status(200).send(fagsakMock);

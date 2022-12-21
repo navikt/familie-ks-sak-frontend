@@ -22,6 +22,7 @@ import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
 import type { IBehandlingstema } from '../typer/behandlingstema';
 import { utredBehandlingstemaFraOppgave } from '../typer/behandlingstema';
 import type { IMinimalFagsak } from '../typer/fagsak';
+import type { Klagebehandlingstype } from '../typer/klage';
 import type {
     IDataForManuellJournalføring,
     IRestJournalføring,
@@ -36,10 +37,10 @@ import { ToggleNavn } from '../typer/toggles';
 import { hentAktivBehandlingPåMinimalFagsak } from '../utils/fagsak';
 import { kalenderDiff } from '../utils/kalender';
 import { useApp } from './AppContext';
-import { useFagsakContext } from './FagsakContext';
+import { useFagsakContext } from './fagsak/FagsakContext';
 
 export interface ManuellJournalføringSkjemaFelter {
-    behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | '';
+    behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
     behandlingsårsak: BehandlingÅrsak | '';
     behandlingstema: IBehandlingstema | undefined;
     journalpostTittel: string;
@@ -77,7 +78,9 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
         verdi: false,
     });
 
-    const behandlingstype = useFelt<Behandlingstype | Tilbakekrevingsbehandlingstype | ''>({
+    const behandlingstype = useFelt<
+        Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''
+    >({
         verdi: '',
         valideringsfunksjon: felt => {
             return felt.verdi !== ''

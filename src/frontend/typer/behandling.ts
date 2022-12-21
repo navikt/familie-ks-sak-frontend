@@ -3,12 +3,13 @@ import type { ISODateString } from '@navikt/familie-form-elements';
 import type { BehandlingKategori } from './behandlingstema';
 import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
-import type { IRestValutakurs } from './eøsPerioder';
-import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp } from './eøsPerioder';
+import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
+import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { IGrunnlagPerson } from './person';
 import type { ITilbakekreving } from './simulering';
 import type { ISøknadDTO } from './søknad';
 import type {
+    Behandlingsstatus,
     TilbakekrevingsbehandlingResultat,
     TilbakekrevingsbehandlingÅrsak,
 } from './tilbakekrevingsbehandling';
@@ -52,7 +53,10 @@ export enum BehandlingÅrsak {
     TEKNISK_ENDRING = 'TEKNISK_ENDRING',
 }
 
-export const behandlingÅrsak: Record<BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak, string> = {
+export const behandlingÅrsak: Record<
+    BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak | KlageÅrsak,
+    string
+> = {
     SØKNAD: 'Søknad',
     ÅRLIG_KONTROLL: 'Årlig kontroll',
     DØDSFALL: 'Dødsfall',
@@ -62,6 +66,7 @@ export const behandlingÅrsak: Record<BehandlingÅrsak | Tilbakekrevingsbehandli
     SATSENDRING: 'Satsendring',
     BARNEHAGELISTE: 'Barnehageliste',
     TEKNISK_ENDRING: 'Teknisk Endring',
+
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
     REVURDERING_KLAGE_KA: 'Klage omgjort av KA',
@@ -69,6 +74,14 @@ export const behandlingÅrsak: Record<BehandlingÅrsak | Tilbakekrevingsbehandli
     REVURDERING_OPPLYSNINGER_OM_FORELDELSE: 'Nye opplysninger',
     REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT:
         'Feilutbetalt beløp helt eller delvis bortfalt',
+
+    /** Klage: **/
+    ANNET: 'annet',
+    FEIL_ELLER_ENDRET_FAKTA: 'Feil eller endret fakta',
+    FEIL_I_LOVANDVENDELSE: 'Feil i lovanvendelse',
+    FEIL_PROSESSUELL: 'Prosessuell feil',
+    FEIL_REGELVERKSFORSTÅELSE: 'Feil regelverksforståelse',
+    KØET_BEHANDLING: 'Køet behandling',
 };
 
 export enum BehandlingSteg {
@@ -143,7 +156,6 @@ export enum Behandlingstype {
     FØRSTEGANGSBEHANDLING = 'FØRSTEGANGSBEHANDLING',
     REVURDERING = 'REVURDERING',
     TEKNISK_ENDRING = 'TEKNISK_ENDRING',
-    KLAGE = 'KLAGE',
 }
 
 export enum BehandlingResultat {
@@ -281,7 +293,7 @@ export const behandlingstyper: INøkkelPar = {
 };
 
 export const behandlingsresultater: Record<
-    BehandlingResultat | TilbakekrevingsbehandlingResultat,
+    BehandlingResultat | TilbakekrevingsbehandlingResultat | KlageResultat,
     string
 > = {
     INNVILGET: 'Innvilget',
@@ -307,20 +319,34 @@ export const behandlingsresultater: Record<
     HENLAGT_AUTOMATISK_FØDSELSHENDELSE: 'Henlagt automatisk fødselshendelse',
     HENLAGT_TEKNISK_VEDLIKEHOLD: 'Henlagt teknisk vedlikehold',
     IKKE_VURDERT: 'Ikke vurdert',
+
     /** De neste er resultat for tilbakekrevingsbehandlinger **/
     IKKE_FASTSATT: 'Ikke fastsatt',
     INGEN_TILBAKEBETALING: 'Ingen tilbakebetaling',
     DELVIS_TILBAKEBETALING: 'Delvis tilbakebetaling',
     FULL_TILBAKEBETALING: 'Full tilbakebetaling',
+
+    /** For klagebehandlinger: **/
     HENLAGT: 'Henlagt',
+    IKKE_MEDHOLD: 'Ikke medhold',
+    IKKE_MEDHOLD_FORMKRAV_AVVIST: 'Ikke medhold formkrav avvist',
+    IKKE_SATT: 'Ikke satt',
+    MEDHOLD: 'Medhold',
 };
 
-export const behandlingsstatuser: Record<BehandlingStatus, string> = {
+export const behandlingsstatuser: Record<
+    BehandlingStatus | Behandlingsstatus | KlageStatus,
+    string
+> = {
     OPPRETTET: 'Opprettet',
     UTREDES: 'Utredes',
     FATTER_VEDTAK: 'Fatter vedtak',
     IVERKSETTER_VEDTAK: 'Iverksetter vedtak',
     AVSLUTTET: 'Avsluttet',
+
+    /** For klagebehandlinger: **/
+    VENTER: 'Venter',
+    FERDIGSTILT: 'Ferdigstilt',
 };
 
 export interface IBehandlingPåVent {
