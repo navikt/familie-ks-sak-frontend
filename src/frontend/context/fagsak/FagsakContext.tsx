@@ -19,6 +19,7 @@ import type { IMinimalFagsak, IInternstatistikk } from '../../typer/fagsak';
 import type { IKlagebehandling } from '../../typer/klage';
 import type { IPersonInfo } from '../../typer/person';
 import { sjekkTilgangTilPerson } from '../../utils/commons';
+import { useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 
 const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const [minimalFagsak, settMinimalFagsak] = React.useState<Ressurs<IMinimalFagsak>>(
@@ -32,22 +33,6 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[]>([]);
 
     const { request } = useHttp();
-
-    React.useEffect(() => {
-        if (
-            minimalFagsak.status !== RessursStatus.SUKSESS &&
-            minimalFagsak.status !== RessursStatus.HENTER
-        ) {
-            settBruker(byggTomRessurs());
-        } else {
-            oppdaterBrukerHvisFagsakEndres(
-                bruker,
-                hentDataFraRessurs(minimalFagsak)?.søkerFødselsnummer
-            );
-        }
-
-        oppdaterKlagebehandlingerPåFagsak();
-    }, [minimalFagsak]);
 
     const hentMinimalFagsak = (fagsakId: string | number, påvirkerSystemLaster = true): void => {
         if (påvirkerSystemLaster) {
@@ -149,6 +134,14 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
             );
         }
     };
+
+    useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg({
+        minimalFagsak,
+        settBruker,
+        oppdaterBrukerHvisFagsakEndres,
+        bruker,
+        oppdaterKlagebehandlingerPåFagsak,
+    });
 
     return {
         bruker,
