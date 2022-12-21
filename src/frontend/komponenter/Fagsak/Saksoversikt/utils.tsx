@@ -181,14 +181,14 @@ export const lagLenkePåResultat = (
     }
 };
 
-export const finnÅrsak = (saksoversikstbehandling: Saksoversiktsbehandling): ReactNode => {
+export const finnÅrsak = (saksoversiktsbehandling: Saksoversiktsbehandling): ReactNode => {
     if (
-        saksoversikstbehandling.saksoversiktstype === Saksoversiktstype.TILBAKEBETALING &&
-        saksoversikstbehandling.type === Tilbakekrevingsbehandlingstype.TILBAKEKREVING
+        saksoversiktsbehandling.saksoversiktstype === Saksoversiktstype.TILBAKEBETALING &&
+        saksoversiktsbehandling.type === Tilbakekrevingsbehandlingstype.TILBAKEKREVING
     ) {
         return 'Feilutbetaling';
     }
-    return saksoversikstbehandling.årsak ? behandlingÅrsak[saksoversikstbehandling.årsak] : '-';
+    return saksoversiktsbehandling.årsak ? behandlingÅrsak[saksoversiktsbehandling.årsak] : '-';
 };
 
 export const hentBehandlingstema = (
