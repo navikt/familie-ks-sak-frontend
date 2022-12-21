@@ -32,7 +32,7 @@ export const Behandling: React.FC<IBehandlingshistorikkProps> = ({
             />
             <td>{finnÅrsak(saksoversiktsbehandling)}</td>
             <td>{lagLenkePåType(minimalFagsak.id, saksoversiktsbehandling)}</td>
-            <td>{hentBehandlingstema(saksoversiktsbehandling) ?? '-'}</td>
+            <td>{hentBehandlingstema(saksoversiktsbehandling)?.navn ?? '-'}</td>
             <td>{behandlingsstatuser[saksoversiktsbehandling.status]}</td>
             <td
                 children={
