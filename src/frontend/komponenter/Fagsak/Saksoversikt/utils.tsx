@@ -25,7 +25,7 @@ import type { VisningBehandling } from './visningBehandling';
 
 export enum Saksoversiktstype {
     KONTANTSTØTTE = 'KONTANTSTØTTE',
-    TILBAKEBETALING = 'TILBAKBETALING',
+    TILBAKEBETALING = 'TILBAKEBETALING',
     KLAGE = 'KLAGE',
 }
 
