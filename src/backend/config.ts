@@ -17,7 +17,7 @@ const Environment = () => {
         return {
             buildPath: 'frontend_development',
             namespace: 'local',
-            proxyUrl: 'http://localhost:8083',
+            proxyUrl: 'https://familie-kontantstotte-sak.dev.intern.nav.no',
             familieTilbakeUrl: 'https://familie-tilbake.dev.intern.nav.no',
             familieKlageUrl: 'https://familie-klage.dev.intern.nav.no',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
