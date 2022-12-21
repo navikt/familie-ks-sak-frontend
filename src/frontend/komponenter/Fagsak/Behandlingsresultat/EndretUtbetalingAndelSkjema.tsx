@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 
+import classNames from 'classnames';
 import styled from 'styled-components';
 
 import variables from 'nav-frontend-core';
@@ -8,7 +9,7 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Element } from 'nav-frontend-typografi';
 
 import { Delete } from '@navikt/ds-icons';
-import { BodyShort, Button, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { BodyShort, Button, Checkbox, Label, Radio, RadioGroup } from '@navikt/ds-react';
 import type { ISODateString } from '@navikt/familie-form-elements';
 import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
@@ -173,6 +174,8 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
         }
     }, [skjema.submitRessurs]);
 
+    const erLesevisning = vurderErLesevisning();
+
     return (
         <>
             <StyledSkjemaGruppe feil={hentFrontendFeilmelding(skjema.submitRessurs)}>
@@ -185,7 +188,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         onChange={(event): void => {
                             skjema.felter.person.validerOgSettFelt(event.target.value);
                         }}
-                        erLesevisning={vurderErLesevisning()}
+                        erLesevisning={erLesevisning}
                     >
                         <option value={undefined}>Velg person</option>
                         {åpenBehandling.personer
@@ -221,7 +224,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                     skjema.felter.fom.validerOgSettFelt(dato);
                                 }
                             }}
-                            lesevisning={vurderErLesevisning()}
+                            lesevisning={erLesevisning}
                         />
                     </Feltmargin>
                     <MånedÅrVelger
@@ -237,7 +240,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 skjema.felter.tom.validerOgSettFelt(dato);
                             }
                         }}
-                        lesevisning={vurderErLesevisning()}
+                        lesevisning={erLesevisning}
                     />
                 </Feltmargin>
 
@@ -252,7 +255,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 event.target.value as IEndretUtbetalingAndelÅrsak
                             );
                         }}
-                        erLesevisning={vurderErLesevisning()}
+                        erLesevisning={erLesevisning}
                         lesevisningVerdi={
                             skjema.felter.årsak.verdi ? årsakTekst[skjema.felter.årsak.verdi] : ''
                         }
@@ -267,20 +270,27 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 </Feltmargin>
 
                 <Feltmargin>
-                    {vurderErLesevisning() ? (
+                    {erLesevisning ? (
                         <>
                             <Label>Utbetaling</Label>
                             <BodyShort>
                                 {skjema.felter.periodeSkalUtbetalesTilSøker.verdi ? 'Ja' : 'Nei'}
                             </BodyShort>
+                            skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
+                            <BodyShort
+                                className={classNames('skjemaelement', 'lese-felt')}
+                                children={'Vurderingen er et avslag'}
+                            />
+                            )
                         </>
                     ) : (
                         <RadioGroup
                             legend={<Label>Utbetaling</Label>}
                             value={skjema.felter.periodeSkalUtbetalesTilSøker.verdi}
-                            onChange={(val: boolean | undefined) =>
-                                skjema.felter.periodeSkalUtbetalesTilSøker.validerOgSettFelt(val)
-                            }
+                            onChange={(val: boolean | undefined) => {
+                                skjema.felter.periodeSkalUtbetalesTilSøker.validerOgSettFelt(val);
+                                skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
+                            }}
                         >
                             <Radio
                                 name={'utbetaling'}
@@ -297,6 +307,19 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 {'Perioden skal ikke utbetales'}
                             </Radio>
                         </RadioGroup>
+                    )}
+                    {!skjema.felter.periodeSkalUtbetalesTilSøker.verdi && (
+                        <Checkbox
+                            value={'Vurderingen er et avslag'}
+                            checked={skjema.felter.erEksplisittAvslagPåSøknad.verdi}
+                            onChange={event =>
+                                skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
+                                    event.target.checked
+                                )
+                            }
+                        >
+                            {'Vurderingen er et avslag'}
+                        </Checkbox>
                     )}
                 </Feltmargin>
 
@@ -410,7 +433,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         }}
                     />
                 </Feltmargin>
-                {!vurderErLesevisning() && (
+                {!erLesevisning && (
                     <Knapperekke>
                         <KnapperekkeVenstre>
                             <StyledFerdigKnapp
@@ -431,7 +454,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                             </Button>
                         </KnapperekkeVenstre>
 
-                        {!vurderErLesevisning() && (
+                        {!erLesevisning && (
                             <Button
                                 variant={'tertiary'}
                                 id={`sletteknapp-endret-utbetaling-andel-${endretUtbetalingAndel.id}`}
