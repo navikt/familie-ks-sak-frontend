@@ -15,10 +15,10 @@ import {
 } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import type { IMinimalFagsak, IInternstatistikk } from '../typer/fagsak';
-import type { IKlagebehandling } from '../typer/klage';
-import type { IPersonInfo } from '../typer/person';
-import { sjekkTilgangTilPerson } from '../utils/commons';
+import type { IMinimalFagsak, IInternstatistikk } from '../../typer/fagsak';
+import type { IKlagebehandling } from '../../typer/klage';
+import type { IPersonInfo } from '../../typer/person';
+import { sjekkTilgangTilPerson } from '../../utils/commons';
 
 const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const [minimalFagsak, settMinimalFagsak] = React.useState<Ressurs<IMinimalFagsak>>(

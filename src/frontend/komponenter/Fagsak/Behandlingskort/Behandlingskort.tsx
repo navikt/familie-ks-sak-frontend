@@ -7,7 +7,7 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 
 import { hentDataFraRessurs } from '@navikt/familie-typer';
 
-import { useFagsakContext } from '../../../context/FagsakContext';
+import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import type { IBehandling } from '../../../typer/behandling';
 import {
     BehandlingResultat,

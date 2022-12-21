@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { BodyShort, Heading, Switch } from '@navikt/ds-react';
 
-import { useFagsakContext } from '../../../context/FagsakContext';
+import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { kalenderDiff } from '../../../utils/kalender';
 import { Behandling } from './Behandling';

@@ -8,7 +8,7 @@ import { Button } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useApp } from '../../context/AppContext';
-import { useFagsakContext } from '../../context/FagsakContext';
+import { useFagsakContext } from '../../context/fagsak/FagsakContext';
 import type { IOppgave } from '../../typer/oppgave';
 import { oppgaveTypeFilter, OppgavetypeFilter } from '../../typer/oppgave';
 import { ToggleNavn } from '../../typer/toggles';
