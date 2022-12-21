@@ -78,7 +78,7 @@ export const behandlingÅrsak: Record<
     /** Klage: **/
     ANNET: 'annet',
     FEIL_ELLER_ENDRET_FAKTA: 'Feil eller endret fakta',
-    FEIL_I_LOVANDVENDELSE: 'Feil i lovandvendelse',
+    FEIL_I_LOVANDVENDELSE: 'Feil i lovanvendelse',
     FEIL_PROSESSUELL: 'Prosessuell feil',
     FEIL_REGELVERKSFORSTÅELSE: 'Feil regelverksforståelse',
     KØET_BEHANDLING: 'Køet behandling',
