@@ -59,7 +59,7 @@ const [SimuleringProvider, useSimulering] = constate(({ åpenBehandling }: IProp
         if (erFeilutbetaling) {
             request<undefined, boolean>({
                 method: 'GET',
-                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/har-apen-tilbakekreving`,
+                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/har-åpen-tilbakekrevingsbehandling`,
                 påvirkerSystemLaster: true,
             }).then(response => {
                 settHarÅpentTilbakekrevingRessurs(response);
