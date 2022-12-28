@@ -351,7 +351,7 @@ const TilbakekrevingSkjema: React.FC<{
                                                     hentForhåndsvisning<IForhåndsvisTilbakekrevingsvarselbrevRequest>(
                                                         {
                                                             method: 'POST',
-                                                            url: `/familie-ks-sak/api/tilbakekreving/${åpenBehandling.data.behandlingId}/forhandsvis-varselbrev`,
+                                                            url: `/familie-ks-sak/api/tilbakekreving/${åpenBehandling.data.behandlingId}/forhåndsvis-tilbakekreving-varselbrev`,
                                                             data: {
                                                                 fritekst: fritekstVarsel.verdi,
                                                             },
