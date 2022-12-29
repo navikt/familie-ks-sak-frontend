@@ -3,11 +3,9 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Normaltekst } from 'nav-frontend-typografi';
-
 import { FileContent } from '@navikt/ds-icons';
-import { Alert, Button, Heading } from '@navikt/ds-react';
-import { FamilieSelect, FlexDiv } from '@navikt/familie-form-elements';
+import { Alert, BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
+import { FamilieSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useApp } from '../../../context/AppContext';
@@ -25,22 +23,16 @@ import {
     hentStegNummer,
 } from '../../../typer/behandling';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
-import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
 import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
-import KorrigerEtterbetalingModal from './KorrigerEtterbetalingModal/KorrigerEtterbetalingModal';
 import { PeriodetypeIVedtaksbrev, useVedtak } from './useVedtak';
 import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
-import EndreEndringstidspunkt from './VedtakBegrunnelserTabell/EndreEndringstidspunkt';
 import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
+import Vedtaksmeny from './Vedtaksmeny';
 
 interface IVedtakProps {
     åpenBehandling: IBehandling;
 }
-
-const Container = styled.div`
-    max-width: 49rem;
-`;
 
 const StyledSkjemaSteg = styled(Skjemasteg)`
     .typo-innholdstittel {
@@ -48,17 +40,21 @@ const StyledSkjemaSteg = styled(Skjemasteg)`
     }
 `;
 
-const StyledFlexiDiv = styled(FlexDiv)`
-    justify-content: space-between;
-    max-width: 49rem;
-`;
-
-const StyleHeading = styled(Heading)`
-    display: flex;
-`;
-
-const KorrigertEtterbetalingsbeløpAlert = styled(Alert)`
+const BehandlingKorrigertAlert = styled(Alert)`
     margin-bottom: 1.5rem;
+`;
+
+const Modaltekst = styled(BodyShort)`
+    margin: 2rem 0;
+`;
+
+const KnappHøyre = styled(Button)`
+    margin-left: 1rem;
+`;
+
+const Knapperad = styled.div`
+    display: flex;
+    justify-content: center;
 `;
 
 interface FortsattInnvilgetPerioderSelect extends HTMLSelectElement {
@@ -85,8 +81,6 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
         settVisDokumentModal,
     } = useDokument();
     const [visModal, settVisModal] = React.useState<boolean>(false);
-    const [visKorrigerEtterbetalingModal, setVisKorrigerEtterbetalingModal] =
-        React.useState<boolean>(false);
 
     const visSubmitKnapp =
         !vurderErLesevisning() && åpenBehandling?.status === BehandlingStatus.UTREDES;
@@ -131,27 +125,23 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
 
     return (
         <StyledSkjemaSteg
-            tittel={
-                <StyledFlexiDiv>
-                    <StyleHeading size="large" level="1">
-                        Vedtak
-                    </StyleHeading>
-                    {åpenBehandling.endringstidspunkt && (
-                        <EndreEndringstidspunkt åpenBehandling={åpenBehandling} />
-                    )}
-                </StyledFlexiDiv>
-            }
+            tittel="Vedtak"
             forrigeOnClick={() =>
                 navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/simulering`)
             }
             nesteOnClick={visSubmitKnapp ? foreslåVedtak : undefined}
             nesteKnappTittel={'Til godkjenning'}
             senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
-            maxWidthStyle="100%"
+            maxWidthStyle="54rem"
             className={'vedtak'}
             feilmelding={hentFrontendFeilmelding(behandlingsstegSubmitressurs)}
             steg={BehandlingSteg.BESLUTTE_VEDTAK}
         >
+            <Vedtaksmeny
+                åpenBehandling={åpenBehandling}
+                erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending}
+            />
+
             {erBehandlingMedVedtaksbrevutsending ? (
                 <>
                     <PdfVisningModal
@@ -167,20 +157,11 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
                         }}
                         pdfdata={hentetDokument}
                     />
-                    <KorrigerEtterbetalingModal
-                        erLesevisning={vurderErLesevisning()}
-                        korrigertEtterbetaling={åpenBehandling.korrigertEtterbetaling}
-                        behandlingId={åpenBehandling.behandlingId}
-                        visModal={visKorrigerEtterbetalingModal}
-                        onClose={() =>
-                            setVisKorrigerEtterbetalingModal(!visKorrigerEtterbetalingModal)
-                        }
-                    />
-                    <Container>
-                        {åpenBehandling.korrigertEtterbetaling && (
-                            <KorrigertEtterbetalingsbeløpAlert variant="info">
-                                Etterbetalingsbeløp i brevet er manuelt korrigert
-                            </KorrigertEtterbetalingsbeløpAlert>
+                    <div>
+                        {åpenBehandling.korrigertVedtak && (
+                            <BehandlingKorrigertAlert variant="info">
+                                Vedtaket er korrigert etter § 35
+                            </BehandlingKorrigertAlert>
                         )}
                         {åpenBehandling.resultat === BehandlingResultat.FORTSATT_INNVILGET && (
                             <FamilieSelect
@@ -222,41 +203,43 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
                         >
                             Vis vedtaksbrev
                         </Button>
-                    </Container>
-                    {visModal && (
-                        <UIModalWrapper
-                            modal={{
-                                tittel: 'Totrinnskontroll',
-                                lukkKnapp: false,
-                                visModal: visModal,
-                                actions: [
-                                    <Button
-                                        key={'saksoversikt'}
-                                        variant={'secondary'}
-                                        size={'small'}
-                                        onClick={() => {
-                                            settVisModal(false);
-                                            navigate(`/fagsak/${fagsakId}/saksoversikt`);
-                                            window.location.reload();
-                                        }}
-                                        children={'Gå til saksoversikten'}
-                                    />,
-                                    <Button
-                                        key={'oppgavebenk'}
-                                        variant={'primary'}
-                                        size={'small'}
-                                        onClick={() => {
-                                            settVisModal(false);
-                                            navigate('/oppgaver');
-                                        }}
-                                        children={'Gå til oppgavebenken'}
-                                    />,
-                                ],
-                            }}
-                        >
-                            <Normaltekst>Behandlingen er nå sendt til totrinnskontroll</Normaltekst>
-                        </UIModalWrapper>
-                    )}
+                    </div>
+
+                    <Modal
+                        open={visModal}
+                        onClose={() => settVisModal(false)}
+                        closeButton={true}
+                        shouldCloseOnOverlayClick={false}
+                    >
+                        <Modal.Content>
+                            <Heading size={'medium'} level={'2'}>
+                                Totrinnskontroll
+                            </Heading>
+                            <Modaltekst>Behandlingen er nå sendt til totrinnskontroll</Modaltekst>
+                            <Knapperad>
+                                <Button
+                                    key={'oppgavebenk'}
+                                    variant={'secondary'}
+                                    size={'medium'}
+                                    onClick={() => {
+                                        settVisModal(false);
+                                        navigate('/oppgaver');
+                                    }}
+                                    children={'Gå til oppgavebenken'}
+                                />
+                                <KnappHøyre
+                                    key={'saksoversikt'}
+                                    variant={'secondary'}
+                                    size={'medium'}
+                                    onClick={() => {
+                                        settVisModal(false);
+                                        navigate(`/fagsak/${fagsakId}/saksoversikt`);
+                                    }}
+                                    children={'Gå til saksoversikten'}
+                                />
+                            </Knapperad>
+                        </Modal.Content>
+                    </Modal>
                 </>
             ) : (
                 <Alert variant="info">

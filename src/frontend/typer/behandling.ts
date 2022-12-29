@@ -15,7 +15,7 @@ import type {
 } from './tilbakekrevingsbehandling';
 import type { ITotrinnskontroll } from './totrinnskontroll';
 import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
-import type { IRestKorrigertEtterbetaling, IVedtakForBehandling } from './vedtak';
+import type { IRestKorrigertVedtak, IVedtakForBehandling } from './vedtak';
 import type { Utbetalingsperiode } from './vedtaksperiode';
 import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 
@@ -228,7 +228,7 @@ export interface IBehandling {
     kompetanser: IRestKompetanse[];
     utenlandskePeriodebeløp: IRestUtenlandskPeriodeBeløp[];
     valutakurser: IRestValutakurs[];
-    korrigertEtterbetaling?: IRestKorrigertEtterbetaling;
+    korrigertVedtak?: IRestKorrigertVedtak;
 }
 
 export interface IArbeidsfordelingPåBehandling {
