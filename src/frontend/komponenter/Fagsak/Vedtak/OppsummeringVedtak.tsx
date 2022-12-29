@@ -234,7 +234,6 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
                                     onClick={() => {
                                         settVisModal(false);
                                         navigate(`/fagsak/${fagsakId}/saksoversikt`);
-                                        window.location.reload();
                                     }}
                                     children={'Gå til saksoversikten'}
                                 />
