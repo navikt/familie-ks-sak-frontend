@@ -191,8 +191,9 @@ const useOpprettBehandling = ({
     const opprettTilbakekreving = () => {
         onSubmit(
             {
-                method: 'GET',
-                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/opprett-tilbakekreving`,
+                method: 'POST',
+                url: `/familie-ks-sak/api/tilbakekreving/manuell`,
+                data: { fagsakId: fagsakId },
             },
             response => {
                 if (response.status === RessursStatus.SUKSESS) {
