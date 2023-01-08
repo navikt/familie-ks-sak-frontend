@@ -30,7 +30,8 @@ describe('VedtakBegrunnelserContext', () => {
             const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                 vedtaksperioder,
                 BehandlingResultat.AVSLÅTT_ENDRET_OG_OPPHØRT,
-                BehandlingStatus.UTREDES
+                BehandlingStatus.UTREDES,
+                undefined
             );
             expect(perioder.length).toBe(3);
             expect(perioder[0].type).toBe(Vedtaksperiodetype.UTBETALING);
@@ -47,7 +48,8 @@ describe('VedtakBegrunnelserContext', () => {
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                     vedtaksperioder,
                     BehandlingResultat.INNVILGET_OG_OPPHØRT,
-                    BehandlingStatus.AVSLUTTET
+                    BehandlingStatus.AVSLUTTET,
+                    undefined
                 );
                 expect(perioder.length).toBe(1);
                 expect(perioder[0].type).toEqual(Vedtaksperiodetype.OPPHØR);
@@ -74,7 +76,8 @@ describe('VedtakBegrunnelserContext', () => {
                         }),
                     ],
                     BehandlingResultat.INNVILGET,
-                    BehandlingStatus.UTREDES
+                    BehandlingStatus.UTREDES,
+                    undefined
                 );
                 expect(perioder.length).toBe(1);
             });
@@ -98,7 +101,8 @@ describe('VedtakBegrunnelserContext', () => {
                         }),
                     ],
                     BehandlingResultat.INNVILGET,
-                    BehandlingStatus.UTREDES
+                    BehandlingStatus.UTREDES,
+                    undefined
                 );
                 expect(perioder.length).toBe(0);
             });
@@ -111,7 +115,8 @@ describe('VedtakBegrunnelserContext', () => {
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                     vedtaksperioder,
                     BehandlingResultat.OPPHØRT,
-                    BehandlingStatus.UTREDES
+                    BehandlingStatus.UTREDES,
+                    undefined
                 );
                 expect(perioder.length).toBe(1);
                 expect(perioder[0].type).toBe(Vedtaksperiodetype.OPPHØR);
