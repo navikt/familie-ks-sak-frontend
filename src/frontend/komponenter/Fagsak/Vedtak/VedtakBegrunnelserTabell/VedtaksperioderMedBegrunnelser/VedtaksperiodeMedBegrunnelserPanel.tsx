@@ -35,10 +35,16 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
                 Standardbegrunnelse.ETTER_ENDRET_UTBETALING_ETTERBETALING
         ).length > 0;
 
+    const vedtaksperiodeInneholderBegrunnelseSomStøtterFritekst = () =>
+        vedtaksperiodeMedBegrunnelser.begrunnelser.some(
+            vedtaksbegrunnelse => vedtaksbegrunnelse.støtterFritekst
+        );
+
     const visFritekster = () =>
         (vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.UTBETALING &&
             vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.ENDRET_UTBETALING) ||
         vedtaksperiodeInneholderEtterbetaling3MånedBegrunnelse() ||
+        vedtaksperiodeInneholderBegrunnelseSomStøtterFritekst() ||
         vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
             vedtaksBegrunnelse =>
                 !ugyldigeReduksjonsteksterForÅTriggeFritekst.includes(
