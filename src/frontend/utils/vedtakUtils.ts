@@ -9,8 +9,10 @@ import { BegrunnelseType } from '../typer/vedtak';
 import type { IVedtaksperiodeMedBegrunnelser } from '../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../typer/vedtaksperiode';
 import type { VedtaksbegrunnelseTekster, VilkårType } from '../typer/vilkår';
+import type { FamilieIsoDate } from './kalender';
 import {
     førsteDagIInneværendeMåned,
+    kalenderDato,
     kalenderDatoMedFallback,
     kalenderDatoTilDate,
     kalenderDiff,
@@ -22,7 +24,8 @@ import {
 export const filtrerOgSorterPerioderMedBegrunnelseBehov = (
     vedtaksperioder: IVedtaksperiodeMedBegrunnelser[],
     behandlingResultat: BehandlingResultat,
-    behandlingStatus: BehandlingStatus
+    behandlingStatus: BehandlingStatus,
+    sisteVedtaksperiodeVisningDato: FamilieIsoDate | undefined
 ): IVedtaksperiodeMedBegrunnelser[] => {
     const sorterteOgFiltrertePerioder = vedtaksperioder
         .slice()
@@ -36,7 +39,14 @@ export const filtrerOgSorterPerioderMedBegrunnelseBehov = (
             if (behandlingStatus === BehandlingStatus.AVSLUTTET) {
                 return harPeriodeBegrunnelse(vedtaksperiode);
             } else {
-                return erPeriodeFomMindreEnn2MndFramITid(vedtaksperiode);
+                return (
+                    (sisteVedtaksperiodeVisningDato &&
+                        erPeriodeMindreEllerLikEnnSisteVedtaksperiodeVisningDato(
+                            sisteVedtaksperiodeVisningDato,
+                            vedtaksperiode.fom
+                        )) ||
+                    erPeriodeMindreEnn2MndFramITid(vedtaksperiode.fom)
+                );
             }
         });
 
@@ -50,8 +60,24 @@ export const filtrerOgSorterPerioderMedBegrunnelseBehov = (
     }
 };
 
-const erPeriodeFomMindreEnn2MndFramITid = (vedtaksperiode: IVedtaksperiodeMedBegrunnelser) => {
-    const periodeFom = kalenderDatoMedFallback(vedtaksperiode.fom, TIDENES_MORGEN);
+const erPeriodeMindreEllerLikEnnSisteVedtaksperiodeVisningDato = (
+    sisteVedtaksperiodeVisningDato: string,
+    periode: string | undefined
+) => {
+    const sisteVedtaksperiodeKalenderDato = kalenderDato(sisteVedtaksperiodeVisningDato);
+
+    const periodeIKalenderDato = kalenderDatoMedFallback(periode, TIDENES_MORGEN);
+
+    return (
+        kalenderDiff(
+            kalenderDatoTilDate(periodeIKalenderDato),
+            kalenderDatoTilDate(sisteVedtaksperiodeKalenderDato)
+        ) <= 0
+    );
+};
+
+const erPeriodeMindreEnn2MndFramITid = (periode: string | undefined) => {
+    const periodeFom = kalenderDatoMedFallback(periode, TIDENES_MORGEN);
     const toMånederFremITid = leggTil(førsteDagIInneværendeMåned(), 2, KalenderEnhet.MÅNED);
     return (
         kalenderDiff(kalenderDatoTilDate(periodeFom), kalenderDatoTilDate(toMånederFremITid)) < 0
