@@ -6,13 +6,19 @@ registries:
     url: https://npm.pkg.github.com
     token: ${{ secrets.NAV_READ_PACKAGES }}
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: daily
-    time: "18:00"
-  open-pull-requests-limit: 10
-  registries: "*"
-  ignore:
-    - dependency-name: "*"
-      update-types: ["version-update:semver-patch"]
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "18:00"
+    open-pull-requests-limit: 10
+    registries: "*"
+    ignore:
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-patch" ]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      # Check for updates to GitHub Actions every week
+      interval: "weekly"
