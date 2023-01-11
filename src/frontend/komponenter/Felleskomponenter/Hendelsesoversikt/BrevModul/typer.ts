@@ -59,73 +59,59 @@ export interface ISelectOptionMedBrevtekst extends OptionType {
 
 export const opplysningsdokumenter: Omit<ISelectOptionMedBrevtekst, 'value'>[] = [
     {
-        label: 'Adopsjon - barna',
+        label: 'Barnehageplass - barnet',
         brevtekst: {
-            NB: 'Dokumentasjon på adopsjon som viser hvilken dato du overtok omsorgen for barna.',
-            NN: 'Dokumentasjon på adopsjon som viser frå kva dato du overtok omsorga for barna.',
+            NB: 'Dokumentasjon fra kommunen som viser fra hvilken dato barnet har fått tildelt barnehageplass og hvor mange timer i uken barnet har fått tildelt.',
+            NN: 'Dokumentasjon frå kommunen som viser kva dato barnet har fått tildelt barnehageplass frå og antal timar i veka barnet har fått tildelt.',
         },
     },
     {
-        label: 'Adopsjon - barnet',
+        label: 'Barnehageplass - barna',
         brevtekst: {
-            NB: 'Dokumentasjon på adopsjon som viser hvilken dato du overtok omsorgen for barnet.',
-            NN: 'Dokumentasjon på adopsjon som viser frå kva dato du overtok omsorga for barnet.',
+            NB: 'Dokumentasjon fra kommunen som viser fra hvilken dato barna har fått tildelt barnehageplass og hvor mange timer i uken barna har fått tildelt.',
+            NN: 'Dokumentasjon frå kommunen som viser kva dato barna har fått tildelt barnehageplass frå og antal timar i veka barna har fått tildelt.',
         },
     },
     {
-        label: 'Ankomst Norge - barna',
+        label: 'Medlemskap - søker',
         brevtekst: {
-            NB: 'Dokumentasjon som viser når barna kom til Norge.',
-            NN: 'Dokumentasjon som viser når barna kom til Noreg.',
+            NB: 'Dokumentasjon som viser at du har vært medlem i folketrygden eller i trygdeordninger i andre EØS-land i 5 år. Dokumentasjonen må også vise periodene du har vært medlem.',
+            NN: 'Dokumentasjon som viser at du har vore medlem i folketrygda eller i trygdeordningar i andre EØS-land i 5 år. Dokumentasjonen må også vise periodane du har vore medlem.',
         },
     },
     {
-        label: 'Ankomst Norge - barnet',
+        label: 'Medlemskap - den andre forelderen',
         brevtekst: {
-            NB: 'Dokumentasjon som viser når barnet kom til Norge.',
-            NN: 'Dokumentasjon som viser når barnet kom til Noreg.',
+            NB: 'Dokumentasjon som viser at den andre forelderen har vært medlem i folketrygden eller i trygdeordninger i andre EØS-land i 5 år. Dokumentasjonen må også vise periodene du har vært medlem.',
+            NN: 'Dokumentasjon som viser at den andre forelderen har vore medlem i folketrygda eller i trygdeordningar i andre EØS-land i 5 år. Dokumentasjonen må også vise periodane du har vore medlem.',
         },
     },
     {
-        label: 'Ankomst Norge - søker',
+        label: 'Medlemskap - søker og den andre forelderen',
         brevtekst: {
-            NB: 'Dokumentasjon som viser når du kom til Norge.',
-            NN: 'Dokumentasjon som viser når du kom til Noreg.',
-        },
-    },
-    {
-        label: 'Ankomst Norge - søker og barna',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser når du og barna kom til Norge.',
-            NN: 'Dokumentasjon som viser når du og barna kom til Noreg.',
-        },
-    },
-    {
-        label: 'Ankomst Norge - søker og barnet',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser når du og barnet kom til Norge.',
-            NN: 'Dokumentasjon som viser når du og barnet kom til Noreg.',
+            NB: 'Dokumentasjon som viser at du og den andre forelderen har vært medlem i folketrygden eller i trygdeordninger i andre EØS-land i 5 år. Dokumentasjonen må også vise periodene du har vært medlem.',
+            NN: 'Dokumentasjon som viser at du og den andre forelderen har vore medlem i folketrygda eller i trygdeordningar i andre EØS-land i 5 år. Dokumentasjonen må også vise periodane du har vore medlem.',
         },
     },
     {
         label: 'Avtale om delt bosted',
         brevtekst: {
-            NB: 'Avtale om delt bosted.',
-            NN: 'Avtale om delt bustad.',
+            NB: 'Avtale om delt bosted',
+            NN: 'Avtale om delt bustad',
+        },
+    },
+    {
+        label: 'Enighet om deling',
+        brevtekst: {
+            NB: 'Dokumentasjon som viser at du og den andre forelderen er enige om å dele kontantstøtten.',
+            NN: 'Dokumentasjon som viser at du og den andre forelderen er einige om å dele kontantstøtta.',
         },
     },
     {
         label: 'Avtale om fast bosted',
         brevtekst: {
-            NB: 'Avtale om fast bosted.',
-            NN: 'Avtale om fast bustad.',
-        },
-    },
-    {
-        label: 'Bor sammen med - barna',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser at barna bor sammen med deg.',
-            NN: 'Dokumentasjon som viser at barna bur saman med deg.',
+            NB: 'Avtale om fast bosted',
+            NN: 'Avtale om fast bustad',
         },
     },
     {
@@ -136,10 +122,10 @@ export const opplysningsdokumenter: Omit<ISelectOptionMedBrevtekst, 'value'>[] =
         },
     },
     {
-        label: 'Flyttet til søker - barna',
+        label: 'Bor sammen med - barna',
         brevtekst: {
-            NB: 'Dokumentasjon som viser hvilken dato barna flyttet til deg. Du må melde flytting til Folkeregisteret.',
-            NN: 'Dokumentasjon som viser frå kva dato barna flytta til deg. Du må melde flytting til Folkeregisteret.',
+            NB: 'Dokumentasjon som viser at barna bor sammen med deg.',
+            NN: 'Dokumentasjon som viser at barna bur saman med deg.',
         },
     },
     {
@@ -150,80 +136,10 @@ export const opplysningsdokumenter: Omit<ISelectOptionMedBrevtekst, 'value'>[] =
         },
     },
     {
-        label: 'Folkeregistrert i Norge - barna',
+        label: 'Flyttet til søker - barna',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at barna har norsk fødselsnummer og er bosatt i Norge.',
-            NN: 'Dokumentasjon på at barna har norsk fødselsnummer og er busett  i Noreg.',
-        },
-    },
-    {
-        label: 'Folkeregistrert i Norge - barnet',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser at barnet har norsk fødselsnummer og er bosatt i Norge.',
-            NN: 'Dokumentasjon på at barnet har norsk fødselsnummer og er busett  i Noreg.',
-        },
-    },
-    {
-        label: 'Folkeregistrert i Norge - søker',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser at du har norsk fødselsnummer og er bosatt i Norge.',
-            NN: 'Dokumentasjon på at du har norsk fødselsnummer og er busett  i Noreg.',
-        },
-    },
-    {
-        label: 'Folkeregistrert i Norge - søker og barna',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser at du og barna har norsk fødselsnummer og er bosatt i Norge.',
-            NN: 'Dokumentasjon på at du og barna har norsk fødselsnummer og er busett  i Noreg.',
-        },
-    },
-    {
-        label: 'Folkeregistrert i Norge - søker og barnet',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser at du og barnet har norsk fødselsnummer og er bosatt i Norge.',
-            NN: 'Dokumentasjon på at du og barnet har norsk fødselsnummer og er busett  i Noreg.',
-        },
-    },
-    {
-        label: 'Oppholdstillatelse - barna',
-        brevtekst: {
-            NB: 'Kopi av vedtak om oppholdstillatelse for barna.',
-            NN: 'Kopi av vedtak om opphaldsløyve for barna.',
-        },
-    },
-    {
-        label: 'Oppholdstillatelse - barnet',
-        brevtekst: {
-            NB: 'Kopi av vedtak om oppholdstillatelse for barnet.',
-            NN: 'Kopi av vedtak om opphaldsløyve for barnet.',
-        },
-    },
-    {
-        label: 'Oppholdstillatelse - søker',
-        brevtekst: {
-            NB: 'Kopi av vedtak om oppholdstillatelse for deg.',
-            NN: 'Kopi av vedtak om opphaldsløyve for deg.',
-        },
-    },
-    {
-        label: 'Oppholdstillatelse - søker og barna',
-        brevtekst: {
-            NB: 'Kopi av vedtak om oppholdstillatelse for deg og barna.',
-            NN: 'Kopi av vedtak om opphaldsløyve for deg og barna.',
-        },
-    },
-    {
-        label: 'Oppholdstillatelse - søker og barnet',
-        brevtekst: {
-            NB: 'Kopi av vedtak om oppholdstillatelse for deg og barnet.',
-            NN: 'Kopi av vedtak om opphaldsløyve for deg og barnet.',
-        },
-    },
-    {
-        label: 'Rettsavgjørelse - barna',
-        brevtekst: {
-            NB: 'Rettsavgjørelse som viser fra hvilken dato barna bor sammen med deg.',
-            NN: 'Avgjersle frå retten som viser frå kva dato barna bur saman med deg.',
+            NB: 'Dokumentasjon som viser hvilken dato barna flyttet til deg. Du må melde flytting til Folkeregisteret.',
+            NN: 'Dokumentasjon som viser frå kva dato barna flytta til deg. Du må melde flytting til Folkeregisteret.',
         },
     },
     {
@@ -234,199 +150,122 @@ export const opplysningsdokumenter: Omit<ISelectOptionMedBrevtekst, 'value'>[] =
         },
     },
     {
-        label: 'Utenlandsopphold, perioder - barna',
+        label: 'Rettsavgjørelse - barna',
         brevtekst: {
-            NB: 'Dokumentasjon som viser hvilke perioder barna har vært i Norge og hvilke perioder barna har vært i utlandet. For eksempel kopi av flybilletter, kopi av pass med stempel, bekreftelse fra skole, barnehage eller helsestasjon.',
-            NN: 'Dokumentasjon som viser kva for periodar barna har vore i Noreg og kva for periodar dei har vore i utlandet. Til dømes kopi av flybillettar, kopi av pass med stempel, stadfesting frå skule, barnehage eller helsestasjon.',
-        },
-    },
-    {
-        label: 'Utenlandsopphold, perioder - barnet',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser hvilke perioder barnet har vært i Norge og hvilke perioder barnet har vært i utlandet. For eksempel kopi av flybilletter, kopi av pass med stempel, bekreftelse fra skole, barnehage eller helsestasjon.',
-            NN: 'Dokumentasjon som viser kva for periodar barnet har vore i Noreg og kva for periodar det har vore i utlandet. Til dømes kopi av flybillettar, kopi av pass med stempel, stadfesting frå skule, barnehage eller helsestasjon.',
-        },
-    },
-    {
-        label: 'Utenlandsopphold, perioder - søker',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser hvilke perioder du har vært i Norge og hvilke perioder du har vært i utlandet. For eksempel kopi av flybilletter eller kopi av pass med stempel.',
-            NN: 'Dokumentasjon som viser kva for periodar du har vore i Noreg og kva for periodar du har vore i utlandet. Til dømes kopi av flybillettar eller kopi av pass med stempel.',
-        },
-    },
-    {
-        label: 'Utenlandsopphold, perioder - søker og barna',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser hvilke perioder du og barna har vært i Norge og hvilke perioder dere har vært i utlandet. For eksempel kopi av flybilletter, kopi av pass med stempel, bekreftelse fra skole barnehage eller helsestasjon.',
-            NN: 'Dokumentasjon som viser kva for periodar du og barna har vore i Noreg og kva for periodar de har vore i utlandet. Til dømes kopi av flybillettar, kopi av pass med stempel, stadfesting frå skule, barnehage eller helsestasjon.',
-        },
-    },
-    {
-        label: 'Utenlandsopphold, perioder - søker og barnet',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser hvilke perioder du og barnet har vært i Norge og hvilke perioder dere har vært i utlandet. For eksempel kopi av flybilletter, kopi av pass med stempel, bekreftelse fra skole barnehage eller helsestasjon.',
-            NN: 'Dokumentasjon som viser kva for periodar du og barnet har vore i Noreg og kva for periodar de har vore i utlandet. Til dømes kopi av flybillettar, kopi av pass med stempel, stadfesting frå skule, barnehage eller helsestasjon.',
+            NB: 'Rettsavgjørelse som viser fra hvilken dato barna bor sammen med deg.',
+            NN: 'Avgjersle frå retten som viser frå kva dato barna bur saman med deg.',
         },
     },
     {
         label: 'Vergefullmakt',
         brevtekst: {
-            NB: 'Vergefullmakt.',
-            NN: 'Vergefullmakt.',
+            NB: 'Vergefullmakt',
+            NN: 'Vergefullmakt',
         },
     },
     {
-        label: 'Dokumentasjon dødsfall samboer',
+        label: 'Annet (Fritekst)',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at samboeren din er død.',
-            NN: 'Dokumentasjon som viser at sambuaren din er død.',
+            NB: 'Annet (Fritekst)',
+            NN: 'Anna (Fritekst)',
         },
     },
     {
-        label: 'Dokumentasjon dødsfall gift',
+        label: 'Utenlandsopphold, periode - søker og barnet',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at ektefellen din er død.',
-            NN: 'Dokumentasjon som viser at ektefellen din er død.',
+            NB: 'Dokumentasjon som viser hvilken periode du og barnet har vært i utlandet. For eksempel kopi av flybilletter, kopi av pass med stempel, bekreftelse fra barnehage eller helsestasjon.',
+            NN: 'Dokumentasjon som viser kva for periode du og barna har vore i utlandet. Til dømes kopi av flybillettar, kopi av pass med stempel, stadfesting frå barnehage eller helsestasjon.',
         },
     },
     {
-        label: 'Separasjonsbevilling',
+        label: 'Utenlandsopphold, periode - søker og barna',
         brevtekst: {
-            NB: 'Separasjonsbevilling.',
-            NN: 'Separasjonsbevilling.',
+            NB: 'Dokumentasjon som viser hvilken periode du og barna har vært i utlandet. For eksempel kopi av flybilletter, kopi av pass med stempel, bekreftelse barnehage eller helsestasjon.',
+            NN: 'Dokumentasjon som viser kva for periode du og barna har vore i utlandet. Til dømes kopi av flybillettar, kopi av pass med stempel, stadfesting frå barnehage eller helsestasjon.',
         },
     },
     {
-        label: 'Dokumentasjon skilsmisse',
+        label: 'Utenlandsopphold, periode - barnet',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at du er skilt.',
-            NN: 'Dokumentasjon som viser at du er skilt.',
+            NB: 'Dokumentasjon som viser hvilken periode barnet har vært i utlandet. For eksempel kopi av flybilletter, kopi av pass med stempel, bekreftelse fra barnehage eller helsestasjon.',
+            NN: 'Dokumentasjon som viser kva for periode barnet har vore i utlandet. Til dømes kopi av flybillettar, kopi av pass med stempel, stadfesting frå barnehage eller helsestasjon.',
         },
     },
     {
-        label: 'Meklingsattest',
+        label: 'Utenlandsopphold, periode - barna',
         brevtekst: {
-            NB: 'Meklingsattest',
-            NN: 'Meklingsattest',
+            NB: 'Dokumentasjon som viser hvilken periode barna har vært i utlandet. For eksempel kopi av flybilletter, kopi av pass med stempel, bekreftelse fra barnehage eller helsestasjon.',
+            NN: 'Dokumentasjon som viser kva for periode barna har vore i utlandet. Til dømes kopi av flybillettar, kopi av pass med stempel, stadfesting frå barnehage eller helsestasjon.',
         },
     },
     {
-        label: 'Dokumentasjon på egen husholdning',
+        label: 'Ankomst Norge - barnet',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at du har egen husholdning.',
-            NN: 'Dokumentasjon som viser at du har eiga hushaldning.',
+            NB: 'Dokumentasjon som viser når barnet kom til Norge.',
+            NN: 'Dokumentasjon som viser når barnet kom til Noreg.',
         },
     },
     {
-        label: 'Dokumentasjon på flytting samboer',
+        label: 'Ankomst Norge - barna',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at du og samboeren din har flyttet fra hverandre.',
-            NN: 'Dokumentasjon som viser at du og sambuaren din har flytta frå kvarandre.',
+            NB: 'Dokumentasjon som viser når barna kom til Norge.',
+            NN: 'Dokumentasjon som viser når barna kom til Noreg',
         },
     },
     {
-        label: 'Dokumentasjon på flytting gift',
+        label: 'Ankomst Norge - søker',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at du og ektefellen din har flyttet fra hverandre.',
-            NN: 'Dokumentasjon som viser at du og ektefellen din har flytta frå kvarandre.',
+            NB: 'Dokumentasjon som viser når du kom til Norge.',
+            NN: 'Dokumentasjon som viser når du kom til Noreg.',
         },
     },
     {
-        label: 'Dokumentasjon på fengsel samboer',
+        label: 'Ankomst Norge - søker og barnet',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at samboeren din er i fengsel i 6 måneder eller mer.',
-            NN: 'Dokumentasjon som viser at sambuaren din er i fengsel i 6 månader eller meir.',
+            NB: 'Dokumentasjon som viser når du og barnet kom til Norge.',
+            NN: 'Dokumentasjon som viser når du og barnet kom til Noreg.',
         },
     },
     {
-        label: 'Dokumentasjon på fengsel ektefelle',
+        label: 'Ankomst Norge - søker og barna',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at ektefellen din er i fengsel i 6 måneder eller mer.',
-            NN: 'Dokumentasjon som viser at ektefellen din er i fengsel i 6 månader eller meir.',
+            NB: 'Dokumentasjon som viser når du og barna kom til Norge.',
+            NN: 'Dokumentasjon som viser når du og barna kom til Noreg.',
         },
     },
     {
-        label: 'Erklæring samlivsbrudd (faktisk separasjon)',
+        label: 'Oppholdstillatelse - barnet',
         brevtekst: {
-            NB: 'Erklæring på at forholdet er avsluttet.',
-            NN: 'Erklæring på at forholdet er avslutta.',
+            NB: 'Kopi av vedtak om oppholdstillatelse for barnet',
+            NN: 'Kopi av vedtak om opphaldsløyve for barnet.',
         },
     },
     {
-        label: 'Varig oppholdsbevis for EØS borger',
+        label: 'Oppholdstillatelse - barna',
         brevtekst: {
-            NB: 'Varig oppholdsbevis for EØS borger.',
-            NN: 'Varig opphaldsbevis for EØS borgar.',
+            NB: 'Kopi av vedtak om oppholdstillatelse for barna.',
+            NN: 'Kopi av vedtak om opphaldsløyve for barna.',
         },
     },
     {
-        label: 'Dokumentasjon på arbeid',
+        label: 'Oppholdstillatelse - søker',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at du jobber i Norge.',
-            NN: 'Dokumentasjon som viser at du jobbar i Noreg.',
+            NB: 'Kopi av vedtak om oppholdstillatelse for deg.',
+            NN: 'Kopi av vedtak om opphaldsløyve for deg.',
         },
     },
     {
-        label: 'Dokumentasjon på utført arbeid',
+        label: 'Oppholdstillatelse - søker og barnet',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at du har jobbet i Norge.',
-            NN: 'Dokumentasjon som viser at du har jobba i Noreg.',
+            NB: 'Kopi av vedtak om oppholdstillatelse for deg og barnet.',
+            NN: 'Kopi av vedtak om opphaldsløyve for deg og barnet.',
         },
     },
     {
-        label: 'Fullmakt',
+        label: 'Oppholdstillatelse - søker og barna',
         brevtekst: {
-            NB: 'Dokumentasjon som viser hvem du har gitt fullmakt til. Dette må være en person.',
-            NN: 'Dokumentasjon som viser kven du har gitt fullmakt til. Dette må vere ein person.',
-        },
-    },
-    {
-        label: 'Driver næring i Norge',
-        brevtekst: {
-            NB: 'Næringsspesifikasjon eller resultatregnskap som viser at du driver næring i Norge.',
-            NN: 'Næringsspesifikasjon eller resultatreknskap som viser at du driv næring i Noreg.',
-        },
-    },
-    {
-        label: 'Har drevet næring i Norge',
-        brevtekst: {
-            NB: 'Næringsspesifikasjon eller resultatregnskap som viser at du har drevet næring i Norge.',
-            NN: 'Næringsspesifikasjon eller resultatreknskap som viser at du har drive næring i Noreg.',
-        },
-    },
-    {
-        label: 'Frasagt barnetrygd Storbritannia',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser at familien har frasagt seg retten til barnetrygd fra Storbritannia.',
-            NN: 'Dokumentasjon som viser at familien har sagt frå seg seg retten til barnetrygd frå Storbritannia.',
-        },
-    },
-    {
-        label: 'Betalt skatt Storbritannia',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser at familien har betalt “High Income Child Benefit Charge” i Storbritannia.',
-            NN: 'Dokumentasjon som viser at familien har betalt “High Income Child Benefit Charge” i Storbritannia.',
-        },
-    },
-    {
-        label: 'Sentrum for livsinteresser',
-        brevtekst: {
-            NB: 'Opplysninger om hvilket land du og familien din er bosatt i.',
-            NN: 'Opplysningar om kva land du og familien din er busett i.',
-        },
-    },
-    {
-        label: 'Selvforsørget EØS borger',
-        brevtekst: {
-            NB: 'Dokumentasjon som viser at du kan forsørge deg selv og familien din mens du er bosatt i Norge. Du kan sende oss dokumenter som viser at du har pensjon, oppsparte midler eller inntekt på eiendom i Norge. ',
-            NN: 'Dokumentasjon som viser at du kan forsørge deg sjølv og familien din medan du er busett i Noreg. Du kan sende oss dokument som viser at du har pensjon, oppsparte midlar eller inntekt på eigedom i Noreg.',
-        },
-    },
-    {
-        label: 'Barnetrygden kommer barnet til gode',
-        brevtekst: {
-            NB: 'Dokumentasjon på, eller opplysninger om hvordan du bruker barnetrygden på barnet.',
-            NN: 'Dokumentasjon på, eller opplysningar om korleis du brukar barnetrygda på barnet.',
+            NB: 'Kopi av vedtak om oppholdstillatelse for deg og barna.',
+            NN: 'Kopi av vedtak om opphaldsløyve for deg og barna.',
         },
     },
 ];
