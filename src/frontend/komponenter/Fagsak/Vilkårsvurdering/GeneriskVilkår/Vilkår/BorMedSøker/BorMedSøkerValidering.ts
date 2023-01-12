@@ -3,7 +3,8 @@ import { feil, ok } from '@navikt/familie-skjema';
 
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import { Regelverk } from '../../../../../../typer/vilkår';
-import { muligeUtdypendeVilkårsvurderinger } from './BorMedSøkerContext';
+import { erBegrunnelsePåkrevd } from '../../VilkårSkjema';
+import { bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår } from './BorMedSøkerContext';
 
 export const erUtdypendeVilkårsvurderingerGyldig = (
     felt: FeltState<UtdypendeVilkårsvurdering[]>,
@@ -12,6 +13,9 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
     if (!avhengigheter || !avhengigheter?.vurderesEtter) {
         return feil(felt, 'Utdypende vilkårsvurdering er ugyldig');
     }
+
+    const muligeUtdypendeVilkårsvurderinger =
+        bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(avhengigheter.vurderesEtter);
 
     if (muligeUtdypendeVilkårsvurderinger.length === 0) {
         return ok(felt);
@@ -42,10 +46,17 @@ export const erBegrunnelseGyldig = (
 
     const begrunnelseOppgitt = felt.verdi.length > 0;
 
-    if (avhengigheter.vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
+    if (
+        erBegrunnelsePåkrevd(
+            avhengigheter.vurderesEtter,
+            avhengigheter.utdypendeVilkårsvurderinger,
+            avhengigheter.personType,
+            avhengigheter.vilkårType
+        )
+    ) {
         return begrunnelseOppgitt ? ok(felt) : feil(felt, 'Du må fylle inn en begrunnelse');
     } else {
-        if (begrunnelseOppgitt || avhengigheter?.utdypendeVilkårsvurdering.length === 0) {
+        if (begrunnelseOppgitt || avhengigheter?.utdypendeVilkårsvurderinger.length === 0) {
             return ok(felt);
         }
         return feil(
