@@ -2,19 +2,22 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { ExpandFilled } from '@navikt/ds-icons';
+import { Calculator, ExpandFilled } from '@navikt/ds-icons';
 import { Button } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
 import { NavdsSpacing10 } from '@navikt/ds-tokens/dist/tokens';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
+import { BehandlingÅrsak } from '../../../typer/behandling';
+import { BehandlingKategori } from '../../../typer/behandlingstema';
 import KorrigerVedtak from './KorrigerVedtakModal/KorrigerVedtak';
 import EndreEndringstidspunkt from './VedtakBegrunnelserTabell/EndreEndringstidspunkt';
 
 interface IVedtakmenyProps {
     åpenBehandling: IBehandling;
     erBehandlingMedVedtaksbrevutsending: boolean;
+    visFeilutbetaltValuta: () => void;
 }
 
 const KnappHøyreHjørne = styled(Button)`
@@ -30,6 +33,7 @@ const StyledDropdownMeny = styled(Dropdown.Menu)`
 const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
     åpenBehandling,
     erBehandlingMedVedtaksbrevutsending,
+    visFeilutbetaltValuta,
 }) => {
     const { vurderErLesevisning } = useBehandling();
 
@@ -56,6 +60,13 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
                     {åpenBehandling.endringstidspunkt && (
                         <EndreEndringstidspunkt åpenBehandling={åpenBehandling} />
                     )}
+                    {åpenBehandling.årsak === BehandlingÅrsak.ÅRLIG_KONTROLL &&
+                        åpenBehandling.kategori === BehandlingKategori.EØS && (
+                            <Dropdown.Menu.List.Item onClick={visFeilutbetaltValuta}>
+                                <Calculator />
+                                Legg til feilutbetalt valuta
+                            </Dropdown.Menu.List.Item>
+                        )}
                 </Dropdown.Menu.List>
             </StyledDropdownMeny>
         </Dropdown>

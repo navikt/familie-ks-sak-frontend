@@ -25,6 +25,7 @@ import {
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
+import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
 import { PeriodetypeIVedtaksbrev, useVedtak } from './useVedtak';
 import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
 import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
@@ -85,6 +86,14 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
     const visSubmitKnapp =
         !vurderErLesevisning() && åpenBehandling?.status === BehandlingStatus.UTREDES;
 
+    const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = React.useState(false);
+    const [erUlagretNyFeilutbetaltValutaPeriode, settErUlagretNyFeilutbetaltValutaPeriode] =
+        React.useState(false);
+
+    React.useEffect(() => {
+        settVisFeilutbetaltValuta(åpenBehandling.feilutbetaltValuta.length > 0);
+    }, [åpenBehandling]);
+
     const hentVedtaksbrev = () => {
         const rolle = hentSaksbehandlerRolle();
         const skalOgsåLagreBrevPåVedtak =
@@ -106,7 +115,10 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
     };
 
     const foreslåVedtak = () => {
-        foreslåVedtakNesteOnClick((visModal: boolean) => settVisModal(visModal));
+        foreslåVedtakNesteOnClick(
+            (visModal: boolean) => settVisModal(visModal),
+            erUlagretNyFeilutbetaltValutaPeriode
+        );
     };
 
     const erBehandlingMedVedtaksbrevutsending =
@@ -140,6 +152,7 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
             <Vedtaksmeny
                 åpenBehandling={åpenBehandling}
                 erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending}
+                visFeilutbetaltValuta={() => settVisFeilutbetaltValuta(true)}
             />
 
             {erBehandlingMedVedtaksbrevutsending ? (
@@ -189,9 +202,27 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
                                 {hentInfostripeTekst(åpenBehandling.årsak, åpenBehandling.status)}
                             </Alert>
                         ) : (
-                            <VedtaksbegrunnelseTeksterProvider>
-                                <VedtaksperioderMedBegrunnelser åpenBehandling={åpenBehandling} />
-                            </VedtaksbegrunnelseTeksterProvider>
+                            <>
+                                <VedtaksbegrunnelseTeksterProvider>
+                                    <VedtaksperioderMedBegrunnelser
+                                        åpenBehandling={åpenBehandling}
+                                    />
+                                </VedtaksbegrunnelseTeksterProvider>
+                                {visFeilutbetaltValuta && (
+                                    <FeilutbetaltValuta
+                                        feilutbetaltValutaListe={åpenBehandling.feilutbetaltValuta}
+                                        behandlingId={åpenBehandling.behandlingId}
+                                        fagsakId={fagsakId}
+                                        settErUlagretNyFeilutbetaltValutaPeriode={
+                                            settErUlagretNyFeilutbetaltValutaPeriode
+                                        }
+                                        erLesevisning={vurderErLesevisning()}
+                                        skjulFeilutbetaltValuta={() =>
+                                            settVisFeilutbetaltValuta(false)
+                                        }
+                                    />
+                                )}
+                            </>
                         )}
                         <Button
                             id={'forhandsvis-vedtaksbrev'}
