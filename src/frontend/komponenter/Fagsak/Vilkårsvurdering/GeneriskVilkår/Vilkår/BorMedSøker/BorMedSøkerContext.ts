@@ -2,9 +2,15 @@ import { useFelt } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
-import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
+import type { Resultat } from '../../../../../../typer/vilkår';
+import { Regelverk as RegelverkType } from '../../../../../../typer/vilkår';
+import {
+    UtdypendeVilkårsvurderingDeltBosted,
+    UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
+    UtdypendeVilkårsvurderingGenerell,
+} from '../../../../../../typer/vilkår';
 import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
 import {
     erAvslagBegrunnelserGyldig,
@@ -13,12 +19,6 @@ import {
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BorMedSøkerValidering';
-
-export const muligeUtdypendeVilkårsvurderinger = [
-    UtdypendeVilkårsvurdering.VURDERING_ANNET_GRUNNLAG,
-    UtdypendeVilkårsvurdering.DELT_BOSTED,
-    UtdypendeVilkårsvurdering.DELT_BOSTED_SKAL_IKKE_DELES,
-];
 
 export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
@@ -69,7 +69,9 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
             valideringsfunksjon: erBegrunnelseGyldig,
             avhengigheter: {
                 vurderesEtter: vurderesEtter.verdi,
-                utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
+                utdypendeVilkårsvurderinger: utdypendeVilkårsvurdering.verdi,
+                personType: person.type,
+                vilkårType: vilkår.vilkårType,
             },
         }),
         erEksplisittAvslagPåSøknad,
@@ -85,4 +87,23 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
     return {
         felter,
     };
+};
+
+export const bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår = (
+    vurderesEtter: RegelverkType | undefined
+): UtdypendeVilkårsvurdering[] => {
+    if (vurderesEtter === RegelverkType.EØS_FORORDNINGEN) {
+        return [
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_SØKER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_ANNEN_FORELDER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_ALENE_I_ANNET_EØS_LAND,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_NORGE_MED_SØKER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_STORBRITANNIA_MED_SØKER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_STORBRITANNIA_MED_ANNEN_FORELDER,
+            UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED,
+            UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED_SKAL_IKKE_DELES,
+            UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
+        ];
+    }
+    return [UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG];
 };

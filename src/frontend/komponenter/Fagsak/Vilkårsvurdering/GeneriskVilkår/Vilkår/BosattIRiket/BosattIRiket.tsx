@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import type { Regelverk, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
-import { muligeUtdypendeVilkårsvurderinger, useBosattIRiket } from './BosattIRiketContext';
+import {
+    bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår,
+    useBosattIRiket,
+} from './BosattIRiketContext';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
@@ -15,18 +19,34 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
     lesevisning,
 }: BosattIRiketProps) => {
     const { felter } = useBosattIRiket(vilkårResultat, person);
+    const [utdypendeVilkårsvurderinger, setUtdypendeVilkårsvurderinger] = useState<
+        UtdypendeVilkårsvurdering[]
+    >(
+        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
+            vilkårResultat.vurderesEtter,
+            person
+        )
+    );
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={true}
             visSpørsmål={true}
-            muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
+            muligeUtdypendeVilkårsvurderinger={utdypendeVilkårsvurderinger}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             toggleForm={toggleForm}
             person={person}
             lesevisning={lesevisning}
+            vurderesEtterEndringer={(vurderesEtter: Regelverk): void => {
+                setUtdypendeVilkårsvurderinger(
+                    bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
+                        vurderesEtter,
+                        person
+                    )
+                );
+            }}
         />
     );
 };

@@ -6,7 +6,7 @@ import { Radio } from 'nav-frontend-skjema';
 
 import { FamilieInput, FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
-import { Resultat, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -42,7 +42,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
         if (!barnehageplass) {
             if (
                 vilkårSkjemaContext.skjema.felter.utdypendeVilkårsvurdering.verdi.find(
-                    utdypende => utdypende === UtdypendeVilkårsvurdering.SOMMERFERIE
+                    utdypende => utdypende === UtdypendeVilkårsvurderingGenerell.SOMMERFERIE
                 )
             ) {
                 vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);

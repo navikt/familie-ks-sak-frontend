@@ -23,13 +23,13 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak } from '../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../typer/person';
+import { PersonType } from '../../../../typer/person';
 import type {
     IVilkårConfig,
     IVilkårResultat,
-    Regelverk,
     UtdypendeVilkårsvurdering,
 } from '../../../../typer/vilkår';
-import { Resultat, resultater } from '../../../../typer/vilkår';
+import { Resultat, resultater, Regelverk, VilkårType } from '../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../utils/vilkår';
 import AvslagSkjema from './AvslagSkjema';
 import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
@@ -90,6 +90,7 @@ export interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkå
     muligeUtdypendeVilkårsvurderinger?: UtdypendeVilkårsvurdering[];
     periodeChildren?: ReactNode;
     children?: ReactNode;
+    vurderesEtterEndringer?: (vurderesEtter: Regelverk) => void;
 }
 
 export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
@@ -104,6 +105,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     toggleForm,
     children,
     periodeChildren,
+    vurderesEtterEndringer,
 }: IVilkårSkjema<T>) => {
     const { åpenBehandling } = useBehandling();
     const årsakErSøknad =
@@ -126,11 +128,14 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         }
                         value={skjema.felter.vurderesEtter.verdi}
                         label={'Vurderes etter'}
-                        onChange={event =>
+                        onChange={event => {
                             skjema.felter.vurderesEtter.validerOgSettFelt(
                                 event.target.value as Regelverk
-                            )
-                        }
+                            );
+                            if (vurderesEtterEndringer) {
+                                vurderesEtterEndringer(event.target.value as Regelverk);
+                            }
+                        }}
                     >
                         {Object.entries(alleRegelverk).map(
                             ([regelverk, { tekst }]: [
@@ -213,7 +218,16 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 <FamilieTextarea
                     erLesevisning={lesevisning}
                     id={vilkårBegrunnelseFeilmeldingId(vilkårResultat)}
-                    label={`Begrunnelse (valgfri)`}
+                    label={`Begrunnelse ${
+                        erBegrunnelsePåkrevd(
+                            skjema.felter.vurderesEtter.verdi,
+                            skjema.felter.utdypendeVilkårsvurdering.verdi,
+                            person.type,
+                            vilkårResultat.vilkårType
+                        )
+                            ? ''
+                            : '(valgfri)'
+                    }`}
                     className={'begrunnelse-textarea'}
                     placeholder={'Begrunn hvorfor det er gjort endringer på vilkåret.'}
                     value={skjema.felter.begrunnelse.verdi}
@@ -261,5 +275,19 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 </Knapperad>
             </Container>
         </SkjemaGruppe>
+    );
+};
+
+export const erBegrunnelsePåkrevd = (
+    vurderesEtter: Regelverk | undefined,
+    utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[],
+    personType: PersonType,
+    vilkårType: VilkårType
+): boolean => {
+    return (
+        (vurderesEtter === Regelverk.NASJONALE_REGLER && utdypendeVilkårsvurderinger.length > 0) ||
+        (vurderesEtter === Regelverk.EØS_FORORDNINGEN &&
+            personType === PersonType.SØKER &&
+            vilkårType === VilkårType.BOSATT_I_RIKET)
     );
 };
