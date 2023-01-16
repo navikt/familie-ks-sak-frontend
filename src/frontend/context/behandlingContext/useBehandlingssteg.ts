@@ -97,39 +97,37 @@ const useBehandlingssteg = (
         erUlagretNyFeilutbetaltValuta: boolean
     ) => {
         if (erUlagretNyFeilutbetaltValuta) {
-            settSubmitRessurs(
+            return settSubmitRessurs(
                 byggFeiletRessurs(
                     'Det er lagt til en ny periode med feilutbetalt valuta. Fyll ut periode og beløp, eller fjern perioden.'
                 )
             );
-            if (kanForeslåVedtak()) {
-                settSubmitRessurs(byggHenterRessurs());
-                request<void, IBehandling>({
-                    method: 'POST',
-                    url: `/familie-ks-sak/api/behandlinger/${
-                        behandling?.behandlingId
-                    }/steg/foreslå-vedtak?behandlendeEnhet=${
-                        innloggetSaksbehandler?.enhet ?? '9999'
-                    }`,
-                }).then((response: Ressurs<IBehandling>) => {
-                    settSubmitRessurs(response);
-
-                    if (response.status === RessursStatus.SUKSESS) {
-                        settVisModal(true);
-                        oppdaterBehandling(response);
-                    } else if (response.status === RessursStatus.FEILET) {
-                        settSubmitRessurs(byggFeiletRessurs(defaultFunksjonellFeil));
-                    }
-                });
-            } else {
-                settSubmitRessurs(
-                    byggFeiletRessurs(
-                        'Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.'
-                    )
-                );
-            }
         }
+
+        if (!kanForeslåVedtak()) {
+            return settSubmitRessurs(
+                byggFeiletRessurs(
+                    'Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.'
+                )
+            );
+        }
+
+        request<void, IBehandling>({
+            method: 'POST',
+            url: `/familie-ks-sak/api/behandlinger/${
+                behandling?.behandlingId
+            }/steg/foreslå-vedtak?behandlendeEnhet=${innloggetSaksbehandler?.enhet ?? '9999'}`,
+            påvirkerSystemLaster: true,
+        }).then((response: Ressurs<IBehandling>) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                settVisModal(true);
+                oppdaterBehandling(response);
+            } else {
+                settSubmitRessurs(byggFeiletRessurs(defaultFunksjonellFeil));
+            }
+        });
     };
+
     return {
         submitRessurs,
         vilkårsvurderingNesteOnClick,

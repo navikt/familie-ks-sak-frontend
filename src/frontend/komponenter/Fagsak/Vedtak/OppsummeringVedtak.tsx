@@ -86,13 +86,12 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
     const visSubmitKnapp =
         !vurderErLesevisning() && åpenBehandling?.status === BehandlingStatus.UTREDES;
 
-    const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = React.useState(false);
+    const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = React.useState(
+        åpenBehandling.feilutbetaltValuta.length > 0
+    );
+
     const [erUlagretNyFeilutbetaltValutaPeriode, settErUlagretNyFeilutbetaltValutaPeriode] =
         React.useState(false);
-
-    React.useEffect(() => {
-        settVisFeilutbetaltValuta(åpenBehandling.feilutbetaltValuta.length > 0);
-    }, [åpenBehandling]);
 
     const hentVedtaksbrev = () => {
         const rolle = hentSaksbehandlerRolle();

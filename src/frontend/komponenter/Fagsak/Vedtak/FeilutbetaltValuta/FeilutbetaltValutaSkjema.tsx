@@ -54,56 +54,54 @@ const gjørOmDatoHvisGyldigInput = (
 
 const FeilutbetaltValutaSkjema: React.FunctionComponent<IFeilutbetaltValutaSkjemaProps> = ({
     skjema,
-}) => {
-    return (
-        <>
-            <FlexDatoInputWrapper>
-                <Label size="small">Angi periode med feilutbetalt valuta</Label>
-                <FlexRowDiv style={{ gap: '2rem' }}>
-                    <FamilieDatovelger
-                        {...skjema.felter.fom?.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                        id="fom-dato"
-                        label="F.o.m"
-                        value={skjema.felter.fom.verdi}
-                        valgtDato={skjema.felter.fom.verdi}
-                        onChange={(dato?: ISODateString) => {
-                            skjema.felter.fom?.validerOgSettFelt(
-                                gjørOmDatoHvisGyldigInput(dato, FamilieIsoTilFørsteDagIMåneden)
-                            );
-                        }}
-                        limitations={{
-                            maxDate: serializeIso8601String(sisteDagIInneværendeMåned()),
-                        }}
-                    />
-                    <FamilieDatovelger
-                        {...skjema.felter.tom?.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                        id="fom-dato"
-                        label="T.o.m"
-                        value={skjema.felter.tom.verdi}
-                        valgtDato={skjema.felter.tom.verdi}
-                        onChange={(dato?: ISODateString) =>
-                            skjema.felter.tom?.validerOgSettFelt(
-                                gjørOmDatoHvisGyldigInput(dato, FamilieIsoTilSisteDagIMåneden)
-                            )
-                        }
-                        limitations={{
-                            maxDate: serializeIso8601String(sisteDagIInneværendeMåned()),
-                        }}
-                    />
-                </FlexRowDiv>
-            </FlexDatoInputWrapper>
-            <StyledFamilieInput
-                {...skjema.felter.feilutbetaltBeløp.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                size="small"
-                label="Feilutbetalt beløp"
-                value={skjema.felter.feilutbetaltBeløp.verdi}
-                type="number"
-                onChange={changeEvent =>
-                    skjema.felter.feilutbetaltBeløp.validerOgSettFelt(changeEvent.target.value)
-                }
-            />
-        </>
-    );
-};
+}) => (
+    <>
+        <FlexDatoInputWrapper>
+            <Label size="small">Angi periode med feilutbetalt valuta</Label>
+            <FlexRowDiv style={{ gap: '2rem' }}>
+                <FamilieDatovelger
+                    {...skjema.felter.fom?.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
+                    id="fom-dato"
+                    label="F.o.m"
+                    value={skjema.felter.fom.verdi}
+                    valgtDato={skjema.felter.fom.verdi}
+                    onChange={(dato?: ISODateString) => {
+                        skjema.felter.fom?.validerOgSettFelt(
+                            gjørOmDatoHvisGyldigInput(dato, FamilieIsoTilFørsteDagIMåneden)
+                        );
+                    }}
+                    limitations={{
+                        maxDate: serializeIso8601String(sisteDagIInneværendeMåned()),
+                    }}
+                />
+                <FamilieDatovelger
+                    {...skjema.felter.tom?.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
+                    id="fom-dato"
+                    label="T.o.m"
+                    value={skjema.felter.tom.verdi}
+                    valgtDato={skjema.felter.tom.verdi}
+                    onChange={(dato?: ISODateString) =>
+                        skjema.felter.tom?.validerOgSettFelt(
+                            gjørOmDatoHvisGyldigInput(dato, FamilieIsoTilSisteDagIMåneden)
+                        )
+                    }
+                    limitations={{
+                        maxDate: serializeIso8601String(sisteDagIInneværendeMåned()),
+                    }}
+                />
+            </FlexRowDiv>
+        </FlexDatoInputWrapper>
+        <StyledFamilieInput
+            {...skjema.felter.feilutbetaltBeløp.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
+            size="small"
+            label="Feilutbetalt beløp"
+            value={skjema.felter.feilutbetaltBeløp.verdi}
+            type="number"
+            onChange={changeEvent =>
+                skjema.felter.feilutbetaltBeløp.validerOgSettFelt(changeEvent.target.value)
+            }
+        />
+    </>
+);
 
 export default FeilutbetaltValutaSkjema;

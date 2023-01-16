@@ -64,7 +64,8 @@ const FeilutbetaltValuta: React.FC<IFeilutbetaltValuta> = ({
         (acc, val) => acc + val.feilutbetaltBeløp,
         0
     );
-    const tekstTilNØS = `Viser til følgende vedtak \nhttps://barnetrygd.intern.nav.no/fagsak/${fagsakId}/${behandlingId}/vedtak
+
+    const tekstTilNØS = `Viser til følgende vedtak \nhttps://kontantstotte.intern.nav.no/fagsak/${fagsakId}/${behandlingId}/vedtak
     \nBer om at feilutbetalingsbeløpet på grunn av valuta- og satsendringer trekkes i fremtidige utbetalinger.
     \nTotalt kr ${totaltFeilutbetaltBeløp}
     \n${feilutbetaltValutaListe

@@ -40,7 +40,7 @@ const NyFeilutbetaltValutaPeriode: React.FC<INyFeilutbetaltValutaPeriodeProps> =
     };
 
     const lagre = () => {
-        lagreNyPeriode(() => lukkNyPeriode());
+        lagreNyPeriode(lukkNyPeriode);
     };
 
     return (
