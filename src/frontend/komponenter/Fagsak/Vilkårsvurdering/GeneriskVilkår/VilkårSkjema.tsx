@@ -285,7 +285,7 @@ export const erBegrunnelsePåkrevd = (
     vilkårType: VilkårType
 ): boolean => {
     return (
-        (vurderesEtter === Regelverk.NASJONALE_REGLER && utdypendeVilkårsvurderinger.length > 0) ||
+        utdypendeVilkårsvurderinger.length > 0 ||
         (vurderesEtter === Regelverk.EØS_FORORDNINGEN &&
             personType === PersonType.SØKER &&
             vilkårType === VilkårType.BOSATT_I_RIKET)
