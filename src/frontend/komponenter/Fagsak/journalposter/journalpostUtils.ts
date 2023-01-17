@@ -40,10 +40,8 @@ export const hentSorterteJournalposter = (
 
 export const mapFagsystemkodeTilTekst = (kode: string | undefined) => {
     switch (kode) {
-        case 'BA':
-            return 'NAV Barnetrygd';
-        case 'IT01':
-            return 'Infotrygd';
+        case 'KONT':
+            return 'NAV Kontantstøtte';
         case undefined:
             return '-';
         default:
