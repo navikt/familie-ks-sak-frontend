@@ -245,14 +245,6 @@ export const behandlingstyper: INøkkelPar = {
         id: 'FØRSTEGANGSBEHANDLING',
         navn: 'Førstegangsbehandling',
     },
-    MIGRERING_FRA_INFOTRYGD: {
-        id: 'MIGRERING_FRA_INFOTRYGD',
-        navn: 'Migrering fra infotrygd',
-    },
-    MIGRERING_FRA_INFOTRYGD_OPPHØRT: {
-        id: 'MIGRERING_FRA_INFOTRYGD',
-        navn: 'Opphør migrering fra infotrygd',
-    },
     REVURDERING: {
         id: 'REVURDERING',
         navn: 'Revurdering',

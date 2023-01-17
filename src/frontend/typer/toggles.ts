@@ -6,7 +6,6 @@ export enum ToggleNavn {
     kanBehandleTekniskEndring = 'familie-ks-sak.behandling.teknisk-endring',
     kanManueltKorrigereMedVedtaksbrev = 'familie-ks-sak.behandling.korreksjon-vedtaksbrev',
     brukEøs = 'familie-ks-sak.behandling.eos',
-    skalIkkeStoppeMigreringsbehandlig = 'familie-ks-sak.ikke.stopp.migeringsbehandling',
     tekniskVedlikeholdHenleggelse = 'familie-ks-sak.teknisk-vedlikehold-henleggelse.tilgangsstyring',
     endreMottakerEndringsårsaker = 'familie-ks-sak.behandling.endringsperiode.endre-mottaker-aarsaker.utgivelse',
     støtterInstitusjon = 'familie-ks-sak.stotter-institusjon',
