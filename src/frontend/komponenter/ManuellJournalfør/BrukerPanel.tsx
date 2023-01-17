@@ -4,14 +4,11 @@ import styled from 'styled-components';
 
 import { FamilieInput, FamilieKnapp } from '@navikt/familie-form-elements';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
 import { KontoSirkel } from '../../ikoner/KontoSirkel';
 import { formaterIdent } from '../../utils/formatter';
 import { identValidator } from '../../utils/validators';
-import { SamhandlerTabell } from '../Fagsak/InstitusjonOgVerge/SamhandlerTabell';
-import { useSamhandlerSkjema } from '../Fagsak/InstitusjonOgVerge/useSamhandler';
 import { DeltagerInfo } from './DeltagerInfo';
 import { StyledEkspanderbartpanelBase } from './StyledEkspanderbartpanelBase';
 
@@ -42,7 +39,6 @@ export const BrukerPanel: React.FC = () => {
         verdi: '',
         valideringsfunksjon: identValidator,
     });
-    const { samhandlerSkjema } = useSamhandlerSkjema();
     useEffect(() => {
         settFeilMelding('');
     }, [nyIdent.verdi]);
@@ -55,12 +51,6 @@ export const BrukerPanel: React.FC = () => {
             settÅpen(true);
         }
     }, [skjema.visFeilmeldinger, skjema.felter.bruker.valideringsstatus]);
-
-    useEffect(() => {
-        if (samhandlerSkjema.submitRessurs.status === RessursStatus.SUKSESS) {
-            skjema.felter.samhandler.validerOgSettFelt(samhandlerSkjema.submitRessurs.data);
-        }
-    }, [samhandlerSkjema.submitRessurs.status]);
 
     return (
         <StyledEkspanderbartpanelBaseMedMargin
@@ -81,9 +71,6 @@ export const BrukerPanel: React.FC = () => {
                 />
             }
         >
-            {skjema.felter.samhandler.verdi !== null && (
-                <SamhandlerTabell samhandler={skjema.felter.samhandler.verdi}></SamhandlerTabell>
-            )}
             <br />
             <StyledDiv>
                 {!erLesevisning() && (
