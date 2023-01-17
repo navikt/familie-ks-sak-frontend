@@ -34,14 +34,11 @@ describe('sider.ts', () => {
             const behandling = mockBehandling({ årsak: BehandlingÅrsak.SATSENDRING });
             expect(Object.keys(hentTrinnForBehandling(behandling))).not.toContain(SideId.VEDTAK);
         });
-        test('Standard revurdering uten søknad viser alle sider bortsett fra FILTRERING_FØDSELSHENDELSER og REGISTRERE_SØKNAD', () => {
+        test('Standard revurdering uten søknad viser alle sider bortsett fra REGISTRERE_SØKNAD og REGISTRERE_MOTTAKER', () => {
             const behandling = mockBehandling({ årsak: BehandlingÅrsak.NYE_OPPLYSNINGER });
             expect(Object.keys(hentTrinnForBehandling(behandling))).toEqual(
                 Object.values(SideId).filter(
-                    side =>
-                        side !== SideId.FILTRERING_FØDSELSHENDELSER &&
-                        side !== SideId.REGISTRERE_SØKNAD &&
-                        side !== SideId.REGISTRERE_MOTTAKER
+                    side => side !== SideId.REGISTRERE_SØKNAD && side !== SideId.REGISTRERE_MOTTAKER
                 )
             );
         });
@@ -52,7 +49,6 @@ describe('sider.ts', () => {
             const sider = [
                 SideId.REGISTRERE_MOTTAKER,
                 SideId.REGISTRERE_SØKNAD,
-                SideId.FILTRERING_FØDSELSHENDELSER,
                 SideId.VILKÅRSVURDERING,
                 SideId.BEHANDLINGRESULTAT,
                 SideId.SIMULERING,
@@ -82,9 +78,7 @@ describe('sider.ts', () => {
             expect(erViPåUlovligSteg('vedtak', sider.REGISTRERE_SØKNAD)).toBeTruthy();
         });
         test('Skal returnere false dersom vi ikke er på ulovlig steg', () => {
-            expect(
-                erViPåUlovligSteg('registrer-soknad', sider.FILTRERING_FØDSELSHENDELSER)
-            ).toBeFalsy();
+            expect(erViPåUlovligSteg('registrer-soknad', sider.VILKÅRSVURDERING)).toBeFalsy();
         });
     });
 
