@@ -9,7 +9,8 @@ import {
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { Begrunnelse } from '../typer/vedtak';
-import { Resultat, UtdypendeVilkårsvurdering } from '../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../typer/vilkår';
+import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import familieDayjs from './familieDayjs';
 import type { DagMånedÅr, IPeriode } from './kalender';
 import {
@@ -126,7 +127,11 @@ export const erPeriodeGyldig = (
                     return feil(felt, 'Du kan ikke legge til periode før barnets fødselsdato');
                 }
                 if (erBarnetsAlderVilkår) {
-                    if (utdypendeVilkårsvurdering?.includes(UtdypendeVilkårsvurdering.ADOPSJON)) {
+                    if (
+                        utdypendeVilkårsvurdering?.includes(
+                            UtdypendeVilkårsvurderingGenerell.ADOPSJON
+                        )
+                    ) {
                         if (tom && datoDifferanseMerEnn1År(fom, tom)) {
                             return feil(
                                 felt,

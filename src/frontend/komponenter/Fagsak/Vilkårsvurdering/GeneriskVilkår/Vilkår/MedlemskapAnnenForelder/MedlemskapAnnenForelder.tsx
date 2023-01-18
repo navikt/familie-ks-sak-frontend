@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Radio } from 'nav-frontend-skjema';
 
+import { Label } from '@navikt/ds-react';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
 import { Resultat } from '../../../../../../typer/vilkår';
@@ -24,7 +25,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
-            visVurderesEtter={false}
+            visVurderesEtter={true}
             visSpørsmål={false}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
@@ -32,8 +33,15 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
             person={person}
             lesevisning={lesevisning}
         >
+            <br />
             <FamilieRadioGruppe
-                legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål() : ''}
+                legend={
+                    <Label>
+                        {vilkårFraConfig.spørsmål
+                            ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
+                            : ''}
+                    </Label>
+                }
                 error={
                     vilkårSkjemaContext.skjema.visFeilmeldinger
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding

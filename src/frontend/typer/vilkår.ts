@@ -207,10 +207,8 @@ export const annenVurderingConfig: Record<AnnenVurderingType, IAnnenVurderingCon
     },
 };
 
-export enum UtdypendeVilkårsvurdering {
+export enum UtdypendeVilkårsvurderingGenerell {
     VURDERING_ANNET_GRUNNLAG = 'VURDERING_ANNET_GRUNNLAG',
-    DELT_BOSTED = 'DELT_BOSTED',
-    DELT_BOSTED_SKAL_IKKE_DELES = 'DELT_BOSTED_SKAL_IKKE_DELES',
     ADOPSJON = 'ADOPSJON',
     SOMMERFERIE = 'SOMMERFERIE',
 }
@@ -228,3 +226,21 @@ export enum UtdypendeVilkårsvurderingEøsBarnBorMedSøker {
     BARN_BOR_I_STORBRITANNIA_MED_ANNEN_FORELDER = 'BARN_BOR_I_STORBRITANNIA_MED_ANNEN_FORELDER',
     BARN_BOR_ALENE_I_ANNET_EØS_LAND = 'BARN_BOR_ALENE_I_ANNET_EØS_LAND',
 }
+
+export enum UtdypendeVilkårsvurderingEøsSøkerBosattIRiket {
+    OMFATTET_AV_NORSK_LOVGIVNING = 'OMFATTET_AV_NORSK_LOVGIVNING',
+    OMFATTET_AV_NORSK_LOVGIVNING_UTLAND = 'OMFATTET_AV_NORSK_LOVGIVNING_UTLAND',
+}
+
+export enum UtdypendeVilkårsvurderingEøsBarnBosattIRiket {
+    BARN_BOR_I_NORGE = 'BARN_BOR_I_NORGE',
+    BARN_BOR_I_EØS = 'BARN_BOR_I_EØS',
+    BARN_BOR_I_STORBRITANNIA = 'BARN_BOR_I_STORBRITANNIA',
+}
+
+export type UtdypendeVilkårsvurdering =
+    | UtdypendeVilkårsvurderingGenerell
+    | UtdypendeVilkårsvurderingDeltBosted
+    | UtdypendeVilkårsvurderingEøsBarnBorMedSøker
+    | UtdypendeVilkårsvurderingEøsSøkerBosattIRiket
+    | UtdypendeVilkårsvurderingEøsBarnBosattIRiket;

@@ -27,7 +27,7 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
-            visVurderesEtter={false}
+            visVurderesEtter={true}
             visSpørsmål={true}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
