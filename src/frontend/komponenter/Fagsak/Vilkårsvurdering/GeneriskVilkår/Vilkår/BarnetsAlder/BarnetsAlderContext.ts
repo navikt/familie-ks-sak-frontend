@@ -2,7 +2,8 @@ import { useFelt } from '@navikt/familie-skjema';
 
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import { UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
+import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
 import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
@@ -14,7 +15,9 @@ import {
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BarnetsAlderValidering';
 
-export const muligeUtdypendeVilkårsvurderinger = [UtdypendeVilkårsvurdering.ADOPSJON];
+export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = [
+    UtdypendeVilkårsvurderingGenerell.ADOPSJON,
+];
 
 export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
