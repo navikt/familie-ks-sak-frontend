@@ -1,4 +1,4 @@
-import type { IVedtaksperiodeMedBegrunnelser, Vedtaksperiodetype } from './vedtaksperiode';
+import type { IVedtaksperiodeMedBegrunnelser } from './vedtaksperiode';
 import type { VilkårType } from './vilkår';
 
 export interface IVedtakForBehandling {
@@ -6,28 +6,6 @@ export interface IVedtakForBehandling {
     vedtaksdato: string;
     vedtaksperioderMedBegrunnelser: IVedtaksperiodeMedBegrunnelser[];
     id: number;
-}
-
-export interface IRestVedtakBegrunnelse {
-    begrunnelse?: Begrunnelse;
-    begrunnelseType?: BegrunnelseType;
-    brevBegrunnelse?: string;
-    fom: string;
-    id?: number;
-    tom?: string;
-}
-
-export interface IRestPostFritekstVedtakBegrunnelser {
-    fom?: string;
-    tom?: string;
-    fritekster: string[];
-    vedtaksperiodetype: Vedtaksperiodetype;
-}
-
-export interface IRestDeleteVedtakBegrunnelser {
-    fom: string;
-    tom?: string;
-    begrunnelseTyper: BegrunnelseType[];
 }
 
 export interface IRestBegrunnelseTilknyttetVilkår {
