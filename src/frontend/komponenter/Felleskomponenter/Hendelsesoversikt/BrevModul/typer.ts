@@ -164,13 +164,6 @@ export const opplysningsdokumenter: Omit<ISelectOptionMedBrevtekst, 'value'>[] =
         },
     },
     {
-        label: 'Annet (Fritekst)',
-        brevtekst: {
-            NB: 'Annet (Fritekst)',
-            NN: 'Anna (Fritekst)',
-        },
-    },
-    {
         label: 'Utenlandsopphold, periode - søker og barnet',
         brevtekst: {
             NB: 'Dokumentasjon som viser hvilken periode du og barnet har vært i utlandet. For eksempel kopi av flybilletter, kopi av pass med stempel, bekreftelse fra barnehage eller helsestasjon.',
