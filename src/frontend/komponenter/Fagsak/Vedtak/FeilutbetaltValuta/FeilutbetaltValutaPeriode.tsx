@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -34,6 +34,7 @@ const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
     behandlingId,
 }) => {
     const [erRadEkspandert, settErRadEkspandert] = useState<boolean>(false);
+    const [forrigeFeilutbetaltValuta, settForrigeFeilutbetaltValuta] = useState(feilutbetaltValuta);
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const { skjema, oppdaterEksisterendePeriode, nullstillSkjema, fjernPeriode, valideringErOk } =
@@ -43,14 +44,15 @@ const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
             settFeilmelding: settFeilmelding,
         });
 
-    useEffect(() => {
-        nullstillOgLukkSkjema();
-    }, [feilutbetaltValuta]);
-
     const nullstillOgLukkSkjema = () => {
         nullstillSkjema();
         settErRadEkspandert(false);
     };
+
+    if (feilutbetaltValuta !== forrigeFeilutbetaltValuta) {
+        nullstillOgLukkSkjema();
+        settForrigeFeilutbetaltValuta(feilutbetaltValuta);
+    }
 
     const håndterLukkingOgÅpningAvPanel = () => {
         if (erLesevisning) return;

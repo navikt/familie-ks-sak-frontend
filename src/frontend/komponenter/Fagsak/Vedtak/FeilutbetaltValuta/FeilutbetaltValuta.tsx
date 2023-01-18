@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -52,9 +52,10 @@ const FeilutbetaltValuta: React.FC<IFeilutbetaltValuta> = ({
         feilutbetaltValutaListe.length === 0
     );
 
-    useEffect(() => {
+    const oppdaterØnskerÅLeggeTilNyPeriode = (ønskerÅLeggeTilNyPeriode: boolean) => {
+        settØnskerÅLeggeTilNyPeriode(ønskerÅLeggeTilNyPeriode);
         settErUlagretNyFeilutbetaltValutaPeriode(ønskerÅLeggeTilNyPeriode);
-    }, [ønskerÅLeggeTilNyPeriode]);
+    };
 
     if (feilutbetaltValutaListe.length === 0 && !ønskerÅLeggeTilNyPeriode) {
         skjulFeilutbetaltValuta();
@@ -106,7 +107,7 @@ const FeilutbetaltValuta: React.FC<IFeilutbetaltValuta> = ({
                         ))}
                     {ønskerÅLeggeTilNyPeriode && (
                         <NyFeilutbetaltValutaPeriode
-                            lukkNyPeriode={() => settØnskerÅLeggeTilNyPeriode(false)}
+                            lukkNyPeriode={() => oppdaterØnskerÅLeggeTilNyPeriode(false)}
                             behandlingId={behandlingId}
                         />
                     )}
@@ -118,7 +119,7 @@ const FeilutbetaltValuta: React.FC<IFeilutbetaltValuta> = ({
                         variant="tertiary"
                         size="small"
                         icon={<AddCircle />}
-                        onClick={() => settØnskerÅLeggeTilNyPeriode(true)}
+                        onClick={() => oppdaterØnskerÅLeggeTilNyPeriode(true)}
                     >
                         Legg til ny periode
                     </Button>
