@@ -2,7 +2,6 @@ import type { VisningBehandling } from '../komponenter/Fagsak/Saksoversikt/visni
 import type { BehandlingÅrsak } from './behandling';
 import type { BehandlingKategori } from './behandlingstema';
 import type { INøkkelPar } from './common';
-import type { IInstitusjon } from './institusjon-og-verge';
 import type { ITilbakekrevingsbehandling } from './tilbakekrevingsbehandling';
 import type { Utbetalingsperiode } from './vedtaksperiode';
 
@@ -22,7 +21,6 @@ export interface IBaseFagsak {
     søkerFødselsnummer: string;
     underBehandling: boolean;
     løpendeKategori?: BehandlingKategori;
-    institusjon?: IInstitusjon;
 }
 
 export interface IMinimalFagsak extends IBaseFagsak {
