@@ -86,22 +86,15 @@ export const behandlingÅrsak: Record<
 };
 
 export enum BehandlingSteg {
-    HENLEGG_BEHANDLING = 'HENLEGG_BEHANDLING',
-    REGISTRERE_INSTITUSJON_OG_VERGE = 'REGISTRERE_INSTITUSJON_OG_VERGE',
-    REGISTRERE_SØKNAD = 'REGISTRERE_SØKNAD',
     REGISTRERE_PERSONGRUNNLAG = 'REGISTRERE_PERSONGRUNNLAG',
-    FILTRERING_FØDSELSHENDELSER = 'FILTRERING_FØDSELSHENDELSER',
+    REGISTRERE_SØKNAD = 'REGISTRERE_SØKNAD',
     VILKÅRSVURDERING = 'VILKÅRSVURDERING',
     BEHANDLINGSRESULTAT = 'BEHANDLINGSRESULTAT',
     SIMULERING = 'SIMULERING',
-    SEND_TIL_BESLUTTER = 'SEND_TIL_BESLUTTER',
     VEDTAK = 'VEDTAK',
     BESLUTTE_VEDTAK = 'BESLUTTE_VEDTAK',
     IVERKSETT_MOT_OPPDRAG = 'IVERKSETT_MOT_OPPDRAG',
-    VENTE_PÅ_STATUS_FRA_ØKONOMI = 'VENTE_PÅ_STATUS_FRA_ØKONOMI',
     JOURNALFØR_VEDTAKSBREV = 'JOURNALFØR_VEDTAKSBREV',
-    DISTRIBUER_VEDTAKSBREV = 'DISTRIBUER_VEDTAKSBREV',
-    FERDIGSTILLE_BEHANDLING = 'FERDIGSTILLE_BEHANDLING',
     AVSLUTT_BEHANDLING = 'AVSLUTT_BEHANDLING',
 }
 
@@ -112,11 +105,9 @@ export enum BehandlingStegStatus {
 
 export const hentStegNummer = (steg: BehandlingSteg): number => {
     switch (steg) {
-        case BehandlingSteg.REGISTRERE_SØKNAD:
-            return 1;
         case BehandlingSteg.REGISTRERE_PERSONGRUNNLAG:
             return 1;
-        case BehandlingSteg.FILTRERING_FØDSELSHENDELSER:
+        case BehandlingSteg.REGISTRERE_SØKNAD:
             return 2;
         case BehandlingSteg.VILKÅRSVURDERING:
             return 3;
@@ -130,16 +121,10 @@ export const hentStegNummer = (steg: BehandlingSteg): number => {
             return 7;
         case BehandlingSteg.IVERKSETT_MOT_OPPDRAG:
             return 8;
-        case BehandlingSteg.VENTE_PÅ_STATUS_FRA_ØKONOMI:
-            return 9;
         case BehandlingSteg.JOURNALFØR_VEDTAKSBREV:
-            return 10;
-        case BehandlingSteg.DISTRIBUER_VEDTAKSBREV:
-            return 11;
-        case BehandlingSteg.FERDIGSTILLE_BEHANDLING:
-            return 12;
+            return 9;
         case BehandlingSteg.AVSLUTT_BEHANDLING:
-            return 13;
+            return 10;
         default:
             return 0;
     }
@@ -181,7 +166,6 @@ export enum BehandlingResultat {
     HENLAGT_FEILAKTIG_OPPRETTET = 'HENLAGT_FEILAKTIG_OPPRETTET',
     HENLAGT_SØKNAD_TRUKKET = 'HENLAGT_SØKNAD_TRUKKET',
     IKKE_VURDERT = 'IKKE_VURDERT',
-    HENLAGT_AUTOMATISK_FØDSELSHENDELSE = 'HENLAGT_AUTOMATISK_FØDSELSHENDELSE',
     HENLAGT_TEKNISK_VEDLIKEHOLD = 'HENLAGT_TEKNISK_VEDLIKEHOLD',
 }
 
@@ -189,7 +173,6 @@ export const erBehandlingHenlagt = (behandlingsresultat?: BehandlingResultat) =>
     return (
         behandlingsresultat === BehandlingResultat.HENLAGT_FEILAKTIG_OPPRETTET ||
         behandlingsresultat === BehandlingResultat.HENLAGT_SØKNAD_TRUKKET ||
-        behandlingsresultat === BehandlingResultat.HENLAGT_AUTOMATISK_FØDSELSHENDELSE ||
         behandlingsresultat === BehandlingResultat.HENLAGT_TEKNISK_VEDLIKEHOLD
     );
 };
@@ -259,14 +242,6 @@ export const behandlingstyper: INøkkelPar = {
         id: 'FØRSTEGANGSBEHANDLING',
         navn: 'Førstegangsbehandling',
     },
-    MIGRERING_FRA_INFOTRYGD: {
-        id: 'MIGRERING_FRA_INFOTRYGD',
-        navn: 'Migrering fra infotrygd',
-    },
-    MIGRERING_FRA_INFOTRYGD_OPPHØRT: {
-        id: 'MIGRERING_FRA_INFOTRYGD',
-        navn: 'Opphør migrering fra infotrygd',
-    },
     REVURDERING: {
         id: 'REVURDERING',
         navn: 'Revurdering',
@@ -318,7 +293,6 @@ export const behandlingsresultater: Record<
     FORTSATT_INNVILGET: 'Fortsatt innvilget',
     HENLAGT_FEILAKTIG_OPPRETTET: 'Henlagt (feilaktig opprettet)',
     HENLAGT_SØKNAD_TRUKKET: 'Henlagt (søknad trukket)',
-    HENLAGT_AUTOMATISK_FØDSELSHENDELSE: 'Henlagt automatisk fødselshendelse',
     HENLAGT_TEKNISK_VEDLIKEHOLD: 'Henlagt teknisk vedlikehold',
     IKKE_VURDERT: 'Ikke vurdert',
 

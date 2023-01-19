@@ -14,7 +14,7 @@ import {
 
 import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import type { IBehandling, IOpprettBehandlingData } from '../../typer/behandling';
-import { BehandlingSteg, BehandlingÅrsak } from '../../typer/behandling';
+import { BehandlingÅrsak } from '../../typer/behandling';
 import type { ILogg } from '../../typer/logg';
 
 const useBehandlingApi = (
@@ -54,9 +54,7 @@ const useBehandlingApi = (
 
                     if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
                         navigate(
-                            behandling.steg === BehandlingSteg.REGISTRERE_INSTITUSJON_OG_VERGE
-                                ? `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-mottaker`
-                                : `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`
+                            `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`
                         );
                     } else {
                         navigate(

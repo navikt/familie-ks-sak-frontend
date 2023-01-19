@@ -15,8 +15,6 @@ import UIModalWrapper from './Felleskomponenter/Modal/UIModalWrapper';
 import SystemetLaster from './Felleskomponenter/SystemetLaster/SystemetLaster';
 import TidslinjeVisualisering from './Felleskomponenter/TidslinjeVisualisering/TidslinjeVisualisering';
 import Toasts from './Felleskomponenter/Toast/Toasts';
-import { Infotrygd } from './Infotrygd/Infotrygd';
-import { Samhandler } from './Infotrygd/Samhandler';
 import Internstatistikk from './Internstatistikk';
 import ManuellJournalfør from './ManuellJournalfør/ManuellJournalfør';
 
@@ -59,8 +57,6 @@ const Container: React.FC = () => {
                                         path="/internstatistikk"
                                         element={<Internstatistikk />}
                                     />
-                                    <Route path="/infotrygd" element={<Infotrygd />} />
-                                    <Route path="/samhandler" element={<Samhandler />} />
                                     <Route path="/oppgaver" element={<Oppgaver />} />
                                     <Route path="/" element={<Navigate to="/oppgaver" />} />
                                 </Routes>
