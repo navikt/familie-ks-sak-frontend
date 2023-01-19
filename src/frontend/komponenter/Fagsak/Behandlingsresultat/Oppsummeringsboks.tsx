@@ -145,7 +145,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
             serializeIso8601String(kalenderDatoFraDate(aktivEtikett.date)),
             datoformat.MÅNED_ÅR_NAVN
         );
-        return navn[0].toUpperCase() + navn.substr(1);
+        return navn[0].toUpperCase() + navn.substring(1);
     };
 
     React.useEffect(() => {

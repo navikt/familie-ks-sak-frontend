@@ -10,12 +10,10 @@ import { Button } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useApp } from '../../../../context/AppContext';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak } from '../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
 import type { IPersonInfo } from '../../../../typer/person';
-import { ToggleNavn } from '../../../../typer/toggles';
 import EndreBehandlendeEnhet from './EndreBehandlendeEnhet/EndreBehandlendeEnhet';
 import EndreBehandlingstema from './EndreBehandling/EndreBehandlingstema';
 import HenleggBehandling from './HenleggBehandling/HenleggBehandling';
@@ -37,7 +35,6 @@ const PosisjonertMenyknapp = styled(Button)`
 const Behandlingsmeny: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
     const { åpenBehandling, vurderErLesevisning } = useBehandling();
     const navigate = useNavigate();
-    const { toggles } = useApp();
 
     return (
         <Dropdown>
@@ -58,9 +55,7 @@ const Behandlingsmeny: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
                             <EndreBehandlingstema />
                         )}
                     <OpprettBehandling minimalFagsak={minimalFagsak} />
-                    {toggles[ToggleNavn.støtterInstitusjon].valueOf() && !!bruker && (
-                        <OpprettFagsak personInfo={bruker} />
-                    )}
+                    {!!bruker && <OpprettFagsak personInfo={bruker} />}
                     {åpenBehandling.status === RessursStatus.SUKSESS && (
                         <HenleggBehandling
                             fagsakId={minimalFagsak.id}

@@ -53,7 +53,6 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
                                     {
                                         personIdent: søkeresultat.ident,
                                         aktørId: null,
-                                        institusjon: null,
                                     },
                                     lukkModal
                                 );
