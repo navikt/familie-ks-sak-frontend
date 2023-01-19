@@ -184,10 +184,9 @@ const TilbakekrevingSkjema: React.FC<{
                                         Teksteksempel ved opprett tilbakekreving
                                     </Heading>
                                     <BodyLong size="small" spacing={true}>
-                                        TODO: TEA-10954 - Legg til kontantstøtte eksempler
-                                    </BodyLong>
-                                    <BodyLong size="small" spacing={true}>
-                                        TODO: TEA-10954 - Legg til kontantstøtte eksempler
+                                        Barn født 01.02.03 flyttet fra bruker 01.01.2019. Bruker har
+                                        mottatt kontantstøtte for barnet etter at barnet ikke lenger
+                                        bor fast sammen med bruker.
                                     </BodyLong>
                                     <BodyLong size="small" spacing={true}>
                                         Søknaden ble mottatt 11.03.2022. Bruker har ikke meldt fra
@@ -303,8 +302,15 @@ const TilbakekrevingSkjema: React.FC<{
                                                                     size="small"
                                                                     spacing={true}
                                                                 >
-                                                                    TODO: TEA-10954 - Legg til
-                                                                    kontantstøtte eksempler
+                                                                    Vi mottok melding fra deg (dato)
+                                                                    om at du flyttet utenlands
+                                                                    (dato). Du har ikke rett på
+                                                                    kontantstøtte når du oppholder
+                                                                    deg utenlands. Da vi mottok
+                                                                    meldingen fra deg, var det
+                                                                    allerede utbetalt kontantstøtte
+                                                                    for perioden (Fom dato - Tom
+                                                                    dato).
                                                                 </BodyLong>
                                                                 <Lenke
                                                                     href="https://navno.sharepoint.com/sites/intranett-kommunikasjon/SitePages/Språk.aspx"
