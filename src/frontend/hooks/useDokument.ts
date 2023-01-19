@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import type { AxiosError } from 'axios';
 
 import { useHttp } from '@navikt/familie-http';
+import type { Ressurs } from '@navikt/familie-typer';
 import {
     byggDataRessurs,
     byggFeiletRessurs,
@@ -10,7 +11,6 @@ import {
     byggTomRessurs,
     RessursStatus,
 } from '@navikt/familie-typer';
-import type { Ressurs } from '@navikt/familie-typer';
 
 import type { FamilieAxiosRequestConfig } from '../context/AppContext';
 
@@ -30,8 +30,7 @@ const useDokument = () => {
         const binaryLen = binaryString.length;
         const bytes = new Uint8Array(binaryLen);
         for (let i = 0; i < binaryLen; i++) {
-            const ascii = binaryString.charCodeAt(i);
-            bytes[i] = ascii;
+            bytes[i] = binaryString.charCodeAt(i);
         }
         return bytes;
     };

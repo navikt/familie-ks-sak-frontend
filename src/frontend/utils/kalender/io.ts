@@ -9,9 +9,9 @@ export const erIsoStringGyldig = (dato?: FamilieIsoDate): boolean => {
     if (!dato) return false;
     else if (!dato.includes('-')) return false;
 
-    const år: number = parseInt(dato.substr(0, 4), 10);
-    const måned: number = parseInt(dato.substr(5, 7), 10);
-    const dag: number = parseInt(dato.substr(8, 10), 10);
+    const år: number = parseInt(dato.substring(0, 4), 10);
+    const måned: number = parseInt(dato.substring(5, 7), 10);
+    const dag: number = parseInt(dato.substring(8, 10), 10);
 
     if (år < 1800 || år > 2500) {
         return false;
@@ -40,10 +40,10 @@ export const parseIso8601String = (dato: FamilieIsoDate): DagMånedÅr => {
         throw new Error(`Dato '${dato}' er ugyldig`);
     }
 
-    const år: number = parseInt(dato.substr(0, 4), 10);
-    const måned: number = parseInt(dato.substr(5, 7), 10);
-    const dag: number = parseInt(dato.substr(8, 10), 10);
-    const logDato = dato.substr(0, 10);
+    const år: number = parseInt(dato.substring(0, 4), 10);
+    const måned: number = parseInt(dato.substring(5, 7), 10);
+    const dag: number = parseInt(dato.substring(8, 10), 10);
+    const logDato = dato.substring(0, 10);
 
     if (år < 1000 || år > 3000) {
         throw new Error(`År fra dato '${logDato}' er '${år}' og er sannsynligvis feil`);
@@ -72,9 +72,9 @@ export const parseIso8601StringMånedÅr = (dato: YearMonth): MånedÅr => {
         throw new Error(`Dato '${dato}' er ugyldig`);
     }
 
-    const år: number = parseInt(dato.substr(0, 4), 10);
-    const måned: number = parseInt(dato.substr(5, 7), 10);
-    const logDato = dato.substr(0, 7);
+    const år: number = parseInt(dato.substring(0, 4), 10);
+    const måned: number = parseInt(dato.substring(5, 7), 10);
+    const logDato = dato.substring(0, 7);
 
     if (år < 1800 || år > 2500) {
         throw new Error(`År fra dato '${logDato}' er '${år}' og er sannsynligvis feil`);
@@ -98,8 +98,8 @@ export const parseIso8601MånedString = (dato: FamilieIsoDate): DagMånedÅr => 
         throw new Error(`Dato '${dato}' er ugyldig`);
     }
 
-    const år: number = parseInt(dato.substr(0, 4), 10);
-    const måned: number = parseInt(dato.substr(5, 7), 10);
+    const år: number = parseInt(dato.substring(0, 4), 10);
+    const måned: number = parseInt(dato.substring(5, 7), 10);
     const dag = 1;
 
     if (år < 1800 || år > 2500) {

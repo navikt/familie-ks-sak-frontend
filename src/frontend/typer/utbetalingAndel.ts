@@ -59,11 +59,7 @@ export const satsTilOption = (fullSats: boolean): SatsOption => ({
 });
 
 export const optionTilsats = (satsLabel: string): boolean => {
-    if (satsLabel === IEndretUtbetalingAndelFullSats.FULL_SATS.valueOf()) {
-        return true;
-    } else {
-        return false;
-    }
+    return satsLabel === IEndretUtbetalingAndelFullSats.FULL_SATS.valueOf();
 };
 
 export const satser: IEndretUtbetalingAndelFullSats[] = Object.keys(
