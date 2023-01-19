@@ -60,7 +60,6 @@ export const doRedirectProxy = () => {
             res.redirect(newUrl);
         } else {
             console.log(`Ustøttet redirect: ${req.originalUrl}`);
-            newUrl = req.originalUrl;
             res.sendStatus(404);
         }
     };

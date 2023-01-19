@@ -1,4 +1,4 @@
-import { BehandlingÅrsak, BehandlingSteg, BehandlingStegStatus } from '../../../typer/behandling';
+import { BehandlingÅrsak, BehandlingSteg } from '../../../typer/behandling';
 import { mockBehandling } from '../../../utils/test/behandling/behandling.mock';
 import {
     SideId,
@@ -11,19 +11,6 @@ import {
 
 describe('sider.ts', () => {
     describe('siderForBehandling', () => {
-        test('REGISTRERE_MOTTAKER returneres når behandling.stegTilstand inneholder steget REGISTRERE_INSTITUSJON_OG_VERGE', () => {
-            const behandling = mockBehandling({
-                stegTilstand: [
-                    {
-                        behandlingSteg: BehandlingSteg.REGISTRERE_INSTITUSJON_OG_VERGE,
-                        behandlingStegStatus: BehandlingStegStatus.IKKE_UTFØRT,
-                    },
-                ],
-            });
-            expect(Object.keys(hentTrinnForBehandling(behandling))).toContain(
-                SideId.REGISTRERE_MOTTAKER
-            );
-        });
         test('REGISTRERE_SØKNAD returneres ved årsak SØKNAD', () => {
             const behandling = mockBehandling({ årsak: BehandlingÅrsak.SØKNAD });
             expect(Object.keys(hentTrinnForBehandling(behandling))).toContain(
@@ -34,15 +21,10 @@ describe('sider.ts', () => {
             const behandling = mockBehandling({ årsak: BehandlingÅrsak.SATSENDRING });
             expect(Object.keys(hentTrinnForBehandling(behandling))).not.toContain(SideId.VEDTAK);
         });
-        test('Standard revurdering uten søknad viser alle sider bortsett fra FILTRERING_FØDSELSHENDELSER og REGISTRERE_SØKNAD', () => {
+        test('Standard revurdering uten søknad viser alle sider bortsett fra REGISTRERE_SØKNAD', () => {
             const behandling = mockBehandling({ årsak: BehandlingÅrsak.NYE_OPPLYSNINGER });
             expect(Object.keys(hentTrinnForBehandling(behandling))).toEqual(
-                Object.values(SideId).filter(
-                    side =>
-                        side !== SideId.FILTRERING_FØDSELSHENDELSER &&
-                        side !== SideId.REGISTRERE_SØKNAD &&
-                        side !== SideId.REGISTRERE_MOTTAKER
-                )
+                Object.values(SideId).filter(side => side !== SideId.REGISTRERE_SØKNAD)
             );
         });
     });
@@ -50,9 +32,7 @@ describe('sider.ts', () => {
     describe('Sjekk ved endring av sider', () => {
         test('Oppdater siderForBehandling-tester ved nye/fjernede sider', () => {
             const sider = [
-                SideId.REGISTRERE_MOTTAKER,
                 SideId.REGISTRERE_SØKNAD,
-                SideId.FILTRERING_FØDSELSHENDELSER,
                 SideId.VILKÅRSVURDERING,
                 SideId.BEHANDLINGRESULTAT,
                 SideId.SIMULERING,
@@ -82,9 +62,7 @@ describe('sider.ts', () => {
             expect(erViPåUlovligSteg('vedtak', sider.REGISTRERE_SØKNAD)).toBeTruthy();
         });
         test('Skal returnere false dersom vi ikke er på ulovlig steg', () => {
-            expect(
-                erViPåUlovligSteg('registrer-soknad', sider.FILTRERING_FØDSELSHENDELSER)
-            ).toBeFalsy();
+            expect(erViPåUlovligSteg('registrer-soknad', sider.VILKÅRSVURDERING)).toBeFalsy();
         });
     });
 

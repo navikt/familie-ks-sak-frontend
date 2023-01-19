@@ -1,11 +1,6 @@
 import { mapFraRestPersonResultatTilPersonResultat } from '../../../context/Vilkårsvurdering/vilkårsvurdering';
 import type { IBehandling } from '../../../typer/behandling';
-import {
-    BehandlingSteg,
-    BehandlingStegStatus,
-    BehandlingÅrsak,
-    hentStegNummer,
-} from '../../../typer/behandling';
+import { BehandlingSteg, BehandlingÅrsak, hentStegNummer } from '../../../typer/behandling';
 import type { IPersonResultat, IVilkårResultat } from '../../../typer/vilkår';
 import { Resultat } from '../../../typer/vilkår';
 import { formaterIdent } from '../../../utils/formatter';
@@ -35,9 +30,7 @@ export enum KontrollertStatus {
 }
 
 export enum SideId {
-    REGISTRERE_MOTTAKER = 'REGISTRERE_MOTTAKER',
     REGISTRERE_SØKNAD = 'REGISTRERE_SØKNAD',
-    FILTRERING_FØDSELSHENDELSER = 'FILTRERING_FØDSELSHENDELSER',
     VILKÅRSVURDERING = 'VILKÅRSVURDERING',
     BEHANDLINGRESULTAT = 'BEHANDLINGRESULTAT',
     SIMULERING = 'SIMULERING',
@@ -45,32 +38,12 @@ export enum SideId {
 }
 
 export const sider: Record<SideId, ISide> = {
-    REGISTRERE_MOTTAKER: {
-        href: 'registrer-mottaker',
-        navn: 'Registrer mottaker',
-        steg: BehandlingSteg.REGISTRERE_INSTITUSJON_OG_VERGE,
-        visSide: (åpenBehandling: IBehandling) => {
-            return (
-                åpenBehandling.stegTilstand.find(
-                    value => value.behandlingSteg === BehandlingSteg.REGISTRERE_INSTITUSJON_OG_VERGE
-                ) !== undefined
-            );
-        },
-    },
     REGISTRERE_SØKNAD: {
         href: 'registrer-soknad',
         navn: 'Registrer søknad',
         steg: BehandlingSteg.REGISTRERE_SØKNAD,
         visSide: (åpenBehandling: IBehandling) => {
             return åpenBehandling.årsak === BehandlingÅrsak.SØKNAD;
-        },
-    },
-    FILTRERING_FØDSELSHENDELSER: {
-        href: 'filtreringsregler',
-        navn: 'Filtreringsregler',
-        steg: BehandlingSteg.FILTRERING_FØDSELSHENDELSER,
-        visSide: (_åpenBehandling: IBehandling) => {
-            return false; // todo: Returnerer false for nå, så kan vi rydde denne når vi rydder BehandlingSteg
         },
     },
     VILKÅRSVURDERING: {
@@ -122,7 +95,7 @@ export const sider: Record<SideId, ISide> = {
 };
 
 export const erSidenAktiv = (side: ISide, behandling: IBehandling): boolean => {
-    const steg = finnSteg(behandling);
+    const steg = behandling.steg;
 
     if (!side.steg && side.steg !== 0) {
         return true;
@@ -155,7 +128,7 @@ export const hentTrinnForBehandling = (
 };
 
 export const finnSideForBehandlingssteg = (behandling: IBehandling): ISide | undefined => {
-    const steg = finnSteg(behandling);
+    const steg = behandling.steg;
 
     if (hentStegNummer(steg) >= hentStegNummer(BehandlingSteg.VEDTAK)) {
         return sider.VEDTAK.visSide && sider.VEDTAK.visSide(behandling)
@@ -191,25 +164,3 @@ export const erViPåUlovligSteg = (pathname: string, behandlingSide?: ISide) => 
 
     return false;
 };
-
-const finnSteg = (behandling: IBehandling): BehandlingSteg => {
-    const erHenlagt = inneholderSteg(behandling, BehandlingSteg.HENLEGG_BEHANDLING);
-
-    if (erHenlagt) {
-        if (inneholderSteg(behandling, BehandlingSteg.VEDTAK)) return BehandlingSteg.VEDTAK;
-        if (inneholderSteg(behandling, BehandlingSteg.VILKÅRSVURDERING))
-            return BehandlingSteg.VILKÅRSVURDERING;
-        if (inneholderSteg(behandling, BehandlingSteg.FILTRERING_FØDSELSHENDELSER))
-            return BehandlingSteg.FILTRERING_FØDSELSHENDELSER;
-        return BehandlingSteg.REGISTRERE_SØKNAD;
-    } else {
-        return behandling.steg;
-    }
-};
-
-const inneholderSteg = (behandling: IBehandling, behandlingSteg: BehandlingSteg): boolean =>
-    behandling.stegTilstand
-        .filter(
-            stegTilstand => stegTilstand.behandlingStegStatus !== BehandlingStegStatus.IKKE_UTFØRT
-        )
-        .some(stegTilstand => stegTilstand.behandlingSteg === behandlingSteg);

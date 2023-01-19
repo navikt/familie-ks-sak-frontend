@@ -17,7 +17,7 @@ import { useBehandling } from '../../../../../context/behandlingContext/Behandli
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling, IRestNyBehandling } from '../../../../../typer/behandling';
-import { BehandlingSteg, Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
+import { Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
 import type { IBehandlingstema } from '../../../../../typer/behandlingstema';
 import { Klagebehandlingstype } from '../../../../../typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
@@ -228,9 +228,7 @@ const useOpprettBehandling = ({
 
                     if (behandling && behandling.årsak === BehandlingÅrsak.SØKNAD) {
                         navigate(
-                            behandling.steg === BehandlingSteg.REGISTRERE_INSTITUSJON_OG_VERGE
-                                ? `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-mottaker`
-                                : `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`
+                            `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`
                         );
                     } else {
                         navigate(
