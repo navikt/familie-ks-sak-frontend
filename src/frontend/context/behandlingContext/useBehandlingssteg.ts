@@ -92,31 +92,40 @@ const useBehandlingssteg = (
         behandling?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
         behandling?.årsak === BehandlingÅrsak.DØDSFALL;
 
-    const foreslåVedtakNesteOnClick = (settVisModal: (visModal: boolean) => void) => {
-        if (kanForeslåVedtak()) {
-            settSubmitRessurs(byggHenterRessurs());
-            request<void, IBehandling>({
-                method: 'POST',
-                url: `/familie-ks-sak/api/behandlinger/${
-                    behandling?.behandlingId
-                }/steg/foreslå-vedtak?behandlendeEnhet=${innloggetSaksbehandler?.enhet ?? '9999'}`,
-            }).then((response: Ressurs<IBehandling>) => {
-                settSubmitRessurs(response);
+    const foreslåVedtakNesteOnClick = (
+        settVisModal: (visModal: boolean) => void,
+        erUlagretNyFeilutbetaltValuta: boolean
+    ) => {
+        if (erUlagretNyFeilutbetaltValuta) {
+            return settSubmitRessurs(
+                byggFeiletRessurs(
+                    'Det er lagt til en ny periode med feilutbetalt valuta. Fyll ut periode og beløp, eller fjern perioden.'
+                )
+            );
+        }
 
-                if (response.status === RessursStatus.SUKSESS) {
-                    settVisModal(true);
-                    oppdaterBehandling(response);
-                } else if (response.status === RessursStatus.FEILET) {
-                    settSubmitRessurs(byggFeiletRessurs(defaultFunksjonellFeil));
-                }
-            });
-        } else {
-            settSubmitRessurs(
+        if (!kanForeslåVedtak()) {
+            return settSubmitRessurs(
                 byggFeiletRessurs(
                     'Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.'
                 )
             );
         }
+
+        request<void, IBehandling>({
+            method: 'POST',
+            url: `/familie-ks-sak/api/behandlinger/${
+                behandling?.behandlingId
+            }/steg/foreslå-vedtak?behandlendeEnhet=${innloggetSaksbehandler?.enhet ?? '9999'}`,
+            påvirkerSystemLaster: true,
+        }).then((response: Ressurs<IBehandling>) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                settVisModal(true);
+                oppdaterBehandling(response);
+            } else {
+                settSubmitRessurs(byggFeiletRessurs(defaultFunksjonellFeil));
+            }
+        });
     };
 
     return {

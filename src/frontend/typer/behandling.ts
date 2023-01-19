@@ -4,6 +4,7 @@ import type { FamilieIsoDate } from '../utils/kalender';
 import type { BehandlingKategori } from './behandlingstema';
 import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
+import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
 import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { IGrunnlagPerson } from './person';
@@ -214,6 +215,7 @@ export interface IBehandling {
     valutakurser: IRestValutakurs[];
     korrigertVedtak?: IRestKorrigertVedtak;
     sisteVedtaksperiodeVisningDato?: FamilieIsoDate;
+    feilutbetaltValuta: IRestFeilutbetaltValuta[];
 }
 
 export interface IArbeidsfordelingPåBehandling {
