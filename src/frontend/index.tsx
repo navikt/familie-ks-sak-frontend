@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom';
 import App from './komponenter/App';
 
 // eslint-disable-next-line
-const packageConfig = require('../../package.json');
+require('../../package.json');
 
 const environment = window.location.hostname;
 

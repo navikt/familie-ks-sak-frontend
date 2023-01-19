@@ -2,20 +2,14 @@ import React from 'react';
 
 import Lenke from 'nav-frontend-lenker';
 
-import { BodyShort, Tag } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
 import Visittkort from '@navikt/familie-visittkort';
 
 import { useApp } from '../../../context/AppContext';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import type { IPersonInfo } from '../../../typer/person';
-import {
-    datoformat,
-    formaterIdent,
-    formaterIsoDato,
-    hentAlder,
-    millisekunderIEttÅr,
-} from '../../../utils/formatter';
+import { formaterIdent, hentAlder } from '../../../utils/formatter';
 import DødsfallTag from '../../Felleskomponenter/DødsfallTag';
 import Behandlingsmeny from './Behandlingsmeny/Behandlingsmeny';
 
@@ -45,17 +39,6 @@ const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
             <div style={{ flex: 1 }}></div>
             {minimalFagsak !== undefined && (
                 <>
-                    {minimalFagsak?.migreringsdato !== undefined &&
-                        sjekkOmMigreringsdatoErEldreEnn3År(minimalFagsak.migreringsdato) && (
-                            <Tag
-                                size="small"
-                                children={`Migrert ${formaterIsoDato(
-                                    minimalFagsak?.migreringsdato,
-                                    datoformat.DATO
-                                )}`}
-                                variant={'info'}
-                            />
-                        )}
                     <Lenke
                         className={'visittkort__lenke'}
                         href={`/fagsak/${minimalFagsak.id}/saksoversikt`}
@@ -75,13 +58,6 @@ const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
             )}
         </Visittkort>
     );
-};
-
-const sjekkOmMigreringsdatoErEldreEnn3År = (migreringsdatoIString: string) => {
-    const dato = new Date();
-    const migreringsdato = new Date(migreringsdatoIString);
-    const difference = dato.getTime() - migreringsdato.getTime();
-    return Math.floor(Math.abs(difference) / millisekunderIEttÅr) < 3;
 };
 
 export default Personlinje;

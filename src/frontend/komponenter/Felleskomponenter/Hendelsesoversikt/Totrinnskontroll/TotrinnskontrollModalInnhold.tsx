@@ -13,7 +13,7 @@ const TotrinnskontrollModalInnhold: React.FunctionComponent<IProps> = ({ beslutn
             <div className={'totrinnsvurdering-modal-innhold'}>
                 <StatusIkon status={Status.FEIL} />
                 <div className={'totrinnsvurdering-modal-tekst'}>
-                    Beslutning er IKKE_VURDERT. Ta kontakt med barnetrygdteamet.
+                    Beslutning er IKKE_VURDERT. Ta kontakt med kontantstøtteteamet.
                 </div>
             </div>
         );

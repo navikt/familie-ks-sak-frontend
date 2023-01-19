@@ -31,7 +31,7 @@ export const getAriaSort = (
     if (column.isSortedDesc === true) {
         return ariaSortMap.get(FeltSortOrder.DESCENDANT);
     }
-    if (column.isSortedDesc === false) {
+    if (!column.isSortedDesc) {
         return ariaSortMap.get(FeltSortOrder.ASCENDANT);
     }
     return ariaSortMap.get(FeltSortOrder.NONE);
@@ -41,7 +41,7 @@ export const getSortLenkClassName = (column: ColumnInstance<IOppgaveRad>) => {
     if (column.isSortedDesc === true) {
         return 'tabell__th--sortert-desc';
     }
-    if (column.isSortedDesc === false) {
+    if (!column.isSortedDesc) {
         return 'tabell__th--sortert-asc';
     }
     return '';
