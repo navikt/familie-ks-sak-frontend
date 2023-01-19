@@ -116,7 +116,14 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
         } else return '';
     };
 
-    return erBehandlingMedVedtaksbrevutsending ? (
+    if (!erBehandlingMedVedtaksbrevutsending) {
+        return (
+            <Alert variant="info">
+                {`Du er inne på en teknisk behandling og det finnes ingen vedtaksbrev.`}
+            </Alert>
+        );
+    }
+    return (
         <>
             <Vedtaksmeny
                 åpenBehandling={åpenBehandling}
@@ -197,7 +204,6 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                     Vis vedtaksbrev
                 </Button>
             </div>
-
             <Modal
                 open={visModal}
                 onClose={() => settVisModal(false)}
@@ -234,10 +240,6 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                 </Modal.Content>
             </Modal>
         </>
-    ) : (
-        <Alert variant="info">
-            {`Du er inne på en teknisk behandling og det finnes ingen vedtaksbrev.`}
-        </Alert>
     );
 };
 
