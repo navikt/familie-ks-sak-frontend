@@ -278,7 +278,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                         inline
                         size={'small'}
                         children={
-                            'Norge og annen forelders aktivitetsland er primærland. Saksbehandler må manuelt vurdere om Norge skal utbetale barnetrygden.'
+                            'Norge og annen forelders aktivitetsland er primærland. Saksbehandler må manuelt vurdere om Norge skal utbetale kontantstøtten.'
                         }
                     />
                 )}

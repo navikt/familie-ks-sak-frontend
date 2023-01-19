@@ -8,7 +8,7 @@ import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../typer/ve
 import { BegrunnelseType } from '../typer/vedtak';
 import type { IVedtaksperiodeMedBegrunnelser } from '../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../typer/vedtaksperiode';
-import type { VedtaksbegrunnelseTekster, VilkårType } from '../typer/vilkår';
+import type { VedtaksbegrunnelseTekster } from '../typer/vilkår';
 import type { FamilieIsoDate } from './kalender';
 import {
     førsteDagIInneværendeMåned,
@@ -112,22 +112,6 @@ export const finnBegrunnelseType = (
               );
           }) as BegrunnelseType)
         : undefined;
-};
-
-export const finnVedtakBegrunnelseVilkår = (
-    vilkårBegrunnelser: Ressurs<VedtaksbegrunnelseTekster>,
-    begrunnelse: Begrunnelse
-): VilkårType | undefined => {
-    if (vilkårBegrunnelser.status === RessursStatus.SUKSESS) {
-        Object.keys(vilkårBegrunnelser.data).forEach(begrunnelseType => {
-            const match = vilkårBegrunnelser.data[begrunnelseType as BegrunnelseType].find(
-                (begrunnelseTilknyttetVilkår: IRestBegrunnelseTilknyttetVilkår) =>
-                    begrunnelseTilknyttetVilkår.id === begrunnelse
-            );
-            if (match !== undefined) return match.vilkår;
-        });
-    }
-    return undefined;
 };
 
 export const hentBakgrunnsfarge = (begrunnelseType?: BegrunnelseType) => {

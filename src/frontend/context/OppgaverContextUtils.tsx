@@ -142,4 +142,4 @@ export const mapIOppgaverTilOppgaveRad = (
     });
 
 export const intDatoTilNorskDato = (intDato: string) =>
-    `${intDato.substr(8, 2)}.${intDato.substr(5, 2)}.${intDato.substr(2, 2)}`;
+    `${intDato.substring(8, 2)}.${intDato.substring(5, 2)}.${intDato.substring(2, 2)}`;
