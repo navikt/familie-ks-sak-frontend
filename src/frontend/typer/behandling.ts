@@ -334,8 +334,10 @@ export interface IBehandlingPåVent {
 
 export enum SettPåVentÅrsak {
     AVVENTER_DOKUMENTASJON = 'AVVENTER_DOKUMENTASJON',
+    AVVENTER_BEHANDLING = 'AVVENTER_BEHANDLING',
 }
 
 export const settPåVentÅrsaker: Record<SettPåVentÅrsak, string> = {
     AVVENTER_DOKUMENTASJON: 'Avventer dokumentasjon',
+    AVVENTER_BEHANDLING: 'Avventer behandling',
 };
