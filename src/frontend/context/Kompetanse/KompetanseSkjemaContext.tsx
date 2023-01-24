@@ -120,7 +120,7 @@ const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => 
                         barnetsBostedsland: skjema.felter.barnetsBostedsland.verdi,
                         resultat: skjema.felter.resultat.verdi,
                     },
-                    url: `/familie-ks-sak/api/kompetanse/${behandlingId}`,
+                    url: `/familie-ks-sak/api/behandlinger/${behandlingId}/kompetanse`,
                 },
                 (response: Ressurs<IBehandling>) => {
                     if (response.status === RessursStatus.SUKSESS) {
@@ -138,7 +138,7 @@ const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => 
         settVisfeilmeldinger(false);
         request<void, IBehandling>({
             method: 'DELETE',
-            url: `/familie-ks-sak/api/kompetanse/${behandlingId}/${kompetanse.id}`,
+            url: `/familie-ks-sak/api/behandlinger/${behandlingId}/kompetanse/${kompetanse.id}`,
         }).then((response: Ressurs<IBehandling>) => {
             if (response.status === RessursStatus.SUKSESS) {
                 nullstillSkjema();
