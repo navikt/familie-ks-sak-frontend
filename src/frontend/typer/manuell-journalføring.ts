@@ -67,35 +67,39 @@ export interface INavnOgIdent {
 export enum JournalpostTittel {
     SØKNAD_OM_KONTANTSTØTTE = 'Søknad om kontantstøtte',
     ETTERSENDELSE_TIL_SØKNAD_OM_KONTANTSTØTTE = 'Ettersendelse til søknad om kontantstøtte',
-    TILLEGGSSKJEMA_VED_KRAV_OM_UTBETALING = 'Tilleggsskjema EØS',
+    TILLEGGSSKJEMA_EØS = 'Tilleggsskjema EØS',
 }
 
 export const BrevkodeMap = new Map<string | undefined, string>([
     [JournalpostTittel.SØKNAD_OM_KONTANTSTØTTE.toString(), 'NAV 34-00.08'],
     [JournalpostTittel.ETTERSENDELSE_TIL_SØKNAD_OM_KONTANTSTØTTE.toString(), 'NAVe 33-00.08'],
-    [JournalpostTittel.TILLEGGSSKJEMA_VED_KRAV_OM_UTBETALING.toString(), 'NAV 34-00.15'],
+    [JournalpostTittel.TILLEGGSSKJEMA_EØS.toString(), 'NAV 34-00.15'],
 ]);
 
 export enum DokumentTittel {
     AVTALE_OM_DELT_BOSTED = 'Avtale om delt bosted',
-    AVTALE_OM_FAST_BOSTED_SAMVÆR = 'Avtale om fast bosted/samvær',
     ARBEIDSAVTALE = 'Arbeidsavtale',
-    BEKREFTELSE_PÅ_UTENLANDSOPPHOLD = 'Bekreftelse på utenlandsopphold',
-    BEKREFTELSE_PÅ_OPPHOLDSTILLATELSE = 'Bekreftelse på oppholdstillatelse',
-    BEKREFTELSE_PÅ_ASYLSTATUS = 'Bekreftelse på asylstatus',
+    DOKUMENTASJON_PÅ_BARNEHAGEPLASS = 'Dokumentasjon på barnehageplass',
     DOKUMENTASJON_PÅ_DATO_FOR_OVERTAKELSE_AV_OMSORG = 'Dokumentasjon på dato for overtakelse av omsorg',
-    DOKUMENTASJON_PÅ_ADOPSJON = 'Dokumentasjon på adopsjon',
-    ERKLÆRING_OM_SAMLIVSBRUDD = 'Erklæring om samlivsbrudd',
-    EØS_REGISTERINGSBEVIS = 'EØS registreringsbevis',
-    EØS_VARIG_OPPHOLDBEVIS = 'EØS varig oppholdbevis',
+    EØS_REGISTRERINGSBEVIS = 'EØS registreringsbevis',
+    EØS_VARIG_OPPHOLDSBEVIS = 'EØS varig oppholdsbevis',
     F001 = 'F001',
     F002 = 'F002',
+    FULLMAKT = 'Fullmakt',
     FØDSELSATTEST = 'Fødselsattest',
+    H001 = 'H001',
+    H002 = 'H002',
+    KLAGE = 'Klage',
+    KLAGE_PÅ_TILBAKEKREVING = 'Klage på tilbakekreving',
     KONTOOPPLYSNINGER = 'Kontoopplysninger',
+    LØNNSSLIPPER = 'Lønnsslipper',
+    OPPHOLDSTILLATELSE_LOVLIG_OPPHOLD = 'Oppholdstillatelse/lovlig opphold',
     PASS_ID_PAPIRER = 'Pass/ID-papirer',
-    REGISTERUTSKRIFT_FRA_BRØNNØYSUNDREGISTRENE = 'Registerutskrift fra Brønnøysundregistrene',
+    REGISTRERUTSKRIFT_FRA_BRØNNØYSUNDREGISTRENE = 'Registerutskrift fra Brønnøysundregistrene',
+    UTENLANDSOPPHOLD = 'Utenlandsopphold',
     UTTALELSE = 'Uttalelse',
     UTTALELSE_TILBAKEKREVING = 'Uttalelse tilbakekreving',
+    VIGSELSATTEST = 'Vigselsattest',
 }
 
 export enum JournalpostKanal {
