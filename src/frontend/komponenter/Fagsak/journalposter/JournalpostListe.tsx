@@ -128,9 +128,12 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
     useEffect(() => {
         settJournalposterRessurs(byggHenterRessurs());
 
-        request<undefined, IJournalpost[]>({
-            method: 'GET',
-            url: `/familie-ks-sak/api/journalpost/bruker/${bruker.personIdent}`,
+        const ident = bruker.personIdent;
+
+        request<{ ident: string }, IJournalpost[]>({
+            method: 'POST',
+            data: { ident },
+            url: `/familie-ks-sak/api/journalpost/bruker`,
             påvirkerSystemLaster: true,
         }).then(journalposterRessurs => {
             settJournalposterRessurs(journalposterRessurs);
