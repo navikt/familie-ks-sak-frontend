@@ -52,7 +52,7 @@ const hentIkkeVurderteAndreVurderingerFeil = (
 ): FeiloppsummeringFeil[] =>
     personResultat.andreVurderinger
         .filter(
-            (annenVurdering: IAnnenVurdering) => annenVurdering.resultat === Resultat.IKKE_OPPFYLT
+            (annenVurdering: IAnnenVurdering) => annenVurdering.resultat === Resultat.IKKE_VURDERT
         )
         .map(annenVurdering => ({
             skjemaelementId: annenVurderingFeilmeldingId(annenVurdering),
