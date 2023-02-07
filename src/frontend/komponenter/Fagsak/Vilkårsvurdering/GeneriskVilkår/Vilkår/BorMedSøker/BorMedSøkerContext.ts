@@ -105,5 +105,9 @@ export const bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår = (
             UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
         ];
     }
-    return [UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG];
+    return [
+        UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
+        UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED,
+        UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED_SKAL_IKKE_DELES,
+    ];
 };
