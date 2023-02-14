@@ -26,7 +26,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={true}
-            visSpørsmål={false}
+            visSpørsmål={true}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             toggleForm={toggleForm}

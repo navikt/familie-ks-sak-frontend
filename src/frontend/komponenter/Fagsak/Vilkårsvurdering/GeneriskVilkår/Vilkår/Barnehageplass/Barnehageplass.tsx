@@ -75,7 +75,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={false}
-            visSpørsmål={false}
+            visSpørsmål={true}
             muligeUtdypendeVilkårsvurderinger={
                 harBarnehageplass ? [] : muligeUtdypendeVilkårsvurderinger
             }
