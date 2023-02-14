@@ -6,7 +6,11 @@ import { Radio } from 'nav-frontend-skjema';
 
 import { FamilieInput, FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
-import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
+import {
+    Resultat,
+    resultater,
+    UtdypendeVilkårsvurderingGenerell,
+} from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -92,6 +96,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
                         : ''
                 }
+                value={resultater[felter.resultat.verdi]}
                 erLesevisning={lesevisning}
             >
                 <Radio
