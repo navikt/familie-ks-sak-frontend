@@ -5,7 +5,7 @@ import { Radio } from 'nav-frontend-skjema';
 import { Label } from '@navikt/ds-react';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
-import { Resultat } from '../../../../../../typer/vilkår';
+import { Resultat, resultater } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -42,6 +42,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                             : ''}
                     </Label>
                 }
+                value={resultater[felter.resultat.verdi]}
                 error={
                     vilkårSkjemaContext.skjema.visFeilmeldinger
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
