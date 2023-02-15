@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -6,11 +6,7 @@ import { Radio } from 'nav-frontend-skjema';
 
 import { FamilieInput, FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
-import {
-    Resultat,
-    resultater,
-    UtdypendeVilkårsvurderingGenerell,
-} from '../../../../../../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -75,6 +71,14 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
         oppdaterResultat(harBarnehageplass, vilkårSkjemaContext.skjema.felter.antallTimer.verdi);
     }, [vilkårSkjemaContext.skjema.felter.utdypendeVilkårsvurdering]);
 
+    const skalKrysseAvPåJaForBarnehageplass =
+        vilkårSkjemaContext.skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT &&
+        harBarnehageplass;
+
+    const skalKrysseAvPåNeiForBarnehageplass =
+        vilkårSkjemaContext.skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT &&
+        !harBarnehageplass;
+
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
@@ -96,16 +100,13 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
                         : ''
                 }
-                value={resultater[felter.resultat.verdi]}
+                value={skalKrysseAvPåJaForBarnehageplass ? 'Ja' : 'Nei'}
                 erLesevisning={lesevisning}
             >
                 <Radio
                     label={'Ja'}
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                    checked={
-                        vilkårSkjemaContext.skjema.felter.resultat.verdi !==
-                            Resultat.IKKE_VURDERT && harBarnehageplass
-                    }
+                    checked={skalKrysseAvPåJaForBarnehageplass}
                     onChange={() => {
                         onBarnehageplassOppdatert(true);
                     }}
@@ -113,10 +114,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                 <Radio
                     label={'Nei'}
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                    checked={
-                        vilkårSkjemaContext.skjema.felter.resultat.verdi !==
-                            Resultat.IKKE_VURDERT && !harBarnehageplass
-                    }
+                    checked={skalKrysseAvPåNeiForBarnehageplass}
                     onChange={() => {
                         vilkårSkjemaContext.skjema.felter.antallTimer.validerOgSettFelt('');
                         onBarnehageplassOppdatert(false);
