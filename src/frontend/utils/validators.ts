@@ -18,6 +18,7 @@ import {
     erFør,
     erIsoStringGyldig,
     erSamme,
+    førsteDagINesteMåned,
     kalenderDato,
     kalenderDatoMedFallback,
     KalenderEnhet,
@@ -167,10 +168,10 @@ export const erPeriodeGyldig = (
 
         const fomKalenderDato = kalenderDatoMedFallback(fom, TIDENES_MORGEN);
 
-        if (valgtDatoErNesteMånedEllerSenere(fomKalenderDato, idag)) {
+        if (erEtter(fomKalenderDato, førsteDagINesteMåned())) {
             return feil(
                 felt,
-                'Du kan ikke legge inn fra og med dato som er i neste måned eller senere'
+                'Du kan ikke legge inn fra og med dato som er etter første dag i neste måned eller senere'
             );
         }
 

@@ -1,6 +1,7 @@
+import { leggTil } from './aritmetikk';
 import { parseIso8601MånedString, parseIso8601String, parseIso8601StringMånedÅr } from './io';
 import type { DagMånedÅr, FamilieIsoDate, MånedÅr, YearMonth } from './typer';
-import { antallDagerIMåned } from './typer';
+import { antallDagerIMåned, KalenderEnhet } from './typer';
 
 export const TIDENES_MORGEN: DagMånedÅr = {
     dag: 1,
@@ -48,6 +49,14 @@ export const førsteDagIInneværendeMåned = () => {
     const inneværende = iDag();
     return {
         ...inneværende,
+        dag: 1,
+    };
+};
+
+export const førsteDagINesteMåned = () => {
+    const nesteMåned = leggTil(iDag(), 1, KalenderEnhet.MÅNED);
+    return {
+        ...nesteMåned,
         dag: 1,
     };
 };
