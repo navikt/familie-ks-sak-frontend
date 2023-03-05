@@ -4,7 +4,7 @@ export const hentBarnehageplassBeskrivelse = (prosent: number, erPåvirketAvEndr
     switch (true) {
         case erPåvirketAvEndring:
             return 'Ikke relevant';
-        case prosent === 100 || prosentVedDeltBosted:
+        case prosent === 100 || prosent === prosentVedDeltBosted:
             return 'Ingen plass';
         case prosent === 80:
             return 'Under 9 timer';
