@@ -56,7 +56,6 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
     app.use(
         '/endringslogg',
         ensureAuthenticated(azureAuthClient, true),
-        attachToken(azureAuthClient),
         doEndringslogProxy()
     );
 
