@@ -23,13 +23,13 @@ spec:
     enabled: true
     path: /metrics
   ingresses:
-    - https://kontantstotte.dev.intern.nav.no
+    - https://kontantstotte.intern.dev.nav.no
   azure:
     application:
       enabled: true
       tenant: trygdeetaten.no
       replyURLs:
-        - https://kontantstotte.dev.intern.nav.no/auth/openid/callback
+        - https://kontantstotte.intern.dev.nav.no/auth/openid/callback
       claims:
         groups:
           - id: "71f503a2-c28f-4394-a05a-8da263ceca4a"  # '0000-GA-Kontantstotte-Veileder' - Veileder
@@ -48,6 +48,8 @@ spec:
       rules:
         - application: familie-ks-sak
         - application: familie-ks-sak-frontend-redis
+      external:
+        - host: familie-endringslogg.intern.dev.nav.no
   envFrom:
     - secret: ks-sak-frontend
   env:
