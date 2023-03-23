@@ -61,6 +61,7 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
 
     const {
         harInnloggetSaksbehandlerSkrivetilgang,
+        harInnloggetSaksbehandlerSuperbrukerTilgang,
         innloggetSaksbehandler,
         hentSaksbehandlerRolle,
     } = useApp();
