@@ -21,7 +21,7 @@ export const gruppeIdTilRolle = (gruppeId: string) => {
 };
 
 export const gruppeIdTilSuperbrukerRolle = erProd()
-    ? 'c31541cc-6590-4986-b6a7-cc0b040888dc'
+    ? 'b8158d87-a284-4620-9bf9-f0aa3f62c8aa'
     : '314fa714-f13c-4cdc-ac5c-e13ce08e241c';
 
 export const hentSøkersMålform = (behandling: IBehandling) =>
