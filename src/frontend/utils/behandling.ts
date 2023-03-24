@@ -20,6 +20,10 @@ export const gruppeIdTilRolle = (gruppeId: string) => {
     return rolleConfig.get(gruppeId) ?? BehandlerRolle.UKJENT;
 };
 
+export const gruppeIdTilSuperbrukerRolle = erProd()
+    ? 'b8158d87-a284-4620-9bf9-f0aa3f62c8aa'
+    : '314fa714-f13c-4cdc-ac5c-e13ce08e241c';
+
 export const hentSøkersMålform = (behandling: IBehandling) =>
     behandling.personer.find((person: IGrunnlagPerson) => {
         return person.type === PersonType.SØKER;

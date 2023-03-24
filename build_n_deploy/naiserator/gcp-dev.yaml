@@ -35,6 +35,7 @@ spec:
           - id: "71f503a2-c28f-4394-a05a-8da263ceca4a"  # '0000-GA-Kontantstotte-Veileder' - Veileder
           - id: "c7e0b108-7ae6-432c-9ab4-946174c240c0"  # '0000-GA-Kontantstotte-Saksbehandler' - Saksbehandler
           - id: "52fe1bef-224f-49df-a40a-29f92d4520f8"  # '0000-GA-Kontantstotte-Beslutter' - Beslutter
+          - id: "314fa714-f13c-4cdc-ac5c-e13ce08e241c"  # '0000-GA-Kontantstotte-Superbruker' - Superbruker
           - id: "c62e908a-cf20-4ad0-b7b3-3ff6ca4bf38b"  # teamfamilie-forvaltning
   resources:
     limits:
