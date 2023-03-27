@@ -8,6 +8,11 @@ import { Alert, BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
+import { PeriodetypeIVedtaksbrev, useVedtak } from './useVedtak';
+import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
+import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
+import Vedtaksmeny from './Vedtaksmeny';
 import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import useDokument from '../../../hooks/useDokument';
@@ -22,11 +27,6 @@ import {
     hentStegNummer,
 } from '../../../typer/behandling';
 import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
-import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
-import { PeriodetypeIVedtaksbrev, useVedtak } from './useVedtak';
-import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
-import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
-import Vedtaksmeny from './Vedtaksmeny';
 
 interface IOppsummeringVedtakInnholdProps {
     åpenBehandling: IBehandling;

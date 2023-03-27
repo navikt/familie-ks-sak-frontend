@@ -5,11 +5,11 @@ import styled from 'styled-components';
 import { BodyShort, Button, ErrorMessage, Heading } from '@navikt/ds-react';
 import type { ISøkeresultat } from '@navikt/familie-header';
 
+import useOpprettFagsak from './useOpprettFagsak';
 import { useApp } from '../../../context/AppContext';
 import type { IPersonInfo } from '../../../typer/person';
 import { formaterIdent } from '../../../utils/formatter';
 import UIModalWrapper from '../Modal/UIModalWrapper';
-import useOpprettFagsak from './useOpprettFagsak';
 
 export interface IOpprettFagsakModal {
     lukkModal: () => void;

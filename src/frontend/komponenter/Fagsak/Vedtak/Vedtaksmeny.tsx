@@ -7,12 +7,12 @@ import { Button } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
 import { NavdsSpacing10 } from '@navikt/ds-tokens/dist/tokens';
 
+import KorrigerVedtak from './KorrigerVedtakModal/KorrigerVedtak';
+import EndreEndringstidspunkt from './VedtakBegrunnelserTabell/EndreEndringstidspunkt';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingÅrsak } from '../../../typer/behandling';
 import { BehandlingKategori } from '../../../typer/behandlingstema';
-import KorrigerVedtak from './KorrigerVedtakModal/KorrigerVedtak';
-import EndreEndringstidspunkt from './VedtakBegrunnelserTabell/EndreEndringstidspunkt';
 
 interface IVedtakmenyProps {
     åpenBehandling: IBehandling;

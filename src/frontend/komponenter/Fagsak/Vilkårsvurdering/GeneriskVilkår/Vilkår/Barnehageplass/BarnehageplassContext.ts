@@ -1,5 +1,9 @@
 import { useFelt } from '@navikt/familie-skjema';
 
+import {
+    erAntallTimerGyldig,
+    erUtdypendeVilkårsvurderingerGyldig,
+} from './BarnehageplassValidering';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import { UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
@@ -13,10 +17,6 @@ import {
     erResultatGyldig,
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import {
-    erAntallTimerGyldig,
-    erUtdypendeVilkårsvurderingerGyldig,
-} from './BarnehageplassValidering';
 
 export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = [
     UtdypendeVilkårsvurderingGenerell.SOMMERFERIE,

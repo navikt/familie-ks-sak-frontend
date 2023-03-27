@@ -4,10 +4,10 @@ import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
 
+import { useMedlemskap } from './MedlemskapContext';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
-import { useMedlemskap } from './MedlemskapContext';
 
 type MedlemskapProps = IVilkårSkjemaBaseProps;
 

@@ -10,10 +10,6 @@ import { Button } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import { BehandlingÅrsak } from '../../../../typer/behandling';
-import type { IMinimalFagsak } from '../../../../typer/fagsak';
-import type { IPersonInfo } from '../../../../typer/person';
 import EndreBehandlendeEnhet from './EndreBehandlendeEnhet/EndreBehandlendeEnhet';
 import EndreBehandlingstema from './EndreBehandling/EndreBehandlingstema';
 import HenleggBehandling from './HenleggBehandling/HenleggBehandling';
@@ -22,6 +18,10 @@ import TaBehandlingAvVent from './LeggBehandlingPåVent/TaBehandlingAvVent';
 import LeggTilBarnPBehandling from './LeggTilBarnPåBehandling/LeggTilBarnPåBehandling';
 import OpprettBehandling from './OpprettBehandling/OpprettBehandling';
 import OpprettFagsak from './OpprettFagsak/OpprettFagsak';
+import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
+import { BehandlingÅrsak } from '../../../../typer/behandling';
+import type { IMinimalFagsak } from '../../../../typer/fagsak';
+import type { IPersonInfo } from '../../../../typer/person';
 
 interface IProps {
     bruker?: IPersonInfo;

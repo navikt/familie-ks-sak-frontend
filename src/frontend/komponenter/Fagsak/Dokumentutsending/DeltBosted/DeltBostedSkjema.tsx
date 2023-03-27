@@ -4,11 +4,11 @@ import { CheckboxGruppe } from 'nav-frontend-skjema';
 
 import type { Felt } from '@navikt/familie-skjema';
 
+import BarnCheckbox from './BarnCheckbox';
 import type { IPersonInfo } from '../../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../../typer/søknad';
 import { kalenderDiff, kalenderDatoTilDate, kalenderDato } from '../../../../utils/kalender';
 import LeggTilBarn from '../../../Felleskomponenter/LeggTilBarn';
-import BarnCheckbox from './BarnCheckbox';
 
 interface IProps {
     barnMedDeltBostedFelt: Felt<IBarnMedOpplysninger[]>;

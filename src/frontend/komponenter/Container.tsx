@@ -3,11 +3,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 
-import { useApp } from '../context/AppContext';
-import { BehandlingProvider } from '../context/behandlingContext/BehandlingContext';
-import { FagsakProvider } from '../context/fagsak/FagsakContext';
-import { Oppgaver } from '../context/OppgaverContext';
-import { TidslinjeProvider } from '../context/TidslinjeContext';
 import FagsakContainer from './Fagsak/FagsakContainer';
 import { HeaderMedSøk } from './Felleskomponenter/HeaderMedSøk/HeaderMedSøk';
 import UgyldigSesjon from './Felleskomponenter/Modal/SesjonUtløpt';
@@ -17,6 +12,11 @@ import TidslinjeVisualisering from './Felleskomponenter/TidslinjeVisualisering/T
 import Toasts from './Felleskomponenter/Toast/Toasts';
 import Internstatistikk from './Internstatistikk';
 import ManuellJournalfør from './ManuellJournalfør/ManuellJournalfør';
+import { useApp } from '../context/AppContext';
+import { BehandlingProvider } from '../context/behandlingContext/BehandlingContext';
+import { FagsakProvider } from '../context/fagsak/FagsakContext';
+import { Oppgaver } from '../context/OppgaverContext';
+import { TidslinjeProvider } from '../context/TidslinjeContext';
 
 const Container: React.FC = () => {
     const { autentisert, systemetLaster, innloggetSaksbehandler } = useApp();

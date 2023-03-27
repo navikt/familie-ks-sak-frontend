@@ -2,9 +2,9 @@ import constate from 'constate';
 
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
-import type { IBehandling } from '../../typer/behandling';
 import { hentFeilIVilkårsvurdering } from './hentFeilIVilkårsvurdering';
 import { mapFraRestVilkårsvurderingTilUi } from './vilkårsvurdering';
+import type { IBehandling } from '../../typer/behandling';
 
 interface IProps {
     åpenBehandling: IBehandling;

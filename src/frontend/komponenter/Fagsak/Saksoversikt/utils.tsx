@@ -4,6 +4,7 @@ import React from 'react';
 import { ExternalLink } from '@navikt/ds-icons';
 import { Link } from '@navikt/ds-react';
 
+import type { VisningBehandling } from './visningBehandling';
 import {
     behandlingsresultater,
     BehandlingStatus,
@@ -21,7 +22,6 @@ import {
     Behandlingsresultatstype,
     Tilbakekrevingsbehandlingstype,
 } from '../../../typer/tilbakekrevingsbehandling';
-import type { VisningBehandling } from './visningBehandling';
 
 export enum Saksoversiktstype {
     KONTANTSTØTTE = 'KONTANTSTØTTE',

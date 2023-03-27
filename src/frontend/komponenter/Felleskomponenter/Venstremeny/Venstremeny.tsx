@@ -7,11 +7,11 @@ import { BackFilled, NextFilled } from '@navikt/ds-icons';
 import { BodyShort, Button } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import Link from './Link';
 import type { IUnderside } from './sider';
 import { erSidenAktiv } from './sider';
+import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
+import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 
 const ToggleVisningVenstremeny = styled(Button)`
     position: fixed;

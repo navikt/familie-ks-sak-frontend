@@ -8,12 +8,12 @@ import { AddCircle } from '@navikt/ds-icons';
 import { Button, Heading } from '@navikt/ds-react';
 import { NavdsSpacing5, NavdsSpacing8, NavdsSpacing16 } from '@navikt/ds-tokens/dist/tokens';
 
+import VilkårTabell from './VilkårTabell';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IVilkårConfig, IVilkårResultat, VilkårType } from '../../../../typer/vilkår';
 import { Resultat } from '../../../../typer/vilkår';
 import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
-import VilkårTabell from './VilkårTabell';
 
 interface IProps {
     person: IGrunnlagPerson;

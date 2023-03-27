@@ -10,15 +10,15 @@ import { Alert, Heading } from '@navikt/ds-react';
 import { FamilieKnapp } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
-import type { OppgavetypeFilter } from '../../typer/oppgave';
-import { oppgaveTypeFilter } from '../../typer/oppgave';
-import Knapperekke from '../Felleskomponenter/Knapperekke';
 import { AvsenderPanel } from './AvsenderPanel';
 import { BrukerPanel } from './BrukerPanel';
 import { Dokumenter } from './Dokument/Dokumenter';
 import Journalpost from './Journalpost';
 import { KnyttJournalpostTilBehandling } from './KnyttJournalpostTilBehandling';
+import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
+import { oppgaveTypeFilter } from '../../typer/oppgave';
+import type { OppgavetypeFilter } from '../../typer/oppgave';
+import Knapperekke from '../Felleskomponenter/Knapperekke';
 
 const Container = styled.div`
     padding: 2rem;

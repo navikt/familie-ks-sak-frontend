@@ -10,13 +10,13 @@ import type { ISODateString } from '@navikt/familie-form-elements';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 
+import { vilkårPeriodeFeilmeldingId } from './VilkårTabell';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IVilkårResultat } from '../../../../typer/vilkår';
 import { Resultat } from '../../../../typer/vilkår';
 import { datoformatNorsk } from '../../../../utils/formatter';
 import type { IPeriode } from '../../../../utils/kalender';
 import { nyPeriode } from '../../../../utils/kalender';
-import { vilkårPeriodeFeilmeldingId } from './VilkårTabell';
 
 interface IProps {
     vilkår: IVilkårResultat;

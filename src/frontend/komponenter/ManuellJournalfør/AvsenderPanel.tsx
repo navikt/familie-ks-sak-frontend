@@ -7,11 +7,11 @@ import { BodyShort, Checkbox } from '@navikt/ds-react';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
+import { DeltagerInfo } from './DeltagerInfo';
+import { StyledEkspanderbartpanelBase } from './StyledEkspanderbartpanelBase';
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
 import { EmailIkon } from '../../ikoner/EmailIkon';
 import { formaterIdent } from '../../utils/formatter';
-import { DeltagerInfo } from './DeltagerInfo';
-import { StyledEkspanderbartpanelBase } from './StyledEkspanderbartpanelBase';
 
 const StyledEkspanderbartpanelBaseMedMargin = styled(StyledEkspanderbartpanelBase)`
     & .ekspanderbartPanel__innhold {

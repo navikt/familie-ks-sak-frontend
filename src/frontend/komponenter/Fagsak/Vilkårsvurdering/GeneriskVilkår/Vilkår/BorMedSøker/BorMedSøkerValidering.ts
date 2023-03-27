@@ -1,10 +1,10 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
+import { bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår } from './BorMedSøkerContext';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import { Regelverk } from '../../../../../../typer/vilkår';
 import { erBegrunnelsePåkrevd } from '../../VilkårSkjema';
-import { bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår } from './BorMedSøkerContext';
 
 export const erUtdypendeVilkårsvurderingerGyldig = (
     felt: FeltState<UtdypendeVilkårsvurdering[]>,
