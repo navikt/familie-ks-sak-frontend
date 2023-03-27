@@ -32,11 +32,14 @@ const baseConfig = {
             patterns: [{ from: 'src/frontend/public/favicon.svg', to: '.' + publicUrl }],
         }),
         new TypeScriptTypeChecker({
+            async: true,
             typescript: {
                 configFile: path.join(process.cwd(), 'src/frontend/tsconfig.json'),
-            },
-            eslint: {
-                files: './src/**/*.{ts,tsx,js,jsx}',
+                diagnosticOptions: {
+                    semantic: true,
+                    syntactic: true,
+                },
+                mode: 'write-references',
             },
         }),
     ],
