@@ -98,5 +98,8 @@
         "react": {
             "version": "detect"
         }
+    },
+    "env": {
+        "node": true
     }
 }

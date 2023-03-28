@@ -1,14 +1,13 @@
-/* eslint-disable */
 import path from 'path';
 
-import ESLintPlugin from 'eslint-webpack-plugin';
+import SentryCliPlugin from '@sentry/webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import CssMinimizerWebpackPlugin from 'css-minimizer-webpack-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import merge from 'webpack-merge';
 
 import baseConfig from './webpack.common.js';
-import SentryCliPlugin from '@sentry/webpack-plugin';
 
 const prodConfig = merge.mergeWithRules({
     module: {
@@ -66,6 +65,7 @@ const prodConfig = merge.mergeWithRules({
             url: 'https://sentry.gc.nav.no/',
             release: process.env.SENTRY_RELEASE,
             urlPrefix: `~/assets`,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             errorHandler: (err, invokeErr, compilation) => {
                 compilation.warnings.push('Sentry CLI Plugin: ' + err.message);
             },
