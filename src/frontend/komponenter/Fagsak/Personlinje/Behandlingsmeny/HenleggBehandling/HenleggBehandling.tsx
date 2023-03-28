@@ -11,6 +11,7 @@ import { Dropdown } from '@navikt/ds-react-internal';
 import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import useHenleggBehandling from './useHenleggBehandling';
 import { useApp } from '../../../../../context/AppContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import useDokument from '../../../../../hooks/useDokument';
@@ -22,7 +23,6 @@ import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 import PdfVisningModal from '../../../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
-import useHenleggBehandling from './useHenleggBehandling';
 
 interface IProps {
     fagsakId: number;

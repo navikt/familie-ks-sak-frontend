@@ -5,17 +5,17 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Alert } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { DokumentutsendingProvider } from '../../context/DokumentutsendingContext';
-import { useFagsakContext } from '../../context/fagsak/FagsakContext';
-import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
-import { useAmplitude } from '../../utils/amplitude';
-import Venstremeny from '../Felleskomponenter/Venstremeny/Venstremeny';
 import BehandlingContainer from './BehandlingContainer';
 import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
 import Høyremeny from './Høyremeny/Høyremeny';
 import JournalpostListe from './journalposter/JournalpostListe';
 import Personlinje from './Personlinje/Personlinje';
 import Saksoversikt from './Saksoversikt/Saksoversikt';
+import { DokumentutsendingProvider } from '../../context/DokumentutsendingContext';
+import { useFagsakContext } from '../../context/fagsak/FagsakContext';
+import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
+import { useAmplitude } from '../../utils/amplitude';
+import Venstremeny from '../Felleskomponenter/Venstremeny/Venstremeny';
 
 const FagsakContainer: React.FunctionComponent = () => {
     const { fagsakId } = useSakOgBehandlingParams();

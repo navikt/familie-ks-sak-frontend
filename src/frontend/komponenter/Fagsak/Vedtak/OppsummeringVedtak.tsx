@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { RessursStatus } from '@navikt/familie-typer';
 
+import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../typer/behandling';
@@ -16,7 +17,6 @@ import {
 } from '../../../typer/behandling';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
-import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
 
 interface IVedtakProps {
     åpenBehandling: IBehandling;

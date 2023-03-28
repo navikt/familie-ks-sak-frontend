@@ -5,9 +5,6 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TypeScriptTypeChecker from 'fork-ts-checker-webpack-plugin';
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
 
 const publicUrl = '/assets';
 
@@ -32,11 +29,14 @@ const baseConfig = {
             patterns: [{ from: 'src/frontend/public/favicon.svg', to: '.' + publicUrl }],
         }),
         new TypeScriptTypeChecker({
+            async: true,
             typescript: {
                 configFile: path.join(process.cwd(), 'src/frontend/tsconfig.json'),
-            },
-            eslint: {
-                files: './src/**/*.{ts,tsx,js,jsx}',
+                diagnosticOptions: {
+                    semantic: true,
+                    syntactic: true,
+                },
+                mode: 'write-references',
             },
         }),
     ],
@@ -48,19 +48,6 @@ const baseConfig = {
                 resolve: {
                     fullySpecified: false, // Fikser at man ikke kan gjøre import uten filextension fra moduler med type: module i package.json
                 },
-            },
-            {
-                test: /\.(ts|tsx)$/,
-                enforce: 'pre',
-                exclude: /node_modules/,
-                use: [
-                    {
-                        options: {
-                            eslintPath: require.resolve('eslint'),
-                        },
-                        loader: require.resolve('eslint-loader'),
-                    },
-                ],
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif|ico)$/,

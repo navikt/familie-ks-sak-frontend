@@ -3,6 +3,7 @@ import React from 'react';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 
+import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opprettBehandlingUtils';
 import { useApp } from '../../../../../context/AppContext';
 import { Behandlingstype } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
@@ -11,7 +12,6 @@ import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrev
 import { ToggleNavn } from '../../../../../typer/toggles';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../../../utils/fagsak';
 import type { VisningBehandling } from '../../../Saksoversikt/visningBehandling';
-import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opprettBehandlingUtils';
 
 interface IProps {
     behandlingstype: Felt<

@@ -18,6 +18,9 @@ import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import BarnBrevetGjelder from './BarnBrevetGjelder';
+import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
+import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { useBrevModul } from '../../../../context/BrevModulContext';
 import useDokument from '../../../../hooks/useDokument';
@@ -36,9 +39,6 @@ import DeltBostedSkjema from '../../../Fagsak/Dokumentutsending/DeltBosted/DeltB
 import Knapperekke from '../../Knapperekke';
 import PdfVisningModal from '../../PdfVisningModal/PdfVisningModal';
 import SkjultLegend from '../../SkjultLegend';
-import BarnBrevetGjelder from './BarnBrevetGjelder';
-import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
-import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 
 interface IProps {
     onSubmitSuccess: () => void;

@@ -8,6 +8,8 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { Button } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
+import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import FamilieChevron from '../../../../ikoner/FamilieChevron';
 import ManuellVurdering from '../../../../ikoner/ManuellVurdering';
@@ -15,8 +17,6 @@ import VilkårResultatIkon from '../../../../ikoner/VilkårResultatIkon';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurderingConfig, IAnnenVurdering } from '../../../../typer/vilkår';
 import { Resultat, uiResultat } from '../../../../typer/vilkår';
-import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
-import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
 
 interface IProps {
     person: IGrunnlagPerson;

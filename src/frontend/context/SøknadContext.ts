@@ -8,6 +8,8 @@ import type { Avhengigheter } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
+import { useBehandling } from './behandlingContext/BehandlingContext';
+import { useFagsakContext } from './fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../typer/behandling';
 import type { IMinimalFagsak } from '../typer/fagsak';
@@ -25,8 +27,6 @@ import {
     kalenderDatoMedFallback,
     TIDENES_ENDE,
 } from '../utils/kalender';
-import { useBehandling } from './behandlingContext/BehandlingContext';
-import { useFagsakContext } from './fagsak/FagsakContext';
 
 export const hentBarnMedLøpendeUtbetaling = (minimalFagsak: IMinimalFagsak) =>
     minimalFagsak.gjeldendeUtbetalingsperioder

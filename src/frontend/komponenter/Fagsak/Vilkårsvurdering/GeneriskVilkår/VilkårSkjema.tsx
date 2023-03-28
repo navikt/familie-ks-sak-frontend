@@ -20,6 +20,11 @@ import {
 } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import AvslagSkjema from './AvslagSkjema';
+import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
+import VelgPeriode from './VelgPeriode';
+import type { IVilkårSkjemaContext, VilkårSkjemaContextValue } from './VilkårSkjemaContext';
+import { vilkårBegrunnelseFeilmeldingId, vilkårFeilmeldingId } from './VilkårTabell';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak } from '../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../typer/person';
@@ -31,11 +36,6 @@ import type {
 } from '../../../../typer/vilkår';
 import { Resultat, resultater, Regelverk, VilkårType } from '../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../utils/vilkår';
-import AvslagSkjema from './AvslagSkjema';
-import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
-import VelgPeriode from './VelgPeriode';
-import type { IVilkårSkjemaContext, VilkårSkjemaContextValue } from './VilkårSkjemaContext';
-import { vilkårBegrunnelseFeilmeldingId, vilkårFeilmeldingId } from './VilkårTabell';
 
 const Container = styled.div`
     max-width: 30rem;

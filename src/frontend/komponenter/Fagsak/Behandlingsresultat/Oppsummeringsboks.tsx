@@ -7,6 +7,7 @@ import { Xknapp } from 'nav-frontend-ikonknapper';
 import { Alert, BodyShort, Label } from '@navikt/ds-react';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
+import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
 import { useTidslinje } from '../../../context/TidslinjeContext';
 import type {
     IEøsPeriodeStatus,
@@ -26,7 +27,6 @@ import {
     sorterUtbetaling,
 } from '../../../utils/formatter';
 import { kalenderDatoFraDate, serializeIso8601String } from '../../../utils/kalender';
-import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
 
 const TableHeaderAlignedRight = styled.th`
     text-align: right;

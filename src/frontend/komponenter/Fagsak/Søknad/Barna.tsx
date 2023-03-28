@@ -7,6 +7,7 @@ import { CheckboxGruppe } from 'nav-frontend-skjema';
 import { Alert, Heading, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import BarnMedOpplysninger from './BarnMedOpplysninger';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import { useSøknad } from '../../../context/SøknadContext';
@@ -16,7 +17,6 @@ import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '../../../ty
 import type { IBarnMedOpplysninger } from '../../../typer/søknad';
 import { kalenderDato, kalenderDatoTilDate, kalenderDiff } from '../../../utils/kalender';
 import LeggTilBarn from '../../Felleskomponenter/LeggTilBarn';
-import BarnMedOpplysninger from './BarnMedOpplysninger';
 
 const BarnMedDiskresjonskode = styled.div`
     display: flex;

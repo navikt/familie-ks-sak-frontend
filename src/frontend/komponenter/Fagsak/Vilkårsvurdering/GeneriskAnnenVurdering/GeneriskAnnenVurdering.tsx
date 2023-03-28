@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Element, Undertittel } from 'nav-frontend-typografi';
 
+import AnnenVurderingTabell from './AnnenVurderingTabell';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../typer/vilkår';
-import AnnenVurderingTabell from './AnnenVurderingTabell';
 
 interface IProps {
     person: IGrunnlagPerson;

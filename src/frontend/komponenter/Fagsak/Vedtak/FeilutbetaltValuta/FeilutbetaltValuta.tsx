@@ -7,10 +7,10 @@ import { Button, Heading, Table } from '@navikt/ds-react';
 import { CopyToClipboard } from '@navikt/ds-react-internal';
 import { NavdsSemanticColorLink } from '@navikt/ds-tokens/dist/tokens';
 
-import type { IRestFeilutbetaltValuta } from '../../../../typer/eøs-feilutbetalt-valuta';
-import { periodeToString } from '../../../../utils/kalender';
 import FeilutbetaltValutaPeriode from './FeilutbetaltValutaPeriode';
 import NyFeilutbetaltValutaPeriode from './NyFeilutbetaltValutaPeriode';
+import type { IRestFeilutbetaltValuta } from '../../../../typer/eøs-feilutbetalt-valuta';
+import { periodeToString } from '../../../../utils/kalender';
 
 interface IFeilutbetaltValuta {
     behandlingId: number;

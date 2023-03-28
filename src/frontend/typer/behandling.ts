@@ -1,6 +1,5 @@
 import type { ISODateString } from '@navikt/familie-form-elements';
 
-import type { FamilieIsoDate } from '../utils/kalender';
 import type { BehandlingKategori } from './behandlingstema';
 import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
@@ -20,6 +19,7 @@ import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
 import type { IRestKorrigertVedtak, IVedtakForBehandling } from './vedtak';
 import type { Utbetalingsperiode } from './vedtaksperiode';
 import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
+import type { FamilieIsoDate } from '../utils/kalender';
 
 export interface IRestNyBehandling {
     kategori: BehandlingKategori | null;

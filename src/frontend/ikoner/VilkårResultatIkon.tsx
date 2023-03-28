@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Resultat } from '../typer/vilkår';
 import StatusIkon, { Status } from './StatusIkon';
+import { Resultat } from '../typer/vilkår';
 
 interface IVilkårResultatIkon {
     height?: number;

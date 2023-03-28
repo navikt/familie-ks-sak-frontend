@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { IDokumentInfo } from '@navikt/familie-typer';
 
-import { useManuellJournalfør } from '../../../context/ManuellJournalførContext';
-import { StyledEkspanderbartpanelBase } from '../StyledEkspanderbartpanelBase';
 import { DokumentInfoStripe } from './DokumentInfoStripe';
 import { EndreDokumentInfoPanel } from './EndreDokumentInfoPanel';
+import { useManuellJournalfør } from '../../../context/ManuellJournalførContext';
+import { StyledEkspanderbartpanelBase } from '../StyledEkspanderbartpanelBase';
 
 interface IDokumentVelgerProps {
     dokument: IDokumentInfo;

@@ -1,10 +1,10 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
+import { muligeUtdypendeVilkårsvurderinger } from './BarnehageplassContext';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import { Resultat } from '../../../../../../typer/vilkår';
 import { tellAntallDesimaler } from '../../../../../../utils/eøsValidators';
-import { muligeUtdypendeVilkårsvurderinger } from './BarnehageplassContext';
 
 export const erAntallTimerGyldig = (
     felt: FeltState<string>,

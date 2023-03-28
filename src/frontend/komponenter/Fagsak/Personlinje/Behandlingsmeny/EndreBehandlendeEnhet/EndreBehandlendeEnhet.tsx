@@ -7,6 +7,7 @@ import { Dropdown } from '@navikt/ds-react-internal';
 import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
+import useEndreBehandlendeEnhet from './useEndreBehandlendeEnhet';
 import { useApp } from '../../../../../context/AppContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingSteg, hentStegNummer } from '../../../../../typer/behandling';
@@ -15,7 +16,6 @@ import { behandendeEnheter } from '../../../../../typer/enhet';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
-import useEndreBehandlendeEnhet from './useEndreBehandlendeEnhet';
 
 const EndreBehandlendeEnhet: React.FC = () => {
     const {

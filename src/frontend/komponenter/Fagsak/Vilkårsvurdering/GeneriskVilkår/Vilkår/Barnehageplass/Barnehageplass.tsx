@@ -6,16 +6,16 @@ import { Radio } from 'nav-frontend-skjema';
 
 import { FamilieInput, FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
-import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
-import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
-import { VilkårSkjema } from '../../VilkårSkjema';
-import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import {
     antallTimerKvalifiserer,
     vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie,
     vilkårOppfyltOgAntallTimerKvalifiserer,
 } from './BarnehageplassUtils';
+import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
+import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
+import { VilkårSkjema } from '../../VilkårSkjema';
+import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 const StyledFamilieInput = styled(FamilieInput)`
     margin-bottom: 1rem;

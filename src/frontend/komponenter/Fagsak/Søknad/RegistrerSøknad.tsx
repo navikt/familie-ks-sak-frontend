@@ -7,14 +7,14 @@ import { Feiloppsummering } from 'nav-frontend-skjema';
 import { Alert, BodyShort, Button } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import Annet from './Annet';
+import Barna from './Barna';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useSøknad } from '../../../context/SøknadContext';
 import { BehandlingSteg } from '../../../typer/behandling';
 import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
 import MålformVelger from '../../Felleskomponenter/MålformVelger';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
-import Annet from './Annet';
-import Barna from './Barna';
 
 const FjernVilkårAdvarsel = styled(BodyShort)`
     white-space: pre-wrap;

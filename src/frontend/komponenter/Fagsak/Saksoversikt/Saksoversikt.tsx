@@ -8,6 +8,10 @@ import Tabs from 'nav-frontend-tabs';
 import { Alert, Heading } from '@navikt/ds-react';
 import { byggTomRessurs } from '@navikt/familie-typer';
 
+import Behandlinger from './Behandlinger';
+import FagsakLenkepanel from './FagsakLenkepanel';
+import Utbetalinger from './Utbetalinger';
+import type { VisningBehandling } from './visningBehandling';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingStatus, erBehandlingHenlagt } from '../../../typer/behandling';
@@ -26,10 +30,6 @@ import {
     periodeOverlapperMedValgtDato,
     serializeIso8601String,
 } from '../../../utils/kalender';
-import Behandlinger from './Behandlinger';
-import FagsakLenkepanel from './FagsakLenkepanel';
-import Utbetalinger from './Utbetalinger';
-import type { VisningBehandling } from './visningBehandling';
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;

@@ -1,8 +1,8 @@
-import type { FamilieIsoDate, IPeriode } from '../utils/kalender';
 import type { BehandlingSteg, BehandlingStegStatus } from './behandling';
 import type { IGrunnlagPerson } from './person';
 import { PersonType } from './person';
 import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse, BegrunnelseType } from './vedtak';
+import type { FamilieIsoDate, IPeriode } from '../utils/kalender';
 
 export enum Resultat {
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
