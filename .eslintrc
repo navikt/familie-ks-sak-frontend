@@ -2,7 +2,6 @@
     "extends": [
         "eslint:recommended",
         "plugin:import/typescript",
-        /* "plugin:react-app/recommended", */
         "plugin:jsx-a11y/recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier",
@@ -18,7 +17,6 @@
     },
     "plugins": [
         "@typescript-eslint",
-        /* "react-app", */
         "prettier",
         "import"
     ],
