@@ -10,7 +10,6 @@ export interface IManueltBrevRequestPåBehandling {
     multiselectVerdier: string[];
     barnIBrev: string[];
     brevmal: Brevmal;
-    datoAvtale?: string;
     barnasFødselsdager?: string[];
     behandlingKategori?: BehandlingKategori | undefined;
     antallUkerSvarfrist?: number;
@@ -23,7 +22,6 @@ export interface IManueltBrevRequestPåFagsak {
     mottakerMålform: Målform;
     mottakerNavn: string;
     brevmal: Brevmal | Informasjonsbrev;
-    datoAvtale?: string;
     behandlingKategori?: undefined;
     antallUkerSvarfrist?: undefined;
 }
