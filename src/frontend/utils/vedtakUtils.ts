@@ -3,11 +3,6 @@ import navFarger from 'nav-frontend-core';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../typer/vedtak';
-import { BegrunnelseType } from '../typer/vedtak';
-import type { IVedtaksperiodeMedBegrunnelser } from '../typer/vedtaksperiode';
-import { Vedtaksperiodetype } from '../typer/vedtaksperiode';
-import type { VedtaksbegrunnelseTekster } from '../typer/vilkår';
 import type { FamilieIsoDate } from './kalender';
 import {
     førsteDagIInneværendeMåned,
@@ -20,6 +15,11 @@ import {
     TIDENES_MORGEN,
 } from './kalender';
 import { BehandlingResultat, BehandlingStatus } from '../typer/behandling';
+import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../typer/vedtak';
+import { BegrunnelseType } from '../typer/vedtak';
+import type { IVedtaksperiodeMedBegrunnelser } from '../typer/vedtaksperiode';
+import { Vedtaksperiodetype } from '../typer/vedtaksperiode';
+import type { VedtaksbegrunnelseTekster } from '../typer/vilkår';
 
 export const filtrerOgSorterPerioderMedBegrunnelseBehov = (
     vedtaksperioder: IVedtaksperiodeMedBegrunnelser[],
