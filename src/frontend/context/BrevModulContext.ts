@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 
 import createUseContext from 'constate';
 
-import type { ISODateString } from '@navikt/familie-form-elements';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -19,10 +18,8 @@ import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
 import { Målform } from '../typer/søknad';
-import { useDeltBostedFelter } from '../utils/deltBostedSkjemaFelter';
 import type { IFritekstFelt } from '../utils/fritekstfelter';
 import { genererIdBasertPåAndreFritekster, lagInitiellFritekst } from '../utils/fritekstfelter';
-import { erIsoStringGyldig } from '../utils/kalender';
 
 export const hentMuligeBrevmalerImplementering = (
     åpenBehandling: Ressurs<IBehandling>
@@ -44,17 +41,6 @@ const brevmalKanVelgesForBehandling = (brevmal: Brevmal, åpenBehandling: IBehan
                 åpenBehandling.type === Behandlingstype.REVURDERING &&
                 åpenBehandling.årsak !== BehandlingÅrsak.SØKNAD
             );
-        case Brevmal.VARSEL_OM_REVURDERING_DELT_BOSTED_PARAGRAF_14:
-            return (
-                åpenBehandling.type === Behandlingstype.REVURDERING &&
-                [
-                    BehandlingÅrsak.NYE_OPPLYSNINGER,
-                    BehandlingÅrsak.SØKNAD,
-                    BehandlingÅrsak.ÅRLIG_KONTROLL,
-                ].includes(åpenBehandling.årsak)
-            );
-        case Brevmal.VARSEL_OM_REVURDERING_SAMBOER:
-            return åpenBehandling.type === Behandlingstype.REVURDERING;
         case Brevmal.SVARTIDSBREV:
             return åpenBehandling.årsak === BehandlingÅrsak.SØKNAD;
         case Brevmal.FORLENGET_SVARTIDSBREV:
@@ -137,11 +123,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
         skalFeltetVises: (avhengigheter: Avhengigheter) => {
             return (
                 avhengigheter?.brevmal.valideringsstatus === Valideringsstatus.OK &&
-                ![
-                    Brevmal.SVARTIDSBREV,
-                    Brevmal.VARSEL_OM_REVURDERING_DELT_BOSTED_PARAGRAF_14,
-                    Brevmal.VARSEL_OM_REVURDERING_SAMBOER,
-                ].includes(avhengigheter.brevmal.verdi)
+                ![Brevmal.SVARTIDSBREV].includes(avhengigheter.brevmal.verdi)
             );
         },
         avhengigheter: { brevmal },
@@ -169,21 +151,6 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
             return (
                 avhengigheter?.brevmal.valideringsstatus === Valideringsstatus.OK &&
                 [Brevmal.FORLENGET_SVARTIDSBREV].includes(avhengigheter.brevmal.verdi)
-            );
-        },
-        avhengigheter: { brevmal },
-    });
-
-    const datoAvtale = useFelt<ISODateString | undefined>({
-        verdi: '',
-        valideringsfunksjon: (felt: FeltState<string | undefined>) =>
-            felt.verdi && erIsoStringGyldig(felt.verdi)
-                ? ok(felt)
-                : feil(felt, 'Du må velge en gyldig dato.'),
-        skalFeltetVises: avhengigheter => {
-            return (
-                avhengigheter?.brevmal.valideringsstatus === Valideringsstatus.OK &&
-                avhengigheter.brevmal.verdi === Brevmal.VARSEL_OM_REVURDERING_SAMBOER
             );
         },
         avhengigheter: { brevmal },
@@ -230,27 +197,13 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
         avhengigheter: { brevmal },
     });
 
-    const {
-        barnMedDeltBosted,
-        avtalerOmDeltBostedPerBarn,
-        nullstillDeltBosted,
-        hentDeltBostedMulitiselectVerdierForBarn,
-    } = useDeltBostedFelter({
-        avhengigheter: { brevmal: brevmal },
-        skalFeltetVises: avhengigheter =>
-            avhengigheter.brevmal.verdi === Brevmal.VARSEL_OM_REVURDERING_DELT_BOSTED_PARAGRAF_14,
-    });
-
     const { kanSendeSkjema, onSubmit, skjema, settVisfeilmeldinger } = useSkjema<
         {
             mottakerIdent: string;
             brevmal: Brevmal | '';
             dokumenter: ISelectOptionMedBrevtekst[];
             fritekster: FeltState<IFritekstFelt>[];
-            barnMedDeltBosted: IBarnMedOpplysninger[];
             barnBrevetGjelder: IBarnMedOpplysninger[];
-            avtalerOmDeltBostedPerBarn: Record<string, ISODateString[]>;
-            datoAvtale: ISODateString | undefined;
             antallUkerSvarfrist: number;
         },
         IBehandling
@@ -260,10 +213,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
             brevmal,
             dokumenter,
             fritekster,
-            barnMedDeltBosted,
             barnBrevetGjelder,
-            avtalerOmDeltBostedPerBarn,
-            datoAvtale,
             antallUkerSvarfrist,
         },
         skjemanavn: 'brevmodul',
@@ -278,12 +228,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
      */
     useEffect(() => {
         skjema.felter.dokumenter.nullstill();
-        nullstillDeltBosted();
     }, [åpenBehandling]);
-
-    useEffect(() => {
-        nullstillDeltBosted();
-    }, [skjema.felter.brevmal.verdi]);
 
     const personer =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.personer : [];
@@ -331,48 +276,25 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
     }, [brevmal, fritekster]);
 
     const hentSkjemaData = (): IManueltBrevRequestPåBehandling => {
-        const erVarselOmRevurderingDeltBosted =
-            skjema.felter.brevmal.verdi === Brevmal.VARSEL_OM_REVURDERING_DELT_BOSTED_PARAGRAF_14;
+        const multiselectVerdier = [
+            ...skjema.felter.dokumenter.verdi.map((selectOption: ISelectOptionMedBrevtekst) => {
+                if (selectOption.brevtekst) {
+                    return selectOption.brevtekst[mottakersMålform()];
+                } else {
+                    return selectOption.value;
+                }
+            }),
+            ...skjema.felter.fritekster.verdi.map(f => f.verdi.tekst),
+        ];
 
-        if (erVarselOmRevurderingDeltBosted) {
-            return hentVarselOmRevurderingDeltBostedSkjemaData();
-        } else {
-            const multiselectVerdier = [
-                ...skjema.felter.dokumenter.verdi.map((selectOption: ISelectOptionMedBrevtekst) => {
-                    if (selectOption.brevtekst) {
-                        return selectOption.brevtekst[mottakersMålform()];
-                    } else {
-                        return selectOption.value;
-                    }
-                }),
-                ...skjema.felter.fritekster.verdi.map(f => f.verdi.tekst),
-            ];
-
-            const barnBrevetGjelder = skjema.felter.barnBrevetGjelder.verdi.filter(
-                barn => barn.merket
-            );
-
-            return {
-                mottakerIdent: skjema.felter.mottakerIdent.verdi,
-                multiselectVerdier: multiselectVerdier,
-                brevmal: skjema.felter.brevmal.verdi as Brevmal,
-                barnIBrev: [],
-                barnasFødselsdager: barnBrevetGjelder.map(barn => barn.fødselsdato || ''),
-                datoAvtale: skjema.felter.datoAvtale.verdi,
-                behandlingKategori,
-                antallUkerSvarfrist: skjema.felter.antallUkerSvarfrist.verdi,
-            };
-        }
-    };
-
-    const hentVarselOmRevurderingDeltBostedSkjemaData = (): IManueltBrevRequestPåBehandling => {
-        const merkedeBarn = skjema.felter.barnMedDeltBosted.verdi.filter(barn => barn.merket);
+        const barnBrevetGjelder = skjema.felter.barnBrevetGjelder.verdi.filter(barn => barn.merket);
 
         return {
             mottakerIdent: skjema.felter.mottakerIdent.verdi,
-            multiselectVerdier: merkedeBarn.flatMap(hentDeltBostedMulitiselectVerdierForBarn),
-            barnIBrev: merkedeBarn.map(barn => barn.ident),
-            brevmal: Brevmal.VARSEL_OM_REVURDERING_DELT_BOSTED_PARAGRAF_14,
+            multiselectVerdier: multiselectVerdier,
+            brevmal: skjema.felter.brevmal.verdi as Brevmal,
+            barnIBrev: [],
+            barnasFødselsdager: barnBrevetGjelder.map(barn => barn.fødselsdato || ''),
             behandlingKategori,
             antallUkerSvarfrist: skjema.felter.antallUkerSvarfrist.verdi,
         };

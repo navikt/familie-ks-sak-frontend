@@ -34,8 +34,6 @@ import { målform } from '../../../../typer/søknad';
 import { lagPersonLabel } from '../../../../utils/formatter';
 import type { IFritekstFelt } from '../../../../utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
-import { FamilieDatovelgerWrapper } from '../../../../utils/skjema/FamilieDatovelgerWrapper';
-import DeltBostedSkjema from '../../../Fagsak/Dokumentutsending/DeltBosted/DeltBostedSkjema';
 import Knapperekke from '../../Knapperekke';
 import PdfVisningModal from '../../PdfVisningModal/PdfVisningModal';
 import SkjultLegend from '../../SkjultLegend';
@@ -366,23 +364,6 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                     erFolkeregistrert: true,
                                 })
                             )}
-                    />
-                )}
-                {skjema.felter.brevmal.verdi ===
-                    Brevmal.VARSEL_OM_REVURDERING_DELT_BOSTED_PARAGRAF_14 && (
-                    <DeltBostedSkjema
-                        avtalerOmDeltBostedPerBarnFelt={skjema.felter.avtalerOmDeltBostedPerBarn}
-                        barnMedDeltBostedFelt={skjema.felter.barnMedDeltBosted}
-                        visFeilmeldinger={skjema.visFeilmeldinger}
-                        settVisFeilmeldinger={settVisfeilmeldinger}
-                    />
-                )}
-                {skjema.felter.brevmal.verdi === Brevmal.VARSEL_OM_REVURDERING_SAMBOER && (
-                    <FamilieDatovelgerWrapper
-                        label={'Samboer fra'}
-                        valgtDato={skjema.felter.datoAvtale.verdi}
-                        placeholder={'DD.MM.ÅÅÅÅ'}
-                        {...skjema.felter.datoAvtale.hentNavInputProps(skjema.visFeilmeldinger)}
                     />
                 )}
                 {skjema.felter.brevmal.verdi === Brevmal.FORLENGET_SVARTIDSBREV && (
