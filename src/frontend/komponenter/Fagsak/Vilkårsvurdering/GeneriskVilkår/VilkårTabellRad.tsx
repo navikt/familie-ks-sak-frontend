@@ -59,9 +59,10 @@ const FlexDiv = styled.div`
 const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårResultat }) => {
     const { toggles } = useApp();
     const { vurderErLesevisning, åpenBehandling, behandlingPåVent } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
 
     const hentInitiellEkspandering = () =>
-        vurderErLesevisning() || vilkårResultat.resultat === Resultat.IKKE_VURDERT;
+        erLesevisning || vilkårResultat.resultat === Resultat.IKKE_VURDERT;
 
     const [ekspandertVilkår, settEkspandertVilkår] = useState(hentInitiellEkspandering());
     const [redigerbartVilkår, settRedigerbartVilkår] = useState<IVilkårResultat>(vilkårResultat);
@@ -90,7 +91,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}
                         person={person}
-                        lesevisning={vurderErLesevisning()}
+                        lesevisning={erLesevisning}
                     />
                 );
             case VilkårType.MEDLEMSKAP:
@@ -100,7 +101,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}
                         person={person}
-                        lesevisning={vurderErLesevisning()}
+                        lesevisning={erLesevisning}
                     />
                 );
             case VilkårType.BARNEHAGEPLASS:
@@ -110,7 +111,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}
                         person={person}
-                        lesevisning={vurderErLesevisning()}
+                        lesevisning={erLesevisning}
                     />
                 );
             case VilkårType.MEDLEMSKAP_ANNEN_FORELDER:
@@ -120,7 +121,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}
                         person={person}
-                        lesevisning={vurderErLesevisning()}
+                        lesevisning={erLesevisning}
                     />
                 );
             case VilkårType.BOR_MED_SØKER:
@@ -130,7 +131,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}
                         person={person}
-                        lesevisning={vurderErLesevisning()}
+                        lesevisning={erLesevisning}
                     />
                 );
             case VilkårType.BARNETS_ALDER:
@@ -140,7 +141,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}
                         person={person}
-                        lesevisning={vurderErLesevisning()}
+                        lesevisning={erLesevisning}
                     />
                 );
             default:

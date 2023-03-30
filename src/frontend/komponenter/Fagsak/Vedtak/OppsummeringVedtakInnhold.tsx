@@ -67,6 +67,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
     const { hentSaksbehandlerRolle } = useApp();
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
 
     const { overstyrFortsattInnvilgetVedtaksperioder, periodetypeIVedtaksbrev } = useVedtak({
         åpenBehandling,
@@ -152,7 +153,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                 {åpenBehandling.resultat === BehandlingResultat.FORTSATT_INNVILGET && (
                     <FamilieSelect
                         label="Velg brev med eller uten perioder"
-                        erLesevisning={vurderErLesevisning()}
+                        erLesevisning={erLesevisning}
                         onChange={(
                             event: React.ChangeEvent<FortsattInnvilgetPerioderSelect>
                         ): void => {
@@ -187,7 +188,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                                 settErUlagretNyFeilutbetaltValutaPeriode={
                                     settErUlagretNyFeilutbetaltValutaPeriode
                                 }
-                                erLesevisning={vurderErLesevisning()}
+                                erLesevisning={erLesevisning}
                                 skjulFeilutbetaltValuta={() => settVisFeilutbetaltValuta(false)}
                             />
                         )}
