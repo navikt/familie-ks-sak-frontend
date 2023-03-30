@@ -7,6 +7,13 @@ import { AutomaticSystem, People, Settings } from '@navikt/ds-icons';
 import { BodyShort, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { Barnehageplass } from './Vilkår/Barnehageplass/Barnehageplass';
+import { BarnetsAlder } from './Vilkår/BarnetsAlder/BarnetsAlder';
+import { BorMedSøker } from './Vilkår/BorMedSøker/BorMedSøker';
+import { BosattIRiket } from './Vilkår/BosattIRiket/BosattIRiket';
+import { Medlemskap } from './Vilkår/Medlemskap/Medlemskap';
+import { MedlemskapAnnenForelder } from './Vilkår/MedlemskapAnnenForelder/MedlemskapAnnenForelder';
+import { vilkårFeilmeldingId } from './VilkårTabell';
 import { useApp } from '../../../../context/AppContext';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import VilkårResultatIkon from '../../../../ikoner/VilkårResultatIkon';
@@ -17,13 +24,6 @@ import { Resultat, uiResultat, VilkårType } from '../../../../typer/vilkår';
 import { datoformat, formaterIsoDato } from '../../../../utils/formatter';
 import { periodeToString } from '../../../../utils/kalender';
 import { alleRegelverk } from '../../../../utils/vilkår';
-import { Barnehageplass } from './Vilkår/Barnehageplass/Barnehageplass';
-import { BarnetsAlder } from './Vilkår/BarnetsAlder/BarnetsAlder';
-import { BorMedSøker } from './Vilkår/BorMedSøker/BorMedSøker';
-import { BosattIRiket } from './Vilkår/BosattIRiket/BosattIRiket';
-import { Medlemskap } from './Vilkår/Medlemskap/Medlemskap';
-import { MedlemskapAnnenForelder } from './Vilkår/MedlemskapAnnenForelder/MedlemskapAnnenForelder';
-import { vilkårFeilmeldingId } from './VilkårTabell';
 
 interface IProps {
     person: IGrunnlagPerson;

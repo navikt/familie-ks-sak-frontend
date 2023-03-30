@@ -13,6 +13,8 @@ import { FamilieKnapp } from '@navikt/familie-form-elements';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
+import { HentetLabel } from './Registeropplysninger/HentetLabel';
+import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useVilkårsvurdering } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
@@ -21,8 +23,6 @@ import { BehandlingSteg, BehandlingÅrsak } from '../../../typer/behandling';
 import { datoformat, formaterIsoDato } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
-import { HentetLabel } from './Registeropplysninger/HentetLabel';
-import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 
 const UregistrerteBarnListe = styled.ol`
     margin: ${NavdsSpacing2} 0;
