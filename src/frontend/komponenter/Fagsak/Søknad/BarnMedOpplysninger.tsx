@@ -47,6 +47,7 @@ const FjernBarnKnapp = styled(Button)`
 const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
     const { skjema, barnMedLøpendeUtbetaling } = useSøknad();
     const { vurderErLesevisning } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
     const [visHarLøpendeModal, settVisHarLøpendeModal] = useState(false);
 
     const barnetHarLøpendeUtbetaling = barnMedLøpendeUtbetaling.has(barn.ident);
@@ -71,7 +72,7 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
 
     return (
         <CheckboxOgSlettknapp>
-            {vurderErLesevisning() ? (
+            {erLesevisning ? (
                 barn.merket ? (
                     <BodyShort
                         className={classNames('skjemaelement', 'lese-felt')}
@@ -106,7 +107,7 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                     </LabelContent>
                 </StyledCheckbox>
             )}
-            {barn.manueltRegistrert && !vurderErLesevisning() && (
+            {barn.manueltRegistrert && !erLesevisning && (
                 <FjernBarnKnapp
                     variant={'tertiary'}
                     id={`fjern__${barn.ident}`}

@@ -341,7 +341,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         onChange={(dato?: ISODateString) =>
                             skjema.felter.søknadstidspunkt.validerOgSettFelt(dato)
                         }
-                        erLesesvisning={vurderErLesevisning()}
+                        erLesesvisning={erLesevisning}
                     />
                     {skjema.felter.søknadstidspunkt.feilmelding && skjema.visFeilmeldinger && (
                         <StyledErrorMessage>
@@ -370,7 +370,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                             onChange={(dato?: ISODateString) =>
                                 skjema.felter.avtaletidspunktDeltBosted.validerOgSettFelt(dato)
                             }
-                            erLesesvisning={vurderErLesevisning()}
+                            erLesesvisning={erLesevisning}
                         />
                         {skjema.felter.avtaletidspunktDeltBosted.feilmelding &&
                             skjema.visFeilmeldinger && (
@@ -419,7 +419,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 <Feltmargin>
                     <StyledFamilieTextarea
                         {...skjema.felter.begrunnelse.hentNavInputProps(skjema.visFeilmeldinger)}
-                        erLesevisning={vurderErLesevisning()}
+                        erLesevisning={erLesevisning}
                         placeholder={'Begrunn hvorfor utbetalingsperioden er endret.'}
                         label={'Begrunnelse'}
                         value={

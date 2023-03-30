@@ -18,9 +18,6 @@ import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import BarnBrevetGjelder from './BarnBrevetGjelder';
-import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
-import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { useBrevModul } from '../../../../context/BrevModulContext';
 import useDokument from '../../../../hooks/useDokument';
@@ -37,6 +34,9 @@ import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
 import Knapperekke from '../../Knapperekke';
 import PdfVisningModal from '../../PdfVisningModal/PdfVisningModal';
 import SkjultLegend from '../../SkjultLegend';
+import BarnBrevetGjelder from './BarnBrevetGjelder';
+import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
+import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
 
 interface IProps {
     onSubmitSuccess: () => void;
@@ -91,6 +91,7 @@ const StyledFamilieInput = styled(FamilieInput)`
 
 const Brevskjema = ({ onSubmitSuccess }: IProps) => {
     const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
     const { hentForhåndsvisning, hentetDokument } = useDokument();
 
     const {
@@ -234,7 +235,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                             </LabelOgEtikett>
                         }
                         creatable={false}
-                        erLesevisning={vurderErLesevisning()}
+                        erLesevisning={erLesevisning}
                         isMulti={true}
                         onChange={valgteOptions => {
                             skjema.felter.dokumenter.onChange(
@@ -249,7 +250,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 {skjema.felter.fritekster.erSynlig && (
                     <FritekstWrapper>
                         <Label htmlFor={skjemaGruppeId}>Legg til kulepunkt</Label>
-                        {vurderErLesevisning() ? (
+                        {erLesevisning ? (
                             <StyledList id={skjemaGruppeId}>
                                 {skjema.felter.fritekster.verdi.map(
                                     (fritekst: FeltState<IFritekstFelt>) => (
@@ -328,7 +329,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                     )}
                                 </SkjemaGruppe>
 
-                                {!erMaksAntallKulepunkter && !vurderErLesevisning() && (
+                                {!erMaksAntallKulepunkter && !erLesevisning && (
                                     <Button
                                         onClick={() => leggTilFritekst()}
                                         id={`legg-til-fritekst`}
@@ -377,7 +378,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 )}
             </SkjemaGruppe>
             <Knapperekke>
-                {!vurderErLesevisning() && (
+                {!erLesevisning && (
                     <Button
                         id={'forhandsvis-vedtaksbrev'}
                         variant={'tertiary'}

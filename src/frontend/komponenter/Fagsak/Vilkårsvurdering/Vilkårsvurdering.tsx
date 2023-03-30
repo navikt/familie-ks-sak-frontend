@@ -13,8 +13,6 @@ import { FamilieKnapp } from '@navikt/familie-form-elements';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
-import { HentetLabel } from './Registeropplysninger/HentetLabel';
-import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useVilkårsvurdering } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
@@ -23,6 +21,8 @@ import { BehandlingSteg, BehandlingÅrsak } from '../../../typer/behandling';
 import { datoformat, formaterIsoDato } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
+import { HentetLabel } from './Registeropplysninger/HentetLabel';
+import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 
 const UregistrerteBarnListe = styled.ol`
     margin: ${NavdsSpacing2} 0;
@@ -54,6 +54,7 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
         vilkårsvurderingNesteOnClick,
         behandlingsstegSubmitressurs,
     } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
 
     const registeropplysningerHentetTidpsunkt =
         vilkårsvurdering[0]?.person?.registerhistorikk?.hentetTidspunkt;
@@ -84,7 +85,7 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                 navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/registrer-soknad`);
             }}
             nesteOnClick={() => {
-                if (vurderErLesevisning()) {
+                if (erLesevisning) {
                     navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/tilkjent-ytelse`);
                 } else if (!erFeilISkjema) {
                     vilkårsvurderingNesteOnClick();
@@ -125,7 +126,7 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                         loading={hentOpplysningerRessurs.status === RessursStatus.HENTER}
                         variant="tertiary"
                         size="small"
-                        erLesevisning={vurderErLesevisning()}
+                        erLesevisning={erLesevisning}
                     >
                         {hentOpplysningerRessurs.status !== RessursStatus.HENTER && (
                             <Refresh style={{ fontSize: '1.5rem' }} role="img" focusable="false" />

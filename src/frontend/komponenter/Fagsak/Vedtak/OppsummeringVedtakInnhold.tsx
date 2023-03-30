@@ -8,11 +8,6 @@ import { Alert, BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
-import { PeriodetypeIVedtaksbrev, useVedtak } from './useVedtak';
-import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
-import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
-import Vedtaksmeny from './Vedtaksmeny';
 import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import useDokument from '../../../hooks/useDokument';
@@ -27,6 +22,11 @@ import {
     hentStegNummer,
 } from '../../../typer/behandling';
 import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
+import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
+import { PeriodetypeIVedtaksbrev, useVedtak } from './useVedtak';
+import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
+import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
+import Vedtaksmeny from './Vedtaksmeny';
 
 interface IOppsummeringVedtakInnholdProps {
     åpenBehandling: IBehandling;
@@ -67,6 +67,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
     const { hentSaksbehandlerRolle } = useApp();
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
 
     const { overstyrFortsattInnvilgetVedtaksperioder, periodetypeIVedtaksbrev } = useVedtak({
         åpenBehandling,
@@ -152,7 +153,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                 {åpenBehandling.resultat === BehandlingResultat.FORTSATT_INNVILGET && (
                     <FamilieSelect
                         label="Velg brev med eller uten perioder"
-                        erLesevisning={vurderErLesevisning()}
+                        erLesevisning={erLesevisning}
                         onChange={(
                             event: React.ChangeEvent<FortsattInnvilgetPerioderSelect>
                         ): void => {
@@ -187,7 +188,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                                 settErUlagretNyFeilutbetaltValutaPeriode={
                                     settErUlagretNyFeilutbetaltValutaPeriode
                                 }
-                                erLesevisning={vurderErLesevisning()}
+                                erLesevisning={erLesevisning}
                                 skjulFeilutbetaltValuta={() => settVisFeilutbetaltValuta(false)}
                             />
                         )}
