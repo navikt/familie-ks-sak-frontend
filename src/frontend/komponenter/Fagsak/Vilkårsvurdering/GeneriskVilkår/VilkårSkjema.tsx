@@ -174,9 +174,15 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                             label={'Ja'}
                             name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                             checked={skjema.felter.resultat.verdi === Resultat.OPPFYLT}
-                            onChange={() =>
-                                skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT)
-                            }
+                            onChange={() => {
+                                skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
+                                vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
+                                    false
+                                );
+                                vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt(
+                                    []
+                                );
+                            }}
                         />
                         <Radio
                             label={'Nei'}
