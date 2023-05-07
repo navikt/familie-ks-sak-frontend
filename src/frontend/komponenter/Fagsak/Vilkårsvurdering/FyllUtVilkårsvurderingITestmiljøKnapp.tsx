@@ -31,8 +31,8 @@ export const FyllUtVilkårsvurderingITestmiljøKnapp: React.FunctionComponent<IP
             method: 'PUT',
             url: `/familie-ks-sak/api/forvaltning/${behandlingId}/fyll-ut-vilkarsvurdering`,
             påvirkerSystemLaster: true,
-        }).then((kjørSatsendringRessurs: Ressurs<string>) => {
-            if (kjørSatsendringRessurs.status === RessursStatus.SUKSESS) {
+        }).then((kjørFyllUtVilkårsvurderingRessurs: Ressurs<string>) => {
+            if (kjørFyllUtVilkårsvurderingRessurs.status === RessursStatus.SUKSESS) {
                 window.location.reload();
             }
         });
