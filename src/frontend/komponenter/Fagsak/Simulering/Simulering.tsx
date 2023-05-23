@@ -14,7 +14,7 @@ import { useBehandling } from '../../../context/behandlingContext/BehandlingCont
 import { useSimulering } from '../../../context/SimuleringContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../typer/behandling';
-import { BehandlingSteg } from '../../../typer/behandling';
+import { BehandlingResultat, BehandlingSteg } from '../../../typer/behandling';
 import type { ITilbakekreving } from '../../../typer/simulering';
 import { hentSøkersMålform } from '../../../utils/behandling';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
@@ -41,7 +41,7 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
     const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
 
     const nesteOnClick = () => {
-        if (vurderErLesevisning()) {
+        if (vurderErLesevisning() || åpenBehandling?.resultat == BehandlingResultat.AVSLÅTT) {
             navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/vedtak`);
         } else {
             onSubmit<ITilbakekreving | undefined>(
