@@ -13,7 +13,6 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { settPåVentÅrsaker } from '../../../../../typer/behandling';
 import { defaultFunksjonellFeil } from '../../../../../typer/feilmeldinger';
@@ -33,7 +32,6 @@ interface IProps {
 
 const TaBehandlingAvVent: React.FC<IProps> = ({ behandling }) => {
     const { request } = useHttp();
-    const { settÅpenBehandling } = useBehandling();
 
     const [visModal, settVisModal] = useState<boolean>(false);
     const [submitRessurs, settSubmitRessurs] = useState(byggTomRessurs());
@@ -50,9 +48,8 @@ const TaBehandlingAvVent: React.FC<IProps> = ({ behandling }) => {
             url: `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent/gjenoppta`,
         })
             .then((ressurs: Ressurs<IBehandling>) => {
-                settÅpenBehandling(ressurs, true);
                 settSubmitRessurs(ressurs);
-                lukkModal();
+                window.location.reload();
             })
             .catch(() => {
                 settSubmitRessurs(byggFeiletRessurs(defaultFunksjonellFeil));
