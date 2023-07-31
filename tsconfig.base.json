@@ -20,6 +20,6 @@
       "jsx": "react",
       "esModuleInterop": true,
       "isolatedModules": true,
-      "importsNotUsedAsValues": "error",
+      "ignoreDeprecations": "5.0",
     }
   }
