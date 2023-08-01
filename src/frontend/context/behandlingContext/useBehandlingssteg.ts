@@ -114,9 +114,9 @@ const useBehandlingssteg = (
 
         request<void, IBehandling>({
             method: 'POST',
-            url: `/familie-ks-sak/api/behandlinger/${
-                behandling?.behandlingId
-            }/steg/foreslå-vedtak?behandlendeEnhet=${innloggetSaksbehandler?.enhet ?? '9999'}`,
+            url: `/familie-ks-sak/api/behandlinger/${behandling?.behandlingId}/steg/foreslå-vedtak?behandlendeEnhet=${
+                innloggetSaksbehandler?.enhet ?? '9999'
+            }`,
             påvirkerSystemLaster: true,
         }).then((response: Ressurs<IBehandling>) => {
             if (response.status === RessursStatus.SUKSESS) {

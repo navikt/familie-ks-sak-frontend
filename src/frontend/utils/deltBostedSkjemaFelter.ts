@@ -37,10 +37,11 @@ export const useDeltBostedFelter = ({ avhengigheter, skalFeltetVises }: IProps) 
 
             return barnMedDeltBosted
                 .filter((barn: IBarnMedOpplysninger) => barn.merket)
-                .some((barn: IBarnMedOpplysninger) =>
-                    felt.verdi[barn.ident]?.some(
-                        avtaleDato => avtaleDato.length === 0 || !erIsoStringGyldig(avtaleDato)
-                    )
+                .some(
+                    (barn: IBarnMedOpplysninger) =>
+                        felt.verdi[barn.ident]?.some(
+                            avtaleDato => avtaleDato.length === 0 || !erIsoStringGyldig(avtaleDato)
+                        )
                 )
                 ? feil(felt, 'Minst én av barna mangler avtale om delt bosted')
                 : ok(felt);
