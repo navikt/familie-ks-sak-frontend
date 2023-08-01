@@ -8,7 +8,7 @@ import { Feiloppsummering } from 'nav-frontend-skjema';
 
 import { Refresh } from '@navikt/ds-icons';
 import { Alert, BodyShort, ErrorMessage } from '@navikt/ds-react';
-import { NavdsSpacing2 } from '@navikt/ds-tokens/dist/tokens';
+import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
 import { FamilieKnapp } from '@navikt/familie-form-elements';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
@@ -27,7 +27,7 @@ import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
 
 const UregistrerteBarnListe = styled.ol`
-    margin: ${NavdsSpacing2} 0;
+    margin: ${ASpacing2} 0;
 `;
 
 const HentetLabelOgKnappDiv = styled.div`
@@ -39,7 +39,7 @@ const HentetLabelOgKnappDiv = styled.div`
         margin: 0 !important;
     }
 
-    margin-bottom: ${NavdsSpacing2};
+    margin-bottom: ${ASpacing2};
 `;
 
 interface IProps {
