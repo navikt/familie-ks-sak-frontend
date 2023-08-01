@@ -4056,10 +4056,10 @@
   resolved "https://registry.npmjs.org/@tsconfig/node16/-/node16-1.0.2.tgz"
   integrity sha512-eZxlbI8GZscaGS7kkc/trHTT5xgrjH3/1n2JDwusC9iahPKWMRvRjJSAN5mCXviuTGQ/lHnhvv8Q1YTpnfz9gA==
 
-"@types/amplitude-js@^8.16.0":
-  version "8.16.0"
-  resolved "https://registry.npmjs.org/@types/amplitude-js/-/amplitude-js-8.16.0.tgz"
-  integrity sha512-ElfQLlWQvtlXw2dwk3qslgs9PIUlX6+6Cf/NEezlNnexJ5B9ykUrNOQk6xbNFKR01MhCld07nWEf5iTYERKS9A==
+"@types/amplitude-js@^8.16.2":
+  version "8.16.2"
+  resolved "https://registry.yarnpkg.com/@types/amplitude-js/-/amplitude-js-8.16.2.tgz#2cfb850a01a4171e632498821f92e45bef23c952"
+  integrity sha512-a+tb/CEQOlrHRvEvAuYNOcoUy1POERANnAhfKgiTmsy0eACj3eukGP0ucA9t115QOPzVUhbnUfZqtyHp99IZyA==
 
 "@types/babel__core@^7.1.14":
   version "7.1.19"
