@@ -140,7 +140,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         {Object.entries(alleRegelverk).map(
                             ([regelverk, { tekst }]: [
                                 string,
-                                { tekst: string; symbol: ReactNode }
+                                { tekst: string; symbol: ReactNode },
                             ]) => {
                                 return (
                                     <option
