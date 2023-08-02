@@ -30,7 +30,7 @@ export const SøknadMottattDatoFelt: React.FC<IProps> = ({
 }) => (
     <FixedDatoVelger
         {...søknadMottattDato.hentNavInputProps(visFeilmeldinger)}
-        valgtDato={søknadMottattDato.verdi}
+        value={søknadMottattDato.verdi}
         label={'Mottatt dato'}
         limitations={{
             maxDate: new Date().toISOString(),

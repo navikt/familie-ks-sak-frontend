@@ -101,7 +101,7 @@ const VelgPeriode: React.FC<IProps> = ({
                             onChange={(dato?: ISODateString) => {
                                 periode.validerOgSettFelt(nyPeriode(dato, periode.verdi.tom));
                             }}
-                            valgtDato={periode.verdi.fom}
+                            value={periode.verdi.fom}
                         />
                     </div>
                 )}
@@ -115,7 +115,7 @@ const VelgPeriode: React.FC<IProps> = ({
                             onChange={(dato?: ISODateString) => {
                                 periode.validerOgSettFelt(nyPeriode(periode.verdi.fom, dato));
                             }}
-                            valgtDato={periode.verdi.tom}
+                            value={periode.verdi.tom}
                         />
                     </div>
                 )}
