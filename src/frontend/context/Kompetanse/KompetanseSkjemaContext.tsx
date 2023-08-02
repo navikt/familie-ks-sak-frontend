@@ -3,7 +3,8 @@ import React from 'react';
 import type { OptionType } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import { useFelt, useSkjema } from '@navikt/familie-skjema';
-import { byggTomRessurs, type Ressurs, RessursStatus } from '@navikt/familie-typer';
+import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
+import type { Ressurs } from '@navikt/familie-typer';
 
 import {
     erAnnenForeldersAktivitetGyldig,

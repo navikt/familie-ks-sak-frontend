@@ -11,8 +11,8 @@ import {
     FamilieKnapp,
     FamilieReactSelect,
     FamilieSelect,
-    type OptionType,
 } from '@navikt/familie-form-elements';
+import type { OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
