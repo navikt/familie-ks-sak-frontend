@@ -24,7 +24,8 @@ import type {
     SøkersAktivitet,
 } from '../../typer/eøsPerioder';
 import { erBarnGyldig, erEøsPeriodeGyldig } from '../../utils/eøsValidators';
-import { type IYearMonthPeriode, nyYearMonthPeriode } from '../../utils/kalender';
+import { nyYearMonthPeriode } from '../../utils/kalender';
+import type { IYearMonthPeriode } from '../../utils/kalender';
 import { useBehandling } from '../behandlingContext/BehandlingContext';
 
 export const kompetanseFeilmeldingId = (kompetanse: IRestKompetanse): string =>
