@@ -2667,12 +2667,12 @@
     prop-types "^15.8.1"
 
 "@navikt/flagg-ikoner@^3.2.0":
-  version "3.2.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/flagg-ikoner/3.2.0/ebd9adf2aa06a85c91cf1261425b3f4562dc3499f1a7a5c9d4a389df3ff44737"
-  integrity sha512-iGaVIxIWr1CD4VgdFIFJX2jBFSsF+D0G0Hxe9KmAtrVaufscq0/AYVBHvrK6pkP8RFMbX3vaRxBY3RBJ5eYsGg==
+  version "3.2.7"
+  resolved "https://npm.pkg.github.com/download/@navikt/flagg-ikoner/3.2.7/14809a69ed573ebe9ae05666b25b23a70bd9286c#14809a69ed573ebe9ae05666b25b23a70bd9286c"
+  integrity sha512-ENe/LokFTw1/ihJ+trQeb0ta0b+plj9I4kjIAR7Pd9tyNMtOHd/X+H0S2tQxDznwzyM6nd6uPh09sSQgxB1bLg==
   dependencies:
     svg-country-flags "^1.2.10"
-    uuid "^8.3.2"
+    uuid "^9.0.0"
 
 "@navikt/fnrvalidator@^1.3.1":
   version "1.3.1"
@@ -4383,7 +4383,7 @@ babel-jest@^29.2.2:
     graceful-fs "^4.2.9"
     slash "^3.0.0"
 
-babel-loader@^9.1.0:
+babel-loader@^9.1.3:
   version "9.1.3"
   resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-9.1.3.tgz#3d0e01b4e69760cc694ee306fe16d358aa1c6f9a"
   integrity sha512-xG3ST4DglodGf8qSwv0MdeWLhrDsw/32QMdTO5T1ZIp9gQur0HkCyFs7Awskr10JKXFXwpAhiCuYX5oGXnRGbw==
