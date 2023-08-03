@@ -36,8 +36,8 @@ export default merge.mergeWithRules({
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 options: {
-                    presets: ['@babel/preset-typescript', '@babel/preset-react'],
-                    plugins: ['react-refresh/babel', 'babel-plugin-styled-components'],
+                    presets: ['react-app'],
+                    plugins: ['react-refresh/babel'],
                 },
             },
         ],
