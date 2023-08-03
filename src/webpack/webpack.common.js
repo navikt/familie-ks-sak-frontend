@@ -58,7 +58,7 @@ const baseConfig = {
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 options: {
-                    presets: ['react-app'],
+                    presets: ['@babel/preset-typescript', '@babel/preset-react'],
                 },
             },
             {
