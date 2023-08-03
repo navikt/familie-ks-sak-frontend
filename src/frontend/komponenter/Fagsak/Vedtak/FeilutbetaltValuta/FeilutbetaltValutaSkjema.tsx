@@ -64,7 +64,6 @@ const FeilutbetaltValutaSkjema: React.FunctionComponent<IFeilutbetaltValutaSkjem
                     id="fom-dato"
                     label="F.o.m"
                     value={skjema.felter.fom.verdi}
-                    valgtDato={skjema.felter.fom.verdi}
                     onChange={(dato?: ISODateString) => {
                         skjema.felter.fom?.validerOgSettFelt(
                             gjørOmDatoHvisGyldigInput(dato, FamilieIsoTilFørsteDagIMåneden)
@@ -79,7 +78,6 @@ const FeilutbetaltValutaSkjema: React.FunctionComponent<IFeilutbetaltValutaSkjem
                     id="fom-dato"
                     label="T.o.m"
                     value={skjema.felter.tom.verdi}
-                    valgtDato={skjema.felter.tom.verdi}
                     onChange={(dato?: ISODateString) =>
                         skjema.felter.tom?.validerOgSettFelt(
                             gjørOmDatoHvisGyldigInput(dato, FamilieIsoTilSisteDagIMåneden)

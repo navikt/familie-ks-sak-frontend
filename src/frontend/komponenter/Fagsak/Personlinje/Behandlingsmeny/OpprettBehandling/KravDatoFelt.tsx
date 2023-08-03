@@ -27,7 +27,7 @@ const FixedDatoVelger = styled(FamilieDatovelger)`
 export const KravDatoFelt: React.FC<IProps> = ({ kravMottattDato, visFeilmeldinger }) => (
     <FixedDatoVelger
         {...kravMottattDato.hentNavInputProps(visFeilmeldinger)}
-        valgtDato={kravMottattDato.verdi}
+        value={kravMottattDato.verdi}
         label={'Krav mottatt'}
         limitations={{
             maxDate: new Date().toISOString(),
