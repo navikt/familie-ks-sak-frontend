@@ -53,7 +53,6 @@ spec:
     outbound:
       rules:
         - application: familie-ks-sak
-        - application: familie-ks-sak-frontend-redis
   envFrom:
     - secret: ks-sak-frontend
   env:

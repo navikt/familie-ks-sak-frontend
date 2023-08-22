@@ -47,7 +47,6 @@ spec:
     outbound:
       rules:
         - application: familie-ks-sak
-        - application: familie-ks-sak-frontend-redis
       external:
         - host: familie-endringslogg.intern.dev.nav.no
   envFrom:
