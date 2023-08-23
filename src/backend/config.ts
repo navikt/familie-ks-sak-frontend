@@ -29,7 +29,6 @@ const Environment = () => {
             proxyUrl: 'http://familie-ks-sak:8089',
             familieTilbakeUrl: 'http://familie-tilbake-frontend:8000',
             familieKlageUrl: '',
-            redisUrl: 'familie-redis',
             endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
         };
     } else if (process.env.ENV === 'preprod') {
@@ -39,7 +38,6 @@ const Environment = () => {
             proxyUrl: 'http://familie-ks-sak',
             familieTilbakeUrl: 'https://familie-tilbake-frontend.intern.dev.nav.no',
             familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
-            redisUrl: 'familie-ks-sak-frontend-redis',
             endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
         };
     }
@@ -51,7 +49,6 @@ const Environment = () => {
         familieTilbakeUrl: 'https://familietilbakekreving.intern.nav.no',
         familieKlageUrl: 'https://familie-klage.intern.nav.no',
         endringsloggProxyUrl: 'https://familie-endringslogg.intern.nav.no',
-        redisUrl: 'familie-ks-sak-frontend-redis',
     };
 };
 const env = Environment();
