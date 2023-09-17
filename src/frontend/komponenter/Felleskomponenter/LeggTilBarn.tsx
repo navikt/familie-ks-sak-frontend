@@ -194,7 +194,7 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                                         },
                                     ]);
                                     onSuccess && onSuccess(hentetPerson.data);
-
+                                    nullstillRegistrerBarnSkjema();
                                     settVisModal(false);
                                 }
                             });
