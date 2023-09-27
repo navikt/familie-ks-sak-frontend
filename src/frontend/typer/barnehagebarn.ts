@@ -21,11 +21,6 @@ export interface IBarnehagebarn {
     endringstype: string;
     kommuneNavn: string;
     kommuneNr: string;
-    versjon: number;
-    opprettetAv: string;
-    opprettetTidspunkt: string;
-    endretAv: string;
-    endretTidspunkt: string;
     fagsakId: number;
     behandlingId: number;
     fagsakstatus: string;
