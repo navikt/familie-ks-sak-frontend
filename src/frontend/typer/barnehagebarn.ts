@@ -13,7 +13,6 @@ export interface IBarnehagebarnRequestParams {
     sortAsc: boolean;
 }
 export interface IBarnehagebarn {
-    id: string;
     ident: string;
     fom: string;
     tom?: string;
