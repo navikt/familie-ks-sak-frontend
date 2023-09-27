@@ -68,7 +68,7 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
         return request<IBarnehagebarnRequestParams, IBarnehagebarnResponse>({
             data: barnehagebarnRequestParams,
             method: 'POST',
-            url: `/familie-ks-sak/api/forvaltning/barnehageliste/hentAlleBarnehagebarnPage`,
+            url: `/familie-ks-sak/api/barnehagebarn/barnehagebarnliste`,
         })
             .then((barnehagebarnResponseRessurs: Ressurs<IBarnehagebarnResponse>) => {
                 return barnehagebarnResponseRessurs;
