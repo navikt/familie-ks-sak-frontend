@@ -13,6 +13,7 @@ import Toasts from './Felleskomponenter/Toast/Toasts';
 import Internstatistikk from './Internstatistikk';
 import ManuellJournalfør from './ManuellJournalfør/ManuellJournalfør';
 import { useApp } from '../context/AppContext';
+import { BarnehagebarnComp } from '../context/BarnehagebarnContext';
 import { BehandlingProvider } from '../context/behandlingContext/BehandlingContext';
 import { FagsakProvider } from '../context/fagsak/FagsakContext';
 import { Oppgaver } from '../context/OppgaverContext';
@@ -57,6 +58,7 @@ const Container: React.FC = () => {
                                         path="/internstatistikk"
                                         element={<Internstatistikk />}
                                     />
+                                    <Route path="/barnehagebarn" element={<BarnehagebarnComp />} />
                                     <Route path="/oppgaver" element={<Oppgaver />} />
                                     <Route path="/" element={<Navigate to="/oppgaver" />} />
                                 </Routes>
