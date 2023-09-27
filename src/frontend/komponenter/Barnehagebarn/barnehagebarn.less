@@ -1,0 +1,56 @@
+@import (reference) '~nav-frontend-core/less/_variabler';
+
+@barnehagePageHeight: ~"calc("100vh ~"-" 48px ~"-" 1.1rem~")";
+
+.barnehagebarn {
+  padding: .5rem;
+  height: @barnehagePageHeight;
+  width: 100vw;
+  overflow: auto;
+}
+
+.barnhagebarn-filtere {
+  width: 100%;
+  display:flex;
+  .bb-filter{
+    margin-right: 1rem;
+  }
+}
+
+.barnhagebarn-actions{
+  width: 100%;
+  display:flex;
+  .bb-filter{
+    margin-right: 1rem;
+  }
+}
+
+.barnhagebarn-navigasjon-wrapper{
+  padding:5px;
+  border: 1px solid #ddd;
+  background-color: #f8f8ff;
+  margin-top: 5px;
+
+.barnhagebarn-navigasjon{
+    width: 100%;
+    display:flex;
+    height: 32px;
+    align-items: flex-end;
+
+    .barnhagebarn-navigasjon-left {
+      width: 200px;
+      flex: 0 0 200px;
+    }
+
+    .barnhagebarn-navigasjon-center {
+      flex: 1;
+    }
+
+    .barnhagebarn-navigasjon-right {
+      width: 300px;
+      flex: 0 0 300px;
+      text-align: right;
+      vertical-align: bottom;
+    }
+  }
+}
