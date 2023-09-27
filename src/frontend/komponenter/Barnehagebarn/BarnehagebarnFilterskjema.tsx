@@ -10,7 +10,6 @@ const BarnehagebarnFilterskjema: React.FunctionComponent = () => {
         hentBarnehagebarnResponseRessurs,
         updateIdent,
         updateKommuneNavn,
-        updateKommuneNr,
         updateKunLøpendeFagsak,
         fjernBarnehagebarnFiltere,
     } = useBarnehagebarn();
@@ -50,21 +49,9 @@ const BarnehagebarnFilterskjema: React.FunctionComponent = () => {
                     />
                 </div>
                 <div className="bb-filter">
-                    <TextField
-                        label="Kommunenr."
-                        title="Filtrer på kommunenummer"
-                        size="small"
-                        maxLength={4}
-                        value={barnehagebarnRequestParams.kommuneNr}
-                        onChange={(event): void => {
-                            updateKommuneNr(event.target.value);
-                        }}
-                    />
-                </div>
-                <div className="bb-filter">
                     <CheckboxGroup legend="Kun løpende fagsaker" size="small">
                         <Checkbox
-                            value={barnehagebarnRequestParams.kunLøpendeFagsak}
+                            checked={barnehagebarnRequestParams.kunLøpendeFagsak}
                             hideLabel
                             onChange={(): void => {
                                 updateKunLøpendeFagsak();

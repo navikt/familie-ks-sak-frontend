@@ -116,6 +116,7 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
         const newBarnehageRequestParams = {
             ...barnehagebarnRequestParams,
             ident: value,
+            kommuneNavn: '',
         };
         settBarnehagebarnRequestParams(newBarnehageRequestParams);
     };
@@ -124,14 +125,7 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
         const newBarnehageRequestParams = {
             ...barnehagebarnRequestParams,
             kommuneNavn: value,
-        };
-        settBarnehagebarnRequestParams(newBarnehageRequestParams);
-    };
-
-    const updateKommuneNr = (value: string) => {
-        const newBarnehageRequestParams = {
-            ...barnehagebarnRequestParams,
-            kommuneNr: value,
+            ident: '',
         };
         settBarnehagebarnRequestParams(newBarnehageRequestParams);
     };
@@ -151,7 +145,6 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
             ...barnehagebarnRequestParams,
             ident: '',
             kommuneNavn: '',
-            kommuneNr: '',
             kunLøpendeFagsak: false,
         };
         settBarnehagebarnRequestParams(newBarnehageRequestParams);
@@ -206,7 +199,6 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
         updateSortByAscDesc,
         updateIdent,
         updateKommuneNavn,
-        updateKommuneNr,
         updateKunLøpendeFagsak,
         fjernBarnehagebarnFiltere,
     };
