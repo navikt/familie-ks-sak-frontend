@@ -31,7 +31,7 @@ const defaultBarnehagebarnRequestParams: IBarnehagebarnRequestParams = {
     kunLøpendeFagsak: false,
     limit: 20,
     offset: 0,
-    sortBy: 'endretTidspunkt',
+    sortBy: 'kommuneNavn',
     sortAsc: false,
 };
 
