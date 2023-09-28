@@ -15,8 +15,8 @@ export interface IBarnehagebarn {
     endringstype: string;
     kommuneNavn: string;
     kommuneNr: string;
-    fagsakId: number;
-    fagsakstatus: string;
+    fagsakId?: number;
+    fagsakstatus?: string;
 }
 export interface ISort {
     empty: boolean;
