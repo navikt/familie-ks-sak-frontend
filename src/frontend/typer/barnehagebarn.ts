@@ -1,11 +1,6 @@
 export interface IBarnehagebarnRequestParams {
     ident?: string;
-    fom?: string;
-    tom?: string;
-    endringstype?: string;
     kommuneNavn?: string;
-    kommuneNr?: string;
-    antallTimerIBarnehage?: number;
     kunLøpendeFagsak: boolean;
     limit?: number;
     offset?: number;
@@ -21,7 +16,6 @@ export interface IBarnehagebarn {
     kommuneNavn: string;
     kommuneNr: string;
     fagsakId: number;
-    behandlingId: number;
     fagsakstatus: string;
 }
 export interface ISort {

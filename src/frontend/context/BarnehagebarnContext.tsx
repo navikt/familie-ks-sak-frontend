@@ -18,16 +18,10 @@ import type { IBarnehagebarn } from '../typer/barnehagebarn';
 
 const localStorageOn = false;
 const localStorageKey = 'barnehagebarnRequestParams';
-let isReset = false;
 
 const defaultBarnehagebarnRequestParams: IBarnehagebarnRequestParams = {
     ident: '',
-    fom: '',
-    tom: '',
-    endringstype: '',
     kommuneNavn: '',
-    kommuneNr: '',
-    antallTimerIBarnehage: undefined,
     kunLøpendeFagsak: false,
     limit: 20,
     offset: 0,
@@ -45,6 +39,8 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
         Ressurs<IBarnehagebarnResponse>
     >(byggTomRessurs<IBarnehagebarnResponse>());
 
+    const [resetForm, setResetForm] = useState<boolean>(false);
+
     const data: ReadonlyArray<IBarnehagebarn> = useMemo(() => {
         return barnehagebarnResponse.status === RessursStatus.SUKSESS &&
             barnehagebarnResponse.data.content.length > 0
@@ -57,7 +53,7 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
         hentBarnehagebarnResponseRessursFraBackend().then(
             (barnehagebarnDtoRessurs: Ressurs<IBarnehagebarnResponse>) => {
                 settBarnehagebarnResponse(barnehagebarnDtoRessurs);
-                isReset = false;
+                setResetForm(false);
             }
         );
     };
@@ -140,7 +136,7 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
     };
 
     const fjernBarnehagebarnFiltere = () => {
-        isReset = true;
+        setResetForm(true);
         const newBarnehageRequestParams = {
             ...barnehagebarnRequestParams,
             ident: '',
@@ -154,17 +150,12 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
         if (
             barnehagebarnRequestParams.ident === '' &&
             barnehagebarnRequestParams.kommuneNavn === '' &&
-            barnehagebarnRequestParams.kommuneNr === '' &&
             !barnehagebarnRequestParams.kunLøpendeFagsak &&
-            isReset
+            resetForm
         ) {
             hentBarnehagebarnResponseRessurs();
         }
-    }, [
-        barnehagebarnRequestParams.ident,
-        barnehagebarnRequestParams.kommuneNavn,
-        barnehagebarnRequestParams.kommuneNr,
-    ]);
+    }, [barnehagebarnRequestParams.ident, barnehagebarnRequestParams.kommuneNavn, resetForm]);
 
     useEffect(() => {
         hentBarnehagebarnResponseRessurs();
