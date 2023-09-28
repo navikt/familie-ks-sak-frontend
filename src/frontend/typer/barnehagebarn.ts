@@ -16,7 +16,6 @@ export interface IBarnehagebarn {
     kommuneNavn: string;
     kommuneNr: string;
     fagsakId: number;
-    behandlingId: number;
     fagsakstatus: string;
 }
 export interface ISort {
