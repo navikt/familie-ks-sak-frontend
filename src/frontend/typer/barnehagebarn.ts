@@ -1,11 +1,6 @@
 export interface IBarnehagebarnRequestParams {
     ident?: string;
-    fom?: string;
-    tom?: string;
-    endringstype?: string;
     kommuneNavn?: string;
-    kommuneNr?: string;
-    antallTimerIBarnehage?: number;
     kunLøpendeFagsak: boolean;
     limit?: number;
     offset?: number;

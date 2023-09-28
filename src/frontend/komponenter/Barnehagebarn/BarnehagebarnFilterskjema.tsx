@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FunnelIcon, FileResetIcon } from '@navikt/aksel-icons';
-import { Button, Checkbox, CheckboxGroup, Fieldset, TextField } from '@navikt/ds-react';
+import { Button, Checkbox, Fieldset, Label, TextField } from '@navikt/ds-react';
 
 import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
 const BarnehagebarnFilterskjema: React.FunctionComponent = () => {
@@ -49,17 +49,20 @@ const BarnehagebarnFilterskjema: React.FunctionComponent = () => {
                     />
                 </div>
                 <div className="bb-filter">
-                    <CheckboxGroup legend="Kun løpende fagsaker" size="small">
-                        <Checkbox
-                            checked={barnehagebarnRequestParams.kunLøpendeFagsak}
-                            hideLabel
-                            onChange={(): void => {
-                                updateKunLøpendeFagsak();
-                            }}
-                        >
-                            Kun løpende fagsaker
-                        </Checkbox>
-                    </CheckboxGroup>
+                    <Label size="small" htmlFor="kun-loepende-fagsak">
+                        Kun løpende fagsaker
+                    </Label>
+                    <Checkbox
+                        id="kun-loepende-fagsak"
+                        title="Vis kun løpende fagsaker"
+                        checked={barnehagebarnRequestParams.kunLøpendeFagsak}
+                        hideLabel
+                        onChange={(): void => {
+                            updateKunLøpendeFagsak();
+                        }}
+                    >
+                        Vis kun løpende fagsaker
+                    </Checkbox>
                 </div>
             </div>
             <div className="barnhagebarn-actions">

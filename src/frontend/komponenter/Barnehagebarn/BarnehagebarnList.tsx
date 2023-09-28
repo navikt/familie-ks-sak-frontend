@@ -105,7 +105,7 @@ const BarnehagebarnList: React.FunctionComponent = () => {
                                     <Table.DataCell>{barnheagebarn.fagsakstatus}</Table.DataCell>
                                     <Table.DataCell>
                                         <Link
-                                            title={`FagsakId: ${barnheagebarn.fagsakId}. BehandlingId: ${barnheagebarn.behandlingId}`}
+                                            title={`FagsakId: ${barnheagebarn.fagsakId}`}
                                             href={`/fagsak/${barnheagebarn.fagsakId}/saksoversikt`}
                                         >
                                             Gå til saksoversikt
