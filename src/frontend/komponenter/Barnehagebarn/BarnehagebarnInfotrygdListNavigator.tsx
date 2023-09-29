@@ -6,14 +6,14 @@ import { Select } from '@navikt/ds-react';
 import { Pagination } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
+import { useBarnehagebarnInfotrygd } from '../../context/BarnehagebarnInfotrygdContext';
 
 const StyledSelect = styled(Select)`
     max-width: 200px;
 `;
-const BarnehagebarnListNavigator: React.FunctionComponent = () => {
+const BarnehagebarnInfotrygdListNavigator: React.FunctionComponent = () => {
     const { barnehagebarnResponse, updateOffset, updateLimit, barnehagebarnRequestParams } =
-        useBarnehagebarn();
+        useBarnehagebarnInfotrygd();
     return barnehagebarnResponse.status === RessursStatus.SUKSESS &&
         barnehagebarnResponse.data.content.length >= 0 ? (
         <div className="barnhagebarn-navigasjon-wrapper">
@@ -71,4 +71,4 @@ const BarnehagebarnListNavigator: React.FunctionComponent = () => {
         </div>
     ) : null;
 };
-export default BarnehagebarnListNavigator;
+export default BarnehagebarnInfotrygdListNavigator;

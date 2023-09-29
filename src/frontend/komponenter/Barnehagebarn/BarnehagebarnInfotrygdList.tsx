@@ -4,12 +4,12 @@ import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
 
-import { Alert, Link, Table } from '@navikt/ds-react';
+import { Alert, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import BarnehagebarnListNavigator from './BarnehagebarnListNavigator';
-import BarnehagebarnSortLink from './BarnehagebarnSortLink';
-import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
+import BarnehagebarnInfotrygdListNavigator from './BarnehagebarnInfotrygdListNavigator';
+import BarnehagebarnInfotrygdSortLink from './BarnehagebarnInfotrygdSortLink';
+import { useBarnehagebarnInfotrygd } from '../../context/BarnehagebarnInfotrygdContext';
 
 const StyledAlert = styled(Alert)`
     margin-top: 1rem;
@@ -27,65 +27,62 @@ const StyledTable = styled(Table)`
     }
 `;
 
-const BarnehagebarnList: React.FunctionComponent = () => {
-    const { barnehagebarnResponse, data } = useBarnehagebarn();
+const BarnehagebarnInfortrygdList: React.FunctionComponent = () => {
+    const { barnehagebarnResponse, data } = useBarnehagebarnInfotrygd();
 
     return (
         <div className={'barnehagebarnList'}>
             <div>
-                <BarnehagebarnListNavigator />
+                <BarnehagebarnInfotrygdListNavigator />
             </div>
             <div>
                 <StyledTable zebraStripes={true} size="small">
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell scope="col">
-                                <BarnehagebarnSortLink
+                                <BarnehagebarnInfotrygdSortLink
                                     displayValue={'Barns ident'}
                                     fieldName={'ident'}
                                 />
                             </Table.HeaderCell>
                             <Table.HeaderCell scope="col">
-                                <BarnehagebarnSortLink
+                                <BarnehagebarnInfotrygdSortLink
                                     displayValue={'Fra og med'}
                                     fieldName={'fom'}
                                 />
                             </Table.HeaderCell>
                             <Table.HeaderCell scope="col">
-                                <BarnehagebarnSortLink
+                                <BarnehagebarnInfotrygdSortLink
                                     displayValue={'Til og med'}
                                     fieldName={'tom'}
                                 />
                             </Table.HeaderCell>
                             <Table.HeaderCell scope="col">
-                                <BarnehagebarnSortLink
+                                <BarnehagebarnInfotrygdSortLink
                                     displayValue={'Ant. timer i barnehage'}
                                     fieldName={'antallTimerIBarnehage'}
                                 />
                             </Table.HeaderCell>
                             <Table.HeaderCell scope="col">
-                                <BarnehagebarnSortLink
+                                <BarnehagebarnInfotrygdSortLink
                                     displayValue={'Endringstype'}
                                     fieldName={'endringstype'}
                                 />
                             </Table.HeaderCell>
                             <Table.HeaderCell scope="col">
-                                <BarnehagebarnSortLink
+                                <BarnehagebarnInfotrygdSortLink
                                     displayValue={'Kommunenavn'}
                                     fieldName={'kommuneNavn'}
                                 />
                             </Table.HeaderCell>
                             <Table.HeaderCell scope="col">
-                                <BarnehagebarnSortLink
+                                <BarnehagebarnInfotrygdSortLink
                                     displayValue={'Kommunenr.'}
                                     fieldName={'kommuneNr'}
                                 />
                             </Table.HeaderCell>
                             <Table.HeaderCell scope="col">
-                                <span>Fagsakstatus</span>
-                            </Table.HeaderCell>
-                            <Table.HeaderCell scope="col">
-                                <span>Saksoversikt</span>
+                                <span>Har fagsak Infotrygd</span>
                             </Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
@@ -103,22 +100,10 @@ const BarnehagebarnList: React.FunctionComponent = () => {
                                     <Table.DataCell>{barnheagebarn.kommuneNavn}</Table.DataCell>
                                     <Table.DataCell>{barnheagebarn.kommuneNr}</Table.DataCell>
                                     <Table.DataCell>
-                                        {barnheagebarn.fagsakstatus ? (
-                                            <span>{barnheagebarn.fagsakstatus}</span>
+                                        {barnheagebarn.harFagsak ? (
+                                            <span>Ja</span>
                                         ) : (
-                                            <span>Ingen fagsak</span>
-                                        )}
-                                    </Table.DataCell>
-                                    <Table.DataCell>
-                                        {barnheagebarn.fagsakId ? (
-                                            <Link
-                                                title={`FagsakId: ${barnheagebarn.fagsakId}`}
-                                                href={`/fagsak/${barnheagebarn.fagsakId}/saksoversikt`}
-                                            >
-                                                Gå til saksoversikt
-                                            </Link>
-                                        ) : (
-                                            <span>Ingen fagsak</span>
+                                            <span>Nei</span>
                                         )}
                                     </Table.DataCell>
                                 </Table.Row>
@@ -145,4 +130,4 @@ const BarnehagebarnList: React.FunctionComponent = () => {
         </div>
     );
 };
-export default BarnehagebarnList;
+export default BarnehagebarnInfortrygdList;

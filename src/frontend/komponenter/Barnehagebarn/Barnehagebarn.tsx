@@ -8,7 +8,7 @@ const Barnehagebarn: React.FunctionComponent = () => {
     const { loggSidevisning } = useAmplitude();
 
     useEffect(() => {
-        loggSidevisning('barnehagebarn');
+        loggSidevisning('barnehageliste ks-sak');
     }, []);
 
     return (

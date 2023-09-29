@@ -2,20 +2,19 @@ import React from 'react';
 
 import { Heading } from '@navikt/ds-react';
 
-import BarnehagebarnFilterskjema from './BarnehagebarnFilterskjema';
+import BarnehagebarnInfotrygdFilterskjema from './BarnehagebarnInfotrygdFilterskjema';
 
-const BarnehagebarnHeader: React.FunctionComponent = () => {
+const BarnehagebarnInfotrygdHeader: React.FunctionComponent = () => {
     return (
         <div className={'barnhagebarn-header'}>
             <div>
                 <Heading size={'medium'} level={'2'} className={'barnhagebarn-header__tittel'}>
-                    Barnehageliste KS sak
+                    Barnehageliste Infotrygd
                 </Heading>
-
-                <BarnehagebarnFilterskjema />
+                <BarnehagebarnInfotrygdFilterskjema />
             </div>
         </div>
     );
 };
 
-export default BarnehagebarnHeader;
+export default BarnehagebarnInfotrygdHeader;

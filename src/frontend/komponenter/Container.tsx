@@ -3,6 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 
+import BarnehagebarnTabComp from './Barnehagebarn/BarnehagebarnTabComp';
 import FagsakContainer from './Fagsak/FagsakContainer';
 import { HeaderMedSøk } from './Felleskomponenter/HeaderMedSøk/HeaderMedSøk';
 import UgyldigSesjon from './Felleskomponenter/Modal/SesjonUtløpt';
@@ -13,7 +14,6 @@ import Toasts from './Felleskomponenter/Toast/Toasts';
 import Internstatistikk from './Internstatistikk';
 import ManuellJournalfør from './ManuellJournalfør/ManuellJournalfør';
 import { useApp } from '../context/AppContext';
-import { BarnehagebarnComp } from '../context/BarnehagebarnContext';
 import { BehandlingProvider } from '../context/behandlingContext/BehandlingContext';
 import { FagsakProvider } from '../context/fagsak/FagsakContext';
 import { Oppgaver } from '../context/OppgaverContext';
@@ -58,7 +58,10 @@ const Container: React.FC = () => {
                                         path="/internstatistikk"
                                         element={<Internstatistikk />}
                                     />
-                                    <Route path="/barnehagebarn" element={<BarnehagebarnComp />} />
+                                    <Route
+                                        path="/barnehagelister"
+                                        element={<BarnehagebarnTabComp />}
+                                    />
                                     <Route path="/oppgaver" element={<Oppgaver />} />
                                     <Route path="/" element={<Navigate to="/oppgaver" />} />
                                 </Routes>

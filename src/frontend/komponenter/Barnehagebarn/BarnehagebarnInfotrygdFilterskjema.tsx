@@ -3,8 +3,8 @@ import React from 'react';
 import { FunnelIcon, FileResetIcon } from '@navikt/aksel-icons';
 import { Button, Checkbox, Fieldset, Label, TextField } from '@navikt/ds-react';
 
-import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
-const BarnehagebarnFilterskjema: React.FunctionComponent = () => {
+import { useBarnehagebarnInfotrygd } from '../../context/BarnehagebarnInfotrygdContext';
+const BarnehagebarnInfotrygdFilterskjema: React.FunctionComponent = () => {
     const {
         barnehagebarnRequestParams,
         hentBarnehagebarnResponseRessurs,
@@ -12,7 +12,7 @@ const BarnehagebarnFilterskjema: React.FunctionComponent = () => {
         updateKommuneNavn,
         updateKunLøpendeFagsak,
         fjernBarnehagebarnFiltere,
-    } = useBarnehagebarn();
+    } = useBarnehagebarnInfotrygd();
 
     return (
         <Fieldset
@@ -91,4 +91,4 @@ const BarnehagebarnFilterskjema: React.FunctionComponent = () => {
     );
 };
 
-export default BarnehagebarnFilterskjema;
+export default BarnehagebarnInfotrygdFilterskjema;
