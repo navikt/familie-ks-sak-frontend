@@ -7,7 +7,6 @@ import navFarger from 'nav-frontend-core';
 import { Alert, Link, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import BarnehagebarnListNavigator from './BarnehagebarnListNavigator';
 import BarnehagebarnSortLink from './BarnehagebarnSortLink';
 import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
 
@@ -32,9 +31,6 @@ const BarnehagebarnList: React.FunctionComponent = () => {
 
     return (
         <div className={'barnehagebarnList'}>
-            <div>
-                <BarnehagebarnListNavigator />
-            </div>
             <div>
                 <StyledTable zebraStripes={true} size="small">
                     <Table.Header>

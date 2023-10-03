@@ -6,6 +6,7 @@ import { Heading } from '@navikt/ds-react';
 
 import BarnehagebarnInfotrygdFilterskjema from './BarnehagebarnInfotrygdFilterskjema';
 import BarnehagebarnInfotrygdList from './BarnehagebarnInfotrygdList';
+import BarnehagebarnInfotrygdListNavigator from './BarnehagebarnInfotrygdListNavigator';
 import { useAmplitude } from '../../../utils/amplitude';
 
 const Container = styled.div`
@@ -27,6 +28,7 @@ const BarnehagebarnInfotrygd: React.FunctionComponent = () => {
                 Barnehageliste Infotrygd
             </Heading>
             <BarnehagebarnInfotrygdFilterskjema />
+            <BarnehagebarnInfotrygdListNavigator />
             <BarnehagebarnInfotrygdList />
         </Container>
     );
