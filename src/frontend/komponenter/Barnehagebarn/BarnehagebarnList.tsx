@@ -54,28 +54,28 @@ const BarnehagebarnList: React.FunctionComponent = () => {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {data.map((barnheagebarn, i) => {
+                    {data.map((barnehagebarn, i) => {
                         return (
-                            <Table.Row key={i + barnheagebarn.ident}>
-                                <Table.DataCell>{barnheagebarn.ident}</Table.DataCell>
-                                <Table.DataCell>{barnheagebarn.fom}</Table.DataCell>
-                                <Table.DataCell>{barnheagebarn.tom}</Table.DataCell>
+                            <Table.Row key={i + barnehagebarn.ident}>
+                                <Table.DataCell>{barnehagebarn.ident}</Table.DataCell>
+                                <Table.DataCell>{barnehagebarn.fom}</Table.DataCell>
+                                <Table.DataCell>{barnehagebarn.tom}</Table.DataCell>
                                 <Table.DataCell align="right">
-                                    {barnheagebarn.antallTimerIBarnehage}
+                                    {barnehagebarn.antallTimerIBarnehage}
                                 </Table.DataCell>
-                                <Table.DataCell>{barnheagebarn.endringstype}</Table.DataCell>
-                                <Table.DataCell>{barnheagebarn.kommuneNavn}</Table.DataCell>
-                                <Table.DataCell>{barnheagebarn.kommuneNr}</Table.DataCell>
+                                <Table.DataCell>{barnehagebarn.endringstype}</Table.DataCell>
+                                <Table.DataCell>{barnehagebarn.kommuneNavn}</Table.DataCell>
+                                <Table.DataCell>{barnehagebarn.kommuneNr}</Table.DataCell>
                                 <Table.DataCell>
-                                    {barnheagebarn.fagsakstatus
-                                        ? barnheagebarn.fagsakstatus
+                                    {barnehagebarn.fagsakstatus
+                                        ? barnehagebarn.fagsakstatus
                                         : 'Ingen fagsak'}
                                 </Table.DataCell>
                                 <Table.DataCell>
-                                    {barnheagebarn.fagsakId ? (
+                                    {barnehagebarn.fagsakId ? (
                                         <Link
-                                            title={`FagsakId: ${barnheagebarn.fagsakId}`}
-                                            href={`/fagsak/${barnheagebarn.fagsakId}/saksoversikt`}
+                                            title={`FagsakId: ${barnehagebarn.fagsakId}`}
+                                            href={`/fagsak/${barnehagebarn.fagsakId}/saksoversikt`}
                                         >
                                             Gå til saksoversikt
                                         </Link>
