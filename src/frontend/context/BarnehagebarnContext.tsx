@@ -94,14 +94,14 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
 
     /* Sorting values */
     const updateSortByAscDesc = (fieldName: string) => {
-        let sortAscDesc = barnehagebarnRequestParams.sortAsc;
+        let sortAscending = barnehagebarnRequestParams.sortAsc;
         if (fieldName === barnehagebarnRequestParams.sortBy) {
-            sortAscDesc = !sortAscDesc;
+            sortAscending = !sortAscending;
         }
         const newBarnehageRequestParams = {
             ...barnehagebarnRequestParams,
             sortBy: fieldName,
-            sortAsc: sortAscDesc,
+            sortAsc: sortAscending,
         };
         settBarnehagebarnRequestParams(newBarnehageRequestParams);
     };
