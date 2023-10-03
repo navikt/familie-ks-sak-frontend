@@ -11,7 +11,7 @@ const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-const BarnehagebarnInfortrygdList: React.FunctionComponent = () => {
+const BarnehagebarnInfotrygdList: React.FunctionComponent = () => {
     const { barnehagebarnResponse, data, barnehagebarnRequestParams, updateSortByAscDesc } =
         useBarnehagebarnInfotrygd();
 
@@ -91,4 +91,4 @@ const BarnehagebarnInfortrygdList: React.FunctionComponent = () => {
         </>
     );
 };
-export default BarnehagebarnInfortrygdList;
+export default BarnehagebarnInfotrygdList;

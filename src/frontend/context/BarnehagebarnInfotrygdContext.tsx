@@ -12,7 +12,7 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import BarnehagebarnInfortrygd from '../komponenter/Barnehagebarn/infotrygd/BarnehagebarnInfotrygd';
+import BarnehagebarnInfotrygd from '../komponenter/Barnehagebarn/infotrygd/BarnehagebarnInfotrygd';
 import type {
     IBarnehagebarnRequestParams,
     IBarnehagebarnInfotrygdResponse,
@@ -35,7 +35,7 @@ const defaultBarnehagebarnRequestParams: IBarnehagebarnRequestParams = {
     sortAsc: false,
 };
 
-const [BarnehagebarnInfortrygdProvider, useBarnehagebarnInfotrygd] = createUseContext(() => {
+const [BarnehagebarnInfotrygdProvider, useBarnehagebarnInfotrygd] = createUseContext(() => {
     const { request } = useHttp();
 
     const [barnehagebarnRequestParams, settBarnehagebarnRequestParams] =
@@ -200,9 +200,9 @@ const [BarnehagebarnInfortrygdProvider, useBarnehagebarnInfotrygd] = createUseCo
 
 const BarnehagebarnInfotrygdComp: React.FC = () => {
     return (
-        <BarnehagebarnInfortrygdProvider>
-            <BarnehagebarnInfortrygd />
-        </BarnehagebarnInfortrygdProvider>
+        <BarnehagebarnInfotrygdProvider>
+            <BarnehagebarnInfotrygd />
+        </BarnehagebarnInfotrygdProvider>
     );
 };
 
