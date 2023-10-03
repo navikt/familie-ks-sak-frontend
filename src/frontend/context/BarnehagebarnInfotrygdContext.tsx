@@ -12,7 +12,7 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import BarnehagebarnInfortrygd from '../komponenter/Barnehagebarn/BarnehagebarnInfotrygd';
+import BarnehagebarnInfortrygd from '../komponenter/Barnehagebarn/infotrygd/BarnehagebarnInfotrygd';
 import type {
     IBarnehagebarnRequestParams,
     IBarnehagebarnInfotrygdResponse,

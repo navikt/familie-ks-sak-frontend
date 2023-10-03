@@ -3,7 +3,7 @@ import React from 'react';
 import { FunnelIcon, FileResetIcon } from '@navikt/aksel-icons';
 import { Button, Checkbox, Fieldset, Label, TextField } from '@navikt/ds-react';
 
-import { useBarnehagebarnInfotrygd } from '../../context/BarnehagebarnInfotrygdContext';
+import { useBarnehagebarnInfotrygd } from '../../../context/BarnehagebarnInfotrygdContext';
 const BarnehagebarnInfotrygdFilterskjema: React.FunctionComponent = () => {
     const {
         barnehagebarnRequestParams,

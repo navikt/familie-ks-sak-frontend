@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ArrowDownIcon, ArrowsUpDownIcon, ArrowUpIcon } from '@navikt/aksel-icons';
 import { Link } from '@navikt/ds-react';
 
-import { useBarnehagebarnInfotrygd } from '../../context/BarnehagebarnInfotrygdContext';
+import { useBarnehagebarnInfotrygd } from '../../../context/BarnehagebarnInfotrygdContext';
 
 interface IProps {
     displayValue: string;

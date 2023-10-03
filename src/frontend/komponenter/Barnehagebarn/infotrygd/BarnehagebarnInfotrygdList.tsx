@@ -9,7 +9,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnehagebarnInfotrygdListNavigator from './BarnehagebarnInfotrygdListNavigator';
 import BarnehagebarnInfotrygdSortLink from './BarnehagebarnInfotrygdSortLink';
-import { useBarnehagebarnInfotrygd } from '../../context/BarnehagebarnInfotrygdContext';
+import { useBarnehagebarnInfotrygd } from '../../../context/BarnehagebarnInfotrygdContext';
 
 const StyledAlert = styled(Alert)`
     margin-top: 1rem;

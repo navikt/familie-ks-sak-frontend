@@ -6,7 +6,7 @@ import { Select } from '@navikt/ds-react';
 import { Pagination } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBarnehagebarnInfotrygd } from '../../context/BarnehagebarnInfotrygdContext';
+import { useBarnehagebarnInfotrygd } from '../../../context/BarnehagebarnInfotrygdContext';
 
 const StyledSelect = styled(Select)`
     max-width: 200px;
