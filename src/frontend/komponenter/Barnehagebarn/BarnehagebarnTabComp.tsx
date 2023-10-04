@@ -12,12 +12,12 @@ const BarnehagebarnTabComp: React.FunctionComponent = () => {
                 <Tabs.Tab
                     value="barnehageliste-ks-sak"
                     label="Barnehageliste KS sak"
-                    icon={<TeddyBearIcon title="Barnehageliste KS sak" />}
+                    icon={<TeddyBearIcon title="Barnehageliste KS sak" aria-hidden />}
                 />
                 <Tabs.Tab
                     value="barnehageliste-infotrygd"
                     label="Barnehageliste Infotrygd"
-                    icon={<TeddyBearIcon title="Barnehageliste Infotrygd" />}
+                    icon={<TeddyBearIcon title="Barnehageliste Infotrygd" aria-hidden />}
                 />
             </Tabs.List>
             <Tabs.Panel value="barnehageliste-ks-sak">
