@@ -6,6 +6,7 @@ import { Alert, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBarnehagebarnInfotrygd } from '../../../context/BarnehagebarnInfotrygdContext';
+import { datoformat, formaterIsoDato } from '../../../utils/formatter';
 
 const StyledAlert = styled(Alert)`
     margin-top: 1rem;
@@ -30,6 +31,9 @@ const BarnehagebarnInfotrygdList: React.FunctionComponent = () => {
                     <Table.Row>
                         <Table.ColumnHeader sortable sortKey={'ident'}>
                             Barns ident
+                        </Table.ColumnHeader>
+                        <Table.ColumnHeader sortable sortKey={'endretTid'}>
+                            Mottatt tid
                         </Table.ColumnHeader>
                         <Table.ColumnHeader sortable sortKey={'fom'}>
                             Fra og med
@@ -57,6 +61,9 @@ const BarnehagebarnInfotrygdList: React.FunctionComponent = () => {
                         return (
                             <Table.Row key={i + barnehagebarn.ident}>
                                 <Table.DataCell>{barnehagebarn.ident}</Table.DataCell>
+                                <Table.DataCell>
+                                    {formaterIsoDato(barnehagebarn.endretTid, datoformat.DATO_TID)}
+                                </Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.fom}</Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.tom}</Table.DataCell>
                                 <Table.DataCell align="right">
