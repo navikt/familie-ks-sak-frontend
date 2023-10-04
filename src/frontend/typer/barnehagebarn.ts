@@ -18,6 +18,18 @@ export interface IBarnehagebarn {
     fagsakId?: number;
     fagsakstatus?: string;
 }
+
+export interface IBarnehagebarnInfotrygd {
+    ident: string;
+    fom: string;
+    tom?: string;
+    antallTimerIBarnehage?: number;
+    endringstype: string;
+    kommuneNavn: string;
+    kommuneNr: string;
+    harFagsak?: boolean;
+}
+
 export interface ISort {
     empty: boolean;
     sorted: boolean;
@@ -33,6 +45,20 @@ export interface IPageable {
 }
 export interface IBarnehagebarnResponse {
     content: IBarnehagebarn[];
+    pageable: IPageable;
+    sort: ISort;
+    last: boolean;
+    totalElements: number;
+    totalPages: number;
+    number: number;
+    size: number;
+    first: boolean;
+    numberOfElements: number;
+    empty: boolean;
+}
+
+export interface IBarnehagebarnInfotrygdResponse {
+    content: IBarnehagebarnInfotrygd[];
     pageable: IPageable;
     sort: ISort;
     last: boolean;

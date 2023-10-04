@@ -2,18 +2,18 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Alert, Link, Table } from '@navikt/ds-react';
+import { Alert, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
+import { useBarnehagebarnInfotrygd } from '../../../context/BarnehagebarnInfotrygdContext';
 
 const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-const BarnehagebarnList: React.FunctionComponent = () => {
+const BarnehagebarnInfotrygdList: React.FunctionComponent = () => {
     const { barnehagebarnResponse, data, barnehagebarnRequestParams, updateSortByAscDesc } =
-        useBarnehagebarn();
+        useBarnehagebarnInfotrygd();
 
     return (
         <>
@@ -49,8 +49,7 @@ const BarnehagebarnList: React.FunctionComponent = () => {
                         <Table.ColumnHeader sortable sortKey={'kommuneNr'}>
                             Kommunenr.
                         </Table.ColumnHeader>
-                        <Table.ColumnHeader>Fagsakstatus</Table.ColumnHeader>
-                        <Table.ColumnHeader>Saksoversikt</Table.ColumnHeader>
+                        <Table.ColumnHeader>Har fagsak Infotrygd</Table.ColumnHeader>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
@@ -67,21 +66,7 @@ const BarnehagebarnList: React.FunctionComponent = () => {
                                 <Table.DataCell>{barnehagebarn.kommuneNavn}</Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.kommuneNr}</Table.DataCell>
                                 <Table.DataCell>
-                                    {barnehagebarn.fagsakstatus
-                                        ? barnehagebarn.fagsakstatus
-                                        : 'Ingen fagsak'}
-                                </Table.DataCell>
-                                <Table.DataCell>
-                                    {barnehagebarn.fagsakId ? (
-                                        <Link
-                                            title={`FagsakId: ${barnehagebarn.fagsakId}`}
-                                            href={`/fagsak/${barnehagebarn.fagsakId}/saksoversikt`}
-                                        >
-                                            Gå til saksoversikt
-                                        </Link>
-                                    ) : (
-                                        'Ingen fagsak'
-                                    )}
+                                    {barnehagebarn.harFagsak ? 'Ja' : 'Nei'}
                                 </Table.DataCell>
                             </Table.Row>
                         );
@@ -106,4 +91,4 @@ const BarnehagebarnList: React.FunctionComponent = () => {
         </>
     );
 };
-export default BarnehagebarnList;
+export default BarnehagebarnInfotrygdList;

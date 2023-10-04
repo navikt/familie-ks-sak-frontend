@@ -6,7 +6,7 @@ import { Select } from '@navikt/ds-react';
 import { Pagination } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
+import { useBarnehagebarnInfotrygd } from '../../../context/BarnehagebarnInfotrygdContext';
 
 const NavigasjonsContainer = styled.div`
     margin-bottom: 1rem;
@@ -24,9 +24,9 @@ const FlexDiv = styled.div`
     gap: 1rem;
     align-items: center;
 `;
-const BarnehagebarnListNavigator: React.FunctionComponent = () => {
+const BarnehagebarnInfotrygdListNavigator: React.FunctionComponent = () => {
     const { barnehagebarnResponse, updateOffset, updateLimit, barnehagebarnRequestParams } =
-        useBarnehagebarn();
+        useBarnehagebarnInfotrygd();
     return barnehagebarnResponse.status === RessursStatus.SUKSESS &&
         barnehagebarnResponse.data.content.length >= 0 ? (
         <NavigasjonsContainer>
@@ -65,6 +65,7 @@ const BarnehagebarnListNavigator: React.FunctionComponent = () => {
             ) : (
                 <div>Ingen resultater</div>
             )}
+
             {barnehagebarnResponse?.data?.totalPages > 0 && (
                 <Pagination
                     size="small"
@@ -78,4 +79,4 @@ const BarnehagebarnListNavigator: React.FunctionComponent = () => {
         </NavigasjonsContainer>
     ) : null;
 };
-export default BarnehagebarnListNavigator;
+export default BarnehagebarnInfotrygdListNavigator;
