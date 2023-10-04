@@ -17,6 +17,7 @@ export interface IBarnehagebarn {
     kommuneNr: string;
     fagsakId?: number;
     fagsakstatus?: string;
+    endretTid: string;
 }
 
 export interface IBarnehagebarnInfotrygd {
@@ -28,6 +29,7 @@ export interface IBarnehagebarnInfotrygd {
     kommuneNavn: string;
     kommuneNr: string;
     harFagsak?: boolean;
+    endretTid: string;
 }
 
 export interface ISort {
