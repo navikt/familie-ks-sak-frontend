@@ -74,7 +74,9 @@ const BarnehagebarnInfotrygdFilterskjema: React.FunctionComponent = () => {
                     size="small"
                     onClick={() => hentBarnehagebarnResponseRessurs()}
                     icon={<FunnelIcon aria-hidden />}
-                ></Button>
+                >
+                    Filtrer
+                </Button>
                 <Button
                     variant="primary"
                     size="small"
