@@ -20,7 +20,7 @@ import type {
 import type { IBarnehagebarnInfotrygd } from '../typer/barnehagebarn';
 
 const ENDPOINT_URL_BARNEHAGELISTE_INFOTRYGD =
-    '/familie-ks-sak/api/barnehagebarn/barnehagebarninfotrygdliste';
+    '/familie-ks-sak/api/barnehagebarn/barnehagebarnInfotrygdliste';
 
 const localStorageOn = false;
 const localStorageKey = 'barnehagebarnRequestParams';
