@@ -15,6 +15,10 @@ const NavigasjonsContainer = styled.div`
     align-items: center;
 `;
 
+const VenterPåDataDiv = styled.div`
+    margin-bottom: 3rem;
+`;
+
 const StyledSelect = styled(Select)`
     margin-right: auto;
 `;
@@ -76,6 +80,8 @@ const BarnehagebarnListNavigator: React.FunctionComponent = () => {
                 />
             )}
         </NavigasjonsContainer>
-    ) : null;
+    ) : (
+        <VenterPåDataDiv></VenterPåDataDiv>
+    );
 };
 export default BarnehagebarnListNavigator;
