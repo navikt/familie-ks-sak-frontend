@@ -13,6 +13,7 @@ const Container = styled.div`
     padding: 0.5rem;
     width: 100vw;
     overflow: auto;
+    height: calc(100vh - 116px - 1.1rem);
 `;
 
 const BarnehagebarnInfotrygd: React.FunctionComponent = () => {
