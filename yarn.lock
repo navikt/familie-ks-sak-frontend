@@ -2264,11 +2264,12 @@
     framer-motion "^6.3.16"
     react-tooltip "^4.2.21"
 
-"@navikt/familie-form-elements@^10.1.0":
-  version "10.1.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/10.1.2/10f686ffefcec2ff023950c70aa7e1770543e341#10f686ffefcec2ff023950c70aa7e1770543e341"
-  integrity sha512-OBzVrr/B6q+rmSG0qOSb5FI0wVue3EhJYe5aXC4ULTN3JqGOSEyxFjs1zS5FzAyLFkAe4P7GbAxfCL4Ackjofw==
+"@navikt/familie-datovelger@^0.3.0":
+  version "0.3.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-datovelger/0.3.0/5f2bd3910ddb45ccb5b0e36d64c9168a01e4d0be#5f2bd3910ddb45ccb5b0e36d64c9168a01e4d0be"
+  integrity sha512-nCVOEsYe2V0qReW3aOGA+rsPIsB9Fu/hmgw2vqF09jgNq/MejwROXW+sVruzAb06oYsBHfwRD9shInCQMJqCFA==
   dependencies:
+    "@navikt/familie-form-elements" "^13.0.0"
     "@types/classnames" "^2.3.1"
     classnames "^2.3.2"
     dayjs "^1.11.3"
@@ -2280,6 +2281,15 @@
     nav-frontend-skjema-style "^3.0.2"
     nav-frontend-typografi "^4.0.x"
     nav-frontend-typografi-style "^2.0.1"
+    react-select "^5.7.0"
+
+"@navikt/familie-form-elements@^13.0.0":
+  version "13.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/13.0.0/c3ec85621cb87c35cece49ce4a0d59d17ab0ad7c#c3ec85621cb87c35cece49ce4a0d59d17ab0ad7c"
+  integrity sha512-C7Co3jFGad7TdS7P2QM1l58rb4T82lE31Gx6gOC7MXRaBKTDnd9MJCf8AXazUyjmxUASmWepdSoGo/bgZjtJdA==
+  dependencies:
+    "@types/classnames" "^2.3.1"
+    classnames "^2.3.2"
     react-select "^5.7.0"
 
 "@navikt/familie-header@^10.1.3":

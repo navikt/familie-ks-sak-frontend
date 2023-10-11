@@ -6,13 +6,10 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { Delete } from '@navikt/ds-icons';
 import { Alert, Label, Link, Heading, Button } from '@navikt/ds-react';
-import {
-    FamilieDatovelger,
-    FamilieInput,
-    FamilieKnapp,
-    FamilieReactSelect,
-} from '@navikt/familie-form-elements';
-import type { ISODateString, OptionType } from '@navikt/familie-form-elements';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
+import type { ISODateString } from '@navikt/familie-datovelger';
+import { FamilieInput, FamilieKnapp, FamilieReactSelect } from '@navikt/familie-form-elements';
+import type { OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
