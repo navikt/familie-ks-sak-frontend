@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import type { Felt } from '@navikt/familie-skjema';
 
 import type { FamilieIsoDate } from '../../../../../utils/kalender';
