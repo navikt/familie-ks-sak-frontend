@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { FunnelIcon, FileResetIcon } from '@navikt/aksel-icons';
 import { Button, Checkbox, Fieldset, TextField } from '@navikt/ds-react';
 
-import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
+import { useBarnehagebarnInfotrygd } from '../../../context/BarnehagebarnInfotrygdContext';
 
 const FlexDiv = styled.div`
     display: flex;
@@ -18,7 +18,7 @@ const StyledFieldset = styled(Fieldset)`
     margin-top: 1rem;
 `;
 
-const BarnehagebarnFilterskjema: React.FunctionComponent = () => {
+const BarnehagebarnInfotrygdFilterskjema: React.FunctionComponent = () => {
     const {
         barnehagebarnRequestParams,
         hentBarnehagebarnResponseRessurs,
@@ -26,12 +26,12 @@ const BarnehagebarnFilterskjema: React.FunctionComponent = () => {
         updateKommuneNavn,
         updateKunLøpendeFagsak,
         fjernBarnehagebarnFiltere,
-    } = useBarnehagebarn();
+    } = useBarnehagebarnInfotrygd();
 
     return (
         <StyledFieldset
             size="small"
-            aria-label="Barnehagebarn filterskjema"
+            aria-label="barnehagebarn-filterskjema"
             legend="Filterskjema"
             description="Filtrer barnehagebarn resultater"
             hideLegend
@@ -92,4 +92,4 @@ const BarnehagebarnFilterskjema: React.FunctionComponent = () => {
     );
 };
 
-export default BarnehagebarnFilterskjema;
+export default BarnehagebarnInfotrygdFilterskjema;

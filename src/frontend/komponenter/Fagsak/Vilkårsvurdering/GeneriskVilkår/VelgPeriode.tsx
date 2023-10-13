@@ -6,8 +6,8 @@ import navFarger from 'nav-frontend-core';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { HelpText, Label } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-form-elements';
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
+import type { ISODateString } from '@navikt/familie-datovelger';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { vilkårPeriodeFeilmeldingId } from './VilkårTabell';

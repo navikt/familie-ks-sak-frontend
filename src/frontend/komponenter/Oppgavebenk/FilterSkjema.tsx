@@ -7,8 +7,8 @@ import { Select, SkjemaGruppe } from 'nav-frontend-skjema';
 import { Element } from 'nav-frontend-typografi';
 
 import { Button } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-form-elements';
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
+import type { ISODateString } from '@navikt/familie-datovelger';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 

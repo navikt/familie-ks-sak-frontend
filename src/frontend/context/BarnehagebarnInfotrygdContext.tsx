@@ -12,11 +12,15 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import Barnehagebarn from '../komponenter/Barnehagebarn/Barnehagebarn';
-import type { IBarnehagebarnRequestParams, IBarnehagebarnResponse } from '../typer/barnehagebarn';
-import type { IBarnehagebarn } from '../typer/barnehagebarn';
+import BarnehagebarnInfotrygd from '../komponenter/Barnehagebarn/infotrygd/BarnehagebarnInfotrygd';
+import type {
+    IBarnehagebarnRequestParams,
+    IBarnehagebarnInfotrygdResponse,
+} from '../typer/barnehagebarn';
+import type { IBarnehagebarnInfotrygd } from '../typer/barnehagebarn';
 
-const ENDPOINT_URL_BARNEHAGELISTE_KS_SAK = '/familie-ks-sak/api/barnehagebarn/barnehagebarnliste';
+const ENDPOINT_URL_BARNEHAGELISTE_INFOTRYGD =
+    '/familie-ks-sak/api/barnehagebarn/barnehagebarnInfotrygdliste';
 
 const localStorageOn = false;
 const localStorageKey = 'barnehagebarnRequestParams';
@@ -31,19 +35,19 @@ const defaultBarnehagebarnRequestParams: IBarnehagebarnRequestParams = {
     sortAsc: false,
 };
 
-const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
+const [BarnehagebarnInfotrygdProvider, useBarnehagebarnInfotrygd] = createUseContext(() => {
     const { request } = useHttp();
 
     const [barnehagebarnRequestParams, settBarnehagebarnRequestParams] =
         useState<IBarnehagebarnRequestParams>({ ...defaultBarnehagebarnRequestParams });
 
     const [barnehagebarnResponse, settBarnehagebarnResponse] = useState<
-        Ressurs<IBarnehagebarnResponse>
-    >(byggTomRessurs<IBarnehagebarnResponse>());
+        Ressurs<IBarnehagebarnInfotrygdResponse>
+    >(byggTomRessurs<IBarnehagebarnInfotrygdResponse>());
 
     const [resetForm, setResetForm] = useState<boolean>(false);
 
-    const data: ReadonlyArray<IBarnehagebarn> = useMemo(() => {
+    const data: ReadonlyArray<IBarnehagebarnInfotrygd> = useMemo(() => {
         return barnehagebarnResponse.status === RessursStatus.SUKSESS &&
             barnehagebarnResponse.data.content.length > 0
             ? barnehagebarnResponse.data.content
@@ -53,7 +57,7 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
     const hentBarnehagebarnResponseRessurs = () => {
         settBarnehagebarnResponse(byggHenterRessurs());
         hentBarnehagebarnResponseRessursFraBackend().then(
-            (barnehagebarnDtoRessurs: Ressurs<IBarnehagebarnResponse>) => {
+            (barnehagebarnDtoRessurs: Ressurs<IBarnehagebarnInfotrygdResponse>) => {
                 settBarnehagebarnResponse(barnehagebarnDtoRessurs);
                 setResetForm(false);
             }
@@ -61,18 +65,18 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
     };
 
     const hentBarnehagebarnResponseRessursFraBackend = (): Promise<
-        Ressurs<IBarnehagebarnResponse>
+        Ressurs<IBarnehagebarnInfotrygdResponse>
     > => {
-        return request<IBarnehagebarnRequestParams, IBarnehagebarnResponse>({
+        return request<IBarnehagebarnRequestParams, IBarnehagebarnInfotrygdResponse>({
             data: barnehagebarnRequestParams,
             method: 'POST',
-            url: `${ENDPOINT_URL_BARNEHAGELISTE_KS_SAK}`,
+            url: `${ENDPOINT_URL_BARNEHAGELISTE_INFOTRYGD}`,
         })
-            .then((barnehagebarnResponseRessurs: Ressurs<IBarnehagebarnResponse>) => {
+            .then((barnehagebarnResponseRessurs: Ressurs<IBarnehagebarnInfotrygdResponse>) => {
                 return barnehagebarnResponseRessurs;
             })
             .catch((_error: AxiosError) => {
-                return byggFeiletRessurs('Ukjent feil ved innhenting av barnehageliste ks-sak');
+                return byggFeiletRessurs('Ukjent feil ved innhenting av barnehageliste infotrygd');
             });
     };
 
@@ -194,12 +198,12 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
     };
 });
 
-const BarnehagebarnComp: React.FC = () => {
+const BarnehagebarnInfotrygdComp: React.FC = () => {
     return (
-        <BarnehagebarnProvider>
-            <Barnehagebarn />
-        </BarnehagebarnProvider>
+        <BarnehagebarnInfotrygdProvider>
+            <BarnehagebarnInfotrygd />
+        </BarnehagebarnInfotrygdProvider>
     );
 };
 
-export { BarnehagebarnComp, useBarnehagebarn };
+export { BarnehagebarnInfotrygdComp, useBarnehagebarnInfotrygd };

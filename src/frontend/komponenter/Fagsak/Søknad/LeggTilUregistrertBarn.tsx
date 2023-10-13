@@ -6,7 +6,8 @@ import styled from 'styled-components';
 import { Element } from 'nav-frontend-typografi';
 
 import { BodyShort, Checkbox } from '@navikt/ds-react';
-import { FamilieDatovelger, FamilieInput } from '@navikt/familie-form-elements';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
+import { FamilieInput } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
