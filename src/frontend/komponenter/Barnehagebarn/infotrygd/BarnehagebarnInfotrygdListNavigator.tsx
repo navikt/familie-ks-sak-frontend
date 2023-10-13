@@ -13,6 +13,7 @@ const NavigasjonsContainer = styled.div`
     display: flex;
     justify-content: end;
     align-items: center;
+    min-height: 2rem;
 `;
 
 const StyledSelect = styled(Select)`
@@ -27,56 +28,61 @@ const FlexDiv = styled.div`
 const BarnehagebarnInfotrygdListNavigator: React.FunctionComponent = () => {
     const { barnehagebarnResponse, updateOffset, updateLimit, barnehagebarnRequestParams } =
         useBarnehagebarnInfotrygd();
-    return barnehagebarnResponse.status === RessursStatus.SUKSESS &&
-        barnehagebarnResponse.data.content.length >= 0 ? (
-        <NavigasjonsContainer>
-            <StyledSelect
-                hideLabel
-                label="Antall per side"
-                size="small"
-                aria-labelledby={'Antall per side'}
-                value={barnehagebarnRequestParams.limit}
-                onChange={event => updateLimit(+event.target.value)}
-            >
-                <option value="1">Vis 1 per side</option>
-                <option value="2">Vis 2 per side</option>
-                <option value="3">Vis 3 per side</option>
-                <option value="4">Vis 4 per side</option>
-                <option value="20">Vis 20 per side</option>
-                <option value="50">Vis 50 per side</option>
-                <option value="100">Vis 100 per side</option>
-                <option value="200">Vis 200 per side</option>
-            </StyledSelect>
-            {barnehagebarnResponse.data.totalElements > 0 ? (
-                <FlexDiv>
-                    |
-                    <span>
-                        <b>
-                            Side {barnehagebarnResponse.data.number + 1} av{' '}
-                            {barnehagebarnResponse.data.totalPages}{' '}
-                        </b>
-                        ({barnehagebarnResponse.data.pageable.offset + 1} -{' '}
-                        {barnehagebarnResponse.data.pageable.offset +
-                            barnehagebarnResponse.data.numberOfElements}{' '}
-                        av {barnehagebarnResponse.data.totalElements} totalt)
-                    </span>
-                    |
-                </FlexDiv>
-            ) : (
-                <div>Ingen resultater</div>
-            )}
 
-            {barnehagebarnResponse?.data?.totalPages > 0 && (
-                <Pagination
-                    size="small"
-                    page={barnehagebarnResponse.data.number + 1}
-                    count={barnehagebarnResponse.data.totalPages}
-                    onPageChange={(side: number) => updateOffset(side - 1)}
-                    boundaryCount={1}
-                    siblingCount={1}
-                />
-            )}
+    return (
+        <NavigasjonsContainer>
+            {barnehagebarnResponse.status === RessursStatus.SUKSESS &&
+                barnehagebarnResponse.data.content.length >= 0 && (
+                    <>
+                        <StyledSelect
+                            hideLabel
+                            label="Antall per side"
+                            size="small"
+                            aria-labelledby={'Antall per side'}
+                            value={barnehagebarnRequestParams.limit}
+                            onChange={event => updateLimit(+event.target.value)}
+                        >
+                            <option value="1">Vis 1 per side</option>
+                            <option value="2">Vis 2 per side</option>
+                            <option value="3">Vis 3 per side</option>
+                            <option value="4">Vis 4 per side</option>
+                            <option value="20">Vis 20 per side</option>
+                            <option value="50">Vis 50 per side</option>
+                            <option value="100">Vis 100 per side</option>
+                            <option value="200">Vis 200 per side</option>
+                        </StyledSelect>
+                        {barnehagebarnResponse.data.totalElements > 0 ? (
+                            <FlexDiv>
+                                |
+                                <span>
+                                    <b>
+                                        Side {barnehagebarnResponse.data.number + 1} av{' '}
+                                        {barnehagebarnResponse.data.totalPages}{' '}
+                                    </b>
+                                    ({barnehagebarnResponse.data.pageable.offset + 1} -{' '}
+                                    {barnehagebarnResponse.data.pageable.offset +
+                                        barnehagebarnResponse.data.numberOfElements}{' '}
+                                    av {barnehagebarnResponse.data.totalElements} totalt)
+                                </span>
+                                |
+                            </FlexDiv>
+                        ) : (
+                            <div>Ingen resultater</div>
+                        )}
+
+                        {barnehagebarnResponse?.data?.totalPages > 0 && (
+                            <Pagination
+                                size="small"
+                                page={barnehagebarnResponse.data.number + 1}
+                                count={barnehagebarnResponse.data.totalPages}
+                                onPageChange={(side: number) => updateOffset(side - 1)}
+                                boundaryCount={1}
+                                siblingCount={1}
+                            />
+                        )}
+                    </>
+                )}
         </NavigasjonsContainer>
-    ) : null;
+    );
 };
 export default BarnehagebarnInfotrygdListNavigator;

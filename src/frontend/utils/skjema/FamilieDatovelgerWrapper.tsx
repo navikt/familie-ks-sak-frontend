@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
 
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
 
 import { StyledErrorMessage } from '../../komponenter/Fagsak/Dokumentutsending/DeltBosted/DeltBostedAvtaler';
 
