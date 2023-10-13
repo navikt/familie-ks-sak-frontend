@@ -2,9 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
-
-import { BodyShort, Label } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
 
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../typer/vedtaksperiode';
 import { hentVedtaksperiodeTittel, Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
@@ -17,29 +15,25 @@ import {
     TIDENES_ENDE,
 } from '../../../../../utils/kalender';
 
-const StyledEkspanderbartpanelBase = styled(EkspanderbartpanelBase)`
+const StyledExpansionCard = styled(ExpansionCard)`
     margin-bottom: 1rem;
-
-    .ekspanderbartPanel__hode {
-        padding: 0 1rem 0 1.6rem;
-    }
-    .ekspanderbartPanel__innhold {
-        padding: 0.5rem 2.75rem 1.5rem 1.6rem;
-    }
 `;
 
-const PanelTittel = styled.div`
+const StyledExpansionHeader = styled(ExpansionCard.Header)`
+    align-items: center;
+`;
+
+const StyledExpansionTitle = styled(ExpansionCard.Title)`
     display: grid;
     grid-template-columns: minmax(6rem, 12rem) minmax(6rem, 15rem) auto;
     grid-gap: 0.5rem;
-    margin: 1rem;
     margin-left: 0;
 `;
 
 interface IEkspanderbartBegrunnelsePanelProps {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
     åpen: boolean;
-    onClick?: (event: React.SyntheticEvent<HTMLButtonElement>) => void;
+    onClick?: () => void;
 }
 
 const slutterSenereEnnInneværendeMåned = (tom?: string) =>
@@ -59,12 +53,15 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
     const vedtaksperiodeTittel = hentVedtaksperiodeTittel(vedtaksperiodeMedBegrunnelser);
 
     return (
-        <StyledEkspanderbartpanelBase
+        <StyledExpansionCard
             key={`${periode.fom}_${periode.tom}`}
-            apen={åpen}
-            onClick={onClick}
-            tittel={
-                <PanelTittel>
+            size={'small'}
+            open={åpen}
+            onToggle={onClick}
+            aria-label={`Periode ${periode.fom}_${periode.tom}`}
+        >
+            <StyledExpansionHeader>
+                <StyledExpansionTitle>
                     {periode.fom && (
                         <Label>
                             {periodeToString({
@@ -91,11 +88,10 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
                                 )}
                             </BodyShort>
                         )}
-                </PanelTittel>
-            }
-        >
-            {children}
-        </StyledEkspanderbartpanelBase>
+                </StyledExpansionTitle>
+            </StyledExpansionHeader>
+            <ExpansionCard.Content>{children}</ExpansionCard.Content>
+        </StyledExpansionCard>
     );
 };
 
