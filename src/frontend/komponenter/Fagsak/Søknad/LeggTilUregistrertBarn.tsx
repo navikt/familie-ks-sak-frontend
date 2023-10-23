@@ -3,9 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { Element } from 'nav-frontend-typografi';
-
-import { BodyShort, Checkbox } from '@navikt/ds-react';
+import { BodyShort, Checkbox, Label } from '@navikt/ds-react';
 import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
@@ -57,7 +55,8 @@ const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
             {registrerBarnSkjema.felter.uregistrertBarnFødselsdato.erSynlig &&
                 registrerBarnSkjema.felter.uregistrertBarnNavn.erSynlig && (
                     <UregistrertBarnInputs>
-                        <Element>Tilgjengelige opplysninger om barnet</Element>
+                        <Label>Tilgjengelige opplysninger om barnet</Label>
+                        <br />
                         <br />
 
                         <FamilieDatovelger
