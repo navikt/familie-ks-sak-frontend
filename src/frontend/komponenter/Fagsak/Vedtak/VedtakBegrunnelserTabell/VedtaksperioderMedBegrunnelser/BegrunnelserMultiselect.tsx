@@ -68,6 +68,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
                 container: provided => ({
                     ...provided,
                     maxWidth: '50rem',
+                    zIndex: 2,
                 }),
                 groupHeading: provided => ({
                     ...provided,
