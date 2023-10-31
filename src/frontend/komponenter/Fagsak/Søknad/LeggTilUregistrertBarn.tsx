@@ -3,9 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { Element } from 'nav-frontend-typografi';
-
-import { BodyShort, Checkbox } from '@navikt/ds-react';
+import { BodyShort, Checkbox, Label } from '@navikt/ds-react';
 import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
@@ -24,6 +22,10 @@ const Container = styled.div`
 
 const UregistrertBarnInputs = styled.div`
     margin: 1rem 0 1rem 1rem;
+`;
+
+const StyledFamilieDatovelger = styled(FamilieDatovelger)`
+    margin: 1rem 0;
 `;
 
 const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
@@ -57,10 +59,8 @@ const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
             {registrerBarnSkjema.felter.uregistrertBarnFødselsdato.erSynlig &&
                 registrerBarnSkjema.felter.uregistrertBarnNavn.erSynlig && (
                     <UregistrertBarnInputs>
-                        <Element>Tilgjengelige opplysninger om barnet</Element>
-                        <br />
-
-                        <FamilieDatovelger
+                        <Label>Tilgjengelige opplysninger om barnet</Label>
+                        <StyledFamilieDatovelger
                             {...registrerBarnSkjema.felter.uregistrertBarnFødselsdato.hentNavInputProps(
                                 registrerBarnSkjema.visFeilmeldinger
                             )}
@@ -68,8 +68,6 @@ const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
                             label={'Fødselsdato (valgfri)'}
                             placeholder={'DD.MM.ÅÅÅÅ'}
                         />
-
-                        <br />
                         <FamilieInput
                             {...registrerBarnSkjema.felter.uregistrertBarnNavn.hentNavInputProps(
                                 registrerBarnSkjema.visFeilmeldinger
