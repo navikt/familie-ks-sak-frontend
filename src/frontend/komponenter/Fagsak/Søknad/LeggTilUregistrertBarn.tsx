@@ -24,6 +24,10 @@ const UregistrertBarnInputs = styled.div`
     margin: 1rem 0 1rem 1rem;
 `;
 
+const StyledFamilieDatovelger = styled(FamilieDatovelger)`
+    margin: 1rem 0;
+`;
+
 const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
     const { vurderErLesevisning } = useBehandling();
 
@@ -56,10 +60,7 @@ const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
                 registrerBarnSkjema.felter.uregistrertBarnNavn.erSynlig && (
                     <UregistrertBarnInputs>
                         <Label>Tilgjengelige opplysninger om barnet</Label>
-                        <br />
-                        <br />
-
-                        <FamilieDatovelger
+                        <StyledFamilieDatovelger
                             {...registrerBarnSkjema.felter.uregistrertBarnFødselsdato.hentNavInputProps(
                                 registrerBarnSkjema.visFeilmeldinger
                             )}
@@ -67,8 +68,6 @@ const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
                             label={'Fødselsdato (valgfri)'}
                             placeholder={'DD.MM.ÅÅÅÅ'}
                         />
-
-                        <br />
                         <FamilieInput
                             {...registrerBarnSkjema.felter.uregistrertBarnNavn.hentNavInputProps(
                                 registrerBarnSkjema.visFeilmeldinger
