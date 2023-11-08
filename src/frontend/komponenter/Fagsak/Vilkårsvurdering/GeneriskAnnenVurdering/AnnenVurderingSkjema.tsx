@@ -7,11 +7,11 @@ import { Radio, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { FamilieKnapp, FamilieRadioGruppe, FamilieTextarea } from '@navikt/familie-form-elements';
 
+import { useAnnenVurderingSkjema } from './AnnenVurderingSkjemaContext';
+import { annenVurderingBegrunnelseFeilmeldingId } from './AnnenVurderingTabell';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../typer/vilkår';
 import { Resultat, resultater } from '../../../../typer/vilkår';
-import { useAnnenVurderingSkjema } from './AnnenVurderingSkjemaContext';
-import { annenVurderingBegrunnelseFeilmeldingId } from './AnnenVurderingTabell';
 
 const Container = styled.div`
     max-width: 30rem;

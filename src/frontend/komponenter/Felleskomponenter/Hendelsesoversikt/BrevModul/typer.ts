@@ -9,8 +9,6 @@ export enum Brevmal {
     INNHENTE_OPPLYSNINGER_ETTER_SØKNAD_I_SED = 'INNHENTE_OPPLYSNINGER_ETTER_SØKNAD_I_SED',
     VARSEL_OM_VEDTAK_ETTER_SØKNAD_I_SED = 'VARSEL_OM_VEDTAK_ETTER_SØKNAD_I_SED',
     VARSEL_OM_REVURDERING = 'VARSEL_OM_REVURDERING',
-    VARSEL_OM_REVURDERING_DELT_BOSTED_PARAGRAF_14 = 'VARSEL_OM_REVURDERING_DELT_BOSTED_PARAGRAF_14',
-    VARSEL_OM_REVURDERING_SAMBOER = 'VARSEL_OM_REVURDERING_SAMBOER',
     VARSEL_OM_REVURDERING_FRA_NASJONAL_TIL_EØS = 'VARSEL_OM_REVURDERING_FRA_NASJONAL_TIL_EØS',
     HENLEGGE_TRUKKET_SØKNAD = 'HENLEGGE_TRUKKET_SØKNAD',
     SVARTIDSBREV = 'SVARTIDSBREV',
@@ -33,8 +31,6 @@ export const brevmaler: Record<Brevmal, string> = {
     VARSEL_OM_REVURDERING: 'Varsel om revurdering',
     HENLEGGE_TRUKKET_SØKNAD: 'Henlegg søknad',
     SVARTIDSBREV: 'Svartidsbrev',
-    VARSEL_OM_REVURDERING_DELT_BOSTED_PARAGRAF_14: 'Varsel om revurdering delt bosted §14',
-    VARSEL_OM_REVURDERING_SAMBOER: 'Varsel om revurdering samboer',
     VARSEL_OM_REVURDERING_FRA_NASJONAL_TIL_EØS: 'Varsel om revurdering fra nasjonal til EØS',
     FORLENGET_SVARTIDSBREV: 'Forlenget svartidsbrev',
 };
@@ -82,15 +78,15 @@ export const opplysningsdokumenter: Omit<ISelectOptionMedBrevtekst, 'value'>[] =
     {
         label: 'Medlemskap - den andre forelderen',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at den andre forelderen har vært medlem i folketrygden eller i trygdeordninger i andre EØS-land i 5 år. Dokumentasjonen må også vise periodene du har vært medlem.',
-            NN: 'Dokumentasjon som viser at den andre forelderen har vore medlem i folketrygda eller i trygdeordningar i andre EØS-land i 5 år. Dokumentasjonen må også vise periodane du har vore medlem.',
+            NB: 'Dokumentasjon som viser at den andre forelderen har vært medlem i folketrygden eller i trygdeordninger i andre EØS-land i 5 år. Dokumentasjonen må også vise hvilke perioder den andre forelderen har vært medlem.',
+            NN: 'Dokumentasjon som viser at den andre forelderen har vore medlem i folketrygda eller i trygdeordningar i andre EØS-land i 5 år. Dokumentasjonen må også vise kva periodar den andre forelderen har vore medlem.',
         },
     },
     {
         label: 'Medlemskap - søker og den andre forelderen',
         brevtekst: {
-            NB: 'Dokumentasjon som viser at du og den andre forelderen har vært medlem i folketrygden eller i trygdeordninger i andre EØS-land i 5 år. Dokumentasjonen må også vise periodene du har vært medlem.',
-            NN: 'Dokumentasjon som viser at du og den andre forelderen har vore medlem i folketrygda eller i trygdeordningar i andre EØS-land i 5 år. Dokumentasjonen må også vise periodane du har vore medlem.',
+            NB: 'Dokumentasjon som viser at du og den andre forelderen har vært medlem i folketrygden eller i trygdeordninger i andre EØS-land i 5 år. Dokumentasjonen må også vise hvilke perioder du og den andre forelderen har vært medlem.',
+            NN: 'Dokumentasjon som viser at du og den andre forelderen har vore medlem i folketrygda eller i trygdeordningar i andre EØS-land i 5 år. Dokumentasjonen må også vise kva periodar du og den andre forelderen har vore medlem.',
         },
     },
     {

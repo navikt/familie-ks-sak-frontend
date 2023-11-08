@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import type { Regelverk, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
-import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
-import { VilkårSkjema } from '../../VilkårSkjema';
-import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 import {
     bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår,
     useBosattIRiket,
 } from './BosattIRiketContext';
+import type { Regelverk, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
+import { VilkårSkjema } from '../../VilkårSkjema';
+import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 

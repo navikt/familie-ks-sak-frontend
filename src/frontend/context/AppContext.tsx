@@ -5,22 +5,20 @@ import type { AxiosRequestConfig } from 'axios';
 import createUseContext from 'constate';
 
 import { Knapp } from 'nav-frontend-knapper';
-import { Normaltekst } from 'nav-frontend-typografi';
 
+import { Alert, BodyShort } from '@navikt/ds-react';
 import { HttpProvider, useHttp, loggFeil } from '@navikt/familie-http';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { ISaksbehandler } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import IkkeTilgang from '../ikoner/IkkeTilgang';
-import InformasjonSirkel from '../ikoner/InformasjonSirkel';
 import type { IToast, ToastTyper } from '../komponenter/Felleskomponenter/Toast/typer';
 import { BehandlerRolle } from '../typer/behandling';
 import type { IRestTilgang } from '../typer/person';
 import { adressebeskyttelsestyper } from '../typer/person';
 import type { IToggles } from '../typer/toggles';
 import { alleTogglerAv, ToggleNavn } from '../typer/toggles';
-import { gruppeIdTilRolle } from '../utils/behandling';
+import { gruppeIdTilRolle, gruppeIdTilSuperbrukerRolle } from '../utils/behandling';
 import { tilFeilside } from '../utils/commons';
 
 const FEM_MINUTTER = 300000;
@@ -95,11 +93,12 @@ const [AppContentProvider, useApp] = createUseContext(() => {
                         innhold: () => {
                             return (
                                 <div className={'utdatert-losning'}>
-                                    <InformasjonSirkel />
-                                    <Normaltekst>
-                                        Det finnes en oppdatert versjon av løsningen. Det anbefales
-                                        at du oppdaterer med en gang.
-                                    </Normaltekst>
+                                    <Alert variant={'info'} inline>
+                                        <BodyShort>
+                                            Det finnes en oppdatert versjon av løsningen. Det
+                                            anbefales at du oppdaterer med en gang.
+                                        </BodyShort>
+                                    </Alert>
                                 </div>
                             );
                         },
@@ -180,18 +179,15 @@ const [AppContentProvider, useApp] = createUseContext(() => {
                     onClose: () => lukkModal(),
                     innhold: () => {
                         return (
-                            <Normaltekst>
-                                <IkkeTilgang
-                                    height={20}
-                                    className={'tilgangmodal-ikke-oppfylt-ikon'}
-                                    width={20}
-                                />
-                                {`Bruker har diskresjonskode ${
-                                    adressebeskyttelsestyper[
-                                        ressurs.data.adressebeskyttelsegradering
-                                    ]
-                                }`}
-                            </Normaltekst>
+                            <Alert variant={'error'} inline>
+                                <BodyShort>
+                                    {`Bruker har diskresjonskode ${
+                                        adressebeskyttelsestyper[
+                                            ressurs.data.adressebeskyttelsegradering
+                                        ]
+                                    }`}
+                                </BodyShort>
+                            </Alert>
                         );
                     },
                     actions: [
@@ -231,6 +227,9 @@ const [AppContentProvider, useApp] = createUseContext(() => {
         return rolle;
     };
 
+    const harInnloggetSaksbehandlerSuperbrukerTilgang = () =>
+        innloggetSaksbehandler?.groups?.includes(gruppeIdTilSuperbrukerRolle);
+
     const harInnloggetSaksbehandlerSkrivetilgang = () => {
         const rolle = hentSaksbehandlerRolle();
 
@@ -242,6 +241,7 @@ const [AppContentProvider, useApp] = createUseContext(() => {
         hentSaksbehandlerRolle,
         innloggetSaksbehandler,
         harInnloggetSaksbehandlerSkrivetilgang,
+        harInnloggetSaksbehandlerSuperbrukerTilgang,
         lukkModal,
         modal,
         settModal,

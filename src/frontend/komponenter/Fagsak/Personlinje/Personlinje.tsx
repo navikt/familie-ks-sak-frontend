@@ -6,12 +6,12 @@ import { BodyShort } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
 import Visittkort from '@navikt/familie-visittkort';
 
+import Behandlingsmeny from './Behandlingsmeny/Behandlingsmeny';
 import { useApp } from '../../../context/AppContext';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import type { IPersonInfo } from '../../../typer/person';
 import { formaterIdent, hentAlder } from '../../../utils/formatter';
 import DødsfallTag from '../../Felleskomponenter/DødsfallTag';
-import Behandlingsmeny from './Behandlingsmeny/Behandlingsmeny';
 
 interface IProps {
     bruker?: IPersonInfo;

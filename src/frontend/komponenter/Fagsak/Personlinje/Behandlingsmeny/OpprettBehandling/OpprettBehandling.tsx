@@ -8,16 +8,16 @@ import { Button } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import type { IMinimalFagsak } from '../../../../../typer/fagsak';
-import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
-import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
-import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
 import BehandlingstypeFelt from './BehandlingstypeFelt';
 import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
 import { KravDatoFelt } from './KravDatoFelt';
 import { SøknadMottattDatoFelt } from './SøknadMottattDatoFelt';
 import useOpprettBehandling from './useOpprettBehandling';
+import type { IMinimalFagsak } from '../../../../../typer/fagsak';
+import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
+import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
+import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
+import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;

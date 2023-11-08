@@ -9,14 +9,14 @@ import { Alert, Button, Heading, Label } from '@navikt/ds-react';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import DeltBostedSkjema from './DeltBosted/DeltBostedSkjema';
+import KanSøkeSkjema from './KanSøke/KanSøkeSkjema';
 import {
     dokumentÅrsak,
     DokumentÅrsak,
     useDokumentutsending,
 } from '../../../context/DokumentutsendingContext';
 import MålformVelger from '../../Felleskomponenter/MålformVelger';
-import DeltBostedSkjema from './DeltBosted/DeltBostedSkjema';
-import KanSøkeSkjema from './KanSøke/KanSøkeSkjema';
 
 const Container = styled.div`
     padding: 2rem;

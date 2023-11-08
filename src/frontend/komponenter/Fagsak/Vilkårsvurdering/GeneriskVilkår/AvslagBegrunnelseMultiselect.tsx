@@ -8,13 +8,13 @@ import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../../../../typer/vedtak';
 import { BegrunnelseType } from '../../../../typer/vedtak';
 import type { VilkårType } from '../../../../typer/vilkår';
 import { hentBakgrunnsfarge, hentBorderfarge } from '../../../../utils/vedtakUtils';
 import { useVedtaksbegrunnelseTekster } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
-import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
 
 interface IProps {
     vilkårType: VilkårType;

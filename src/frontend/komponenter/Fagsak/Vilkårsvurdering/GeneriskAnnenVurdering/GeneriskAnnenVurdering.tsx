@@ -2,12 +2,11 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-import { Element, Undertittel } from 'nav-frontend-typografi';
+import { Fieldset } from '@navikt/ds-react';
 
+import AnnenVurderingTabell from './AnnenVurderingTabell';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../typer/vilkår';
-import AnnenVurderingTabell from './AnnenVurderingTabell';
 
 interface IProps {
     person: IGrunnlagPerson;
@@ -22,15 +21,6 @@ const Container = styled.div`
     }
 `;
 
-const VilkårTittel = styled(Undertittel)`
-    display: flex;
-    align-items: center;
-
-    > *:not(:first-child) {
-        margin-left: 0.75rem;
-    }
-`;
-
 const GeneriskAnnenVurdering: React.FC<IProps> = ({
     person,
     annenVurderingConfig,
@@ -38,16 +28,13 @@ const GeneriskAnnenVurdering: React.FC<IProps> = ({
 }) => {
     return (
         <Container>
-            <SkjemaGruppe>
-                <VilkårTittel tag={'h4'}>
-                    <Element children={annenVurderingConfig.tittel} />
-                </VilkårTittel>
+            <Fieldset legend={annenVurderingConfig.tittel}>
                 <AnnenVurderingTabell
                     person={person}
                     annenVurderingConfig={annenVurderingConfig}
                     andreVurderinger={andreVurderinger}
                 />
-            </SkjemaGruppe>
+            </Fieldset>
         </Container>
     );
 };

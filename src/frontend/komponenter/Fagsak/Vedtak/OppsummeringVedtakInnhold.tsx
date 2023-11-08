@@ -4,10 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { FileContent } from '@navikt/ds-icons';
-import { Alert, BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Modal } from '@navikt/ds-react';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
+import { PeriodetypeIVedtaksbrev, useVedtak } from './useVedtak';
+import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
+import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
+import Vedtaksmeny from './Vedtaksmeny';
 import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import useDokument from '../../../hooks/useDokument';
@@ -22,11 +27,6 @@ import {
     hentStegNummer,
 } from '../../../typer/behandling';
 import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
-import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
-import { PeriodetypeIVedtaksbrev, useVedtak } from './useVedtak';
-import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
-import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
-import Vedtaksmeny from './Vedtaksmeny';
 
 interface IOppsummeringVedtakInnholdProps {
     åpenBehandling: IBehandling;
@@ -44,15 +44,6 @@ const Modaltekst = styled(BodyShort)`
     margin: 2rem 0;
 `;
 
-const KnappHøyre = styled(Button)`
-    margin-left: 1rem;
-`;
-
-const Knapperad = styled.div`
-    display: flex;
-    justify-content: center;
-`;
-
 interface FortsattInnvilgetPerioderSelect extends HTMLSelectElement {
     value: PeriodetypeIVedtaksbrev;
 }
@@ -67,6 +58,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
     const { hentSaksbehandlerRolle } = useApp();
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
 
     const { overstyrFortsattInnvilgetVedtaksperioder, periodetypeIVedtaksbrev } = useVedtak({
         åpenBehandling,
@@ -152,7 +144,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                 {åpenBehandling.resultat === BehandlingResultat.FORTSATT_INNVILGET && (
                     <FamilieSelect
                         label="Velg brev med eller uten perioder"
-                        erLesevisning={vurderErLesevisning()}
+                        erLesevisning={erLesevisning}
                         onChange={(
                             event: React.ChangeEvent<FortsattInnvilgetPerioderSelect>
                         ): void => {
@@ -187,7 +179,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                                 settErUlagretNyFeilutbetaltValutaPeriode={
                                     settErUlagretNyFeilutbetaltValutaPeriode
                                 }
-                                erLesevisning={vurderErLesevisning()}
+                                erLesevisning={erLesevisning}
                                 skjulFeilutbetaltValuta={() => settVisFeilutbetaltValuta(false)}
                             />
                         )}
@@ -204,18 +196,27 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                     Vis vedtaksbrev
                 </Button>
             </div>
-            <Modal
-                open={visModal}
-                onClose={() => settVisModal(false)}
-                closeButton={true}
-                shouldCloseOnOverlayClick={false}
-            >
-                <Modal.Content>
-                    <Heading size={'medium'} level={'2'}>
-                        Totrinnskontroll
-                    </Heading>
-                    <Modaltekst>Behandlingen er nå sendt til totrinnskontroll</Modaltekst>
-                    <Knapperad>
+            {visModal && (
+                <Modal
+                    open
+                    onClose={() => settVisModal(false)}
+                    header={{ heading: 'Totrinnskontroll', size: 'medium' }}
+                    portal
+                >
+                    <Modal.Body>
+                        <Modaltekst>Behandlingen er nå sendt til totrinnskontroll</Modaltekst>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            key={'saksoversikt'}
+                            variant={'secondary'}
+                            size={'medium'}
+                            onClick={() => {
+                                settVisModal(false);
+                                navigate(`/fagsak/${fagsakId}/saksoversikt`);
+                            }}
+                            children={'Gå til saksoversikten'}
+                        />
                         <Button
                             key={'oppgavebenk'}
                             variant={'secondary'}
@@ -226,19 +227,9 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                             }}
                             children={'Gå til oppgavebenken'}
                         />
-                        <KnappHøyre
-                            key={'saksoversikt'}
-                            variant={'secondary'}
-                            size={'medium'}
-                            onClick={() => {
-                                settVisModal(false);
-                                navigate(`/fagsak/${fagsakId}/saksoversikt`);
-                            }}
-                            children={'Gå til saksoversikten'}
-                        />
-                    </Knapperad>
-                </Modal.Content>
-            </Modal>
+                    </Modal.Footer>
+                </Modal>
+            )}
         </>
     );
 };

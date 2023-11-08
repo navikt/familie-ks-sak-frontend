@@ -1,3 +1,4 @@
+import { mockBarn } from './person/person.mock';
 import { YtelseType } from '../../typer/beregning';
 import { lagUtbetalingsperiodeDetalj } from '../../typer/test/utbetalingsperiode.mock';
 import familieDayjs from '../familieDayjs';
@@ -10,7 +11,6 @@ import {
     sorterUtbetaling,
 } from '../formatter';
 import { iDag, KalenderEnhet, leggTil, serializeIso8601String, trekkFra } from '../kalender';
-import { mockBarn } from './person/person.mock';
 
 describe('utils/formatter', () => {
     test('Skal formatere ident', () => {

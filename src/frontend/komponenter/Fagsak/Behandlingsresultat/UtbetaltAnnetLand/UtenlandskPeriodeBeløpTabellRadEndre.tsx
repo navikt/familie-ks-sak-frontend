@@ -11,8 +11,8 @@ import {
     FamilieKnapp,
     FamilieReactSelect,
     FamilieSelect,
-    type OptionType,
 } from '@navikt/familie-form-elements';
+import type { OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -250,21 +250,22 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                         </FamilieKnapp>
                     </div>
 
-                    {skjema.felter.status?.verdi !== EøsPeriodeStatus.IKKE_UTFYLT && !lesevisning && (
-                        <Button
-                            variant={'tertiary'}
-                            onClick={() => slettUtenlandskPeriodeBeløp()}
-                            id={`slett_utd_beløp_${skjema.felter.barnIdenter.verdi.map(
-                                barn => `${barn}-`
-                            )}_${skjema.felter.initielFom.verdi}`}
-                            loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                            disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
-                            size={'small'}
-                            icon={<Delete />}
-                        >
-                            {'Fjern'}
-                        </Button>
-                    )}
+                    {skjema.felter.status?.verdi !== EøsPeriodeStatus.IKKE_UTFYLT &&
+                        !lesevisning && (
+                            <Button
+                                variant={'tertiary'}
+                                onClick={() => slettUtenlandskPeriodeBeløp()}
+                                id={`slett_utd_beløp_${skjema.felter.barnIdenter.verdi.map(
+                                    barn => `${barn}-`
+                                )}_${skjema.felter.initielFom.verdi}`}
+                                loading={skjema.submitRessurs.status === RessursStatus.HENTER}
+                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
+                                size={'small'}
+                                icon={<Delete />}
+                            >
+                                {'Fjern'}
+                            </Button>
+                        )}
                 </Knapperad>
             </EøsPeriodeSkjemaContainer>
         </SkjemaGruppe>

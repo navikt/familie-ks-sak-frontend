@@ -4,11 +4,11 @@ import styled from 'styled-components';
 
 import { Table } from '@navikt/ds-react';
 
+import VilkårTabellRad from './VilkårTabellRad';
 import { useApp } from '../../../../context/AppContext';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import { ToggleNavn } from '../../../../typer/toggles';
 import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
-import VilkårTabellRad from './VilkårTabellRad';
 
 export const vilkårFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
     `vilkår_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;

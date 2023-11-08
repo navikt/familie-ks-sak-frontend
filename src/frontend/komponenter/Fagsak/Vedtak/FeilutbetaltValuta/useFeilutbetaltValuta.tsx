@@ -2,6 +2,7 @@ import { useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { validerFeilutbetaltBeløp, validerTom, validerFom } from './FeilutbetaltValutaUtil';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../typer/behandling';
 import type {
@@ -10,7 +11,6 @@ import type {
     IRestFeilutbetaltValuta,
 } from '../../../../typer/eøs-feilutbetalt-valuta';
 import type { FamilieIsoDate } from '../../../../utils/kalender';
-import { validerFeilutbetaltBeløp, validerTom, validerFom } from './FeilutbetaltValutaUtil';
 
 interface IProps {
     behandlingId: number;

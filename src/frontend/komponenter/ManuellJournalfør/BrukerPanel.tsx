@@ -2,32 +2,36 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { FamilieInput, FamilieKnapp } from '@navikt/familie-form-elements';
+import { Button, ExpansionCard, TextField } from '@navikt/ds-react';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
 
+import { DeltagerInfo } from './DeltagerInfo';
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
 import { KontoSirkel } from '../../ikoner/KontoSirkel';
 import { formaterIdent } from '../../utils/formatter';
 import { identValidator } from '../../utils/validators';
-import { DeltagerInfo } from './DeltagerInfo';
-import { StyledEkspanderbartpanelBase } from './StyledEkspanderbartpanelBase';
 
-const StyledDiv = styled.div`
+const FlexDiv = styled.div`
     display: flex;
+    margin-bottom: 1.5rem;
 `;
 
-const StyledKnapp = styled(FamilieKnapp)`
+const StyledExpansionCard = styled(ExpansionCard)`
+    margin-top: 1rem;
+    width: 100%;
+`;
+
+const StyledButton = styled(Button)`
     margin-left: 1rem;
     margin-top: auto;
-    height: 1rem;
+    width: 10rem;
 `;
 
-const StyledEkspanderbartpanelBaseMedMargin = styled(StyledEkspanderbartpanelBase)`
-    & .ekspanderbartPanel__innhold {
-        margin-left: 4rem;
-        margin-bottom: 1rem;
-        padding: 0rem 2.75rem 1.5rem 1.6rem;
+const StyledExpansionContent = styled(ExpansionCard.Content)`
+    .navds-expansioncard__content-inner {
+        margin: 1rem 4rem;
     }
+    padding: 0.5rem 1rem 1rem;
 `;
 
 export const BrukerPanel: React.FC = () => {
@@ -53,57 +57,57 @@ export const BrukerPanel: React.FC = () => {
     }, [skjema.visFeilmeldinger, skjema.felter.bruker.valideringsstatus]);
 
     return (
-        <StyledEkspanderbartpanelBaseMedMargin
-            visFeilmeldinger={
-                skjema.visFeilmeldinger &&
-                skjema.felter.bruker.valideringsstatus === Valideringsstatus.FEIL
-            }
-            apen={åpen}
-            onClick={() => {
+        <StyledExpansionCard
+            open={åpen}
+            onToggle={() => {
                 settÅpen(!åpen);
             }}
-            tittel={
-                <DeltagerInfo
-                    ikon={<KontoSirkel filled={åpen} width={48} height={48} />}
-                    navn={skjema.felter.bruker.verdi?.navn || 'Ukjent bruker'}
-                    undertittel={'Søker/Bruker'}
-                    ident={formaterIdent(skjema.felter.bruker.verdi?.personIdent ?? '')}
-                />
-            }
+            aria-label={skjema.felter.bruker.verdi?.navn || 'Ukjent bruker'}
+            size="small"
         >
-            <br />
-            <StyledDiv>
-                {!erLesevisning() && (
-                    <FamilieInput
-                        {...nyIdent.hentNavInputProps(!!feilMelding)}
-                        error={nyIdent.hentNavInputProps(!!feilMelding).feil || feilMelding}
-                        erLesevisning={erLesevisning()}
-                        id={'hent-person'}
-                        label={'Skriv inn fødselsnummer/D-nummer'}
-                        placeholder={'fnr/dnr'}
+            <ExpansionCard.Header>
+                <ExpansionCard.Title>
+                    <DeltagerInfo
+                        ikon={<KontoSirkel filled={åpen} width={48} height={48} />}
+                        navn={skjema.felter.bruker.verdi?.navn || 'Ukjent bruker'}
+                        undertittel={'Søker/Bruker'}
+                        ident={formaterIdent(skjema.felter.bruker.verdi?.personIdent ?? '')}
                     />
+                </ExpansionCard.Title>
+            </ExpansionCard.Header>
+            <StyledExpansionContent>
+                {!erLesevisning() && (
+                    <FlexDiv>
+                        <TextField
+                            {...nyIdent.hentNavInputProps(!!feilMelding)}
+                            error={nyIdent.hentNavInputProps(!!feilMelding).feil || feilMelding}
+                            label={'Endre bruker'}
+                            description={'Skriv inn brukers/søkers fødselsnummer eller D-nummer'}
+                            size="small"
+                        />
+                        <StyledButton
+                            onClick={() => {
+                                if (nyIdent.valideringsstatus === Valideringsstatus.OK) {
+                                    settSpinner(true);
+                                    endreBruker(nyIdent.verdi)
+                                        .then((feilmelding: string) => {
+                                            settFeilMelding(feilmelding);
+                                        })
+                                        .finally(() => {
+                                            settSpinner(false);
+                                        });
+                                } else {
+                                    settFeilMelding('Person ident er ugyldig');
+                                }
+                            }}
+                            children={'Endre bruker'}
+                            loading={spinner}
+                            size="small"
+                            variant="secondary"
+                        />
+                    </FlexDiv>
                 )}
-                <StyledKnapp
-                    onClick={() => {
-                        if (nyIdent.valideringsstatus === Valideringsstatus.OK) {
-                            settSpinner(true);
-                            endreBruker(nyIdent.verdi)
-                                .then((feilmelding: string) => {
-                                    settFeilMelding(feilmelding);
-                                })
-                                .finally(() => {
-                                    settSpinner(false);
-                                });
-                        } else {
-                            settFeilMelding('Person ident er ugyldig');
-                        }
-                    }}
-                    children={'Endre bruker'}
-                    spinner={spinner}
-                    size="small"
-                    erLesevisning={erLesevisning()}
-                />
-            </StyledDiv>
-        </StyledEkspanderbartpanelBaseMedMargin>
+            </StyledExpansionContent>
+        </StyledExpansionCard>
     );
 };

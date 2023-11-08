@@ -5,11 +5,11 @@ import { Radio } from 'nav-frontend-skjema';
 import { Label } from '@navikt/ds-react';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
+import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
 import { Resultat, resultater } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
-import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
 
 type MedlemskapAnnenForelderProps = IVilkårSkjemaBaseProps;
 
@@ -22,6 +22,12 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
 }: MedlemskapAnnenForelderProps) => {
     const { felter } = useMedlemskapAnnenForelder(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+
+    const nullstillAvslagBegrunnelser = () => {
+        vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
+        vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
+    };
+
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
@@ -58,6 +64,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                         vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
                             Resultat.OPPFYLT
                         );
+                        nullstillAvslagBegrunnelser();
                     }}
                 />
                 <Radio
@@ -82,6 +89,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                         vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
                             Resultat.IKKE_AKTUELT
                         );
+                        nullstillAvslagBegrunnelser();
                     }}
                 />
             </FamilieRadioGruppe>

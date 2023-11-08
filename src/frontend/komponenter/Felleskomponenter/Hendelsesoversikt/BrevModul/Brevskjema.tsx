@@ -18,6 +18,9 @@ import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import BarnBrevetGjelder from './BarnBrevetGjelder';
+import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
+import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { useBrevModul } from '../../../../context/BrevModulContext';
 import useDokument from '../../../../hooks/useDokument';
@@ -31,14 +34,9 @@ import { målform } from '../../../../typer/søknad';
 import { lagPersonLabel } from '../../../../utils/formatter';
 import type { IFritekstFelt } from '../../../../utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
-import { FamilieDatovelgerWrapper } from '../../../../utils/skjema/FamilieDatovelgerWrapper';
-import DeltBostedSkjema from '../../../Fagsak/Dokumentutsending/DeltBosted/DeltBostedSkjema';
 import Knapperekke from '../../Knapperekke';
 import PdfVisningModal from '../../PdfVisningModal/PdfVisningModal';
 import SkjultLegend from '../../SkjultLegend';
-import BarnBrevetGjelder from './BarnBrevetGjelder';
-import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
-import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 
 interface IProps {
     onSubmitSuccess: () => void;
@@ -93,6 +91,7 @@ const StyledFamilieInput = styled(FamilieInput)`
 
 const Brevskjema = ({ onSubmitSuccess }: IProps) => {
     const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
     const { hentForhåndsvisning, hentetDokument } = useDokument();
 
     const {
@@ -236,7 +235,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                             </LabelOgEtikett>
                         }
                         creatable={false}
-                        erLesevisning={vurderErLesevisning()}
+                        erLesevisning={erLesevisning}
                         isMulti={true}
                         onChange={valgteOptions => {
                             skjema.felter.dokumenter.onChange(
@@ -251,7 +250,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 {skjema.felter.fritekster.erSynlig && (
                     <FritekstWrapper>
                         <Label htmlFor={skjemaGruppeId}>Legg til kulepunkt</Label>
-                        {vurderErLesevisning() ? (
+                        {erLesevisning ? (
                             <StyledList id={skjemaGruppeId}>
                                 {skjema.felter.fritekster.verdi.map(
                                     (fritekst: FeltState<IFritekstFelt>) => (
@@ -330,7 +329,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                     )}
                                 </SkjemaGruppe>
 
-                                {!erMaksAntallKulepunkter && !vurderErLesevisning() && (
+                                {!erMaksAntallKulepunkter && !erLesevisning && (
                                     <Button
                                         onClick={() => leggTilFritekst()}
                                         id={`legg-til-fritekst`}
@@ -368,23 +367,6 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                             )}
                     />
                 )}
-                {skjema.felter.brevmal.verdi ===
-                    Brevmal.VARSEL_OM_REVURDERING_DELT_BOSTED_PARAGRAF_14 && (
-                    <DeltBostedSkjema
-                        avtalerOmDeltBostedPerBarnFelt={skjema.felter.avtalerOmDeltBostedPerBarn}
-                        barnMedDeltBostedFelt={skjema.felter.barnMedDeltBosted}
-                        visFeilmeldinger={skjema.visFeilmeldinger}
-                        settVisFeilmeldinger={settVisfeilmeldinger}
-                    />
-                )}
-                {skjema.felter.brevmal.verdi === Brevmal.VARSEL_OM_REVURDERING_SAMBOER && (
-                    <FamilieDatovelgerWrapper
-                        label={'Samboer fra'}
-                        valgtDato={skjema.felter.datoAvtale.verdi}
-                        placeholder={'DD.MM.ÅÅÅÅ'}
-                        {...skjema.felter.datoAvtale.hentNavInputProps(skjema.visFeilmeldinger)}
-                    />
-                )}
                 {skjema.felter.brevmal.verdi === Brevmal.FORLENGET_SVARTIDSBREV && (
                     <StyledFamilieInput
                         {...skjema.felter.antallUkerSvarfrist.hentNavInputProps(
@@ -396,7 +378,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 )}
             </SkjemaGruppe>
             <Knapperekke>
-                {!vurderErLesevisning() && (
+                {!erLesevisning && (
                     <Button
                         id={'forhandsvis-vedtaksbrev'}
                         variant={'tertiary'}

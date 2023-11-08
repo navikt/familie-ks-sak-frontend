@@ -1,9 +1,9 @@
+import { erProd } from './miljø';
 import type { IBehandling } from '../typer/behandling';
 import { BehandlerRolle } from '../typer/behandling';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import { Målform } from '../typer/søknad';
-import { erProd } from './miljø';
 
 export const gruppeIdTilRolle = (gruppeId: string) => {
     const rolleConfig = erProd()
@@ -19,6 +19,10 @@ export const gruppeIdTilRolle = (gruppeId: string) => {
           ]);
     return rolleConfig.get(gruppeId) ?? BehandlerRolle.UKJENT;
 };
+
+export const gruppeIdTilSuperbrukerRolle = erProd()
+    ? 'b8158d87-a284-4620-9bf9-f0aa3f62c8aa'
+    : '314fa714-f13c-4cdc-ac5c-e13ce08e241c';
 
 export const hentSøkersMålform = (behandling: IBehandling) =>
     behandling.personer.find((person: IGrunnlagPerson) => {

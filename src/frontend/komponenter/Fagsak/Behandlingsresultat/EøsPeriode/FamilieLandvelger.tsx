@@ -6,7 +6,8 @@ import styled from 'styled-components';
 import { Label } from '@navikt/ds-react';
 import { CountryFilter } from '@navikt/land-verktoy';
 import type { Country, Currency } from '@navikt/land-verktoy';
-import CountrySelect, { type CountrySelectProps } from '@navikt/landvelger';
+import CountrySelect from '@navikt/landvelger';
+import type { CountrySelectProps } from '@navikt/landvelger';
 
 const EØS_CURRENCY: Array<string> = [
     'DKK',

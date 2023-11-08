@@ -5,12 +5,12 @@ import styled from 'styled-components';
 import { AddCircle } from '@navikt/ds-icons';
 import { Button, Heading, Table } from '@navikt/ds-react';
 import { CopyToClipboard } from '@navikt/ds-react-internal';
-import { NavdsSemanticColorLink } from '@navikt/ds-tokens/dist/tokens';
+import { ATextAction } from '@navikt/ds-tokens/dist/tokens';
 
-import type { IRestFeilutbetaltValuta } from '../../../../typer/eøs-feilutbetalt-valuta';
-import { periodeToString } from '../../../../utils/kalender';
 import FeilutbetaltValutaPeriode from './FeilutbetaltValutaPeriode';
 import NyFeilutbetaltValutaPeriode from './NyFeilutbetaltValutaPeriode';
+import type { IRestFeilutbetaltValuta } from '../../../../typer/eøs-feilutbetalt-valuta';
+import { periodeToString } from '../../../../utils/kalender';
 
 interface IFeilutbetaltValuta {
     behandlingId: number;
@@ -36,7 +36,7 @@ const FlexRowDiv = styled.div`
 
 const KopierTilNøsKnapp = styled(CopyToClipboard)`
     :not(:hover):not(:active) {
-        color: ${NavdsSemanticColorLink};
+        color: ${ATextAction};
     }
 `;
 

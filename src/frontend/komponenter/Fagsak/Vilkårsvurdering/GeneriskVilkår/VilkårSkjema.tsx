@@ -7,11 +7,7 @@ import { Radio, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { Delete } from '@navikt/ds-icons';
 import { Button, Label } from '@navikt/ds-react';
-import {
-    NavdsSemanticColorBorderMuted,
-    NavdsSemanticColorFeedbackWarningBorder,
-    NavdsSemanticColorInteractionPrimary,
-} from '@navikt/ds-tokens/dist/tokens';
+import { ABorderDefault, ABorderWarning, ASurfaceAction } from '@navikt/ds-tokens/dist/tokens';
 import {
     FamilieKnapp,
     FamilieRadioGruppe,
@@ -20,6 +16,11 @@ import {
 } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import AvslagSkjema from './AvslagSkjema';
+import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
+import VelgPeriode from './VelgPeriode';
+import type { IVilkårSkjemaContext, VilkårSkjemaContextValue } from './VilkårSkjemaContext';
+import { vilkårBegrunnelseFeilmeldingId, vilkårFeilmeldingId } from './VilkårTabell';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak } from '../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../typer/person';
@@ -31,23 +32,18 @@ import type {
 } from '../../../../typer/vilkår';
 import { Resultat, resultater, Regelverk, VilkårType } from '../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../utils/vilkår';
-import AvslagSkjema from './AvslagSkjema';
-import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
-import VelgPeriode from './VelgPeriode';
-import type { IVilkårSkjemaContext, VilkårSkjemaContextValue } from './VilkårSkjemaContext';
-import { vilkårBegrunnelseFeilmeldingId, vilkårFeilmeldingId } from './VilkårTabell';
 
 const Container = styled.div`
     max-width: 30rem;
     border-left: 0.125rem solid
         ${(props: { lesevisning: boolean; vilkårResultat: Resultat | undefined }) => {
             if (props.lesevisning) {
-                return NavdsSemanticColorBorderMuted;
+                return ABorderDefault;
             }
             if (props.vilkårResultat === Resultat.IKKE_VURDERT) {
-                return NavdsSemanticColorFeedbackWarningBorder;
+                return ABorderWarning;
             }
-            return NavdsSemanticColorInteractionPrimary;
+            return ASurfaceAction;
         }};
     padding-left: 2rem;
     margin-left: -3rem;
@@ -140,7 +136,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         {Object.entries(alleRegelverk).map(
                             ([regelverk, { tekst }]: [
                                 string,
-                                { tekst: string; symbol: ReactNode }
+                                { tekst: string; symbol: ReactNode },
                             ]) => {
                                 return (
                                     <option
@@ -174,9 +170,15 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                             label={'Ja'}
                             name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                             checked={skjema.felter.resultat.verdi === Resultat.OPPFYLT}
-                            onChange={() =>
-                                skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT)
-                            }
+                            onChange={() => {
+                                skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
+                                vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
+                                    false
+                                );
+                                vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt(
+                                    []
+                                );
+                            }}
                         />
                         <Radio
                             label={'Nei'}

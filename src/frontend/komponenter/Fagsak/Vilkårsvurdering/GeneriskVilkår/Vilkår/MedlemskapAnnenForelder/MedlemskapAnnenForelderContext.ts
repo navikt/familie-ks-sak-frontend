@@ -1,5 +1,6 @@
 import { useFelt } from '@navikt/familie-skjema';
 
+import { erPeriodeGyldig } from './MedlemskapAnnenForelderValidering';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
@@ -11,7 +12,6 @@ import type {
 import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
 import { erAvslagBegrunnelserGyldig, erResultatGyldig } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import { erPeriodeGyldig } from './MedlemskapAnnenForelderValidering';
 
 export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {

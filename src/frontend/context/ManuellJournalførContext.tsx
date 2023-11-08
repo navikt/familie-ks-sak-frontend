@@ -16,6 +16,8 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
+import { useApp } from './AppContext';
+import { useFagsakContext } from './fagsak/FagsakContext';
 import useDokument from '../hooks/useDokument';
 import type { VisningBehandling } from '../komponenter/Fagsak/Saksoversikt/visningBehandling';
 import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
@@ -28,7 +30,8 @@ import type {
     IRestJournalføring,
 } from '../typer/manuell-journalføring';
 import { JournalpostKanal } from '../typer/manuell-journalføring';
-import { type IRestLukkOppgaveOgKnyttJournalpost, OppgavetypeFilter } from '../typer/oppgave';
+import { OppgavetypeFilter } from '../typer/oppgave';
+import type { IRestLukkOppgaveOgKnyttJournalpost } from '../typer/oppgave';
 import type { IPersonInfo } from '../typer/person';
 import { Adressebeskyttelsegradering } from '../typer/person';
 import type { ISamhandlerInfo } from '../typer/samhandler';
@@ -36,8 +39,6 @@ import type { Tilbakekrevingsbehandlingstype } from '../typer/tilbakekrevingsbeh
 import { ToggleNavn } from '../typer/toggles';
 import { hentAktivBehandlingPåMinimalFagsak } from '../utils/fagsak';
 import { kalenderDiff } from '../utils/kalender';
-import { useApp } from './AppContext';
-import { useFagsakContext } from './fagsak/FagsakContext';
 
 export interface ManuellJournalføringSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';

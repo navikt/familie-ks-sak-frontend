@@ -1,14 +1,14 @@
-import type { ISODateString } from '@navikt/familie-form-elements';
+import type { ISODateString } from '@navikt/familie-datovelger';
 import { feil, ok, useFelt } from '@navikt/familie-skjema';
 import type { Avhengigheter } from '@navikt/familie-skjema/dist/typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { datoformat, formaterIsoDato } from './formatter';
+import { erIsoStringGyldig } from './kalender';
 import { useFagsakContext } from '../context/fagsak/FagsakContext';
 import type { IForelderBarnRelasjon } from '../typer/person';
 import { ForelderBarnRelasjonRolle } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
-import { datoformat, formaterIsoDato } from './formatter';
-import { erIsoStringGyldig } from './kalender';
 
 interface IProps {
     avhengigheter?: Avhengigheter;
@@ -37,10 +37,11 @@ export const useDeltBostedFelter = ({ avhengigheter, skalFeltetVises }: IProps) 
 
             return barnMedDeltBosted
                 .filter((barn: IBarnMedOpplysninger) => barn.merket)
-                .some((barn: IBarnMedOpplysninger) =>
-                    felt.verdi[barn.ident]?.some(
-                        avtaleDato => avtaleDato.length === 0 || !erIsoStringGyldig(avtaleDato)
-                    )
+                .some(
+                    (barn: IBarnMedOpplysninger) =>
+                        felt.verdi[barn.ident]?.some(
+                            avtaleDato => avtaleDato.length === 0 || !erIsoStringGyldig(avtaleDato)
+                        )
                 )
                 ? feil(felt, 'Minst én av barna mangler avtale om delt bosted')
                 : ok(felt);

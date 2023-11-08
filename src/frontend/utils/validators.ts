@@ -1,16 +1,6 @@
-import {
-    type Avhengigheter,
-    feil,
-    type FeltState,
-    ok,
-    Valideringsstatus,
-} from '@navikt/familie-skjema';
+import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
+import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 
-import type { IGrunnlagPerson } from '../typer/person';
-import { PersonType } from '../typer/person';
-import type { Begrunnelse } from '../typer/vedtak';
-import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../typer/vilkår';
-import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import familieDayjs from './familieDayjs';
 import type { DagMånedÅr, IPeriode } from './kalender';
 import {
@@ -27,6 +17,11 @@ import {
     TIDENES_MORGEN,
     valgtDatoErNesteMånedEllerSenere,
 } from './kalender';
+import type { IGrunnlagPerson } from '../typer/person';
+import { PersonType } from '../typer/person';
+import type { Begrunnelse } from '../typer/vedtak';
+import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../typer/vilkår';
+import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
 
 // eslint-disable-next-line
 const validator = require('@navikt/fnrvalidator');

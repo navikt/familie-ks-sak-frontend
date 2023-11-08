@@ -7,12 +7,12 @@ import Panel from 'nav-frontend-paneler';
 
 import { BodyShort } from '@navikt/ds-react';
 
+import type { VisningBehandling } from './visningBehandling';
 import { BehandlingStatus } from '../../../typer/behandling';
 import type { IBehandlingstema } from '../../../typer/behandlingstema';
 import { tilBehandlingstema } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { hentAktivBehandlingPåMinimalFagsak, hentFagsakStatusVisning } from '../../../utils/fagsak';
-import type { VisningBehandling } from './visningBehandling';
 
 interface IBehandlingLenkepanel {
     minimalFagsak: IMinimalFagsak;

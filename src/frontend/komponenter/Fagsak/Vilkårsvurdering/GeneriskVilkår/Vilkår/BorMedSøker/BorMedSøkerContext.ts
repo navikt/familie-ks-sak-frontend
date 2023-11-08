@@ -1,5 +1,6 @@
 import { useFelt } from '@navikt/familie-skjema';
 
+import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BorMedSøkerValidering';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
@@ -18,7 +19,6 @@ import {
     erResultatGyldig,
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
-import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BorMedSøkerValidering';
 
 export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {

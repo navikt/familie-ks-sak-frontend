@@ -5,6 +5,11 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { Alert } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import Behandlingsresultat from './Behandlingsresultat/Behandlingsresultat';
+import Simulering from './Simulering/Simulering';
+import RegistrerSøknad from './Søknad/RegistrerSøknad';
+import OppsummeringVedtak from './Vedtak/OppsummeringVedtak';
+import Vilkårsvurdering from './Vilkårsvurdering/Vilkårsvurdering';
 import { useBehandling } from '../../context/behandlingContext/BehandlingContext';
 import { EøsProvider } from '../../context/Eøs/EøsContext';
 import { SimuleringProvider } from '../../context/SimuleringContext';
@@ -15,11 +20,6 @@ import { useAmplitude } from '../../utils/amplitude';
 import { hentSideHref } from '../../utils/miljø';
 import type { SideId } from '../Felleskomponenter/Venstremeny/sider';
 import { sider } from '../Felleskomponenter/Venstremeny/sider';
-import Behandlingsresultat from './Behandlingsresultat/Behandlingsresultat';
-import Simulering from './Simulering/Simulering';
-import RegistrerSøknad from './Søknad/RegistrerSøknad';
-import OppsummeringVedtak from './Vedtak/OppsummeringVedtak';
-import Vilkårsvurdering from './Vilkårsvurdering/Vilkårsvurdering';
 
 const BehandlingContainer: React.FunctionComponent = () => {
     const { loggSidevisning } = useAmplitude();

@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import deepEqual from 'deep-equal';
 import styled from 'styled-components';
 
-import { Normaltekst } from 'nav-frontend-typografi';
-
-import { Button } from '@navikt/ds-react';
+import { BodyShort, Button } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
+import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import FamilieChevron from '../../../../ikoner/FamilieChevron';
 import ManuellVurdering from '../../../../ikoner/ManuellVurdering';
@@ -15,8 +15,6 @@ import VilkårResultatIkon from '../../../../ikoner/VilkårResultatIkon';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurderingConfig, IAnnenVurdering } from '../../../../typer/vilkår';
 import { Resultat, uiResultat } from '../../../../typer/vilkår';
-import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
-import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
 
 interface IProps {
     person: IGrunnlagPerson;
@@ -28,7 +26,7 @@ interface IEkspanderbarTrProps {
     ekspandert?: boolean;
 }
 
-const BeskrivelseCelle = styled(Normaltekst)`
+const BeskrivelseCelle = styled(BodyShort)`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -58,9 +56,10 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
     annenVurdering,
 }) => {
     const { vurderErLesevisning, åpenBehandling } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
 
     const [ekspandertAnnenVurdering, settEkspandertAnnenVurdering] = useState(
-        vurderErLesevisning() || false || annenVurdering.resultat === Resultat.IKKE_VURDERT
+        erLesevisning || false || annenVurdering.resultat === Resultat.IKKE_VURDERT
     );
     const [redigerbartAnnenVurdering, settRedigerbartAnnenVurdering] =
         useState<IAnnenVurdering>(annenVurdering);
@@ -88,7 +87,7 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
                             width={20}
                             height={20}
                         />
-                        <Normaltekst children={uiResultat[annenVurdering.resultat]} />
+                        <BodyShort children={uiResultat[annenVurdering.resultat]} />
                     </VurderingCelle>
                 </td>
                 <td />
@@ -96,7 +95,7 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
                     <BeskrivelseCelle children={annenVurdering.begrunnelse} />
                 </td>
                 <td>
-                    {!vurderErLesevisning() && (
+                    {!erLesevisning && (
                         <Button
                             variant={'tertiary'}
                             onClick={() => toggleForm(true)}
@@ -135,7 +134,7 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
                             annenVurderingConfig={annenVurderingConfig}
                             annenVurdering={annenVurdering}
                             toggleForm={toggleForm}
-                            lesevinsing={vurderErLesevisning()}
+                            lesevinsing={erLesevisning}
                         />
                     </EkspandertTd>
                 </tr>

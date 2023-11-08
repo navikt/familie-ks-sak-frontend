@@ -1,5 +1,3 @@
-import { BehandlingÅrsak, BehandlingSteg } from '../../../typer/behandling';
-import { mockBehandling } from '../../../utils/test/behandling/behandling.mock';
 import {
     SideId,
     hentTrinnForBehandling,
@@ -8,6 +6,8 @@ import {
     erViPåUlovligSteg,
     finnSideForBehandlingssteg,
 } from './sider';
+import { BehandlingÅrsak, BehandlingSteg } from '../../../typer/behandling';
+import { mockBehandling } from '../../../utils/test/behandling/behandling.mock';
 
 describe('sider.ts', () => {
     describe('siderForBehandling', () => {
