@@ -2,11 +2,9 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
 import { Select, SkjemaGruppe } from 'nav-frontend-skjema';
-import { Element } from 'nav-frontend-typografi';
 
-import { Button } from '@navikt/ds-react';
+import { Button, ErrorMessage } from '@navikt/ds-react';
 import type { ISODateString } from '@navikt/familie-datovelger';
 import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import { Valideringsstatus } from '@navikt/familie-skjema';
@@ -18,11 +16,6 @@ import { useOppgaver } from '../../context/OppgaverContext';
 import type { IPar } from '../../typer/common';
 import { datoformatNorsk } from '../../utils/formatter';
 
-const StyledElement = styled(Element)`
-    margin-top: 0.5rem;
-    color: ${navFarger.redError};
-`;
-
 const DatoVelgerContainer = styled.div`
     max-width: 12.5rem;
 `;
@@ -31,6 +24,10 @@ const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     .nav-datovelger {
         padding-top: 0.4rem;
     }
+`;
+
+const StyledErrorMessage = styled(ErrorMessage)`
+    margin-top: 0.5rem;
 `;
 
 // Denne stylingen skal fjernes på sikt (minus marginer)
@@ -82,7 +79,9 @@ const FilterSkjema: React.FunctionComponent = () => {
                                         />
                                         {oppgaveFelt.valideringsstatus ===
                                             Valideringsstatus.FEIL && (
-                                            <StyledElement>{oppgaveFelt.feilmelding}</StyledElement>
+                                            <StyledErrorMessage size={'small'}>
+                                                {oppgaveFelt.feilmelding}
+                                            </StyledErrorMessage>
                                         )}
                                     </DatoVelgerContainer>
                                 );
