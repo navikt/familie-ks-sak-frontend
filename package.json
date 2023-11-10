@@ -77,6 +77,7 @@
     "body-parser": "^1.20.2",
     "classnames": "^2.3.1",
     "constate": "^3.3.2",
+    "cosmiconfig": "^8.3.6",
     "dayjs": "^1.11.0",
     "deep-equal": "^2.2.2",
     "dotenv": "^16.3.1",
@@ -126,6 +127,9 @@
     "styled-components": "^5.3.8",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.0"
+  },
+  "dependenciesComments": {
+    "cosmiconfig": "Fjernes når familie-felles-frontend ikke lenger er i bruk"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
