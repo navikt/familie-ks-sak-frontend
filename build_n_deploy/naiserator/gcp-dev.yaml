@@ -47,7 +47,6 @@ spec:
     outbound:
       rules:
         - application: familie-ks-sak
-        - application: familie-ks-sak-frontend-redis
       external:
         - host: familie-endringslogg.intern.dev.nav.no
   envFrom:
@@ -57,3 +56,8 @@ spec:
       value: {{ VERSION }}
     - name: ENV
       value: preprod
+  redis:
+    - instance: sessions
+      access: readwrite
+    - instance: lookup
+      access: read

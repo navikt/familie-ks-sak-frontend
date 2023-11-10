@@ -11,11 +11,13 @@ jobs:
   build:
     name: Build and push Docker container
     runs-on: ubuntu-latest-8-cores
+    permissions:
+      packages: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
           cache: npm
           registry-url: "https://npm.pkg.github.com"
       - uses: ./.github/yarn-cache
@@ -40,7 +42,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest-8-cores
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Deploy til dev-gcp team namespace
         uses: nais/deploy/actions/deploy@v1
         env:

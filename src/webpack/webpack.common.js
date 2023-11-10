@@ -15,7 +15,7 @@ const baseConfig = {
     },
     output: {
         filename: '[name].[contenthash].js',
-        path: path.resolve(process.cwd(), 'node_dist/'),
+        path: path.resolve(process.cwd(), 'backend/'),
     },
     entry: ['./src/frontend/index.tsx'],
     plugins: [
