@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { useHttp } from '@navikt/familie-http';
 import {
-    type Ressurs,
     byggTomRessurs,
     byggHenterRessurs,
     byggFeiletRessurs,
     RessursStatus,
 } from '@navikt/familie-typer';
+import type { Ressurs } from '@navikt/familie-typer';
 
 import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import type { IBehandling, IOpprettBehandlingData } from '../../typer/behandling';

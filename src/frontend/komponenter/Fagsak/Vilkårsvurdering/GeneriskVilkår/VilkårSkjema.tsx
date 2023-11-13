@@ -7,11 +7,7 @@ import { Radio, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { Delete } from '@navikt/ds-icons';
 import { Button, Label } from '@navikt/ds-react';
-import {
-    NavdsSemanticColorBorderMuted,
-    NavdsSemanticColorFeedbackWarningBorder,
-    NavdsSemanticColorInteractionPrimary,
-} from '@navikt/ds-tokens/dist/tokens';
+import { ABorderDefault, ABorderWarning, ASurfaceAction } from '@navikt/ds-tokens/dist/tokens';
 import {
     FamilieKnapp,
     FamilieRadioGruppe,
@@ -42,12 +38,12 @@ const Container = styled.div`
     border-left: 0.125rem solid
         ${(props: { lesevisning: boolean; vilkårResultat: Resultat | undefined }) => {
             if (props.lesevisning) {
-                return NavdsSemanticColorBorderMuted;
+                return ABorderDefault;
             }
             if (props.vilkårResultat === Resultat.IKKE_VURDERT) {
-                return NavdsSemanticColorFeedbackWarningBorder;
+                return ABorderWarning;
             }
-            return NavdsSemanticColorInteractionPrimary;
+            return ASurfaceAction;
         }};
     padding-left: 2rem;
     margin-left: -3rem;

@@ -6,14 +6,10 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { Delete } from '@navikt/ds-icons';
 import { Alert, Label, Link, Heading, Button } from '@navikt/ds-react';
-import {
-    FamilieDatovelger,
-    FamilieInput,
-    FamilieKnapp,
-    FamilieReactSelect,
-    type ISODateString,
-    type OptionType,
-} from '@navikt/familie-form-elements';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
+import type { ISODateString } from '@navikt/familie-datovelger';
+import { FamilieInput, FamilieKnapp, FamilieReactSelect } from '@navikt/familie-form-elements';
+import type { OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -21,7 +17,8 @@ import type { Currency } from '@navikt/land-verktoy';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../typer/behandling';
-import { EøsPeriodeStatus, type IValutakurs } from '../../../../typer/eøsPerioder';
+import { EøsPeriodeStatus } from '../../../../typer/eøsPerioder';
+import type { IValutakurs } from '../../../../typer/eøsPerioder';
 import { datoformatNorsk } from '../../../../utils/formatter';
 import EøsPeriodeSkjema from '../EøsPeriode/EøsPeriodeSkjema';
 import { FamilieValutavelger } from '../EøsPeriode/FamilieLandvelger';
@@ -165,13 +162,12 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                             className="skjemaelement"
                             id={`valutakurs_${skjema.felter.periodeId}`}
                             label={'Valutakursdato'}
-                            value={skjema.felter.valutakursdato?.verdi}
                             placeholder={datoformatNorsk.DATO}
                             erLesesvisning={lesevisning}
                             onChange={(dato?: ISODateString) =>
                                 skjema.felter.valutakursdato?.validerOgSettFelt(dato)
                             }
-                            valgtDato={
+                            value={
                                 skjema.felter.valutakursdato?.verdi !== null
                                     ? skjema.felter.valutakursdato?.verdi
                                     : undefined

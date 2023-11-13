@@ -6,11 +6,10 @@ import styled from 'styled-components';
 
 import variables from 'nav-frontend-core';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
-import { Element } from 'nav-frontend-typografi';
 
 import { Delete } from '@navikt/ds-icons';
 import { BodyShort, Button, Checkbox, Label, Radio, RadioGroup } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-form-elements';
+import type { ISODateString } from '@navikt/familie-datovelger';
 import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -209,7 +208,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 </Feltmargin>
 
                 <Feltmargin>
-                    <Element>Fastsett periode</Element>
+                    <Label>Fastsett periode</Label>
                     <Feltmargin>
                         <MånedÅrVelger
                             {...skjema.felter.fom.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
@@ -331,7 +330,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         feil={
                             !!skjema.felter.søknadstidspunkt.feilmelding && skjema.visFeilmeldinger
                         }
-                        valgtDato={
+                        value={
                             skjema.felter.søknadstidspunkt.verdi !== null
                                 ? skjema.felter.søknadstidspunkt.verdi
                                 : undefined
@@ -360,7 +359,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 !!skjema.felter.avtaletidspunktDeltBosted.feilmelding &&
                                 skjema.visFeilmeldinger
                             }
-                            valgtDato={
+                            value={
                                 skjema.felter.avtaletidspunktDeltBosted.verdi !== null
                                     ? skjema.felter.avtaletidspunktDeltBosted.verdi
                                     : undefined

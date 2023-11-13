@@ -30,7 +30,8 @@ import type {
     IRestJournalføring,
 } from '../typer/manuell-journalføring';
 import { JournalpostKanal } from '../typer/manuell-journalføring';
-import { type IRestLukkOppgaveOgKnyttJournalpost, OppgavetypeFilter } from '../typer/oppgave';
+import { OppgavetypeFilter } from '../typer/oppgave';
+import type { IRestLukkOppgaveOgKnyttJournalpost } from '../typer/oppgave';
 import type { IPersonInfo } from '../typer/person';
 import { Adressebeskyttelsegradering } from '../typer/person';
 import type { ISamhandlerInfo } from '../typer/samhandler';

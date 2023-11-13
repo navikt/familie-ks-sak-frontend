@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import type { Felt } from '@navikt/familie-skjema';
 
 import type { FamilieIsoDate } from '../../../../../utils/kalender';
@@ -27,7 +27,7 @@ const FixedDatoVelger = styled(FamilieDatovelger)`
 export const KravDatoFelt: React.FC<IProps> = ({ kravMottattDato, visFeilmeldinger }) => (
     <FixedDatoVelger
         {...kravMottattDato.hentNavInputProps(visFeilmeldinger)}
-        valgtDato={kravMottattDato.verdi}
+        value={kravMottattDato.verdi}
         label={'Krav mottatt'}
         limitations={{
             maxDate: new Date().toISOString(),

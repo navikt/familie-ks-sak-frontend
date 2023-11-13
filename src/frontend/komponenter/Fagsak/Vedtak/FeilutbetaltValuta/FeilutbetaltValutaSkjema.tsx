@@ -3,9 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Label } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-form-elements';
+import type { ISODateString } from '@navikt/familie-datovelger';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import { FamilieInput } from '@navikt/familie-form-elements';
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 
 import type { IBehandling } from '../../../../typer/behandling';
@@ -64,7 +64,6 @@ const FeilutbetaltValutaSkjema: React.FunctionComponent<IFeilutbetaltValutaSkjem
                     id="fom-dato"
                     label="F.o.m"
                     value={skjema.felter.fom.verdi}
-                    valgtDato={skjema.felter.fom.verdi}
                     onChange={(dato?: ISODateString) => {
                         skjema.felter.fom?.validerOgSettFelt(
                             gjørOmDatoHvisGyldigInput(dato, FamilieIsoTilFørsteDagIMåneden)
@@ -79,7 +78,6 @@ const FeilutbetaltValutaSkjema: React.FunctionComponent<IFeilutbetaltValutaSkjem
                     id="fom-dato"
                     label="T.o.m"
                     value={skjema.felter.tom.verdi}
-                    valgtDato={skjema.felter.tom.verdi}
                     onChange={(dato?: ISODateString) =>
                         skjema.felter.tom?.validerOgSettFelt(
                             gjørOmDatoHvisGyldigInput(dato, FamilieIsoTilSisteDagIMåneden)

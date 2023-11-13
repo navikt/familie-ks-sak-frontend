@@ -4,9 +4,18 @@ import classNames from 'classnames';
 import styled from 'styled-components';
 
 import { Label } from '@navikt/ds-react';
+import {
+    ABorderDanger,
+    ABorderStrong,
+    AGray100,
+    AGray300,
+    ASpacing2,
+    ATextDanger,
+} from '@navikt/ds-tokens/dist/tokens';
 import { CountryFilter } from '@navikt/land-verktoy';
 import type { Country, Currency } from '@navikt/land-verktoy';
-import CountrySelect, { type CountrySelectProps } from '@navikt/landvelger';
+import CountrySelect from '@navikt/landvelger';
+import type { CountrySelectProps } from '@navikt/landvelger';
 
 const EØS_CURRENCY: Array<string> = [
     'DKK',
@@ -24,6 +33,8 @@ const EØS_CURRENCY: Array<string> = [
 ];
 
 const Landvelger = styled(CountrySelect)`
+    display: grid;
+    gap: ${ASpacing2};
     margin-bottom: ${props => (props.utenMargin ? '0rem' : '1rem')};
 
     p.navds-label--small {
@@ -38,7 +49,7 @@ const Landvelger = styled(CountrySelect)`
                 display: none;
             }
             .c-countrySelect__select__control {
-                background-color: var(--navds-global-color-gray-100);
+                background-color: ${AGray100};
             }
         }
     }
@@ -52,19 +63,12 @@ const Landvelger = styled(CountrySelect)`
 
         .c-countrySelect__select__indicator-separator {
             width: ${props => (props.kanNullstilles ? '1px !important' : '0px')};
-            background-color: var(--navds-global-color-gray-300);
+            background-color: ${AGray300};
         }
 
         .c-countrySelect__select__control {
-            border: 1px solid
-                ${props =>
-                    props.feil
-                        ? 'var(--navds-semantic-color-feedback-danger-border)'
-                        : 'var(--navds-semantic-color-border)'};
-            box-shadow: ${props =>
-                props.feil
-                    ? `0 0 0 1px var(--navds-semantic-color-feedback-danger-border)`
-                    : 'none'};
+            border: 1px solid ${props => (props.feil ? ABorderDanger : ABorderStrong)};
+            box-shadow: ${props => (props.feil ? `0 0 0 1px ${ABorderDanger}` : 'none')};
         }
 
         .c-countrySelect__select__value-container {
@@ -73,7 +77,7 @@ const Landvelger = styled(CountrySelect)`
     }
 
     .navds-error-message {
-        color: var(--navds-semantic-color-feedback-danger-text);
+        color: ${ATextDanger};
         font-size: 1rem;
         font-weight: bold;
 

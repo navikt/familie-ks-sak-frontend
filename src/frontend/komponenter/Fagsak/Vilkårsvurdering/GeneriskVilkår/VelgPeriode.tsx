@@ -6,8 +6,8 @@ import navFarger from 'nav-frontend-core';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { HelpText, Label } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-form-elements';
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
+import type { ISODateString } from '@navikt/familie-datovelger';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { vilkårPeriodeFeilmeldingId } from './VilkårTabell';
@@ -101,7 +101,7 @@ const VelgPeriode: React.FC<IProps> = ({
                             onChange={(dato?: ISODateString) => {
                                 periode.validerOgSettFelt(nyPeriode(dato, periode.verdi.tom));
                             }}
-                            valgtDato={periode.verdi.fom}
+                            value={periode.verdi.fom}
                         />
                     </div>
                 )}
@@ -115,7 +115,7 @@ const VelgPeriode: React.FC<IProps> = ({
                             onChange={(dato?: ISODateString) => {
                                 periode.validerOgSettFelt(nyPeriode(periode.verdi.fom, dato));
                             }}
-                            valgtDato={periode.verdi.tom}
+                            value={periode.verdi.tom}
                         />
                     </div>
                 )}

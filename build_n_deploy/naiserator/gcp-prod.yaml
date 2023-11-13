@@ -53,7 +53,6 @@ spec:
     outbound:
       rules:
         - application: familie-ks-sak
-        - application: familie-ks-sak-frontend-redis
   envFrom:
     - secret: ks-sak-frontend
   env:
@@ -61,3 +60,8 @@ spec:
       value: {{ VERSION }}
     - name: ENV
       value: production
+  redis:
+    - instance: sessions
+      access: readwrite
+    - instance: lookup
+      access: read

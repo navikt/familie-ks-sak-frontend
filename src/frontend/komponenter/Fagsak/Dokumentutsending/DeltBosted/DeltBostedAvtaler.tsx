@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 
 import { Button, ErrorMessage } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-form-elements';
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
+import type { ISODateString } from '@navikt/familie-datovelger';
+import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import type { Felt } from '@navikt/familie-skjema';
 
 import Pluss from '../../../../ikoner/Pluss';
@@ -120,7 +120,7 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
                                         ),
                                     });
                                 }}
-                                valgtDato={avtaleDato}
+                                value={avtaleDato}
                             />
                             {index !== 0 && (
                                 <FjernAvtaleKnapp
