@@ -99,7 +99,6 @@ interface IBaseLandvelgerProps {
     utenMargin: boolean;
     kanNullstilles: boolean;
     feil?: string;
-    size?: 'small' | 'medium';
 }
 
 const BaseFamilieLandvelger: React.FC<IBaseLandvelgerProps> = ({
@@ -192,7 +191,6 @@ const FamilieLandvelger: React.FC<IFamilieLandvelgerProps> = ({
             utenMargin={utenMargin}
             kanNullstilles={kanNullstilles}
             feil={feil}
-            size={size}
         />
     );
 };
