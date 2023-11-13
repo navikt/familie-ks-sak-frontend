@@ -8,8 +8,6 @@ export enum ToggleNavn {
     brukEøs = 'familie-ks-sak.behandling.eos',
     tekniskVedlikeholdHenleggelse = 'familie-ks-sak.teknisk-vedlikehold-henleggelse.tilgangsstyring',
     endreMottakerEndringsårsaker = 'familie-ks-sak.behandling.endringsperiode.endre-mottaker-aarsaker.utgivelse',
-    kanBehandleEøsSekunderland = 'familie-ks-sak.behandling.eos-sekunderland',
-    kanBehandleEøsToPrimerland = 'familie-ks-sak.behandling.eos-to-primerland',
     kanBehandleKlage = 'familie-ks-sak.klage',
     barnehagelister = 'familie-ks-sak.barnehagelister',
 }
