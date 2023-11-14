@@ -11,7 +11,6 @@ import KorrigerVedtak from './KorrigerVedtakModal/KorrigerVedtak';
 import EndreEndringstidspunkt from './VedtakBegrunnelserTabell/EndreEndringstidspunkt';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
-import { BehandlingÅrsak } from '../../../typer/behandling';
 import { BehandlingKategori } from '../../../typer/behandlingstema';
 
 interface IVedtakmenyProps {
@@ -60,13 +59,12 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
                     {åpenBehandling.endringstidspunkt && (
                         <EndreEndringstidspunkt åpenBehandling={åpenBehandling} />
                     )}
-                    {åpenBehandling.årsak === BehandlingÅrsak.ÅRLIG_KONTROLL &&
-                        åpenBehandling.kategori === BehandlingKategori.EØS && (
-                            <Dropdown.Menu.List.Item onClick={visFeilutbetaltValuta}>
-                                <Calculator />
-                                Legg til feilutbetalt valuta
-                            </Dropdown.Menu.List.Item>
-                        )}
+                    {åpenBehandling.kategori === BehandlingKategori.EØS && (
+                        <Dropdown.Menu.List.Item onClick={visFeilutbetaltValuta}>
+                            <Calculator />
+                            Legg til feilutbetalt valuta
+                        </Dropdown.Menu.List.Item>
+                    )}
                 </Dropdown.Menu.List>
             </StyledDropdownMeny>
         </Dropdown>
