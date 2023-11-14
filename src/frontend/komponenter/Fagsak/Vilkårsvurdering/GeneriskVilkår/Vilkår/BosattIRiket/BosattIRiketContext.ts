@@ -100,6 +100,7 @@ export const bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår = (
             return [
                 UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING,
                 UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING_UTLAND,
+                UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.ANNEN_FORELDER_OMFATTET_AV_NORSK_LOVGIVNING,
             ];
         } else if (person.type === PersonType.BARN) {
             return [
