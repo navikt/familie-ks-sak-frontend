@@ -102,7 +102,7 @@ const FagsakLenkepanel: React.FC<IBehandlingLenkepanel> = ({ minimalFagsak }) =>
         </>
     ) : (
         <>
-            <StyledPanel>
+            <StyledPanel border>
                 <Innholdstabell minimalFagsak={minimalFagsak} />
             </StyledPanel>
         </>
