@@ -2,9 +2,13 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Alert } from '@navikt/ds-react';
+import { Radio } from 'nav-frontend-skjema';
+
+import { Alert, Label } from '@navikt/ds-react';
+import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
 import { useMedlemskap } from './MedlemskapContext';
+import { Resultat, resultater } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -24,11 +28,15 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
 }: MedlemskapProps) => {
     const { felter, skalViseDatoVarsel } = useMedlemskap(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+    const nullstillAvslagBegrunnelser = () => {
+        vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
+        vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
+    };
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
             visVurderesEtter={true}
-            visSpørsmål={true}
+            visSpørsmål={false}
             vilkårResultat={vilkårResultat}
             vilkårFraConfig={vilkårFraConfig}
             toggleForm={toggleForm}
@@ -41,6 +49,61 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
                     </StyledAlert>
                 )
             }
-        />
+        >
+            <br />
+            <FamilieRadioGruppe
+                legend={
+                    <Label>
+                        {vilkårFraConfig.spørsmål
+                            ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
+                            : ''}
+                    </Label>
+                }
+                value={resultater[felter.resultat.verdi]}
+                error={
+                    vilkårSkjemaContext.skjema.visFeilmeldinger
+                        ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
+                        : ''
+                }
+                erLesevisning={lesevisning}
+            >
+                <Radio
+                    label={'Ja'}
+                    name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                    checked={vilkårSkjemaContext.skjema.felter.resultat.verdi === Resultat.OPPFYLT}
+                    onChange={() => {
+                        vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
+                            Resultat.OPPFYLT
+                        );
+                        nullstillAvslagBegrunnelser();
+                    }}
+                />
+                <Radio
+                    label={'Nei'}
+                    name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                    checked={
+                        vilkårSkjemaContext.skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT
+                    }
+                    onChange={() => {
+                        vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
+                            Resultat.IKKE_OPPFYLT
+                        );
+                    }}
+                />
+                <Radio
+                    label={'Ikke aktuelt'}
+                    name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                    checked={
+                        vilkårSkjemaContext.skjema.felter.resultat.verdi === Resultat.IKKE_AKTUELT
+                    }
+                    onChange={() => {
+                        vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
+                            Resultat.IKKE_AKTUELT
+                        );
+                        nullstillAvslagBegrunnelser();
+                    }}
+                />
+            </FamilieRadioGruppe>
+        </VilkårSkjema>
     );
 };
