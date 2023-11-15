@@ -132,7 +132,10 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                                 vurderesEtterEndringer(event.target.value as Regelverk);
                             }
 
-                            if ((event.target.value as Regelverk) === Regelverk.NASJONALE_REGLER) {
+                            if (
+                                (event.target.value as Regelverk) === Regelverk.NASJONALE_REGLER &&
+                                VilkårType.MEDLEMSKAP === vilkårResultat.vilkårType
+                            ) {
                                 skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_VURDERT);
                             }
                         }}
