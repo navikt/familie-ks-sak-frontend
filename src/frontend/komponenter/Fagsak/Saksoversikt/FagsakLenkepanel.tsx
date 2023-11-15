@@ -11,7 +11,7 @@ import { tilBehandlingstema } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { hentAktivBehandlingPåMinimalFagsak, hentFagsakStatusVisning } from '../../../utils/fagsak';
 
-interface IBehandlingLenkepanel {
+interface IFagsakLinkPanel {
     minimalFagsak: IMinimalFagsak;
 }
 
@@ -85,7 +85,7 @@ const genererHoverTekst = (behandling: VisningBehandling) => {
         : 'Gå til åpen behandling';
 };
 
-const FagsakLenkepanel: React.FC<IBehandlingLenkepanel> = ({ minimalFagsak }) => {
+const FagsakLenkepanel: React.FC<IFagsakLinkPanel> = ({ minimalFagsak }) => {
     const aktivBehandling: VisningBehandling | undefined =
         hentAktivBehandlingPåMinimalFagsak(minimalFagsak);
 
