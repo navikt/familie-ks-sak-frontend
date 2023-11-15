@@ -166,7 +166,6 @@
     "less": "^4.1.1",
     "less-loader": "^11.1.0",
     "lint-staged": "^13.0.3",
-    "mini-css-extract-plugin": "^2.6.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.0",
     "react-refresh": "^0.14.0",
@@ -180,7 +179,7 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-middleware": "^6.1.1",
     "webpack-hot-middleware": "^2.25.4",
-    "webpack-merge": "^5.9.0"
+    "webpack-merge": "^5.10.0"
   },
   "jest": {
     "preset": "ts-jest",
