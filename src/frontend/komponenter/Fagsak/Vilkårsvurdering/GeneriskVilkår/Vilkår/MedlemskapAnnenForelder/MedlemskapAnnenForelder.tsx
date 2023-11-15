@@ -1,8 +1,10 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import { Radio } from 'nav-frontend-skjema';
 
-import { Label } from '@navikt/ds-react';
+import { Alert, Label } from '@navikt/ds-react';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
 import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
@@ -12,6 +14,10 @@ import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 type MedlemskapAnnenForelderProps = IVilkårSkjemaBaseProps;
+
+const StyledAlert = styled(Alert)`
+    margin-top: 1rem;
+`;
 
 export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = ({
     vilkårResultat,
@@ -40,6 +46,14 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
             lesevisning={lesevisning}
         >
             <br />
+
+            <StyledAlert variant="info" inline>
+                Du må vurdere dette vilkåret når den andre forelderen er omfattet av norsk
+                lovgivning og søker har selvstendig rett
+            </StyledAlert>
+
+            <br />
+
             <FamilieRadioGruppe
                 legend={
                     <Label>

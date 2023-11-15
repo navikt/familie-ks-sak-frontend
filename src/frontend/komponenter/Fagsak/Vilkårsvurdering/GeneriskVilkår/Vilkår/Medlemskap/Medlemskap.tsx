@@ -51,6 +51,13 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
             }
         >
             <br />
+
+            <StyledAlert variant="info" inline>
+                Du må vurdere dette vilkåret når søker er omfattet av norsk lovgivning
+            </StyledAlert>
+
+            <br />
+
             <FamilieRadioGruppe
                 legend={
                     <Label>
