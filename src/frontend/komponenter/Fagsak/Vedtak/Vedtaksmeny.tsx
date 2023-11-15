@@ -13,7 +13,6 @@ import EndreEndringstidspunkt from './VedtakBegrunnelserTabell/EndreEndringstids
 import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
-import { BehandlingÅrsak } from '../../../typer/behandling';
 import { BehandlingKategori } from '../../../typer/behandlingstema';
 import { ToggleNavn } from '../../../typer/toggles';
 import { vedtakHarFortsattUtbetaling } from '../../../utils/vedtakUtils';
@@ -67,13 +66,12 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
                     {åpenBehandling.endringstidspunkt && (
                         <EndreEndringstidspunkt åpenBehandling={åpenBehandling} />
                     )}
-                    {åpenBehandling.årsak === BehandlingÅrsak.ÅRLIG_KONTROLL &&
-                        åpenBehandling.kategori === BehandlingKategori.EØS && (
-                            <Dropdown.Menu.List.Item onClick={visFeilutbetaltValuta}>
-                                <Calculator />
-                                Legg til feilutbetalt valuta
-                            </Dropdown.Menu.List.Item>
-                        )}
+                    {åpenBehandling.kategori === BehandlingKategori.EØS && (
+                        <Dropdown.Menu.List.Item onClick={visFeilutbetaltValuta}>
+                            <Calculator />
+                            Legg til feilutbetalt valuta
+                        </Dropdown.Menu.List.Item>
+                    )}
                     {toggles[ToggleNavn.brukEøs] &&
                         vedtakHarFortsattUtbetaling(åpenBehandling.resultat) && (
                             <Dropdown.Menu.List.Item onClick={visRefusjonEøs}>
