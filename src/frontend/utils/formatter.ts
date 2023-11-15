@@ -6,18 +6,18 @@ import type { IBarnMedOpplysninger } from '../typer/søknad';
 import type { IUtbetalingsperiodeDetalj } from '../typer/vedtaksperiode';
 
 export enum datoformat {
-    MÅNED = 'MM.YY',
-    DATO = 'DD.MM.YYYY',
-    DATO_FORKORTTET = 'DD.MM.YY',
+    MÅNED = 'MM.yy',
+    DATO = 'dd.MM.yyyy',
+    DATO_FORKORTTET = 'dd.MM.yy',
     DATO_FORLENGET = 'LL',
     DATO_FORLENGET_MED_TID = 'LLL',
-    ISO_MÅNED = 'YYYY-MM',
-    ISO_DAG = 'YYYY-MM-DD',
-    DATO_TID = 'DD.MM.YY HH:mm',
-    DATO_TID_SEKUNDER = 'DD.MM.YY HH:mm:ss',
+    ISO_MÅNED = 'yyyy-MM',
+    ISO_DAG = 'yyyy-MM-dd',
+    DATO_TID = 'dd.MM.yy HH:mm',
+    DATO_TID_SEKUNDER = 'dd.MM.yy HH:mm:ss',
     TID = 'HH:mm',
-    MÅNED_ÅR_NAVN = 'MMMM YYYY',
-    MÅNED_ÅR_KORTNAVN = 'MMM YYYY',
+    MÅNED_ÅR_NAVN = 'MMMM yyyy',
+    MÅNED_ÅR_KORTNAVN = 'MMM yyyy',
     MÅNED_NAVN = 'MMM',
 }
 

@@ -43,10 +43,14 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
     const [erUlagretNyFeilutbetaltValutaPeriode, settErUlagretNyFeilutbetaltValutaPeriode] =
         React.useState(false);
 
+    const [erUlagretNyRefusjonEøsPeriode, settErUlagretNyRefusjonEøsPeriode] =
+        React.useState(false);
+
     const foreslåVedtak = () => {
         foreslåVedtakNesteOnClick(
             (visModal: boolean) => settVisModal(visModal),
-            erUlagretNyFeilutbetaltValutaPeriode
+            erUlagretNyFeilutbetaltValutaPeriode,
+            erUlagretNyRefusjonEøsPeriode
         );
     };
 
@@ -74,6 +78,7 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
                 erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending}
                 visModal={visModal}
                 settVisModal={settVisModal}
+                settErUlagretNyRefusjonEøsPeriode={settErUlagretNyRefusjonEøsPeriode}
             ></OppsummeringVedtakInnhold>
         </StyledSkjemaSteg>
     );
