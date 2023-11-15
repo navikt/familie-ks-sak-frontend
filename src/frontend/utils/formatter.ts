@@ -1,4 +1,5 @@
-import familieDayjs from './familieDayjs';
+import { format, isBefore, isValid } from 'date-fns';
+
 import { iDag, kalenderDato, kalenderDatoTilDate, kalenderDiff } from './kalender';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
@@ -9,8 +10,8 @@ export enum datoformat {
     MÅNED = 'MM.yy',
     DATO = 'dd.MM.yyyy',
     DATO_FORKORTTET = 'dd.MM.yy',
-    DATO_FORLENGET = 'LL',
-    DATO_FORLENGET_MED_TID = 'LLL',
+    DATO_FORLENGET = 'PPP',
+    DATO_FORLENGET_MED_TID = 'PPPp',
     ISO_MÅNED = 'yyyy-MM',
     ISO_DAG = 'yyyy-MM-dd',
     DATO_TID = 'dd.MM.yy HH:mm',
@@ -28,19 +29,16 @@ export enum datoformatNorsk {
 export const millisekunderIEttÅr = 3.15576e10;
 
 export const formaterIsoDato = (
-    dato: string | undefined,
+    datoString: string | undefined,
     tilFormat: datoformat,
     defaultString?: string
 ): string => {
-    if (!dato) {
+    if (!datoString) {
         return defaultString ?? '';
     }
-    const dayjsDato = familieDayjs(dato);
-    return dayjsDato.isValid() ? dayjsDato.format(tilFormat) : dato;
+    const dato = new Date(datoString);
+    return isValid(dato) ? format(dato, tilFormat) : datoString;
 };
-
-export const formaterIverksattDato = (dato: string | undefined) =>
-    dato ? familieDayjs(dato).format(datoformat.DATO) : 'Ikke satt';
 
 export const hentAlder = (fødselsdato: string): number => {
     return fødselsdato !== ''
@@ -104,8 +102,12 @@ export const lagBarnLabel = (barn: IBarnMedOpplysninger): string => {
     )}) | ${formaterIdent(barn.ident)}`;
 };
 
-export const sorterFødselsdato = (fødselsDatoA: string, fødselsDatoB: string) =>
-    familieDayjs(fødselsDatoA).isBefore(fødselsDatoB) ? 1 : -1;
+export const sorterPåDato = (datoStringA: string, datoStringB: string) => {
+    const datoA = new Date(datoStringA);
+    const datoB = new Date(datoStringB);
+
+    return isBefore(datoA, datoB) ? 1 : -1;
+};
 
 export const sorterPersonTypeOgFødselsdato = (
     personA: IGrunnlagPerson,
@@ -113,14 +115,14 @@ export const sorterPersonTypeOgFødselsdato = (
 ) => {
     if (personA.type === PersonType.SØKER) return -1;
     else if (personB.type === PersonType.SØKER) return 1;
-    else return sorterFødselsdato(personA.fødselsdato, personB.fødselsdato);
+    else return sorterPåDato(personA.fødselsdato, personB.fødselsdato);
 };
 
 export const sorterUtbetaling = (
     utbetalingsperiodeDetaljA: IUtbetalingsperiodeDetalj,
     utbetalingsperiodeDetaljB: IUtbetalingsperiodeDetalj
 ) => {
-    return sorterFødselsdato(
+    return sorterPåDato(
         utbetalingsperiodeDetaljA.person.fødselsdato,
         utbetalingsperiodeDetaljB.person.fødselsdato
     );
