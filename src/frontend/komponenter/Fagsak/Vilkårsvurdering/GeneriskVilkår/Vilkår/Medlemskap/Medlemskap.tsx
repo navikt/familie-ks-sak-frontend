@@ -8,7 +8,7 @@ import { Alert, Label } from '@navikt/ds-react';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
 import { useMedlemskap } from './MedlemskapContext';
-import { Resultat, resultater } from '../../../../../../typer/vilkår';
+import { Regelverk, Resultat, resultater } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -90,19 +90,23 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
                         );
                     }}
                 />
-                <Radio
-                    label={'Ikke aktuelt'}
-                    name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                    checked={
-                        vilkårSkjemaContext.skjema.felter.resultat.verdi === Resultat.IKKE_AKTUELT
-                    }
-                    onChange={() => {
-                        vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
+                {vilkårSkjemaContext.skjema.felter.vurderesEtter.verdi ===
+                    Regelverk.EØS_FORORDNINGEN && (
+                    <Radio
+                        label={'Ikke aktuelt'}
+                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        checked={
+                            vilkårSkjemaContext.skjema.felter.resultat.verdi ===
                             Resultat.IKKE_AKTUELT
-                        );
-                        nullstillAvslagBegrunnelser();
-                    }}
-                />
+                        }
+                        onChange={() => {
+                            vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
+                                Resultat.IKKE_AKTUELT
+                            );
+                            nullstillAvslagBegrunnelser();
+                        }}
+                    />
+                )}
             </FamilieRadioGruppe>
         </VilkårSkjema>
     );
