@@ -1,11 +1,8 @@
 import React from 'react';
 
-import classNames from 'classnames';
+import styled, { css } from 'styled-components';
 
-import { LenkepanelBase } from 'nav-frontend-lenkepanel';
-import Panel from 'nav-frontend-paneler';
-
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, Label, LinkPanel, Panel } from '@navikt/ds-react';
 
 import type { VisningBehandling } from './visningBehandling';
 import { BehandlingStatus } from '../../../typer/behandling';
@@ -23,34 +20,64 @@ interface IInnholdstabell {
     behandling?: VisningBehandling;
 }
 
+const StyledLabel = styled(Label)`
+    display: inline-block;
+    font-size: var(--a-font-size-xlarge);
+    font-weight: var(--a-font-weight-regular);
+`;
+
+const StyledBodyShort = styled(BodyShort)`
+    font-size: var(--a-font-size-heading-medium);
+    font-weight: var(--a-font-weight-bold);
+`;
+
+const Container = styled.div`
+    width: 100%;
+    display: flex;
+
+    div:first-child {
+        margin-right: 5rem;
+    }
+`;
+
 const Innholdstabell: React.FC<IInnholdstabell> = ({ minimalFagsak }) => {
     const behandlingstema: IBehandlingstema | undefined =
         minimalFagsak.løpendeKategori && tilBehandlingstema(minimalFagsak.løpendeKategori);
+
     return (
-        <table className={'fagsak-panel__tabell'}>
-            <thead>
-                <tr>
-                    <th>
-                        <BodyShort>Behandlingstema</BodyShort>
-                    </th>
-                    <th>
-                        <BodyShort>Status</BodyShort>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <BodyShort>{behandlingstema ? behandlingstema.navn : '-'}</BodyShort>
-                    </td>
-                    <td>
-                        <BodyShort>{hentFagsakStatusVisning(minimalFagsak)}</BodyShort>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <Container>
+            <div>
+                <StyledLabel for={'behandlingstema'} spacing>
+                    Behandlingstema
+                </StyledLabel>
+                <StyledBodyShort name={'behandlingstema'}>
+                    {behandlingstema ? behandlingstema.navn : '-'}
+                </StyledBodyShort>
+            </div>
+            <div>
+                <StyledLabel for={'status'} spacing>
+                    Status
+                </StyledLabel>
+                <StyledBodyShort name={'status'}>
+                    {hentFagsakStatusVisning(minimalFagsak)}
+                </StyledBodyShort>
+            </div>
+        </Container>
     );
 };
+
+const panelStyle = css`
+    width: 39rem;
+    padding: 2rem;
+`;
+
+const StyledLinkPanel = styled(LinkPanel)`
+    ${panelStyle}
+`;
+
+const StyledPanel = styled(Panel)`
+    ${panelStyle}
+`;
 
 const genererHoverTekst = (behandling: VisningBehandling) => {
     return behandling.status === BehandlingStatus.AVSLUTTET
@@ -64,19 +91,20 @@ const FagsakLenkepanel: React.FC<IBehandlingLenkepanel> = ({ minimalFagsak }) =>
 
     return aktivBehandling ? (
         <>
-            <LenkepanelBase
+            <StyledLinkPanel
                 title={genererHoverTekst(aktivBehandling)}
-                className={classNames('fagsak-panel', 'fagsak-lenkepanel')}
                 href={`/fagsak/${minimalFagsak.id}/${aktivBehandling.behandlingId}`}
             >
-                <Innholdstabell minimalFagsak={minimalFagsak} />
-            </LenkepanelBase>
+                <LinkPanel.Description>
+                    <Innholdstabell minimalFagsak={minimalFagsak} />
+                </LinkPanel.Description>
+            </StyledLinkPanel>
         </>
     ) : (
         <>
-            <Panel className={'fagsak-panel'}>
+            <StyledPanel>
                 <Innholdstabell minimalFagsak={minimalFagsak} />
-            </Panel>
+            </StyledPanel>
         </>
     );
 };
