@@ -53,9 +53,8 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
 
     const [hentOppgaverVedSidelast, settHentOppgaverVedSidelast] = useState(true);
 
-    const [oppgaver, settOppgaver] = React.useState<Ressurs<IHentOppgaveDto>>(
-        byggTomRessurs<IHentOppgaveDto>()
-    );
+    const [oppgaver, settOppgaver] =
+        React.useState<Ressurs<IHentOppgaveDto>>(byggTomRessurs<IHentOppgaveDto>());
 
     const [oppgaveFelter, settOppgaveFelter] = useState<IOppgaveFelter>(
         initialOppgaveFelter(innloggetSaksbehandler)
