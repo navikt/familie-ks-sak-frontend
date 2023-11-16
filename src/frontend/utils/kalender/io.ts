@@ -1,118 +1,78 @@
-import dayjs from 'dayjs';
+import { isValid, parseISO } from 'date-fns';
 
 import type { DagMånedÅr, FamilieIsoDate, MånedÅr, YearMonth } from './typer';
-import { antallDagerIMåned } from './typer';
 import { capString } from './utils';
-import { datoformat } from '../formatter';
 
-export const erIsoStringGyldig = (dato?: FamilieIsoDate): boolean => {
-    if (!dato) return false;
-    else if (!dato.includes('-')) return false;
+export const erIsoStringGyldig = (familieIsoDato?: FamilieIsoDate): boolean => {
+    if (!familieIsoDato) return false;
+    else if (!familieIsoDato.includes('-')) return false;
 
-    const år: number = parseInt(dato.substring(0, 4), 10);
-    const måned: number = parseInt(dato.substring(5, 7), 10);
-    const dag: number = parseInt(dato.substring(8, 10), 10);
+    const dato = parseISO(familieIsoDato);
+
+    const år: number = dato.getFullYear();
 
     if (år < 1800 || år > 2500) {
         return false;
     }
 
-    if (måned < 1 || måned > 12) {
-        return false;
-    }
-
-    if (dag < 1 || dag > antallDagerIMåned({ år, måned: måned - 1 })) {
-        return false;
-    }
-
-    if (dayjs(dato, datoformat.ISO_DAG).isValid()) {
-        return true;
-    }
-
-    return true;
+    return isValid(dato);
 };
 
-export const parseIso8601String = (dato: FamilieIsoDate): DagMånedÅr => {
-    const dayjsDato = dayjs(dato, datoformat.ISO_DAG);
+export const parseIso8601String = (familieIsoDato: FamilieIsoDate): DagMånedÅr => {
+    const dato = parseISO(familieIsoDato);
 
-    // Dayjs brukes ikke til noe annet enn å fange ugyldige inputs
-    if (!dayjsDato.isValid()) {
-        throw new Error(`Dato '${dato}' er ugyldig`);
+    if (!isValid(dato)) {
+        throw new Error(`Dato '${familieIsoDato}' er ugyldig`);
     }
 
-    const år: number = parseInt(dato.substring(0, 4), 10);
-    const måned: number = parseInt(dato.substring(5, 7), 10);
-    const dag: number = parseInt(dato.substring(8, 10), 10);
-    const logDato = dato.substring(0, 10);
+    const år: number = dato.getFullYear();
 
     if (år < 1000 || år > 3000) {
-        throw new Error(`År fra dato '${logDato}' er '${år}' og er sannsynligvis feil`);
-    }
-
-    if (måned < 1 || måned > 12) {
-        throw new Error(`Måned fra dato '${logDato}' er '${måned}' og er sannsynligvis feil`);
-    }
-
-    if (dag < 1 || dag > antallDagerIMåned({ år, måned: måned - 1 })) {
-        throw new Error(`Dag fra dato '${logDato}' er '${dag}' og er sannsynligvis feil`);
+        throw new Error(`År fra dato '${familieIsoDato}' er '${år}' og er sannsynligvis feil`);
     }
 
     return {
-        dag,
-        måned: måned - 1,
+        dag: dato.getDate(),
+        måned: dato.getMonth(),
         år,
     };
 };
 
 export const parseIso8601StringMånedÅr = (dato: YearMonth): MånedÅr => {
-    const dayjsDato = dayjs(dato, datoformat.ISO_MÅNED);
+    const månedÅrDato = parseISO(dato);
 
-    // Dayjs brukes ikke til noe annet enn å fange ugyldige inputs
-    if (!dayjsDato.isValid()) {
+    if (!isValid(månedÅrDato)) {
         throw new Error(`Dato '${dato}' er ugyldig`);
     }
 
-    const år: number = parseInt(dato.substring(0, 4), 10);
-    const måned: number = parseInt(dato.substring(5, 7), 10);
-    const logDato = dato.substring(0, 7);
-
-    if (år < 1800 || år > 2500) {
-        throw new Error(`År fra dato '${logDato}' er '${år}' og er sannsynligvis feil`);
-    }
-
-    if (måned < 1 || måned > 12) {
-        throw new Error(`Måned fra dato '${logDato}' er '${måned}' og er sannsynligvis feil`);
-    }
-
-    return {
-        måned: måned - 1,
-        år,
-    };
-};
-
-export const parseIso8601MånedString = (dato: FamilieIsoDate): DagMånedÅr => {
-    const dayjsDato = dayjs(dato, datoformat.ISO_MÅNED);
-
-    // Dayjs brukes ikke til noe annet enn å fange ugyldige inputs
-    if (!dayjsDato.isValid()) {
-        throw new Error(`Dato '${dato}' er ugyldig`);
-    }
-
-    const år: number = parseInt(dato.substring(0, 4), 10);
-    const måned: number = parseInt(dato.substring(5, 7), 10);
-    const dag = 1;
+    const år: number = månedÅrDato.getFullYear();
 
     if (år < 1800 || år > 2500) {
         throw new Error(`År fra dato '${dato}' er '${år}' og er sannsynligvis feil`);
     }
 
-    if (måned < 1 || måned > 12) {
-        throw new Error(`Måned fra dato '${dato}' er '${måned}' og er sannsynligvis feil`);
+    return {
+        måned: månedÅrDato.getMonth(),
+        år,
+    };
+};
+
+export const parseIso8601MånedString = (familieIsoDato: FamilieIsoDate): DagMånedÅr => {
+    const dato = parseISO(familieIsoDato);
+
+    if (!isValid(dato)) {
+        throw new Error(`Dato '${familieIsoDato}' er ugyldig`);
+    }
+
+    const år: number = dato.getFullYear();
+
+    if (år < 1800 || år > 2500) {
+        throw new Error(`År fra dato '${familieIsoDato}' er '${år}' og er sannsynligvis feil`);
     }
 
     return {
-        dag,
-        måned: måned - 1,
+        dag: 1,
+        måned: dato.getMonth(),
         år,
     };
 };
