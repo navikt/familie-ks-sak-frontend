@@ -41,9 +41,10 @@ const [BarnehagebarnInfotrygdProvider, useBarnehagebarnInfotrygd] = createUseCon
     const [barnehagebarnRequestParams, settBarnehagebarnRequestParams] =
         useState<IBarnehagebarnRequestParams>({ ...defaultBarnehagebarnRequestParams });
 
-    const [barnehagebarnResponse, settBarnehagebarnResponse] = useState<
-        Ressurs<IBarnehagebarnInfotrygdResponse>
-    >(byggTomRessurs<IBarnehagebarnInfotrygdResponse>());
+    const [barnehagebarnResponse, settBarnehagebarnResponse] =
+        useState<Ressurs<IBarnehagebarnInfotrygdResponse>>(
+            byggTomRessurs<IBarnehagebarnInfotrygdResponse>()
+        );
 
     const [resetForm, setResetForm] = useState<boolean>(false);
 
