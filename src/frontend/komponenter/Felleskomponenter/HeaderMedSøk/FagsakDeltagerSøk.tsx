@@ -27,9 +27,8 @@ const FagsakDeltagerSøk: React.FC = () => {
     const { request } = useHttp();
     const navigate = useNavigate();
 
-    const [fagsakDeltagere, settFagsakDeltagere] = React.useState<Ressurs<IFagsakDeltager[]>>(
-        byggTomRessurs()
-    );
+    const [fagsakDeltagere, settFagsakDeltagere] =
+        React.useState<Ressurs<IFagsakDeltager[]>>(byggTomRessurs());
 
     const [deltagerForOpprettFagsak, settDeltagerForOpprettFagsak] = useState<
         ISøkeresultat | undefined

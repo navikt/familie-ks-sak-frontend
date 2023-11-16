@@ -32,9 +32,8 @@ import { useFagsakContext } from '../fagsak/FagsakContext';
 const [BehandlingProvider, useBehandling] = createUseContext(() => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { hentMinimalFagsak } = useFagsakContext();
-    const [åpenBehandling, privatSettÅpenBehandling] = useState<Ressurs<IBehandling>>(
-        byggTomRessurs()
-    );
+    const [åpenBehandling, privatSettÅpenBehandling] =
+        useState<Ressurs<IBehandling>>(byggTomRessurs());
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
     const [åpenVenstremeny, settÅpenVenstremeny] = useState(true);
 

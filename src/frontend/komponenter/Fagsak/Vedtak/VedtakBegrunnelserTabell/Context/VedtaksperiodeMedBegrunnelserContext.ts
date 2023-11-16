@@ -47,9 +47,8 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
                 vedtaksperiodeMedBegrunnelser.fritekster.length === 0
         );
         const [begrunnelserPut, settBegrunnelserPut] = useState(byggTomRessurs());
-        const [genererteBrevbegrunnelser, settGenererteBrevbegrunnelser] = useState<
-            Ressurs<string[]>
-        >(byggTomRessurs());
+        const [genererteBrevbegrunnelser, settGenererteBrevbegrunnelser] =
+            useState<Ressurs<string[]>>(byggTomRessurs());
 
         const maksAntallKulepunkter =
             vedtaksperiodeMedBegrunnelser.type === Vedtaksperiodetype.FORTSATT_INNVILGET ? 1 : 3;
