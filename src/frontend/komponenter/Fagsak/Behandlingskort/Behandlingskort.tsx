@@ -17,7 +17,8 @@ import {
     behandlingÅrsak,
     erBehandlingHenlagt,
 } from '../../../typer/behandling';
-import { datoformat, formaterIsoDato } from '../../../utils/formatter';
+import { Datoformat } from '../../../utils/dato';
+import { formaterIsoDato } from '../../../utils/formatter';
 import Informasjonsbolk from '../../Felleskomponenter/Informasjonsbolk/Informasjonsbolk';
 import { sakstype } from '../Saksoversikt/Saksoversikt';
 
@@ -128,13 +129,13 @@ const Behandlingskort: React.FC<IBehandlingskortProps> = ({ åpenBehandling }) =
                 informasjon={[
                     {
                         label: 'Opprettet',
-                        tekst: formaterIsoDato(åpenBehandling.opprettetTidspunkt, datoformat.DATO),
+                        tekst: formaterIsoDato(åpenBehandling.opprettetTidspunkt, Datoformat.DATO),
                     },
                     {
                         label: 'Vedtaksdato',
                         tekst: formaterIsoDato(
                             åpenBehandling.vedtak?.vedtaksdato,
-                            datoformat.DATO,
+                            Datoformat.DATO,
                             'Ikke satt'
                         ),
                     },

@@ -21,7 +21,8 @@ import { useVilkårsvurdering } from '../../../context/Vilkårsvurdering/Vilkår
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingSteg, BehandlingÅrsak } from '../../../typer/behandling';
-import { datoformat, formaterIsoDato } from '../../../utils/formatter';
+import { Datoformat } from '../../../utils/dato';
+import { formaterIsoDato } from '../../../utils/formatter';
 import { erProd } from '../../../utils/miljø';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
@@ -107,7 +108,7 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                             registeropplysningerHentetTidpsunkt
                                 ? `Registeropplysninger hentet ${formaterIsoDato(
                                       registeropplysningerHentetTidpsunkt,
-                                      datoformat.DATO_TID_SEKUNDER
+                                      Datoformat.DATO_TID_SEKUNDER
                                   )} fra Folkeregisteret`
                                 : 'Kunne ikke hente innhentingstidspunkt for registeropplysninger'
                         }
@@ -156,7 +157,7 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                                 <BodyShort>
                                     {`${uregistrertBarn.navn} - ${formaterIsoDato(
                                         uregistrertBarn.fødselsdato,
-                                        datoformat.DATO
+                                        Datoformat.DATO
                                     )}`}
                                 </BodyShort>
                             </li>

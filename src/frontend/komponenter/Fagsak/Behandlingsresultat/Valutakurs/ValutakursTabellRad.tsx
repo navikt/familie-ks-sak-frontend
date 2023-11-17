@@ -10,7 +10,8 @@ import {
 } from '../../../../context/Valutakurs/ValutakursSkjemaContext';
 import type { IBehandling } from '../../../../typer/behandling';
 import type { IRestValutakurs } from '../../../../typer/eøsPerioder';
-import { datoformat, formaterIsoDato, lagPersonLabel } from '../../../../utils/formatter';
+import { Datoformat } from '../../../../utils/dato';
+import { formaterIsoDato, lagPersonLabel } from '../../../../utils/formatter';
 import { StatusBarnCelleOgPeriodeCelle } from '../EøsPeriode/fellesKomponenter';
 
 interface IProps {
@@ -100,7 +101,7 @@ const ValutakursTabellRad: React.FC<IProps> = ({
             />
             <Table.DataCell>
                 {valutakurs.valutakursdato
-                    ? formaterIsoDato(valutakurs.valutakursdato, datoformat.DATO)
+                    ? formaterIsoDato(valutakurs.valutakursdato, Datoformat.DATO)
                     : '-'}
             </Table.DataCell>
             <Table.DataCell>{valutakurs.valutakode ? valutakurs.valutakode : '-'}</Table.DataCell>

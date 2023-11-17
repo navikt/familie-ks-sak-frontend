@@ -3,26 +3,44 @@ import { format, isValid, startOfToday } from 'date-fns';
 import type { FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
-import { datoformat } from './formatter';
-
 export type IsoDatoString = string; // Format YYYY-MM-DD (ISO)
 
 export const dagensDato = startOfToday();
 
-interface FormatterProps {
-    dato?: Date;
-    datoformat: datoformat;
+export enum Datoformat {
+    DATO = 'dd.MM.yyyy',
+    DATO_FORKORTTET = 'dd.MM.yy',
+    DATO_FORLENGET = 'PPP',
+    DATO_FORLENGET_MED_TID = 'PPPp',
+    ISO_MÅNED = 'yyyy-MM',
+    ISO_DAG = 'yyyy-MM-dd',
+    DATO_TID = 'dd.MM.yy HH:mm',
+    DATO_TID_SEKUNDER = 'dd.MM.yy HH:mm:ss',
+    TID = 'HH:mm',
+    MÅNED = 'MM.yy',
+    MÅNED_ÅR = 'MM.yyyy',
+    MÅNED_ÅR_NAVN = 'MMMM yyyy',
+    MÅNED_ÅR_KORTNAVN = 'MMM yyyy',
+    MÅNED_NAVN = 'MMM',
+}
+
+interface DateTilFormatertStringProps {
+    date?: Date;
+    tilFormat: Datoformat;
     defaultString?: string;
 }
-export const formatterDate = ({ dato, datoformat, defaultString = '' }: FormatterProps): string => {
-    return dato && isValid(dato) ? format(dato, datoformat) : defaultString;
+export const dateTilFormatertString = ({
+    date,
+    tilFormat,
+    defaultString = '',
+}: DateTilFormatertStringProps): string => {
+    return date && isValid(date) ? format(date, tilFormat) : defaultString;
 };
+export const dateTilIsoDatoString = (dato?: Date): IsoDatoString =>
+    dateTilFormatertString({ date: dato, tilFormat: Datoformat.ISO_DAG, defaultString: '' });
 
-export const formatterDateTilIsoString = (dato?: Date): string =>
-    formatterDate({ dato: dato, datoformat: datoformat.ISO_DAG, defaultString: '' });
-
-export const formatterDateTilIsoStringEllerUndefined = (dato?: Date): string | undefined =>
-    dato && isValid(dato) ? format(dato, datoformat.ISO_DAG) : undefined;
+export const dateTilIsoDatoStringEllerUndefined = (dato?: Date): IsoDatoString | undefined =>
+    dato && isValid(dato) ? format(dato, Datoformat.ISO_DAG) : undefined;
 
 export const validerGyldigDato = (felt: FeltState<Date | undefined>) =>
     felt.verdi && isValid(felt.verdi) ? ok(felt) : feil(felt, 'Du må velge en gyldig dato');

@@ -10,7 +10,8 @@ import { BodyShort, Detail, Label } from '@navikt/ds-react';
 
 import { NavigeringsRetning } from '../../../context/TidslinjeContext';
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../typer/simulering';
-import { datoformat, formaterBeløp, formaterIsoDato } from '../../../utils/formatter';
+import { Datoformat } from '../../../utils/dato';
+import { formaterBeløp, formaterIsoDato } from '../../../utils/formatter';
 import { periodeToString, kalenderDato, erEtter } from '../../../utils/kalender';
 import { hentPeriodelisteMedTommePerioder, hentÅrISimuleringen } from '../../../utils/simulering';
 import TidslinjeNavigering from '../Behandlingsresultat/TidslinjeNavigering';
@@ -138,7 +139,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                 <Label>
                     Simuleringsresultat for{' '}
                     {perioder.length === 1
-                        ? `${formaterIsoDato(perioder[0].fom, datoformat.MÅNED_ÅR_NAVN)}`
+                        ? `${formaterIsoDato(perioder[0].fom, Datoformat.MÅNED_ÅR_NAVN)}`
                         : `perioden ${tilOgFraDatoForSimulering}`}
                 </Label>
             </SimuleringTabellOverskrift>
@@ -205,7 +206,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                                 {kapitaliserTekst(
                                                     formaterIsoDato(
                                                         periode.fom,
-                                                        datoformat.MÅNED_NAVN
+                                                        Datoformat.MÅNED_NAVN
                                                     )
                                                 )}
                                             </Label>
