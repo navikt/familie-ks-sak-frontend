@@ -64,9 +64,8 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     const { hentForhåndsvisning, nullstillDokument, hentetDokument } = useDokument();
 
     const [minimalFagsak, settMinimalFagsak] = useState<IMinimalFagsak | undefined>(undefined);
-    const [dataForManuellJournalføring, settDataForManuellJournalføring] = React.useState(
-        byggTomRessurs<IDataForManuellJournalføring>()
-    );
+    const [dataForManuellJournalføring, settDataForManuellJournalføring] =
+        React.useState(byggTomRessurs<IDataForManuellJournalføring>());
 
     React.useEffect(() => {
         if (oppgaveId) {
@@ -384,8 +383,8 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
                             nyBehandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING
                                 ? BehandlingÅrsak.SØKNAD
                                 : nyBehandlingsårsak === ''
-                                ? BehandlingÅrsak.SØKNAD
-                                : nyBehandlingsårsak,
+                                  ? BehandlingÅrsak.SØKNAD
+                                  : nyBehandlingsårsak,
 
                         navIdent: innloggetSaksbehandler?.navIdent ?? '',
                         journalførendeEnhet: innloggetSaksbehandler?.enhet ?? '9999',
@@ -449,8 +448,8 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
                                 nyBehandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING
                                     ? BehandlingÅrsak.SØKNAD
                                     : nyBehandlingsårsak === ''
-                                    ? BehandlingÅrsak.SØKNAD
-                                    : nyBehandlingsårsak,
+                                      ? BehandlingÅrsak.SØKNAD
+                                      : nyBehandlingsårsak,
                             navIdent: innloggetSaksbehandler?.navIdent ?? '',
                         },
                     },
@@ -484,10 +483,10 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
         return dataForManuellJournalføring.status !== RessursStatus.SUKSESS
             ? false
             : dataForManuellJournalføring.data.oppgave.oppgavetype === OppgavetypeFilter.BEH_SED &&
-              tilordnetInnloggetSaksbehandler() &&
-              toggles[ToggleNavn.brukEøs]
-            ? true
-            : !erLesevisning();
+                tilordnetInnloggetSaksbehandler() &&
+                toggles[ToggleNavn.brukEøs]
+              ? true
+              : !erLesevisning();
     };
 
     const settAvsenderLikBruker = () => {

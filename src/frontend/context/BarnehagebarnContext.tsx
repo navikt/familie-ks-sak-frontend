@@ -37,9 +37,8 @@ const [BarnehagebarnProvider, useBarnehagebarn] = createUseContext(() => {
     const [barnehagebarnRequestParams, settBarnehagebarnRequestParams] =
         useState<IBarnehagebarnRequestParams>({ ...defaultBarnehagebarnRequestParams });
 
-    const [barnehagebarnResponse, settBarnehagebarnResponse] = useState<
-        Ressurs<IBarnehagebarnResponse>
-    >(byggTomRessurs<IBarnehagebarnResponse>());
+    const [barnehagebarnResponse, settBarnehagebarnResponse] =
+        useState<Ressurs<IBarnehagebarnResponse>>(byggTomRessurs<IBarnehagebarnResponse>());
 
     const [resetForm, setResetForm] = useState<boolean>(false);
 

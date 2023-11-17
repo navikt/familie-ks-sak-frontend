@@ -30,7 +30,7 @@ import type {
     IVilkårResultat,
     UtdypendeVilkårsvurdering,
 } from '../../../../typer/vilkår';
-import { Resultat, resultater, Regelverk, VilkårType } from '../../../../typer/vilkår';
+import { Regelverk, Resultat, resultater, VilkårType } from '../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../utils/vilkår';
 
 const Container = styled.div`
@@ -130,6 +130,13 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                             );
                             if (vurderesEtterEndringer) {
                                 vurderesEtterEndringer(event.target.value as Regelverk);
+                            }
+
+                            if (
+                                (event.target.value as Regelverk) === Regelverk.NASJONALE_REGLER &&
+                                VilkårType.MEDLEMSKAP === vilkårResultat.vilkårType
+                            ) {
+                                skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_VURDERT);
                             }
                         }}
                     >

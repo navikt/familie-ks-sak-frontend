@@ -22,14 +22,12 @@ import type { IPersonInfo } from '../../typer/person';
 import { sjekkTilgangTilPerson } from '../../utils/commons';
 
 const [FagsakProvider, useFagsakContext] = createUseContext(() => {
-    const [minimalFagsak, settMinimalFagsak] = React.useState<Ressurs<IMinimalFagsak>>(
-        byggTomRessurs()
-    );
+    const [minimalFagsak, settMinimalFagsak] =
+        React.useState<Ressurs<IMinimalFagsak>>(byggTomRessurs());
 
     const [bruker, settBruker] = React.useState<Ressurs<IPersonInfo>>(byggTomRessurs());
-    const [internstatistikk, settInternstatistikk] = React.useState<Ressurs<IInternstatistikk>>(
-        byggTomRessurs()
-    );
+    const [internstatistikk, settInternstatistikk] =
+        React.useState<Ressurs<IInternstatistikk>>(byggTomRessurs());
     const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[]>([]);
 
     const { request } = useHttp();
