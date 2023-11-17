@@ -1,6 +1,6 @@
 import path from 'path';
 
-import SentryCliPlugin from '@sentry/webpack-plugin';
+import { sentryWebpackPlugin } from '@sentry/webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import CssMinimizerWebpackPlugin from 'css-minimizer-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
@@ -57,8 +57,10 @@ const prodConfig = merge.mergeWithRules({
             threshold: 10240,
             minRatio: 0.8,
         }),
-        new SentryCliPlugin({
-            include: 'frontend_production',
+        sentryWebpackPlugin({
+            sourcemaps: {
+                assets: ['frontend_production'],
+            },
             org: 'nav',
             project: 'familie-ks-sak-frontend',
             authToken: process.env.SENTRY_AUTH_TOKEN,
