@@ -7,6 +7,7 @@ import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
 import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { IGrunnlagPerson } from './person';
+import type { IRestRefusjonEøs } from './refusjon-eøs';
 import type { ITilbakekreving } from './simulering';
 import type { ISøknadDTO } from './søknad';
 import type {
@@ -216,6 +217,7 @@ export interface IBehandling {
     korrigertVedtak?: IRestKorrigertVedtak;
     sisteVedtaksperiodeVisningDato?: FamilieIsoDate;
     feilutbetaltValuta: IRestFeilutbetaltValuta[];
+    refusjonEøs: IRestRefusjonEøs[];
 }
 
 export interface IArbeidsfordelingPåBehandling {

@@ -18,8 +18,8 @@ import type {
 } from '../../../typer/eøsPerioder';
 import { EøsPeriodeStatus, KompetanseResultat } from '../../../typer/eøsPerioder';
 import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
+import { Datoformat } from '../../../utils/dato';
 import {
-    datoformat,
     formaterBeløp,
     formaterIdent,
     formaterIsoDato,
@@ -143,7 +143,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
     const månedNavnOgÅr = () => {
         const navn = formaterIsoDato(
             serializeIso8601String(kalenderDatoFraDate(aktivEtikett.date)),
-            datoformat.MÅNED_ÅR_NAVN
+            Datoformat.MÅNED_ÅR_NAVN
         );
         return navn[0].toUpperCase() + navn.substring(1);
     };

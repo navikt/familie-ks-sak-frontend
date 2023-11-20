@@ -8,7 +8,8 @@ import Panel from 'nav-frontend-paneler';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../typer/simulering';
-import { datoformat, formaterBeløp, formaterIsoDato } from '../../../utils/formatter';
+import { Datoformat } from '../../../utils/dato';
+import { formaterBeløp, formaterIsoDato } from '../../../utils/formatter';
 import { kalenderDato, erFør } from '../../../utils/kalender';
 import { tilVisning } from '../../../utils/kalender';
 
@@ -79,7 +80,7 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
             return 'Totalt';
         }
         if (utbetaltePerioder.length === 1) {
-            return `Total for ${formaterIsoDato(perioder[0].fom, datoformat.MÅNED_ÅR_NAVN)}`;
+            return `Total for ${formaterIsoDato(perioder[0].fom, Datoformat.MÅNED_ÅR_NAVN)}`;
         }
         return `Totalt for perioden ${tilVisning(kalenderDato(fom))} - ${
             tomSisteUtbetaling ? tilVisning(kalenderDato(tomSisteUtbetaling)) : ''
@@ -142,7 +143,7 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
                                     {kapitaliserTekst(
                                         formaterIsoDato(
                                             fomDatoNestePeriode,
-                                            datoformat.MÅNED_ÅR_NAVN
+                                            Datoformat.MÅNED_ÅR_NAVN
                                         )
                                     )}
                                 </BodyShort>

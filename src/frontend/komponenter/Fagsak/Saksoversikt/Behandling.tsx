@@ -11,7 +11,8 @@ import {
 } from './utils';
 import { behandlingsstatuser } from '../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
-import { datoformat, formaterIsoDato } from '../../../utils/formatter';
+import { Datoformat } from '../../../utils/dato';
+import { formaterIsoDato } from '../../../utils/formatter';
 
 interface IBehandlingshistorikkProps {
     minimalFagsak: IMinimalFagsak;
@@ -27,7 +28,7 @@ export const Behandling: React.FC<IBehandlingshistorikkProps> = ({
             <td
                 children={`${formaterIsoDato(
                     hentOpprettetTidspunkt(saksoversiktsbehandling),
-                    datoformat.DATO
+                    Datoformat.DATO
                 )}`}
             />
             <td>{finnÅrsak(saksoversiktsbehandling)}</td>
@@ -37,7 +38,7 @@ export const Behandling: React.FC<IBehandlingshistorikkProps> = ({
             <td
                 children={
                     saksoversiktsbehandling.vedtaksdato
-                        ? formaterIsoDato(saksoversiktsbehandling.vedtaksdato, datoformat.DATO)
+                        ? formaterIsoDato(saksoversiktsbehandling.vedtaksdato, Datoformat.DATO)
                         : '-'
                 }
             />

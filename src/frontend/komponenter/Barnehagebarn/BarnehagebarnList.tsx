@@ -6,7 +6,8 @@ import { Alert, Link, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
-import { datoformat, formaterIsoDato } from '../../utils/formatter';
+import { Datoformat } from '../../utils/dato';
+import { formaterIsoDato } from '../../utils/formatter';
 
 const StyledAlert = styled(Alert)`
     margin-top: 1rem;
@@ -63,7 +64,7 @@ const BarnehagebarnList: React.FunctionComponent = () => {
                             <Table.Row key={i + barnehagebarn.ident}>
                                 <Table.DataCell>{barnehagebarn.ident}</Table.DataCell>
                                 <Table.DataCell>
-                                    {formaterIsoDato(barnehagebarn.endretTid, datoformat.DATO_TID)}
+                                    {formaterIsoDato(barnehagebarn.endretTid, Datoformat.DATO_TID)}
                                 </Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.fom}</Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.tom}</Table.DataCell>

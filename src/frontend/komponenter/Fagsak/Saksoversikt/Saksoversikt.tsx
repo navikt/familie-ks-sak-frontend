@@ -19,8 +19,9 @@ import { behandlingKategori, BehandlingKategori } from '../../../typer/behandlin
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
 import { Vedtaksperiodetype } from '../../../typer/vedtaksperiode';
+import { Datoformat } from '../../../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../utils/fagsak';
-import { datoformat, formaterIsoDato } from '../../../utils/formatter';
+import { formaterIsoDato } from '../../../utils/formatter';
 import {
     førsteDagIInneværendeMåned,
     kalenderDatoTilDate,
@@ -130,7 +131,7 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
                                 <FlexSpaceBetween>
                                     {`Utbetalingen endres fra og med ${formaterIsoDato(
                                         serializeIso8601String(nesteMåned),
-                                        datoformat.MÅNED_ÅR_NAVN
+                                        Datoformat.MÅNED_ÅR_NAVN
                                     )}`}
                                     {lenkeTilBehandlingsresultat()}
                                 </FlexSpaceBetween>
@@ -145,7 +146,7 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
                     <FlexSpaceBetween>
                         {`Utbetalingen starter ${formaterIsoDato(
                             serializeIso8601String(nesteMåned),
-                            datoformat.MÅNED_ÅR_NAVN
+                            Datoformat.MÅNED_ÅR_NAVN
                         )}`}
                         {lenkeTilBehandlingsresultat()}
                     </FlexSpaceBetween>

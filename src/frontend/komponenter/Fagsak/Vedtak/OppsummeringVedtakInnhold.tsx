@@ -9,6 +9,7 @@ import { FamilieSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
+import RefusjonEøs from './RefusjonEøs/RefusjonEøs';
 import { PeriodetypeIVedtaksbrev, useVedtak } from './useVedtak';
 import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
 import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
@@ -33,6 +34,7 @@ interface IOppsummeringVedtakInnholdProps {
     visModal: boolean;
     settVisModal: (erUlagretNyFeilutbetaltValuta: boolean) => void;
     settErUlagretNyFeilutbetaltValutaPeriode: (erUlagretNyFeilutbetaltValuta: boolean) => void;
+    settErUlagretNyRefusjonEøsPeriode: (erUlagretNyRefusjonEøsPeriode: boolean) => void;
     erBehandlingMedVedtaksbrevutsending: boolean;
 }
 
@@ -54,6 +56,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
     erBehandlingMedVedtaksbrevutsending,
     visModal,
     settVisModal,
+    settErUlagretNyRefusjonEøsPeriode,
 }) => {
     const { hentSaksbehandlerRolle } = useApp();
     const { fagsakId } = useSakOgBehandlingParams();
@@ -76,6 +79,9 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
 
     const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = React.useState(
         åpenBehandling.feilutbetaltValuta.length > 0
+    );
+    const [visRefusjonEøs, settVisRefusjonEøs] = React.useState(
+        åpenBehandling.refusjonEøs.length > 0
     );
 
     const hentVedtaksbrev = () => {
@@ -121,6 +127,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                 åpenBehandling={åpenBehandling}
                 erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending}
                 visFeilutbetaltValuta={() => settVisFeilutbetaltValuta(true)}
+                visRefusjonEøs={() => settVisRefusjonEøs(true)}
             />
             <PdfVisningModal
                 onRequestOpen={() => {
@@ -181,6 +188,17 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                                 }
                                 erLesevisning={erLesevisning}
                                 skjulFeilutbetaltValuta={() => settVisFeilutbetaltValuta(false)}
+                            />
+                        )}
+                        {visRefusjonEøs && (
+                            <RefusjonEøs
+                                refusjonEøsListe={åpenBehandling.refusjonEøs ?? []}
+                                behandlingId={åpenBehandling.behandlingId}
+                                fagsakId={fagsakId}
+                                settErUlagretNyRefusjonEøsPeriode={
+                                    settErUlagretNyRefusjonEøsPeriode
+                                }
+                                skjulRefusjonEøs={() => settVisRefusjonEøs(false)}
                             />
                         )}
                     </>

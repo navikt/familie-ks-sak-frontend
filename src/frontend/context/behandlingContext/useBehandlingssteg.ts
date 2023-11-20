@@ -94,7 +94,8 @@ const useBehandlingssteg = (
 
     const foreslåVedtakNesteOnClick = (
         settVisModal: (visModal: boolean) => void,
-        erUlagretNyFeilutbetaltValuta: boolean
+        erUlagretNyFeilutbetaltValuta: boolean,
+        erUlagretNyRefusjonEøsPeriode: boolean
     ) => {
         if (erUlagretNyFeilutbetaltValuta) {
             return settSubmitRessurs(
@@ -103,7 +104,13 @@ const useBehandlingssteg = (
                 )
             );
         }
-
+        if (erUlagretNyRefusjonEøsPeriode) {
+            return settSubmitRessurs(
+                byggFeiletRessurs(
+                    'Det er lagt til en ny periode med refusjon EØS. Fyll ut periode og refusjonsbeløp, eller fjern perioden.'
+                )
+            );
+        }
         if (!kanForeslåVedtak()) {
             return settSubmitRessurs(
                 byggFeiletRessurs(
