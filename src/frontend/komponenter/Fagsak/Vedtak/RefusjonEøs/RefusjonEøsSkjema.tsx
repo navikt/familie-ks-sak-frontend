@@ -2,9 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Label, Radio, TextField } from '@navikt/ds-react';
+import { Label, Radio, RadioGroup, TextField } from '@navikt/ds-react';
 import { ASpacing3 } from '@navikt/ds-tokens/dist/tokens';
-import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { Country } from '@navikt/land-verktoy';
@@ -73,16 +72,10 @@ const RefusjonEøsSkjema: React.FunctionComponent<IRefusjonEøsSkjemaProps> = ({
                 }
             />
 
-            <FamilieRadioGruppe
-                erLesevisning={erLesevisning}
+            <RadioGroup
+                readOnly={erLesevisning}
                 legend="Tekst i vedtaksbrev"
-                value={
-                    erLesevisning
-                        ? `Refusjon ${
-                              skjema.felter.refusjonAvklart.verdi ? 'avklart' : 'ikke avklart'
-                          }`
-                        : skjema.felter.refusjonAvklart.verdi
-                }
+                value={skjema.felter.refusjonAvklart.verdi}
                 onChange={(val: boolean | undefined) =>
                     skjema.felter.refusjonAvklart.validerOgSettFelt(val)
                 }
@@ -103,7 +96,7 @@ const RefusjonEøsSkjema: React.FunctionComponent<IRefusjonEøsSkjemaProps> = ({
                 >
                     {'Refusjon ikke avklart'}
                 </Radio>
-            </FamilieRadioGruppe>
+            </RadioGroup>
             <FlexDatoInputWrapper>
                 <Label size="small">Angi periode som skal refunderes til EØS-land</Label>
                 <FlexRowDiv style={{ gap: '2rem' }}>
