@@ -52,11 +52,15 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
         >
             <br />
 
-            <StyledAlert variant="info" inline>
-                Du må vurdere dette vilkåret når søker er omfattet av norsk lovgivning
-            </StyledAlert>
-
-            <br />
+            {vilkårSkjemaContext.skjema.felter.vurderesEtter.verdi ===
+                Regelverk.EØS_FORORDNINGEN && (
+                <>
+                    <StyledAlert variant="info" inline>
+                        Du må vurdere dette vilkåret når søker er omfattet av norsk lovgivning
+                    </StyledAlert>
+                    <br />
+                </>
+            )}
 
             <FamilieRadioGruppe
                 legend={
