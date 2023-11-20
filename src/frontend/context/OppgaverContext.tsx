@@ -42,6 +42,7 @@ import { erIsoStringGyldig } from '../utils/kalender';
 import { hentFnrFraOppgaveIdenter } from '../utils/oppgave';
 import { hentFrontendFeilmelding } from '../utils/ressursUtils';
 
+const OPPGAVEBENK_SORTERINGSNØKKEL = 'OPPGAVEBENK_SORTERINGSNØKKEL';
 export const oppgaveSideLimit = 15;
 
 export const maksAntallOppgaver = 150;
@@ -67,6 +68,8 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
             : [];
     }, [oppgaver]);
 
+    const lagretSortering = localStorage.getItem(OPPGAVEBENK_SORTERINGSNØKKEL);
+
     const tableInstance: TableInstance<IOppgaveRad> &
         UseSortByInstanceProps<IOppgaveRad> &
         UsePaginationInstanceProps<IOppgaveRad> = useTable<IOppgaveRad>(
@@ -76,11 +79,21 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
             initialState: {
                 pageSize: oppgaveSideLimit,
                 pageIndex: 0,
+                sortBy: lagretSortering
+                    ? JSON.parse(lagretSortering)
+                    : [{ id: 'opprettetTidspunkt', desc: false }],
             },
         },
         useSortBy,
         usePagination
     );
+
+    useEffect(() => {
+        localStorage.setItem(
+            OPPGAVEBENK_SORTERINGSNØKKEL,
+            JSON.stringify(tableInstance.state.sortBy)
+        );
+    }, [tableInstance.state.sortBy]);
 
     useEffect(() => {
         settOppgaveFelter(initialOppgaveFelter(innloggetSaksbehandler));
