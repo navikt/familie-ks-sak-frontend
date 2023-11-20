@@ -8,7 +8,7 @@ import { Alert, Label } from '@navikt/ds-react';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
 import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
-import { Resultat, resultater } from '../../../../../../typer/vilkår';
+import { Regelverk, Resultat, resultater } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -47,12 +47,16 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
         >
             <br />
 
-            <StyledAlert variant="info" inline>
-                Du må vurdere dette vilkåret når den andre forelderen er omfattet av norsk
-                lovgivning og søker har selvstendig rett
-            </StyledAlert>
-
-            <br />
+            {vilkårSkjemaContext.skjema.felter.vurderesEtter.verdi ===
+                Regelverk.EØS_FORORDNINGEN && (
+                <>
+                    <StyledAlert variant="info" inline>
+                        Du må vurdere dette vilkåret når den andre forelderen er omfattet av norsk
+                        lovgivning og søker har selvstendig rett
+                    </StyledAlert>
+                    <br />
+                </>
+            )}
 
             <FamilieRadioGruppe
                 legend={
