@@ -15,6 +15,8 @@ import { Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandli
 import type { IBehandlingstema } from '../../../../../typer/behandlingstema';
 import { Klagebehandlingstype } from '../../../../../typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
+import type { IsoDatoString } from '../../../../../utils/dato';
+import { dateTilIsoDatoString, validerGyldigDato } from '../../../../../utils/dato';
 import type { FamilieIsoDate } from '../../../../../utils/kalender';
 import { erIsoStringGyldig } from '../../../../../utils/kalender';
 
@@ -23,7 +25,7 @@ export interface IOpprettBehandlingSkjemaFelter {
     behandlingsårsak: BehandlingÅrsak | '';
     behandlingstema: IBehandlingstema | undefined;
     søknadMottattDato: FamilieIsoDate;
-    kravMottattDato: FamilieIsoDate;
+    kravMottattDato: Date | undefined;
 }
 
 const useOpprettBehandling = ({
@@ -114,25 +116,9 @@ const useOpprettBehandling = ({
         },
     });
 
-    const kravMottattDato = useFelt<FamilieIsoDate>({
-        verdi: '',
-        valideringsfunksjon: (felt: FeltState<FamilieIsoDate>) => {
-            const erGyldigIsoString = erIsoStringGyldig(felt.verdi);
-            const erIFremtiden = erDatoFremITid(felt.verdi);
-
-            if (!erGyldigIsoString) {
-                return feil(
-                    felt,
-                    'Mottatt dato for klagen må registreres ved manuell opprettelse av klagebehandling'
-                );
-            }
-
-            if (erIFremtiden) {
-                return feil(felt, 'Du kan ikke sette en dato som er frem i tid.');
-            }
-
-            return ok(felt);
-        },
+    const kravMottattDato = useFelt<Date | undefined>({
+        verdi: undefined,
+        valideringsfunksjon: validerGyldigDato,
 
         avhengigheter: { behandlingstype },
         skalFeltetVises: avhengigheter =>
@@ -166,11 +152,11 @@ const useOpprettBehandling = ({
     }, [behandlingstype.verdi]);
 
     const opprettKlagebehandling = () => {
-        onSubmit<{ kravMottattDato: FamilieIsoDate }>(
+        onSubmit<{ kravMottattDato: IsoDatoString }>(
             {
                 method: 'POST',
                 url: `/familie-ks-sak/api/fagsaker/${fagsakId}/opprett-klagebehandling`,
-                data: { kravMottattDato: kravMottattDato.verdi },
+                data: { kravMottattDato: dateTilIsoDatoString(kravMottattDato.verdi) },
             },
             response => {
                 if (response.status === RessursStatus.SUKSESS) {

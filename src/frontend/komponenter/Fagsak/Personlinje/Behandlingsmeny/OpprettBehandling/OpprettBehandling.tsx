@@ -10,12 +10,12 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';
 import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
-import { KravDatoFelt } from './KravDatoFelt';
 import { SøknadMottattDatoFelt } from './SøknadMottattDatoFelt';
 import useOpprettBehandling from './useOpprettBehandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
+import Datovelger from '../../../../Felleskomponenter/Datovelger/Datovelger';
 import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
 
@@ -105,9 +105,11 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                     )}
 
                     {opprettBehandlingSkjema.felter.kravMottattDato.erSynlig && (
-                        <KravDatoFelt
-                            kravMottattDato={opprettBehandlingSkjema.felter.kravMottattDato}
+                        <Datovelger
+                            felt={opprettBehandlingSkjema.felter.kravMottattDato}
                             visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                            label={'Krav mottatt'}
+                            kanKunVelgeFortid
                         />
                     )}
                     {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
