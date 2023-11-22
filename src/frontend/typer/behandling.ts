@@ -26,10 +26,9 @@ export interface IRestNyBehandling {
     kategori: BehandlingKategori | null;
     søkersIdent: string;
     behandlingType: Behandlingstype;
-    journalpostID?: string;
-    behandlingÅrsak?: BehandlingÅrsak;
-    skalBehandlesAutomatisk?: boolean;
-    navIdent?: string;
+    behandlingÅrsak: BehandlingÅrsak;
+    saksbehandlerIdent?: string;
+    søknadMottattDato?: ISODateString;
 }
 
 export enum HenleggÅrsak {

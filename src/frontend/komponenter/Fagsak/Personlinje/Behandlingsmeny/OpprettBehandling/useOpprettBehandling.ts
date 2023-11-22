@@ -170,10 +170,10 @@ const useOpprettBehandling = ({
             {
                 data: {
                     kategori: skjema.felter.behandlingstema.verdi?.kategori ?? null,
-                    søkersIdent,
+                    søkersIdent: søkersIdent,
                     behandlingType: behandlingstype.verdi as Behandlingstype,
                     behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,
-                    navIdent: innloggetSaksbehandler?.navIdent,
+                    saksbehandlerIdent: innloggetSaksbehandler?.navIdent,
                     søknadMottattDato: dateTilIsoDatoStringEllerUndefined(
                         skjema.felter.søknadMottattDato.verdi
                     ),
