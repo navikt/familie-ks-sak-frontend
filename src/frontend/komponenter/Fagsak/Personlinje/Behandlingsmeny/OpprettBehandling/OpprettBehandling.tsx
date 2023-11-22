@@ -10,7 +10,6 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';
 import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
-import { SøknadMottattDatoFelt } from './SøknadMottattDatoFelt';
 import useOpprettBehandling from './useOpprettBehandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
@@ -113,9 +112,11 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                         />
                     )}
                     {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
-                        <SøknadMottattDatoFelt
-                            søknadMottattDato={opprettBehandlingSkjema.felter.søknadMottattDato}
+                        <Datovelger
+                            felt={opprettBehandlingSkjema.felter.søknadMottattDato}
                             visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                            label={'Mottatt dato'}
+                            kanKunVelgeFortid
                         />
                     )}
                 </SkjemaGruppe>
