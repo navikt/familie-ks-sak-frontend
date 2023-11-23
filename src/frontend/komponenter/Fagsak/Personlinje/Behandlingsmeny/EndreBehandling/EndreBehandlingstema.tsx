@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { Button } from '@navikt/ds-react';
+import { Button, Fieldset } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -11,7 +9,6 @@ import { useBehandling } from '../../../../../context/behandlingContext/Behandli
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
 import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
-import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
 
 const EndreBehandlingstema: React.FC = () => {
     const [visModal, settVisModal] = useState(false);
@@ -64,14 +61,17 @@ const EndreBehandlingstema: React.FC = () => {
                     visModal,
                 }}
             >
-                <SkjemaGruppe feil={hentFrontendFeilmelding(ressurs)}>
-                    <SkjultLegend>Endre behandligstema</SkjultLegend>
+                <Fieldset
+                    error={hentFrontendFeilmelding(ressurs)}
+                    legend={'Endre behandlingstema'}
+                    hideLegend
+                >
                     <BehandlingstemaSelect
                         behandlingstema={skjema.felter.behandlingstema}
                         erLesevisning={vurderErLesevisning()}
                         label="Behandlingstema"
                     />
-                </SkjemaGruppe>
+                </Fieldset>
             </UIModalWrapper>
         </>
     );
