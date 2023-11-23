@@ -14,6 +14,12 @@ const StyledCheckboxDiv = styled.div`
     width: 20rem;
 `;
 
+const StyledFieldset = styled(Fieldset)`
+    && > div:not(:last-child):not(:empty) {
+        margin-bottom: 1rem;
+    }
+`;
+
 /**
  * Legger inn lesevisning slik at på sikt
  * så kan man kanskje sjekke hvilken behandling
@@ -23,7 +29,7 @@ export const KnyttTilNyBehandling: React.FC = () => {
     const { skjema, minimalFagsak, kanKnytteJournalpostTilBehandling } = useManuellJournalfør();
     const { knyttTilNyBehandling, behandlingstype, behandlingstema } = skjema.felter;
     return (
-        <Fieldset legend="Knytt til ny behandling" hideLegend>
+        <StyledFieldset legend="Knytt til ny behandling" hideLegend>
             <Heading size={'small'} level={'2'}>
                 Knytt til ny behandling
             </Heading>
@@ -75,6 +81,6 @@ export const KnyttTilNyBehandling: React.FC = () => {
                     label="Velg behandlingstema"
                 />
             )}
-        </Fieldset>
+        </StyledFieldset>
     );
 };
