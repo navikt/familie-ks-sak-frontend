@@ -23,7 +23,7 @@ export const KnyttTilNyBehandling: React.FC = () => {
     const { skjema, minimalFagsak, kanKnytteJournalpostTilBehandling } = useManuellJournalfør();
     const { knyttTilNyBehandling, behandlingstype, behandlingstema } = skjema.felter;
     return (
-        <Fieldset legend="Knytt til ny behandling">
+        <Fieldset legend="Knytt til ny behandling" hideLegend>
             <Heading size={'small'} level={'2'}>
                 Knytt til ny behandling
             </Heading>
