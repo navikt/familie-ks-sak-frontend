@@ -3,8 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { BodyShort, Checkbox, Label } from '@navikt/ds-react';
-import { FamilieInput } from '@navikt/familie-form-elements';
+import { BodyShort, Checkbox, Label, TextField } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
@@ -66,7 +65,7 @@ const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
                             visFeilmeldinger={registrerBarnSkjema.visFeilmeldinger}
                             kanKunVelgeFortid
                         />
-                        <FamilieInput
+                        <TextField
                             {...registrerBarnSkjema.felter.uregistrertBarnNavn.hentNavInputProps(
                                 registrerBarnSkjema.visFeilmeldinger
                             )}
