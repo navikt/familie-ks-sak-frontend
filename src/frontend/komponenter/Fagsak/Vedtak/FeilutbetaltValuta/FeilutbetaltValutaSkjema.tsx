@@ -3,21 +3,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Label } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-datovelger';
-import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 
 import type { IBehandling } from '../../../../typer/behandling';
 import type { IFeilutbetaltValutaSkjemaFelter } from '../../../../typer/eøs-feilutbetalt-valuta';
-import type { FamilieIsoDate } from '../../../../utils/kalender';
-import {
-    erIsoStringGyldig,
-    FamilieIsoTilFørsteDagIMåneden,
-    FamilieIsoTilSisteDagIMåneden,
-    serializeIso8601String,
-    sisteDagIInneværendeMåned,
-} from '../../../../utils/kalender';
+import Månedvelger, { DagIMåneden } from '../../../Felleskomponenter/Datovelger/Månedvelger';
 
 interface IFeilutbetaltValutaSkjemaProps {
     skjema: ISkjema<IFeilutbetaltValutaSkjemaFelter, IBehandling>;
@@ -43,15 +34,6 @@ const StyledFamilieInput = styled(FamilieInput)`
     }
 `;
 
-const gjørOmDatoHvisGyldigInput = (
-    dato: string | undefined,
-    omgjøringsfunksjon: (dato: FamilieIsoDate) => FamilieIsoDate
-): string => {
-    if (dato === undefined) return '';
-    if (erIsoStringGyldig(dato)) return omgjøringsfunksjon(dato);
-    else return dato;
-};
-
 const FeilutbetaltValutaSkjema: React.FunctionComponent<IFeilutbetaltValutaSkjemaProps> = ({
     skjema,
 }) => (
@@ -59,33 +41,20 @@ const FeilutbetaltValutaSkjema: React.FunctionComponent<IFeilutbetaltValutaSkjem
         <FlexDatoInputWrapper>
             <Label size="small">Angi periode med feilutbetalt valuta</Label>
             <FlexRowDiv style={{ gap: '2rem' }}>
-                <FamilieDatovelger
-                    {...skjema.felter.fom?.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                    id="fom-dato"
+                <Månedvelger
                     label="F.o.m"
-                    value={skjema.felter.fom.verdi}
-                    onChange={(dato?: ISODateString) => {
-                        skjema.felter.fom?.validerOgSettFelt(
-                            gjørOmDatoHvisGyldigInput(dato, FamilieIsoTilFørsteDagIMåneden)
-                        );
-                    }}
-                    limitations={{
-                        maxDate: serializeIso8601String(sisteDagIInneværendeMåned()),
-                    }}
+                    felt={skjema.felter.fom}
+                    visFeilmeldinger={skjema.visFeilmeldinger}
+                    dagIMåneden={DagIMåneden.FØRSTE_DAG}
+                    kanKunVelgeFortid
                 />
-                <FamilieDatovelger
-                    {...skjema.felter.tom?.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                    id="fom-dato"
+                <Månedvelger
+                    felt={skjema.felter.tom}
                     label="T.o.m"
-                    value={skjema.felter.tom.verdi}
-                    onChange={(dato?: ISODateString) =>
-                        skjema.felter.tom?.validerOgSettFelt(
-                            gjørOmDatoHvisGyldigInput(dato, FamilieIsoTilSisteDagIMåneden)
-                        )
-                    }
-                    limitations={{
-                        maxDate: serializeIso8601String(sisteDagIInneværendeMåned()),
-                    }}
+                    visFeilmeldinger={skjema.visFeilmeldinger}
+                    dagIMåneden={DagIMåneden.SISTE_DAG}
+                    tilhørendeFomFelt={skjema.felter.fom}
+                    kanKunVelgeFortid
                 />
             </FlexRowDiv>
         </FlexDatoInputWrapper>
