@@ -57,9 +57,6 @@ const baseConfig = {
                 test: /\.(jsx|tsx|ts|js)?$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
-                options: {
-                    presets: ['react-app'],
-                },
             },
             {
                 test: /\.m?js/,
