@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import styled from 'styled-components';
 
 import { BodyShort, Checkbox, Label } from '@navikt/ds-react';
-import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IPersonInfo } from '../../../typer/person';
+import Datovelger from '../../Felleskomponenter/Datovelger/Datovelger';
 import type { IRegistrerBarnSkjema } from '../../Felleskomponenter/LeggTilBarn';
 
 interface IProps {
@@ -22,10 +22,9 @@ const Container = styled.div`
 
 const UregistrertBarnInputs = styled.div`
     margin: 1rem 0 1rem 1rem;
-`;
-
-const StyledFamilieDatovelger = styled(FamilieDatovelger)`
-    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
 const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
@@ -60,13 +59,12 @@ const LeggTilUregistrertBarn: React.FC<IProps> = ({ registrerBarnSkjema }) => {
                 registrerBarnSkjema.felter.uregistrertBarnNavn.erSynlig && (
                     <UregistrertBarnInputs>
                         <Label>Tilgjengelige opplysninger om barnet</Label>
-                        <StyledFamilieDatovelger
-                            {...registrerBarnSkjema.felter.uregistrertBarnFødselsdato.hentNavInputProps(
-                                registrerBarnSkjema.visFeilmeldinger
-                            )}
-                            value={registrerBarnSkjema.felter.uregistrertBarnFødselsdato.verdi}
+                        <Datovelger
+                            felt={registrerBarnSkjema.felter.uregistrertBarnFødselsdato}
                             label={'Fødselsdato (valgfri)'}
-                            placeholder={'DD.MM.ÅÅÅÅ'}
+                            datoMåFyllesUt={false}
+                            visFeilmeldinger={registrerBarnSkjema.visFeilmeldinger}
+                            kanKunVelgeFortid
                         />
                         <FamilieInput
                             {...registrerBarnSkjema.felter.uregistrertBarnNavn.hentNavInputProps(
