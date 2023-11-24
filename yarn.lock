@@ -1928,30 +1928,25 @@
     hey-listen "^1.0.8"
     tslib "^2.3.1"
 
-"@navikt/aksel-icons@5.6.1":
-  version "5.6.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/5.6.1/2929441e9c379ca7185235e4b51fd7dce6b333b4#2929441e9c379ca7185235e4b51fd7dce6b333b4"
-  integrity sha512-SltUf7YD1+ZGJaww2RA54/r6wnUyYA8hfZeeoqCgOmPtn+tqX751AKxq2QxzHyQmm3EBWbelW8wRKCF9+n5q0w==
+"@navikt/aksel-icons@5.10.4", "@navikt/aksel-icons@^5.10.4":
+  version "5.10.4"
+  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/5.10.4/d8843356f6ab6acddd194f4aebfda47455ab904c#d8843356f6ab6acddd194f4aebfda47455ab904c"
+  integrity sha512-F/QteO1hQ5vncdg80/wB5j0t+uUrPbzGtn9DmBQg5g1zBvqfGsZ20YbKOsCUJWXJ8w995M6ZP+TMKatSg0j+LA==
 
 "@navikt/aksel-icons@^2.9.8":
   version "2.9.8"
   resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/2.9.8/04e4868d2f8f1022b52e9de54668127f6d0f5052#04e4868d2f8f1022b52e9de54668127f6d0f5052"
   integrity sha512-HANk2yejzzQxj4UefLg5Q8YXqkwh98SN98fNJUIlfonnh1bla1XB2h690QZJiY5SghHDnb2RGo/aojc8BwI8kQ==
 
-"@navikt/aksel-icons@^5.6.4":
-  version "5.6.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/5.6.4/e19deb88ecdc0324aaaba732fd7c2c1b448ab514#e19deb88ecdc0324aaaba732fd7c2c1b448ab514"
-  integrity sha512-O4BjhWaxORzpU/Y3AMSylSnPU0IC5rYZUi5N580h7HeEcEYXL+cBCaWqvzkQdK/NIuW6GMMpEABayw1xlUszYA==
-
 "@navikt/ds-css-internal@^2.2.0":
   version "2.9.8"
   resolved "https://npm.pkg.github.com/download/@navikt/ds-css-internal/2.9.8/09baada0d399ca309c34bcfb3908276795fa1e96#09baada0d399ca309c34bcfb3908276795fa1e96"
   integrity sha512-fXyQnD9VdBqETb+X0RnMEB97uJZVwTkzeqZ4m6YvdakEGRKOZTs251v1PnT5menH5i5XL+Yg5KZp5RLjOaAzFQ==
 
-"@navikt/ds-css@^5.6.4":
-  version "5.6.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/5.6.4/1a6fdb2ff4d0ea17a5775a0b532f06f83acd2fc4#1a6fdb2ff4d0ea17a5775a0b532f06f83acd2fc4"
-  integrity sha512-2nqwCxzyp59yLA51xnTKTyu1vyDj96P10kxfOo0jIMiNoM430fSx6ayqdd1x60H7HYlzj8wDtvB/tcPnGBHehg==
+"@navikt/ds-css@^5.10.4":
+  version "5.10.4"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/5.10.4/4d5063bde80a8eba8c09f66b7f9905341a382412#4d5063bde80a8eba8c09f66b7f9905341a382412"
+  integrity sha512-LuhZwAXgwxmlww+lvufkdG2fKLsYYjmFAaKpGDSzobTGhnQQ/nz5J+R5iGq4s/GK1lZcSXHGNaAPotG0T5yd+A==
 
 "@navikt/ds-icons@^2.2.0", "@navikt/ds-icons@^2.9.8":
   version "2.9.8"
@@ -1983,24 +1978,24 @@
     react-day-picker "8.3.4"
     react-modal "3.15.1"
 
-"@navikt/ds-react@^5.6.4":
-  version "5.6.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/5.6.4/feb661e7668d7fe7af94685553735b29b92981fe#feb661e7668d7fe7af94685553735b29b92981fe"
-  integrity sha512-R1PKdWpD2JN7pb7vES5lKgiBYgYJsi41g3OozsDdHUxuNQovXkhbTUQGVKNSWLrYwLOYcIbXf5ZqsfabtSLJyw==
+"@navikt/ds-react@^5.10.4":
+  version "5.10.4"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/5.10.4/70389583bd8d07b3adfe3a7a74213364a0cafd7f#70389583bd8d07b3adfe3a7a74213364a0cafd7f"
+  integrity sha512-xQzeiYNo+cauKfcS6OG8RIk+hjM9STnHfFKE8q8aCla6I1EKNnhLlX1Pzmvnk3TVII4s5d+g8fatJ79K2FLj0g==
   dependencies:
     "@floating-ui/react" "0.25.4"
-    "@navikt/aksel-icons" "^5.6.4"
-    "@navikt/ds-tokens" "^5.6.4"
+    "@navikt/aksel-icons" "^5.10.4"
+    "@navikt/ds-tokens" "^5.10.4"
     "@radix-ui/react-tabs" "1.0.0"
     "@radix-ui/react-toggle-group" "1.0.0"
     clsx "^1.2.1"
     date-fns "2.29.3"
     react-day-picker "8.3.4"
 
-"@navikt/ds-tokens@^5.6.4":
-  version "5.6.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/5.6.4/6c068cc57bd75e82926762432596a7da61892ab9#6c068cc57bd75e82926762432596a7da61892ab9"
-  integrity sha512-yyLcVESKCAk6bUuL78uON2rbH35WDdWBNvUagf1pvTw9zeptgFuTho8IxpcpQHuY2NZLDZsn5RajloDg3C9GZw==
+"@navikt/ds-tokens@^5.10.4":
+  version "5.10.4"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/5.10.4/0bb84c7cbbcf1d775ad2733cccef3a45a8c51a09#0bb84c7cbbcf1d775ad2733cccef3a45a8c51a09"
+  integrity sha512-DFSiKThyBx9OmhEIZ6g/Ii10ScaMmaJiKWdhUVXdL0Y3e9+yUhpBtR6wvJR3JGP4HRRFgujr3lJoK2Y+vYYY6g==
 
 "@navikt/familie-backend@^10.0.7":
   version "10.0.7"
