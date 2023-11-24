@@ -5,14 +5,12 @@ import styled, { css } from 'styled-components';
 import { Cancel, Warning } from '@navikt/ds-icons';
 import { Alert, BodyLong, Button, Modal } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
-import { FamilieDatovelger } from '@navikt/familie-datovelger';
-import type { ISODateString } from '@navikt/familie-datovelger';
 import { FamilieTextarea } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useKorrigerVedtakSkjemaContext } from '../../../../context/KorrigerVedtak/KorrigerVedtakSkjemaContext';
 import type { IRestKorrigertVedtak } from '../../../../typer/vedtak';
-import { datoformatNorsk } from '../../../../utils/formatter';
+import Datovelger from '../../../Felleskomponenter/Datovelger/Datovelger';
 
 const AngreKnapp = styled(Button)`
     margin: 0.5rem 0;
@@ -20,10 +18,6 @@ const AngreKnapp = styled(Button)`
 
 const baseSkjemaelementStyle = css`
     margin-bottom: 1.5rem;
-`;
-
-const StyledFamilieDatovelger = styled(FamilieDatovelger)`
-    ${baseSkjemaelementStyle}
 `;
 
 const StyledFamilieTextarea = styled(FamilieTextarea)`
@@ -43,25 +37,14 @@ const KorrigerVedtak: React.FC<IKorrigerVedtak> = ({
 }) => {
     const [visModal, settVisModal] = React.useState<boolean>(false);
 
-    const {
-        skjema,
-        valideringErOk,
-        lagreKorrigertVedtak,
-        nullstillSkjema,
-        angreKorrigering,
-        settVisfeilmeldinger,
-        settRestFeil,
-        restFeil,
-    } = useKorrigerVedtakSkjemaContext({
-        onSuccess: () => settVisModal(false),
-        korrigertVedtak,
-        behandlingId,
-    });
+    const { skjema, valideringErOk, lagreKorrigertVedtak, angreKorrigering, restFeil } =
+        useKorrigerVedtakSkjemaContext({
+            onSuccess: () => settVisModal(false),
+            korrigertVedtak,
+            behandlingId,
+        });
 
     const lukkModal = () => {
-        nullstillSkjema();
-        settVisfeilmeldinger(false);
-        settRestFeil(undefined);
         settVisModal(false);
     };
 
@@ -97,22 +80,12 @@ const KorrigerVedtak: React.FC<IKorrigerVedtak> = ({
                                 vurdert saken din på nytt.
                             </li>
                         </ul>
-                        <StyledFamilieDatovelger
-                            {...skjema.felter.vedtaksdato?.hentNavBaseSkjemaProps(
-                                skjema.visFeilmeldinger
-                            )}
-                            id={'korriger-vedtak-dato'}
+                        <Datovelger
+                            felt={skjema.felter.vedtaksdato}
                             label={'Vedtaksdato'}
-                            erLesesvisning={erLesevisning}
-                            placeholder={datoformatNorsk.DATO}
-                            onChange={(dato?: ISODateString) =>
-                                skjema.felter.vedtaksdato?.validerOgSettFelt(dato)
-                            }
-                            value={
-                                skjema.felter.vedtaksdato?.verdi !== null
-                                    ? skjema.felter.vedtaksdato?.verdi
-                                    : undefined
-                            }
+                            visFeilmeldinger={skjema.visFeilmeldinger}
+                            readOnly={erLesevisning}
+                            kanKunVelgeFortid
                         />
                         <StyledFamilieTextarea
                             {...skjema.felter.begrunnelse?.hentNavBaseSkjemaProps(
