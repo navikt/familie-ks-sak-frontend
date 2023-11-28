@@ -176,7 +176,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                     ).map((aktivitet: KompetanseAktivitet) => {
                         return (
                             <option key={aktivitet} value={aktivitet}>
-                                {kompetanseAktiviteter[aktivitet]}{' '}
+                                {kompetanseAktiviteter[aktivitet]}
                             </option>
                         );
                     })}
