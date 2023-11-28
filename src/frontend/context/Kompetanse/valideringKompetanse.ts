@@ -3,25 +3,25 @@ import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 
 import { AnnenForelderAktivitet, SøkersAktivitet } from '../../typer/eøsPerioder';
-import type { KompetanseResultat } from '../../typer/eøsPerioder';
+import type { KompetanseResultat, KompetanseAktivitet } from '../../typer/eøsPerioder';
 import { isEmpty } from '../../utils/eøsValidators';
 
 const ikkeUtfyltFelt = 'Feltet er påkrevd, men mangler input';
 
 const erSøkersAktivitetGyldig = (
-    felt: FeltState<SøkersAktivitet | undefined>
-): FeltState<SøkersAktivitet | undefined> =>
+    felt: FeltState<KompetanseAktivitet | undefined>
+): FeltState<KompetanseAktivitet | undefined> =>
     !isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt);
 const erAnnenForeldersAktivitetGyldig = (
-    felt: FeltState<AnnenForelderAktivitet | undefined>
-): FeltState<AnnenForelderAktivitet | undefined> =>
+    felt: FeltState<KompetanseAktivitet | undefined>
+): FeltState<KompetanseAktivitet | undefined> =>
     !isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt);
 const erAnnenForeldersAktivitetslandGyldig = (
     felt: FeltState<string | undefined>,
     avhengigheter?: Avhengigheter
 ): FeltState<string | undefined> => {
     const annenForeldersAktivitet =
-        avhengigheter?.annenForeldersAktivitet as Felt<AnnenForelderAktivitet>;
+        avhengigheter?.annenForeldersAktivitet as Felt<KompetanseAktivitet>;
     if (
         annenForeldersAktivitet?.valideringsstatus === Valideringsstatus.IKKE_VALIDERT ||
         annenForeldersAktivitet?.verdi === AnnenForelderAktivitet.IKKE_AKTUELT ||
@@ -35,7 +35,7 @@ const erSøkersAktivitetslandGyldig = (
     felt: FeltState<string | undefined>,
     avhengigheter?: Avhengigheter
 ): FeltState<string | undefined> => {
-    const søkersAktivitet = avhengigheter?.annenForeldersAktivitet as Felt<SøkersAktivitet>;
+    const søkersAktivitet = avhengigheter?.søkersAktivitet as Felt<KompetanseAktivitet>;
     if (
         søkersAktivitet?.valideringsstatus === Valideringsstatus.IKKE_VALIDERT ||
         søkersAktivitet?.verdi === SøkersAktivitet.INAKTIV
