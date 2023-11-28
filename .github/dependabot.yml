@@ -35,6 +35,14 @@ updates:
       babel:
         patterns:
           - "@babel/*"
+      aksel:
+        patterns:
+          - "@navikt/aksel-icons"
+          - "@navikt/ds-*"
+        exclude-patterns:
+          - "@navikt/ds-icons"
+          - "@navikt/ds-css-internal"
+          - "@navikt/ds-react-internal"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
