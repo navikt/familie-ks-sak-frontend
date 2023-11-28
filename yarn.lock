@@ -1853,10 +1853,10 @@
     hey-listen "^1.0.8"
     tslib "^2.3.1"
 
-"@navikt/aksel-icons@5.10.4", "@navikt/aksel-icons@^5.10.4":
-  version "5.10.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/5.10.4/d8843356f6ab6acddd194f4aebfda47455ab904c#d8843356f6ab6acddd194f4aebfda47455ab904c"
-  integrity sha512-F/QteO1hQ5vncdg80/wB5j0t+uUrPbzGtn9DmBQg5g1zBvqfGsZ20YbKOsCUJWXJ8w995M6ZP+TMKatSg0j+LA==
+"@navikt/aksel-icons@5.11.2", "@navikt/aksel-icons@^5.11.2":
+  version "5.11.2"
+  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/5.11.2/3e531b20a48f93dd539493516c9083fd6816b90e#3e531b20a48f93dd539493516c9083fd6816b90e"
+  integrity sha512-93a9BLss+jNgfGALolprdrNSp+2yAY15oupuNGP1Zmy6jtUZd6086Tpr9dZ36U7oRiwvCv+c7dnj9aoGSJAsDg==
 
 "@navikt/aksel-icons@^2.9.8":
   version "2.9.8"
@@ -1868,10 +1868,10 @@
   resolved "https://npm.pkg.github.com/download/@navikt/ds-css-internal/2.9.8/09baada0d399ca309c34bcfb3908276795fa1e96#09baada0d399ca309c34bcfb3908276795fa1e96"
   integrity sha512-fXyQnD9VdBqETb+X0RnMEB97uJZVwTkzeqZ4m6YvdakEGRKOZTs251v1PnT5menH5i5XL+Yg5KZp5RLjOaAzFQ==
 
-"@navikt/ds-css@^5.10.4":
-  version "5.10.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/5.10.4/4d5063bde80a8eba8c09f66b7f9905341a382412#4d5063bde80a8eba8c09f66b7f9905341a382412"
-  integrity sha512-LuhZwAXgwxmlww+lvufkdG2fKLsYYjmFAaKpGDSzobTGhnQQ/nz5J+R5iGq4s/GK1lZcSXHGNaAPotG0T5yd+A==
+"@navikt/ds-css@^5.11.2":
+  version "5.11.2"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/5.11.2/42b0d0aa14fa32035e3fedc3569e47ca7faf30e8#42b0d0aa14fa32035e3fedc3569e47ca7faf30e8"
+  integrity sha512-HlkMOwk5MdtPBoVVHzV2DYecmO2cvmEfa8xg8OtZntYjQ5l4gc2P9/fmAlPcRkcDowmFKTfTszG7hzoHvxoJzg==
 
 "@navikt/ds-icons@^2.2.0", "@navikt/ds-icons@^2.9.8":
   version "2.9.8"
@@ -1903,24 +1903,24 @@
     react-day-picker "8.3.4"
     react-modal "3.15.1"
 
-"@navikt/ds-react@^5.10.4":
-  version "5.10.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/5.10.4/70389583bd8d07b3adfe3a7a74213364a0cafd7f#70389583bd8d07b3adfe3a7a74213364a0cafd7f"
-  integrity sha512-xQzeiYNo+cauKfcS6OG8RIk+hjM9STnHfFKE8q8aCla6I1EKNnhLlX1Pzmvnk3TVII4s5d+g8fatJ79K2FLj0g==
+"@navikt/ds-react@^5.11.2":
+  version "5.11.2"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/5.11.2/716fea09397199ad7e5fba13e1e8c64ee26356bc#716fea09397199ad7e5fba13e1e8c64ee26356bc"
+  integrity sha512-0fcnvi+g+C96YlFDjlTJvUaY6b03nj/VvuUO2+rE30lwgrl6ozeP44LOE1FoLrZOX3lcj+aAFbT7h3AuvabFzg==
   dependencies:
     "@floating-ui/react" "0.25.4"
-    "@navikt/aksel-icons" "^5.10.4"
-    "@navikt/ds-tokens" "^5.10.4"
+    "@navikt/aksel-icons" "^5.11.2"
+    "@navikt/ds-tokens" "^5.11.2"
     "@radix-ui/react-tabs" "1.0.0"
     "@radix-ui/react-toggle-group" "1.0.0"
     clsx "^1.2.1"
-    date-fns "2.29.3"
+    date-fns "^2.30.0"
     react-day-picker "8.3.4"
 
-"@navikt/ds-tokens@^5.10.4":
-  version "5.10.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/5.10.4/0bb84c7cbbcf1d775ad2733cccef3a45a8c51a09#0bb84c7cbbcf1d775ad2733cccef3a45a8c51a09"
-  integrity sha512-DFSiKThyBx9OmhEIZ6g/Ii10ScaMmaJiKWdhUVXdL0Y3e9+yUhpBtR6wvJR3JGP4HRRFgujr3lJoK2Y+vYYY6g==
+"@navikt/ds-tokens@^5.10.4", "@navikt/ds-tokens@^5.11.2":
+  version "5.11.2"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/5.11.2/d94c53904f6bf382464b4c4188399187efd8059e#d94c53904f6bf382464b4c4188399187efd8059e"
+  integrity sha512-3w6rwhPtPwKjmcjOhoCksIhzrLQybJFoNX5AYtSdFvBxQJSRoQsqgc97e4/MN4+TXbJgBfXO+FGKPI6SAe/kug==
 
 "@navikt/familie-backend@^10.0.7":
   version "10.0.7"
@@ -4852,6 +4852,13 @@ date-fns@2.29.3:
   version "2.29.3"
   resolved "https://registry.npmjs.org/date-fns/-/date-fns-2.29.3.tgz"
   integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
+
+date-fns@^2.30.0:
+  version "2.30.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
+  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
+  dependencies:
+    "@babel/runtime" "^7.21.0"
 
 dayjs@^1.10.4, dayjs@^1.11.0, dayjs@^1.11.3:
   version "1.11.6"
