@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@axe-core/react": "^4.8.1",
-    "@navikt/aksel-icons": "5.10.4",
+    "@navikt/aksel-icons": "5.11.2",
     "@navikt/ds-css": "^5.10.4",
     "@navikt/ds-css-internal": "^2.2.0",
     "@navikt/ds-icons": "^2.2.0",
