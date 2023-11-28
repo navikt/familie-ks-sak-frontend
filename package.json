@@ -34,7 +34,7 @@
     "@navikt/ds-css": "^5.10.4",
     "@navikt/ds-css-internal": "^2.2.0",
     "@navikt/ds-icons": "^2.2.0",
-    "@navikt/ds-react": "^5.10.4",
+    "@navikt/ds-react": "^5.11.2",
     "@navikt/ds-react-internal": "^2.2.0",
     "@navikt/ds-tokens": "^5.10.4",
     "@navikt/familie-backend": "^10.0.7",
