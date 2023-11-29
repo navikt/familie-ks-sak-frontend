@@ -56,12 +56,6 @@ export const erBegrunnelseGyldig = (
     ) {
         return begrunnelseOppgitt ? ok(felt) : feil(felt, 'Du må fylle inn en begrunnelse');
     } else {
-        if (begrunnelseOppgitt || avhengigheter?.utdypendeVilkårsvurderinger.length === 0) {
-            return ok(felt);
-        }
-        return feil(
-            felt,
-            'Du har gjort ett eller flere valg under "Utdypende vilkårsvurdering" og må derfor fylle inn en begrunnelse'
-        );
+        return ok(felt);
     }
 };

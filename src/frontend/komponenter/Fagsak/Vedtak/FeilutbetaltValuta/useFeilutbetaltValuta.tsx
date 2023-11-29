@@ -1,8 +1,10 @@
+import { useState } from 'react';
+
 import { useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { validerFeilutbetaltBeløp, validerTom, validerFom } from './FeilutbetaltValutaUtil';
+import { validerFeilutbetaltBeløp } from './FeilutbetaltValutaUtil';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../typer/behandling';
 import type {
@@ -10,7 +12,7 @@ import type {
     IRestNyFeilutbetaltValutaPeriode,
     IRestFeilutbetaltValuta,
 } from '../../../../typer/eøs-feilutbetalt-valuta';
-import type { FamilieIsoDate } from '../../../../utils/kalender';
+import { dateTilIsoDatoString, validerGyldigDato } from '../../../../utils/dato';
 
 interface IProps {
     behandlingId: number;
@@ -21,9 +23,9 @@ interface IProps {
 const useFeilutbetaltValuta = ({ feilutbetaltValuta, settFeilmelding, behandlingId }: IProps) => {
     const { settÅpenBehandling } = useBehandling();
 
-    const fomFelt = useFelt<FamilieIsoDate>({
-        verdi: feilutbetaltValuta?.fom ?? '',
-        valideringsfunksjon: validerFom,
+    const fomFelt = useFelt<Date | undefined>({
+        verdi: undefined,
+        valideringsfunksjon: validerGyldigDato,
     });
 
     const { skjema, kanSendeSkjema, onSubmit, nullstillSkjema, valideringErOk } = useSkjema<
@@ -32,13 +34,12 @@ const useFeilutbetaltValuta = ({ feilutbetaltValuta, settFeilmelding, behandling
     >({
         felter: {
             fom: fomFelt,
-            tom: useFelt<FamilieIsoDate>({
-                verdi: feilutbetaltValuta?.tom ?? '',
+            tom: useFelt<Date | undefined>({
+                verdi: undefined,
                 avhengigheter: {
                     fom: fomFelt,
                 },
-                valideringsfunksjon: (felt, avhengigheter) =>
-                    validerTom(felt, avhengigheter?.fom.verdi as FamilieIsoDate),
+                valideringsfunksjon: validerGyldigDato,
             }),
             feilutbetaltBeløp: useFelt<string>({
                 verdi: feilutbetaltValuta?.feilutbetaltBeløp.toString() ?? '',
@@ -48,6 +49,22 @@ const useFeilutbetaltValuta = ({ feilutbetaltValuta, settFeilmelding, behandling
         skjemanavn: 'Feilutbetalt valuta',
     });
 
+    const tilbakestillSkjemafelterTilDefault = () => {
+        if (feilutbetaltValuta !== undefined) {
+            skjema.felter.fom.validerOgSettFelt(new Date(feilutbetaltValuta.fom));
+            skjema.felter.tom.validerOgSettFelt(new Date(feilutbetaltValuta.tom));
+        }
+        skjema.felter.feilutbetaltBeløp.nullstill();
+    };
+
+    const [forrigeFeilutbetaltValuta, settForrigeFeilutbetaltValuta] =
+        useState<IRestFeilutbetaltValuta>();
+
+    if (forrigeFeilutbetaltValuta !== feilutbetaltValuta) {
+        settForrigeFeilutbetaltValuta(feilutbetaltValuta);
+        tilbakestillSkjemafelterTilDefault();
+    }
+
     const lagreNyPeriode = (lukkNyPeriode: () => void) => {
         if (kanSendeSkjema()) {
             onSubmit<IRestNyFeilutbetaltValutaPeriode>(
@@ -55,8 +72,8 @@ const useFeilutbetaltValuta = ({ feilutbetaltValuta, settFeilmelding, behandling
                     method: 'POST',
                     url: `/familie-ks-sak/api/feilutbetalt-valuta/behandlinger/${behandlingId}`,
                     data: {
-                        fom: skjema.felter.fom?.verdi,
-                        tom: skjema.felter.tom?.verdi,
+                        fom: dateTilIsoDatoString(skjema.felter.fom?.verdi),
+                        tom: dateTilIsoDatoString(skjema.felter.tom?.verdi),
                         feilutbetaltBeløp: Number(skjema.felter.feilutbetaltBeløp.verdi),
                     },
                 },
@@ -81,8 +98,8 @@ const useFeilutbetaltValuta = ({ feilutbetaltValuta, settFeilmelding, behandling
                     data: {
                         ...feilutbetaltValuta,
                         id: feilutbetaltValuta.id,
-                        fom: skjema.felter.fom.verdi,
-                        tom: skjema.felter.tom.verdi,
+                        fom: dateTilIsoDatoString(skjema.felter.fom.verdi),
+                        tom: dateTilIsoDatoString(skjema.felter.tom.verdi),
                         feilutbetaltBeløp: Number(skjema.felter.feilutbetaltBeløp.verdi),
                     },
                 },
@@ -119,6 +136,7 @@ const useFeilutbetaltValuta = ({ feilutbetaltValuta, settFeilmelding, behandling
         skjema,
         lagreNyPeriode,
         oppdaterEksisterendePeriode,
+        tilbakestillSkjemafelterTilDefault,
         fjernPeriode,
         nullstillSkjema,
         valideringErOk,

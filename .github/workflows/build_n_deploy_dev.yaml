@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE: ghcr.io/navikt/familie-ks-sak-frontend:${{ github.sha }}
   VERSION: familie-ks-sak-frontend:${{ github.sha }}
 
 jobs:
@@ -12,7 +11,10 @@ jobs:
     name: Build and push Docker container
     runs-on: ubuntu-latest-8-cores
     permissions:
-      packages: write
+      contents: read
+      id-token: write
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,7 +27,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
         run: yarn --prefer-offline --frozen-lockfile
-      - name: Build and publish Docker image
+
+      - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -34,13 +37,19 @@ jobs:
           yarn build
           yarn test
           yarn run cypress
-          docker build . -t ${IMAGE}
-          echo ${GITHUB_TOKEN} | docker login ghcr.io --username ${GITHUB_REPOSITORY} --password-stdin
-          docker push ${IMAGE}
-  deploy:
-    name: Deploy to NAIS
+
+      - name: Push docker image to GAR
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: teamfamilie
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} # Provided as Organization Secret
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} # Provided as Organization Variable
+
+  deployDev:
+    name: Deploy to gcp-dev
     needs: build
-    runs-on: ubuntu-latest-8-cores
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Deploy til dev-gcp team namespace
@@ -49,4 +58,4 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: build_n_deploy/naiserator/gcp-dev.yaml
-          VAR: VERSION=${{ env.VERSION }}
+          VAR: image=${{ needs.build.outputs.image }},VERSION=${{ env.VERSION }}

@@ -66,7 +66,7 @@ const StyledFamilieRadioGruppe = styled(FamilieRadioGruppe)`
     && {
         margin: 1rem 0;
         legend {
-            margin-bottom: 0rem;
+            margin-bottom: 0;
         }
     }
 `;
@@ -294,7 +294,7 @@ export const erBegrunnelsePåkrevd = (
     vilkårType: VilkårType
 ): boolean => {
     return (
-        utdypendeVilkårsvurderinger.length > 0 ||
+        (vurderesEtter === Regelverk.NASJONALE_REGLER && utdypendeVilkårsvurderinger.length > 0) ||
         (vurderesEtter === Regelverk.EØS_FORORDNINGEN &&
             personType === PersonType.SØKER &&
             vilkårType === VilkårType.BOSATT_I_RIKET)

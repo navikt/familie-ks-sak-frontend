@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { Button } from '@navikt/ds-react';
+import { Button, Fieldset } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';
 import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
-import { KravDatoFelt } from './KravDatoFelt';
-import { SøknadMottattDatoFelt } from './SøknadMottattDatoFelt';
 import useOpprettBehandling from './useOpprettBehandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
+import Datovelger from '../../../../Felleskomponenter/Datovelger/Datovelger';
 import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
-import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
+
+const StyledFieldset = styled(Fieldset)`
+    && > div:not(:last-child):not(:empty) {
+        margin-bottom: 1rem;
+    }
+`;
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;
@@ -80,8 +83,11 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                     visModal,
                 }}
             >
-                <SkjemaGruppe feil={hentFrontendFeilmelding(opprettBehandlingSkjema.submitRessurs)}>
-                    <SkjultLegend>Opprett ny behandling</SkjultLegend>
+                <StyledFieldset
+                    error={hentFrontendFeilmelding(opprettBehandlingSkjema.submitRessurs)}
+                    legend={'Opprett ny behandling'}
+                    hideLegend
+                >
                     <BehandlingstypeFelt
                         behandlingstype={opprettBehandlingSkjema.felter.behandlingstype}
                         visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
@@ -105,18 +111,22 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                     )}
 
                     {opprettBehandlingSkjema.felter.kravMottattDato.erSynlig && (
-                        <KravDatoFelt
-                            kravMottattDato={opprettBehandlingSkjema.felter.kravMottattDato}
+                        <Datovelger
+                            felt={opprettBehandlingSkjema.felter.kravMottattDato}
                             visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                            label={'Krav mottatt'}
+                            kanKunVelgeFortid
                         />
                     )}
                     {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
-                        <SøknadMottattDatoFelt
-                            søknadMottattDato={opprettBehandlingSkjema.felter.søknadMottattDato}
+                        <Datovelger
+                            felt={opprettBehandlingSkjema.felter.søknadMottattDato}
                             visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                            label={'Mottatt dato'}
+                            kanKunVelgeFortid
                         />
                     )}
-                </SkjemaGruppe>
+                </StyledFieldset>
             </UIModalWrapper>
 
             {visBekreftelseTilbakekrevingModal && (

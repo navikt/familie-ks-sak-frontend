@@ -20,16 +20,16 @@ import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
 import type { IRestKorrigertVedtak, IVedtakForBehandling } from './vedtak';
 import type { Utbetalingsperiode } from './vedtaksperiode';
 import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
+import type { IsoDatoString } from '../utils/dato';
 import type { FamilieIsoDate } from '../utils/kalender';
 
 export interface IRestNyBehandling {
     kategori: BehandlingKategori | null;
     søkersIdent: string;
     behandlingType: Behandlingstype;
-    journalpostID?: string;
-    behandlingÅrsak?: BehandlingÅrsak;
-    skalBehandlesAutomatisk?: boolean;
-    navIdent?: string;
+    behandlingÅrsak: BehandlingÅrsak;
+    saksbehandlerIdent?: string;
+    søknadMottattDato?: IsoDatoString;
 }
 
 export enum HenleggÅrsak {
