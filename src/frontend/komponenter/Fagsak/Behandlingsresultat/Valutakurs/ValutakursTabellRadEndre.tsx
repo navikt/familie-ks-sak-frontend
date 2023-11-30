@@ -135,7 +135,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                         <Datovelger
                             felt={skjema.felter.valutakursdato}
                             label={'Valutakursdato'}
-                            visFeilmeldinger={skjema.visFeilmeldinger}
+                            visFeilmeldinger={false}
                             readOnly={lesevisning}
                             disableWeekends
                             kanKunVelgeFortid
