@@ -6,8 +6,6 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { Delete } from '@navikt/ds-icons';
 import { Alert, Label, Link, Heading, Button } from '@navikt/ds-react';
-import { FamilieDatovelger } from '@navikt/familie-datovelger';
-import type { ISODateString } from '@navikt/familie-datovelger';
 import { FamilieInput, FamilieKnapp, FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
@@ -19,7 +17,7 @@ import { useBehandling } from '../../../../context/behandlingContext/BehandlingC
 import type { IBehandling } from '../../../../typer/behandling';
 import { EøsPeriodeStatus } from '../../../../typer/eøsPerioder';
 import type { IValutakurs } from '../../../../typer/eøsPerioder';
-import { datoformatNorsk } from '../../../../utils/formatter';
+import Datovelger from '../../../Felleskomponenter/Datovelger/Datovelger';
 import EøsPeriodeSkjema from '../EøsPeriode/EøsPeriodeSkjema';
 import { FamilieValutavelger } from '../EøsPeriode/FamilieLandvelger';
 import {
@@ -31,14 +29,14 @@ import {
 const ValutakursRad = styled.div`
     width: 32rem;
     display: flex;
-    justify-content: space-between;
+    gap: 1rem;
 
     & div.nav-datovelger__inputContainer {
         width: 8.1rem;
     }
 
     div.skjemaelement {
-        margin-bottom: 0rem;
+        margin-bottom: 0;
 
         label {
             font-weight: normal;
@@ -154,24 +152,13 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                         <Label size="small">Registrer valutakursdato</Label>
                     </StyledLegend>
                     <ValutakursRad>
-                        <FamilieDatovelger
-                            {...skjema.felter.valutakursdato?.hentNavBaseSkjemaProps(
-                                skjema.visFeilmeldinger
-                            )}
-                            limitations={{ weekendsNotSelectable: true }}
-                            className="skjemaelement"
-                            id={`valutakurs_${skjema.felter.periodeId}`}
+                        <Datovelger
+                            felt={skjema.felter.valutakursdato}
                             label={'Valutakursdato'}
-                            placeholder={datoformatNorsk.DATO}
-                            erLesesvisning={lesevisning}
-                            onChange={(dato?: ISODateString) =>
-                                skjema.felter.valutakursdato?.validerOgSettFelt(dato)
-                            }
-                            value={
-                                skjema.felter.valutakursdato?.verdi !== null
-                                    ? skjema.felter.valutakursdato?.verdi
-                                    : undefined
-                            }
+                            visFeilmeldinger={skjema.visFeilmeldinger}
+                            readOnly={lesevisning}
+                            disableWeekends
+                            kanKunVelgeFortid
                         />
                         <FamilieValutavelger
                             erLesevisning={true}
