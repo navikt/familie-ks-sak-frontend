@@ -5,6 +5,11 @@ import styled from 'styled-components';
 
 import { Label } from '@navikt/ds-react';
 import {
+    ABorderDefault,
+    AFontLineHeightLarge,
+    AFontSizeLarge,
+} from '@navikt/ds-tokens/dist/tokens';
+import {
     ABorderDanger,
     ABorderStrong,
     AGray100,
@@ -55,7 +60,7 @@ const Landvelger = styled(CountrySelect)`
     }
 
     & div.c-countrySelect__select {
-        margin-top: 0px;
+        margin-top: 0;
 
         .c-countrySelect__select__indicator {
             color: initial;
@@ -258,4 +263,32 @@ const FamilieValutavelger: React.FC<IFamilieValutavelgerProps> = ({
     );
 };
 
-export { FamilieLandvelger, FamilieValutavelger };
+const StyledFamilieValutavelger = styled(FamilieValutavelger)<{ dempetEtikett?: boolean }>`
+    gap: 0;
+
+    label {
+        font-size: ${AFontSizeLarge};
+        letter-spacing: 0;
+        font-weight: bold;
+        margin: 0;
+        line-height: ${AFontLineHeightLarge};
+    }
+
+    div.c-countrySelect__select {
+        margin-top: 8px;
+
+        .c-countrySelect__select__control {
+            border: 1px solid ${ABorderDefault};
+        }
+
+        .c-countrySelect__select__value-container {
+            min-height: 46px;
+        }
+    }
+
+    &.navds-select--disabled label {
+        opacity: ${({ dempetEtikett }) => (dempetEtikett ? '0.3' : 'unset')};
+    }
+`;
+
+export { FamilieLandvelger, StyledFamilieValutavelger };
