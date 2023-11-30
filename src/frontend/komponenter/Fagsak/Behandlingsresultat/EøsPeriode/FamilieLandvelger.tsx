@@ -251,15 +251,14 @@ const FamilieValutavelger: React.FC<IFamilieValutavelgerProps> = ({
     }
 
     return (
-        <div className={classNames('skjemaelement', className)}>
-            <Landvelger
-                utenMargin={utenMargin}
-                feil={feil}
-                {...landvelgerProps}
-                place
-                label={<Label size="small">{label}</Label>}
-            />
-        </div>
+        <Landvelger
+            className={className}
+            utenMargin={utenMargin}
+            feil={feil}
+            {...landvelgerProps}
+            place
+            label={<Label size="small">{label}</Label>}
+        />
     );
 };
 
