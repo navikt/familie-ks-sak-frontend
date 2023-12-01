@@ -12,8 +12,9 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { hentAlleÅrsaker } from './settPåVentUtils';
 import { useSettPåVentSkjema } from './useSettPåVentSkjema';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
-import type { IBehandling } from '../../../../../typer/behandling';
+import type { IBehandling, IBehandlingPåVent } from '../../../../../typer/behandling';
 import { settPåVentÅrsaker } from '../../../../../typer/behandling';
+import { dateTilIsoDatoString } from '../../../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import Datovelger from '../../../../Felleskomponenter/Datovelger/Datovelger';
 
@@ -35,6 +36,8 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behand
     const { skjema, kanSendeSkjema, onSubmit } = useSettPåVentSkjema(behandling.behandlingPåVent);
     const { settÅpenBehandling } = useBehandling();
 
+    const { årsak, frist } = skjema.felter;
+
     const erBehandlingAlleredePåVent = !!behandling.behandlingPåVent;
 
     const url = erBehandlingAlleredePåVent
@@ -42,11 +45,11 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behand
         : `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent`;
 
     const settBehandlingPåVent = () => {
-        if (kanSendeSkjema()) {
-            onSubmit(
+        if (kanSendeSkjema() && årsak.verdi && frist.verdi) {
+            onSubmit<IBehandlingPåVent>(
                 {
                     method: erBehandlingAlleredePåVent ? 'PUT' : 'POST',
-                    data: { frist: skjema.felter.frist.verdi, årsak: skjema.felter.årsak.verdi },
+                    data: { frist: dateTilIsoDatoString(frist.verdi), årsak: årsak.verdi },
                     url: url,
                 },
                 (ressurs: Ressurs<IBehandling>) => {
@@ -81,7 +84,7 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behand
 
                     <Feltmargin>
                         <Datovelger
-                            felt={skjema.felter.frist}
+                            felt={frist}
                             label={'Frist'}
                             visFeilmeldinger={skjema.visFeilmeldinger}
                             kanKunVelgeFremtid
@@ -89,7 +92,7 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behand
                     </Feltmargin>
                     <Feltmargin>
                         <FamilieSelect
-                            {...skjema.felter.årsak.hentNavInputProps(skjema.visFeilmeldinger)}
+                            {...årsak.hentNavInputProps(skjema.visFeilmeldinger)}
                             label={'Årsak'}
                             placeholder={'Årsak'}
                         >
