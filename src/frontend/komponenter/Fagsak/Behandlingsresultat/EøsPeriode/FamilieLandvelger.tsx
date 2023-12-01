@@ -262,7 +262,7 @@ const FamilieValutavelger: React.FC<IFamilieValutavelgerProps> = ({
     );
 };
 
-const StyledFamilieValutavelger = styled(FamilieValutavelger)<{ dempetEtikett?: boolean }>`
+const StyledFamilieValutavelger = styled(FamilieValutavelger)`
     gap: 0;
 
     label {
@@ -283,10 +283,6 @@ const StyledFamilieValutavelger = styled(FamilieValutavelger)<{ dempetEtikett?: 
         .c-countrySelect__select__value-container {
             min-height: 46px;
         }
-    }
-
-    &.navds-select--disabled label {
-        opacity: ${({ dempetEtikett }) => (dempetEtikett ? '0.3' : 'unset')};
     }
 `;
 
