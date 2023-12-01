@@ -14,10 +14,7 @@ import { dagensDato, validerGyldigDato } from '../../../../../utils/dato';
 
 const STANDARD_ANTALL_DAGER_FRIST = 3 * 7;
 
-export const useSettPåVentSkjema = (
-    behandlingPåVent: IBehandlingPåVent | undefined,
-    modalVises: boolean
-) => {
+export const useSettPåVentSkjema = (behandlingPåVent: IBehandlingPåVent | undefined) => {
     const standardfrist = addDays(dagensDato, STANDARD_ANTALL_DAGER_FRIST);
     const settPåVentFrist = behandlingPåVent?.frist ? new Date(behandlingPåVent?.frist) : undefined;
 
@@ -53,13 +50,13 @@ export const useSettPåVentSkjema = (
     };
 
     useEffect(() => {
-        if (modalVises && behandlingPåVent) {
+        if (behandlingPåVent) {
             settPåVentSkjema.skjema.felter.frist.validerOgSettFelt(settPåVentFrist);
             settPåVentSkjema.skjema.felter.årsak.validerOgSettFelt(behandlingPåVent.årsak);
         } else {
             fyllInnStandardverdier();
         }
-    }, [modalVises]);
+    }, []);
 
     return settPåVentSkjema;
 };
