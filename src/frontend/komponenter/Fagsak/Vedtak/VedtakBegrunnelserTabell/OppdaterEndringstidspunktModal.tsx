@@ -9,9 +9,8 @@ import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import type { IBehandling } from '../../../../typer/behandling';
-import type { FamilieIsoDate } from '../../../../utils/kalender';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
-import { FamilieDatovelgerWrapper } from '../../../../utils/skjema/FamilieDatovelgerWrapper';
+import Datovelger from '../../../Felleskomponenter/Datovelger/Datovelger';
 import UIModalWrapper from '../../../Felleskomponenter/Modal/UIModalWrapper';
 
 const Feltmargin = styled.div`
@@ -22,7 +21,7 @@ interface IProps {
     visModal: boolean;
     onAvbryt: () => void;
     oppdaterEndringstidspunkt: () => void;
-    skjema: ISkjema<{ endringstidspunkt: FamilieIsoDate | undefined }, IBehandling>;
+    skjema: ISkjema<{ endringstidspunkt: Date | undefined }, IBehandling>;
 }
 
 export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({
@@ -63,13 +62,10 @@ export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({
                 utenFeilPropagering={true}
             >
                 <Feltmargin>
-                    <FamilieDatovelgerWrapper
-                        {...skjema.felter.endringstidspunkt.hentNavInputProps(
-                            skjema.visFeilmeldinger
-                        )}
-                        valgtDato={skjema.felter.endringstidspunkt.verdi}
+                    <Datovelger
+                        felt={skjema.felter.endringstidspunkt}
                         label={'Endringstidspunkt'}
-                        placeholder={'DD.MM.ÅÅÅÅ'}
+                        visFeilmeldinger={skjema.visFeilmeldinger}
                     />
                 </Feltmargin>
             </SkjemaGruppe>

@@ -9,6 +9,8 @@ import { OppdaterEndringstidspunktModal } from './OppdaterEndringstidspunktModal
 import { useOppdaterEndringstidspunktSkjema } from './useOppdaterEndringstidspunktSkjema';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../typer/behandling';
+import type { IRestOverstyrtEndringstidspunkt } from '../../../../typer/vedtaksperiode';
+import { dateTilIsoDatoString } from '../../../../utils/dato';
 
 const EndreEndringstidspunkt: React.FC<{
     åpenBehandling: IBehandling;
@@ -21,11 +23,13 @@ const EndreEndringstidspunkt: React.FC<{
     );
     const oppdaterEndringstidspunkt = () => {
         if (kanSendeSkjema()) {
-            onSubmit(
+            onSubmit<IRestOverstyrtEndringstidspunkt>(
                 {
                     method: 'PUT',
                     data: {
-                        overstyrtEndringstidspunkt: skjema.felter.endringstidspunkt.verdi,
+                        overstyrtEndringstidspunkt: dateTilIsoDatoString(
+                            skjema.felter.endringstidspunkt.verdi
+                        ),
                         behandlingId: åpenBehandling.behandlingId,
                     },
                     url: `/familie-ks-sak/api/vedtaksperioder/endringstidspunkt`,
