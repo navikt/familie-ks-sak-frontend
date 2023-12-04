@@ -2,10 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
-
 import { Button, ErrorMessage } from '@navikt/ds-react';
-import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import type { Felt } from '@navikt/familie-skjema';
 
 import Pluss from '../../../../ikoner/Pluss';
@@ -23,23 +20,6 @@ interface IProps {
 
 const Container = styled.div`
     margin-left: 3rem;
-`;
-
-export const StyledFamilieDatovelger = styled(FamilieDatovelger)<{ feil: boolean }>`
-    .nav-datovelger {
-        margin-top: 0.5rem;
-    }
-    .nav-datovelger__input {
-        border-color: ${({ feil }) => (feil ? navFarger.redError : navFarger.navBla)};
-        box-shadow: ${({ feil }) => (feil ? '0 0 0 1px #ba3a26' : '0 0 0 0')};
-    }
-
-    .nav-datovelger__kalenderknapp {
-        border-color: ${({ feil }) => (feil ? navFarger.redError : navFarger.navBla)};
-        box-shadow: ${({ feil }) => (feil ? '0 0 0 1px #ba3a26' : '0 0 0 0')};
-    }
-
-    margin-bottom: ${({ feil }) => (feil ? '.125rem' : '0')};
 `;
 
 const DatovelgerOgSlettknapp = styled.div<{ feil: boolean }>`
