@@ -55,12 +55,13 @@ const EndreEndringstidspunkt: React.FC<{
                 Oppdater endringstidspunkt
             </Dropdown.Menu.List.Item>
 
-            <OppdaterEndringstidspunktModal
-                visModal={visModal}
-                onAvbryt={() => settVisModal(false)}
-                oppdaterEndringstidspunkt={oppdaterEndringstidspunkt}
-                skjema={skjema}
-            />
+            {visModal && (
+                <OppdaterEndringstidspunktModal
+                    onAvbryt={() => settVisModal(false)}
+                    oppdaterEndringstidspunkt={oppdaterEndringstidspunkt}
+                    skjema={skjema}
+                />
+            )}
         </>
     );
 };
