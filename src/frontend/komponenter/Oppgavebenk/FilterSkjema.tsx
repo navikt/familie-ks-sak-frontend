@@ -2,9 +2,9 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Select, SkjemaGruppe } from 'nav-frontend-skjema';
+import { Select } from 'nav-frontend-skjema';
 
-import { Button } from '@navikt/ds-react';
+import { Button, Fieldset } from '@navikt/ds-react';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -32,6 +32,21 @@ const StyledButton = styled(Button)`
     }
 `;
 
+const StyledFieldset = styled(Fieldset)`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+`;
+
+const FilterRad = styled.div`
+    display: flex;
+    margin-top: 1rem;
+
+    & > * {
+        padding-right: 1.5rem;
+    }
+`;
+
 const FilterSkjema: React.FunctionComponent = () => {
     const { innloggetSaksbehandler } = useApp();
     const {
@@ -44,8 +59,8 @@ const FilterSkjema: React.FunctionComponent = () => {
     } = useOppgaver();
 
     return (
-        <SkjemaGruppe className="filterskjema" aria-label="oppgavebenken-filterskjema">
-            <div className="filterskjema__filtre">
+        <StyledFieldset legend={'Oppgavebenken filterskjema'} hideLegend>
+            <FilterRad>
                 {Object.values(oppgaveFelter)
                     .filter((oppgaveFelt: IOppgaveFelt) => oppgaveFelt.filter)
                     .map((oppgaveFelt: IOppgaveFelt) => {
@@ -120,9 +135,9 @@ const FilterSkjema: React.FunctionComponent = () => {
                                 return null;
                         }
                     })}
-            </div>
+            </FilterRad>
 
-            <div className="filterskjema__actions">
+            <div>
                 <StyledButton
                     variant="primary"
                     onClick={() => {
@@ -138,7 +153,7 @@ const FilterSkjema: React.FunctionComponent = () => {
                     children={'Tilbakestill filtrering'}
                 />
             </div>
-        </SkjemaGruppe>
+        </StyledFieldset>
     );
 };
 
