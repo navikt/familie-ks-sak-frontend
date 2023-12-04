@@ -16,7 +16,7 @@ export interface ISøkerMedOpplysninger {
 
 export interface IBarnMedOpplysningerBackend {
     fødselsdato?: string;
-    ident?: string;
+    ident: string;
     inkludertISøknaden: boolean;
     manueltRegistrert: boolean;
     navn?: string;
