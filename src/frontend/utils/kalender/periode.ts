@@ -1,14 +1,14 @@
+import { isAfter, isBefore, isSameDay } from 'date-fns';
+
+import type { IsoDatoString } from '../dato';
+import { isoStringTilDate, isoStringTilDateMedFallback, tidenesEnde } from '../dato';
+
 import type { FamilieIsoDate, IPeriode, IYearMonthPeriode, YearMonth } from '.';
 import {
-    erEtter,
-    erFør,
-    erSamme,
     kalenderDato,
-    kalenderDatoFraDate,
     tilVisning,
     kalenderDatoMedFallback,
     TIDENES_ENDE,
-    TIDENES_MORGEN,
     kalenderDiff,
     kalenderDatoTilDate,
     yearMonthTilVisning,
@@ -30,19 +30,20 @@ export const nyYearMonthPeriode = (fom?: YearMonth, tom?: YearMonth): IYearMonth
 };
 
 export const periodeOverlapperMedValgtDato = (
-    periodeFom: FamilieIsoDate | undefined,
-    periodeTom: FamilieIsoDate | undefined,
+    periodeFom: IsoDatoString,
+    periodeTom: IsoDatoString | undefined,
     valgtDato: Date
 ) => {
-    const valgtDatoDagMånedÅr = kalenderDatoFraDate(valgtDato);
-    const periodeFomDagMånedÅr = kalenderDatoMedFallback(periodeFom, TIDENES_MORGEN);
-    const periodeTomDagMånedÅr = kalenderDatoMedFallback(periodeTom, TIDENES_ENDE);
+    const periodeFomDate = isoStringTilDate(periodeFom);
+    const periodeTomDate = isoStringTilDateMedFallback({
+        isoString: periodeTom,
+        fallbackDate: tidenesEnde,
+    });
 
     return (
-        (erEtter(valgtDatoDagMånedÅr, periodeFomDagMånedÅr) &&
-            erFør(valgtDatoDagMånedÅr, periodeTomDagMånedÅr)) ||
-        erSamme(valgtDatoDagMånedÅr, periodeFomDagMånedÅr) ||
-        erSamme(valgtDatoDagMånedÅr, periodeTomDagMånedÅr)
+        (isAfter(valgtDato, periodeFomDate) && isBefore(valgtDato, periodeTomDate)) ||
+        isSameDay(valgtDato, periodeFomDate) ||
+        isSameDay(valgtDato, periodeTomDate)
     );
 };
 
