@@ -4,11 +4,9 @@ import { useEffect } from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import variables from 'nav-frontend-core';
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
 import { TrashIcon } from '@navikt/aksel-icons';
-import { BodyShort, Button, Checkbox, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { BodyShort, Button, Checkbox, Fieldset, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -41,12 +39,12 @@ const KnapperekkeVenstre = styled.div`
     flex-direction: row;
 `;
 
-const StyledSkjemaGruppe = styled(SkjemaGruppe)`
+const StyledFieldset = styled(Fieldset)`
     margin-top: 1rem;
     margin-bottom: 1.5rem;
     padding-left: 2rem;
     margin-right: 2rem;
-    border-left: 0.0625rem solid ${variables.navBla};
+    border-left: 0.0625rem solid ${ABorderAction};
     max-width: 30rem;
 `;
 
@@ -154,7 +152,11 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
 
     return (
         <>
-            <StyledSkjemaGruppe feil={hentFrontendFeilmelding(skjema.submitRessurs)}>
+            <StyledFieldset
+                error={hentFrontendFeilmelding(skjema.submitRessurs)}
+                legend={'Skjema for å endre utbetalingsandel'}
+                hideLegend
+            >
                 <Feltmargin>
                     <StyledPersonvelger
                         {...skjema.felter.person.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
@@ -407,7 +409,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         )}
                     </Knapperekke>
                 )}
-            </StyledSkjemaGruppe>
+            </StyledFieldset>
         </>
     );
 };
