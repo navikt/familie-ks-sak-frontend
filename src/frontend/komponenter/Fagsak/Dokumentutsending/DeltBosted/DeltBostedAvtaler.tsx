@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 
 import { Button, ErrorMessage } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-datovelger';
 import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import type { Felt } from '@navikt/familie-skjema';
 
@@ -70,10 +69,10 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
     avtalerOmDeltBostedPerBarnFelt,
     visFeilmeldinger,
 }) => {
-    const avtalerOmDeltBosted: ISODateString[] =
+    const avtalerOmDeltBosted: IsoDatoString[] =
         avtalerOmDeltBostedPerBarnFelt.verdi[barn.ident] ?? [];
 
-    const hentFeilmelding = (avtaleDato?: ISODateString) => {
+    const hentFeilmelding = (avtaleDato?: IsoDatoString) => {
         if (!visFeilmeldinger) return undefined;
 
         if (avtaleDato === '') {
