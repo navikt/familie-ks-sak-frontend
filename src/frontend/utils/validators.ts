@@ -44,21 +44,6 @@ export const identValidator = (identFelt: FeltState<string>): FeltState<string> 
     return validerIdent(identFelt);
 };
 
-const harFyltInnOrgnr = (felt: FeltState<string>): FeltState<string> => {
-    return /^\d{9}$/.test(felt.verdi.replace(' ', ''))
-        ? ok(felt)
-        : feil(felt, 'Orgnummer har ikke 9 tall');
-};
-
-export const orgnummerValidator = (orgnummerFelt: FeltState<string>): FeltState<string> => {
-    const validated = harFyltInnOrgnr(orgnummerFelt);
-    if (validated.valideringsstatus !== Valideringsstatus.OK) {
-        return validated;
-    }
-
-    return ok(orgnummerFelt);
-};
-
 const tomEtterAugustÅretBarnetFyller6 = (person: IGrunnlagPerson, tom?: Date): boolean => {
     const datoBarnetFyller6 = addYears(isoStringTilDate(person.fødselsdato), 6);
     const datoSeptemberÅretBarnetFyller6 = setMonth(datoBarnetFyller6, 8);
