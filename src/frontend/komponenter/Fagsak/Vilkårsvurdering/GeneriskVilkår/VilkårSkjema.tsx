@@ -217,7 +217,6 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     />
                 )}
                 <VelgPeriode
-                    vilkår={vilkårResultat}
                     periode={skjema.felter.periode}
                     erEksplisittAvslagPåSøknad={skjema.felter.erEksplisittAvslagPåSøknad}
                     resultat={skjema.felter.resultat}
