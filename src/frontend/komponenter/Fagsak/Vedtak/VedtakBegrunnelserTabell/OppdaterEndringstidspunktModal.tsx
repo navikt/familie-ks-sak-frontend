@@ -41,6 +41,7 @@ export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({
                         felt={skjema.felter.endringstidspunkt}
                         label={'Endringstidspunkt'}
                         visFeilmeldinger={skjema.visFeilmeldinger}
+                        kanKunVelgeFortid
                     />
                 </Fieldset>
             </Modal.Body>
