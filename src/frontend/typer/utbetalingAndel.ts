@@ -1,17 +1,16 @@
-import type { ISODateString } from '@navikt/familie-datovelger';
 import type { OptionType } from '@navikt/familie-form-elements';
 
-import type { FamilieIsoDate } from '../utils/kalender';
+import type { IsoDatoString, IsoMånedString } from '../utils/dato';
 
 export interface IRestEndretUtbetalingAndel {
     id?: number;
     personIdent?: string;
     prosent?: number;
-    fom?: ISODateString;
-    tom?: ISODateString;
+    fom?: IsoMånedString;
+    tom?: IsoMånedString;
     begrunnelse?: string;
-    søknadstidspunkt?: FamilieIsoDate;
-    avtaletidspunktDeltBosted?: FamilieIsoDate;
+    søknadstidspunkt?: IsoDatoString;
+    avtaletidspunktDeltBosted?: IsoDatoString;
     årsak?: IEndretUtbetalingAndelÅrsak;
     erTilknyttetAndeler?: boolean;
     erEksplisittAvslagPåSøknad?: boolean;

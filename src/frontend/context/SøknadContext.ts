@@ -165,6 +165,7 @@ const [SøknadProvider, useSøknad] = createUseContext(
                                             ): IBarnMedOpplysningerBackend => ({
                                                 ...barn,
                                                 inkludertISøknaden: barn.merket,
+                                                ident: barn.ident ?? '',
                                             })
                                         ),
                                     endringAvOpplysningerBegrunnelse:

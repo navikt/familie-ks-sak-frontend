@@ -70,7 +70,7 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
     visFeilmeldinger,
 }) => {
     const avtalerOmDeltBosted: IsoDatoString[] =
-        avtalerOmDeltBostedPerBarnFelt.verdi[barn.ident] ?? [];
+        avtalerOmDeltBostedPerBarnFelt.verdi[barn.ident ?? ''] ?? [];
 
     const hentFeilmelding = (avtaleDato?: IsoDatoString) => {
         if (!visFeilmeldinger) return undefined;
@@ -103,7 +103,7 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
                                 onDateChange={(dato?: IsoDatoString) => {
                                     avtalerOmDeltBostedPerBarnFelt.validerOgSettFelt({
                                         ...avtalerOmDeltBostedPerBarnFelt.verdi,
-                                        [barn.ident]: avtalerOmDeltBosted.reduce(
+                                        [barn.ident ?? '']: avtalerOmDeltBosted.reduce(
                                             (
                                                 acc: string[],
                                                 forrigeAvtaleDato: string,
@@ -129,7 +129,7 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
                                     onClick={() => {
                                         avtalerOmDeltBostedPerBarnFelt.validerOgSettFelt({
                                             ...avtalerOmDeltBostedPerBarnFelt.verdi,
-                                            [barn.ident]: avtalerOmDeltBosted.reduce(
+                                            [barn.ident ?? '']: avtalerOmDeltBosted.reduce(
                                                 (
                                                     acc: string[],
                                                     forrigeAvtaleDato: string,
@@ -159,13 +159,13 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
             {barn.merket && (
                 <LeggTilAvtaleKnapp
                     variant={'tertiary'}
-                    id={`legg_til_avtale__${barn.ident}`}
+                    id={`legg_til_avtale__${barn.ident ?? ''}`}
                     size={'small'}
                     icon={<Pluss />}
                     onClick={() =>
                         avtalerOmDeltBostedPerBarnFelt.validerOgSettFelt({
                             ...avtalerOmDeltBostedPerBarnFelt.verdi,
-                            [barn.ident]: [...avtalerOmDeltBosted, ''],
+                            [barn.ident ?? '']: [...avtalerOmDeltBosted, ''],
                         })
                     }
                 >
