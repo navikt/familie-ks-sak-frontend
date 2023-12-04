@@ -4,6 +4,7 @@ import type { FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
 export type IsoDatoString = string; // Format YYYY-MM-DD (ISO)
+export type IsoMånedString = string; // Format YYYY-MM (ISO)
 
 export const dagensDato = startOfToday();
 
