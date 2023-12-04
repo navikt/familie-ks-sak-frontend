@@ -4,8 +4,8 @@ import createUseContext from 'constate';
 import deepEqual from 'deep-equal';
 
 import type { ISODateString } from '@navikt/familie-datovelger';
-import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useFagsakContext } from './fagsak/FagsakContext';
@@ -148,6 +148,8 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
             nullstillSkjemaUtenomÅrsak();
         }, [årsak.verdi, bruker.status]);
 
+        const erIkkeUndefined = (tekst: string | undefined): tekst is string => tekst !== undefined;
+
         const hentDeltBostedSkjemaData = (målform: Målform): IManueltBrevRequestPåFagsak => {
             if (bruker.status === RessursStatus.SUKSESS) {
                 const barnIBrev = skjema.felter.barnMedDeltBosted.verdi.filter(barn => barn.merket);
@@ -155,7 +157,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                 return {
                     mottakerIdent: bruker.data.personIdent,
                     multiselectVerdier: barnIBrev.flatMap(hentDeltBostedMulitiselectVerdierForBarn),
-                    barnIBrev: barnIBrev.map(barn => barn.ident),
+                    barnIBrev: barnIBrev.map(barn => barn.ident).filter(erIkkeUndefined),
                     mottakerMålform: målform,
                     mottakerNavn: bruker.data.navn,
                     brevmal: Informasjonsbrev.INFORMASJONSBREV_DELT_BOSTED,

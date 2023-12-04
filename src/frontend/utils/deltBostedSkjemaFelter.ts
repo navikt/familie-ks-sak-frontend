@@ -40,7 +40,7 @@ export const useDeltBostedFelter = ({ avhengigheter, skalFeltetVises }: IProps) 
                 .filter((barn: IBarnMedOpplysninger) => barn.merket)
                 .some(
                     (barn: IBarnMedOpplysninger) =>
-                        felt.verdi[barn.ident]?.some(
+                        felt.verdi[barn.ident ?? '']?.some(
                             avtaleDato => avtaleDato.length === 0 || !erIsoStringGyldig(avtaleDato)
                         )
                 )
@@ -78,7 +78,7 @@ export const useDeltBostedFelter = ({ avhengigheter, skalFeltetVises }: IProps) 
     };
 
     const hentDeltBostedMulitiselectVerdierForBarn = (barn: IBarnMedOpplysninger) => {
-        const avtalerOmDeltBosted = avtalerOmDeltBostedPerBarn.verdi[barn.ident] ?? [];
+        const avtalerOmDeltBosted = avtalerOmDeltBostedPerBarn.verdi[barn.ident ?? ''] ?? [];
 
         return avtalerOmDeltBosted.map(
             avtaletidspunktDeltBosted =>
