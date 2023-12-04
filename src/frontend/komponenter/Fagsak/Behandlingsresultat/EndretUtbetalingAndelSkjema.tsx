@@ -286,6 +286,8 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                             </Radio>
                         </RadioGroup>
                     )}
+                </Feltmargin>
+                <Feltmargin>
                     {!skjema.felter.periodeSkalUtbetalesTilSøker.verdi && (
                         <Checkbox
                             value={'Vurderingen er et avslag'}
