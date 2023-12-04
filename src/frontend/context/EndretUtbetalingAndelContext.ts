@@ -133,6 +133,10 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
             settDatofelterTilDefaultverdier();
         }
 
+        const tilbakestillFelterTilDefault = () => {
+            nullstillSkjema();
+            settDatofelterTilDefaultverdier();
+        };
         const hentProsentForEndretUtbetaling = () => {
             return (
                 (skjema.felter.periodeSkalUtbetalesTilSøker.verdi ? 100 : 0) /
@@ -175,6 +179,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
             onSubmit,
             nullstillSkjema,
             hentSkjemaData,
+            tilbakestillFelterTilDefault,
         };
     }
 );

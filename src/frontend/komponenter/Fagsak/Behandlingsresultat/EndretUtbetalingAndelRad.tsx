@@ -153,7 +153,7 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
                     <td colSpan={5}>
                         <EndretUtbetalingAndelSkjema
                             åpenBehandling={åpenBehandling}
-                            avbrytEndringAvUtbetalingsperiode={() => {
+                            lukkSkjema={() => {
                                 settÅpenUtbetalingsAndel(false);
                             }}
                         />
