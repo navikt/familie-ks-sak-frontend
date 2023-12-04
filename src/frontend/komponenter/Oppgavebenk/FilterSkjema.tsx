@@ -2,9 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Select } from 'nav-frontend-skjema';
-
-import { Button, Fieldset } from '@navikt/ds-react';
+import { Button, Fieldset, Select } from '@navikt/ds-react';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -89,15 +87,13 @@ const FilterSkjema: React.FunctionComponent = () => {
                             case 'select':
                                 return (
                                     <Select
-                                        bredde={'l'}
                                         label={oppgaveFelt.label}
                                         onChange={event =>
                                             settVerdiPåOppgaveFelt(oppgaveFelt, event.target.value)
                                         }
                                         key={oppgaveFelt.nøkkel}
                                         value={oppgaveFelt.filter.selectedValue}
-                                        className="filterskjema__filtre--input"
-                                        feil={
+                                        error={
                                             oppgaveFelt.valideringsstatus === Valideringsstatus.FEIL
                                                 ? oppgaveFelt.feilmelding
                                                 : undefined
