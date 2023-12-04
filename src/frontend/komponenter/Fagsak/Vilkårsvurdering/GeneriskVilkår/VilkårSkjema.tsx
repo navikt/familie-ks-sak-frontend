@@ -3,10 +3,10 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Radio, SkjemaGruppe } from 'nav-frontend-skjema';
+import { Radio } from 'nav-frontend-skjema';
 
 import { Delete } from '@navikt/ds-icons';
-import { Button, Label } from '@navikt/ds-react';
+import { Button, Fieldset, Label } from '@navikt/ds-react';
 import { ABorderDefault, ABorderWarning, ASurfaceAction } from '@navikt/ds-tokens/dist/tokens';
 import {
     FamilieKnapp,
@@ -111,7 +111,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
         vilkårSkjemaContext;
 
     return (
-        <SkjemaGruppe feil={feilmelding} utenFeilPropagering={true}>
+        <Fieldset error={feilmelding} errorPropagation={false} legend={'Endre vilkår'} hideLegend>
             <Container lesevisning={false} vilkårResultat={undefined}>
                 {visVurderesEtter && (
                     <FamilieSelect
@@ -282,7 +282,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     )}
                 </Knapperad>
             </Container>
-        </SkjemaGruppe>
+        </Fieldset>
     );
 };
 
