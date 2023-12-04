@@ -16,7 +16,7 @@ const EndreEndringstidspunkt: React.FC<{
     åpenBehandling: IBehandling;
 }> = ({ åpenBehandling }) => {
     const [visModal, settVisModal] = useState(false);
-    const { settÅpenBehandling } = useBehandling();
+    const { settÅpenBehandling, vurderErLesevisning } = useBehandling();
     const { skjema, kanSendeSkjema, onSubmit } = useOppdaterEndringstidspunktSkjema(
         åpenBehandling.endringstidspunkt,
         visModal
@@ -60,6 +60,7 @@ const EndreEndringstidspunkt: React.FC<{
                     onAvbryt={() => settVisModal(false)}
                     oppdaterEndringstidspunkt={oppdaterEndringstidspunkt}
                     skjema={skjema}
+                    erLesevisning={vurderErLesevisning()}
                 />
             )}
         </>

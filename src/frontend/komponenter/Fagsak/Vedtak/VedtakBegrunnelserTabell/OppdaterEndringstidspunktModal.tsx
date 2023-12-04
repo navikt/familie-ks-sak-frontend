@@ -12,12 +12,14 @@ interface IProps {
     onAvbryt: () => void;
     oppdaterEndringstidspunkt: () => void;
     skjema: ISkjema<{ endringstidspunkt: Date | undefined }, IBehandling>;
+    erLesevisning: boolean;
 }
 
 export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({
     onAvbryt,
     oppdaterEndringstidspunkt,
     skjema,
+    erLesevisning,
 }) => {
     return (
         <Modal
@@ -41,6 +43,7 @@ export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({
                         felt={skjema.felter.endringstidspunkt}
                         label={'Endringstidspunkt'}
                         visFeilmeldinger={skjema.visFeilmeldinger}
+                        readOnly={erLesevisning}
                         kanKunVelgeFortid
                     />
                 </Fieldset>
