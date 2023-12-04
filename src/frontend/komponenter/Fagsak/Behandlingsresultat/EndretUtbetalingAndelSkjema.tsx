@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import variables from 'nav-frontend-core';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { Delete } from '@navikt/ds-icons';
+import { TrashIcon } from '@navikt/aksel-icons';
 import { BodyShort, Button, Checkbox, Label, Radio, RadioGroup } from '@navikt/ds-react';
 import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
@@ -400,7 +400,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 id={`sletteknapp-endret-utbetaling-andel-${endretUtbetalingAndel.id}`}
                                 size={'small'}
                                 onClick={slettEndretUtbetaling}
-                                icon={<Delete />}
+                                icon={<TrashIcon />}
                             >
                                 {'Fjern periode'}
                             </Button>
