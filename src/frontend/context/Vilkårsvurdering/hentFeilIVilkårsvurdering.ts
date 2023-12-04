@@ -1,4 +1,4 @@
-import { isAfter, isBefore, isSameDay } from 'date-fns';
+import { addDays, isAfter, isBefore, isSameDay } from 'date-fns';
 
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
@@ -10,9 +10,6 @@ import { isoStringTilDateMedFallback, tidenesEnde, tidenesMorgen } from '../../u
 import type { FamilieIsoDate, IPeriode } from '../../utils/kalender';
 import {
     erEtter,
-    erSamme,
-    KalenderEnhet,
-    leggTil,
     parseIso8601String,
     serializeIso8601String,
     TIDENES_ENDE,
@@ -80,8 +77,10 @@ const hentBarnehageplassPeriodeStarterForSentFeil = (
 ): FeiloppsummeringFeil[] => {
     const sisteOppfylteBarnetsAlderVilkårResultat = oppfylteBarnetsAlderVilkårResultater.reduce(
         (senesteVilkårResultat: IVilkårResultat | undefined, vilkårResultat) => {
-            return parseFraOgMedDato(senesteVilkårResultat?.periode.fom) >
+            return isAfter(
+                parseFraOgMedDato(senesteVilkårResultat?.periode.fom),
                 parseFraOgMedDato(vilkårResultat.periode.fom)
+            )
                 ? senesteVilkårResultat
                 : vilkårResultat;
         },
@@ -138,24 +137,12 @@ const barnetsAlderPeriodeManglerBarnehagePeriode = (
     return !sammenSlåtteBarnehageperioder.some(sammenslåttBarnehageperiode => {
         return (
             erFørEllerSammeDato(
-                isoStringTilDateMedFallback({
-                    isoString: sammenslåttBarnehageperiode.fom,
-                    fallbackDate: tidenesMorgen,
-                }),
-                isoStringTilDateMedFallback({
-                    isoString: barnetsAlderPeriode.fom,
-                    fallbackDate: tidenesMorgen,
-                })
+                parseFraOgMedDato(sammenslåttBarnehageperiode.fom),
+                parseFraOgMedDato(barnetsAlderPeriode.fom)
             ) &&
             erEtterEllerSammeDato(
-                isoStringTilDateMedFallback({
-                    isoString: sammenslåttBarnehageperiode.tom,
-                    fallbackDate: tidenesEnde,
-                }),
-                isoStringTilDateMedFallback({
-                    isoString: barnetsAlderPeriode.tom,
-                    fallbackDate: tidenesEnde,
-                })
+                parseTilOgMedDato(sammenslåttBarnehageperiode.tom),
+                parseTilOgMedDato(barnetsAlderPeriode.tom)
             )
         );
     });
@@ -189,13 +176,19 @@ const erEtterHverandre = (første: IPeriode | undefined, andre: IPeriode): boole
     const tomDatoFørste = parseTilOgMedDato(første?.tom);
     const fomDatoNeste = parseFraOgMedDato(andre.fom);
 
-    const dagenEtterTomDatoFørste = leggTil(tomDatoFørste, 1, KalenderEnhet.DAG);
+    const dagenEtterTomDatoFørste = addDays(tomDatoFørste, 1);
 
-    return erSamme(dagenEtterTomDatoFørste, fomDatoNeste);
+    return isSameDay(dagenEtterTomDatoFørste, fomDatoNeste);
 };
 
 const parseTilOgMedDato = (tom: FamilieIsoDate | undefined) =>
-    parseIso8601String(tom ?? serializeIso8601String(TIDENES_ENDE));
+    isoStringTilDateMedFallback({
+        isoString: tom,
+        fallbackDate: tidenesEnde,
+    });
 
 const parseFraOgMedDato = (fom: FamilieIsoDate | undefined) =>
-    parseIso8601String(fom ?? serializeIso8601String(TIDENES_MORGEN));
+    isoStringTilDateMedFallback({
+        isoString: fom,
+        fallbackDate: tidenesMorgen,
+    });
