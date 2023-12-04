@@ -1954,6 +1954,15 @@
     framer-motion "^6.3.16"
     react-tooltip "^4.2.21"
 
+"@navikt/familie-clipboard@^12.0.0":
+  version "12.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-clipboard/12.0.0/3e0442cc62db799102f35362cefbc3a3c72a6a23#3e0442cc62db799102f35362cefbc3a3c72a6a23"
+  integrity sha512-axUAsi5XCqMioycJwBS8sYxDvmpto1LoQe+tk/imUtCRTNEGMLLKAtK3wDX1ceixmtG8UcMdl7r67RL1iqQByQ==
+  dependencies:
+    "@types/react-tooltip" "^4.2.4"
+    framer-motion "^6.3.16"
+    react-tooltip "^4.2.21"
+
 "@navikt/familie-form-elements@^13.0.0":
   version "13.0.0"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/13.0.0/c3ec85621cb87c35cece49ce4a0d59d17ab0ad7c#c3ec85621cb87c35cece49ce4a0d59d17ab0ad7c"
