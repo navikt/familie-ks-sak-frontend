@@ -8,6 +8,8 @@ export type IsoMånedString = string; // Format YYYY-MM (ISO)
 
 export const dagensDato = startOfToday();
 
+export const tidenesMorgen = new Date(1000, 1, 1);
+
 export const tidenesEnde = new Date(3000, 1, 1);
 
 export enum Datoformat {

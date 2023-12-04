@@ -1,14 +1,15 @@
+import { isAfter, isBefore, isSameDay } from 'date-fns';
+
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
 import { annenVurderingFeilmeldingId } from '../../komponenter/Fagsak/Vilkårsvurdering/GeneriskAnnenVurdering/AnnenVurderingTabell';
 import { vilkårFeilmeldingId } from '../../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
 import type { IPersonResultat, IVilkårResultat, IAnnenVurdering } from '../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig, VilkårType } from '../../typer/vilkår';
+import { isoStringTilDateMedFallback, tidenesEnde, tidenesMorgen } from '../../utils/dato';
 import type { FamilieIsoDate, IPeriode } from '../../utils/kalender';
 import {
     erEtter,
-    erEtterEllerSamme,
-    erFørEllerSamme,
     erSamme,
     KalenderEnhet,
     leggTil,
@@ -121,6 +122,12 @@ const hentBarnetsalderVilkårManglerBarnehagePeriodeFeil = (
                 'Hele eller deler av perioden der barnet er mellom 1 og 2 år er ikke vurdert.',
         }));
 
+const erFørEllerSammeDato = (dato1: Date, dato2: Date) =>
+    isBefore(dato1, dato2) || isSameDay(dato1, dato2);
+
+const erEtterEllerSammeDato = (dato1: Date, dato2: Date) =>
+    isAfter(dato1, dato2) || isSameDay(dato1, dato2);
+
 const barnetsAlderPeriodeManglerBarnehagePeriode = (
     barnetsAlderPeriode: IPeriode,
     barnehagePerioder: IPeriode[]
@@ -130,13 +137,25 @@ const barnetsAlderPeriodeManglerBarnehagePeriode = (
 
     return !sammenSlåtteBarnehageperioder.some(sammenslåttBarnehageperiode => {
         return (
-            erFørEllerSamme(
-                parseFraOgMedDato(sammenslåttBarnehageperiode.fom),
-                parseFraOgMedDato(barnetsAlderPeriode.fom)
+            erFørEllerSammeDato(
+                isoStringTilDateMedFallback({
+                    isoString: sammenslåttBarnehageperiode.fom,
+                    fallbackDate: tidenesMorgen,
+                }),
+                isoStringTilDateMedFallback({
+                    isoString: barnetsAlderPeriode.fom,
+                    fallbackDate: tidenesMorgen,
+                })
             ) &&
-            erEtterEllerSamme(
-                parseTilOgMedDato(sammenslåttBarnehageperiode.tom),
-                parseTilOgMedDato(barnetsAlderPeriode.tom)
+            erEtterEllerSammeDato(
+                isoStringTilDateMedFallback({
+                    isoString: sammenslåttBarnehageperiode.tom,
+                    fallbackDate: tidenesEnde,
+                }),
+                isoStringTilDateMedFallback({
+                    isoString: barnetsAlderPeriode.tom,
+                    fallbackDate: tidenesEnde,
+                })
             )
         );
     });
