@@ -5,6 +5,11 @@ import styled from 'styled-components';
 
 import { Label } from '@navikt/ds-react';
 import {
+    ABorderDefault,
+    AFontLineHeightLarge,
+    AFontSizeLarge,
+} from '@navikt/ds-tokens/dist/tokens';
+import {
     ABorderDanger,
     ABorderStrong,
     AGray100,
@@ -55,7 +60,7 @@ const Landvelger = styled(CountrySelect)`
     }
 
     & div.c-countrySelect__select {
-        margin-top: 0px;
+        margin-top: 0;
 
         .c-countrySelect__select__indicator {
             color: initial;
@@ -246,16 +251,39 @@ const FamilieValutavelger: React.FC<IFamilieValutavelgerProps> = ({
     }
 
     return (
-        <div className={classNames('skjemaelement', className)}>
-            <Landvelger
-                utenMargin={utenMargin}
-                feil={feil}
-                {...landvelgerProps}
-                place
-                label={<Label size="small">{label}</Label>}
-            />
-        </div>
+        <Landvelger
+            className={className}
+            utenMargin={utenMargin}
+            feil={feil}
+            {...landvelgerProps}
+            place
+            label={<Label size="small">{label}</Label>}
+        />
     );
 };
 
-export { FamilieLandvelger, FamilieValutavelger };
+const StyledFamilieValutavelger = styled(FamilieValutavelger)`
+    gap: 0;
+
+    label {
+        font-size: ${AFontSizeLarge};
+        letter-spacing: 0;
+        font-weight: bold;
+        margin: 0;
+        line-height: ${AFontLineHeightLarge};
+    }
+
+    div.c-countrySelect__select {
+        margin-top: 8px;
+
+        .c-countrySelect__select__control {
+            border: 1px solid ${ABorderDefault};
+        }
+
+        .c-countrySelect__select__value-container {
+            min-height: 46px;
+        }
+    }
+`;
+
+export { FamilieLandvelger, StyledFamilieValutavelger };

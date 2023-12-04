@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 
@@ -19,12 +17,6 @@ interface IProps {
     erLesevisning?: boolean;
 }
 
-const StyledFamilieSelect = styled(FamilieSelect)`
-    label {
-        margin-top: 2rem;
-    }
-`;
-
 export const BehandlingårsakFelt: React.FC<IProps> = ({
     behandlingsårsak,
     visFeilmeldinger,
@@ -33,7 +25,7 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
     const { toggles } = useApp();
 
     return (
-        <StyledFamilieSelect
+        <FamilieSelect
             {...behandlingsårsak.hentNavBaseSkjemaProps(visFeilmeldinger)}
             erLesevisning={erLesevisning}
             name={'Behandlingsårsak'}
@@ -63,6 +55,6 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
                         </option>
                     );
                 })}
-        </StyledFamilieSelect>
+        </FamilieSelect>
     );
 };

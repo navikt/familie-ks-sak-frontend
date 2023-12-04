@@ -34,31 +34,30 @@ const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
     behandlingId,
 }) => {
     const [erRadEkspandert, settErRadEkspandert] = useState<boolean>(false);
-    const [forrigeFeilutbetaltValuta, settForrigeFeilutbetaltValuta] = useState(feilutbetaltValuta);
     const [feilmelding, settFeilmelding] = useState<string>();
 
-    const { skjema, oppdaterEksisterendePeriode, nullstillSkjema, fjernPeriode, valideringErOk } =
-        useFeilutbetaltValuta({
-            behandlingId: behandlingId,
-            feilutbetaltValuta,
-            settFeilmelding: settFeilmelding,
-        });
+    const {
+        skjema,
+        oppdaterEksisterendePeriode,
+        fjernPeriode,
+        valideringErOk,
+        tilbakestillSkjemafelterTilDefault,
+    } = useFeilutbetaltValuta({
+        behandlingId,
+        feilutbetaltValuta,
+        settFeilmelding,
+    });
 
-    const nullstillOgLukkSkjema = () => {
-        nullstillSkjema();
+    const tilbakestillOgLukkSkjema = () => {
         settErRadEkspandert(false);
+        tilbakestillSkjemafelterTilDefault();
     };
-
-    if (feilutbetaltValuta !== forrigeFeilutbetaltValuta) {
-        nullstillOgLukkSkjema();
-        settForrigeFeilutbetaltValuta(feilutbetaltValuta);
-    }
 
     const håndterLukkingOgÅpningAvPanel = () => {
         if (erLesevisning) return;
 
         if (erRadEkspandert) {
-            nullstillOgLukkSkjema();
+            tilbakestillOgLukkSkjema();
         } else {
             settErRadEkspandert(true);
         }
@@ -70,7 +69,12 @@ const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
             onOpenChange={håndterLukkingOgÅpningAvPanel}
             content={
                 <FlexColumnDiv>
-                    <FeilutbetaltValutaSkjema skjema={skjema} />
+                    <FeilutbetaltValutaSkjema
+                        skjema={skjema}
+                        key={`${feilutbetaltValuta.id}-$${
+                            erRadEkspandert ? 'ekspandert' : 'lukket'
+                        }`}
+                    />
                     <FlexRowDiv>
                         <Button
                             size="small"
@@ -79,7 +83,7 @@ const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
                         >
                             Lagre periode
                         </Button>
-                        <Button size="small" variant="tertiary" onClick={nullstillOgLukkSkjema}>
+                        <Button size="small" variant="tertiary" onClick={tilbakestillOgLukkSkjema}>
                             Avbryt
                         </Button>
                     </FlexRowDiv>

@@ -3,9 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { BodyShort, Checkbox, Heading } from '@navikt/ds-react';
+import { BodyShort, Checkbox, Fieldset, Heading } from '@navikt/ds-react';
 
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
 import BehandlingstypeFelt from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingstypeFelt';
@@ -14,6 +12,12 @@ import { BehandlingstemaSelect } from '../Felleskomponenter/BehandlingstemaSelec
 
 const StyledCheckboxDiv = styled.div`
     width: 20rem;
+`;
+
+const StyledFieldset = styled(Fieldset)`
+    && > div:not(:last-child):not(:empty) {
+        margin-bottom: 1rem;
+    }
 `;
 
 /**
@@ -25,7 +29,7 @@ export const KnyttTilNyBehandling: React.FC = () => {
     const { skjema, minimalFagsak, kanKnytteJournalpostTilBehandling } = useManuellJournalfør();
     const { knyttTilNyBehandling, behandlingstype, behandlingstema } = skjema.felter;
     return (
-        <SkjemaGruppe>
+        <StyledFieldset legend="Knytt til ny behandling" hideLegend>
             <Heading size={'small'} level={'2'}>
                 Knytt til ny behandling
             </Heading>
@@ -77,6 +81,6 @@ export const KnyttTilNyBehandling: React.FC = () => {
                     label="Velg behandlingstema"
                 />
             )}
-        </SkjemaGruppe>
+        </StyledFieldset>
     );
 };
