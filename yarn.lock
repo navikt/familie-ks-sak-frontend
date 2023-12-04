@@ -1954,25 +1954,6 @@
     framer-motion "^6.3.16"
     react-tooltip "^4.2.21"
 
-"@navikt/familie-datovelger@^0.3.0":
-  version "0.3.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-datovelger/0.3.0/5f2bd3910ddb45ccb5b0e36d64c9168a01e4d0be#5f2bd3910ddb45ccb5b0e36d64c9168a01e4d0be"
-  integrity sha512-nCVOEsYe2V0qReW3aOGA+rsPIsB9Fu/hmgw2vqF09jgNq/MejwROXW+sVruzAb06oYsBHfwRD9shInCQMJqCFA==
-  dependencies:
-    "@navikt/familie-form-elements" "^13.0.0"
-    "@types/classnames" "^2.3.1"
-    classnames "^2.3.2"
-    dayjs "^1.11.3"
-    nav-datovelger "^12.6.0"
-    nav-frontend-core "^6.0.x"
-    nav-frontend-js-utils "^1.0.x"
-    nav-frontend-knapper-style "^2.1.1"
-    nav-frontend-skjema "^4.0.x"
-    nav-frontend-skjema-style "^3.0.2"
-    nav-frontend-typografi "^4.0.x"
-    nav-frontend-typografi-style "^2.0.1"
-    react-select "^5.7.0"
-
 "@navikt/familie-form-elements@^13.0.0":
   version "13.0.0"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/13.0.0/c3ec85621cb87c35cece49ce4a0d59d17ab0ad7c#c3ec85621cb87c35cece49ce4a0d59d17ab0ad7c"
@@ -4826,7 +4807,7 @@ date-fns@^2.30.0:
   dependencies:
     "@babel/runtime" "^7.21.0"
 
-dayjs@^1.10.4, dayjs@^1.11.0, dayjs@^1.11.3:
+dayjs@^1.10.4, dayjs@^1.11.0:
   version "1.11.6"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.6.tgz"
   integrity sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==
@@ -6095,20 +6076,6 @@ fn.name@1.x.x:
   version "1.1.0"
   resolved "https://registry.npmjs.org/fn.name/-/fn.name-1.1.0.tgz"
   integrity sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==
-
-focus-trap-react@^8.6.0:
-  version "8.7.1"
-  resolved "https://registry.npmjs.org/focus-trap-react/-/focus-trap-react-8.7.1.tgz"
-  integrity sha512-1bCCtdZXSzYVrMEcvHfHq+706OSM5r3iZsBFXy9zbnf3+5dyCFiEVWix7Sf6jUaOgshjpyDvZHiBhSlcsO9k3A==
-  dependencies:
-    focus-trap "^6.6.1"
-
-focus-trap@^6.6.1:
-  version "6.6.1"
-  resolved "https://registry.npmjs.org/focus-trap/-/focus-trap-6.6.1.tgz"
-  integrity sha512-x9BWuAeF5UrfWuYKJ3jYrjcVYSYptS9CqtxH5IH7lPlZrMsaugKeAa0HtoZSBZe5DmeTMx2m0qY464ZMzqarzw==
-  dependencies:
-    tabbable "^5.2.1"
 
 follow-redirects@^1.0.0, follow-redirects@^1.15.0:
   version "1.15.2"
@@ -8344,13 +8311,6 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-nav-datovelger@^12.6.0:
-  version "12.6.0"
-  resolved "https://registry.npmjs.org/nav-datovelger/-/nav-datovelger-12.6.0.tgz"
-  integrity sha512-z7hmVcPSqZAoOX40hG/a7E9QQNZoPjRfL2Qn+ylYIYLv5Nx0lzFVZPHnubzdUFTYBf5SFJ6EGWcv9u6ISn2FDA==
-  dependencies:
-    focus-trap-react "^8.6.0"
-
 nav-frontend-chevron-style@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/nav-frontend-chevron-style/-/nav-frontend-chevron-style-1.0.4.tgz#9cad6d1f19507147771e9ff26ebecf6e0964a50c"
@@ -8361,7 +8321,7 @@ nav-frontend-chevron@^1.0.30:
   resolved "https://registry.yarnpkg.com/nav-frontend-chevron/-/nav-frontend-chevron-1.0.30.tgz#1739d8b60d6a7ac3341a70c861b74725efb859ad"
   integrity sha512-lc7DV09rflT6oHaZqGHhoSEOn3uMjdIpGId/QpW2wGF1pc9h/cOZUPNzdqneXPi4JeC3do3gHS+M5dB3J+wSmA==
 
-nav-frontend-core@^6.0.1, nav-frontend-core@^6.0.x:
+nav-frontend-core@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/nav-frontend-core/-/nav-frontend-core-6.0.1.tgz"
   integrity sha512-zFAPRXgmS3Nhu5SyafsTnCFg2/PEbrUF+g1xGo+pKIxGfJgCeLi47gPSe7Kjeh3IwIo0ex3cA7tfbUIWOY65dQ==
@@ -8376,7 +8336,7 @@ nav-frontend-ikonknapper@^2.1.1:
   resolved "https://registry.npmjs.org/nav-frontend-ikonknapper/-/nav-frontend-ikonknapper-2.1.1.tgz"
   integrity sha512-JgKaBDAqWQitG6tnxcE+OAl6Nk7iysmsECVGKd2Nqb8rdzIlkpdshT+Vz7TCLbed/XqyO0ilwPIHGo6J/SjVrg==
 
-nav-frontend-js-utils@^1.0.19, nav-frontend-js-utils@^1.0.x:
+nav-frontend-js-utils@^1.0.19:
   version "1.0.20"
   resolved "https://registry.npmjs.org/nav-frontend-js-utils/-/nav-frontend-js-utils-1.0.20.tgz"
   integrity sha512-rCEbgtLmk/95TJeke3Njgm0lBJuBa0N8p8h5Oqhxjov529UjTT2Vx4XJzjQd7/ApgeCkdc5DB9GW5jGTEFoYTA==
@@ -8448,12 +8408,7 @@ nav-frontend-skjema-style@^3.0.1:
   resolved "https://registry.npmjs.org/nav-frontend-skjema-style/-/nav-frontend-skjema-style-3.0.1.tgz"
   integrity sha512-RUJ1rfsDX1I6JChWyVPF70vTrVijISnOSjvH+8fA8HCNygZ16cG4FzO8SRzARqkJuzlND4zaqJkqNTENOLDBaQ==
 
-nav-frontend-skjema-style@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/nav-frontend-skjema-style/-/nav-frontend-skjema-style-3.0.2.tgz"
-  integrity sha512-CcTTiWxE1cBLPDQZBl/mTfPpW1tHqt49ytp/UbyRqlo4yDKRURUIqWprIJ0TSj/o2voZTqLbILw0SCmNG3GGew==
-
-nav-frontend-skjema@^4.0.2, nav-frontend-skjema@^4.0.x:
+nav-frontend-skjema@^4.0.2:
   version "4.0.5"
   resolved "https://registry.npmjs.org/nav-frontend-skjema/-/nav-frontend-skjema-4.0.5.tgz"
   integrity sha512-rY/PycRYqBSpUk9rnePAJ9fd+QRBC3vbE8e5d9YKmxKeF5Q73azbb3hoHWjm0CfpeEgRttRDfbIWRFH2SPwvCw==
@@ -8490,7 +8445,7 @@ nav-frontend-typografi-style@^2.0.1:
   dependencies:
     nav-frontend-core "^6.0.1"
 
-nav-frontend-typografi@^4.0.1, nav-frontend-typografi@^4.0.x:
+nav-frontend-typografi@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npmjs.org/nav-frontend-typografi/-/nav-frontend-typografi-4.0.1.tgz"
   integrity sha512-zJrvysIWqZm0HSJqqgc1G5Lqr8bLO16B9Pg/FW7+mJQGGz/iqPhX5vvIFTXqAlXVo95qImoZ72uiWiHHRdGhPQ==
@@ -9582,13 +9537,6 @@ react-day-picker@8.3.4:
   version "8.3.4"
   resolved "https://registry.npmjs.org/react-day-picker/-/react-day-picker-8.3.4.tgz"
   integrity sha512-UuCbfZ69DhQmd+UhEv8nCPp5PxMk7ioNTuOLMlU0X7q3wd7o8TKDdsjduQoeBYTPTMS3LFdbA1qqbrIpRHo/Vg==
-
-react-day-picker@^7.4.10:
-  version "7.4.10"
-  resolved "https://registry.npmjs.org/react-day-picker/-/react-day-picker-7.4.10.tgz"
-  integrity sha512-/QkK75qLKdyLmv0kcVzhL7HoJPazoZXS8a6HixbVoK6vWey1Od1WRLcxfyEiUsRfccAlIlf6oKHShqY2SM82rA==
-  dependencies:
-    prop-types "^15.6.2"
 
 react-dom@^17.0.2:
   version "17.0.2"
@@ -10764,11 +10712,6 @@ synckit@^0.8.5:
   dependencies:
     "@pkgr/utils" "^2.3.1"
     tslib "^2.5.0"
-
-tabbable@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.npmjs.org/tabbable/-/tabbable-5.2.1.tgz"
-  integrity sha512-40pEZ2mhjaZzK0BnI+QGNjJO8UYx9pP5v7BGe17SORTO0OEuuaAwQTkAp8whcZvqon44wKFOikD+Al11K3JICQ==
 
 tabbable@^6.0.1:
   version "6.2.0"

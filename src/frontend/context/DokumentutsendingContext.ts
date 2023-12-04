@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import createUseContext from 'constate';
 import deepEqual from 'deep-equal';
 
-import type { ISODateString } from '@navikt/familie-datovelger';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -16,6 +15,7 @@ import { Informasjonsbrev } from '../komponenter/Felleskomponenter/Hendelsesover
 import type { IManueltBrevRequestPåFagsak } from '../typer/dokument';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
 import { Målform } from '../typer/søknad';
+import type { IsoDatoString } from '../utils/dato';
 import { useDeltBostedFelter } from '../utils/deltBostedSkjemaFelter';
 import type { IFritekstFelt } from '../utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '../utils/ressursUtils';
@@ -115,7 +115,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                 fritekster: FeltState<IFritekstFelt>[];
                 dokumenter: ISelectOptionMedBrevtekst[];
                 barnMedDeltBosted: IBarnMedOpplysninger[];
-                avtalerOmDeltBostedPerBarn: Record<string, ISODateString[]>;
+                avtalerOmDeltBostedPerBarn: Record<string, IsoDatoString[]>;
             },
             string
         >({

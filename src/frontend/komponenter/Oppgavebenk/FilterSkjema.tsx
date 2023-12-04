@@ -2,11 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Select, SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { Button, ErrorMessage } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-datovelger';
-import { FamilieDatovelger } from '@navikt/familie-datovelger';
+import { Button, Fieldset, Select } from '@navikt/ds-react';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -14,20 +10,11 @@ import type { IOppgaveFelt } from './oppgavefelter';
 import { useApp } from '../../context/AppContext';
 import { useOppgaver } from '../../context/OppgaverContext';
 import type { IPar } from '../../typer/common';
-import { datoformatNorsk } from '../../utils/formatter';
+import type { IsoDatoString } from '../../utils/dato';
+import DatovelgerForGammelSkjemaløsning from '../Felleskomponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 
 const DatoVelgerContainer = styled.div`
     max-width: 12.5rem;
-`;
-
-const StyledFamilieDatovelger = styled(FamilieDatovelger)`
-    .nav-datovelger {
-        padding-top: 0.4rem;
-    }
-`;
-
-const StyledErrorMessage = styled(ErrorMessage)`
-    margin-top: 0.5rem;
 `;
 
 // Denne stylingen skal fjernes på sikt (minus marginer)
@@ -43,6 +30,21 @@ const StyledButton = styled(Button)`
     }
 `;
 
+const StyledFieldset = styled(Fieldset)`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+`;
+
+const FilterRad = styled.div`
+    display: flex;
+    margin-top: 1rem;
+
+    & > * {
+        padding-right: 1.5rem;
+    }
+`;
+
 const FilterSkjema: React.FunctionComponent = () => {
     const { innloggetSaksbehandler } = useApp();
     const {
@@ -55,8 +57,8 @@ const FilterSkjema: React.FunctionComponent = () => {
     } = useOppgaver();
 
     return (
-        <SkjemaGruppe className="filterskjema" aria-label="oppgavebenken-filterskjema">
-            <div className="filterskjema__filtre">
+        <StyledFieldset legend={'Oppgavebenken filterskjema'} hideLegend>
+            <FilterRad>
                 {Object.values(oppgaveFelter)
                     .filter((oppgaveFelt: IOppgaveFelt) => oppgaveFelt.filter)
                     .map((oppgaveFelt: IOppgaveFelt) => {
@@ -64,39 +66,34 @@ const FilterSkjema: React.FunctionComponent = () => {
                             case 'dato':
                                 return (
                                     <DatoVelgerContainer key={oppgaveFelt.nøkkel}>
-                                        <StyledFamilieDatovelger
-                                            id={oppgaveFelt.nøkkel}
+                                        <DatovelgerForGammelSkjemaløsning
+                                            key={oppgaveFelt.nøkkel}
                                             label={oppgaveFelt.label}
-                                            onChange={(dato?: ISODateString) => {
+                                            onDateChange={(dato?: IsoDatoString) => {
                                                 settVerdiPåOppgaveFelt(
                                                     oppgaveFelt,
                                                     dato ? dato : ''
                                                 );
                                             }}
-                                            placeholder={datoformatNorsk.DATO}
                                             value={oppgaveFelt.filter.selectedValue}
-                                            className="filterskjema__filtre--input"
+                                            visFeilmeldinger={
+                                                oppgaveFelt.valideringsstatus ===
+                                                Valideringsstatus.FEIL
+                                            }
+                                            feilmelding={oppgaveFelt.feilmelding}
                                         />
-                                        {oppgaveFelt.valideringsstatus ===
-                                            Valideringsstatus.FEIL && (
-                                            <StyledErrorMessage size={'small'}>
-                                                {oppgaveFelt.feilmelding}
-                                            </StyledErrorMessage>
-                                        )}
                                     </DatoVelgerContainer>
                                 );
                             case 'select':
                                 return (
                                     <Select
-                                        bredde={'l'}
                                         label={oppgaveFelt.label}
                                         onChange={event =>
                                             settVerdiPåOppgaveFelt(oppgaveFelt, event.target.value)
                                         }
                                         key={oppgaveFelt.nøkkel}
                                         value={oppgaveFelt.filter.selectedValue}
-                                        className="filterskjema__filtre--input"
-                                        feil={
+                                        error={
                                             oppgaveFelt.valideringsstatus === Valideringsstatus.FEIL
                                                 ? oppgaveFelt.feilmelding
                                                 : undefined
@@ -134,9 +131,9 @@ const FilterSkjema: React.FunctionComponent = () => {
                                 return null;
                         }
                     })}
-            </div>
+            </FilterRad>
 
-            <div className="filterskjema__actions">
+            <div>
                 <StyledButton
                     variant="primary"
                     onClick={() => {
@@ -152,7 +149,7 @@ const FilterSkjema: React.FunctionComponent = () => {
                     children={'Tilbakestill filtrering'}
                 />
             </div>
-        </SkjemaGruppe>
+        </StyledFieldset>
     );
 };
 

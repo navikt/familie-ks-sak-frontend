@@ -2,18 +2,15 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
-
 import { Button, ErrorMessage } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-datovelger';
-import { FamilieDatovelger } from '@navikt/familie-datovelger';
 import type { Felt } from '@navikt/familie-skjema';
 
 import Pluss from '../../../../ikoner/Pluss';
 import Slett from '../../../../ikoner/Slett';
 import type { IBarnMedOpplysninger } from '../../../../typer/søknad';
-import { datoformatNorsk } from '../../../../utils/formatter';
+import type { IsoDatoString } from '../../../../utils/dato';
 import { erIsoStringGyldig } from '../../../../utils/kalender';
+import DatovelgerForGammelSkjemaløsning from '../../../Felleskomponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 
 interface IProps {
     barn: IBarnMedOpplysninger;
@@ -23,23 +20,6 @@ interface IProps {
 
 const Container = styled.div`
     margin-left: 3rem;
-`;
-
-export const StyledFamilieDatovelger = styled(FamilieDatovelger)<{ feil: boolean }>`
-    .nav-datovelger {
-        margin-top: 0.5rem;
-    }
-    .nav-datovelger__input {
-        border-color: ${({ feil }) => (feil ? navFarger.redError : navFarger.navBla)};
-        box-shadow: ${({ feil }) => (feil ? '0 0 0 1px #ba3a26' : '0 0 0 0')};
-    }
-
-    .nav-datovelger__kalenderknapp {
-        border-color: ${({ feil }) => (feil ? navFarger.redError : navFarger.navBla)};
-        box-shadow: ${({ feil }) => (feil ? '0 0 0 1px #ba3a26' : '0 0 0 0')};
-    }
-
-    margin-bottom: ${({ feil }) => (feil ? '.125rem' : '0')};
 `;
 
 const DatovelgerOgSlettknapp = styled.div<{ feil: boolean }>`
@@ -69,10 +49,10 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
     avtalerOmDeltBostedPerBarnFelt,
     visFeilmeldinger,
 }) => {
-    const avtalerOmDeltBosted: ISODateString[] =
+    const avtalerOmDeltBosted: IsoDatoString[] =
         avtalerOmDeltBostedPerBarnFelt.verdi[barn.ident ?? ''] ?? [];
 
-    const hentFeilmelding = (avtaleDato?: ISODateString) => {
+    const hentFeilmelding = (avtaleDato?: IsoDatoString) => {
         if (!visFeilmeldinger) return undefined;
 
         if (avtaleDato === '') {
@@ -92,16 +72,15 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
                 return (
                     <div key={`${barn.fødselsdato}`}>
                         <DatovelgerOgSlettknapp feil={feilmelding !== undefined}>
-                            <StyledFamilieDatovelger
-                                erLesesvisning={false}
-                                id={`${barn.fødselsdato}_${avtaleDato}`}
+                            <DatovelgerForGammelSkjemaløsning
                                 label={'Dato for avtale om delt bosted'}
-                                placeholder={datoformatNorsk.DATO}
-                                limitations={{
-                                    minDate: barn.fødselsdato,
-                                }}
-                                feil={feilmelding !== undefined}
-                                onChange={(dato?: ISODateString) => {
+                                minDatoAvgrensning={
+                                    barn.fødselsdato ? new Date(barn.fødselsdato) : undefined
+                                }
+                                value={avtaleDato}
+                                visFeilmeldinger={feilmelding !== undefined}
+                                feilmelding={feilmelding}
+                                onDateChange={(dato?: IsoDatoString) => {
                                     avtalerOmDeltBostedPerBarnFelt.validerOgSettFelt({
                                         ...avtalerOmDeltBostedPerBarnFelt.verdi,
                                         [barn.ident ?? '']: avtalerOmDeltBosted.reduce(
@@ -120,7 +99,6 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
                                         ),
                                     });
                                 }}
-                                value={avtaleDato}
                             />
                             {index !== 0 && (
                                 <FjernAvtaleKnapp
