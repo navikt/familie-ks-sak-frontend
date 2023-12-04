@@ -4,9 +4,7 @@ import styled from 'styled-components';
 
 import { Select, SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { Button, ErrorMessage } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-datovelger';
-import { FamilieDatovelger } from '@navikt/familie-datovelger';
+import { Button } from '@navikt/ds-react';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -14,20 +12,11 @@ import type { IOppgaveFelt } from './oppgavefelter';
 import { useApp } from '../../context/AppContext';
 import { useOppgaver } from '../../context/OppgaverContext';
 import type { IPar } from '../../typer/common';
-import { datoformatNorsk } from '../../utils/formatter';
+import type { IsoDatoString } from '../../utils/dato';
+import DatovelgerForGammelSkjemaløsning from '../Felleskomponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 
 const DatoVelgerContainer = styled.div`
     max-width: 12.5rem;
-`;
-
-const StyledFamilieDatovelger = styled(FamilieDatovelger)`
-    .nav-datovelger {
-        padding-top: 0.4rem;
-    }
-`;
-
-const StyledErrorMessage = styled(ErrorMessage)`
-    margin-top: 0.5rem;
 `;
 
 // Denne stylingen skal fjernes på sikt (minus marginer)
@@ -64,25 +53,22 @@ const FilterSkjema: React.FunctionComponent = () => {
                             case 'dato':
                                 return (
                                     <DatoVelgerContainer key={oppgaveFelt.nøkkel}>
-                                        <StyledFamilieDatovelger
-                                            id={oppgaveFelt.nøkkel}
+                                        <DatovelgerForGammelSkjemaløsning
+                                            key={oppgaveFelt.nøkkel}
                                             label={oppgaveFelt.label}
-                                            onChange={(dato?: ISODateString) => {
+                                            onDateChange={(dato?: IsoDatoString) => {
                                                 settVerdiPåOppgaveFelt(
                                                     oppgaveFelt,
                                                     dato ? dato : ''
                                                 );
                                             }}
-                                            placeholder={datoformatNorsk.DATO}
                                             value={oppgaveFelt.filter.selectedValue}
-                                            className="filterskjema__filtre--input"
+                                            visFeilmeldinger={
+                                                oppgaveFelt.valideringsstatus ===
+                                                Valideringsstatus.FEIL
+                                            }
+                                            feilmelding={oppgaveFelt.feilmelding}
                                         />
-                                        {oppgaveFelt.valideringsstatus ===
-                                            Valideringsstatus.FEIL && (
-                                            <StyledErrorMessage size={'small'}>
-                                                {oppgaveFelt.feilmelding}
-                                            </StyledErrorMessage>
-                                        )}
                                     </DatoVelgerContainer>
                                 );
                             case 'select':
