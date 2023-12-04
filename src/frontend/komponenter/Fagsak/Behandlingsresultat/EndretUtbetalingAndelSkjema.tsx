@@ -9,7 +9,6 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { Delete } from '@navikt/ds-icons';
 import { BodyShort, Button, Checkbox, Label, Radio, RadioGroup } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-datovelger';
 import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -30,16 +29,12 @@ import {
     årsaker,
     årsakTekst,
 } from '../../../typer/utbetalingAndel';
-import { datoformatNorsk, lagPersonLabel } from '../../../utils/formatter';
+import { lagPersonLabel } from '../../../utils/formatter';
 import type { YearMonth } from '../../../utils/kalender';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Datovelger from '../../Felleskomponenter/Datovelger/Datovelger';
 import Knapperekke from '../../Felleskomponenter/Knapperekke';
 import MånedÅrVelger from '../../Felleskomponenter/MånedÅrInput/MånedÅrVelger';
-import {
-    StyledErrorMessage,
-    StyledFamilieDatovelger,
-} from '../Dokumentutsending/DeltBosted/DeltBostedAvtaler';
 
 const KnapperekkeVenstre = styled.div`
     display: flex;
@@ -88,21 +83,8 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
     const { request } = useHttp();
     const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
 
-    const {
-        endretUtbetalingAndel,
-        skjema,
-        kanSendeSkjema,
-        onSubmit,
-        nullstillSkjema,
-        hentSkjemaData,
-    } = useEndretUtbetalingAndel();
-
-    useEffect(() => {
-        nullstillSkjema();
-        skjema.felter.avtaletidspunktDeltBosted.validerOgSettFelt(
-            endretUtbetalingAndel.avtaletidspunktDeltBosted
-        );
-    }, [endretUtbetalingAndel]);
+    const { endretUtbetalingAndel, skjema, kanSendeSkjema, onSubmit, hentSkjemaData } =
+        useEndretUtbetalingAndel();
 
     const oppdaterEndretUtbetaling = (avbrytEndringAvUtbetalingsperiode: () => void) => {
         if (kanSendeSkjema()) {
@@ -323,32 +305,12 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
 
                 {skjema.felter.avtaletidspunktDeltBosted.erSynlig && (
                     <Feltmargin>
-                        <StyledFamilieDatovelger
-                            {...skjema.felter.avtaletidspunktDeltBosted.hentNavBaseSkjemaProps(
-                                skjema.visFeilmeldinger
-                            )}
-                            feil={
-                                !!skjema.felter.avtaletidspunktDeltBosted.feilmelding &&
-                                skjema.visFeilmeldinger
-                            }
-                            value={
-                                skjema.felter.avtaletidspunktDeltBosted.verdi !== null
-                                    ? skjema.felter.avtaletidspunktDeltBosted.verdi
-                                    : undefined
-                            }
-                            label={<Label>Avtale om delt bosted</Label>}
-                            placeholder={datoformatNorsk.DATO}
-                            onChange={(dato?: ISODateString) =>
-                                skjema.felter.avtaletidspunktDeltBosted.validerOgSettFelt(dato)
-                            }
-                            erLesesvisning={erLesevisning}
+                        <Datovelger
+                            felt={skjema.felter.avtaletidspunktDeltBosted}
+                            label={'Avtale om delt bosted'}
+                            visFeilmeldinger={skjema.visFeilmeldinger}
+                            readOnly={erLesevisning}
                         />
-                        {skjema.felter.avtaletidspunktDeltBosted.feilmelding &&
-                            skjema.visFeilmeldinger && (
-                                <StyledErrorMessage>
-                                    {skjema.felter.avtaletidspunktDeltBosted.feilmelding}
-                                </StyledErrorMessage>
-                            )}
                     </Feltmargin>
                 )}
                 {skjema.felter.fullSats.erSynlig && (

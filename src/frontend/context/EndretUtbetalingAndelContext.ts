@@ -38,7 +38,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 periodeSkalUtbetalesTilSøker: boolean | undefined;
                 årsak: IEndretUtbetalingAndelÅrsak | undefined;
                 søknadstidspunkt: Date | undefined;
-                avtaletidspunktDeltBosted: FamilieIsoDate | undefined;
+                avtaletidspunktDeltBosted: Date | undefined;
                 fullSats: boolean | undefined;
                 begrunnelse: string | undefined;
                 erEksplisittAvslagPåSøknad: boolean | undefined;
@@ -67,17 +67,15 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                     verdi: undefined,
                     valideringsfunksjon: validerGyldigDato,
                 }),
-                avtaletidspunktDeltBosted: useFelt<FamilieIsoDate | undefined>({
-                    verdi: endretUtbetalingAndel.avtaletidspunktDeltBosted,
+                avtaletidspunktDeltBosted: useFelt<Date | undefined>({
+                    verdi: undefined,
                     avhengigheter: {
                         årsak: årsakFelt,
                     },
+                    nullstillVedAvhengighetEndring: false,
                     skalFeltetVises: (avhengigheter: Avhengigheter) =>
                         avhengigheter?.årsak.verdi === IEndretUtbetalingAndelÅrsak.DELT_BOSTED,
-                    valideringsfunksjon: felt =>
-                        erIsoStringGyldig(felt.verdi)
-                            ? ok(felt)
-                            : feil(felt, 'Du må velge tidspunkt for avtale om delt bosted.'),
+                    valideringsfunksjon: validerGyldigDato,
                 }),
                 fullSats: useFelt<boolean | undefined>({
                     verdi:
@@ -120,6 +118,11 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                     ? new Date(endretUtbetalingAndel.søknadstidspunkt)
                     : undefined
             );
+            skjema.felter.avtaletidspunktDeltBosted.validerOgSettFelt(
+                endretUtbetalingAndel.avtaletidspunktDeltBosted
+                    ? new Date(endretUtbetalingAndel.avtaletidspunktDeltBosted)
+                    : undefined
+            );
         };
 
         const [forrigeEndretUtbetalingAndel, settForrigeEndretUtbetalingAndel] =
@@ -157,7 +160,9 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 årsak: årsak && årsak.verdi,
                 begrunnelse: begrunnelse.verdi,
                 søknadstidspunkt: dateTilIsoDatoStringEllerUndefined(søknadstidspunkt.verdi),
-                avtaletidspunktDeltBosted: avtaletidspunktDeltBosted.verdi,
+                avtaletidspunktDeltBosted: dateTilIsoDatoStringEllerUndefined(
+                    avtaletidspunktDeltBosted.verdi
+                ),
                 erTilknyttetAndeler: endretUtbetalingAndel.erTilknyttetAndeler,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             };
