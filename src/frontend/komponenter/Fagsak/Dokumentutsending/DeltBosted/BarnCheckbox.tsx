@@ -90,12 +90,12 @@ const BarnCheckbox: React.FC<IProps> = ({
                         if (nyMerketStatus) {
                             avtalerOmDeltBostedPerBarnFelt.validerOgSettFelt({
                                 ...avtalerOmDeltBostedPerBarnFelt.verdi,
-                                [barn.ident]: [''],
+                                [barn.ident ?? '']: [''],
                             });
                         } else {
                             avtalerOmDeltBostedPerBarnFelt.validerOgSettFelt({
                                 ...avtalerOmDeltBostedPerBarnFelt.verdi,
-                                [barn.ident]: [],
+                                [barn.ident ?? '']: [],
                             });
                         }
                     }}

@@ -48,7 +48,11 @@ export const summer = (beløp: number[]): number => beløp.reduce((acc, b) => ac
 
 export const kunSiffer = (value: string) => /^\d+$/.test(value);
 
-const erPersonId = (personIdent: string) => {
+const erPersonId = (personIdent: string | undefined) => {
+    if (!personIdent) {
+        return false;
+    }
+
     const id = personIdent.split(' ').join('');
     return /^[+-]?\d+(\.\d+)?$/.test(id) && id.length === 11;
 };
@@ -58,8 +62,8 @@ const erOrgNr = (orgNr: string) => {
     return kunSiffer(orgNr) && orgNr.length === 9;
 };
 
-export const formaterIdent = (personIdent: string, ukjentTekst = 'Ukjent id') => {
-    if (personIdent === '') {
+export const formaterIdent = (personIdent: string | undefined, ukjentTekst = 'Ukjent id') => {
+    if (personIdent === '' || personIdent === undefined) {
         return ukjentTekst;
     }
 

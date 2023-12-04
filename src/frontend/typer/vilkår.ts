@@ -36,6 +36,7 @@ export enum VilkårType {
     MEDLEMSKAP_ANNEN_FORELDER = 'MEDLEMSKAP_ANNEN_FORELDER',
     BOR_MED_SØKER = 'BOR_MED_SØKER',
     BARNETS_ALDER = 'BARNETS_ALDER',
+    LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
 }
 
 export enum Regelverk {
@@ -50,6 +51,7 @@ export interface IPersonResultat {
     andreVurderinger: IAnnenVurdering[];
     person: IGrunnlagPerson;
 }
+
 export interface IAnnenVurdering {
     id: number;
     begrunnelse: string;
@@ -151,6 +153,13 @@ export const vilkårConfig: Record<VilkårType, IVilkårConfig> = {
         tittel: 'Bosatt i riket',
         spørsmål: (part?: string) => `Er ${part} bosatt i riket?`,
         parterDetteGjelderFor: [PersonType.BARN, PersonType.SØKER],
+    },
+    LOVLIG_OPPHOLD: {
+        beskrivelse: 'lovlig opphold',
+        key: 'LOVLIG_OPPHOLD',
+        tittel: 'Lovlig opphold',
+        spørsmål: (part?: string) => `Har ${part} lovlig opphold?`,
+        parterDetteGjelderFor: [PersonType.SØKER],
     },
     BOR_MED_SØKER: {
         beskrivelse: 'Bor med søker',
