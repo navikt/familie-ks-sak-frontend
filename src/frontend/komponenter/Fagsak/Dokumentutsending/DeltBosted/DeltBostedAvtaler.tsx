@@ -12,8 +12,9 @@ import type { Felt } from '@navikt/familie-skjema';
 import Pluss from '../../../../ikoner/Pluss';
 import Slett from '../../../../ikoner/Slett';
 import type { IBarnMedOpplysninger } from '../../../../typer/søknad';
-import { datoformatNorsk } from '../../../../utils/formatter';
+import type { IsoDatoString } from '../../../../utils/dato';
 import { erIsoStringGyldig } from '../../../../utils/kalender';
+import DatovelgerForGammelSkjemaløsning from '../../../Felleskomponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 
 interface IProps {
     barn: IBarnMedOpplysninger;
@@ -92,16 +93,15 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
                 return (
                     <div key={`${barn.fødselsdato}`}>
                         <DatovelgerOgSlettknapp feil={feilmelding !== undefined}>
-                            <StyledFamilieDatovelger
-                                erLesesvisning={false}
-                                id={`${barn.fødselsdato}_${avtaleDato}`}
+                            <DatovelgerForGammelSkjemaløsning
                                 label={'Dato for avtale om delt bosted'}
-                                placeholder={datoformatNorsk.DATO}
-                                limitations={{
-                                    minDate: barn.fødselsdato,
-                                }}
-                                feil={feilmelding !== undefined}
-                                onChange={(dato?: ISODateString) => {
+                                minDatoAvgrensning={
+                                    barn.fødselsdato ? new Date(barn.fødselsdato) : undefined
+                                }
+                                value={avtaleDato}
+                                visFeilmeldinger={feilmelding !== undefined}
+                                feilmelding={feilmelding}
+                                onDateChange={(dato?: IsoDatoString) => {
                                     avtalerOmDeltBostedPerBarnFelt.validerOgSettFelt({
                                         ...avtalerOmDeltBostedPerBarnFelt.verdi,
                                         [barn.ident]: avtalerOmDeltBosted.reduce(
@@ -120,7 +120,6 @@ const DeltBostedAvtaler: React.FC<IProps> = ({
                                         ),
                                     });
                                 }}
-                                value={avtaleDato}
                             />
                             {index !== 0 && (
                                 <FjernAvtaleKnapp
