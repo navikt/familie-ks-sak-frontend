@@ -1,20 +1,12 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { Button, Modal } from '@navikt/ds-react';
+import { Button, Fieldset, Modal } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import type { IBehandling } from '../../../../typer/behandling';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
 import Datovelger from '../../../Felleskomponenter/Datovelger/Datovelger';
-
-const Feltmargin = styled.div`
-    margin-bottom: 2rem;
-`;
 
 interface IProps {
     onAvbryt: () => void;
@@ -39,18 +31,18 @@ export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({
             portal
         >
             <Modal.Body>
-                <SkjemaGruppe
-                    feil={hentFrontendFeilmelding(skjema.submitRessurs)}
-                    utenFeilPropagering={true}
+                <Fieldset
+                    error={hentFrontendFeilmelding(skjema.submitRessurs)}
+                    errorPropagation={false}
+                    legend={'Nytt endringstidspunkt'}
+                    hideLegend
                 >
-                    <Feltmargin>
-                        <Datovelger
-                            felt={skjema.felter.endringstidspunkt}
-                            label={'Endringstidspunkt'}
-                            visFeilmeldinger={skjema.visFeilmeldinger}
-                        />
-                    </Feltmargin>
-                </SkjemaGruppe>
+                    <Datovelger
+                        felt={skjema.felter.endringstidspunkt}
+                        label={'Endringstidspunkt'}
+                        visFeilmeldinger={skjema.visFeilmeldinger}
+                    />
+                </Fieldset>
             </Modal.Body>
             <Modal.Footer>
                 <Button
