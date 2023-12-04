@@ -1,30 +1,56 @@
 import React from 'react';
 
 import { Button, Fieldset, Modal } from '@navikt/ds-react';
-import type { ISkjema } from '@navikt/familie-skjema';
+import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { useOppdaterEndringstidspunktSkjema } from './useOppdaterEndringstidspunktSkjema';
+import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../typer/behandling';
+import type { IRestOverstyrtEndringstidspunkt } from '../../../../typer/vedtaksperiode';
+import { dateTilIsoDatoString } from '../../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
 import Datovelger from '../../../Felleskomponenter/Datovelger/Datovelger';
 
 interface IProps {
-    onAvbryt: () => void;
-    oppdaterEndringstidspunkt: () => void;
-    skjema: ISkjema<{ endringstidspunkt: Date | undefined }, IBehandling>;
-    erLesevisning: boolean;
+    åpenBehandling: IBehandling;
+    lukkModal: () => void;
 }
 
-export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({
-    onAvbryt,
-    oppdaterEndringstidspunkt,
-    skjema,
-    erLesevisning,
-}) => {
+export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({ åpenBehandling, lukkModal }) => {
+    const { settÅpenBehandling, vurderErLesevisning } = useBehandling();
+    const { skjema, kanSendeSkjema, onSubmit } = useOppdaterEndringstidspunktSkjema(
+        åpenBehandling.endringstidspunkt
+    );
+
+    const erLesevisning = vurderErLesevisning();
+    const oppdaterEndringstidspunkt = () => {
+        if (kanSendeSkjema()) {
+            onSubmit<IRestOverstyrtEndringstidspunkt>(
+                {
+                    method: 'PUT',
+                    data: {
+                        overstyrtEndringstidspunkt: dateTilIsoDatoString(
+                            skjema.felter.endringstidspunkt.verdi
+                        ),
+                        behandlingId: åpenBehandling.behandlingId,
+                    },
+                    url: `/familie-ks-sak/api/vedtaksperioder/endringstidspunkt`,
+                },
+                (response: Ressurs<IBehandling>) => {
+                    if (response.status === RessursStatus.SUKSESS) {
+                        lukkModal();
+                        settÅpenBehandling(response);
+                    }
+                }
+            );
+        }
+    };
+
     return (
         <Modal
             open
-            onClose={onAvbryt}
+            onClose={lukkModal}
             width={'35rem'}
             header={{
                 heading: 'Oppdater endringstidspunkt',
@@ -62,7 +88,7 @@ export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({
                     variant={'tertiary'}
                     key={'Avbryt'}
                     size={'small'}
-                    onClick={onAvbryt}
+                    onClick={lukkModal}
                     children={'Avbryt'}
                 />
             </Modal.Footer>

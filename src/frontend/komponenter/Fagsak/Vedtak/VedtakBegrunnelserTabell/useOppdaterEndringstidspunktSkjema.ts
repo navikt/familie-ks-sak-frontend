@@ -7,8 +7,7 @@ import type { IBehandling } from '../../../../typer/behandling';
 import { validerGyldigDato } from '../../../../utils/dato';
 
 export const useOppdaterEndringstidspunktSkjema = (
-    endringstidspunkt: ISODateString | undefined,
-    modalVises: boolean
+    endringstidspunkt: ISODateString | undefined
 ) => {
     const oppdaterEndringstidspunktSkjema = useSkjema<
         {
@@ -26,14 +25,14 @@ export const useOppdaterEndringstidspunktSkjema = (
     });
 
     useEffect(() => {
-        if (modalVises && endringstidspunkt) {
+        if (endringstidspunkt) {
             oppdaterEndringstidspunktSkjema.skjema.felter.endringstidspunkt.validerOgSettFelt(
                 new Date(endringstidspunkt)
             );
         } else {
             oppdaterEndringstidspunktSkjema.nullstillSkjema();
         }
-    }, [modalVises]);
+    }, []);
 
     return oppdaterEndringstidspunktSkjema;
 };
