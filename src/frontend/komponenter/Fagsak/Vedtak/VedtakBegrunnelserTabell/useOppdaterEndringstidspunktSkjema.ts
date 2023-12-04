@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
-import type { ISODateString } from '@navikt/familie-datovelger';
 import { useFelt, useSkjema } from '@navikt/familie-skjema';
 
 import type { IBehandling } from '../../../../typer/behandling';
+import type { IsoDatoString } from '../../../../utils/dato';
 import { validerGyldigDato } from '../../../../utils/dato';
 
 export const useOppdaterEndringstidspunktSkjema = (
-    endringstidspunkt: ISODateString | undefined
+    endringstidspunkt: IsoDatoString | undefined
 ) => {
     const oppdaterEndringstidspunktSkjema = useSkjema<
         {
