@@ -33,6 +33,7 @@ import {
 import { datoformatNorsk, lagPersonLabel } from '../../../utils/formatter';
 import type { YearMonth } from '../../../utils/kalender';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
+import Datovelger from '../../Felleskomponenter/Datovelger/Datovelger';
 import Knapperekke from '../../Felleskomponenter/Knapperekke';
 import MånedÅrVelger from '../../Felleskomponenter/MånedÅrInput/MånedÅrVelger';
 import {
@@ -311,30 +312,13 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 </Feltmargin>
 
                 <Feltmargin>
-                    <StyledFamilieDatovelger
-                        {...skjema.felter.søknadstidspunkt.hentNavBaseSkjemaProps(
-                            skjema.visFeilmeldinger
-                        )}
-                        feil={
-                            !!skjema.felter.søknadstidspunkt.feilmelding && skjema.visFeilmeldinger
-                        }
-                        value={
-                            skjema.felter.søknadstidspunkt.verdi !== null
-                                ? skjema.felter.søknadstidspunkt.verdi
-                                : undefined
-                        }
-                        label={<Label>Søknadstidspunkt</Label>}
-                        placeholder={datoformatNorsk.DATO}
-                        onChange={(dato?: ISODateString) =>
-                            skjema.felter.søknadstidspunkt.validerOgSettFelt(dato)
-                        }
-                        erLesesvisning={erLesevisning}
+                    <Datovelger
+                        felt={skjema.felter.søknadstidspunkt}
+                        label={'Søknadstidspunkt'}
+                        visFeilmeldinger={skjema.visFeilmeldinger}
+                        readOnly={erLesevisning}
+                        kanKunVelgeFortid
                     />
-                    {skjema.felter.søknadstidspunkt.feilmelding && skjema.visFeilmeldinger && (
-                        <StyledErrorMessage>
-                            {skjema.felter.søknadstidspunkt.feilmelding}
-                        </StyledErrorMessage>
-                    )}
                 </Feltmargin>
 
                 {skjema.felter.avtaletidspunktDeltBosted.erSynlig && (
