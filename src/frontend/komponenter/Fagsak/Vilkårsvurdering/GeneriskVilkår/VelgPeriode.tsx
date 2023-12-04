@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Fieldset, HelpText, Label } from '@navikt/ds-react';
-import type { ISODateString } from '@navikt/familie-datovelger';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
@@ -86,7 +85,7 @@ const VelgPeriode: React.FC<IProps> = ({
                     label={'T.o.m (valgfri)'}
                     value={periode.verdi.tom}
                     readOnly={lesevisning}
-                    onDateChange={(dato?: ISODateString) => {
+                    onDateChange={(dato?: IsoDatoString) => {
                         periode.validerOgSettFelt(nyPeriode(periode.verdi.fom, dato));
                     }}
                     visFeilmeldinger={false}
