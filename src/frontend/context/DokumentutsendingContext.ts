@@ -225,6 +225,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
         return {
             fagsakId,
             hentForhåndsvisningPåFagsak,
+            hentBarnMedOpplysningerFraBruker,
             hentSkjemaFeilmelding,
             hentetDokument,
             sendBrevPåFagsak,

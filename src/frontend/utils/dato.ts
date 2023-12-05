@@ -74,13 +74,3 @@ export const isoStringTilFormatertString = ({
         defaultString: defaultString,
     });
 };
-
-export const isoStringTilDate = (isoDatoString: IsoDatoString | IsoMånedString): Date => {
-    const dato = parseISO(isoDatoString);
-
-    if (!isValid(dato)) {
-        throw new Error(`Dato '${isoDatoString}' er ugyldig`);
-    }
-
-    return dato;
-};

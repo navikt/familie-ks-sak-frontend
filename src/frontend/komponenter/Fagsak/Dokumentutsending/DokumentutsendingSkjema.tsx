@@ -24,7 +24,7 @@ const StyledFieldset = styled(Fieldset)`
     margin-top: 2rem;
 `;
 
-const ÅrsakSkjema = styled.div`
+const FeltMargin = styled.div`
     margin-bottom: 2rem;
 `;
 
@@ -96,7 +96,7 @@ const DokumentutsendingSkjema: React.FC = () => {
                     })}
                 </Select>
 
-                <ÅrsakSkjema>
+                <FeltMargin>
                     {årsakVerdi !== undefined && barnSøktForÅrsaker.includes(årsakVerdi) && (
                         <BarnSøktForSkjema
                             barnSøktForFelt={skjema.felter.barnSøktFor}
@@ -104,7 +104,7 @@ const DokumentutsendingSkjema: React.FC = () => {
                             settVisFeilmeldinger={settVisfeilmeldinger}
                         />
                     )}
-                </ÅrsakSkjema>
+                </FeltMargin>
 
                 <MålformVelger
                     målformFelt={skjema.felter.målform}
