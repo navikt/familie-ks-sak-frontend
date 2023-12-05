@@ -1,7 +1,10 @@
+import { addMonths, endOfMonth, isAfter } from 'date-fns';
+
 import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 
-import familieDayjs from './familieDayjs';
+import type { IsoDatoString } from './dato';
+import { dagensDato, isoStringTilDate } from './dato';
 import type { DagMånedÅr, IPeriode } from './kalender';
 import {
     erEtter,
@@ -15,7 +18,6 @@ import {
     leggTil,
     TIDENES_ENDE,
     TIDENES_MORGEN,
-    valgtDatoErNesteMånedEllerSenere,
 } from './kalender';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
@@ -92,6 +94,9 @@ const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: string, tom?: 
     return erFør(fomDato, fødselsdato) || (tomDato ? erFør(tomDato, fødselsdato) : false);
 };
 
+const valgtDatoErSenereEnnNesteMåned = (valgtDato: IsoDatoString) =>
+    isAfter(isoStringTilDate(valgtDato), endOfMonth(addMonths(dagensDato, 1)));
+
 export const erPeriodeGyldig = (
     felt: FeltState<IPeriode>,
     avhengigheter?: Avhengigheter
@@ -159,8 +164,6 @@ export const erPeriodeGyldig = (
         );
         const fomDatoErLikDødsfallDato = fom === person?.dødsfallDato;
 
-        const idag = kalenderDatoMedFallback(familieDayjs().toISOString(), TIDENES_ENDE);
-
         const fomKalenderDato = kalenderDatoMedFallback(fom, TIDENES_MORGEN);
 
         if (erEtter(fomKalenderDato, førsteDagINesteMåned())) {
@@ -170,14 +173,10 @@ export const erPeriodeGyldig = (
             );
         }
 
-        if (
-            tom &&
-            !erBarnetsAlderVilkår &&
-            valgtDatoErNesteMånedEllerSenere(tomKalenderDato, idag)
-        ) {
+        if (tom && !erBarnetsAlderVilkår && valgtDatoErSenereEnnNesteMåned(tom)) {
             return feil(
                 felt,
-                'Du kan ikke legge inn til og med dato som er i neste måned eller senere'
+                'Du kan ikke legge inn til og med dato som er senere enn neste måned'
             );
         }
 
