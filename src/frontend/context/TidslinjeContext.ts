@@ -1,19 +1,14 @@
 import { useState } from 'react';
 
 import createUseContext from 'constate';
-import { addMonths, endOfMonth, subMonths } from 'date-fns';
+import { addMonths, endOfMonth, startOfMonth, subMonths } from 'date-fns';
 
 import type { Periode, Etikett } from '@navikt/familie-tidslinje';
 
 import type { IPersonMedAndelerTilkjentYtelse, IYtelsePeriode } from '../typer/beregning';
 import type { IGrunnlagPerson } from '../typer/person';
-import { dagensDato } from '../utils/dato';
+import { dagensDato, isoStringTilDate } from '../utils/dato';
 import { sorterPersonTypeOgFødselsdato } from '../utils/formatter';
-import {
-    hentFørsteDagIYearMonth,
-    hentSisteDagIYearMonth,
-    kalenderDatoTilDate,
-} from '../utils/kalender';
 
 export interface ITidslinjeVindu {
     id: number;
@@ -96,14 +91,10 @@ const [TidslinjeProvider, useTidslinje] = createUseContext(() => {
                   (personMedAndelerTilkjentYtelse: IPersonMedAndelerTilkjentYtelse) => {
                       return personMedAndelerTilkjentYtelse.ytelsePerioder.reduce(
                           (acc: Periode[], ytelsePeriode: IYtelsePeriode) => {
-                              const fom = kalenderDatoTilDate(
-                                  hentFørsteDagIYearMonth(ytelsePeriode.stønadFom)
-                              );
+                              const fom = startOfMonth(isoStringTilDate(ytelsePeriode.stønadFom));
                               const periode: Periode = {
                                   fom,
-                                  tom: kalenderDatoTilDate(
-                                      hentSisteDagIYearMonth(ytelsePeriode.stønadTom)
-                                  ),
+                                  tom: endOfMonth(isoStringTilDate(ytelsePeriode.stønadTom)),
                                   id: `${
                                       personMedAndelerTilkjentYtelse.personIdent
                                   }_${fom.getMonth()}_${fom.getDay()}`,
