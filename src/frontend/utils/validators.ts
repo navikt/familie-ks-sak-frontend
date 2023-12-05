@@ -1,4 +1,5 @@
 import {
+    addMonths,
     addYears,
     endOfMonth,
     isAfter,
@@ -69,6 +70,9 @@ const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Da
 const erNesteMånedEllerSenere = (dato: Date) => isAfter(dato, endOfMonth(dagensDato));
 
 const erUendelig = (date: Date | undefined): date is undefined => date === undefined;
+
+const valgtDatoErSenereEnnNesteMåned = (valgtDato: Date) =>
+    isAfter(valgtDato, endOfMonth(addMonths(dagensDato, 1)));
 
 export const erPeriodeGyldig = (
     felt: FeltState<IPeriode>,
@@ -141,10 +145,10 @@ export const erPeriodeGyldig = (
             );
         }
         if (!erUendelig(tom)) {
-            if (!erBarnetsAlderVilkår && erNesteMånedEllerSenere(tom)) {
+            if (!erBarnetsAlderVilkår && valgtDatoErSenereEnnNesteMåned(tom)) {
                 return feil(
                     felt,
-                    'Du kan ikke legge inn til og med dato som er i neste måned eller senere'
+                    'Du kan ikke legge inn til og med dato som er senere enn neste måned'
                 );
             }
 
