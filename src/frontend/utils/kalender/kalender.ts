@@ -14,12 +14,6 @@ export const kalenderDatoMedFallback = (
     fallbackDato: DagMånedÅr
 ): DagMånedÅr => (dato ? parseIso8601String(dato) : fallbackDato);
 
-export const kalenderDatoFraDate = (date: Date): DagMånedÅr => ({
-    dag: date.getDate(),
-    måned: date.getMonth(),
-    år: date.getFullYear(),
-});
-
 export const kalenderDatoTilDate = (
     dagMånedÅr: DagMånedÅr,
     timer?: number,
