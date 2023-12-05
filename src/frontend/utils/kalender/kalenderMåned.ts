@@ -1,4 +1,4 @@
-import type { DagMånedÅr, YearMonth, FamilieIsoDate, MånedÅr } from '.';
+import type { YearMonth, FamilieIsoDate, MånedÅr } from '.';
 import { antallDagerIMåned, parseIso8601MånedString } from '.';
 
 export const kalenderMåned = (dato: FamilieIsoDate): MånedÅr => {
@@ -8,11 +8,6 @@ export const kalenderMåned = (dato: FamilieIsoDate): MånedÅr => {
         år: dagMånedÅr.år,
     };
 };
-
-export const sisteDagIMåned = (dagMånedÅr: DagMånedÅr) => ({
-    ...dagMånedÅr,
-    dag: antallDagerIMåned({ år: dagMånedÅr.år, måned: dagMånedÅr.måned }),
-});
 
 export const hentFørsteDagIYearMonth = (yearMonth: YearMonth) => {
     const månedÅr = kalenderMåned(yearMonth);

@@ -1,6 +1,6 @@
 import { isValid, parseISO } from 'date-fns';
 
-import type { DagMånedÅr, FamilieIsoDate, MånedÅr, YearMonth } from './typer';
+import type { DagMånedÅr, FamilieIsoDate } from './typer';
 import { capString } from './utils';
 
 export const erIsoStringGyldig = (familieIsoDato?: FamilieIsoDate): boolean => {
@@ -34,25 +34,6 @@ export const parseIso8601String = (familieIsoDato: FamilieIsoDate): DagMånedÅr
     return {
         dag: dato.getDate(),
         måned: dato.getMonth(),
-        år,
-    };
-};
-
-export const parseIso8601StringMånedÅr = (dato: YearMonth): MånedÅr => {
-    const månedÅrDato = parseISO(dato);
-
-    if (!isValid(månedÅrDato)) {
-        throw new Error(`Dato '${dato}' er ugyldig`);
-    }
-
-    const år: number = månedÅrDato.getFullYear();
-
-    if (år < 1800 || år > 2500) {
-        throw new Error(`År fra dato '${dato}' er '${år}' og er sannsynligvis feil`);
-    }
-
-    return {
-        måned: månedÅrDato.getMonth(),
         år,
     };
 };

@@ -11,12 +11,6 @@ export type År = { år: number };
 export type MånedÅr = { måned: number } & År;
 export type DagMånedÅr = { dag: number } & MånedÅr;
 
-export enum KalenderEnhet {
-    DAG,
-    MÅNED,
-    ÅR,
-}
-
 export interface IPeriode {
     // Format YYYY-MM-DD (ISO)
     fom?: FamilieIsoDate;
