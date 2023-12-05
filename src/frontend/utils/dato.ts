@@ -1,10 +1,15 @@
-import { format, isValid, startOfToday } from 'date-fns';
+import { format, isValid, parseISO, startOfToday } from 'date-fns';
 
 import type { FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
 
 export type IsoDatoString = string; // Format YYYY-MM-DD (ISO)
 export type IsoMånedString = string; // Format YYYY-MM (ISO)
+interface IsoStringTilFormatertStringProps {
+    isoString: IsoDatoString | IsoMånedString | undefined;
+    tilFormat: Datoformat;
+    defaultString?: string;
+}
 
 export const dagensDato = startOfToday();
 
@@ -45,3 +50,26 @@ export const dateTilIsoDatoStringEllerUndefined = (dato?: Date): IsoDatoString |
 
 export const validerGyldigDato = (felt: FeltState<Date | undefined>) =>
     felt.verdi && isValid(felt.verdi) ? ok(felt) : feil(felt, 'Du må velge en gyldig dato');
+
+export const isoStringTilFormatertString = ({
+    isoString,
+    tilFormat,
+    defaultString = '',
+}: IsoStringTilFormatertStringProps): string => {
+    const dato = isoString ? parseISO(isoString) : undefined;
+    return dateTilFormatertString({
+        date: dato,
+        tilFormat: tilFormat,
+        defaultString: defaultString,
+    });
+};
+
+export const isoStringTilDate = (isoDatoString: IsoDatoString | IsoMånedString): Date => {
+    const dato = parseISO(isoDatoString);
+
+    if (!isValid(dato)) {
+        throw new Error(`Dato '${isoDatoString}' er ugyldig`);
+    }
+
+    return dato;
+};
