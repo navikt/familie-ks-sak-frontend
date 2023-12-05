@@ -37,5 +37,3 @@ export const kalenderDatoTilDate = (
         timer ? timer : 0,
         minutter ? minutter : 0
     );
-
-export const iDag = (): DagMånedÅr => kalenderDatoFraDate(new Date());
