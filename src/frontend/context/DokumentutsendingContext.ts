@@ -12,9 +12,10 @@ import useDokument from '../hooks/useDokument';
 import { hentEnkeltInformasjonsbrevRequest } from '../komponenter/Fagsak/Dokumentutsending/Informasjonsbrev/enkeltInformasjonsbrevUtils';
 import { Informasjonsbrev } from '../komponenter/Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IManueltBrevRequestPåFagsak } from '../typer/dokument';
+import type { IForelderBarnRelasjon } from '../typer/person';
+import { ForelderBarnRelasjonRolle } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
 import { Målform } from '../typer/søknad';
-import { useBarnSøktForFelter } from '../utils/barnSøktForFelter';
 import { Datoformat, isoStringTilFormatertString } from '../utils/dato';
 import { hentFrontendFeilmelding } from '../utils/ressursUtils';
 
@@ -30,6 +31,31 @@ export const dokumentÅrsak: Record<DokumentÅrsak, string> = {
         'Informasjon til forelder omfattet norsk lovgivning - har fått en søknad fra annen forelder',
     TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING:
         'Informasjon til forelder omfattet av norsk lovgivning - varsel om revurdering',
+};
+
+const hentBarnMedOpplysningerFraBruker = () => {
+    const { bruker: brukerRessurs } = useFagsakContext();
+
+    if (brukerRessurs.status === RessursStatus.SUKSESS) {
+        const iBarnMedOpplysningers =
+            brukerRessurs.data.forelderBarnRelasjon
+                .filter(
+                    (relasjon: IForelderBarnRelasjon) =>
+                        relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN
+                )
+                .map(
+                    (relasjon: IForelderBarnRelasjon): IBarnMedOpplysninger => ({
+                        merket: false,
+                        ident: relasjon.personIdent,
+                        navn: relasjon.navn,
+                        fødselsdato: relasjon.fødselsdato,
+                        manueltRegistrert: false,
+                        erFolkeregistrert: true,
+                    })
+                ) ?? [];
+
+        return iBarnMedOpplysningers;
+    } else return [];
 };
 
 export const [DokumentutsendingProvider, useDokumentutsending] = createUseContext(
@@ -53,13 +79,21 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
             },
         });
 
-        const { barnSøktFor, nullstillBarnSøktFor } = useBarnSøktForFelter({
-            avhengigheter: { årsakFelt: årsak },
+        const barnMedOpplysningerFraBruker = hentBarnMedOpplysningerFraBruker();
+
+        const barnSøktFor = useFelt<IBarnMedOpplysninger[]>({
+            verdi: barnMedOpplysningerFraBruker,
+            valideringsfunksjon: felt => {
+                return felt.verdi.some((barn: IBarnMedOpplysninger) => barn.merket)
+                    ? ok(felt)
+                    : feil(felt, 'Du må velge barn');
+            },
             skalFeltetVises: avhengigheter =>
                 [
                     DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
                     DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING,
                 ].includes(avhengigheter.årsakFelt.verdi),
+            nullstillVedAvhengighetEndring: false,
         });
 
         const {
@@ -80,20 +114,18 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
             felter: {
                 årsak: årsak,
                 målform: målform,
-
-                barnSøktFor,
+                barnSøktFor: barnSøktFor,
             },
             skjemanavn: 'Dokumentutsending',
         });
 
         const nullstillSkjemaUtenomÅrsak = () => {
             skjema.felter.målform.nullstill();
-            nullstillBarnSøktFor();
+            skjema.felter.barnSøktFor.nullstill();
         };
 
         const nullstillSkjema = () => {
             nullstillHeleSkjema();
-            nullstillBarnSøktFor();
         };
 
         useEffect(() => {

@@ -5,11 +5,6 @@ import { feil, ok } from '@navikt/familie-skjema';
 
 export type IsoDatoString = string; // Format YYYY-MM-DD (ISO)
 export type IsoMånedString = string; // Format YYYY-MM (ISO)
-interface IsoStringTilFormatertStringProps {
-    isoString: IsoDatoString | IsoMånedString | undefined;
-    tilFormat: Datoformat;
-    defaultString?: string;
-}
 
 export const dagensDato = startOfToday();
 
@@ -50,6 +45,12 @@ export const dateTilIsoDatoStringEllerUndefined = (dato?: Date): IsoDatoString |
 
 export const validerGyldigDato = (felt: FeltState<Date | undefined>) =>
     felt.verdi && isValid(felt.verdi) ? ok(felt) : feil(felt, 'Du må velge en gyldig dato');
+
+interface IsoStringTilFormatertStringProps {
+    isoString: IsoDatoString | IsoMånedString | undefined;
+    tilFormat: Datoformat;
+    defaultString?: string;
+}
 
 export const isoStringTilFormatertString = ({
     isoString,
