@@ -8,13 +8,6 @@ import type { IPersonResultat, IVilkårResultat, IAnnenVurdering } from '../../t
 import { annenVurderingConfig, Resultat, vilkårConfig, VilkårType } from '../../typer/vilkår';
 import { isoStringTilDateMedFallback, tidenesEnde, tidenesMorgen } from '../../utils/dato';
 import type { FamilieIsoDate, IPeriode } from '../../utils/kalender';
-import {
-    erEtter,
-    parseIso8601String,
-    serializeIso8601String,
-    TIDENES_ENDE,
-    TIDENES_MORGEN,
-} from '../../utils/kalender';
 
 export const hentFeilIVilkårsvurdering = (
     personResultater: IPersonResultat[]
@@ -152,11 +145,15 @@ function starterEtter(
     barnehageplassVilkårResultat: IPeriode | undefined,
     barnetsAlderPeriode: IPeriode | undefined
 ) {
-    return erEtter(
-        parseIso8601String(
-            barnehageplassVilkårResultat?.fom ?? serializeIso8601String(TIDENES_MORGEN)
-        ),
-        parseIso8601String(barnetsAlderPeriode?.tom ?? serializeIso8601String(TIDENES_ENDE))
+    return isAfter(
+        isoStringTilDateMedFallback({
+            isoString: barnehageplassVilkårResultat?.fom,
+            fallbackDate: tidenesMorgen,
+        }),
+        isoStringTilDateMedFallback({
+            isoString: barnetsAlderPeriode?.tom,
+            fallbackDate: tidenesEnde,
+        })
     );
 }
 

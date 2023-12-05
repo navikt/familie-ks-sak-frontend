@@ -1,8 +1,10 @@
+import { isAfter } from 'date-fns';
+
+import { isoStringTilDate } from './dato';
 import {
     kalenderDato,
     leggTil,
     serializeIso8601String,
-    erEtter,
     KalenderEnhet,
     kalenderDiffMåned,
 } from './kalender';
@@ -30,7 +32,7 @@ export const hentPeriodelisteMedTommePerioder = (
     }
 
     periodelisteMedTommePerioder.sort((a, b) =>
-        erEtter(kalenderDato(a.fom), kalenderDato(b.fom)) ? 1 : -1
+        isAfter(isoStringTilDate(a.fom), isoStringTilDate(b.fom)) ? 1 : -1
     );
     return periodelisteMedTommePerioder;
 };
@@ -41,7 +43,7 @@ export const hentÅrISimuleringen = (perioder: ISimuleringPeriode[]): number[] =
 const hentSorterteFomdatoer = (perioder: ISimuleringPeriode[]): string[] =>
     perioder
         .map(periode => periode.fom)
-        .sort((a, b) => (erEtter(kalenderDato(a), kalenderDato(b)) ? 1 : -1));
+        .sort((a, b) => (isAfter(isoStringTilDate(a), isoStringTilDate(b)) ? 1 : -1));
 
 const hentAntallMånederISimuleringen = (fomListe: string[]): number => {
     const førstePeriodeFom = kalenderDato(fomListe[0]);
