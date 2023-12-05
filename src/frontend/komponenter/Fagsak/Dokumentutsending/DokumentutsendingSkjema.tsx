@@ -113,7 +113,7 @@ const DokumentutsendingSkjema: React.FC = () => {
                     Legend={<Label children={'Målform'} />}
                 />
 
-                {skjema.felter.årsak.verdi && visForhåndsvisningBeskjed() && (
+                {årsakVerdi && visForhåndsvisningBeskjed() && (
                     <StyledAlert variant="info">
                         Du har gjort endringer i brevet som ikke er forhåndsvist
                     </StyledAlert>

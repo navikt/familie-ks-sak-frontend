@@ -106,7 +106,6 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
             {
                 årsak: DokumentÅrsak | undefined;
                 målform: Målform | undefined;
-
                 barnSøktFor: IBarnMedOpplysninger[];
             },
             string
@@ -170,7 +169,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
             hentForhåndsvisning<IManueltBrevRequestPåFagsak>({
                 method: 'POST',
                 data: skjemaData,
-                url: `/familie-ks-sak/api/brev/fagsak/${fagsakId}/forhåndsvis-brev`,
+                url: `/familie-ks-sak/api/brev/fagsak/${fagsakId}/forhaandsvis-brev`,
             });
         };
 

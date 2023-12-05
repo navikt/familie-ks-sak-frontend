@@ -391,7 +391,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                 hentForhåndsvisning<IManueltBrevRequestPåBehandling>({
                                     method: 'POST',
                                     data: hentSkjemaData(),
-                                    url: `/familie-ks-sak/api/brev/forhåndsvis-brev/${behandlingId}`,
+                                    url: `/familie-ks-sak/api/brev/forhaandsvis-brev/${behandlingId}`,
                                 });
                             }
                         }}
