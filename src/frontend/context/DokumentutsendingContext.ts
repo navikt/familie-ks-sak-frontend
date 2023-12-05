@@ -88,6 +88,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                     ? ok(felt)
                     : feil(felt, 'Du må velge barn');
             },
+            avhengigheter: { årsakFelt: årsak },
             skalFeltetVises: avhengigheter =>
                 [
                     DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
