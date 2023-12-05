@@ -4,14 +4,7 @@ import type { IsoDatoString } from '../dato';
 import { isoStringTilDate, isoStringTilDateMedFallback, tidenesEnde } from '../dato';
 
 import type { FamilieIsoDate, IPeriode, IYearMonthPeriode, YearMonth } from '.';
-import {
-    kalenderDatoMedFallback,
-    TIDENES_ENDE,
-    kalenderDiff,
-    kalenderDatoTilDate,
-    yearMonthTilVisning,
-    yearMonthTilKalenderMåned,
-} from '.';
+import { kalenderDatoMedFallback, TIDENES_ENDE, kalenderDiff, kalenderDatoTilDate } from '.';
 
 export const nyPeriode = (fom?: FamilieIsoDate, tom?: FamilieIsoDate): IPeriode => {
     return {
@@ -53,10 +46,4 @@ export const periodeDiff = (første: IPeriode, andre: IPeriode) => {
         kalenderDatoTilDate(kalenderDatoMedFallback(første.fom, TIDENES_ENDE)),
         kalenderDatoTilDate(kalenderDatoMedFallback(andre.fom, TIDENES_ENDE))
     );
-};
-
-export const yearMonthPeriodeToString = (periode: IYearMonthPeriode) => {
-    return `${yearMonthTilVisning(
-        periode.fom ? yearMonthTilKalenderMåned(periode.fom) : undefined
-    )} - ${yearMonthTilVisning(periode.tom ? yearMonthTilKalenderMåned(periode.tom) : undefined)}`;
 };

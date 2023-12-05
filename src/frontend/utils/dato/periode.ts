@@ -1,4 +1,4 @@
-import type { IsoDatoString } from './dato';
+import type { IsoDatoString, IsoMånedString } from './dato';
 import { Datoformat, isoStringTilFormatertString } from './dato';
 
 export interface IIsoDatoPeriode {
@@ -6,6 +6,13 @@ export interface IIsoDatoPeriode {
     fom?: IsoDatoString;
     tom?: IsoDatoString;
 }
+
+export interface IIsoMånedPeriode {
+    // Format YYYY-MM
+    fom?: IsoMånedString;
+    tom?: IsoMånedString;
+}
+
 export const isoDatoPeriodeTilFormatertString = (periode: IIsoDatoPeriode) => {
     return `${isoStringTilFormatertString({
         isoString: periode.fom,
@@ -13,5 +20,23 @@ export const isoDatoPeriodeTilFormatertString = (periode: IIsoDatoPeriode) => {
     })} - ${isoStringTilFormatertString({
         isoString: periode.tom,
         tilFormat: Datoformat.DATO,
+    })}`;
+};
+
+interface FormaterIsoMånedPeriodeProps {
+    periode: IIsoMånedPeriode;
+    tilFormat: Datoformat;
+}
+
+export const isoMånedPeriodeTilFormatertString = ({
+    periode,
+    tilFormat,
+}: FormaterIsoMånedPeriodeProps) => {
+    return `${isoStringTilFormatertString({
+        isoString: periode.fom,
+        tilFormat: tilFormat,
+    })} - ${isoStringTilFormatertString({
+        isoString: periode.tom,
+        tilFormat: tilFormat,
     })}`;
 };
