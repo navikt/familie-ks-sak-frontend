@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { addMonths, startOfMonth } from 'date-fns';
 import styled from 'styled-components';
 
 import Lenke from 'nav-frontend-lenker';
@@ -19,18 +20,10 @@ import { behandlingKategori, BehandlingKategori } from '../../../typer/behandlin
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
 import { Vedtaksperiodetype } from '../../../typer/vedtaksperiode';
-import { Datoformat } from '../../../utils/dato';
+import { dagensDato, dateTilFormatertString, Datoformat } from '../../../utils/dato';
 import { periodeOverlapperMedValgtDato } from '../../../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../utils/fagsak';
-import { formaterIsoDato } from '../../../utils/formatter';
-import {
-    førsteDagIInneværendeMåned,
-    kalenderDatoTilDate,
-    kalenderDiff,
-    KalenderEnhet,
-    leggTil,
-    serializeIso8601String,
-} from '../../../utils/kalender';
+import { kalenderDiff } from '../../../utils/kalender';
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;
@@ -94,13 +87,9 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
         periodeOverlapperMedValgtDato(periode.periodeFom, periode.periodeTom, new Date())
     );
 
-    const nesteMåned = leggTil(førsteDagIInneværendeMåned(), 1, KalenderEnhet.MÅNED);
+    const nesteMåned = startOfMonth(addMonths(dagensDato, 1));
     const utbetalingsperiodeNesteMåned = gjeldendeUtbetalingsperioder.find(periode =>
-        periodeOverlapperMedValgtDato(
-            periode.periodeFom,
-            periode.periodeTom,
-            kalenderDatoTilDate(nesteMåned)
-        )
+        periodeOverlapperMedValgtDato(periode.periodeFom, periode.periodeTom, nesteMåned)
     );
 
     const lenkeTilBehandlingsresultat = () => {
@@ -129,10 +118,10 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
                         utbetalingsperiodeNesteMåned !== utbetalingsperiodeInneværendeMåned && (
                             <StyledAlert className={'saksoversikt__alert'} variant="info">
                                 <FlexSpaceBetween>
-                                    {`Utbetalingen endres fra og med ${formaterIsoDato(
-                                        serializeIso8601String(nesteMåned),
-                                        Datoformat.MÅNED_ÅR_NAVN
-                                    )}`}
+                                    {`Utbetalingen endres fra og med ${dateTilFormatertString({
+                                        date: nesteMåned,
+                                        tilFormat: Datoformat.MÅNED_ÅR_NAVN,
+                                    })}`}
                                     {lenkeTilBehandlingsresultat()}
                                 </FlexSpaceBetween>
                             </StyledAlert>
@@ -144,10 +133,10 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
             return (
                 <StyledAlert className={'saksoversikt__alert'} variant="info">
                     <FlexSpaceBetween>
-                        {`Utbetalingen starter ${formaterIsoDato(
-                            serializeIso8601String(nesteMåned),
-                            Datoformat.MÅNED_ÅR_NAVN
-                        )}`}
+                        {`Utbetalingen starter ${dateTilFormatertString({
+                            date: nesteMåned,
+                            tilFormat: Datoformat.MÅNED_ÅR_NAVN,
+                        })}`}
                         {lenkeTilBehandlingsresultat()}
                     </FlexSpaceBetween>
                 </StyledAlert>
