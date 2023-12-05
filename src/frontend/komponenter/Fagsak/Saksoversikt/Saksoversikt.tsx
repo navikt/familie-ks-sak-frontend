@@ -20,6 +20,7 @@ import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
 import { Vedtaksperiodetype } from '../../../typer/vedtaksperiode';
 import { Datoformat } from '../../../utils/dato';
+import { periodeOverlapperMedValgtDato } from '../../../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../utils/fagsak';
 import { formaterIsoDato } from '../../../utils/formatter';
 import {
@@ -28,7 +29,6 @@ import {
     kalenderDiff,
     KalenderEnhet,
     leggTil,
-    periodeOverlapperMedValgtDato,
     serializeIso8601String,
 } from '../../../utils/kalender';
 

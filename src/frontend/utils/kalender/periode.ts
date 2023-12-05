@@ -1,8 +1,3 @@
-import { isAfter, isBefore, isSameDay } from 'date-fns';
-
-import type { IsoDatoString } from '../dato';
-import { isoStringTilDate, isoStringTilDateMedFallback, tidenesEnde } from '../dato';
-
 import type { FamilieIsoDate, IPeriode, IYearMonthPeriode, YearMonth } from '.';
 import { kalenderDatoMedFallback, TIDENES_ENDE, kalenderDiff, kalenderDatoTilDate } from '.';
 
@@ -18,24 +13,6 @@ export const nyYearMonthPeriode = (fom?: YearMonth, tom?: YearMonth): IYearMonth
         fom: fom !== '' && fom ? fom : undefined,
         tom: tom !== '' && tom ? tom : undefined,
     };
-};
-
-export const periodeOverlapperMedValgtDato = (
-    periodeFom: IsoDatoString,
-    periodeTom: IsoDatoString | undefined,
-    valgtDato: Date
-) => {
-    const periodeFomDate = isoStringTilDate(periodeFom);
-    const periodeTomDate = isoStringTilDateMedFallback({
-        isoString: periodeTom,
-        fallbackDate: tidenesEnde,
-    });
-
-    return (
-        (isAfter(valgtDato, periodeFomDate) && isBefore(valgtDato, periodeTomDate)) ||
-        isSameDay(valgtDato, periodeFomDate) ||
-        isSameDay(valgtDato, periodeTomDate)
-    );
 };
 
 export const periodeDiff = (første: IPeriode, andre: IPeriode) => {
