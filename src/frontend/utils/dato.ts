@@ -43,6 +43,16 @@ export const dateTilIsoDatoString = (dato?: Date): IsoDatoString =>
 export const dateTilIsoDatoStringEllerUndefined = (dato?: Date): IsoDatoString | undefined =>
     dato && isValid(dato) ? format(dato, Datoformat.ISO_DAG) : undefined;
 
+export const isoStringTilDate = (isoDatoString: IsoDatoString | IsoMånedString): Date => {
+    const dato = parseISO(isoDatoString);
+
+    if (!isValid(dato)) {
+        throw new Error(`Dato '${isoDatoString}' er ugyldig`);
+    }
+
+    return dato;
+};
+
 export const validerGyldigDato = (felt: FeltState<Date | undefined>) =>
     felt.verdi && isValid(felt.verdi) ? ok(felt) : feil(felt, 'Du må velge en gyldig dato');
 
