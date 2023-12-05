@@ -94,12 +94,12 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
         if (skalOgsåLagreBrevPåVedtak) {
             hentForhåndsvisning({
                 method: 'POST',
-                url: `/familie-ks-sak/api/brev/forhåndsvis-og-lagre-vedtaksbrev/${åpenBehandling.behandlingId}`,
+                url: `/familie-ks-sak/api/brev/forhaandsvis-og-lagre-vedtaksbrev/${åpenBehandling.behandlingId}`,
             });
         } else {
             hentForhåndsvisning({
                 method: 'GET',
-                url: `/familie-ks-sak/api/brev/forhåndsvis-vedtaksbrev/${åpenBehandling.behandlingId}`,
+                url: `/familie-ks-sak/api/brev/forhaandsvis-vedtaksbrev/${åpenBehandling.behandlingId}`,
             });
         }
     };
