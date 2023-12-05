@@ -6,11 +6,6 @@ export const TIDENES_MORGEN: DagMånedÅr = {
     måned: 1,
     år: 1000,
 };
-export const TIDENES_ENDE: DagMånedÅr = {
-    dag: 1,
-    måned: 1,
-    år: 3000,
-};
 
 export const kalenderDato = (dato: FamilieIsoDate): DagMånedÅr => parseIso8601String(dato);
 
