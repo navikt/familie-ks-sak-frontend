@@ -38,26 +38,6 @@ export const parseIso8601String = (familieIsoDato: FamilieIsoDate): DagMånedÅr
     };
 };
 
-export const parseIso8601MånedString = (familieIsoDato: FamilieIsoDate): DagMånedÅr => {
-    const dato = parseISO(familieIsoDato);
-
-    if (!isValid(dato)) {
-        throw new Error(`Dato '${familieIsoDato}' er ugyldig`);
-    }
-
-    const år: number = dato.getFullYear();
-
-    if (år < 1800 || år > 2500) {
-        throw new Error(`År fra dato '${familieIsoDato}' er '${år}' og er sannsynligvis feil`);
-    }
-
-    return {
-        dag: 1,
-        måned: dato.getMonth(),
-        år,
-    };
-};
-
 export const serializeIso8601String = ({ år, måned, dag }: DagMånedÅr): FamilieIsoDate => {
     const yyyy = capString(4, år);
     const mm = capString(2, måned + 1);
