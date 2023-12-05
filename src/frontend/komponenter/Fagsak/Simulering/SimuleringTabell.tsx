@@ -12,8 +12,9 @@ import { BodyShort, Detail, Label } from '@navikt/ds-react';
 import { NavigeringsRetning } from '../../../context/TidslinjeContext';
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../typer/simulering';
 import { Datoformat, isoStringTilDate } from '../../../utils/dato';
+import { isoDatoPeriodeTilFormatertString } from '../../../utils/dato/periode';
 import { formaterBeløp, formaterIsoDato } from '../../../utils/formatter';
-import { periodeToString, kalenderDato } from '../../../utils/kalender';
+import { kalenderDato } from '../../../utils/kalender';
 import { hentPeriodelisteMedTommePerioder, hentÅrISimuleringen } from '../../../utils/simulering';
 import TidslinjeNavigering from '../Behandlingsresultat/TidslinjeNavigering';
 
@@ -129,7 +130,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
         </Skillelinje>
     );
 
-    const tilOgFraDatoForSimulering = `${periodeToString({
+    const tilOgFraDatoForSimulering = `${isoDatoPeriodeTilFormatertString({
         fom,
         tom: tomDatoNestePeriode ?? tomSisteUtbetaling,
     })}`;

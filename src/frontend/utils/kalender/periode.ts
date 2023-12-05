@@ -5,8 +5,6 @@ import { isoStringTilDate, isoStringTilDateMedFallback, tidenesEnde } from '../d
 
 import type { FamilieIsoDate, IPeriode, IYearMonthPeriode, YearMonth } from '.';
 import {
-    kalenderDato,
-    tilVisning,
     kalenderDatoMedFallback,
     TIDENES_ENDE,
     kalenderDiff,
@@ -45,12 +43,6 @@ export const periodeOverlapperMedValgtDato = (
         isSameDay(valgtDato, periodeFomDate) ||
         isSameDay(valgtDato, periodeTomDate)
     );
-};
-
-export const periodeToString = (periode: IPeriode) => {
-    return `${tilVisning(periode.fom ? kalenderDato(periode.fom) : undefined)} - ${tilVisning(
-        periode.tom ? kalenderDato(periode.tom) : undefined
-    )}`;
 };
 
 export const periodeDiff = (første: IPeriode, andre: IPeriode) => {

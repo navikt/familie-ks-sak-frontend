@@ -8,8 +8,8 @@ import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../typer/vedtaksperiode';
 import { hentVedtaksperiodeTittel, Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
 import { dagensDato, isoStringTilDateMedFallback, tidenesEnde } from '../../../../../utils/dato';
+import { isoDatoPeriodeTilFormatertString } from '../../../../../utils/dato/periode';
 import { formaterBeløp, summer } from '../../../../../utils/formatter';
-import { periodeToString } from '../../../../../utils/kalender';
 
 const StyledExpansionCard = styled(ExpansionCard)`
     margin-bottom: 1rem;
@@ -63,7 +63,7 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
                 <StyledExpansionTitle>
                     {periode.fom && (
                         <Label>
-                            {periodeToString({
+                            {isoDatoPeriodeTilFormatertString({
                                 fom: periode.fom,
                                 tom: slutterSenereEnnInneværendeMåned(periode.tom)
                                     ? ''
