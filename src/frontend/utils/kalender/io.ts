@@ -1,7 +1,6 @@
 import { isValid, parseISO } from 'date-fns';
 
 import type { DagMånedÅr, FamilieIsoDate } from './typer';
-import { capString } from './utils';
 
 export const erIsoStringGyldig = (familieIsoDato?: FamilieIsoDate): boolean => {
     if (!familieIsoDato) return false;
@@ -36,11 +35,4 @@ export const parseIso8601String = (familieIsoDato: FamilieIsoDate): DagMånedÅr
         måned: dato.getMonth(),
         år,
     };
-};
-
-export const serializeIso8601String = ({ år, måned, dag }: DagMånedÅr): FamilieIsoDate => {
-    const yyyy = capString(4, år);
-    const mm = capString(2, måned + 1);
-    const dd = capString(2, dag);
-    return `${yyyy}-${mm}-${dd}`;
 };
