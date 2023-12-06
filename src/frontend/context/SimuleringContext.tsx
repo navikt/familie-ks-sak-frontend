@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import constate from 'constate';
+import { isAfter } from 'date-fns';
 
 import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
@@ -12,7 +13,7 @@ import useSakOgBehandlingParams from '../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../typer/behandling';
 import type { ISimuleringDTO, ISimuleringPeriode, ITilbakekreving } from '../typer/simulering';
 import { Tilbakekrevingsvalg } from '../typer/simulering';
-import { kalenderDato, kalenderDatoTilDate, kalenderDiff, TIDENES_MORGEN } from '../utils/kalender';
+import { isoStringTilDateMedFallback, tidenesMorgen } from '../utils/dato';
 
 interface IProps {
     åpenBehandling: IBehandling;
@@ -170,14 +171,16 @@ const [SimuleringProvider, useSimulering] = constate(({ åpenBehandling }: IProp
     ): ISimuleringPeriode {
         if (
             periode.resultat === 0 &&
-            kalenderDiff(
-                kalenderDatoTilDate(
-                    periode.forfallsdato ? kalenderDato(periode.forfallsdato) : TIDENES_MORGEN
-                ),
-                kalenderDatoTilDate(
-                    tidSimuleringHentet ? kalenderDato(tidSimuleringHentet) : TIDENES_MORGEN
-                )
-            ) > 0
+            isAfter(
+                isoStringTilDateMedFallback({
+                    isoString: periode.forfallsdato,
+                    fallbackDate: tidenesMorgen,
+                }),
+                isoStringTilDateMedFallback({
+                    isoString: tidSimuleringHentet,
+                    fallbackDate: tidenesMorgen,
+                })
+            )
         ) {
             return {
                 ...periode,

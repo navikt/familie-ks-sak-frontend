@@ -1,19 +1,12 @@
-import { addMonths, isBefore, startOfMonth } from 'date-fns';
+import { addMonths, differenceInMilliseconds, isAfter, isBefore, startOfMonth } from 'date-fns';
 
 import navFarger from 'nav-frontend-core';
 
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { dagensDato, isoStringTilDateMedFallback, tidenesMorgen } from './dato';
+import { dagensDato, isoStringTilDate, isoStringTilDateMedFallback, tidenesMorgen } from './dato';
 import type { FamilieIsoDate } from './kalender';
-import {
-    kalenderDato,
-    kalenderDatoMedFallback,
-    kalenderDatoTilDate,
-    kalenderDiff,
-    TIDENES_MORGEN,
-} from './kalender';
 import { BehandlingResultat, BehandlingStatus } from '../typer/behandling';
 import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../typer/vedtak';
 import { BegrunnelseType } from '../typer/vedtak';
@@ -30,9 +23,9 @@ export const filtrerOgSorterPerioderMedBegrunnelseBehov = (
     const sorterteOgFiltrertePerioder = vedtaksperioder
         .slice()
         .sort((a, b) =>
-            kalenderDiff(
-                kalenderDatoTilDate(kalenderDatoMedFallback(a.fom, TIDENES_MORGEN)),
-                kalenderDatoTilDate(kalenderDatoMedFallback(b.fom, TIDENES_MORGEN))
+            differenceInMilliseconds(
+                isoStringTilDateMedFallback({ isoString: a.fom, fallbackDate: tidenesMorgen }),
+                isoStringTilDateMedFallback({ isoString: b.fom, fallbackDate: tidenesMorgen })
             )
         )
         .filter((vedtaksperiode: IVedtaksperiodeMedBegrunnelser) => {
@@ -64,15 +57,9 @@ const erPeriodeMindreEllerLikEnnSisteVedtaksperiodeVisningDato = (
     sisteVedtaksperiodeVisningDato: string,
     periode: string | undefined
 ) => {
-    const sisteVedtaksperiodeKalenderDato = kalenderDato(sisteVedtaksperiodeVisningDato);
-
-    const periodeIKalenderDato = kalenderDatoMedFallback(periode, TIDENES_MORGEN);
-
-    return (
-        kalenderDiff(
-            kalenderDatoTilDate(periodeIKalenderDato),
-            kalenderDatoTilDate(sisteVedtaksperiodeKalenderDato)
-        ) <= 0
+    return isAfter(
+        isoStringTilDate(sisteVedtaksperiodeVisningDato),
+        isoStringTilDateMedFallback({ isoString: periode, fallbackDate: tidenesMorgen })
     );
 };
 
