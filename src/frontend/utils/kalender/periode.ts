@@ -1,6 +1,8 @@
-import type { FamilieIsoDate, IPeriode, IYearMonthPeriode, YearMonth } from '.';
+import type { IsoDatoString } from '../dato';
 
-export const nyPeriode = (fom?: FamilieIsoDate, tom?: FamilieIsoDate): IPeriode => {
+import type { IPeriode, IYearMonthPeriode, YearMonth } from '.';
+
+export const nyPeriode = (fom?: IsoDatoString, tom?: IsoDatoString): IPeriode => {
     return {
         fom: fom !== '' && fom ? fom : undefined,
         tom: tom !== '' && tom ? tom : undefined,

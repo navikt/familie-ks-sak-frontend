@@ -19,7 +19,6 @@ import type { IRestKorrigertVedtak, IVedtakForBehandling } from './vedtak';
 import type { Utbetalingsperiode } from './vedtaksperiode';
 import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 import type { IsoDatoString } from '../utils/dato';
-import type { FamilieIsoDate } from '../utils/kalender';
 
 export interface IRestNyBehandling {
     kategori: BehandlingKategori | null;
@@ -213,7 +212,7 @@ export interface IBehandling {
     utenlandskePeriodebeløp: IRestUtenlandskPeriodeBeløp[];
     valutakurser: IRestValutakurs[];
     korrigertVedtak?: IRestKorrigertVedtak;
-    sisteVedtaksperiodeVisningDato?: FamilieIsoDate;
+    sisteVedtaksperiodeVisningDato?: IsoDatoString;
     feilutbetaltValuta: IRestFeilutbetaltValuta[];
     refusjonEøs: IRestRefusjonEøs[];
 }

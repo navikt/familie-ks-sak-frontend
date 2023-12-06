@@ -14,7 +14,6 @@ import {
     erIsoStringGyldig,
     validerGyldigDato,
 } from '../utils/dato';
-import type { FamilieIsoDate } from '../utils/kalender';
 
 interface IProps {
     endretUtbetalingAndel: IRestEndretUtbetalingAndel;
@@ -37,8 +36,8 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
         const { skjema, kanSendeSkjema, onSubmit } = useSkjema<
             {
                 person: string | undefined;
-                fom: FamilieIsoDate | undefined;
-                tom: FamilieIsoDate | undefined;
+                fom: IsoDatoString | undefined;
+                tom: IsoDatoString | undefined;
                 periodeSkalUtbetalesTilSøker: boolean | undefined;
                 årsak: IEndretUtbetalingAndelÅrsak | undefined;
                 søknadstidspunkt: Date | undefined;

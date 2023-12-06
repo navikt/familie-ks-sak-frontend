@@ -5,8 +5,8 @@ import navFarger from 'nav-frontend-core';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import type { IsoDatoString } from './dato';
 import { dagensDato, isoStringTilDate, isoStringTilDateMedFallback, tidenesMorgen } from './dato';
-import type { FamilieIsoDate } from './kalender';
 import { BehandlingResultat, BehandlingStatus } from '../typer/behandling';
 import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../typer/vedtak';
 import { BegrunnelseType } from '../typer/vedtak';
@@ -18,7 +18,7 @@ export const filtrerOgSorterPerioderMedBegrunnelseBehov = (
     vedtaksperioder: IVedtaksperiodeMedBegrunnelser[],
     behandlingResultat: BehandlingResultat,
     behandlingStatus: BehandlingStatus,
-    sisteVedtaksperiodeVisningDato: FamilieIsoDate | undefined
+    sisteVedtaksperiodeVisningDato: IsoDatoString | undefined
 ): IVedtaksperiodeMedBegrunnelser[] => {
     const sorterteOgFiltrertePerioder = vedtaksperioder
         .slice()

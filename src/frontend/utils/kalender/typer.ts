@@ -1,10 +1,11 @@
+import type { IsoDatoString } from '../dato';
+
 export type YearMonth = string; // Format YYYY-MM (ISO)
-export type FamilieIsoDate = string; // Format YYYY-MM-DD (ISO)
 
 export interface IPeriode {
     // Format YYYY-MM-DD (ISO)
-    fom?: FamilieIsoDate;
-    tom?: FamilieIsoDate;
+    fom?: IsoDatoString;
+    tom?: IsoDatoString;
 }
 
 export interface IYearMonthPeriode {

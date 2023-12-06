@@ -2,7 +2,8 @@ import type { BehandlingSteg, BehandlingStegStatus } from './behandling';
 import type { IGrunnlagPerson } from './person';
 import { PersonType } from './person';
 import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse, BegrunnelseType } from './vedtak';
-import type { FamilieIsoDate, IPeriode } from '../utils/kalender';
+import type { IsoDatoString } from '../utils/dato';
+import type { IPeriode } from '../utils/kalender';
 
 export enum Resultat {
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
@@ -107,8 +108,8 @@ export interface IRestVilkårResultat {
     erAutomatiskVurdert: boolean;
     erVurdert: boolean;
     id: number;
-    periodeFom?: FamilieIsoDate;
-    periodeTom?: FamilieIsoDate;
+    periodeFom?: IsoDatoString;
+    periodeTom?: IsoDatoString;
     resultat: Resultat;
     erEksplisittAvslagPåSøknad?: boolean;
     avslagBegrunnelser: Begrunnelse[];
