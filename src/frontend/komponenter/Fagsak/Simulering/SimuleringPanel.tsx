@@ -9,7 +9,12 @@ import Panel from 'nav-frontend-paneler';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../typer/simulering';
-import { Datoformat, isoStringTilDate, isoStringTilFormatertString } from '../../../utils/dato';
+import {
+    Datoformat,
+    isoDatoPeriodeTilFormatertString,
+    isoStringTilDate,
+    isoStringTilFormatertString,
+} from '../../../utils/dato';
 import { formaterBeløp } from '../../../utils/formatter';
 
 const StyledPanel = styled(Panel)`
@@ -85,12 +90,9 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
                 tilFormat: Datoformat.MÅNED_ÅR_NAVN,
             })}`;
         }
-        return `Totalt for perioden ${isoStringTilFormatertString({
-            isoString: fom,
-            tilFormat: Datoformat.DATO,
-        })} - ${isoStringTilFormatertString({
-            isoString: tomSisteUtbetaling,
-            tilFormat: Datoformat.DATO,
+        return `Totalt for perioden ${isoDatoPeriodeTilFormatertString({
+            fom: fom,
+            tom: tomSisteUtbetaling,
         })}`;
     };
 
