@@ -86,22 +86,3 @@ export const isoStringTilDateMedFallback = ({ isoString, fallbackDate }: IsoStri
 
 export const validerGyldigDato = (felt: FeltState<Date | undefined>) =>
     felt.verdi && isValid(felt.verdi) ? ok(felt) : feil(felt, 'Du må velge en gyldig dato');
-
-interface IsoStringTilFormatertStringProps {
-    isoString: IsoDatoString | IsoMånedString | undefined;
-    tilFormat: Datoformat;
-    defaultString?: string;
-}
-
-export const isoStringTilFormatertString = ({
-    isoString,
-    tilFormat,
-    defaultString = '',
-}: IsoStringTilFormatertStringProps): string => {
-    const dato = isoString ? parseISO(isoString) : undefined;
-    return dateTilFormatertString({
-        date: dato,
-        tilFormat: tilFormat,
-        defaultString: defaultString,
-    });
-};
