@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
+import { isAfter } from 'date-fns';
 import styled from 'styled-components';
 import 'nav-frontend-tabell-style';
 
@@ -10,9 +11,10 @@ import { BodyShort, Detail, Label } from '@navikt/ds-react';
 
 import { NavigeringsRetning } from '../../../context/TidslinjeContext';
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../typer/simulering';
-import { Datoformat } from '../../../utils/dato';
+import { Datoformat, isoStringTilDate } from '../../../utils/dato';
+import { isoDatoPeriodeTilFormatertString } from '../../../utils/dato/periode';
 import { formaterBeløp, formaterIsoDato } from '../../../utils/formatter';
-import { periodeToString, kalenderDato, erEtter } from '../../../utils/kalender';
+import { kalenderDato } from '../../../utils/kalender';
 import { hentPeriodelisteMedTommePerioder, hentÅrISimuleringen } from '../../../utils/simulering';
 import TidslinjeNavigering from '../Behandlingsresultat/TidslinjeNavigering';
 
@@ -102,7 +104,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
 
     const periodeErEtterNesteUtbetalingsPeriode = (periode: ISimuleringPeriode) =>
         fomDatoNestePeriode &&
-        erEtter(kalenderDato(periode.fom), kalenderDato(fomDatoNestePeriode));
+        isAfter(isoStringTilDate(periode.fom), isoStringTilDate(fomDatoNestePeriode));
 
     const periodeSkalVisesITabell = (periode: ISimuleringPeriode) =>
         !periodeErEtterNesteUtbetalingsPeriode(periode) &&
@@ -128,7 +130,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
         </Skillelinje>
     );
 
-    const tilOgFraDatoForSimulering = `${periodeToString({
+    const tilOgFraDatoForSimulering = `${isoDatoPeriodeTilFormatertString({
         fom,
         tom: tomDatoNestePeriode ?? tomSisteUtbetaling,
     })}`;

@@ -23,8 +23,8 @@ import { ToggleNavn } from '../../../../typer/toggles';
 import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
 import { Resultat, uiResultat, VilkårType } from '../../../../typer/vilkår';
 import { Datoformat } from '../../../../utils/dato';
+import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato/periode';
 import { formaterIsoDato } from '../../../../utils/formatter';
-import { periodeToString } from '../../../../utils/kalender';
 import { alleRegelverk } from '../../../../utils/vilkår';
 
 interface IProps {
@@ -177,7 +177,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
             </Table.DataCell>
             <Table.DataCell>
                 <BodyShort>
-                    {periodeErTom ? '-' : periodeToString(vilkårResultat.periode)}
+                    {periodeErTom ? '-' : isoDatoPeriodeTilFormatertString(vilkårResultat.periode)}
                 </BodyShort>
             </Table.DataCell>
             <Table.DataCell>

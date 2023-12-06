@@ -1,10 +1,10 @@
-import { format, setDefaultOptions } from 'date-fns';
+import { addDays, format, setDefaultOptions, subDays, subYears } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
 import { mockBarn } from './person/person.mock';
 import { YtelseType } from '../../typer/beregning';
 import { lagUtbetalingsperiodeDetalj } from '../../typer/test/utbetalingsperiode.mock';
-import { Datoformat } from '../dato';
+import { dagensDato, dateTilIsoDatoString, Datoformat } from '../dato';
 import {
     formaterIdent,
     formaterIsoDato,
@@ -12,7 +12,6 @@ import {
     kunSiffer,
     sorterUtbetaling,
 } from '../formatter';
-import { iDag, KalenderEnhet, leggTil, serializeIso8601String, trekkFra } from '../kalender';
 
 describe('utils/formatter', () => {
     beforeAll(() => {
@@ -45,18 +44,14 @@ describe('utils/formatter', () => {
     });
 
     test('Skal hente riktig alder fra fødselsdato', () => {
-        const toÅrSiden = trekkFra(iDag(), 2, KalenderEnhet.ÅR);
-        expect(hentAlder(serializeIso8601String(trekkFra(toÅrSiden, 1, KalenderEnhet.DAG)))).toBe(
-            2
-        );
+        const toÅrSiden = subYears(dagensDato, 2);
+        expect(hentAlder(dateTilIsoDatoString(subDays(toÅrSiden, 1)))).toBe(2);
     });
 
     test('Skal hente riktig alder før og etter fødselsdato', () => {
-        const toÅrSiden = trekkFra(iDag(), 2, KalenderEnhet.ÅR);
-        expect(hentAlder(serializeIso8601String(trekkFra(toÅrSiden, 1, KalenderEnhet.DAG)))).toBe(
-            2
-        );
-        expect(hentAlder(serializeIso8601String(leggTil(toÅrSiden, 1, KalenderEnhet.DAG)))).toBe(1);
+        const toÅrSiden = subYears(dagensDato, 2);
+        expect(hentAlder(dateTilIsoDatoString(subDays(toÅrSiden, 1)))).toBe(2);
+        expect(hentAlder(dateTilIsoDatoString(addDays(toÅrSiden, 1)))).toBe(1);
     });
 
     describe('formaterIsoDato', () => {

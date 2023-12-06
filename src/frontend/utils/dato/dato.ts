@@ -8,6 +8,10 @@ export type IsoMånedString = string; // Format YYYY-MM (ISO)
 
 export const dagensDato = startOfToday();
 
+export const tidenesMorgen = new Date(1000, 1, 1);
+
+export const tidenesEnde = new Date(3000, 1, 1);
+
 export enum Datoformat {
     DATO = 'dd.MM.yyyy',
     DATO_FORKORTTET = 'dd.MM.yy',
@@ -43,19 +47,6 @@ export const dateTilIsoDatoString = (dato?: Date): IsoDatoString =>
 export const dateTilIsoDatoStringEllerUndefined = (dato?: Date): IsoDatoString | undefined =>
     dato && isValid(dato) ? format(dato, Datoformat.ISO_DAG) : undefined;
 
-export const isoStringTilDate = (isoDatoString: IsoDatoString | IsoMånedString): Date => {
-    const dato = parseISO(isoDatoString);
-
-    if (!isValid(dato)) {
-        throw new Error(`Dato '${isoDatoString}' er ugyldig`);
-    }
-
-    return dato;
-};
-
-export const validerGyldigDato = (felt: FeltState<Date | undefined>) =>
-    felt.verdi && isValid(felt.verdi) ? ok(felt) : feil(felt, 'Du må velge en gyldig dato');
-
 interface IsoStringTilFormatertStringProps {
     isoString: IsoDatoString | IsoMånedString | undefined;
     tilFormat: Datoformat;
@@ -74,3 +65,24 @@ export const isoStringTilFormatertString = ({
         defaultString: defaultString,
     });
 };
+
+export const isoStringTilDate = (isoDatoString: IsoDatoString | IsoMånedString): Date => {
+    const dato = parseISO(isoDatoString);
+
+    if (!isValid(dato)) {
+        throw new Error(`Dato '${isoDatoString}' er ugyldig`);
+    }
+
+    return dato;
+};
+
+interface IsoStringTilDateProps {
+    isoString: IsoDatoString | IsoMånedString | undefined;
+    fallbackDate: Date;
+}
+
+export const isoStringTilDateMedFallback = ({ isoString, fallbackDate }: IsoStringTilDateProps) =>
+    isoString ? isoStringTilDate(isoString) : fallbackDate;
+
+export const validerGyldigDato = (felt: FeltState<Date | undefined>) =>
+    felt.verdi && isValid(felt.verdi) ? ok(felt) : feil(felt, 'Du må velge en gyldig dato');

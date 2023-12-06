@@ -1,3 +1,5 @@
+import { differenceInMilliseconds } from 'date-fns';
+
 import type { IGrunnlagPerson } from '../../typer/person';
 import { PersonTypeVisningsRangering } from '../../typer/person';
 import type {
@@ -8,13 +10,19 @@ import type {
     IVilkårResultat,
 } from '../../typer/vilkår';
 import { Resultat } from '../../typer/vilkår';
-import {
-    kalenderDato,
-    kalenderDatoTilDate,
-    kalenderDiff,
-    nyPeriode,
-    periodeDiff,
-} from '../../utils/kalender';
+import type { IIsoDatoPeriode } from '../../utils/dato';
+import { isoStringTilDateMedFallback, tidenesEnde } from '../../utils/dato';
+import { kalenderDato, kalenderDatoTilDate, kalenderDiff, nyPeriode } from '../../utils/kalender';
+
+const periodeDiff = (periodeA: IIsoDatoPeriode, periodeB: IIsoDatoPeriode) => {
+    if (!periodeA.fom && !periodeA.tom) {
+        return 1;
+    }
+    return differenceInMilliseconds(
+        isoStringTilDateMedFallback({ isoString: periodeA.fom, fallbackDate: tidenesEnde }),
+        isoStringTilDateMedFallback({ isoString: periodeB.fom, fallbackDate: tidenesEnde })
+    );
+};
 
 export const sorterVilkårsvurderingForPerson = (
     vilkårResultater: IVilkårResultat[]

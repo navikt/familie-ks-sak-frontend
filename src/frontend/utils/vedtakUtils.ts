@@ -1,17 +1,17 @@
+import { addMonths, isBefore, startOfMonth } from 'date-fns';
+
 import navFarger from 'nav-frontend-core';
 
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { dagensDato, isoStringTilDateMedFallback, tidenesMorgen } from './dato';
 import type { FamilieIsoDate } from './kalender';
 import {
-    førsteDagIInneværendeMåned,
     kalenderDato,
     kalenderDatoMedFallback,
     kalenderDatoTilDate,
     kalenderDiff,
-    KalenderEnhet,
-    leggTil,
     TIDENES_MORGEN,
 } from './kalender';
 import { BehandlingResultat, BehandlingStatus } from '../typer/behandling';
@@ -76,12 +76,11 @@ const erPeriodeMindreEllerLikEnnSisteVedtaksperiodeVisningDato = (
     );
 };
 
-const erPeriodeMindreEnn2MndFramITid = (periode: string | undefined) => {
-    const periodeFom = kalenderDatoMedFallback(periode, TIDENES_MORGEN);
-    const toMånederFremITid = leggTil(førsteDagIInneværendeMåned(), 2, KalenderEnhet.MÅNED);
-    return (
-        kalenderDiff(kalenderDatoTilDate(periodeFom), kalenderDatoTilDate(toMånederFremITid)) < 0
-    );
+const erPeriodeMindreEnn2MndFramITid = (periodeFom: string | undefined) => {
+    const fom = isoStringTilDateMedFallback({ isoString: periodeFom, fallbackDate: tidenesMorgen });
+    const toMånederFremITid = addMonths(startOfMonth(dagensDato), 2);
+
+    return isBefore(fom, toMånederFremITid);
 };
 
 const harPeriodeBegrunnelse = (vedtaksperiode: IVedtaksperiodeMedBegrunnelser) => {
