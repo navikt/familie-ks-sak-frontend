@@ -8,8 +8,8 @@ import type { Felt } from '@navikt/familie-skjema';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { Resultat } from '../../../../typer/vilkår';
 import type { IsoDatoString } from '../../../../utils/dato';
+import { nyIsoDatoPeriode } from '../../../../utils/dato';
 import type { IPeriode } from '../../../../utils/kalender';
-import { nyPeriode } from '../../../../utils/kalender';
 import DatovelgerForGammelSkjemaløsning from '../../../Felleskomponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 
 interface IProps {
@@ -75,7 +75,7 @@ const VelgPeriode: React.FC<IProps> = ({
                     }
                     value={periode.verdi.fom}
                     onDateChange={(dato?: IsoDatoString) => {
-                        periode.validerOgSettFelt(nyPeriode(dato, periode.verdi.tom));
+                        periode.validerOgSettFelt(nyIsoDatoPeriode(dato, periode.verdi.tom));
                     }}
                     visFeilmeldinger={false}
                     readOnly={lesevisning}
@@ -86,7 +86,7 @@ const VelgPeriode: React.FC<IProps> = ({
                     value={periode.verdi.tom}
                     readOnly={lesevisning}
                     onDateChange={(dato?: IsoDatoString) => {
-                        periode.validerOgSettFelt(nyPeriode(periode.verdi.fom, dato));
+                        periode.validerOgSettFelt(nyIsoDatoPeriode(periode.verdi.fom, dato));
                     }}
                     visFeilmeldinger={false}
                 />

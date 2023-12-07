@@ -11,8 +11,12 @@ import type {
 } from '../../typer/vilkår';
 import { Resultat } from '../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../utils/dato';
-import { isoStringTilDate, isoStringTilDateMedFallback, tidenesEnde } from '../../utils/dato';
-import { nyPeriode } from '../../utils/kalender';
+import {
+    isoStringTilDate,
+    isoStringTilDateMedFallback,
+    nyIsoDatoPeriode,
+    tidenesEnde,
+} from '../../utils/dato';
 
 const periodeDiff = (periodeA: IIsoDatoPeriode, periodeB: IIsoDatoPeriode) => {
     if (!periodeA.fom && !periodeA.tom) {
@@ -68,7 +72,7 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                                 return {
                                     begrunnelse: vilkårResultat.begrunnelse,
                                     id: vilkårResultat.id,
-                                    periode: nyPeriode(
+                                    periode: nyIsoDatoPeriode(
                                         vilkårResultat.periodeFom,
                                         vilkårResultat.periodeTom
                                     ),
