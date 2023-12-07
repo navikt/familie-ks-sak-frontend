@@ -14,9 +14,9 @@ import { mapEøsPeriodeStatusTilStatus } from '../../../../context/Eøs/EøsCont
 import StatusIkon from '../../../../ikoner/StatusIkon';
 import { EøsPeriodeStatus } from '../../../../typer/eøsPerioder';
 import type { IGrunnlagPerson } from '../../../../typer/person';
+import type { IIsoMånedPeriode } from '../../../../utils/dato';
 import { Datoformat } from '../../../../utils/dato';
 import { formaterIsoDato, lagPersonLabel } from '../../../../utils/formatter';
-import type { IYearMonthPeriode } from '../../../../utils/kalender';
 
 interface IEøsPeriodeSkjemaContainerProps {
     maxWidth?: number;
@@ -64,7 +64,7 @@ const BarnDiv = styled.div`
     margin-top: 1px;
 `;
 
-const formatterPeriode = (periode: IYearMonthPeriode): string => {
+const formatterPeriode = (periode: IIsoMånedPeriode): string => {
     return `${formaterIsoDato(periode.fom, Datoformat.MÅNED_ÅR_KORTNAVN)} - ${
         periode.tom ? formaterIsoDato(periode.tom, Datoformat.MÅNED_ÅR_KORTNAVN) : ''
     }`;
@@ -74,7 +74,7 @@ interface IStatusBarnCelleOgPeriodeCelleProps {
     status: EøsPeriodeStatus;
     barnIdenter: string[];
     personer: IGrunnlagPerson[];
-    periode: IYearMonthPeriode;
+    periode: IIsoMånedPeriode;
 }
 
 export const StatusBarnCelleOgPeriodeCelle = (props: IStatusBarnCelleOgPeriodeCelleProps) => {
