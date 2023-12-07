@@ -7,7 +7,7 @@ import type {
     Regelverk as RegelverkType,
     UtdypendeVilkårsvurdering,
 } from '../../../../../../typer/vilkår';
-import { Resultat } from '../../../../../../typer/vilkår';
+import { Resultat, VilkårType } from '../../../../../../typer/vilkår';
 import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
 import {
     erAvslagBegrunnelserGyldig,
@@ -57,7 +57,8 @@ export const useLovligOpphold = (vilkår: IVilkårResultat, person: IGrunnlagPer
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
-            valideringsfunksjon: erPeriodeGyldig,
+            valideringsfunksjon: (felt, avhengigheter) =>
+                erPeriodeGyldig(felt, VilkårType.LOVLIG_OPPHOLD, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

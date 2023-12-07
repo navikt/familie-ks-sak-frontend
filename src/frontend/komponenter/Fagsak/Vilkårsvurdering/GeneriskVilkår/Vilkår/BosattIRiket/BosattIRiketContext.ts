@@ -7,7 +7,7 @@ import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Resultat } from '../../../../../../typer/vilkår';
-import { Regelverk as RegelverkType } from '../../../../../../typer/vilkår';
+import { Regelverk as RegelverkType, VilkårType } from '../../../../../../typer/vilkår';
 import {
     UtdypendeVilkårsvurderingGenerell,
     UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
@@ -64,7 +64,8 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
-            valideringsfunksjon: erPeriodeGyldig,
+            valideringsfunksjon: (felt, avhengigheter) =>
+                erPeriodeGyldig(felt, VilkårType.BOSATT_I_RIKET, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

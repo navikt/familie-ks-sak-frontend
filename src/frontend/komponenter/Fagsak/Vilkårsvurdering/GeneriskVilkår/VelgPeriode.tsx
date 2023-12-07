@@ -79,7 +79,6 @@ const VelgPeriode: React.FC<IProps> = ({
                     }}
                     visFeilmeldinger={false}
                     readOnly={lesevisning}
-                    kanKunVelgeFortid
                 />
                 <DatovelgerForGammelSkjemaløsning
                     label={'T.o.m (valgfri)'}

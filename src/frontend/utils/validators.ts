@@ -10,16 +10,16 @@ import {
     setMonth,
 } from 'date-fns';
 
-import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 
 import { dagensDato, isoStringTilDate } from './dato';
 import type { IPeriode } from './kalender';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { Begrunnelse } from '../typer/vedtak';
-import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../typer/vilkår';
 import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../typer/vilkår';
 
 // eslint-disable-next-line
 const validator = require('@navikt/fnrvalidator');
@@ -76,6 +76,7 @@ const valgtDatoErSenereEnnNesteMåned = (valgtDato: Date) =>
 
 export const erPeriodeGyldig = (
     felt: FeltState<IPeriode>,
+    vilkår: VilkårType,
     avhengigheter?: Avhengigheter
 ): FeltState<IPeriode> => {
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
@@ -138,10 +139,18 @@ export const erPeriodeGyldig = (
         const fomDatoErLikDødsfallDato =
             !!person?.dødsfallDato && isSameDay(fom, isoStringTilDate(person.dødsfallDato));
 
-        if (erNesteMånedEllerSenere(fom)) {
+        if (
+            vilkår === VilkårType.BARNEHAGEPLASS
+                ? valgtDatoErSenereEnnNesteMåned(fom)
+                : erNesteMånedEllerSenere(fom)
+        ) {
             return feil(
                 felt,
-                'Du kan ikke legge inn fra og med dato som er etter første dag i neste måned eller senere'
+                `Du kan ikke legge inn fra og med dato som er ${
+                    vilkår === VilkårType.BARNEHAGEPLASS
+                        ? 'senere enn neste måned'
+                        : 'neste måned eller senere'
+                }`
             );
         }
         if (!erUendelig(tom)) {
