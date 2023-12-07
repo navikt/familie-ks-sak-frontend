@@ -14,6 +14,7 @@ import type { EøsPeriodeStatus, IRestValutakurs, IValutakurs } from '../../type
 import {
     dateTilIsoDatoString,
     dateTilIsoDatoStringEllerUndefined,
+    nyIsoMånedPeriode,
     validerGyldigDato,
 } from '../../utils/dato';
 import {
@@ -25,7 +26,6 @@ import {
     tellAntallDesimaler,
 } from '../../utils/eøsValidators';
 import type { IYearMonthPeriode } from '../../utils/kalender';
-import { nyYearMonthPeriode } from '../../utils/kalender';
 import { useBehandling } from '../behandlingContext/BehandlingContext';
 import {
     konverterDesimalverdiTilSkjemaVisning,
@@ -122,7 +122,7 @@ const useValutakursSkjema = ({ barnIValutakurs, valutakurs }: IProps) => {
                 valideringsfunksjon: erBarnGyldig,
             }),
             periode: useFelt<IYearMonthPeriode>({
-                verdi: nyYearMonthPeriode(valutakurs.fom, valutakurs.tom),
+                verdi: nyIsoMånedPeriode(valutakurs.fom, valutakurs.tom),
                 avhengigheter: { initelFom },
                 valideringsfunksjon: erEøsPeriodeGyldig,
             }),

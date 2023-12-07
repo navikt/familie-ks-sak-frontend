@@ -22,8 +22,8 @@ import type {
     KompetanseAktivitet,
     KompetanseResultat,
 } from '../../typer/eøsPerioder';
+import { nyIsoMånedPeriode } from '../../utils/dato';
 import { erBarnGyldig, erEøsPeriodeGyldig } from '../../utils/eøsValidators';
-import { nyYearMonthPeriode } from '../../utils/kalender';
 import type { IYearMonthPeriode } from '../../utils/kalender';
 import { useBehandling } from '../behandlingContext/BehandlingContext';
 
@@ -73,7 +73,7 @@ const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => 
                 valideringsfunksjon: erBarnGyldig,
             }),
             periode: useFelt<IYearMonthPeriode>({
-                verdi: nyYearMonthPeriode(kompetanse.fom, kompetanse.tom),
+                verdi: nyIsoMånedPeriode(kompetanse.fom, kompetanse.tom),
                 avhengigheter: { initelFom },
                 valideringsfunksjon: erEøsPeriodeGyldig,
             }),

@@ -14,8 +14,8 @@ import type {
     EøsPeriodeStatus,
     UtenlandskPeriodeBeløpIntervall,
 } from '../../typer/eøsPerioder';
+import { nyIsoMånedPeriode } from '../../utils/dato';
 import { erBarnGyldig, erEøsPeriodeGyldig, isEmpty, isNumeric } from '../../utils/eøsValidators';
-import { nyYearMonthPeriode } from '../../utils/kalender';
 import type { IYearMonthPeriode } from '../../utils/kalender';
 import { useBehandling } from '../behandlingContext/BehandlingContext';
 import {
@@ -92,7 +92,7 @@ const useUtenlandskPeriodeBeløpSkjema = ({
                 valideringsfunksjon: erBarnGyldig,
             }),
             periode: useFelt<IYearMonthPeriode>({
-                verdi: nyYearMonthPeriode(utenlandskPeriodeBeløp.fom, utenlandskPeriodeBeløp.tom),
+                verdi: nyIsoMånedPeriode(utenlandskPeriodeBeløp.fom, utenlandskPeriodeBeløp.tom),
                 avhengigheter: { initelFom },
                 valideringsfunksjon: erEøsPeriodeGyldig,
             }),
