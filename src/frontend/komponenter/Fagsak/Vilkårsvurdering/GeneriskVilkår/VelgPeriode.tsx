@@ -7,13 +7,12 @@ import type { Felt } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { Resultat } from '../../../../typer/vilkår';
-import type { IsoDatoString } from '../../../../utils/dato';
+import type { IIsoDatoPeriode, IsoDatoString } from '../../../../utils/dato';
 import { nyIsoDatoPeriode } from '../../../../utils/dato';
-import type { IPeriode } from '../../../../utils/kalender';
 import DatovelgerForGammelSkjemaløsning from '../../../Felleskomponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 
 interface IProps {
-    periode: Felt<IPeriode>;
+    periode: Felt<IIsoDatoPeriode>;
     erEksplisittAvslagPåSøknad: Felt<boolean>;
     resultat: Felt<Resultat>;
     visFeilmeldinger: boolean;

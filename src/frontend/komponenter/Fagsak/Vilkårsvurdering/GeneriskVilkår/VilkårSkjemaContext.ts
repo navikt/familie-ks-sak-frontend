@@ -9,14 +9,14 @@ import type { Begrunnelse } from '../../../../typer/vedtak';
 import type { IEndreVilkårResultat, Regelverk } from '../../../../typer/vilkår';
 import type { Resultat, UtdypendeVilkårsvurdering } from '../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../typer/vilkår';
-import type { IPeriode } from '../../../../utils/kalender';
+import type { IIsoDatoPeriode } from '../../../../utils/dato';
 import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
 
 export interface IVilkårSkjemaContext {
     vurderesEtter: Regelverk | undefined;
     resultat: Resultat;
     utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering[];
-    periode: IPeriode;
+    periode: IIsoDatoPeriode;
     begrunnelse: string;
     erEksplisittAvslagPåSøknad: boolean;
     avslagBegrunnelser: Begrunnelse[];
