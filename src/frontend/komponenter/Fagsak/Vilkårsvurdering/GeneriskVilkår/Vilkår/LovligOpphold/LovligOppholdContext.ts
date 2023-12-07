@@ -8,7 +8,7 @@ import type {
     UtdypendeVilkårsvurdering,
 } from '../../../../../../typer/vilkår';
 import { Resultat } from '../../../../../../typer/vilkår';
-import type { IIsoMånedPeriode } from '../../../../../../utils/dato';
+import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     erAvslagBegrunnelserGyldig,
     erPeriodeGyldig,
@@ -51,7 +51,7 @@ export const useLovligOpphold = (vilkår: IVilkårResultat, person: IGrunnlagPer
         vurderesEtter,
         resultat,
         utdypendeVilkårsvurdering,
-        periode: useFelt<IIsoMånedPeriode>({
+        periode: useFelt<IIsoDatoPeriode>({
             verdi: vilkårSkjema.periode,
             avhengigheter: {
                 person,

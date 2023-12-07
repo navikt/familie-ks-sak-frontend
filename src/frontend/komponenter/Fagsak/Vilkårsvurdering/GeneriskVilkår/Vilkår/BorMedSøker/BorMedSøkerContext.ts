@@ -12,7 +12,7 @@ import {
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
     UtdypendeVilkårsvurderingGenerell,
 } from '../../../../../../typer/vilkår';
-import type { IIsoMånedPeriode } from '../../../../../../utils/dato';
+import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     erAvslagBegrunnelserGyldig,
     erPeriodeGyldig,
@@ -56,7 +56,7 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
         vurderesEtter,
         resultat,
         utdypendeVilkårsvurdering,
-        periode: useFelt<IIsoMånedPeriode>({
+        periode: useFelt<IIsoDatoPeriode>({
             verdi: vilkårSkjema.periode,
             avhengigheter: {
                 person,
