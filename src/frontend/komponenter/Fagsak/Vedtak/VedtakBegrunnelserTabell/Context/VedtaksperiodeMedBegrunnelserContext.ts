@@ -90,9 +90,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
             });
 
         const { grupperteBegrunnelser, vedtaksbegrunnelseTekster } = useVilkårBegrunnelser({
-            åpenBehandling,
             vedtaksperiodeMedBegrunnelser,
-            periode: skjema.felter.periode.verdi,
         });
 
         const populerSkjemaFraBackend = () => {
