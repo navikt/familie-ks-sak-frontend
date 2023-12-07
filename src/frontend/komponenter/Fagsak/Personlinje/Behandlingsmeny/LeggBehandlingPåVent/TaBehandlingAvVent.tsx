@@ -16,8 +16,7 @@ import {
 import type { IBehandling } from '../../../../../typer/behandling';
 import { settPåVentÅrsaker } from '../../../../../typer/behandling';
 import { defaultFunksjonellFeil } from '../../../../../typer/feilmeldinger';
-import { Datoformat } from '../../../../../utils/dato';
-import { formaterIsoDato } from '../../../../../utils/formatter';
+import { Datoformat, isoStringTilFormatertString } from '../../../../../utils/dato';
 import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 
 const StyledBodyShort = styled(BodyShort)`
@@ -100,10 +99,10 @@ const TaBehandlingAvVent: React.FC<IProps> = ({ behandling }) => {
                         ` Årsak: ${settPåVentÅrsaker[behandling?.behandlingPåVent?.årsak]}. `}
                 </BodyShort>
                 <StyledBodyShort>
-                    {`Frist: ${formaterIsoDato(
-                        behandling?.behandlingPåVent?.frist,
-                        Datoformat.DATO
-                    )}. `}
+                    {`Frist: ${isoStringTilFormatertString({
+                        isoString: behandling?.behandlingPåVent?.frist,
+                        tilFormat: Datoformat.DATO,
+                    })}. `}
                     Gå via meny for å endre årsak og frist på ventende behandling.
                 </StyledBodyShort>
 

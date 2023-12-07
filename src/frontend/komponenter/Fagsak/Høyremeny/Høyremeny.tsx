@@ -8,8 +8,7 @@ import { hentDataFraRessursMedFallback, RessursStatus } from '@navikt/familie-ty
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { ILogg } from '../../../typer/logg';
-import { Datoformat } from '../../../utils/dato';
-import { formaterIsoDato } from '../../../utils/formatter';
+import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import Hendelsesoversikt from '../../Felleskomponenter/Hendelsesoversikt/Hendelsesoversikt';
 import type { Hendelse } from '../../Felleskomponenter/Hendelsesoversikt/typer';
 import Behandlingskort from '../Behandlingskort/Behandlingskort';
@@ -22,7 +21,7 @@ const ToggleVisningHøyremeny = styled(Button)`
     width: 34px;
     min-width: 34px;
     height: 34px;
-    padding: 0px;
+    padding: 0;
     border-radius: 50%;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `;
@@ -64,10 +63,10 @@ const Høyremeny: React.FunctionComponent = () => {
                                 (loggElement: ILogg): Hendelse => {
                                     return {
                                         id: loggElement.id.toString(),
-                                        dato: formaterIsoDato(
-                                            loggElement.opprettetTidspunkt,
-                                            Datoformat.DATO_TID
-                                        ),
+                                        dato: isoStringTilFormatertString({
+                                            isoString: loggElement.opprettetTidspunkt,
+                                            tilFormat: Datoformat.DATO_TID,
+                                        }),
                                         utførtAv: loggElement.opprettetAv,
                                         rolle: loggElement.rolle,
                                         tittel: loggElement.tittel,

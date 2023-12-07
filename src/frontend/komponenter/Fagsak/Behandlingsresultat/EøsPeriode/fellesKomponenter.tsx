@@ -15,8 +15,8 @@ import StatusIkon from '../../../../ikoner/StatusIkon';
 import { EøsPeriodeStatus } from '../../../../typer/eøsPerioder';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IIsoMånedPeriode } from '../../../../utils/dato';
-import { Datoformat } from '../../../../utils/dato';
-import { formaterIsoDato, lagPersonLabel } from '../../../../utils/formatter';
+import { Datoformat, isoStringTilFormatertString } from '../../../../utils/dato';
+import { lagPersonLabel } from '../../../../utils/formatter';
 
 interface IEøsPeriodeSkjemaContainerProps {
     maxWidth?: number;
@@ -65,8 +65,16 @@ const BarnDiv = styled.div`
 `;
 
 const formatterPeriode = (periode: IIsoMånedPeriode): string => {
-    return `${formaterIsoDato(periode.fom, Datoformat.MÅNED_ÅR_KORTNAVN)} - ${
-        periode.tom ? formaterIsoDato(periode.tom, Datoformat.MÅNED_ÅR_KORTNAVN) : ''
+    return `${isoStringTilFormatertString({
+        isoString: periode.fom,
+        tilFormat: Datoformat.MÅNED_ÅR_KORTNAVN,
+    })} - ${
+        periode.tom
+            ? isoStringTilFormatertString({
+                  isoString: periode.tom,
+                  tilFormat: Datoformat.MÅNED_ÅR_KORTNAVN,
+              })
+            : ''
     }`;
 };
 
