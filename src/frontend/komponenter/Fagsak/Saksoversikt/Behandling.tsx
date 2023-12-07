@@ -35,14 +35,11 @@ export const Behandling: React.FC<IBehandlingshistorikkProps> = ({
             <td>{hentBehandlingstema(saksoversiktsbehandling)?.navn ?? '-'}</td>
             <td>{behandlingsstatuser[saksoversiktsbehandling.status]}</td>
             <td
-                children={
-                    saksoversiktsbehandling.vedtaksdato
-                        ? isoStringTilFormatertString({
-                              isoString: saksoversiktsbehandling.vedtaksdato,
-                              tilFormat: Datoformat.DATO,
-                          })
-                        : '-'
-                }
+                children={isoStringTilFormatertString({
+                    isoString: saksoversiktsbehandling.vedtaksdato,
+                    tilFormat: Datoformat.DATO,
+                    defaultString: '-',
+                })}
             />
             <td>{lagLenkePåResultat(minimalFagsak, saksoversiktsbehandling)}</td>
         </tr>

@@ -78,12 +78,11 @@ const Journalpost: React.FC = () => {
                 <JournalpostMetadataDiv>
                     <BodyShort>
                         Mottatt:{' '}
-                        {datoMottatt
-                            ? isoStringTilFormatertString({
-                                  isoString: datoMottatt,
-                                  tilFormat: Datoformat.DATO,
-                              })
-                            : 'Ingen mottatt dato'}
+                        {isoStringTilFormatertString({
+                            isoString: datoMottatt,
+                            tilFormat: Datoformat.DATO,
+                            defaultString: 'Ingen mottatt dato',
+                        })}
                     </BodyShort>
                 </JournalpostMetadataDiv>
                 <EndreJournalpost />

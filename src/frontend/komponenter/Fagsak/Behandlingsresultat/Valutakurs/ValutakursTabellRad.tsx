@@ -93,12 +93,11 @@ const ValutakursTabellRad: React.FC<IProps> = ({
                 }}
             />
             <Table.DataCell>
-                {valutakurs.valutakursdato
-                    ? isoStringTilFormatertString({
-                          isoString: valutakurs.valutakursdato,
-                          tilFormat: Datoformat.DATO,
-                      })
-                    : '-'}
+                {isoStringTilFormatertString({
+                    isoString: valutakurs.valutakursdato,
+                    tilFormat: Datoformat.DATO,
+                    defaultString: '-',
+                })}
             </Table.DataCell>
             <Table.DataCell>{valutakurs.valutakode ? valutakurs.valutakode : '-'}</Table.DataCell>
         </Table.ExpandableRow>
