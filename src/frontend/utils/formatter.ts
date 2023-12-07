@@ -7,10 +7,6 @@ import { PersonType } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
 import type { IUtbetalingsperiodeDetalj } from '../typer/vedtaksperiode';
 
-export enum datoformatNorsk {
-    DATO = 'ddmmåå',
-}
-
 export const millisekunderIEttÅr = 3.15576e10;
 
 export const formaterIsoDato = (
