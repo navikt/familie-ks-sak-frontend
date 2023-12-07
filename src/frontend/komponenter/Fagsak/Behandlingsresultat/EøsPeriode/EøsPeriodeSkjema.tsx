@@ -7,7 +7,7 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Label } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
-import type { IYearMonthPeriode } from '../../../../utils/kalender';
+import type { IIsoMånedPeriode } from '../../../../utils/dato';
 import MånedÅrVelger from '../../../Felleskomponenter/MånedÅrInput/MånedÅrVelger';
 
 const StyledLegend = styled.legend`
@@ -28,12 +28,12 @@ const FlexDiv = styled.div`
     }
 
     div div.skjemaelement {
-        margin-bottom: 0rem;
+        margin-bottom: 0;
     }
 `;
 
 interface IProps {
-    periode: Felt<IYearMonthPeriode>;
+    periode: Felt<IIsoMånedPeriode>;
     periodeFeilmeldingId: string;
     initielFom: Felt<string>;
     visFeilmeldinger: boolean;

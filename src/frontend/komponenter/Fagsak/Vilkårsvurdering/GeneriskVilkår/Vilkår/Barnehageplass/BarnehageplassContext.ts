@@ -10,7 +10,7 @@ import { UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilk
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
-import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
+import type { IIsoMånedPeriode } from '../../../../../../utils/dato';
 import {
     erAvslagBegrunnelserGyldig,
     erPeriodeGyldig,
@@ -68,7 +68,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             valideringsfunksjon: erAntallTimerGyldig,
         }),
         utdypendeVilkårsvurdering,
-        periode: useFelt<IYearMonthPeriode>({
+        periode: useFelt<IIsoMånedPeriode>({
             verdi: vilkårSkjema.periode,
             avhengigheter: {
                 person,
