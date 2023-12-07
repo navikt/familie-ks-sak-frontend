@@ -19,7 +19,6 @@ import 'nav-frontend-tabell-style';
 import { JournalpostDokument } from './JournalpostDokument';
 import {
     formaterFagsak,
-    formaterDatoRegistrertSendtMottatt,
     hentDatoRegistrertSendt,
     hentSorterteJournalposter,
     hentSortState,
@@ -27,6 +26,7 @@ import {
 } from './journalpostUtils';
 import useDokument from '../../../hooks/useDokument';
 import type { IPersonInfo } from '../../../typer/person';
+import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 
 const Container = styled.div`
@@ -217,7 +217,11 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
                                     </InnUtWrapper>
                                 </StyledDataCell>
                                 <StyledDataCell>
-                                    {formaterDatoRegistrertSendtMottatt(journalpost.datoMottatt)}
+                                    {isoStringTilFormatertString({
+                                        isoString: journalpost.datoMottatt,
+                                        tilFormat: Datoformat.DATO_TID,
+                                        defaultString: '-',
+                                    })}
                                 </StyledDataCell>
 
                                 <StyledDataCell>
