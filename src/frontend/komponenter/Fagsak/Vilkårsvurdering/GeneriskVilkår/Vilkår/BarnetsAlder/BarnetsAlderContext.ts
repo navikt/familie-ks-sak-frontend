@@ -57,7 +57,6 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-                erBarnetsAlderVilkår: true,
                 utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
             },
             valideringsfunksjon: (felt, avhengigheter) =>

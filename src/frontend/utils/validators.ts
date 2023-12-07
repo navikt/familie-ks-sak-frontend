@@ -82,7 +82,7 @@ export const erPeriodeGyldig = (
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
     const erEksplisittAvslagPåSøknad: boolean | undefined =
         avhengigheter?.erEksplisittAvslagPåSøknad;
-    const erBarnetsAlderVilkår: boolean = avhengigheter?.erBarnetsAlderVilkår ?? false;
+    const erBarnetsAlderVilkår: boolean = vilkår === VilkårType.BARNETS_ALDER;
 
     const erMedlemskapAnnenForelderVilkår: boolean =
         avhengigheter?.erMedlemskapAnnenForelderVilkår ?? false;
