@@ -8,7 +8,7 @@ import type { Avhengigheter } from '@navikt/familie-skjema';
 import type { IBehandling } from '../typer/behandling';
 import type { IRestEndretUtbetalingAndel } from '../typer/utbetalingAndel';
 import { IEndretUtbetalingAndelÅrsak } from '../typer/utbetalingAndel';
-import type { IsoDatoString } from '../utils/dato';
+import type { IsoMånedString } from '../utils/dato';
 import {
     dateTilIsoDatoStringEllerUndefined,
     erIsoStringGyldig,
@@ -36,8 +36,8 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
         const { skjema, kanSendeSkjema, onSubmit } = useSkjema<
             {
                 person: string | undefined;
-                fom: IsoDatoString | undefined;
-                tom: IsoDatoString | undefined;
+                fom: IsoMånedString | undefined;
+                tom: IsoMånedString | undefined;
                 periodeSkalUtbetalesTilSøker: boolean | undefined;
                 årsak: IEndretUtbetalingAndelÅrsak | undefined;
                 søknadstidspunkt: Date | undefined;
@@ -54,14 +54,14 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                     valideringsfunksjon: felt =>
                         felt.verdi ? ok(felt) : feil(felt, 'Du må velge en person'),
                 }),
-                fom: useFelt<IsoDatoString | undefined>({
+                fom: useFelt<IsoMånedString | undefined>({
                     verdi: endretUtbetalingAndel.fom,
                     valideringsfunksjon: felt =>
                         erIsoStringGyldig(felt.verdi)
                             ? ok(felt)
                             : feil(felt, 'Du må velge f.o.m-dato'),
                 }),
-                tom: useFelt<IsoDatoString | undefined>({
+                tom: useFelt<IsoMånedString | undefined>({
                     verdi: endretUtbetalingAndel.tom,
                 }),
                 periodeSkalUtbetalesTilSøker: periodeSkalUtbetalesTilSøkerFelt,
