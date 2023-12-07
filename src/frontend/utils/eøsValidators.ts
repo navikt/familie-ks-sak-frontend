@@ -6,12 +6,11 @@ import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 
 import type { IIsoMånedPeriode, IsoMånedString } from './dato';
 import { dagensDato, isoStringTilDate } from './dato';
-import type { YearMonth } from './kalender';
 
 const isEmpty = (text?: string | number | boolean | Date | null) =>
     text === null || text === undefined || text.toString().trim().length === 0;
 
-const valgtDatoErNesteMånedEllerSenere = (valgtDato: YearMonth) =>
+const valgtDatoErNesteMånedEllerSenere = (valgtDato: IsoMånedString) =>
     isAfter(isoStringTilDate(valgtDato), endOfMonth(dagensDato));
 const valgtDatoErSenereEnnNesteMåned = (valgtDato: IsoMånedString) =>
     isAfter(isoStringTilDate(valgtDato), endOfMonth(addMonths(dagensDato, 1)));
