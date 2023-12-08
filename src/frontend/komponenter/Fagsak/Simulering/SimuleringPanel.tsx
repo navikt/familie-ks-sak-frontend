@@ -24,20 +24,16 @@ const StyledTable = styled.table`
     border-spacing: 0 0.5rem;
 `;
 
-const StyledTh = styled.th(
-    (props: { erHøyrestilt?: boolean }) => `
-        text-align: ${props.erHøyrestilt ? 'right' : 'left'};
-    `
-);
+const StyledTh = styled.th<{ $erHøyrestilt?: boolean }>`
+    text-align: ${props => (props.$erHøyrestilt ? 'right' : 'left')};
+`;
 
-const StyledTd = styled.th(
-    (props: { erHøyrestilt?: boolean }) => `
-        text-align: ${props.erHøyrestilt ? 'right' : 'left'};
-    `
-);
+const StyledTd = styled.th<{ $erHøyrestilt?: boolean }>`
+    text-align: ${props => (props.$erHøyrestilt ? 'right' : 'left')};
+`;
 
-const LabelMedFarge = styled(Label)`
-    color: ${(props: { farge?: string }) => (props.farge ? props.farge : navFarger.navMorkGra)};
+const LabelMedFarge = styled(Label)<{ $farge?: string }>`
+    color: ${props => (props.$farge ? props.$farge : navFarger.navMorkGra)};
 `;
 
 const StyledHr = styled.hr`
@@ -100,9 +96,11 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
                         <StyledTd>
                             <BodyShort>Feilutbetaling</BodyShort>
                         </StyledTd>
-                        <StyledTd erHøyrestilt={true}>
+                        <StyledTd $erHøyrestilt={true}>
                             <LabelMedFarge
-                                farge={feilutbetaling > 0 ? navFarger.navRod : navFarger.navMorkGra}
+                                $farge={
+                                    feilutbetaling > 0 ? navFarger.navRod : navFarger.navMorkGra
+                                }
                             >
                                 {formaterBeløpEllerDashOmUndefined(feilutbetaling)}
                             </LabelMedFarge>
@@ -113,7 +111,7 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
                         <StyledTd>
                             <BodyShort>Etterbetaling</BodyShort>
                         </StyledTd>
-                        <StyledTd erHøyrestilt={true}>
+                        <StyledTd $erHøyrestilt={true}>
                             <LabelMedFarge>
                                 {formaterBeløpEllerDashOmUndefined(etterbetaling)}
                             </LabelMedFarge>
@@ -131,7 +129,7 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
                             <Label>Neste utbetaling</Label>
                         </StyledTh>
                         {!nestePeriode && (
-                            <StyledTh erHøyrestilt={true}>
+                            <StyledTh $erHøyrestilt={true}>
                                 <Label>-</Label>
                             </StyledTh>
                         )}
@@ -149,9 +147,9 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
                                 </BodyShort>
                             </StyledTd>
 
-                            <StyledTd erHøyrestilt={true}>
+                            <StyledTd $erHøyrestilt={true}>
                                 <LabelMedFarge
-                                    farge={
+                                    $farge={
                                         nestePeriode?.resultat && nestePeriode.resultat > 0
                                             ? navFarger.navGronnDarken40
                                             : navFarger.navMorkGra

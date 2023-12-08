@@ -40,7 +40,7 @@ const UtbetaltBeløpRad = styled.div`
     justify-content: space-between;
 
     div.skjemaelement {
-        margin-bottom: 0rem;
+        margin-bottom: 0;
 
         label {
             font-weight: normal;
@@ -133,7 +133,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
 
     return (
         <SkjemaGruppe feil={skjema.visFeilmeldinger && visSubmitFeilmelding()}>
-            <EøsPeriodeSkjemaContainer maxWidth={34} lesevisning={lesevisning} status={status}>
+            <EøsPeriodeSkjemaContainer $maxWidth={34} $lesevisning={lesevisning} $status={status}>
                 <UtbetaltBeløpInfo variant="info" inline>
                     <UtbetaltBeløpText size="small">
                         Dersom det er ulike beløp per barn utbetalt i det andre landet, må barna

@@ -19,19 +19,18 @@ import { formaterIsoDato, lagPersonLabel } from '../../../../utils/formatter';
 import type { IYearMonthPeriode } from '../../../../utils/kalender';
 
 interface IEøsPeriodeSkjemaContainerProps {
-    maxWidth?: number;
-    lesevisning: boolean;
-    status: EøsPeriodeStatus;
+    $maxWidth?: number;
+    $lesevisning: boolean;
+    $status: EøsPeriodeStatus;
 }
 
-export const EøsPeriodeSkjemaContainer = styled.div`
-    max-width: ${(props: IEøsPeriodeSkjemaContainerProps) =>
-        props.maxWidth ? `${props.maxWidth}rem` : '30rem'};
+export const EøsPeriodeSkjemaContainer = styled.div<IEøsPeriodeSkjemaContainerProps>`
+    max-width: ${props => (props.$maxWidth ? `${props.$maxWidth}rem` : '30rem')};
     border-left: 0.125rem solid
-        ${(props: IEøsPeriodeSkjemaContainerProps) => {
-            if (props.lesevisning) return ABorderDefault;
-            if (props.status === EøsPeriodeStatus.IKKE_UTFYLT) return ABorderWarning;
-            if (props.status === EøsPeriodeStatus.UFULLSTENDIG) return ABorderDanger;
+        ${props => {
+            if (props.$lesevisning) return ABorderDefault;
+            if (props.$status === EøsPeriodeStatus.IKKE_UTFYLT) return ABorderWarning;
+            if (props.$status === EøsPeriodeStatus.UFULLSTENDIG) return ABorderDanger;
             return ASurfaceAction;
         }};
     padding-left: 2rem;

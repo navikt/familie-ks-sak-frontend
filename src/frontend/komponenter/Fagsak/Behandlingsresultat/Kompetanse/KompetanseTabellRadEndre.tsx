@@ -83,7 +83,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
 
     return (
         <SkjemaGruppe feil={skjema.visFeilmeldinger && visSubmitFeilmelding()}>
-            <EøsPeriodeSkjemaContainer lesevisning={lesevisning} status={status}>
+            <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
                 <div className={'skjemaelement'}>
                     <FamilieReactSelect
                         {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}

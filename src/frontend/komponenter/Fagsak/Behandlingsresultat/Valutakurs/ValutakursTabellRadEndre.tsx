@@ -38,7 +38,7 @@ const ValutakursRad = styled.div`
     }
 
     div.skjemaelement {
-        margin-bottom: 0rem;
+        margin-bottom: 0;
 
         label {
             font-weight: normal;
@@ -123,7 +123,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
 
     return (
         <SkjemaGruppe feil={skjema.visFeilmeldinger && visSubmitFeilmelding()}>
-            <EøsPeriodeSkjemaContainer maxWidth={34} lesevisning={lesevisning} status={status}>
+            <EøsPeriodeSkjemaContainer $maxWidth={34} $lesevisning={lesevisning} $status={status}>
                 <div className={'skjemaelement'}>
                     <FamilieReactSelect
                         {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}

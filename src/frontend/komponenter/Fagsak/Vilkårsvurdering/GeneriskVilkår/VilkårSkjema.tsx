@@ -33,14 +33,14 @@ import type {
 import { Regelverk, Resultat, resultater, VilkårType } from '../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../utils/vilkår';
 
-const Container = styled.div`
+const Container = styled.div<{ $lesevisning: boolean; $vilkårResultat: Resultat | undefined }>`
     max-width: 30rem;
     border-left: 0.125rem solid
-        ${(props: { lesevisning: boolean; vilkårResultat: Resultat | undefined }) => {
-            if (props.lesevisning) {
+        ${props => {
+            if (props.$lesevisning) {
                 return ABorderDefault;
             }
-            if (props.vilkårResultat === Resultat.IKKE_VURDERT) {
+            if (props.$vilkårResultat === Resultat.IKKE_VURDERT) {
                 return ABorderWarning;
             }
             return ASurfaceAction;
@@ -112,7 +112,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
 
     return (
         <SkjemaGruppe feil={feilmelding} utenFeilPropagering={true}>
-            <Container lesevisning={false} vilkårResultat={undefined}>
+            <Container $lesevisning={false} $vilkårResultat={undefined}>
                 {visVurderesEtter && (
                     <FamilieSelect
                         erLesevisning={lesevisning}

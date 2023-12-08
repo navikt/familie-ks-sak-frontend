@@ -21,13 +21,11 @@ const Årsvelger = styled.div`
     flex-direction: column;
 `;
 
-const StyledTable = styled.table(
-    (props: { bredde: number }) => `
-    width: ${props.bredde}rem;
+const StyledTable = styled.table<{ $bredde: number }>`
+    width: ${props => props.$bredde}rem;
     border-collapse: collapse;
     table-layout: fixed;
-`
-);
+`;
 
 const HøyresiltTd = styled.td`
     text-align: right !important;
@@ -37,8 +35,8 @@ const HøyresiltTh = styled.th`
     text-align: right !important;
 `;
 
-const BodyShortMedFarge = styled(BodyShort)`
-    color: ${(props: { farge?: string }) => (props.farge ? props.farge : navFarger.navMorkGra)};
+const BodyShortMedFarge = styled(BodyShort)<{ $farge?: string }>`
+    color: ${props => (props.$farge ? props.$farge : navFarger.navMorkGra)};
 `;
 
 const VenstreKolonne = styled.col`
@@ -53,7 +51,7 @@ const SkillelinjeKolonne = styled.col`
     width: 1.125rem;
 `;
 
-const Skillelinje = styled.td`
+const Skillelinje = styled.td<{ $erHeader?: boolean }>`
     position: relative;
     padding: 0.5rem !important;
     border: none !important;
@@ -61,7 +59,7 @@ const Skillelinje = styled.td`
     hr {
         border: none;
         border-right: 1px dashed ${navFarger.navGra60};
-        height: ${(props: { erHeader?: boolean }) => (props.erHeader ? '3.875rem' : '3.25rem')};
+        height: ${props => (props.$erHeader ? '3.875rem' : '3.25rem')};
         position: absolute;
         top: -0.375rem;
     }
@@ -74,8 +72,8 @@ const SimuleringTabellOverskrift = styled.div`
     margin-bottom: 1rem;
 `;
 
-const LabelMedFarge = styled(Label)`
-    color: ${(props: { farge?: string }) => (props.farge ? props.farge : navFarger.navMorkGra)};
+const LabelMedFarge = styled(Label)<{ farge?: string }>`
+    color: ${props => (props.$farge ? props.$farge : navFarger.navMorkGra)};
 `;
 
 interface ISimuleringProps {
@@ -123,7 +121,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
     const erNestePeriode = (periode: ISimuleringPeriode) => periode.fom === fomDatoNestePeriode;
 
     const TabellSkillelinje = (props: { erHeader?: boolean }) => (
-        <Skillelinje erHeader={props.erHeader}>
+        <Skillelinje $erHeader={props.erHeader}>
             <hr />
         </Skillelinje>
     );
@@ -151,7 +149,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                         : `perioden ${tilOgFraDatoForSimulering}`
                 }`}
                 className="tabell"
-                bredde={tabellbredde}
+                $bredde={tabellbredde}
             >
                 <colgroup>
                     <VenstreKolonne />
@@ -262,7 +260,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                         <HøyresiltTd>
                                             {fomDatoNestePeriode === periode.fom ? (
                                                 <LabelMedFarge
-                                                    farge={
+                                                    $farge={
                                                         periode.resultat && periode.resultat < 0
                                                             ? navFarger.navRod
                                                             : navFarger.navGronnDarken40
@@ -272,7 +270,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                                 </LabelMedFarge>
                                             ) : (
                                                 <BodyShortMedFarge
-                                                    farge={
+                                                    $farge={
                                                         periode.resultat && periode.resultat < 0
                                                             ? navFarger.navRod
                                                             : navFarger.navMorkGra

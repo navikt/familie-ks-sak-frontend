@@ -17,8 +17,8 @@ const StyledLegend = styled.legend`
     }
 `;
 
-const FlexDiv = styled.div`
-    width: ${(props: { maxWidth?: number }) => (props.maxWidth ? `${props.maxWidth}rem` : '28rem')};
+const FlexDiv = styled.div<{ $maxWidth?: number }>`
+    width: ${props => (props.$maxWidth ? `${props.$maxWidth}rem` : '28rem')};
     display: flex;
     justify-content: space-between;
     font-size: 1rem;
@@ -28,7 +28,7 @@ const FlexDiv = styled.div`
     }
 
     div div.skjemaelement {
-        margin-bottom: 0rem;
+        margin-bottom: 0;
     }
 `;
 
@@ -62,7 +62,7 @@ const EøsPeriodeSkjema: React.FC<IProps> = ({
             <StyledLegend>
                 <Label size="small">Periode</Label>
             </StyledLegend>
-            <FlexDiv maxWidth={maxWidth}>
+            <FlexDiv $maxWidth={maxWidth}>
                 <MånedÅrVelger
                     lesevisning={lesevisning}
                     id={`periode_fom`}

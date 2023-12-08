@@ -23,7 +23,7 @@ interface IProps {
 }
 
 interface IEkspanderbarTrProps {
-    ekspandert?: boolean;
+    $ekspandert?: boolean;
 }
 
 const BeskrivelseCelle = styled(BodyShort)`
@@ -39,10 +39,10 @@ const VurderingCelle = styled.div`
     }
 `;
 
-const EkspanderbarTr = styled.tr`
+const EkspanderbarTr = styled.tr<IEkspanderbarTrProps>`
     td {
-        border-bottom: ${(props: IEkspanderbarTrProps) =>
-            props.ekspandert ? 'none' : '1px solid rgba(0, 0, 0, 0.15)'} !important;
+        border-bottom: ${props =>
+            props.$ekspandert ? 'none' : '1px solid rgba(0, 0, 0, 0.15)'} !important;
     }
 `;
 
@@ -79,7 +79,7 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
 
     return (
         <>
-            <EkspanderbarTr {...{ ekspandert: ekspandertAnnenVurdering }}>
+            <EkspanderbarTr {...{ $ekspandert: ekspandertAnnenVurdering }}>
                 <td>
                     <VurderingCelle>
                         <VilkårResultatIkon
