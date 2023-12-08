@@ -13,8 +13,8 @@ import {
 import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 
+import type { IIsoDatoPeriode } from './dato';
 import { dagensDato, isoStringTilDate } from './dato';
-import type { IPeriode } from './kalender';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { Begrunnelse } from '../typer/vedtak';
@@ -75,9 +75,9 @@ const valgtDatoErSenereEnnNesteMåned = (valgtDato: Date) =>
     isAfter(valgtDato, endOfMonth(addMonths(dagensDato, 1)));
 
 export const erPeriodeGyldig = (
-    felt: FeltState<IPeriode>,
+    felt: FeltState<IIsoDatoPeriode>,
     avhengigheter?: Avhengigheter
-): FeltState<IPeriode> => {
+): FeltState<IIsoDatoPeriode> => {
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
     const erEksplisittAvslagPåSøknad: boolean | undefined =
         avhengigheter?.erEksplisittAvslagPåSøknad;

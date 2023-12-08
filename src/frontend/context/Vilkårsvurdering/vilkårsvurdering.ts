@@ -11,8 +11,12 @@ import type {
 } from '../../typer/vilkår';
 import { Resultat } from '../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../utils/dato';
-import { isoStringTilDateMedFallback, tidenesEnde } from '../../utils/dato';
-import { kalenderDato, kalenderDatoTilDate, kalenderDiff, nyPeriode } from '../../utils/kalender';
+import {
+    isoStringTilDate,
+    isoStringTilDateMedFallback,
+    nyIsoDatoPeriode,
+    tidenesEnde,
+} from '../../utils/dato';
 
 const periodeDiff = (periodeA: IIsoDatoPeriode, periodeB: IIsoDatoPeriode) => {
     if (!periodeA.fom && !periodeA.tom) {
@@ -68,7 +72,7 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                                 return {
                                     begrunnelse: vilkårResultat.begrunnelse,
                                     id: vilkårResultat.id,
-                                    periode: nyPeriode(
+                                    periode: nyIsoDatoPeriode(
                                         vilkårResultat.periodeFom,
                                         vilkårResultat.periodeTom
                                     ),
@@ -122,9 +126,9 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                 return -1;
             }
 
-            return kalenderDiff(
-                kalenderDatoTilDate(kalenderDato(b.person.fødselsdato)),
-                kalenderDatoTilDate(kalenderDato(a.person.fødselsdato))
+            return differenceInMilliseconds(
+                isoStringTilDate(b.person.fødselsdato),
+                isoStringTilDate(a.person.fødselsdato)
             );
         });
 };

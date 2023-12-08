@@ -10,7 +10,7 @@ import NyRefusjonEøsPeriode from './NyRefusjonEøsPeriode';
 import RefusjonEøsPeriode from './RefusjonEøsPeriode';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IRestRefusjonEøs } from '../../../../typer/refusjon-eøs';
-import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato/periode';
+import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato';
 import { summerBeløpForPerioder } from '../utils';
 
 interface IRefusjonEøs {

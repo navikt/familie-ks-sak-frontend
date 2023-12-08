@@ -6,8 +6,7 @@ import navFarger from 'nav-frontend-core';
 
 import { Tag } from '@navikt/ds-react';
 
-import { Datoformat } from '../../utils/dato';
-import { formaterIsoDato } from '../../utils/formatter';
+import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 
 const StyletTag = styled(Tag)`
     color: white;
@@ -20,7 +19,10 @@ interface IDødsfallTagProps {
 }
 
 const DødsfallTag: React.FC<IDødsfallTagProps> = ({ dødsfallDato }) => {
-    const formatertDato = formaterIsoDato(dødsfallDato, Datoformat.DATO);
+    const formatertDato = isoStringTilFormatertString({
+        isoString: dødsfallDato,
+        tilFormat: Datoformat.DATO,
+    });
     return <StyletTag variant="info">{`Død ${formatertDato}`}</StyletTag>;
 };
 

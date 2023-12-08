@@ -9,7 +9,7 @@ import RefusjonEøsSkjema from './RefusjonEøsSkjema';
 import { useRefusjonEøs } from './useRefusjonEøs';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import type { IRestRefusjonEøs } from '../../../../typer/refusjon-eøs';
-import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato/periode';
+import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato';
 
 interface IRefusjonEøsPeriode {
     refusjonEøs: IRestRefusjonEøs;

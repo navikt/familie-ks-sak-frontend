@@ -8,7 +8,7 @@ import { Table, Button, Tooltip, Alert } from '@navikt/ds-react';
 import FeilutbetaltValutaSkjema from './FeilutbetaltValutaSkjema';
 import { useFeilutbetaltValuta } from './useFeilutbetaltValuta';
 import type { IRestFeilutbetaltValuta } from '../../../../typer/eøs-feilutbetalt-valuta';
-import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato/periode';
+import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato';
 
 interface IFeilutbetaltValutaPeriode {
     feilutbetaltValuta: IRestFeilutbetaltValuta;

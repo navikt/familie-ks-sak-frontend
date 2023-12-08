@@ -10,7 +10,7 @@ import { ATextAction } from '@navikt/ds-tokens/dist/tokens';
 import FeilutbetaltValutaPeriode from './FeilutbetaltValutaPeriode';
 import NyFeilutbetaltValutaPeriode from './NyFeilutbetaltValutaPeriode';
 import type { IRestFeilutbetaltValuta } from '../../../../typer/eøs-feilutbetalt-valuta';
-import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato/periode';
+import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato';
 
 interface IFeilutbetaltValuta {
     behandlingId: number;

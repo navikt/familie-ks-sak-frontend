@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { addMonths, startOfMonth } from 'date-fns';
+import { addMonths, differenceInMilliseconds, startOfMonth } from 'date-fns';
 import styled from 'styled-components';
 
 import Lenke from 'nav-frontend-lenker';
@@ -20,10 +20,14 @@ import { behandlingKategori, BehandlingKategori } from '../../../typer/behandlin
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
 import { Vedtaksperiodetype } from '../../../typer/vedtaksperiode';
-import { dagensDato, dateTilFormatertString, Datoformat } from '../../../utils/dato';
+import {
+    dagensDato,
+    dateTilFormatertString,
+    Datoformat,
+    isoStringTilDate,
+} from '../../../utils/dato';
 import { periodeOverlapperMedValgtDato } from '../../../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../utils/fagsak';
-import { kalenderDiff } from '../../../utils/kalender';
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;
@@ -72,7 +76,10 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
     let gjeldendeBehandling =
         iverksatteBehandlinger.length > 0
             ? iverksatteBehandlinger.sort((a, b) =>
-                  kalenderDiff(new Date(b.opprettetTidspunkt), new Date(a.opprettetTidspunkt))
+                  differenceInMilliseconds(
+                      isoStringTilDate(b.opprettetTidspunkt),
+                      isoStringTilDate(a.opprettetTidspunkt)
+                  )
               )[0]
             : undefined;
 
