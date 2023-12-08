@@ -6,7 +6,7 @@ import {
 } from './BarnehageplassValidering';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import { UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
+import { UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../../../../../typer/vilkår';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
@@ -74,7 +74,8 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
-            valideringsfunksjon: erPeriodeGyldig,
+            valideringsfunksjon: (felt, avhengigheter) =>
+                erPeriodeGyldig(felt, VilkårType.BARNEHAGEPLASS, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

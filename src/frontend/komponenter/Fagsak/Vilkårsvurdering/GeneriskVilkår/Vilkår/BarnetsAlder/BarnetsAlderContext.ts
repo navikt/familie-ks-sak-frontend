@@ -3,7 +3,7 @@ import { useFelt } from '@navikt/familie-skjema';
 import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BarnetsAlderValidering';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import { UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
+import { UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../../../../../typer/vilkår';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
@@ -57,10 +57,10 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-                erBarnetsAlderVilkår: true,
                 utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
             },
-            valideringsfunksjon: erPeriodeGyldig,
+            valideringsfunksjon: (felt, avhengigheter) =>
+                erPeriodeGyldig(felt, VilkårType.BARNETS_ALDER, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,
