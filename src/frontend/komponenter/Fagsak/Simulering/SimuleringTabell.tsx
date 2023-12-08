@@ -11,10 +11,13 @@ import { BodyShort, Detail, Label } from '@navikt/ds-react';
 
 import { NavigeringsRetning } from '../../../context/TidslinjeContext';
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../typer/simulering';
-import { Datoformat, isoStringTilDate } from '../../../utils/dato';
-import { isoDatoPeriodeTilFormatertString } from '../../../utils/dato/periode';
-import { formaterBeløp, formaterIsoDato } from '../../../utils/formatter';
-import { kalenderDato } from '../../../utils/kalender';
+import {
+    Datoformat,
+    isoStringTilDate,
+    isoDatoPeriodeTilFormatertString,
+    isoStringTilFormatertString,
+} from '../../../utils/dato';
+import { formaterBeløp } from '../../../utils/formatter';
 import { hentPeriodelisteMedTommePerioder, hentÅrISimuleringen } from '../../../utils/simulering';
 import TidslinjeNavigering from '../Behandlingsresultat/TidslinjeNavigering';
 
@@ -108,7 +111,8 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
 
     const periodeSkalVisesITabell = (periode: ISimuleringPeriode) =>
         !periodeErEtterNesteUtbetalingsPeriode(periode) &&
-        (!erMerEnn12MånederISimulering || kalenderDato(periode.fom).år === aktueltÅr);
+        (!erMerEnn12MånederISimulering ||
+            isoStringTilDate(periode.fom).getFullYear() === aktueltÅr);
 
     const formaterBeløpUtenValutakode = (beløp?: number) =>
         beløp ? formaterBeløp(beløp).slice(0, -3) : '-';
@@ -141,7 +145,10 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                 <Label>
                     Simuleringsresultat for{' '}
                     {perioder.length === 1
-                        ? `${formaterIsoDato(perioder[0].fom, Datoformat.MÅNED_ÅR_NAVN)}`
+                        ? `${isoStringTilFormatertString({
+                              isoString: perioder[0].fom,
+                              tilFormat: Datoformat.MÅNED_ÅR_NAVN,
+                          })}`
                         : `perioden ${tilOgFraDatoForSimulering}`}
                 </Label>
             </SimuleringTabellOverskrift>
@@ -206,10 +213,10 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                         <HøyresiltTh>
                                             <Label>
                                                 {kapitaliserTekst(
-                                                    formaterIsoDato(
-                                                        periode.fom,
-                                                        Datoformat.MÅNED_NAVN
-                                                    )
+                                                    isoStringTilFormatertString({
+                                                        isoString: periode.fom,
+                                                        tilFormat: Datoformat.MÅNED_NAVN,
+                                                    })
                                                 )}
                                             </Label>
                                         </HøyresiltTh>

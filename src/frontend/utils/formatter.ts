@@ -1,29 +1,12 @@
-import { differenceInMilliseconds, format, isBefore, isValid } from 'date-fns';
+import { differenceInMilliseconds, isBefore } from 'date-fns';
 
-import type { Datoformat } from './dato';
 import { dagensDato, isoStringTilDate } from './dato';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
 import type { IUtbetalingsperiodeDetalj } from '../typer/vedtaksperiode';
 
-export enum datoformatNorsk {
-    DATO = 'ddmmåå',
-}
-
 export const millisekunderIEttÅr = 3.15576e10;
-
-export const formaterIsoDato = (
-    datoString: string | undefined,
-    tilFormat: Datoformat,
-    defaultString?: string
-): string => {
-    if (!datoString) {
-        return defaultString ?? '';
-    }
-    const dato = new Date(datoString);
-    return isValid(dato) ? format(dato, tilFormat) : datoString;
-};
 
 export const hentAlder = (fødselsdato: string): number => {
     return fødselsdato !== ''

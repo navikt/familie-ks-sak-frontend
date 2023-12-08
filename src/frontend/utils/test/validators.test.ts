@@ -9,8 +9,8 @@ import type { IGrunnlagPerson } from '../../typer/person';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
 import { Resultat, VilkårType } from '../../typer/vilkår';
-import type { IPeriode } from '../kalender';
-import { nyPeriode } from '../kalender';
+import type { IIsoDatoPeriode } from '../dato';
+import { nyIsoDatoPeriode } from '../dato';
 import { erPeriodeGyldig, erResultatGyldig, identValidator } from '../validators';
 
 describe('utils/validators', () => {
@@ -35,7 +35,9 @@ describe('utils/validators', () => {
     };
 
     test('Periode med ugyldig fom gir feil', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('400220', undefined));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('400220', undefined)
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
@@ -45,7 +47,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode med ugyldig tom gir feil', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2020-06-17', '400220'));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2020-06-17', '400220')
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
@@ -55,7 +59,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode uten datoer gir feil hvis ikke avslag', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode(undefined, undefined));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode(undefined, undefined)
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
@@ -65,7 +71,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode uten fom-dato gir feil hvis avslag og tom-dato er satt', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode(undefined, '2010-05-17'));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode(undefined, '2010-05-17')
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: true,
@@ -77,7 +85,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode uten fom-dato, tom-dato og som er avslag gir ok', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode(undefined, undefined));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode(undefined, undefined)
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: true,
@@ -86,7 +96,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode med fom-dato på oppfylt periode senere enn tom', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2010-06-17', '2010-01-17'));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2010-06-17', '2010-01-17')
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: true,
@@ -96,7 +108,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode med fom-dato før barnets fødselsdato på oppfylt periode gir feil', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('1999-05-17', '2018-05-17'));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('1999-05-17', '2018-05-17')
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
@@ -108,7 +122,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode med tom-dato etter barnets dødsfalldato gir feil', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2000-05-17', '2021-05-17'));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2000-05-17', '2021-05-17')
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture({ dødsfallDato: '2020-12-12' }),
             erEksplisittAvslagPåSøknad: true,
@@ -120,7 +136,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode med fom-dato lik som tom-dato skal ikke være mulig dersom det ikke er barnets dødsfallsdato', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2020-12-12', '2020-12-12'));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2020-12-12', '2020-12-12')
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
@@ -130,7 +148,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode med fom-dato lik som tom-dato skal være mulig dersom det er barnets dødsfallsdato', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2020-12-12', '2020-12-12'));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2020-12-12', '2020-12-12')
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture({ dødsfallDato: '2020-12-12' }),
             erEksplisittAvslagPåSøknad: false,
@@ -139,7 +159,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode med etter barnets fødselsdato pluss 2 år gir feil på BarnetsAlder-vilkåret', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2001-05-17', '2018-05-17'));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2001-05-17', '2018-05-17')
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
@@ -151,7 +173,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode med etter barnets fødselsdato gir ok på andre vilkår', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2001-05-17', '2018-05-18'));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2001-05-17', '2018-05-18')
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
@@ -160,7 +184,9 @@ describe('utils/validators', () => {
     });
 
     test('Periode med innenfor 1-2 år gir ok på BarnetsAlder-vilkåret', () => {
-        const periode: FeltState<IPeriode> = nyFeltState(nyPeriode('2001-05-17', '2002-05-17'));
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2001-05-17', '2002-05-17')
+        );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,

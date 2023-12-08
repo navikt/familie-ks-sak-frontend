@@ -22,9 +22,11 @@ import type { IGrunnlagPerson } from '../../../../typer/person';
 import { ToggleNavn } from '../../../../typer/toggles';
 import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
 import { Resultat, uiResultat, VilkårType } from '../../../../typer/vilkår';
-import { Datoformat } from '../../../../utils/dato';
-import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato/periode';
-import { formaterIsoDato } from '../../../../utils/formatter';
+import {
+    Datoformat,
+    isoStringTilFormatertString,
+    isoDatoPeriodeTilFormatertString,
+} from '../../../../utils/dato';
 import { alleRegelverk } from '../../../../utils/vilkår';
 
 interface IProps {
@@ -218,10 +220,10 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         {åpenBehandling.status === RessursStatus.SUKSESS && vilkårResultat.erVurdert
                             ? vilkårResultat.behandlingId === åpenBehandling.data.behandlingId
                                 ? 'Vurdert i denne behandlingen'
-                                : `Vurdert ${formaterIsoDato(
-                                      vilkårResultat.endretTidspunkt,
-                                      Datoformat.DATO_FORKORTTET
-                                  )}`
+                                : `Vurdert ${isoStringTilFormatertString({
+                                      isoString: vilkårResultat.endretTidspunkt,
+                                      tilFormat: Datoformat.DATO_FORKORTTET,
+                                  })}`
                             : ''}
                     </div>
                 </FlexDiv>

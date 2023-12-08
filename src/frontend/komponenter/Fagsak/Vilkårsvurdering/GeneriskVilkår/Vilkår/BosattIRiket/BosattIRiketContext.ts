@@ -13,7 +13,7 @@ import {
     UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
     UtdypendeVilkårsvurderingEøsBarnBosattIRiket,
 } from '../../../../../../typer/vilkår';
-import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
+import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     erAvslagBegrunnelserGyldig,
     erPeriodeGyldig,
@@ -58,7 +58,7 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
         vurderesEtter,
         resultat,
         utdypendeVilkårsvurdering,
-        periode: useFelt<IYearMonthPeriode>({
+        periode: useFelt<IIsoDatoPeriode>({
             verdi: vilkårSkjema.periode,
             avhengigheter: {
                 person,

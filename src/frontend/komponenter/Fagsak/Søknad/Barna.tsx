@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { differenceInMilliseconds } from 'date-fns';
 import styled from 'styled-components';
 
 import { CheckboxGruppe } from 'nav-frontend-skjema';
@@ -15,7 +16,7 @@ import RødError from '../../../ikoner/RødError';
 import type { IForelderBarnRelasjonMaskert } from '../../../typer/person';
 import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../typer/søknad';
-import { kalenderDato, kalenderDatoTilDate, kalenderDiff } from '../../../utils/kalender';
+import { isoStringTilDate } from '../../../utils/dato';
 import LeggTilBarn from '../../Felleskomponenter/LeggTilBarn';
 
 const BarnMedDiskresjonskode = styled.div`
@@ -58,9 +59,9 @@ const Barna: React.FunctionComponent = () => {
 
             return !a.ident
                 ? 1
-                : kalenderDiff(
-                      kalenderDatoTilDate(kalenderDato(b.fødselsdato)),
-                      kalenderDatoTilDate(kalenderDato(a.fødselsdato))
+                : differenceInMilliseconds(
+                      isoStringTilDate(b.fødselsdato),
+                      isoStringTilDate(a.fødselsdato)
                   );
         }
     );
