@@ -35,7 +35,7 @@ const StyledMånedVelger = styled(MånedVelger)`
 `;
 
 const StyledErrorMessage = styled(ErrorMessage)`
-    margin-top: 0rem;
+    margin-top: 0;
     margin-bottom: 0.5rem;
 `;
 
@@ -43,7 +43,6 @@ const MånedÅrVelger: React.FC<Props> = ({
     id,
     feil,
     value,
-    className,
     label,
     onEndret,
     antallÅrTilbake = 10,
@@ -71,7 +70,7 @@ const MånedÅrVelger: React.FC<Props> = ({
     }, [value]);
 
     return (
-        <div className={className} style={lesevisning ? { minWidth: '140px' } : {}}>
+        <div style={lesevisning ? { minWidth: '140px' } : {}}>
             {label && <DatolabelStyle htmlFor={id}>{label}</DatolabelStyle>}
             <Knapperad>
                 <StyledMånedVelger
