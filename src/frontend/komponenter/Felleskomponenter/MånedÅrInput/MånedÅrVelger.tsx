@@ -12,13 +12,11 @@ interface Props {
     id: string;
     feil?: ReactNode | undefined;
     value: string | undefined;
-    className?: string;
     label?: ReactNode;
     onEndret: (årMåned?: string) => void;
     antallÅrTilbake: number;
     antallÅrFrem: number;
     lesevisning?: boolean;
-    disabled?: boolean;
 }
 
 const Knapperad = styled.div`
@@ -48,7 +46,6 @@ const MånedÅrVelger: React.FC<Props> = ({
     antallÅrTilbake = 10,
     antallÅrFrem = 4,
     lesevisning = false,
-    disabled = false,
 }) => {
     const årFraVerdi = () => (value ? parseInt(value.split('-')[0], 10) : undefined);
     const månedFraVerdi = () => (value ? value.split('-')[1] : undefined);
@@ -77,7 +74,6 @@ const MånedÅrVelger: React.FC<Props> = ({
                     måned={måned}
                     settMåned={settMåned}
                     lesevisning={lesevisning}
-                    disabled={disabled}
                     feil={!!feil && !måned}
                 />
                 <Årvelger
@@ -86,7 +82,6 @@ const MånedÅrVelger: React.FC<Props> = ({
                     antallÅrTilbake={antallÅrTilbake}
                     antallÅrFrem={antallÅrFrem}
                     lesevisning={lesevisning}
-                    disabled={disabled}
                     feil={!!feil && !år}
                 />
             </Knapperad>

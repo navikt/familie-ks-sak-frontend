@@ -6,8 +6,6 @@ interface MånedProps {
     måned: string | undefined;
     settMåned: (måned: string | undefined) => void;
     lesevisning?: boolean;
-    disabled?: boolean;
-    className?: string;
     feil?: boolean;
 }
 
@@ -30,8 +28,6 @@ const MånedVelger: React.FC<MånedProps> = ({
     måned,
     settMåned,
     lesevisning = false,
-    disabled = false,
-    className,
     feil = false,
 }) => {
     return (
@@ -39,12 +35,10 @@ const MånedVelger: React.FC<MånedProps> = ({
             readOnly={lesevisning}
             value={måned ?? ''}
             label={'Måned'}
-            className={className}
             onChange={event => {
                 event.persist();
                 settMåned(event.target.value !== '' ? event.target.value : undefined);
             }}
-            disabled={disabled}
             error={feil}
         >
             <option value="">Måned</option>

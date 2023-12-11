@@ -8,7 +8,6 @@ interface ÅrProps {
     antallÅrFrem: number;
     antallÅrTilbake: number;
     lesevisning?: boolean;
-    disabled?: boolean;
     feil?: boolean;
 }
 
@@ -34,7 +33,6 @@ const Årvelger: React.FC<ÅrProps> = ({
     antallÅrFrem,
     antallÅrTilbake,
     lesevisning = false,
-    disabled = false,
     feil = false,
 }) => {
     const årOptions = lagÅrOptions(år, antallÅrFrem, antallÅrTilbake);
@@ -47,7 +45,6 @@ const Årvelger: React.FC<ÅrProps> = ({
                 settÅr(event.target.value !== '' ? parseInt(event.target.value) : undefined);
             }}
             readOnly={lesevisning}
-            disabled={disabled}
             error={feil}
             label={'År'}
         >
