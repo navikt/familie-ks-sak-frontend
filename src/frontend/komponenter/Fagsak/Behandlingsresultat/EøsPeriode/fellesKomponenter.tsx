@@ -25,8 +25,7 @@ interface IEøsPeriodeSkjemaContainerProps {
 }
 
 export const EøsPeriodeSkjemaContainer = styled.div`
-    max-width: ${(props: IEøsPeriodeSkjemaContainerProps) =>
-        props.maxWidth ? `${props.maxWidth}rem` : '30rem'};
+    max-width: 34rem;
     border-left: 0.125rem solid
         ${(props: IEøsPeriodeSkjemaContainerProps) => {
             if (props.lesevisning) return ABorderDefault;

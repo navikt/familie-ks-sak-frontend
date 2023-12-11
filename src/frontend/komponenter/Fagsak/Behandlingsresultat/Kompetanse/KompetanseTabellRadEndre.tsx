@@ -2,10 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
 import { Delete } from '@navikt/ds-icons';
-import { Alert, Button, Select } from '@navikt/ds-react';
+import { Alert, Button, Fieldset, Select } from '@navikt/ds-react';
 import { FamilieKnapp, FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
@@ -52,6 +50,10 @@ const StyledFamilieLandvelger = styled(FamilieLandvelger)`
 `;
 
 const StyledSelect = styled(Select)`
+    margin-top: 1.5rem;
+`;
+
+const StyledFamilieReactSelect = styled(FamilieReactSelect)`
     margin-top: 0.5rem;
 `;
 
@@ -87,21 +89,23 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
     const toPrimærland = skjema.felter.resultat?.verdi === KompetanseResultat.TO_PRIMÆRLAND;
 
     return (
-        <SkjemaGruppe feil={skjema.visFeilmeldinger && visSubmitFeilmelding()}>
+        <Fieldset
+            error={skjema.visFeilmeldinger && visSubmitFeilmelding()}
+            legend={'Kompetanseskjema'}
+            hideLegend
+        >
             <EøsPeriodeSkjemaContainer lesevisning={lesevisning} status={status}>
-                <div className={'skjemaelement'}>
-                    <FamilieReactSelect
-                        {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}
-                        erLesevisning={lesevisning}
-                        label={'Barn'}
-                        isMulti
-                        options={tilgjengeligeBarn}
-                        value={skjema.felter.barnIdenter.verdi}
-                        onChange={options =>
-                            skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])
-                        }
-                    />
-                </div>
+                <StyledFamilieReactSelect
+                    {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}
+                    erLesevisning={lesevisning}
+                    label={'Barn'}
+                    isMulti
+                    options={tilgjengeligeBarn}
+                    value={skjema.felter.barnIdenter.verdi}
+                    onChange={options =>
+                        skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])
+                    }
+                />
                 <StyledEøsPeriodeSkjema
                     periode={skjema.felter.periode}
                     periodeFeilmeldingId={kompetansePeriodeFeilmeldingId(skjema)}
@@ -115,7 +119,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                         perioden
                     </StyledAlert>
                 )}
-                <Select
+                <StyledSelect
                     {...skjema.felter.søkersAktivitet.hentNavInputProps(skjema.visFeilmeldinger)}
                     readOnly={lesevisning}
                     label={'Søkers aktivitet'}
@@ -143,7 +147,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                                 </option>
                             );
                         })}
-                </Select>
+                </StyledSelect>
                 <StyledSelect
                     className="unset-margin-bottom"
                     {...skjema.felter.annenForeldersAktivitet.hentNavInputProps(
@@ -323,7 +327,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                         )}
                 </Knapperad>
             </EøsPeriodeSkjemaContainer>
-        </SkjemaGruppe>
+        </Fieldset>
     );
 };
 
