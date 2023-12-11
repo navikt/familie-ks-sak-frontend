@@ -19,7 +19,6 @@ import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../util
 import { lagPersonLabel } from '../../../../utils/formatter';
 
 interface IEøsPeriodeSkjemaContainerProps {
-    maxWidth?: number;
     lesevisning: boolean;
     status: EøsPeriodeStatus;
 }
@@ -35,13 +34,6 @@ export const EøsPeriodeSkjemaContainer = styled.div`
         }};
     padding-left: 2rem;
     margin-left: -3rem;
-`;
-
-export const StyledLegend = styled.legend`
-    && {
-        display: flex;
-        margin-bottom: 0;
-    }
 `;
 
 export const Knapperad = styled.div`
