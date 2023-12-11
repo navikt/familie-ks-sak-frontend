@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { Select } from '@navikt/ds-react';
 
 interface MånedProps {
     måned: string | undefined;
@@ -35,9 +35,8 @@ const MånedVelger: React.FC<MånedProps> = ({
     feil = false,
 }) => {
     return (
-        <FamilieSelect
-            erLesevisning={lesevisning}
-            lesevisningVerdi={måned ? månedValg.find(mnd => mnd.mndNr === måned)?.verdi : ''}
+        <Select
+            readOnly={lesevisning}
             value={måned ?? ''}
             label={'Måned'}
             className={className}
@@ -54,7 +53,7 @@ const MånedVelger: React.FC<MånedProps> = ({
                     {mnd.verdi}
                 </option>
             ))}
-        </FamilieSelect>
+        </Select>
     );
 };
 

@@ -68,7 +68,7 @@ const EndreBehandlingstema: React.FC = () => {
                 >
                     <BehandlingstemaSelect
                         behandlingstema={skjema.felter.behandlingstema}
-                        erLesevisning={vurderErLesevisning()}
+                        readOnly={vurderErLesevisning()}
                         label="Behandlingstema"
                     />
                 </Fieldset>

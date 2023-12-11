@@ -7,13 +7,8 @@ import navFarger from 'nav-frontend-core';
 import { Label, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { AddCircle, Delete, FileContent } from '@navikt/ds-icons';
-import { Button, Tag } from '@navikt/ds-react';
-import {
-    FamilieInput,
-    FamilieReactSelect,
-    FamilieSelect,
-    FamilieTextarea,
-} from '@navikt/familie-form-elements';
+import { Button, Select, Tag, Textarea } from '@navikt/ds-react';
+import { FamilieInput, FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -47,7 +42,7 @@ const StyledList = styled.ul`
     margin: 0;
 `;
 
-const StyledFamilieSelect = styled(FamilieSelect)`
+const StyledSelect = styled(Select)`
     margin-top: 1rem;
 `;
 
@@ -58,7 +53,7 @@ const StyledFamilieFritekstFelt = styled.div`
     }
 `;
 
-const FamilieTextareaBegrunnelseFritekst = styled(FamilieTextarea)`
+const TextareaBegrunnelseFritekst = styled(Textarea)`
     .navds-textarea__wrapper {
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
@@ -167,7 +162,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 }
             >
                 <SkjultLegend>Send brev</SkjultLegend>
-                <FamilieSelect
+                <Select
                     {...skjema.felter.mottakerIdent.hentNavInputProps(skjema.visFeilmeldinger)}
                     label={'Velg mottaker'}
                     placeholder={'Velg mottaker'}
@@ -191,8 +186,8 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                 </option>
                             );
                         })}
-                </FamilieSelect>
-                <StyledFamilieSelect
+                </Select>
+                <StyledSelect
                     {...skjema.felter.brevmal.hentNavInputProps(skjema.visFeilmeldinger)}
                     label={'Velg brevmal'}
                     placeholder={'Velg brevmal'}
@@ -213,7 +208,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                             </option>
                         );
                     })}
-                </StyledFamilieSelect>
+                </StyledSelect>
 
                 {skjema.felter.dokumenter.erSynlig && (
                     <FamilieReactSelect
@@ -276,8 +271,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                                     key={`fritekst-${fritekstId}`}
                                                 >
                                                     <SkjultLegend>{`Kulepunkt ${fritekstId}`}</SkjultLegend>
-                                                    <FamilieTextareaBegrunnelseFritekst
-                                                        erLesevisning={false}
+                                                    <TextareaBegrunnelseFritekst
                                                         key={`fritekst-${fritekstId}`}
                                                         id={`${fritekstId}`}
                                                         label={`Kulepunkt ${fritekstId}`}

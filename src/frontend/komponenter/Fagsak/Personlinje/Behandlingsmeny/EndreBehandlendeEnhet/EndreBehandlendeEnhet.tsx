@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { Button } from '@navikt/ds-react';
+import { Button, Select, Textarea } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
-import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlendeEnhet from './useEndreBehandlendeEnhet';
@@ -37,10 +36,6 @@ const EndreBehandlendeEnhet: React.FC = () => {
         settSubmitRessurs,
         submitRessurs,
     } = useEndreBehandlendeEnhet(() => settVisModal(false));
-
-    const valgtArbeidsfordelingsenhet = behandendeEnheter.find(
-        (enhet: IArbeidsfordelingsenhet) => enhet.enhetId === enhetId
-    );
 
     const lukkBehandlendeEnhetModal = () => {
         fjernState();
@@ -99,9 +94,8 @@ const EndreBehandlendeEnhet: React.FC = () => {
             >
                 <SkjemaGruppe feil={hentFrontendFeilmelding(submitRessurs)}>
                     <SkjultLegend>Endre enhet</SkjultLegend>
-                    <FamilieSelect
-                        erLesevisning={erLesevisningPåBehandling()}
-                        lesevisningVerdi={valgtArbeidsfordelingsenhet?.enhetNavn}
+                    <Select
+                        readOnly={erLesevisningPåBehandling()}
                         name="enhet"
                         value={enhetId}
                         label={'Velg ny enhet'}
@@ -126,11 +120,11 @@ const EndreBehandlendeEnhet: React.FC = () => {
                                 </option>
                             );
                         })}
-                    </FamilieSelect>
+                    </Select>
 
-                    <FamilieTextarea
+                    <Textarea
                         disabled={submitRessurs.status === RessursStatus.HENTER}
-                        erLesevisning={erLesevisningPåBehandling()}
+                        readOnly={erLesevisningPåBehandling()}
                         label={'Begrunnelse'}
                         value={begrunnelse}
                         maxLength={4000}
