@@ -12,7 +12,7 @@ interface Props {
     id: string;
     feil?: ReactNode | undefined;
     value: string | undefined;
-    label?: ReactNode;
+    label: string;
     onEndret: (årMåned?: string) => void;
     antallÅrTilbake: number;
     antallÅrFrem: number;
@@ -75,6 +75,7 @@ const MånedÅrVelger: React.FC<Props> = ({
                     settMåned={settMåned}
                     lesevisning={lesevisning}
                     feil={!!feil && !måned}
+                    label={label}
                 />
                 <Årvelger
                     år={år}

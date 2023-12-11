@@ -7,6 +7,7 @@ interface MånedProps {
     settMåned: (måned: string | undefined) => void;
     lesevisning?: boolean;
     feil?: boolean;
+    label: string;
 }
 
 const månedValg = [
@@ -29,12 +30,13 @@ const MånedVelger: React.FC<MånedProps> = ({
     settMåned,
     lesevisning = false,
     feil = false,
+    label,
 }) => {
     return (
         <Select
             readOnly={lesevisning}
             value={måned ?? ''}
-            label={'Måned'}
+            label={label}
             onChange={event => {
                 event.persist();
                 settMåned(event.target.value !== '' ? event.target.value : undefined);

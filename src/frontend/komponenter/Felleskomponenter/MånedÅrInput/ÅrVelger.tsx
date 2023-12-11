@@ -47,6 +47,8 @@ const Årvelger: React.FC<ÅrProps> = ({
             readOnly={lesevisning}
             error={feil}
             label={'År'}
+            hideLabel
+            style={{ marginTop: '2rem' }}
         >
             <option value="">År</option>
             {årOptions}
