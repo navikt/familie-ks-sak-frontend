@@ -8,6 +8,7 @@ interface MånedProps {
     lesevisning?: boolean;
     feil?: boolean;
     label: string;
+    className?: string;
 }
 
 const månedValg = [
@@ -31,6 +32,7 @@ const MånedVelger: React.FC<MånedProps> = ({
     lesevisning = false,
     feil = false,
     label,
+    className,
 }) => {
     return (
         <Select
@@ -42,6 +44,7 @@ const MånedVelger: React.FC<MånedProps> = ({
                 settMåned(event.target.value !== '' ? event.target.value : undefined);
             }}
             error={feil}
+            className={className}
         >
             <option value="">Måned</option>
             {månedValg.map(mnd => (

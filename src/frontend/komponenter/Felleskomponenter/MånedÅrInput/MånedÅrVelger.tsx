@@ -24,10 +24,6 @@ const Knapperad = styled.div`
     flex-direction: row;
 `;
 
-const DatolabelStyle = styled.label`
-    margin-bottom: 0.5em;
-`;
-
 const StyledMånedVelger = styled(MånedVelger)`
     padding-right: 1em;
 `;
@@ -38,7 +34,6 @@ const StyledErrorMessage = styled(ErrorMessage)`
 `;
 
 const MånedÅrVelger: React.FC<Props> = ({
-    id,
     feil,
     value,
     label,
@@ -67,8 +62,7 @@ const MånedÅrVelger: React.FC<Props> = ({
     }, [value]);
 
     return (
-        <div style={lesevisning ? { minWidth: '140px' } : {}}>
-            {label && <DatolabelStyle htmlFor={id}>{label}</DatolabelStyle>}
+        <div>
             <Knapperad>
                 <StyledMånedVelger
                     måned={måned}
