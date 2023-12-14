@@ -7,8 +7,12 @@ import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
 
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../typer/vedtaksperiode';
 import { hentVedtaksperiodeTittel, Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
-import { dagensDato, isoStringTilDateMedFallback, tidenesEnde } from '../../../../../utils/dato';
-import { isoDatoPeriodeTilFormatertString } from '../../../../../utils/dato/periode';
+import {
+    dagensDato,
+    isoStringTilDateMedFallback,
+    tidenesEnde,
+    isoDatoPeriodeTilFormatertString,
+} from '../../../../../utils/dato';
 import { formaterBeløp, summer } from '../../../../../utils/formatter';
 
 const StyledExpansionCard = styled(ExpansionCard)`

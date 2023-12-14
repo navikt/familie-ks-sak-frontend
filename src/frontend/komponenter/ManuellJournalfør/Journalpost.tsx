@@ -8,8 +8,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
 import { JournalpostTittel } from '../../typer/manuell-journalføring';
-import { Datoformat } from '../../utils/dato';
-import { formaterIsoDato } from '../../utils/formatter';
+import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 
 export const journalpostTittelList = Object.keys(JournalpostTittel).map((_, index) => {
     return {
@@ -79,9 +78,11 @@ const Journalpost: React.FC = () => {
                 <JournalpostMetadataDiv>
                     <BodyShort>
                         Mottatt:{' '}
-                        {datoMottatt
-                            ? formaterIsoDato(datoMottatt, Datoformat.DATO)
-                            : 'Ingen mottatt dato'}
+                        {isoStringTilFormatertString({
+                            isoString: datoMottatt,
+                            tilFormat: Datoformat.DATO,
+                            defaultString: 'Ingen mottatt dato',
+                        })}
                     </BodyShort>
                 </JournalpostMetadataDiv>
                 <EndreJournalpost />

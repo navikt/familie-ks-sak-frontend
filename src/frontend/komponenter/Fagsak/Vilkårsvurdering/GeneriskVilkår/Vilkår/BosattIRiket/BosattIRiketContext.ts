@@ -7,13 +7,13 @@ import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Resultat } from '../../../../../../typer/vilkår';
-import { Regelverk as RegelverkType } from '../../../../../../typer/vilkår';
+import { Regelverk as RegelverkType, VilkårType } from '../../../../../../typer/vilkår';
 import {
     UtdypendeVilkårsvurderingGenerell,
     UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
     UtdypendeVilkårsvurderingEøsBarnBosattIRiket,
 } from '../../../../../../typer/vilkår';
-import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
+import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     erAvslagBegrunnelserGyldig,
     erPeriodeGyldig,
@@ -58,13 +58,14 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
         vurderesEtter,
         resultat,
         utdypendeVilkårsvurdering,
-        periode: useFelt<IYearMonthPeriode>({
+        periode: useFelt<IIsoDatoPeriode>({
             verdi: vilkårSkjema.periode,
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
-            valideringsfunksjon: erPeriodeGyldig,
+            valideringsfunksjon: (felt, avhengigheter) =>
+                erPeriodeGyldig(felt, VilkårType.BOSATT_I_RIKET, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

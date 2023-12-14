@@ -10,16 +10,16 @@ import {
     setMonth,
 } from 'date-fns';
 
-import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 
+import type { IIsoDatoPeriode } from './dato';
 import { dagensDato, isoStringTilDate } from './dato';
-import type { IPeriode } from './kalender';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { Begrunnelse } from '../typer/vedtak';
-import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../typer/vilkår';
 import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../typer/vilkår';
 
 // eslint-disable-next-line
 const validator = require('@navikt/fnrvalidator');
@@ -75,13 +75,14 @@ const valgtDatoErSenereEnnNesteMåned = (valgtDato: Date) =>
     isAfter(valgtDato, endOfMonth(addMonths(dagensDato, 1)));
 
 export const erPeriodeGyldig = (
-    felt: FeltState<IPeriode>,
+    felt: FeltState<IIsoDatoPeriode>,
+    vilkår: VilkårType,
     avhengigheter?: Avhengigheter
-): FeltState<IPeriode> => {
+): FeltState<IIsoDatoPeriode> => {
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
     const erEksplisittAvslagPåSøknad: boolean | undefined =
         avhengigheter?.erEksplisittAvslagPåSøknad;
-    const erBarnetsAlderVilkår: boolean = avhengigheter?.erBarnetsAlderVilkår ?? false;
+    const erBarnetsAlderVilkår: boolean = vilkår === VilkårType.BARNETS_ALDER;
 
     const erMedlemskapAnnenForelderVilkår: boolean =
         avhengigheter?.erMedlemskapAnnenForelderVilkår ?? false;
@@ -138,10 +139,18 @@ export const erPeriodeGyldig = (
         const fomDatoErLikDødsfallDato =
             !!person?.dødsfallDato && isSameDay(fom, isoStringTilDate(person.dødsfallDato));
 
-        if (erNesteMånedEllerSenere(fom)) {
+        if (
+            vilkår === VilkårType.BARNEHAGEPLASS
+                ? valgtDatoErSenereEnnNesteMåned(fom)
+                : erNesteMånedEllerSenere(fom)
+        ) {
             return feil(
                 felt,
-                'Du kan ikke legge inn fra og med dato som er etter første dag i neste måned eller senere'
+                `Du kan ikke legge inn fra og med dato som er ${
+                    vilkår === VilkårType.BARNEHAGEPLASS
+                        ? 'senere enn neste måned'
+                        : 'neste måned eller senere'
+                }`
             );
         }
         if (!erUendelig(tom)) {

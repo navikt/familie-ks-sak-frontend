@@ -12,8 +12,7 @@ import StatusIkon, { Status } from '../../../ikoner/StatusIkon';
 import type { IBehandling } from '../../../typer/behandling';
 import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
 import { IEndretUtbetalingAndelÅrsak, årsakTekst } from '../../../typer/utbetalingAndel';
-import { Datoformat } from '../../../utils/dato';
-import { isoMånedPeriodeTilFormatertString } from '../../../utils/dato/periode';
+import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../utils/dato';
 import { lagPersonLabel } from '../../../utils/formatter';
 
 interface IEndretUtbetalingAndelRadProps {

@@ -6,8 +6,8 @@ import { annenVurderingFeilmeldingId } from '../../komponenter/Fagsak/Vilkårsvu
 import { vilkårFeilmeldingId } from '../../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
 import type { IPersonResultat, IVilkårResultat, IAnnenVurdering } from '../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig, VilkårType } from '../../typer/vilkår';
+import type { IIsoDatoPeriode, IsoDatoString } from '../../utils/dato';
 import { isoStringTilDateMedFallback, tidenesEnde, tidenesMorgen } from '../../utils/dato';
-import type { FamilieIsoDate, IPeriode } from '../../utils/kalender';
 
 export const hentFeilIVilkårsvurdering = (
     personResultater: IPersonResultat[]
@@ -121,8 +121,8 @@ const erEtterEllerSammeDato = (dato1: Date, dato2: Date) =>
     isAfter(dato1, dato2) || isSameDay(dato1, dato2);
 
 const barnetsAlderPeriodeManglerBarnehagePeriode = (
-    barnetsAlderPeriode: IPeriode,
-    barnehagePerioder: IPeriode[]
+    barnetsAlderPeriode: IIsoDatoPeriode,
+    barnehagePerioder: IIsoDatoPeriode[]
 ): boolean => {
     const sammenSlåtteBarnehageperioder =
         slåSammenPerioderSomLiggerInntilHveranre(barnehagePerioder);
@@ -142,8 +142,8 @@ const barnetsAlderPeriodeManglerBarnehagePeriode = (
 };
 
 function starterEtter(
-    barnehageplassVilkårResultat: IPeriode | undefined,
-    barnetsAlderPeriode: IPeriode | undefined
+    barnehageplassVilkårResultat: IIsoDatoPeriode | undefined,
+    barnetsAlderPeriode: IIsoDatoPeriode | undefined
 ) {
     return isAfter(
         isoStringTilDateMedFallback({
@@ -157,9 +157,11 @@ function starterEtter(
     );
 }
 
-const slåSammenPerioderSomLiggerInntilHveranre = (perioder: IPeriode[]): IPeriode[] => {
-    return perioder.reduce((acc: IPeriode[], periode) => {
-        const forrigePeriode: IPeriode | undefined = acc[acc.length - 1];
+const slåSammenPerioderSomLiggerInntilHveranre = (
+    perioder: IIsoDatoPeriode[]
+): IIsoDatoPeriode[] => {
+    return perioder.reduce((acc: IIsoDatoPeriode[], periode) => {
+        const forrigePeriode: IIsoDatoPeriode | undefined = acc[acc.length - 1];
 
         if (erEtterHverandre(forrigePeriode, periode)) {
             return [...acc.slice(0, -1), { fom: forrigePeriode.fom, tom: periode.tom }];
@@ -169,7 +171,7 @@ const slåSammenPerioderSomLiggerInntilHveranre = (perioder: IPeriode[]): IPerio
     }, []);
 };
 
-const erEtterHverandre = (første: IPeriode | undefined, andre: IPeriode): boolean => {
+const erEtterHverandre = (første: IIsoDatoPeriode | undefined, andre: IIsoDatoPeriode): boolean => {
     const tomDatoFørste = parseTilOgMedDato(første?.tom);
     const fomDatoNeste = parseFraOgMedDato(andre.fom);
 
@@ -178,13 +180,13 @@ const erEtterHverandre = (første: IPeriode | undefined, andre: IPeriode): boole
     return isSameDay(dagenEtterTomDatoFørste, fomDatoNeste);
 };
 
-const parseTilOgMedDato = (tom: FamilieIsoDate | undefined) =>
+const parseTilOgMedDato = (tom: IsoDatoString | undefined) =>
     isoStringTilDateMedFallback({
         isoString: tom,
         fallbackDate: tidenesEnde,
     });
 
-const parseFraOgMedDato = (fom: FamilieIsoDate | undefined) =>
+const parseFraOgMedDato = (fom: IsoDatoString | undefined) =>
     isoStringTilDateMedFallback({
         isoString: fom,
         fallbackDate: tidenesMorgen,

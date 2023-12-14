@@ -11,8 +11,7 @@ import {
 } from './utils';
 import { behandlingsstatuser } from '../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
-import { Datoformat } from '../../../utils/dato';
-import { formaterIsoDato } from '../../../utils/formatter';
+import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 
 interface IBehandlingshistorikkProps {
     minimalFagsak: IMinimalFagsak;
@@ -26,21 +25,21 @@ export const Behandling: React.FC<IBehandlingshistorikkProps> = ({
     return (
         <tr key={hentBehandlingId(saksoversiktsbehandling)}>
             <td
-                children={`${formaterIsoDato(
-                    hentOpprettetTidspunkt(saksoversiktsbehandling),
-                    Datoformat.DATO
-                )}`}
+                children={`${isoStringTilFormatertString({
+                    isoString: hentOpprettetTidspunkt(saksoversiktsbehandling),
+                    tilFormat: Datoformat.DATO,
+                })}`}
             />
             <td>{finnÅrsak(saksoversiktsbehandling)}</td>
             <td>{lagLenkePåType(minimalFagsak.id, saksoversiktsbehandling)}</td>
             <td>{hentBehandlingstema(saksoversiktsbehandling)?.navn ?? '-'}</td>
             <td>{behandlingsstatuser[saksoversiktsbehandling.status]}</td>
             <td
-                children={
-                    saksoversiktsbehandling.vedtaksdato
-                        ? formaterIsoDato(saksoversiktsbehandling.vedtaksdato, Datoformat.DATO)
-                        : '-'
-                }
+                children={isoStringTilFormatertString({
+                    isoString: saksoversiktsbehandling.vedtaksdato,
+                    tilFormat: Datoformat.DATO,
+                    defaultString: '-',
+                })}
             />
             <td>{lagLenkePåResultat(minimalFagsak, saksoversiktsbehandling)}</td>
         </tr>

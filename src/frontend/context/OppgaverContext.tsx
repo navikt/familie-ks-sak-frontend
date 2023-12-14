@@ -38,7 +38,7 @@ import {
     SaksbehandlerFilter,
 } from '../typer/oppgave';
 import { ToggleNavn } from '../typer/toggles';
-import { erIsoStringGyldig } from '../utils/kalender';
+import { erIsoStringGyldig } from '../utils/dato';
 import { hentFnrFraOppgaveIdenter } from '../utils/oppgave';
 import { hentFrontendFeilmelding } from '../utils/ressursUtils';
 

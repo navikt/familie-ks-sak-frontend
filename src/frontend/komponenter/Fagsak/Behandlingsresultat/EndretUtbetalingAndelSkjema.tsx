@@ -5,9 +5,18 @@ import classNames from 'classnames';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { BodyShort, Button, Checkbox, Fieldset, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import {
+    BodyShort,
+    Button,
+    Checkbox,
+    Fieldset,
+    Label,
+    Radio,
+    RadioGroup,
+    Select,
+    Textarea,
+} from '@navikt/ds-react';
 import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
-import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -27,8 +36,8 @@ import {
     årsaker,
     årsakTekst,
 } from '../../../typer/utbetalingAndel';
+import type { IsoMånedString } from '../../../utils/dato';
 import { lagPersonLabel } from '../../../utils/formatter';
-import type { YearMonth } from '../../../utils/kalender';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Datovelger from '../../Felleskomponenter/Datovelger/Datovelger';
 import Knapperekke from '../../Felleskomponenter/Knapperekke';
@@ -48,12 +57,12 @@ const StyledFieldset = styled(Fieldset)`
     max-width: 30rem;
 `;
 
-const StyledPersonvelger = styled(FamilieSelect)`
+const StyledPersonvelger = styled(Select)`
     max-width: 20rem;
     z-index: 1000;
 `;
 
-const StyledSatsvelger = styled(FamilieSelect)`
+const StyledSatsvelger = styled(Select)`
     max-width: 10rem;
 `;
 
@@ -65,7 +74,7 @@ const StyledFerdigKnapp = styled(Button)`
     margin-right: 0.5rem;
 `;
 
-const StyledFamilieTextarea = styled(FamilieTextarea)`
+const StyledTextarea = styled(Textarea)`
     min-height: 8rem;
 `;
 
@@ -166,7 +175,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         onChange={(event): void => {
                             skjema.felter.person.validerOgSettFelt(event.target.value);
                         }}
-                        erLesevisning={erLesevisning}
+                        readOnly={erLesevisning}
                     >
                         <option value={undefined}>Velg person</option>
                         {åpenBehandling.personer
@@ -191,11 +200,11 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     <Feltmargin>
                         <MånedÅrVelger
                             {...skjema.felter.fom.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                            label={<BodyShort>F.o.m</BodyShort>}
+                            label={'F.o.m'}
                             value={skjema.felter.fom.verdi}
                             antallÅrFrem={finnÅrFremTilStønadTom()}
                             antallÅrTilbake={finnÅrTilbakeTilStønadFra()}
-                            onEndret={(dato: YearMonth | undefined) => {
+                            onEndret={(dato: IsoMånedString | undefined) => {
                                 if (dato === undefined) {
                                     skjema.felter.fom.nullstill();
                                 } else {
@@ -207,11 +216,11 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     </Feltmargin>
                     <MånedÅrVelger
                         {...skjema.felter.tom.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                        label={<BodyShort>T.o.m (valgfri)</BodyShort>}
+                        label={'T.o.m (valgfri)'}
                         value={skjema.felter.tom.verdi}
                         antallÅrFrem={finnÅrFremTilStønadTom()}
                         antallÅrTilbake={finnÅrTilbakeTilStønadFra()}
-                        onEndret={(dato: YearMonth | undefined) => {
+                        onEndret={(dato: IsoMånedString | undefined) => {
                             if (dato === undefined) {
                                 skjema.felter.tom.nullstill();
                             } else {
@@ -223,7 +232,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 </Feltmargin>
 
                 <Feltmargin>
-                    <FamilieSelect
+                    <Select
                         {...skjema.felter.årsak.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
                         value={skjema.felter.årsak.verdi}
                         label={<Label>Årsak</Label>}
@@ -233,10 +242,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 event.target.value as IEndretUtbetalingAndelÅrsak
                             );
                         }}
-                        erLesevisning={erLesevisning}
-                        lesevisningVerdi={
-                            skjema.felter.årsak.verdi ? årsakTekst[skjema.felter.årsak.verdi] : ''
-                        }
+                        readOnly={erLesevisning}
                     >
                         <option value={undefined}>Velg årsak</option>
                         {årsaker.map(årsak => (
@@ -244,7 +250,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 {årsakTekst[årsak]}
                             </option>
                         ))}
-                    </FamilieSelect>
+                    </Select>
                 </Feltmargin>
 
                 <Feltmargin>
@@ -360,9 +366,9 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 )}
 
                 <Feltmargin>
-                    <StyledFamilieTextarea
+                    <StyledTextarea
                         {...skjema.felter.begrunnelse.hentNavInputProps(skjema.visFeilmeldinger)}
-                        erLesevisning={erLesevisning}
+                        readOnly={erLesevisning}
                         placeholder={'Begrunn hvorfor utbetalingsperioden er endret.'}
                         label={'Begrunnelse'}
                         value={

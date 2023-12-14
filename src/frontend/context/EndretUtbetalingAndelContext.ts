@@ -8,9 +8,12 @@ import type { Avhengigheter } from '@navikt/familie-skjema';
 import type { IBehandling } from '../typer/behandling';
 import type { IRestEndretUtbetalingAndel } from '../typer/utbetalingAndel';
 import { IEndretUtbetalingAndelÅrsak } from '../typer/utbetalingAndel';
-import { dateTilIsoDatoStringEllerUndefined, validerGyldigDato } from '../utils/dato';
-import type { FamilieIsoDate } from '../utils/kalender';
-import { erIsoStringGyldig } from '../utils/kalender';
+import type { IsoMånedString } from '../utils/dato';
+import {
+    dateTilIsoDatoStringEllerUndefined,
+    erIsoStringGyldig,
+    validerGyldigDato,
+} from '../utils/dato';
 
 interface IProps {
     endretUtbetalingAndel: IRestEndretUtbetalingAndel;
@@ -33,8 +36,8 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
         const { skjema, kanSendeSkjema, onSubmit } = useSkjema<
             {
                 person: string | undefined;
-                fom: FamilieIsoDate | undefined;
-                tom: FamilieIsoDate | undefined;
+                fom: IsoMånedString | undefined;
+                tom: IsoMånedString | undefined;
                 periodeSkalUtbetalesTilSøker: boolean | undefined;
                 årsak: IEndretUtbetalingAndelÅrsak | undefined;
                 søknadstidspunkt: Date | undefined;
@@ -51,14 +54,14 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                     valideringsfunksjon: felt =>
                         felt.verdi ? ok(felt) : feil(felt, 'Du må velge en person'),
                 }),
-                fom: useFelt<FamilieIsoDate | undefined>({
+                fom: useFelt<IsoMånedString | undefined>({
                     verdi: endretUtbetalingAndel.fom,
                     valideringsfunksjon: felt =>
                         erIsoStringGyldig(felt.verdi)
                             ? ok(felt)
                             : feil(felt, 'Du må velge f.o.m-dato'),
                 }),
-                tom: useFelt<FamilieIsoDate | undefined>({
+                tom: useFelt<IsoMånedString | undefined>({
                     verdi: endretUtbetalingAndel.tom,
                 }),
                 periodeSkalUtbetalesTilSøker: periodeSkalUtbetalesTilSøkerFelt,
