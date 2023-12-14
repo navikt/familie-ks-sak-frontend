@@ -16,16 +16,15 @@ import {
 } from './valideringKompetanse';
 import type { IBehandling } from '../../typer/behandling';
 import type {
-    AnnenForelderAktivitet,
     EøsPeriodeStatus,
     IKompetanse,
     IRestKompetanse,
+    KompetanseAktivitet,
     KompetanseResultat,
-    SøkersAktivitet,
 } from '../../typer/eøsPerioder';
+import type { IIsoMånedPeriode } from '../../utils/dato';
+import { nyIsoMånedPeriode } from '../../utils/dato';
 import { erBarnGyldig, erEøsPeriodeGyldig } from '../../utils/eøsValidators';
-import { nyYearMonthPeriode } from '../../utils/kalender';
-import type { IYearMonthPeriode } from '../../utils/kalender';
 import { useBehandling } from '../behandlingContext/BehandlingContext';
 
 export const kompetanseFeilmeldingId = (kompetanse: IRestKompetanse): string =>
@@ -44,12 +43,12 @@ const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => 
     const { request } = useHttp();
 
     const initelFom = useFelt<string>({ verdi: kompetanse.fom });
-    const annenForeldersAktivitet = useFelt<AnnenForelderAktivitet | undefined>({
+    const annenForeldersAktivitet = useFelt<KompetanseAktivitet | undefined>({
         verdi: kompetanse.annenForeldersAktivitet,
         valideringsfunksjon: erAnnenForeldersAktivitetGyldig,
     });
 
-    const søkersAktivitet = useFelt<SøkersAktivitet | undefined>({
+    const søkersAktivitet = useFelt<KompetanseAktivitet | undefined>({
         verdi: kompetanse.søkersAktivitet,
         valideringsfunksjon: erSøkersAktivitetGyldig,
     });
@@ -73,8 +72,8 @@ const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => 
                 verdi: barnIKompetanse,
                 valideringsfunksjon: erBarnGyldig,
             }),
-            periode: useFelt<IYearMonthPeriode>({
-                verdi: nyYearMonthPeriode(kompetanse.fom, kompetanse.tom),
+            periode: useFelt<IIsoMånedPeriode>({
+                verdi: nyIsoMånedPeriode(kompetanse.fom, kompetanse.tom),
                 avhengigheter: { initelFom },
                 valideringsfunksjon: erEøsPeriodeGyldig,
             }),

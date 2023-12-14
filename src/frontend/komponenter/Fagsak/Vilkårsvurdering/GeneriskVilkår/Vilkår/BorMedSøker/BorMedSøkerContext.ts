@@ -6,13 +6,13 @@ import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Resultat } from '../../../../../../typer/vilkår';
-import { Regelverk as RegelverkType } from '../../../../../../typer/vilkår';
+import { Regelverk as RegelverkType, VilkårType } from '../../../../../../typer/vilkår';
 import {
     UtdypendeVilkårsvurderingDeltBosted,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
     UtdypendeVilkårsvurderingGenerell,
 } from '../../../../../../typer/vilkår';
-import type { IYearMonthPeriode } from '../../../../../../utils/kalender';
+import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     erAvslagBegrunnelserGyldig,
     erPeriodeGyldig,
@@ -56,13 +56,14 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
         vurderesEtter,
         resultat,
         utdypendeVilkårsvurdering,
-        periode: useFelt<IYearMonthPeriode>({
+        periode: useFelt<IIsoDatoPeriode>({
             verdi: vilkårSkjema.periode,
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
-            valideringsfunksjon: erPeriodeGyldig,
+            valideringsfunksjon: (felt, avhengigheter) =>
+                erPeriodeGyldig(felt, VilkårType.BOR_MED_SØKER, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

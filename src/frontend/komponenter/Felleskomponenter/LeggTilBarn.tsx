@@ -20,7 +20,7 @@ import { useBehandling } from '../../context/behandlingContext/BehandlingContext
 import type { IPersonInfo, IRestTilgang } from '../../typer/person';
 import { adressebeskyttelsestyper } from '../../typer/person';
 import type { IBarnMedOpplysninger } from '../../typer/søknad';
-import type { FamilieIsoDate } from '../../utils/kalender';
+import { dateTilIsoDatoStringEllerUndefined } from '../../utils/dato';
 import { identValidator } from '../../utils/validators';
 import LeggTilUregistrertBarn from '../Fagsak/Søknad/LeggTilUregistrertBarn';
 
@@ -49,7 +49,7 @@ const DrekLenkeContainer = styled.div`
 export interface IRegistrerBarnSkjema {
     ident: string;
     erFolkeregistrert: boolean;
-    uregistrertBarnFødselsdato: FamilieIsoDate | undefined;
+    uregistrertBarnFødselsdato: Date | undefined;
     uregistrertBarnNavn: string;
 }
 
@@ -94,7 +94,7 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
         {
             ident: string;
             erFolkeregistrert: boolean;
-            uregistrertBarnFødselsdato: FamilieIsoDate | undefined;
+            uregistrertBarnFødselsdato: Date | undefined;
             uregistrertBarnNavn: string;
         },
         IPersonInfo
@@ -112,7 +112,7 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                 avhengigheter: { erFolkeregistrert: erFolkeregistrert.verdi },
             }),
             erFolkeregistrert,
-            uregistrertBarnFødselsdato: useFelt<FamilieIsoDate | undefined>({
+            uregistrertBarnFødselsdato: useFelt<Date | undefined>({
                 verdi: undefined,
                 skalFeltetVises: (avhengigheter: Avhengigheter) => {
                     const { erFolkeregistrert } = avhengigheter;
@@ -153,7 +153,9 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                 barnaMedOpplysninger.validerOgSettFelt([
                     ...barnaMedOpplysninger.verdi,
                     {
-                        fødselsdato: registrerBarnSkjema.felter.uregistrertBarnFødselsdato.verdi,
+                        fødselsdato: dateTilIsoDatoStringEllerUndefined(
+                            registrerBarnSkjema.felter.uregistrertBarnFødselsdato.verdi
+                        ),
                         ident: '',
                         merket: true,
                         manueltRegistrert: true,

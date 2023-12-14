@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { useState } from 'react';
 
+import { differenceInMilliseconds } from 'date-fns';
 import styled from 'styled-components';
 
 import { Collapse, Expand } from '@navikt/ds-icons';
@@ -9,14 +10,12 @@ import { Button, Table } from '@navikt/ds-react';
 import type { IRestRegisteropplysning } from '../../../../typer/person';
 import { Registeropplysning, registeropplysning } from '../../../../typer/registeropplysning';
 import {
-    kalenderDato,
-    kalenderDatoMedFallback,
-    kalenderDatoTilDate,
-    kalenderDiff,
-    periodeToString,
-    TIDENES_MORGEN,
-    tilVisning,
-} from '../../../../utils/kalender';
+    Datoformat,
+    isoStringTilDateMedFallback,
+    isoStringTilFormatertString,
+    isoDatoPeriodeTilFormatertString,
+    tidenesMorgen,
+} from '../../../../utils/dato';
 
 const Container = styled.div`
     display: flex;
@@ -64,9 +63,9 @@ const hentDatoHeader = (opplysningstype: Registeropplysning) => {
 };
 
 const sorterPerioderSynkende = (a: IRestRegisteropplysning, b: IRestRegisteropplysning) =>
-    kalenderDiff(
-        kalenderDatoTilDate(kalenderDatoMedFallback(b.fom, TIDENES_MORGEN)),
-        kalenderDatoTilDate(kalenderDatoMedFallback(a.fom, TIDENES_MORGEN))
+    differenceInMilliseconds(
+        isoStringTilDateMedFallback({ isoString: b.fom, fallbackDate: tidenesMorgen }),
+        isoStringTilDateMedFallback({ isoString: a.fom, fallbackDate: tidenesMorgen })
     );
 
 export const GRENSE_FOR_EKSPANDERBAR_HISTORIKK = 3;
@@ -117,12 +116,11 @@ const RegisteropplysningerTabell: React.FC<IRegisteropplysningerTabellProps> = (
                                         children={
                                             opplysningstype === Registeropplysning.SIVILSTAND ||
                                             opplysningstype === Registeropplysning.DØDSBOADRESSE
-                                                ? tilVisning(
-                                                      periode.fom
-                                                          ? kalenderDato(periode.fom)
-                                                          : undefined
-                                                  )
-                                                : periodeToString({
+                                                ? isoStringTilFormatertString({
+                                                      isoString: periode.fom,
+                                                      tilFormat: Datoformat.DATO,
+                                                  })
+                                                : isoDatoPeriodeTilFormatertString({
                                                       fom: periode.fom,
                                                       tom: periode.tom,
                                                   })

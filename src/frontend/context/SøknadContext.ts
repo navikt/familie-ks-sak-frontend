@@ -1,6 +1,7 @@
 import React from 'react';
 
 import createUseContext from 'constate';
+import { isAfter } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
@@ -21,19 +22,17 @@ import type {
     IRestRegistrerSøknad,
     Målform,
 } from '../typer/søknad';
-import {
-    erEtter,
-    kalenderDatoFraDate,
-    kalenderDatoMedFallback,
-    TIDENES_ENDE,
-} from '../utils/kalender';
+import { dagensDato, isoStringTilDateMedFallback, tidenesEnde } from '../utils/dato';
 
 export const hentBarnMedLøpendeUtbetaling = (minimalFagsak: IMinimalFagsak) =>
     minimalFagsak.gjeldendeUtbetalingsperioder
         .filter(utbetalingsperiode =>
-            erEtter(
-                kalenderDatoMedFallback(utbetalingsperiode.periodeTom, TIDENES_ENDE),
-                kalenderDatoFraDate(new Date())
+            isAfter(
+                isoStringTilDateMedFallback({
+                    isoString: utbetalingsperiode.periodeTom,
+                    fallbackDate: tidenesEnde,
+                }),
+                dagensDato
             )
         )
         .reduce((acc, utbetalingsperiode) => {
@@ -165,6 +164,7 @@ const [SøknadProvider, useSøknad] = createUseContext(
                                             ): IBarnMedOpplysningerBackend => ({
                                                 ...barn,
                                                 inkludertISøknaden: barn.merket,
+                                                ident: barn.ident ?? '',
                                             })
                                         ),
                                     endringAvOpplysningerBegrunnelse:

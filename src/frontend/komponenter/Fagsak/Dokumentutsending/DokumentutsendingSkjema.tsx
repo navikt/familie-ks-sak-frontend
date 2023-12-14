@@ -2,15 +2,11 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { FileContent } from '@navikt/ds-icons';
-import { Alert, Button, Heading, Label } from '@navikt/ds-react';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { FileTextIcon } from '@navikt/aksel-icons';
+import { Alert, Button, Fieldset, Heading, Label, Select } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import DeltBostedSkjema from './DeltBosted/DeltBostedSkjema';
-import KanSøkeSkjema from './KanSøke/KanSøkeSkjema';
+import BarnSøktForSkjema from './BarnSøktFor/BarnSøktForSkjema';
 import {
     dokumentÅrsak,
     DokumentÅrsak,
@@ -23,12 +19,12 @@ const Container = styled.div`
     overflow: auto;
 `;
 
-const StyledSkjemaGruppe = styled(SkjemaGruppe)`
+const StyledFieldset = styled(Fieldset)`
     max-width: 30rem;
     margin-top: 2rem;
 `;
 
-const ÅrsakSkjema = styled.div`
+const FeltMargin = styled.div`
     margin-bottom: 2rem;
 `;
 
@@ -39,10 +35,11 @@ const StyledAlert = styled(Alert)`
 const Handlinger = styled.div`
     display: flex;
     justify-content: space-between;
+    margin-top: 1.5rem;
 `;
 
 const SendBrevKnapp = styled(Button)`
-    margin-right: 2rem;
+    margin-right: 1rem;
 `;
 
 const DokumentutsendingSkjema: React.FC = () => {
@@ -55,24 +52,37 @@ const DokumentutsendingSkjema: React.FC = () => {
         sendBrevPåFagsak,
         skjemaErLåst,
         hentSkjemaFeilmelding,
-        visForhåndsvisningBeskjed,
         settVisfeilmeldinger,
+        visForhåndsvisningBeskjed,
     } = useDokumentutsending();
+
+    const årsakVerdi = skjema.felter.årsak.verdi;
+
+    const barnSøktForÅrsaker = [
+        DokumentÅrsak.KAN_SØKE_EØS,
+        DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
+        DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING,
+    ];
 
     return (
         <Container>
             <Heading size={'large'} level={'1'} children={'Send informasjonsbrev'} />
-
-            <StyledSkjemaGruppe feil={hentSkjemaFeilmelding()} utenFeilPropagering={true}>
-                <FamilieSelect
-                    {...skjema.felter.årsak.hentNavBaseSkjemaProps(false)}
+            <StyledFieldset
+                error={hentSkjemaFeilmelding()}
+                errorPropagation={false}
+                legend="Send informasjonsbrev"
+                hideLegend
+            >
+                <Select
+                    {...skjema.felter.årsak.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
                     label={'Velg årsak'}
-                    value={skjema.felter.årsak.verdi}
+                    value={skjema.felter.årsak.verdi || ''}
                     onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
                         skjema.felter.årsak.onChange(event.target.value as DokumentÅrsak);
                     }}
                     size={'medium'}
                 >
+                    <option value="">Velg</option>
                     {Object.values(DokumentÅrsak).map(årsak => {
                         return (
                             <option
@@ -84,52 +94,36 @@ const DokumentutsendingSkjema: React.FC = () => {
                             </option>
                         );
                     })}
-                </FamilieSelect>
+                </Select>
 
-                <MålformVelger
-                    målformFelt={skjema.felter.målform}
-                    visFeilmeldinger={false}
-                    erLesevisning={false}
-                    Legend={<Label children={'Målform'} />}
-                />
-
-                <ÅrsakSkjema>
-                    {skjema.felter.årsak.verdi === DokumentÅrsak.DELT_BOSTED && (
-                        <DeltBostedSkjema
-                            avtalerOmDeltBostedPerBarnFelt={
-                                skjema.felter.avtalerOmDeltBostedPerBarn
-                            }
-                            barnMedDeltBostedFelt={skjema.felter.barnMedDeltBosted}
+                <FeltMargin>
+                    {årsakVerdi !== undefined && barnSøktForÅrsaker.includes(årsakVerdi) && (
+                        <BarnSøktForSkjema
+                            barnSøktForFelt={skjema.felter.barnSøktFor}
                             visFeilmeldinger={skjema.visFeilmeldinger}
                             settVisFeilmeldinger={settVisfeilmeldinger}
                         />
                     )}
-                    {skjema.felter.årsak.verdi === DokumentÅrsak.KAN_SØKE && <KanSøkeSkjema />}
-                </ÅrsakSkjema>
+                </FeltMargin>
 
-                {visForhåndsvisningBeskjed() && (
+                <MålformVelger
+                    målformFelt={skjema.felter.målform}
+                    visFeilmeldinger={skjema.visFeilmeldinger}
+                    erLesevisning={false}
+                    Legend={<Label children={'Målform'} />}
+                />
+
+                {årsakVerdi && visForhåndsvisningBeskjed() && (
                     <StyledAlert variant="info">
                         Du har gjort endringer i brevet som ikke er forhåndsvist
                     </StyledAlert>
                 )}
-            </StyledSkjemaGruppe>
+            </StyledFieldset>
 
             <Handlinger>
-                <Button
-                    variant={'tertiary'}
-                    id={'forhandsvis-vedtaksbrev'}
-                    size={'small'}
-                    loading={hentetDokument.status === RessursStatus.HENTER}
-                    disabled={skjemaErLåst()}
-                    onClick={hentForhåndsvisningPåFagsak}
-                    icon={<FileContent />}
-                >
-                    {'Forhåndsvis'}
-                </Button>
-
                 <div>
                     <SendBrevKnapp
-                        size="small"
+                        size="medium"
                         variant="primary"
                         loading={senderBrev()}
                         disabled={skjemaErLåst()}
@@ -138,10 +132,23 @@ const DokumentutsendingSkjema: React.FC = () => {
                         Send brev
                     </SendBrevKnapp>
 
-                    <Button size="small" variant="tertiary" onClick={nullstillSkjema}>
+                    <Button size="medium" variant="tertiary" onClick={nullstillSkjema}>
                         Avbryt
                     </Button>
                 </div>
+                {skjema.felter.årsak.verdi && (
+                    <Button
+                        variant={'tertiary'}
+                        id={'forhandsvis-vedtaksbrev'}
+                        size={'medium'}
+                        loading={hentetDokument.status === RessursStatus.HENTER}
+                        disabled={skjemaErLåst()}
+                        onClick={hentForhåndsvisningPåFagsak}
+                        icon={<FileTextIcon />}
+                    >
+                        {'Forhåndsvis'}
+                    </Button>
+                )}
             </Handlinger>
         </Container>
     );

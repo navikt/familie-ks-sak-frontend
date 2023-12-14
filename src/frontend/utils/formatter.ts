@@ -1,37 +1,18 @@
-import { format, isBefore, isValid } from 'date-fns';
+import { differenceInMilliseconds, isBefore } from 'date-fns';
 
-import type { Datoformat } from './dato';
-import { iDag, kalenderDato, kalenderDatoTilDate, kalenderDiff } from './kalender';
+import { dagensDato, isoStringTilDate } from './dato';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
 import type { IUtbetalingsperiodeDetalj } from '../typer/vedtaksperiode';
 
-export enum datoformatNorsk {
-    DATO = 'ddmmåå',
-}
-
 export const millisekunderIEttÅr = 3.15576e10;
-
-export const formaterIsoDato = (
-    datoString: string | undefined,
-    tilFormat: Datoformat,
-    defaultString?: string
-): string => {
-    if (!datoString) {
-        return defaultString ?? '';
-    }
-    const dato = new Date(datoString);
-    return isValid(dato) ? format(dato, tilFormat) : datoString;
-};
 
 export const hentAlder = (fødselsdato: string): number => {
     return fødselsdato !== ''
         ? Math.floor(
-              kalenderDiff(
-                  kalenderDatoTilDate(iDag()),
-                  kalenderDatoTilDate(kalenderDato(fødselsdato))
-              ) / millisekunderIEttÅr
+              differenceInMilliseconds(dagensDato, isoStringTilDate(fødselsdato)) /
+                  millisekunderIEttÅr
           )
         : 0;
 };
@@ -48,7 +29,11 @@ export const summer = (beløp: number[]): number => beløp.reduce((acc, b) => ac
 
 export const kunSiffer = (value: string) => /^\d+$/.test(value);
 
-const erPersonId = (personIdent: string) => {
+const erPersonId = (personIdent: string | undefined) => {
+    if (!personIdent) {
+        return false;
+    }
+
     const id = personIdent.split(' ').join('');
     return /^[+-]?\d+(\.\d+)?$/.test(id) && id.length === 11;
 };
@@ -58,8 +43,8 @@ const erOrgNr = (orgNr: string) => {
     return kunSiffer(orgNr) && orgNr.length === 9;
 };
 
-export const formaterIdent = (personIdent: string, ukjentTekst = 'Ukjent id') => {
-    if (personIdent === '') {
+export const formaterIdent = (personIdent: string | undefined, ukjentTekst = 'Ukjent id') => {
+    if (personIdent === '' || personIdent === undefined) {
         return ukjentTekst;
     }
 

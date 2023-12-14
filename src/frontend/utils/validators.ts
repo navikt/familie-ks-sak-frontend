@@ -1,27 +1,25 @@
-import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
-import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
-
-import familieDayjs from './familieDayjs';
-import type { DagMånedÅr, IPeriode } from './kalender';
 import {
-    erEtter,
-    erFør,
-    erIsoStringGyldig,
-    erSamme,
-    førsteDagINesteMåned,
-    kalenderDato,
-    kalenderDatoMedFallback,
-    KalenderEnhet,
-    leggTil,
-    TIDENES_ENDE,
-    TIDENES_MORGEN,
-    valgtDatoErNesteMånedEllerSenere,
-} from './kalender';
+    addMonths,
+    addYears,
+    endOfMonth,
+    isAfter,
+    isBefore,
+    isSameDay,
+    isValid,
+    parseISO,
+    setMonth,
+} from 'date-fns';
+
+import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
+
+import type { IIsoDatoPeriode } from './dato';
+import { dagensDato, isoStringTilDate } from './dato';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { Begrunnelse } from '../typer/vedtak';
-import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../typer/vilkår';
 import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../typer/vilkår';
 
 // eslint-disable-next-line
 const validator = require('@navikt/fnrvalidator');
@@ -47,62 +45,44 @@ export const identValidator = (identFelt: FeltState<string>): FeltState<string> 
     return validerIdent(identFelt);
 };
 
-const harFyltInnOrgnr = (felt: FeltState<string>): FeltState<string> => {
-    return /^\d{9}$/.test(felt.verdi.replace(' ', ''))
-        ? ok(felt)
-        : feil(felt, 'Orgnummer har ikke 9 tall');
+const tomEtterAugustÅretBarnetFyller6 = (person: IGrunnlagPerson, tom?: Date): boolean => {
+    const datoBarnetFyller6 = addYears(isoStringTilDate(person.fødselsdato), 6);
+    const datoSeptemberÅretBarnetFyller6 = setMonth(datoBarnetFyller6, 8);
+    return tom ? isAfter(tom, datoSeptemberÅretBarnetFyller6) : false;
 };
 
-export const orgnummerValidator = (orgnummerFelt: FeltState<string>): FeltState<string> => {
-    const validated = harFyltInnOrgnr(orgnummerFelt);
-    if (validated.valideringsstatus !== Valideringsstatus.OK) {
-        return validated;
-    }
-
-    return ok(orgnummerFelt);
+const datoErPersonsXÅrsdag = (person: IGrunnlagPerson, dato: Date, antallÅr: number) => {
+    const personsXÅrsdag = addYears(isoStringTilDate(person.fødselsdato), antallÅr);
+    return isSameDay(dato, personsXÅrsdag);
 };
 
-const tomEtterAugustÅretBarnetFyller6 = (person: IGrunnlagPerson, tom?: string): boolean => {
-    const datoBarnetFyller6 = leggTil(kalenderDato(person.fødselsdato), 6, KalenderEnhet.ÅR);
-    const datoSeptemberÅretBarnetFyller6: DagMånedÅr = {
-        år: datoBarnetFyller6.år,
-        måned: 8,
-        dag: 1,
-    };
-    const tomDato = tom ? kalenderDato(tom) : undefined;
-    return tomDato ? erEtter(tomDato, datoSeptemberÅretBarnetFyller6) : false;
+const datoDifferanseMerEnn1År = (fom: Date, tom: Date) => {
+    const fomDatoPluss1År = addYears(fom, 1);
+    return isBefore(fomDatoPluss1År, tom);
 };
 
-const datoErPersonsXÅrsdag = (person: IGrunnlagPerson, datoString: string, antallÅr: number) => {
-    const personsXÅrsdag = leggTil(kalenderDato(person.fødselsdato), antallÅr, KalenderEnhet.ÅR);
-    return erSamme(kalenderDato(datoString), personsXÅrsdag);
+const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Date) => {
+    const fødselsdato = isoStringTilDate(person.fødselsdato);
+
+    return isBefore(fom, fødselsdato) || (tom ? isBefore(tom, fødselsdato) : false);
 };
 
-const datoDifferanseMerEnn1År = (fom: string, tom: string) => {
-    const fomDatoPluss1År = leggTil(kalenderDato(fom), 1, KalenderEnhet.ÅR);
-    const tomDato = kalenderDato(tom);
-    return erFør(fomDatoPluss1År, tomDato);
-};
+const erNesteMånedEllerSenere = (dato: Date) => isAfter(dato, endOfMonth(dagensDato));
 
-const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: string, tom?: string) => {
-    const fødselsdato = kalenderDato(person.fødselsdato);
-    const fomDato = kalenderDato(fom);
-    const tomDato = tom ? kalenderDato(tom) : undefined;
+const erUendelig = (date: Date | undefined): date is undefined => date === undefined;
 
-    return erFør(fomDato, fødselsdato) || (tomDato ? erFør(tomDato, fødselsdato) : false);
-};
+const valgtDatoErSenereEnnNesteMåned = (valgtDato: Date) =>
+    isAfter(valgtDato, endOfMonth(addMonths(dagensDato, 1)));
 
 export const erPeriodeGyldig = (
-    felt: FeltState<IPeriode>,
+    felt: FeltState<IIsoDatoPeriode>,
+    vilkår: VilkårType,
     avhengigheter?: Avhengigheter
-): FeltState<IPeriode> => {
-    const fom = felt.verdi.fom;
-    const tom = felt.verdi.tom;
-
+): FeltState<IIsoDatoPeriode> => {
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
     const erEksplisittAvslagPåSøknad: boolean | undefined =
         avhengigheter?.erEksplisittAvslagPåSøknad;
-    const erBarnetsAlderVilkår: boolean = avhengigheter?.erBarnetsAlderVilkår ?? false;
+    const erBarnetsAlderVilkår: boolean = vilkår === VilkårType.BARNETS_ALDER;
 
     const erMedlemskapAnnenForelderVilkår: boolean =
         avhengigheter?.erMedlemskapAnnenForelderVilkår ?? false;
@@ -110,10 +90,13 @@ export const erPeriodeGyldig = (
     const utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering | undefined =
         avhengigheter?.utdypendeVilkårsvurdering;
 
-    if (fom) {
-        if (!erIsoStringGyldig(fom)) {
+    if (felt.verdi.fom) {
+        const fom = parseISO(felt.verdi.fom);
+        const tom = felt.verdi.tom ? parseISO(felt.verdi.tom) : undefined;
+
+        if (!isValid(fom)) {
             return feil(felt, 'Ugyldig f.o.m.');
-        } else if (tom && !erIsoStringGyldig(tom)) {
+        } else if (tom && !isValid(tom)) {
             return feil(felt, 'Ugyldig t.o.m.');
         }
 
@@ -152,40 +135,38 @@ export const erPeriodeGyldig = (
             }
         }
 
-        const tomKalenderDato = kalenderDatoMedFallback(tom, TIDENES_ENDE);
-        const fomDatoErFørTomDato = erFør(
-            kalenderDatoMedFallback(fom, TIDENES_MORGEN),
-            tomKalenderDato
-        );
-        const fomDatoErLikDødsfallDato = fom === person?.dødsfallDato;
-
-        const idag = kalenderDatoMedFallback(familieDayjs().toISOString(), TIDENES_ENDE);
-
-        const fomKalenderDato = kalenderDatoMedFallback(fom, TIDENES_MORGEN);
-
-        if (erEtter(fomKalenderDato, førsteDagINesteMåned())) {
-            return feil(
-                felt,
-                'Du kan ikke legge inn fra og med dato som er etter første dag i neste måned eller senere'
-            );
-        }
+        const fomDatoErFørTomDato = erUendelig(tom) || isBefore(fom, tom);
+        const fomDatoErLikDødsfallDato =
+            !!person?.dødsfallDato && isSameDay(fom, isoStringTilDate(person.dødsfallDato));
 
         if (
-            tom &&
-            !erBarnetsAlderVilkår &&
-            valgtDatoErNesteMånedEllerSenere(tomKalenderDato, idag)
+            vilkår === VilkårType.BARNEHAGEPLASS
+                ? valgtDatoErSenereEnnNesteMåned(fom)
+                : erNesteMånedEllerSenere(fom)
         ) {
             return feil(
                 felt,
-                'Du kan ikke legge inn til og med dato som er i neste måned eller senere'
+                `Du kan ikke legge inn fra og med dato som er ${
+                    vilkår === VilkårType.BARNEHAGEPLASS
+                        ? 'senere enn neste måned'
+                        : 'neste måned eller senere'
+                }`
             );
         }
+        if (!erUendelig(tom)) {
+            if (!erBarnetsAlderVilkår && valgtDatoErSenereEnnNesteMåned(tom)) {
+                return feil(
+                    felt,
+                    'Du kan ikke legge inn til og med dato som er senere enn neste måned'
+                );
+            }
 
-        if (tom && person?.dødsfallDato) {
-            const dødsfallKalenderDato = kalenderDato(person.dødsfallDato);
+            if (person?.dødsfallDato) {
+                const dødsfalldato = isoStringTilDate(person.dødsfallDato);
 
-            if (erEtter(tomKalenderDato, dødsfallKalenderDato)) {
-                return feil(felt, 'Du kan ikke sette til og med dato etter dødsfalldato');
+                if (isAfter(tom, dødsfalldato)) {
+                    return feil(felt, 'Du kan ikke sette til og med dato etter dødsfalldato');
+                }
             }
         }
 
@@ -194,7 +175,7 @@ export const erPeriodeGyldig = (
             : feil(felt, 'F.o.m må settes tidligere enn t.o.m');
     } else {
         if (erEksplisittAvslagPåSøknad) {
-            return !tom
+            return !felt.verdi.tom
                 ? ok(felt)
                 : feil(felt, 'F.o.m. må settes eller t.o.m. må fjernes før du kan gå videre');
         } else {

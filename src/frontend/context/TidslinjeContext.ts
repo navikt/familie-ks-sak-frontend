@@ -1,22 +1,14 @@
 import { useState } from 'react';
 
 import createUseContext from 'constate';
+import { addMonths, endOfMonth, startOfMonth, subMonths } from 'date-fns';
 
 import type { Periode, Etikett } from '@navikt/familie-tidslinje';
 
 import type { IPersonMedAndelerTilkjentYtelse, IYtelsePeriode } from '../typer/beregning';
 import type { IGrunnlagPerson } from '../typer/person';
+import { dagensDato, isoStringTilDate } from '../utils/dato';
 import { sorterPersonTypeOgFødselsdato } from '../utils/formatter';
-import {
-    hentFørsteDagIYearMonth,
-    hentSisteDagIYearMonth,
-    kalenderDatoTilDate,
-    KalenderEnhet,
-    leggTil,
-    sisteDagIMåned,
-    trekkFra,
-    nesteMåned,
-} from '../utils/kalender';
 
 export interface ITidslinjeVindu {
     id: number;
@@ -47,13 +39,13 @@ const [TidslinjeProvider, useTidslinje] = createUseContext(() => {
 
     const [aktivtTidslinjeVindu, settAktivtTidslinjeVindu] = useState({
         vindu: tidslinjeVinduer[TidslinjeVindu.ETT_ÅR],
-        startDato: sisteDagIMåned(trekkFra(nesteMåned(), 12, KalenderEnhet.MÅNED)),
-        sluttDato: sisteDagIMåned(nesteMåned()),
+        startDato: endOfMonth(subMonths(dagensDato, 11)),
+        sluttDato: endOfMonth(addMonths(dagensDato, 1)),
     });
 
     const genererFormatertÅrstall = () => {
-        const startÅr = aktivtTidslinjeVindu.startDato.år;
-        const sluttÅr = aktivtTidslinjeVindu.sluttDato.år;
+        const startÅr = aktivtTidslinjeVindu.startDato.getFullYear();
+        const sluttÅr = aktivtTidslinjeVindu.sluttDato.getFullYear();
 
         if (startÅr !== sluttÅr) {
             return `${startÅr} - ${sluttÅr}`;
@@ -66,14 +58,14 @@ const [TidslinjeProvider, useTidslinje] = createUseContext(() => {
         if (retning === NavigeringsRetning.VENSTRE) {
             settAktivtTidslinjeVindu(({ sluttDato, startDato, vindu }) => ({
                 ...aktivtTidslinjeVindu,
-                startDato: sisteDagIMåned(trekkFra(startDato, vindu.måneder, KalenderEnhet.MÅNED)),
-                sluttDato: sisteDagIMåned(trekkFra(sluttDato, vindu.måneder, KalenderEnhet.MÅNED)),
+                startDato: endOfMonth(subMonths(startDato, vindu.måneder)),
+                sluttDato: endOfMonth(subMonths(sluttDato, vindu.måneder)),
             }));
         } else {
             settAktivtTidslinjeVindu(({ sluttDato, startDato, vindu }) => ({
                 ...aktivtTidslinjeVindu,
-                startDato: sisteDagIMåned(leggTil(startDato, vindu.måneder, KalenderEnhet.MÅNED)),
-                sluttDato: sisteDagIMåned(leggTil(sluttDato, vindu.måneder, KalenderEnhet.MÅNED)),
+                startDato: endOfMonth(subMonths(startDato, vindu.måneder)),
+                sluttDato: endOfMonth(subMonths(sluttDato, vindu.måneder)),
             }));
         }
     };
@@ -87,7 +79,7 @@ const [TidslinjeProvider, useTidslinje] = createUseContext(() => {
         settAktivtTidslinjeVindu(({ sluttDato }) => ({
             ...aktivtTidslinjeVindu,
             vindu: vindu,
-            startDato: sisteDagIMåned(trekkFra(sluttDato, vindu.måneder, KalenderEnhet.MÅNED)),
+            startDato: endOfMonth(subMonths(sluttDato, vindu.måneder)),
         }));
     };
 
@@ -99,14 +91,10 @@ const [TidslinjeProvider, useTidslinje] = createUseContext(() => {
                   (personMedAndelerTilkjentYtelse: IPersonMedAndelerTilkjentYtelse) => {
                       return personMedAndelerTilkjentYtelse.ytelsePerioder.reduce(
                           (acc: Periode[], ytelsePeriode: IYtelsePeriode) => {
-                              const fom = kalenderDatoTilDate(
-                                  hentFørsteDagIYearMonth(ytelsePeriode.stønadFom)
-                              );
+                              const fom = startOfMonth(isoStringTilDate(ytelsePeriode.stønadFom));
                               const periode: Periode = {
                                   fom,
-                                  tom: kalenderDatoTilDate(
-                                      hentSisteDagIYearMonth(ytelsePeriode.stønadTom)
-                                  ),
+                                  tom: endOfMonth(isoStringTilDate(ytelsePeriode.stønadTom)),
                                   id: `${
                                       personMedAndelerTilkjentYtelse.personIdent
                                   }_${fom.getMonth()}_${fom.getDay()}`,

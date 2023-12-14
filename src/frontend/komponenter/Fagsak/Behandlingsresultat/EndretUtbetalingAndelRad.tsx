@@ -4,27 +4,21 @@ import { useState } from 'react';
 import deepEqual from 'deep-equal';
 import styled from 'styled-components';
 
-import { Collapse, Expand } from '@navikt/ds-icons';
-import { BodyShort, Button } from '@navikt/ds-react';
+import { Table } from '@navikt/ds-react';
 
 import EndretUtbetalingAndelSkjema from './EndretUtbetalingAndelSkjema';
-import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useEndretUtbetalingAndel } from '../../../context/EndretUtbetalingAndelContext';
 import StatusIkon, { Status } from '../../../ikoner/StatusIkon';
 import type { IBehandling } from '../../../typer/behandling';
 import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
 import { IEndretUtbetalingAndelÅrsak, årsakTekst } from '../../../typer/utbetalingAndel';
+import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../utils/dato';
 import { lagPersonLabel } from '../../../utils/formatter';
-import { yearMonthPeriodeToString } from '../../../utils/kalender';
 
 interface IEndretUtbetalingAndelRadProps {
     endretUtbetalingAndel: IRestEndretUtbetalingAndel;
     åpenBehandling: IBehandling;
 }
-
-const TdUtenUnderstrek = styled.td<{ erÅpen: boolean }>`
-    ${props => props.erÅpen && 'border-bottom: 0 !important;'}
-`;
 
 const PersonCelle = styled.div`
     display: flex;
@@ -40,8 +34,6 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
     const [åpenUtbetalingsAndel, settÅpenUtbetalingsAndel] = useState<boolean>(
         endretUtbetalingAndel.personIdent === null
     );
-
-    const { vurderErLesevisning } = useBehandling();
 
     const { hentSkjemaData } = useEndretUtbetalingAndel();
 
@@ -92,8 +84,21 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
 
     return (
         <>
-            <tr>
-                <TdUtenUnderstrek erÅpen={åpenUtbetalingsAndel}>
+            <Table.ExpandableRow
+                togglePlacement={'right'}
+                open={åpenUtbetalingsAndel}
+                onOpenChange={() => toggleForm()}
+                content={
+                    <EndretUtbetalingAndelSkjema
+                        åpenBehandling={åpenBehandling}
+                        lukkSkjema={() => {
+                            settÅpenUtbetalingsAndel(false);
+                        }}
+                        key={åpenUtbetalingsAndel ? 'åpen' : 'lukket'}
+                    />
+                }
+            >
+                <Table.DataCell>
                     <PersonCelle>
                         <StatusIkon
                             status={
@@ -111,19 +116,22 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
                               )
                             : 'Ikke satt'}
                     </PersonCelle>
-                </TdUtenUnderstrek>
-                <TdUtenUnderstrek erÅpen={åpenUtbetalingsAndel}>
+                </Table.DataCell>
+                <Table.DataCell>
                     {endretUtbetalingAndel.fom
-                        ? yearMonthPeriodeToString({
-                              fom: endretUtbetalingAndel.fom,
-                              tom: endretUtbetalingAndel.tom,
+                        ? isoMånedPeriodeTilFormatertString({
+                              periode: {
+                                  fom: endretUtbetalingAndel.fom,
+                                  tom: endretUtbetalingAndel.tom,
+                              },
+                              tilFormat: Datoformat.MÅNED_ÅR,
                           })
                         : ''}
-                </TdUtenUnderstrek>
-                <TdUtenUnderstrek erÅpen={åpenUtbetalingsAndel}>
+                </Table.DataCell>
+                <Table.DataCell>
                     {endretUtbetalingAndel.årsak ? årsakTekst[endretUtbetalingAndel.årsak] : ''}
-                </TdUtenUnderstrek>
-                <TdUtenUnderstrek erÅpen={åpenUtbetalingsAndel}>
+                </Table.DataCell>
+                <Table.DataCell>
                     {typeof endretUtbetalingAndel.prosent === 'number' &&
                     endretUtbetalingAndel.årsak
                         ? fraProsentTilTekst(
@@ -131,35 +139,8 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
                               endretUtbetalingAndel.årsak
                           )
                         : ''}
-                </TdUtenUnderstrek>
-                <TdUtenUnderstrek erÅpen={åpenUtbetalingsAndel}>
-                    <Button variant="tertiary" size="xsmall" onClick={() => toggleForm()}>
-                        {åpenUtbetalingsAndel ? (
-                            <>
-                                <BodyShort>Lukk</BodyShort>
-                                <Collapse width="22" height="22" />
-                            </>
-                        ) : (
-                            <>
-                                <BodyShort>{vurderErLesevisning() ? 'Se mer' : 'Endre'}</BodyShort>
-                                <Expand width="22" height="22" />
-                            </>
-                        )}
-                    </Button>
-                </TdUtenUnderstrek>
-            </tr>
-            {åpenUtbetalingsAndel && (
-                <tr>
-                    <td colSpan={5}>
-                        <EndretUtbetalingAndelSkjema
-                            åpenBehandling={åpenBehandling}
-                            avbrytEndringAvUtbetalingsperiode={() => {
-                                settÅpenUtbetalingsAndel(false);
-                            }}
-                        />
-                    </td>
-                </tr>
-            )}
+                </Table.DataCell>
+            </Table.ExpandableRow>
         </>
     );
 };

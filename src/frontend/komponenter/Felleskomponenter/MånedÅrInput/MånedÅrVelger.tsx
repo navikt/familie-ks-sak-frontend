@@ -12,13 +12,11 @@ interface Props {
     id: string;
     feil?: ReactNode | undefined;
     value: string | undefined;
-    className?: string;
-    label?: ReactNode;
+    label: string;
     onEndret: (årMåned?: string) => void;
     antallÅrTilbake: number;
     antallÅrFrem: number;
     lesevisning?: boolean;
-    disabled?: boolean;
 }
 
 const Knapperad = styled.div`
@@ -26,30 +24,23 @@ const Knapperad = styled.div`
     flex-direction: row;
 `;
 
-const DatolabelStyle = styled.label`
-    margin-bottom: 0.5em;
-`;
-
 const StyledMånedVelger = styled(MånedVelger)`
     padding-right: 1em;
 `;
 
 const StyledErrorMessage = styled(ErrorMessage)`
-    margin-top: 0rem;
+    margin-top: 0;
     margin-bottom: 0.5rem;
 `;
 
 const MånedÅrVelger: React.FC<Props> = ({
-    id,
     feil,
     value,
-    className,
     label,
     onEndret,
     antallÅrTilbake = 10,
     antallÅrFrem = 4,
     lesevisning = false,
-    disabled = false,
 }) => {
     const årFraVerdi = () => (value ? parseInt(value.split('-')[0], 10) : undefined);
     const månedFraVerdi = () => (value ? value.split('-')[1] : undefined);
@@ -71,15 +62,14 @@ const MånedÅrVelger: React.FC<Props> = ({
     }, [value]);
 
     return (
-        <div className={className} style={lesevisning ? { minWidth: '140px' } : {}}>
-            {label && <DatolabelStyle htmlFor={id}>{label}</DatolabelStyle>}
+        <div>
             <Knapperad>
                 <StyledMånedVelger
                     måned={måned}
                     settMåned={settMåned}
                     lesevisning={lesevisning}
-                    disabled={disabled}
                     feil={!!feil && !måned}
+                    label={label}
                 />
                 <Årvelger
                     år={år}
@@ -87,7 +77,6 @@ const MånedÅrVelger: React.FC<Props> = ({
                     antallÅrTilbake={antallÅrTilbake}
                     antallÅrFrem={antallÅrFrem}
                     lesevisning={lesevisning}
-                    disabled={disabled}
                     feil={!!feil && !år}
                 />
             </Knapperad>

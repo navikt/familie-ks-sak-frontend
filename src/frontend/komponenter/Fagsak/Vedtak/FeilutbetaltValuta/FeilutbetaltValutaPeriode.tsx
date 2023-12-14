@@ -8,7 +8,7 @@ import { Table, Button, Tooltip, Alert } from '@navikt/ds-react';
 import FeilutbetaltValutaSkjema from './FeilutbetaltValutaSkjema';
 import { useFeilutbetaltValuta } from './useFeilutbetaltValuta';
 import type { IRestFeilutbetaltValuta } from '../../../../typer/eøs-feilutbetalt-valuta';
-import { periodeToString } from '../../../../utils/kalender';
+import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato';
 
 interface IFeilutbetaltValutaPeriode {
     feilutbetaltValuta: IRestFeilutbetaltValuta;
@@ -34,31 +34,30 @@ const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
     behandlingId,
 }) => {
     const [erRadEkspandert, settErRadEkspandert] = useState<boolean>(false);
-    const [forrigeFeilutbetaltValuta, settForrigeFeilutbetaltValuta] = useState(feilutbetaltValuta);
     const [feilmelding, settFeilmelding] = useState<string>();
 
-    const { skjema, oppdaterEksisterendePeriode, nullstillSkjema, fjernPeriode, valideringErOk } =
-        useFeilutbetaltValuta({
-            behandlingId: behandlingId,
-            feilutbetaltValuta,
-            settFeilmelding: settFeilmelding,
-        });
+    const {
+        skjema,
+        oppdaterEksisterendePeriode,
+        fjernPeriode,
+        valideringErOk,
+        tilbakestillSkjemafelterTilDefault,
+    } = useFeilutbetaltValuta({
+        behandlingId,
+        feilutbetaltValuta,
+        settFeilmelding,
+    });
 
-    const nullstillOgLukkSkjema = () => {
-        nullstillSkjema();
+    const tilbakestillOgLukkSkjema = () => {
         settErRadEkspandert(false);
+        tilbakestillSkjemafelterTilDefault();
     };
-
-    if (feilutbetaltValuta !== forrigeFeilutbetaltValuta) {
-        nullstillOgLukkSkjema();
-        settForrigeFeilutbetaltValuta(feilutbetaltValuta);
-    }
 
     const håndterLukkingOgÅpningAvPanel = () => {
         if (erLesevisning) return;
 
         if (erRadEkspandert) {
-            nullstillOgLukkSkjema();
+            tilbakestillOgLukkSkjema();
         } else {
             settErRadEkspandert(true);
         }
@@ -70,7 +69,12 @@ const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
             onOpenChange={håndterLukkingOgÅpningAvPanel}
             content={
                 <FlexColumnDiv>
-                    <FeilutbetaltValutaSkjema skjema={skjema} />
+                    <FeilutbetaltValutaSkjema
+                        skjema={skjema}
+                        key={`${feilutbetaltValuta.id}-$${
+                            erRadEkspandert ? 'ekspandert' : 'lukket'
+                        }`}
+                    />
                     <FlexRowDiv>
                         <Button
                             size="small"
@@ -79,7 +83,7 @@ const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
                         >
                             Lagre periode
                         </Button>
-                        <Button size="small" variant="tertiary" onClick={nullstillOgLukkSkjema}>
+                        <Button size="small" variant="tertiary" onClick={tilbakestillOgLukkSkjema}>
                             Avbryt
                         </Button>
                     </FlexRowDiv>
@@ -88,7 +92,7 @@ const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
             }
         >
             <Table.DataCell scope="row">
-                {periodeToString({
+                {isoDatoPeriodeTilFormatertString({
                     fom: feilutbetaltValuta.fom,
                     tom: feilutbetaltValuta.tom,
                 })}

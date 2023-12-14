@@ -1,12 +1,12 @@
 import { ytelsetype } from './beregning';
 import type { IGrunnlagPerson } from './person';
 import type { Begrunnelse, BegrunnelseType } from './vedtak';
-import type { FamilieIsoDate } from '../utils/kalender';
+import type { IsoDatoString } from '../utils/dato';
 
 export interface IVedtaksperiodeMedBegrunnelser {
     id: number;
-    fom?: FamilieIsoDate;
-    tom?: FamilieIsoDate;
+    fom?: IsoDatoString;
+    tom?: IsoDatoString;
     type: Vedtaksperiodetype;
     begrunnelser: IRestVedtaksbegrunnelse[];
     fritekster: string[];
@@ -35,33 +35,33 @@ export enum Vedtaksperiodetype {
 
 export type Vedtaksperiode =
     | {
-          periodeFom: FamilieIsoDate;
-          periodeTom?: FamilieIsoDate;
+          periodeFom: IsoDatoString;
+          periodeTom?: IsoDatoString;
           vedtaksperiodetype: Vedtaksperiodetype.UTBETALING;
           utbetalingsperiodeDetaljer: IUtbetalingsperiodeDetalj[];
           antallBarn: number;
           utbetaltPerMnd: number;
       }
     | {
-          periodeFom: FamilieIsoDate;
-          periodeTom?: FamilieIsoDate;
+          periodeFom: IsoDatoString;
+          periodeTom?: IsoDatoString;
           vedtaksperiodetype: Vedtaksperiodetype.OPPHØR;
       }
     | {
-          periodeFom?: FamilieIsoDate;
-          periodeTom?: FamilieIsoDate;
+          periodeFom?: IsoDatoString;
+          periodeTom?: IsoDatoString;
           vedtaksperiodetype: Vedtaksperiodetype.AVSLAG;
       }
     | {
-          periodeFom?: FamilieIsoDate;
-          periodeTom?: FamilieIsoDate;
+          periodeFom?: IsoDatoString;
+          periodeTom?: IsoDatoString;
           vedtaksperiodetype: Vedtaksperiodetype.FORTSATT_INNVILGET;
           utbetalingsperiode: Vedtaksperiode;
       };
 
 export type Utbetalingsperiode = {
-    periodeFom: FamilieIsoDate;
-    periodeTom?: FamilieIsoDate;
+    periodeFom: IsoDatoString;
+    periodeTom?: IsoDatoString;
     vedtaksperiodetype: Vedtaksperiodetype.UTBETALING;
     utbetalingsperiodeDetaljer: IUtbetalingsperiodeDetalj[];
     antallBarn: number;
@@ -73,6 +73,11 @@ export interface IUtbetalingsperiodeDetalj {
     utbetaltPerMnd: number;
     prosent: number;
     erPåvirketAvEndring: boolean;
+}
+
+export interface IRestOverstyrtEndringstidspunkt {
+    overstyrtEndringstidspunkt: IsoDatoString;
+    behandlingId: number;
 }
 
 export const hentVedtaksperiodeTittel = (

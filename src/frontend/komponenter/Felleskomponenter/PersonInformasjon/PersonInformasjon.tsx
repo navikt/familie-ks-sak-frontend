@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-import { BodyShort, Heading } from '@navikt/ds-react';
-import Clipboard from '@navikt/familie-clipboard';
+import styled from 'styled-components';
+
+import { BodyShort, CopyButton, Heading } from '@navikt/ds-react';
 import { FamilieIkonVelger } from '@navikt/familie-ikoner';
 
 import type { IGrunnlagPerson } from '../../../typer/person';
@@ -15,9 +16,16 @@ interface IProps {
     width?: string;
 }
 
+const FlexBox = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+`;
+
 const PersonInformasjon: React.FunctionComponent<IProps> = ({ person, somOverskrift = false }) => {
     const alder = hentAlder(person.fødselsdato);
     const navnOgAlder = `${person.navn} (${alder} år)`;
+    const formatertIdent = formaterIdent(person.personIdent);
 
     return (
         <div className={'personinformasjon'}>
@@ -34,11 +42,12 @@ const PersonInformasjon: React.FunctionComponent<IProps> = ({ person, somOverskr
                     <Heading level="2" size="medium" as="span">
                         &ensp;|&ensp;
                     </Heading>
-                    <Clipboard>
+                    <FlexBox>
                         <Heading level="2" size="medium" as="span">
-                            {formaterIdent(person.personIdent)}
+                            {formatertIdent}
                         </Heading>
-                    </Clipboard>
+                        <CopyButton size="small" copyText={person.personIdent} />
+                    </FlexBox>
                     <Heading level="2" size="medium" as="span">
                         &ensp;|&ensp;
                     </Heading>
@@ -69,9 +78,10 @@ const PersonInformasjon: React.FunctionComponent<IProps> = ({ person, somOverskr
                         {navnOgAlder}
                     </BodyShort>
                     <BodyShort>&ensp;|&ensp;</BodyShort>
-                    <Clipboard>
-                        <BodyShort>{formaterIdent(person.personIdent)}</BodyShort>
-                    </Clipboard>
+                    <FlexBox>
+                        <BodyShort>{formatertIdent}</BodyShort>
+                        <CopyButton size="small" copyText={person.personIdent} />
+                    </FlexBox>
                     <BodyShort>&ensp;|&ensp;</BodyShort>
                     <BodyShort>{`${personTypeMap[person.type]} `}</BodyShort>
                 </>

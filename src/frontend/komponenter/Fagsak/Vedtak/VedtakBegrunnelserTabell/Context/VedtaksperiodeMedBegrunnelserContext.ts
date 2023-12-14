@@ -24,12 +24,12 @@ import type {
     IVedtaksperiodeMedBegrunnelser,
 } from '../../../../../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
+import type { IIsoDatoPeriode } from '../../../../../utils/dato';
 import type { IFritekstFelt } from '../../../../../utils/fritekstfelter';
 import {
     genererIdBasertPåAndreFritekster,
     lagInitiellFritekst,
 } from '../../../../../utils/fritekstfelter';
-import type { IPeriode } from '../../../../../utils/kalender';
 import { useVilkårBegrunnelser } from '../Hooks/useVedtaksbegrunnelser';
 
 interface IProps {
@@ -54,7 +54,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
             vedtaksperiodeMedBegrunnelser.type === Vedtaksperiodetype.FORTSATT_INNVILGET ? 1 : 3;
         const makslengdeFritekst = 220;
 
-        const periode = useFelt<IPeriode>({
+        const periode = useFelt<IIsoDatoPeriode>({
             verdi: {
                 fom: vedtaksperiodeMedBegrunnelser.fom,
                 tom: vedtaksperiodeMedBegrunnelser.tom,
@@ -77,7 +77,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
         const { hentFeilTilOppsummering, kanSendeSkjema, onSubmit, settVisfeilmeldinger, skjema } =
             useSkjema<
                 {
-                    periode: IPeriode;
+                    periode: IIsoDatoPeriode;
                     fritekster: FeltState<IFritekstFelt>[];
                 },
                 IBehandling
@@ -90,9 +90,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
             });
 
         const { grupperteBegrunnelser, vedtaksbegrunnelseTekster } = useVilkårBegrunnelser({
-            åpenBehandling,
             vedtaksperiodeMedBegrunnelser,
-            periode: skjema.felter.periode.verdi,
         });
 
         const populerSkjemaFraBackend = () => {

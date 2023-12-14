@@ -4,7 +4,6 @@ import type { ISelectOption } from '@navikt/familie-form-elements';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import type { IBehandling } from '../../../../../typer/behandling';
 import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../../../../../typer/vedtak';
 import { BegrunnelseType, begrunnelseTyper } from '../../../../../typer/vedtak';
 import type {
@@ -13,15 +12,12 @@ import type {
 } from '../../../../../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
 import type { VedtaksbegrunnelseTekster } from '../../../../../typer/vilkår';
-import type { IPeriode } from '../../../../../utils/kalender';
 import { useVedtaksbegrunnelseTekster } from '../Context/VedtaksbegrunnelseTeksterContext';
 
 export const useVilkårBegrunnelser = ({
     vedtaksperiodeMedBegrunnelser,
 }: {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
-    periode: IPeriode;
-    åpenBehandling: IBehandling;
 }) => {
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
 

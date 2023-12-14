@@ -65,6 +65,15 @@ const brevmalKanVelgesForBehandling = (brevmal: Brevmal, åpenBehandling: IBehan
                     åpenBehandling.type
                 )
             );
+        case Brevmal.INNHENTE_OPPLYSNINGER_OG_INFORMASJON_OM_AT_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_HAR_SØKT:
+            return (
+                åpenBehandling.årsak === BehandlingÅrsak.SØKNAD &&
+                [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING].includes(
+                    åpenBehandling.type
+                )
+            );
+        case Brevmal.VARSEL_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_SØKT:
+            return åpenBehandling.type === Behandlingstype.REVURDERING;
         case Brevmal.VARSEL_OM_VEDTAK_ETTER_SØKNAD_I_SED:
             return (
                 åpenBehandling.årsak === BehandlingÅrsak.SØKNAD &&
@@ -174,6 +183,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
                 [
                     Brevmal.INNHENTE_OPPLYSNINGER,
                     Brevmal.INNHENTE_OPPLYSNINGER_ETTER_SØKNAD_I_SED,
+                    Brevmal.INNHENTE_OPPLYSNINGER_OG_INFORMASJON_OM_AT_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_HAR_SØKT,
                 ].includes(avhengigheter?.brevmal.verdi)
             );
         },
@@ -191,6 +201,8 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
         skalFeltetVises: (avhengigheter: Avhengigheter) => {
             return [
                 Brevmal.INNHENTE_OPPLYSNINGER_ETTER_SØKNAD_I_SED,
+                Brevmal.INNHENTE_OPPLYSNINGER_OG_INFORMASJON_OM_AT_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_HAR_SØKT,
+                Brevmal.VARSEL_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_SØKT,
                 Brevmal.VARSEL_OM_VEDTAK_ETTER_SØKNAD_I_SED,
             ].includes(avhengigheter?.brevmal.verdi);
         },
@@ -258,6 +270,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
             Brevmal.VARSEL_OM_REVURDERING,
             Brevmal.VARSEL_OM_REVURDERING_FRA_NASJONAL_TIL_EØS,
             Brevmal.VARSEL_OM_VEDTAK_ETTER_SØKNAD_I_SED,
+            Brevmal.VARSEL_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_SØKT,
             Brevmal.FORLENGET_SVARTIDSBREV,
         ].includes(brevmal);
 

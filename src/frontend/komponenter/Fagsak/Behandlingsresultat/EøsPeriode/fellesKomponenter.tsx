@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import { BodyShort, Table } from '@navikt/ds-react';
 import {
-    ABorderDefault,
     ABorderDanger,
+    ABorderDefault,
     ABorderWarning,
     ASurfaceAction,
 } from '@navikt/ds-tokens/dist/tokens';
@@ -14,18 +14,17 @@ import { mapEøsPeriodeStatusTilStatus } from '../../../../context/Eøs/EøsCont
 import StatusIkon from '../../../../ikoner/StatusIkon';
 import { EøsPeriodeStatus } from '../../../../typer/eøsPerioder';
 import type { IGrunnlagPerson } from '../../../../typer/person';
-import { Datoformat } from '../../../../utils/dato';
-import { formaterIsoDato, lagPersonLabel } from '../../../../utils/formatter';
-import type { IYearMonthPeriode } from '../../../../utils/kalender';
+import type { IIsoMånedPeriode } from '../../../../utils/dato';
+import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../utils/dato';
+import { lagPersonLabel } from '../../../../utils/formatter';
 
 interface IEøsPeriodeSkjemaContainerProps {
-    $maxWidth?: number;
     $lesevisning: boolean;
     $status: EøsPeriodeStatus;
 }
 
 export const EøsPeriodeSkjemaContainer = styled.div<IEøsPeriodeSkjemaContainerProps>`
-    max-width: ${props => (props.$maxWidth ? `${props.$maxWidth}rem` : '30rem')};
+    max-width: 34rem;
     border-left: 0.125rem solid
         ${props => {
             if (props.$lesevisning) return ABorderDefault;
@@ -35,13 +34,6 @@ export const EøsPeriodeSkjemaContainer = styled.div<IEøsPeriodeSkjemaContainer
         }};
     padding-left: 2rem;
     margin-left: -3rem;
-`;
-
-export const StyledLegend = styled.legend`
-    && {
-        display: flex;
-        margin-bottom: 0;
-    }
 `;
 
 export const Knapperad = styled.div`
@@ -63,17 +55,11 @@ const BarnDiv = styled.div`
     margin-top: 1px;
 `;
 
-const formatterPeriode = (periode: IYearMonthPeriode): string => {
-    return `${formaterIsoDato(periode.fom, Datoformat.MÅNED_ÅR_KORTNAVN)} - ${
-        periode.tom ? formaterIsoDato(periode.tom, Datoformat.MÅNED_ÅR_KORTNAVN) : ''
-    }`;
-};
-
 interface IStatusBarnCelleOgPeriodeCelleProps {
     status: EøsPeriodeStatus;
     barnIdenter: string[];
     personer: IGrunnlagPerson[];
-    periode: IYearMonthPeriode;
+    periode: IIsoMånedPeriode;
 }
 
 export const StatusBarnCelleOgPeriodeCelle = (props: IStatusBarnCelleOgPeriodeCelleProps) => {
@@ -98,7 +84,12 @@ export const StatusBarnCelleOgPeriodeCelle = (props: IStatusBarnCelleOgPeriodeCe
                 </EøsPeriodeVurdertCelle>
             </Table.DataCell>
             <Table.DataCell>
-                <BodyShort size="small">{formatterPeriode(props.periode)}</BodyShort>
+                <BodyShort size="small">
+                    {isoMånedPeriodeTilFormatertString({
+                        periode: props.periode,
+                        tilFormat: Datoformat.MÅNED_ÅR_KORTNAVN,
+                    })}
+                </BodyShort>
             </Table.DataCell>
         </>
     );

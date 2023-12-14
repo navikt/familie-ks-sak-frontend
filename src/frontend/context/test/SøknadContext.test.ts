@@ -1,14 +1,11 @@
+import { addYears } from 'date-fns';
+
 import { kjønnType } from '@navikt/familie-typer';
 
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
 import { Vedtaksperiodetype } from '../../typer/vedtaksperiode';
-import {
-    kalenderDatoFraDate,
-    KalenderEnhet,
-    leggTil,
-    serializeIso8601String,
-} from '../../utils/kalender';
+import { dagensDato, dateTilIsoDatoString } from '../../utils/dato';
 import { mockMinimalFagsak } from '../../utils/test/minimalFagsak/minimalFagsak.mock';
 import { hentBarnMedLøpendeUtbetaling } from '../SøknadContext';
 
@@ -46,9 +43,7 @@ describe('SøknadContext', () => {
                 },
                 {
                     periodeFom: '2021-01-01',
-                    periodeTom: serializeIso8601String(
-                        leggTil(kalenderDatoFraDate(new Date()), 1, KalenderEnhet.ÅR)
-                    ),
+                    periodeTom: dateTilIsoDatoString(addYears(dagensDato, 1)),
                     vedtaksperiodetype: Vedtaksperiodetype.UTBETALING,
                     utbetalingsperiodeDetaljer: [
                         {

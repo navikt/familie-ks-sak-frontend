@@ -2,11 +2,9 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
 import { Delete } from '@navikt/ds-icons';
-import { Alert, Button } from '@navikt/ds-react';
-import { FamilieKnapp, FamilieReactSelect, FamilieSelect } from '@navikt/familie-form-elements';
+import { Alert, Button, Fieldset, Select } from '@navikt/ds-react';
+import { FamilieKnapp, FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
@@ -17,14 +15,13 @@ import { useBehandling } from '../../../../context/behandlingContext/BehandlingC
 import type { IBehandling } from '../../../../typer/behandling';
 import {
     AnnenForelderAktivitet,
-    annenForelderAktiviteter,
     EøsPeriodeStatus,
+    kompetanseAktiviteter,
     KompetanseResultat,
     kompetanseResultater,
     SøkersAktivitet,
-    søkersAktiviteter,
 } from '../../../../typer/eøsPerioder';
-import type { IKompetanse } from '../../../../typer/eøsPerioder';
+import type { IKompetanse, KompetanseAktivitet } from '../../../../typer/eøsPerioder';
 import EøsPeriodeSkjema from '../EøsPeriode/EøsPeriodeSkjema';
 import { FamilieLandvelger } from '../EøsPeriode/FamilieLandvelger';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsPeriode/fellesKomponenter';
@@ -41,17 +38,26 @@ interface IProps {
     sendInnSkjema: () => void;
     toggleForm: (visAlert: boolean) => void;
     slettKompetanse: () => void;
+    erAnnenForelderOmfattetAvNorskLovgivning?: boolean;
 }
 
 const StyledAlert = styled(Alert)`
-    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
 `;
 
 const StyledFamilieLandvelger = styled(FamilieLandvelger)`
     margin-top: 1.5rem;
 `;
 
-const StyledFamilieSelect = styled(FamilieSelect)`
+const StyledSelect = styled(Select)`
+    margin-top: 1.5rem;
+`;
+
+const StyledFamilieReactSelect = styled(FamilieReactSelect)`
+    margin-top: 0.5rem;
+`;
+
+const StyledEøsPeriodeSkjema = styled(EøsPeriodeSkjema)`
     margin-top: 1.5rem;
 `;
 
@@ -63,6 +69,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
     sendInnSkjema,
     toggleForm,
     slettKompetanse,
+    erAnnenForelderOmfattetAvNorskLovgivning,
 }) => {
     const { vurderErLesevisning } = useBehandling();
     const lesevisning = vurderErLesevisning(true);
@@ -82,81 +89,92 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
     const toPrimærland = skjema.felter.resultat?.verdi === KompetanseResultat.TO_PRIMÆRLAND;
 
     return (
-        <SkjemaGruppe feil={skjema.visFeilmeldinger && visSubmitFeilmelding()}>
+        <Fieldset
+            error={skjema.visFeilmeldinger && visSubmitFeilmelding()}
+            legend={'Kompetanseskjema'}
+            hideLegend
+        >
             <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
-                <div className={'skjemaelement'}>
-                    <FamilieReactSelect
-                        {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}
-                        erLesevisning={lesevisning}
-                        label={'Barn'}
-                        isMulti
-                        options={tilgjengeligeBarn}
-                        value={skjema.felter.barnIdenter.verdi}
-                        onChange={options =>
-                            skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])
-                        }
-                    />
-                </div>
-                <EøsPeriodeSkjema
+                <StyledFamilieReactSelect
+                    {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}
+                    erLesevisning={lesevisning}
+                    label={'Barn'}
+                    isMulti
+                    options={tilgjengeligeBarn}
+                    value={skjema.felter.barnIdenter.verdi}
+                    onChange={options =>
+                        skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])
+                    }
+                />
+                <StyledEøsPeriodeSkjema
                     periode={skjema.felter.periode}
                     periodeFeilmeldingId={kompetansePeriodeFeilmeldingId(skjema)}
                     initielFom={skjema.felter.initielFom}
                     visFeilmeldinger={skjema.visFeilmeldinger}
                     lesevisning={lesevisning}
                 />
-                <FamilieSelect
+                {erAnnenForelderOmfattetAvNorskLovgivning && (
+                    <StyledAlert variant="info" inline>
+                        Annen forelder er omfattet av norsk lovgivning og har selvstendig rett i
+                        perioden
+                    </StyledAlert>
+                )}
+                <StyledSelect
                     {...skjema.felter.søkersAktivitet.hentNavInputProps(skjema.visFeilmeldinger)}
-                    erLesevisning={lesevisning}
+                    readOnly={lesevisning}
                     label={'Søkers aktivitet'}
                     value={skjema.felter.søkersAktivitet.verdi || undefined}
-                    lesevisningVerdi={
-                        skjema.felter.søkersAktivitet.verdi
-                            ? søkersAktiviteter[skjema.felter.søkersAktivitet.verdi]
-                            : 'Ikke utfylt'
-                    }
                     onChange={event =>
                         skjema.felter.søkersAktivitet.validerOgSettFelt(
-                            event.target.value as SøkersAktivitet
+                            event.target.value as KompetanseAktivitet
                         )
                     }
                 >
                     <option value={''}>Velg</option>
-                    {Object.values(SøkersAktivitet).map(aktivitet => {
-                        return (
-                            <option key={aktivitet} value={aktivitet}>
-                                {søkersAktiviteter[aktivitet]}
-                            </option>
-                        );
-                    })}
-                </FamilieSelect>
-                <StyledFamilieSelect
+                    {Object.values(
+                        erAnnenForelderOmfattetAvNorskLovgivning
+                            ? AnnenForelderAktivitet
+                            : SøkersAktivitet
+                    )
+                        .filter(
+                            (aktivitet: KompetanseAktivitet) =>
+                                aktivitet !== AnnenForelderAktivitet.IKKE_AKTUELT
+                        )
+                        .map((aktivitet: KompetanseAktivitet) => {
+                            return (
+                                <option key={aktivitet} value={aktivitet}>
+                                    {kompetanseAktiviteter[aktivitet]}
+                                </option>
+                            );
+                        })}
+                </StyledSelect>
+                <StyledSelect
                     className="unset-margin-bottom"
                     {...skjema.felter.annenForeldersAktivitet.hentNavInputProps(
                         skjema.visFeilmeldinger
                     )}
-                    erLesevisning={lesevisning}
+                    readOnly={lesevisning}
                     label={'Annen forelders aktivitet'}
                     value={skjema.felter.annenForeldersAktivitet.verdi || undefined}
-                    lesevisningVerdi={
-                        skjema.felter.annenForeldersAktivitet?.verdi
-                            ? annenForelderAktiviteter[skjema.felter.annenForeldersAktivitet?.verdi]
-                            : 'Ikke utfylt'
-                    }
                     onChange={event => {
                         skjema.felter.annenForeldersAktivitet.validerOgSettFelt(
-                            event.target.value as AnnenForelderAktivitet
+                            event.target.value as KompetanseAktivitet
                         );
                     }}
                 >
                     <option value={''}>Velg</option>
-                    {Object.values(AnnenForelderAktivitet).map(aktivitet => {
+                    {Object.values(
+                        erAnnenForelderOmfattetAvNorskLovgivning
+                            ? SøkersAktivitet
+                            : AnnenForelderAktivitet
+                    ).map((aktivitet: KompetanseAktivitet) => {
                         return (
                             <option key={aktivitet} value={aktivitet}>
-                                {annenForelderAktiviteter[aktivitet]}
+                                {kompetanseAktiviteter[aktivitet]}
                             </option>
                         );
                     })}
-                </StyledFamilieSelect>
+                </StyledSelect>
                 {skjema.felter.annenForeldersAktivitet.verdi ===
                     AnnenForelderAktivitet.IKKE_AKTUELT && (
                     <StyledAlert variant="info" size="small" inline>
@@ -226,16 +244,11 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                             : ''
                     }
                 />
-                <FamilieSelect
+                <Select
                     {...skjema.felter.resultat.hentNavInputProps(skjema.visFeilmeldinger)}
-                    erLesevisning={lesevisning}
+                    readOnly={lesevisning}
                     label={'Kompetanse'}
                     value={skjema.felter.resultat.verdi || undefined}
-                    lesevisningVerdi={
-                        skjema.felter.resultat.verdi
-                            ? kompetanseResultater[skjema.felter.resultat.verdi]
-                            : 'Ikke utfylt'
-                    }
                     onChange={event => {
                         skjema.felter.resultat.validerOgSettFelt(
                             event.target.value as KompetanseResultat
@@ -262,7 +275,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                     >
                         {kompetanseResultater[KompetanseResultat.TO_PRIMÆRLAND]}
                     </option>
-                </FamilieSelect>
+                </Select>
                 {toPrimærland && (
                     <Alert
                         variant={'warning'}
@@ -314,7 +327,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                         )}
                 </Knapperad>
             </EøsPeriodeSkjemaContainer>
-        </SkjemaGruppe>
+        </Fieldset>
     );
 };
 

@@ -2,23 +2,14 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { Label } from '@navikt/ds-react';
+import { Fieldset } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
-import type { IYearMonthPeriode } from '../../../../utils/kalender';
+import type { IIsoMånedPeriode } from '../../../../utils/dato';
 import MånedÅrVelger from '../../../Felleskomponenter/MånedÅrInput/MånedÅrVelger';
 
-const StyledLegend = styled.legend`
-    && {
-        display: flex;
-        margin-bottom: 0;
-    }
-`;
-
-const FlexDiv = styled.div<{ $maxWidth?: number }>`
-    width: ${props => (props.$maxWidth ? `${props.$maxWidth}rem` : '28rem')};
+const FlexDiv = styled.div`
+    width: 32rem;
     display: flex;
     justify-content: space-between;
     font-size: 1rem;
@@ -33,12 +24,13 @@ const FlexDiv = styled.div<{ $maxWidth?: number }>`
 `;
 
 interface IProps {
-    periode: Felt<IYearMonthPeriode>;
+    periode: Felt<IIsoMånedPeriode>;
     periodeFeilmeldingId: string;
     initielFom: Felt<string>;
     visFeilmeldinger: boolean;
     lesevisning: boolean;
     maxWidth?: number;
+    className?: string;
 }
 
 const EøsPeriodeSkjema: React.FC<IProps> = ({
@@ -47,22 +39,21 @@ const EøsPeriodeSkjema: React.FC<IProps> = ({
     initielFom,
     visFeilmeldinger,
     lesevisning,
-    maxWidth,
+    className,
 }) => {
     const finnÅrTilbakeTil = (): number => {
         return new Date().getFullYear() - new Date(initielFom.verdi).getFullYear();
     };
 
     return (
-        <SkjemaGruppe
-            className={lesevisning ? 'lesevisning' : ''}
-            feilmeldingId={periodeFeilmeldingId}
-            feil={visFeilmeldinger && periode.feilmelding}
+        <Fieldset
+            className={`${className} ${lesevisning ? 'lesevisning' : ''}`}
+            errorId={periodeFeilmeldingId}
+            error={visFeilmeldinger && periode.feilmelding}
+            legend={'Periode'}
+            size={'medium'}
         >
-            <StyledLegend>
-                <Label size="small">Periode</Label>
-            </StyledLegend>
-            <FlexDiv $maxWidth={maxWidth}>
+            <FlexDiv>
                 <MånedÅrVelger
                     lesevisning={lesevisning}
                     id={`periode_fom`}
@@ -100,7 +91,7 @@ const EøsPeriodeSkjema: React.FC<IProps> = ({
                     }}
                 />
             </FlexDiv>
-        </SkjemaGruppe>
+        </Fieldset>
     );
 };
 

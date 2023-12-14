@@ -11,6 +11,7 @@ import { Barnehageplass } from './Vilkår/Barnehageplass/Barnehageplass';
 import { BarnetsAlder } from './Vilkår/BarnetsAlder/BarnetsAlder';
 import { BorMedSøker } from './Vilkår/BorMedSøker/BorMedSøker';
 import { BosattIRiket } from './Vilkår/BosattIRiket/BosattIRiket';
+import { LovligOpphold } from './Vilkår/LovligOpphold/LovligOpphold';
 import { Medlemskap } from './Vilkår/Medlemskap/Medlemskap';
 import { MedlemskapAnnenForelder } from './Vilkår/MedlemskapAnnenForelder/MedlemskapAnnenForelder';
 import { vilkårFeilmeldingId } from './VilkårTabell';
@@ -21,9 +22,11 @@ import type { IGrunnlagPerson } from '../../../../typer/person';
 import { ToggleNavn } from '../../../../typer/toggles';
 import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
 import { Resultat, uiResultat, VilkårType } from '../../../../typer/vilkår';
-import { Datoformat } from '../../../../utils/dato';
-import { formaterIsoDato } from '../../../../utils/formatter';
-import { periodeToString } from '../../../../utils/kalender';
+import {
+    Datoformat,
+    isoStringTilFormatertString,
+    isoDatoPeriodeTilFormatertString,
+} from '../../../../utils/dato';
 import { alleRegelverk } from '../../../../utils/vilkår';
 
 interface IProps {
@@ -88,6 +91,16 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
             case VilkårType.BOSATT_I_RIKET:
                 return (
                     <BosattIRiket
+                        vilkårResultat={vilkårResultat}
+                        vilkårFraConfig={vilkårFraConfig}
+                        toggleForm={toggleForm}
+                        person={person}
+                        lesevisning={erLesevisning}
+                    />
+                );
+            case VilkårType.LOVLIG_OPPHOLD:
+                return (
+                    <LovligOpphold
                         vilkårResultat={vilkårResultat}
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}
@@ -166,7 +179,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
             </Table.DataCell>
             <Table.DataCell>
                 <BodyShort>
-                    {periodeErTom ? '-' : periodeToString(vilkårResultat.periode)}
+                    {periodeErTom ? '-' : isoDatoPeriodeTilFormatertString(vilkårResultat.periode)}
                 </BodyShort>
             </Table.DataCell>
             <Table.DataCell>
@@ -207,10 +220,10 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         {åpenBehandling.status === RessursStatus.SUKSESS && vilkårResultat.erVurdert
                             ? vilkårResultat.behandlingId === åpenBehandling.data.behandlingId
                                 ? 'Vurdert i denne behandlingen'
-                                : `Vurdert ${formaterIsoDato(
-                                      vilkårResultat.endretTidspunkt,
-                                      Datoformat.DATO_FORKORTTET
-                                  )}`
+                                : `Vurdert ${isoStringTilFormatertString({
+                                      isoString: vilkårResultat.endretTidspunkt,
+                                      tilFormat: Datoformat.DATO_FORKORTTET,
+                                  })}`
                             : ''}
                     </div>
                 </FlexDiv>

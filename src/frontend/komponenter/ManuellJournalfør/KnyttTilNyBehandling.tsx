@@ -75,7 +75,7 @@ export const KnyttTilNyBehandling: React.FC = () => {
             {behandlingstema.erSynlig && (
                 <BehandlingstemaSelect
                     behandlingstema={behandlingstema}
-                    erLesevisning={!kanKnytteJournalpostTilBehandling()}
+                    readOnly={!kanKnytteJournalpostTilBehandling()}
                     visFeilmeldinger={skjema.visFeilmeldinger}
                     name="Behandlingstema"
                     label="Velg behandlingstema"

@@ -1,19 +1,19 @@
 import React from 'react';
 
+import { endOfMonth, isAfter } from 'date-fns';
 import styled from 'styled-components';
 
 import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
 
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../typer/vedtaksperiode';
 import { hentVedtaksperiodeTittel, Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
-import { formaterBeløp, summer } from '../../../../../utils/formatter';
 import {
-    erEtter,
-    kalenderDatoMedFallback,
-    periodeToString,
-    sisteDagIInneværendeMåned,
-    TIDENES_ENDE,
-} from '../../../../../utils/kalender';
+    dagensDato,
+    isoStringTilDateMedFallback,
+    tidenesEnde,
+    isoDatoPeriodeTilFormatertString,
+} from '../../../../../utils/dato';
+import { formaterBeløp, summer } from '../../../../../utils/formatter';
 
 const StyledExpansionCard = styled(ExpansionCard)`
     margin-bottom: 1rem;
@@ -37,7 +37,10 @@ interface IEkspanderbartBegrunnelsePanelProps {
 }
 
 const slutterSenereEnnInneværendeMåned = (tom?: string) =>
-    erEtter(kalenderDatoMedFallback(tom, TIDENES_ENDE), sisteDagIInneværendeMåned());
+    isAfter(
+        isoStringTilDateMedFallback({ isoString: tom, fallbackDate: tidenesEnde }),
+        endOfMonth(dagensDato)
+    );
 
 const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProps> = ({
     vedtaksperiodeMedBegrunnelser,
@@ -64,7 +67,7 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
                 <StyledExpansionTitle>
                     {periode.fom && (
                         <Label>
-                            {periodeToString({
+                            {isoDatoPeriodeTilFormatertString({
                                 fom: periode.fom,
                                 tom: slutterSenereEnnInneværendeMåned(periode.tom)
                                     ? ''

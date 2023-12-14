@@ -2,16 +2,9 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
 import { Delete } from '@navikt/ds-icons';
-import { Alert, BodyShort, Button, Label } from '@navikt/ds-react';
-import {
-    FamilieInput,
-    FamilieKnapp,
-    FamilieReactSelect,
-    FamilieSelect,
-} from '@navikt/familie-form-elements';
+import { Alert, BodyShort, Button, Fieldset, Select, TextField } from '@navikt/ds-react';
+import { FamilieKnapp, FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
@@ -27,50 +20,34 @@ import {
 } from '../../../../typer/eøsPerioder';
 import type { IUtenlandskPeriodeBeløp } from '../../../../typer/eøsPerioder';
 import EøsPeriodeSkjema from '../EøsPeriode/EøsPeriodeSkjema';
-import { FamilieValutavelger } from '../EøsPeriode/FamilieLandvelger';
-import {
-    EøsPeriodeSkjemaContainer,
-    Knapperad,
-    StyledLegend,
-} from '../EøsPeriode/fellesKomponenter';
+import { StyledFamilieValutavelger } from '../EøsPeriode/FamilieLandvelger';
+import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsPeriode/fellesKomponenter';
 
 const UtbetaltBeløpRad = styled.div`
     width: 32rem;
     display: flex;
     justify-content: space-between;
-
-    div.skjemaelement {
-        margin-bottom: 0;
-
-        label {
-            font-weight: normal;
-            margin-bottom: 0.5rem;
-        }
-
-        p.navds-label {
-            font-weight: normal;
-            margin-bottom: 0.5rem;
-        }
-
-        &:nth-of-type(1) {
-            width: 6.5rem;
-        }
-        &:nth-of-type(2) {
-            width: 16rem;
-        }
-        &:nth-of-type(3) {
-            width: 7rem;
-        }
-    }
+    gap: 1rem;
 `;
 
 const UtbetaltBeløpInfo = styled(Alert)`
-    width: 60rem;
     margin-bottom: var(--navds-spacing-6);
 `;
 
 const UtbetaltBeløpText = styled(BodyShort)`
     font-weight: bold;
+`;
+
+const StyledEøsPeriodeSkjema = styled(EøsPeriodeSkjema)`
+    margin-top: 1.5rem;
+`;
+
+const StyledFieldset = styled(Fieldset)`
+    margin-top: 1.5rem;
+`;
+
+const StyledTextField = styled(TextField)`
+    width: 9rem;
 `;
 
 const utenlandskPeriodeBeløpPeriodeFeilmeldingId = (
@@ -132,28 +109,30 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
     };
 
     return (
-        <SkjemaGruppe feil={skjema.visFeilmeldinger && visSubmitFeilmelding()}>
-            <EøsPeriodeSkjemaContainer $maxWidth={34} $lesevisning={lesevisning} $status={status}>
+        <Fieldset
+            error={skjema.visFeilmeldinger && visSubmitFeilmelding()}
+            legend={'Endre utenlandsk periodebeløp'}
+            hideLegend
+        >
+            <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
                 <UtbetaltBeløpInfo variant="info" inline>
                     <UtbetaltBeløpText size="small">
                         Dersom det er ulike beløp per barn utbetalt i det andre landet, må barna
                         registreres separat
                     </UtbetaltBeløpText>
                 </UtbetaltBeløpInfo>
-                <div className={'skjemaelement'}>
-                    <FamilieReactSelect
-                        {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}
-                        erLesevisning={lesevisning}
-                        label={'Barn'}
-                        isMulti
-                        options={tilgjengeligeBarn}
-                        value={skjema.felter.barnIdenter.verdi}
-                        onChange={options =>
-                            skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])
-                        }
-                    />
-                </div>
-                <EøsPeriodeSkjema
+                <FamilieReactSelect
+                    {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}
+                    erLesevisning={lesevisning}
+                    label={'Barn'}
+                    isMulti
+                    options={tilgjengeligeBarn}
+                    value={skjema.felter.barnIdenter.verdi}
+                    onChange={options =>
+                        skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])
+                    }
+                />
+                <StyledEøsPeriodeSkjema
                     periode={skjema.felter.periode}
                     periodeFeilmeldingId={utenlandskPeriodeBeløpPeriodeFeilmeldingId(skjema)}
                     initielFom={skjema.felter.initielFom}
@@ -161,30 +140,28 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                     lesevisning={lesevisning}
                     maxWidth={32}
                 />
-                <SkjemaGruppe
-                    className={lesevisning ? 'lesevisning' : ''}
-                    feilmeldingId={utenlandskPeriodeBeløpUtbetaltFeilmeldingId(skjema)}
-                    feil={skjema.visFeilmeldinger && visUtbetaltBeløpGruppeFeilmelding()}
+                <StyledFieldset
+                    errorId={utenlandskPeriodeBeløpUtbetaltFeilmeldingId(skjema)}
+                    error={skjema.visFeilmeldinger && visUtbetaltBeløpGruppeFeilmelding()}
+                    legend={'Utbetalt i det andre landet'}
+                    size={'medium'}
                 >
-                    <StyledLegend>
-                        <Label size="small">Utbetalt i det andre landet</Label>
-                    </StyledLegend>
                     <UtbetaltBeløpRad>
-                        <FamilieInput
+                        <StyledTextField
                             label={'Beløp per barn'}
-                            erLesevisning={lesevisning}
+                            readOnly={lesevisning}
                             value={skjema.felter.beløp?.verdi}
                             onChange={event =>
                                 skjema.felter.beløp?.validerOgSettFelt(event.target.value)
                             }
+                            size={'medium'}
                         />
-                        <FamilieValutavelger
+                        <StyledFamilieValutavelger
                             erLesevisning={lesevisning}
                             id={'valuta'}
                             label={'Valuta'}
                             kunEøs
                             medFlag
-                            size="small"
                             value={skjema.felter.valutakode?.verdi}
                             onChange={(value: Currency) => {
                                 if (value) {
@@ -196,21 +173,14 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                             utenMargin
                             kanNullstilles
                         />
-                        <FamilieSelect
+                        <Select
                             label={'Intervall'}
-                            erLesevisning={lesevisning}
+                            readOnly={lesevisning}
                             value={skjema.felter.intervall?.verdi || undefined}
                             onChange={event =>
                                 skjema.felter.intervall?.validerOgSettFelt(
                                     event.target.value as UtenlandskPeriodeBeløpIntervall
                                 )
-                            }
-                            lesevisningVerdi={
-                                skjema.felter.intervall?.verdi
-                                    ? utenlandskPeriodeBeløpIntervaller[
-                                          skjema.felter.intervall.verdi
-                                      ]
-                                    : ''
                             }
                         >
                             <option key={'-'} value={''}>
@@ -223,9 +193,9 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                                     </option>
                                 );
                             })}
-                        </FamilieSelect>
+                        </Select>
                     </UtbetaltBeløpRad>
-                </SkjemaGruppe>
+                </StyledFieldset>
 
                 <Knapperad>
                     <div>
@@ -268,7 +238,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                         )}
                 </Knapperad>
             </EøsPeriodeSkjemaContainer>
-        </SkjemaGruppe>
+        </Fieldset>
     );
 };
 

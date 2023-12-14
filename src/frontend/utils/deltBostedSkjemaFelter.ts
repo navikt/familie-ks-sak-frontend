@@ -1,11 +1,9 @@
-import type { ISODateString } from '@navikt/familie-datovelger';
 import { feil, ok, useFelt } from '@navikt/familie-skjema';
 import type { Avhengigheter } from '@navikt/familie-skjema/dist/typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { Datoformat } from './dato';
-import { formaterIsoDato } from './formatter';
-import { erIsoStringGyldig } from './kalender';
+import type { IsoDatoString } from './dato';
+import { Datoformat, erIsoStringGyldig, isoStringTilFormatertString } from './dato';
 import { useFagsakContext } from '../context/fagsak/FagsakContext';
 import type { IForelderBarnRelasjon } from '../typer/person';
 import { ForelderBarnRelasjonRolle } from '../typer/person';
@@ -31,7 +29,7 @@ export const useDeltBostedFelter = ({ avhengigheter, skalFeltetVises }: IProps) 
         nullstillVedAvhengighetEndring: false,
     });
 
-    const avtalerOmDeltBostedPerBarn = useFelt<Record<string, ISODateString[]>>({
+    const avtalerOmDeltBostedPerBarn = useFelt<Record<string, IsoDatoString[]>>({
         verdi: {},
         valideringsfunksjon: (felt, avhengigheter) => {
             const barnMedDeltBosted = avhengigheter?.verdi ?? [];
@@ -40,7 +38,7 @@ export const useDeltBostedFelter = ({ avhengigheter, skalFeltetVises }: IProps) 
                 .filter((barn: IBarnMedOpplysninger) => barn.merket)
                 .some(
                     (barn: IBarnMedOpplysninger) =>
-                        felt.verdi[barn.ident]?.some(
+                        felt.verdi[barn.ident ?? '']?.some(
                             avtaleDato => avtaleDato.length === 0 || !erIsoStringGyldig(avtaleDato)
                         )
                 )
@@ -78,17 +76,17 @@ export const useDeltBostedFelter = ({ avhengigheter, skalFeltetVises }: IProps) 
     };
 
     const hentDeltBostedMulitiselectVerdierForBarn = (barn: IBarnMedOpplysninger) => {
-        const avtalerOmDeltBosted = avtalerOmDeltBostedPerBarn.verdi[barn.ident] ?? [];
+        const avtalerOmDeltBosted = avtalerOmDeltBostedPerBarn.verdi[barn.ident ?? ''] ?? [];
 
         return avtalerOmDeltBosted.map(
             avtaletidspunktDeltBosted =>
-                `Barn født ${formaterIsoDato(
-                    barn.fødselsdato,
-                    Datoformat.DATO
-                )}. Avtalen gjelder fra ${formaterIsoDato(
-                    avtaletidspunktDeltBosted,
-                    Datoformat.DATO_FORLENGET
-                )}.`
+                `Barn født ${isoStringTilFormatertString({
+                    isoString: barn.fødselsdato,
+                    tilFormat: Datoformat.DATO,
+                })}. Avtalen gjelder fra ${isoStringTilFormatertString({
+                    isoString: avtaletidspunktDeltBosted,
+                    tilFormat: Datoformat.DATO_FORLENGET,
+                })}.`
         );
     };
 

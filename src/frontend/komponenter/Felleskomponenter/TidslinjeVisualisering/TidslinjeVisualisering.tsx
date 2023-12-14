@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import { endOfMonth } from 'date-fns';
 import { useMatch } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -22,13 +23,8 @@ import type {
 } from '../../../typer/tidslinjer';
 import { Regelverk, Resultat, vilkårConfig } from '../../../typer/vilkår';
 import type { IVilkårConfig } from '../../../typer/vilkår';
+import { isoStringTilDate } from '../../../utils/dato';
 import { formaterIdent } from '../../../utils/formatter';
-import {
-    kalenderDato,
-    kalenderDatoFraDate,
-    kalenderDatoTilDate,
-    sisteDagIMåned,
-} from '../../../utils/kalender';
 import TidslinjeEtikett from '../../Fagsak/Behandlingsresultat/TidslinjeEtikett';
 import TidslinjeNavigering from '../../Fagsak/Behandlingsresultat/TidslinjeNavigering';
 import Vinduvelger from '../../Fagsak/Behandlingsresultat/VinduVelger';
@@ -135,8 +131,8 @@ const TidslinjeVisualisering: React.FC = () => {
         resultatTidslinje: IRestTidslinjePeriode<IVilkårRegelverkResultat>[]
     ): Periode[] => {
         return resultatTidslinje.map(resultatPeriode => ({
-            fom: kalenderDatoTilDate(kalenderDato(resultatPeriode.fraOgMed)),
-            tom: kalenderDatoTilDate(kalenderDato(resultatPeriode.tilOgMed)),
+            fom: isoStringTilDate(resultatPeriode.fraOgMed),
+            tom: isoStringTilDate(resultatPeriode.tilOgMed),
             id: `${resultatPeriode.fraOgMed}_${resultatPeriode.tilOgMed}`,
             status: mapResultatTilStatus(resultatPeriode.innhold.resultat),
         }));
@@ -160,8 +156,8 @@ const TidslinjeVisualisering: React.FC = () => {
         resultatTidslinje: IRestTidslinjePeriode<Resultat>[]
     ): Periode[] => {
         return resultatTidslinje.map(resultatPeriode => ({
-            fom: kalenderDatoTilDate(kalenderDato(resultatPeriode.fraOgMed)),
-            tom: kalenderDatoTilDate(kalenderDato(resultatPeriode.tilOgMed)),
+            fom: isoStringTilDate(resultatPeriode.fraOgMed),
+            tom: isoStringTilDate(resultatPeriode.tilOgMed),
             id: `${resultatPeriode.fraOgMed}_${resultatPeriode.tilOgMed}`,
             status: mapResultatTilStatus(resultatPeriode.innhold),
         }));
@@ -173,8 +169,8 @@ const TidslinjeVisualisering: React.FC = () => {
         return regelverkTidslinje
             .filter(regelverkPeriode => regelverkPeriode.innhold)
             .map(regelverkPeriode => ({
-                fom: kalenderDatoTilDate(kalenderDato(regelverkPeriode.fraOgMed)),
-                tom: kalenderDatoTilDate(kalenderDato(regelverkPeriode.tilOgMed)),
+                fom: isoStringTilDate(regelverkPeriode.fraOgMed),
+                tom: isoStringTilDate(regelverkPeriode.tilOgMed),
                 id: `${regelverkPeriode.fraOgMed}_${regelverkPeriode.tilOgMed}`,
                 status:
                     regelverkPeriode.innhold === Regelverk.NASJONALE_REGLER
@@ -259,20 +255,12 @@ const TidslinjeVisualisering: React.FC = () => {
                                     etikettRender={(etikett: Etikett) => (
                                         <TidslinjeEtikett etikett={etikett} />
                                     )}
-                                    startDato={kalenderDatoTilDate(
-                                        aktivtTidslinjeVindu.startDato,
-                                        23,
-                                        0
-                                    )}
-                                    sluttDato={kalenderDatoTilDate(aktivtTidslinjeVindu.sluttDato)}
+                                    startDato={aktivtTidslinjeVindu.startDato}
+                                    sluttDato={aktivtTidslinjeVindu.sluttDato}
                                     aktivtUtsnitt={
                                         aktivEtikett && {
                                             fom: aktivEtikett.date,
-                                            tom: kalenderDatoTilDate(
-                                                sisteDagIMåned(
-                                                    kalenderDatoFraDate(aktivEtikett.date)
-                                                )
-                                            ),
+                                            tom: endOfMonth(aktivEtikett.date),
                                         }
                                     }
                                 />

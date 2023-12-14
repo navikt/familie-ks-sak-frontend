@@ -1,9 +1,9 @@
 import type { FeltState } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
+import type { IIsoMånedPeriode } from '../dato';
+import { nyIsoMånedPeriode } from '../dato';
 import { erEøsPeriodeGyldig, isEmpty, isNumeric, tellAntallDesimaler } from '../eøsValidators';
-import type { IYearMonthPeriode } from '../kalender';
-import { nyYearMonthPeriode } from '../kalender';
 
 describe('utils/eøsValidators', () => {
     const nyFeltState = <T>(verdi: T): FeltState<T> => ({
@@ -14,8 +14,8 @@ describe('utils/eøsValidators', () => {
     });
 
     test('erEøsPeriodeGyldig skal kaste feilmelding hvis fom dato ikke er utfylt', () => {
-        const eøsPeriode: FeltState<IYearMonthPeriode> = nyFeltState(
-            nyYearMonthPeriode(undefined, '2010-05')
+        const eøsPeriode: FeltState<IIsoMånedPeriode> = nyFeltState(
+            nyIsoMånedPeriode(undefined, '2010-05')
         );
 
         const valideringsresultat = erEøsPeriodeGyldig(eøsPeriode);
@@ -25,8 +25,8 @@ describe('utils/eøsValidators', () => {
     });
 
     test('erEøsPeriodeGyldig skal kaste feilmelding hvis fom dato er mer enn 1mnd senere enn dagens dato', () => {
-        const eøsPeriode: FeltState<IYearMonthPeriode> = nyFeltState(
-            nyYearMonthPeriode('2099-12', '2100-05')
+        const eøsPeriode: FeltState<IIsoMånedPeriode> = nyFeltState(
+            nyIsoMånedPeriode('2099-12', '2100-05')
         );
 
         const valideringsresultat = erEøsPeriodeGyldig(eøsPeriode);
@@ -38,8 +38,8 @@ describe('utils/eøsValidators', () => {
     });
 
     test('erEøsPeriodeGyldig skal kaste feilmelding hvis tom dato er mer enn 1mnd senere enn dagens dato', () => {
-        const eøsPeriode: FeltState<IYearMonthPeriode> = nyFeltState(
-            nyYearMonthPeriode('2010-12', '2100-05')
+        const eøsPeriode: FeltState<IIsoMånedPeriode> = nyFeltState(
+            nyIsoMånedPeriode('2010-12', '2100-05')
         );
 
         const valideringsresultat = erEøsPeriodeGyldig(eøsPeriode);
@@ -51,8 +51,8 @@ describe('utils/eøsValidators', () => {
     });
 
     test('erEøsPeriodeGyldig skal kaste feilmelding hvis fom dato er satt før initielFom dato', () => {
-        const eøsPeriode: FeltState<IYearMonthPeriode> = nyFeltState(
-            nyYearMonthPeriode('2010-12', '2009-05')
+        const eøsPeriode: FeltState<IIsoMånedPeriode> = nyFeltState(
+            nyIsoMånedPeriode('2010-12', '2009-05')
         );
 
         const valideringsresultat = erEøsPeriodeGyldig(eøsPeriode, { initielFom: '2011-10' });
@@ -64,8 +64,8 @@ describe('utils/eøsValidators', () => {
     });
 
     test('erEøsPeriodeGyldig skal returnere OK dersom alle felter er fylt inn korrekt', () => {
-        const eøsPeriode: FeltState<IYearMonthPeriode> = nyFeltState(
-            nyYearMonthPeriode('2010-12', '2012-05')
+        const eøsPeriode: FeltState<IIsoMånedPeriode> = nyFeltState(
+            nyIsoMånedPeriode('2010-12', '2012-05')
         );
 
         const valideringsresultat = erEøsPeriodeGyldig(eøsPeriode, { initielFom: '2009-10' });

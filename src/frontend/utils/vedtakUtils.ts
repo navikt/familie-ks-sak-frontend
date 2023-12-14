@@ -1,19 +1,12 @@
+import { addMonths, differenceInMilliseconds, isAfter, isBefore, startOfMonth } from 'date-fns';
+
 import navFarger from 'nav-frontend-core';
 
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import type { FamilieIsoDate } from './kalender';
-import {
-    førsteDagIInneværendeMåned,
-    kalenderDato,
-    kalenderDatoMedFallback,
-    kalenderDatoTilDate,
-    kalenderDiff,
-    KalenderEnhet,
-    leggTil,
-    TIDENES_MORGEN,
-} from './kalender';
+import type { IsoDatoString } from './dato';
+import { dagensDato, isoStringTilDate, isoStringTilDateMedFallback, tidenesMorgen } from './dato';
 import { BehandlingResultat, BehandlingStatus } from '../typer/behandling';
 import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../typer/vedtak';
 import { BegrunnelseType } from '../typer/vedtak';
@@ -25,14 +18,14 @@ export const filtrerOgSorterPerioderMedBegrunnelseBehov = (
     vedtaksperioder: IVedtaksperiodeMedBegrunnelser[],
     behandlingResultat: BehandlingResultat,
     behandlingStatus: BehandlingStatus,
-    sisteVedtaksperiodeVisningDato: FamilieIsoDate | undefined
+    sisteVedtaksperiodeVisningDato: IsoDatoString | undefined
 ): IVedtaksperiodeMedBegrunnelser[] => {
     const sorterteOgFiltrertePerioder = vedtaksperioder
         .slice()
         .sort((a, b) =>
-            kalenderDiff(
-                kalenderDatoTilDate(kalenderDatoMedFallback(a.fom, TIDENES_MORGEN)),
-                kalenderDatoTilDate(kalenderDatoMedFallback(b.fom, TIDENES_MORGEN))
+            differenceInMilliseconds(
+                isoStringTilDateMedFallback({ isoString: a.fom, fallbackDate: tidenesMorgen }),
+                isoStringTilDateMedFallback({ isoString: b.fom, fallbackDate: tidenesMorgen })
             )
         )
         .filter((vedtaksperiode: IVedtaksperiodeMedBegrunnelser) => {
@@ -64,24 +57,17 @@ const erPeriodeMindreEllerLikEnnSisteVedtaksperiodeVisningDato = (
     sisteVedtaksperiodeVisningDato: string,
     periode: string | undefined
 ) => {
-    const sisteVedtaksperiodeKalenderDato = kalenderDato(sisteVedtaksperiodeVisningDato);
-
-    const periodeIKalenderDato = kalenderDatoMedFallback(periode, TIDENES_MORGEN);
-
-    return (
-        kalenderDiff(
-            kalenderDatoTilDate(periodeIKalenderDato),
-            kalenderDatoTilDate(sisteVedtaksperiodeKalenderDato)
-        ) <= 0
+    return isAfter(
+        isoStringTilDate(sisteVedtaksperiodeVisningDato),
+        isoStringTilDateMedFallback({ isoString: periode, fallbackDate: tidenesMorgen })
     );
 };
 
-const erPeriodeMindreEnn2MndFramITid = (periode: string | undefined) => {
-    const periodeFom = kalenderDatoMedFallback(periode, TIDENES_MORGEN);
-    const toMånederFremITid = leggTil(førsteDagIInneværendeMåned(), 2, KalenderEnhet.MÅNED);
-    return (
-        kalenderDiff(kalenderDatoTilDate(periodeFom), kalenderDatoTilDate(toMånederFremITid)) < 0
-    );
+const erPeriodeMindreEnn2MndFramITid = (periodeFom: string | undefined) => {
+    const fom = isoStringTilDateMedFallback({ isoString: periodeFom, fallbackDate: tidenesMorgen });
+    const toMånederFremITid = addMonths(startOfMonth(dagensDato), 2);
+
+    return isBefore(fom, toMånederFremITid);
 };
 
 const harPeriodeBegrunnelse = (vedtaksperiode: IVedtaksperiodeMedBegrunnelser) => {

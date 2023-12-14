@@ -10,7 +10,7 @@ import { ATextAction } from '@navikt/ds-tokens/dist/tokens';
 import FeilutbetaltValutaPeriode from './FeilutbetaltValutaPeriode';
 import NyFeilutbetaltValutaPeriode from './NyFeilutbetaltValutaPeriode';
 import type { IRestFeilutbetaltValuta } from '../../../../typer/eøs-feilutbetalt-valuta';
-import { periodeToString } from '../../../../utils/kalender';
+import { isoDatoPeriodeTilFormatertString } from '../../../../utils/dato';
 
 interface IFeilutbetaltValuta {
     behandlingId: number;
@@ -72,7 +72,7 @@ const FeilutbetaltValuta: React.FC<IFeilutbetaltValuta> = ({
     \n${feilutbetaltValutaListe
         .map(
             feilutbetaltValuta =>
-                `${periodeToString({
+                `${isoDatoPeriodeTilFormatertString({
                     fom: feilutbetaltValuta.fom,
                     tom: feilutbetaltValuta.tom,
                 })} kr ${feilutbetaltValuta.feilutbetaltBeløp}`

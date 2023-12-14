@@ -6,9 +6,8 @@ import styled from 'styled-components';
 import Lenke from 'nav-frontend-lenker';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { BodyShort, Button } from '@navikt/ds-react';
+import { BodyShort, Button, Select, Textarea } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
-import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useHenleggBehandling from './useHenleggBehandling';
@@ -113,7 +112,7 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                                 hentForhåndsvisning({
                                     method: 'POST',
                                     data: hentSkjemaData(),
-                                    url: `/familie-ks-sak/api/brev/forhåndsvis-brev/${behandlingId}`,
+                                    url: `/familie-ks-sak/api/brev/forhaandsvis-brev/${behandlingId}`,
                                 });
                             }}
                             visLenke={skjema.felter.årsak.verdi === HenleggÅrsak.SØKNAD_TRUKKET}
@@ -161,7 +160,7 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                     }
                     legend={SkjultLegend({ children: 'Henlegg behandling' })}
                 >
-                    <FamilieSelect
+                    <Select
                         {...skjema.felter.årsak.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
                         label={'Velg årsak'}
                         value={skjema.felter.årsak.verdi}
@@ -191,12 +190,11 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                                     </option>
                                 );
                             })}
-                    </FamilieSelect>
+                    </Select>
 
-                    <FamilieTextarea
+                    <Textarea
                         {...skjema.felter.begrunnelse.hentNavInputProps(skjema.visFeilmeldinger)}
                         label={'Begrunnelse'}
-                        erLesevisning={false}
                         maxLength={4000}
                     />
                 </SkjemaGruppe>

@@ -2,20 +2,18 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { BodyShort, Button } from '@navikt/ds-react';
-import { FamilieSelect } from '@navikt/familie-form-elements';
-import type { ISkjema } from '@navikt/familie-skjema';
+import { BodyShort, Button, Fieldset, Modal, Select } from '@navikt/ds-react';
+import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { hentAlleÅrsaker } from './settPåVentUtils';
-import type { IBehandling, SettPåVentÅrsak } from '../../../../../typer/behandling';
+import { useSettPåVentSkjema } from './useSettPåVentSkjema';
+import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import type { IBehandling, IBehandlingPåVent } from '../../../../../typer/behandling';
 import { settPåVentÅrsaker } from '../../../../../typer/behandling';
-import type { FamilieIsoDate } from '../../../../../utils/kalender';
+import { dateTilIsoDatoString } from '../../../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import { FamilieDatovelgerWrapper } from '../../../../../utils/skjema/FamilieDatovelgerWrapper';
-import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
+import Datovelger from '../../../../Felleskomponenter/Datovelger/Datovelger';
 
 const Feltmargin = styled.div`
     margin-bottom: 2rem;
@@ -26,73 +24,73 @@ const StyledBodyShort = styled(BodyShort)`
 `;
 
 interface IProps {
-    visModal: boolean;
-    onAvbryt: () => void;
-    settBehandlingPåVent: () => void;
-    skjema: ISkjema<
-        { frist: FamilieIsoDate | undefined; årsak: SettPåVentÅrsak | undefined },
-        IBehandling
-    >;
-    erBehandlingAlleredePåVent: boolean;
+    lukkModal: () => void;
+    behandling: IBehandling;
 }
 
-export const SettBehandlingPåVentModal: React.FC<IProps> = ({
-    visModal,
-    onAvbryt,
-    settBehandlingPåVent,
-    skjema,
-    erBehandlingAlleredePåVent,
-}) => {
+export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behandling }) => {
     const årsaker = hentAlleÅrsaker();
+    const { skjema, kanSendeSkjema, onSubmit } = useSettPåVentSkjema(behandling.behandlingPåVent);
+    const { settÅpenBehandling } = useBehandling();
+
+    const { årsak, frist } = skjema.felter;
+
+    const erBehandlingAlleredePåVent = !!behandling.behandlingPåVent;
+
+    const url = erBehandlingAlleredePåVent
+        ? `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent/oppdater`
+        : `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent`;
+
+    const settBehandlingPåVent = () => {
+        if (kanSendeSkjema() && årsak.verdi && frist.verdi) {
+            onSubmit<IBehandlingPåVent>(
+                {
+                    method: erBehandlingAlleredePåVent ? 'PUT' : 'POST',
+                    data: { frist: dateTilIsoDatoString(frist.verdi), årsak: årsak.verdi },
+                    url: url,
+                },
+                (ressurs: Ressurs<IBehandling>) => {
+                    settÅpenBehandling(ressurs);
+                    lukkModal();
+                }
+            );
+        }
+    };
 
     return (
-        <UIModalWrapper
-            modal={{
-                tittel: erBehandlingAlleredePåVent
+        <Modal
+            open
+            onClose={lukkModal}
+            width={'35rem'}
+            header={{
+                heading: erBehandlingAlleredePåVent
                     ? 'Endre ventende behandling'
                     : 'Sett behandling på vent',
-                visModal: visModal,
-                lukkKnapp: true,
-                onClose: onAvbryt,
-                actions: [
-                    <Button
-                        variant={'tertiary'}
-                        key={'Avbryt'}
-                        size="medium"
-                        onClick={onAvbryt}
-                        children={'Avbryt'}
-                    />,
-                    <Button
-                        variant={'primary'}
-                        key={erBehandlingAlleredePåVent ? 'Oppdater' : 'Bekreft'}
-                        size={'medium'}
-                        onClick={settBehandlingPåVent}
-                        children={erBehandlingAlleredePåVent ? 'Oppdater' : 'Bekreft'}
-                        loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                        disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
-                    />,
-                ],
+                size: 'small',
             }}
+            portal
         >
-            <SkjemaGruppe
-                feil={hentFrontendFeilmelding(skjema.submitRessurs)}
-                utenFeilPropagering={true}
-            >
-                {erBehandlingAlleredePåVent && (
-                    <StyledBodyShort>Behandlingen er satt på vent.</StyledBodyShort>
-                )}
+            <Modal.Body>
+                <Fieldset
+                    error={hentFrontendFeilmelding(skjema.submitRessurs)}
+                    errorPropagation={false}
+                    legend={'Sett behandling på vent'}
+                    hideLegend
+                >
+                    {erBehandlingAlleredePåVent && (
+                        <StyledBodyShort>Behandlingen er satt på vent.</StyledBodyShort>
+                    )}
 
-                <Feltmargin>
-                    <FamilieDatovelgerWrapper
-                        {...skjema.felter.frist.hentNavInputProps(skjema.visFeilmeldinger)}
-                        valgtDato={skjema.felter.frist.verdi}
-                        label={'Frist'}
-                        placeholder={'DD.MM.ÅÅÅÅ'}
-                    />
-                </Feltmargin>
-                <Feltmargin>
-                    <FamilieSelect
-                        {...skjema.felter.årsak.hentNavInputProps(skjema.visFeilmeldinger)}
+                    <Feltmargin>
+                        <Datovelger
+                            felt={frist}
+                            label={'Frist'}
+                            visFeilmeldinger={skjema.visFeilmeldinger}
+                            kanKunVelgeFremtid
+                        />
+                    </Feltmargin>
+                    <Select
+                        {...årsak.hentNavInputProps(skjema.visFeilmeldinger)}
                         label={'Årsak'}
                         placeholder={'Årsak'}
                     >
@@ -102,9 +100,27 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({
                                 {settPåVentÅrsaker[årsak]}
                             </option>
                         ))}
-                    </FamilieSelect>
-                </Feltmargin>
-            </SkjemaGruppe>
-        </UIModalWrapper>
+                    </Select>
+                </Fieldset>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button
+                    variant={'primary'}
+                    key={erBehandlingAlleredePåVent ? 'Oppdater' : 'Bekreft'}
+                    size={'medium'}
+                    onClick={settBehandlingPåVent}
+                    children={erBehandlingAlleredePåVent ? 'Oppdater' : 'Bekreft'}
+                    loading={skjema.submitRessurs.status === RessursStatus.HENTER}
+                    disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
+                />
+                <Button
+                    variant={'tertiary'}
+                    key={'Avbryt'}
+                    size="medium"
+                    onClick={lukkModal}
+                    children={'Avbryt'}
+                />
+            </Modal.Footer>
+        </Modal>
     );
 };

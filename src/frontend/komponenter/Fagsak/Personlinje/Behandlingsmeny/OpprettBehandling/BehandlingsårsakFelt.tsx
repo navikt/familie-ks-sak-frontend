@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { useApp } from '../../../../../context/AppContext';
@@ -25,9 +25,9 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
     const { toggles } = useApp();
 
     return (
-        <FamilieSelect
+        <Select
             {...behandlingsårsak.hentNavBaseSkjemaProps(visFeilmeldinger)}
-            erLesevisning={erLesevisning}
+            readOnly={erLesevisning}
             name={'Behandlingsårsak'}
             label={'Velg årsak'}
             onChange={(event: React.ChangeEvent<BehandlingÅrsakSelect>): void => {
@@ -55,6 +55,6 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
                         </option>
                     );
                 })}
-        </FamilieSelect>
+        </Select>
     );
 };
