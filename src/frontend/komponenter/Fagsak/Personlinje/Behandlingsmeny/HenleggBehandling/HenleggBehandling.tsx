@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Lenke from 'nav-frontend-lenker';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { BodyShort, Button, Select, Textarea } from '@navikt/ds-react';
+import { BodyShort, Button, Modal, Select, Textarea } from '@navikt/ds-react';
 import { Dropdown } from '@navikt/ds-react-internal';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -19,7 +19,6 @@ import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingSteg, henleggÅrsak, HenleggÅrsak } from '../../../../../typer/behandling';
 import { ToggleNavn } from '../../../../../typer/toggles';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 import PdfVisningModal from '../../../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
 
@@ -40,12 +39,6 @@ const StyledVeivalgTekst = styled(BodyShort)`
         top: 6px;
         margin-right: 10px;
     }
-`;
-
-const StyledLenke = styled(Lenke)<{ visLenke: boolean }>`
-    margin-right: auto;
-    display: ${({ visLenke }) => (visLenke ? 'flex' : 'none')};
-    align-items: center;
 `;
 
 const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
@@ -101,34 +94,70 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
             >
                 Henlegg behandling
             </Dropdown.Menu.List.Item>
-
-            <UIModalWrapper
-                modal={{
-                    actions: [
-                        <StyledLenke
-                            key={'forhåndsvis'}
-                            href="#"
-                            onClick={() => {
-                                hentForhåndsvisning({
-                                    method: 'POST',
-                                    data: hentSkjemaData(),
-                                    url: `/familie-ks-sak/api/brev/forhaandsvis-brev/${behandlingId}`,
-                                });
-                            }}
-                            visLenke={skjema.felter.årsak.verdi === HenleggÅrsak.SØKNAD_TRUKKET}
+            {visModal && (
+                <Modal
+                    open
+                    width={'35rem'}
+                    onClose={() => {
+                        nullstillSkjema();
+                        nullstillDokument();
+                        settVisModal(false);
+                    }}
+                    header={{ heading: 'Henlegg behandling', size: 'medium' }}
+                    portal
+                >
+                    <Modal.Body>
+                        <SkjemaGruppe
+                            feil={
+                                hentFrontendFeilmelding(skjema.submitRessurs) ||
+                                hentFrontendFeilmelding(hentetDokument)
+                            }
+                            legend={SkjultLegend({ children: 'Henlegg behandling' })}
                         >
-                            Forhåndsvis
-                        </StyledLenke>,
-                        <Button
-                            key={'avbryt'}
-                            variant="tertiary"
-                            size="small"
-                            onClick={() => {
-                                nullstillSkjema();
-                                settVisModal(false);
-                            }}
-                            children={'Avbryt'}
-                        />,
+                            <Select
+                                {...skjema.felter.årsak.hentNavBaseSkjemaProps(
+                                    skjema.visFeilmeldinger
+                                )}
+                                label={'Velg årsak'}
+                                value={skjema.felter.årsak.verdi}
+                                onChange={(event: React.ChangeEvent<HenleggÅrsakSelect>): void => {
+                                    skjema.felter.årsak.onChange(event.target.value);
+                                }}
+                            >
+                                <option disabled={true} value={''}>
+                                    Velg
+                                </option>
+                                {Object.values(HenleggÅrsak)
+                                    .filter(
+                                        årsak =>
+                                            (årsak !== HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&
+                                                erPåHenleggbartSteg) ||
+                                            (årsak === HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&
+                                                harTilgangTilTekniskVedlikeholdHenleggelse)
+                                    )
+                                    .map(årsak => {
+                                        return (
+                                            <option
+                                                key={årsak}
+                                                aria-selected={skjema.felter.årsak.verdi === årsak}
+                                                value={årsak}
+                                            >
+                                                {henleggÅrsak[årsak]}
+                                            </option>
+                                        );
+                                    })}
+                            </Select>
+
+                            <Textarea
+                                {...skjema.felter.begrunnelse.hentNavInputProps(
+                                    skjema.visFeilmeldinger
+                                )}
+                                label={'Begrunnelse'}
+                                maxLength={4000}
+                            />
+                        </SkjemaGruppe>
+                    </Modal.Body>
+                    <Modal.Footer>
                         <Button
                             key={'bekreft'}
                             variant="primary"
@@ -141,68 +170,55 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                                     ? 'Bekreft og send brev'
                                     : 'Bekreft'
                             }
-                        />,
-                    ],
-                    onClose: () => {
-                        nullstillSkjema();
-                        nullstillDokument();
-                        settVisModal(false);
-                    },
-                    lukkKnapp: true,
-                    tittel: 'Henlegg behandling',
-                    visModal,
-                }}
-            >
-                <SkjemaGruppe
-                    feil={
-                        hentFrontendFeilmelding(skjema.submitRessurs) ||
-                        hentFrontendFeilmelding(hentetDokument)
-                    }
-                    legend={SkjultLegend({ children: 'Henlegg behandling' })}
+                        />
+                        <Button
+                            key={'avbryt'}
+                            variant="tertiary"
+                            size="small"
+                            onClick={() => {
+                                nullstillSkjema();
+                                settVisModal(false);
+                            }}
+                            children={'Avbryt'}
+                        />
+                        {skjema.felter.årsak.verdi === HenleggÅrsak.SØKNAD_TRUKKET && (
+                            <Lenke
+                                key={'forhåndsvis'}
+                                href="#"
+                                onClick={() => {
+                                    hentForhåndsvisning({
+                                        method: 'POST',
+                                        data: hentSkjemaData(),
+                                        url: `/familie-ks-sak/api/brev/forhaandsvis-brev/${behandlingId}`,
+                                    });
+                                }}
+                            >
+                                Forhåndsvis
+                            </Lenke>
+                        )}
+                    </Modal.Footer>
+                </Modal>
+            )}
+            {visVeivalgModal && (
+                <Modal
+                    open
+                    width={'35rem'}
+                    header={{
+                        heading: 'Behandling henlagt',
+                        size: 'medium',
+                    }}
+                    onClose={() => settVisVeivalgModal(false)}
+                    portal
                 >
-                    <Select
-                        {...skjema.felter.årsak.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                        label={'Velg årsak'}
-                        value={skjema.felter.årsak.verdi}
-                        onChange={(event: React.ChangeEvent<HenleggÅrsakSelect>): void => {
-                            skjema.felter.årsak.onChange(event.target.value);
-                        }}
-                    >
-                        <option disabled={true} value={''}>
-                            Velg
-                        </option>
-                        {Object.values(HenleggÅrsak)
-                            .filter(
-                                årsak =>
-                                    (årsak !== HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&
-                                        erPåHenleggbartSteg) ||
-                                    (årsak === HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&
-                                        harTilgangTilTekniskVedlikeholdHenleggelse)
-                            )
-                            .map(årsak => {
-                                return (
-                                    <option
-                                        key={årsak}
-                                        aria-selected={skjema.felter.årsak.verdi === årsak}
-                                        value={årsak}
-                                    >
-                                        {henleggÅrsak[årsak]}
-                                    </option>
-                                );
-                            })}
-                    </Select>
-
-                    <Textarea
-                        {...skjema.felter.begrunnelse.hentNavInputProps(skjema.visFeilmeldinger)}
-                        label={'Begrunnelse'}
-                        maxLength={4000}
-                    />
-                </SkjemaGruppe>
-            </UIModalWrapper>
-
-            <UIModalWrapper
-                modal={{
-                    actions: [
+                    <Modal.Body>
+                        <StyledVeivalgTekst>
+                            <StatusIkon status={Status.OK} />
+                            {årsak === HenleggÅrsak.SØKNAD_TRUKKET
+                                ? 'Behandlingen er henlagt og brev til bruker er sendt'
+                                : 'Behandlingen er henlagt'}
+                        </StyledVeivalgTekst>
+                    </Modal.Body>
+                    <Modal.Footer>
                         <Button
                             key={'Gå til saksoversikten'}
                             variant="secondary"
@@ -211,7 +227,7 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                                 navigate(`/fagsak/${fagsakId}/saksoversikt`);
                             }}
                             children={'Gå til saksoversikten'}
-                        />,
+                        />
                         <Button
                             key={'Gå til oppgavebenken'}
                             variant="secondary"
@@ -220,23 +236,10 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                                 navigate('/oppgaver');
                             }}
                             children={'Gå til oppgavebenken'}
-                        />,
-                    ],
-                    onClose: () => {
-                        settVisVeivalgModal(false);
-                    },
-                    lukkKnapp: true,
-                    tittel: '',
-                    visModal: visVeivalgModal,
-                }}
-            >
-                <StyledVeivalgTekst>
-                    <StatusIkon status={Status.OK} />
-                    {årsak === HenleggÅrsak.SØKNAD_TRUKKET
-                        ? 'Behandlingen er henlagt og brev til bruker er sendt'
-                        : 'Behandlingen er henlagt'}
-                </StyledVeivalgTekst>
-            </UIModalWrapper>
+                        />
+                    </Modal.Footer>
+                </Modal>
+            )}
             <PdfVisningModal
                 åpen={visDokumentModal}
                 onRequestClose={() => settVisDokumentModal(false)}
