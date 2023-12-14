@@ -155,11 +155,12 @@ const TilbakekrevingSkjema: React.FC<{
 
     return (
         <>
-            <PdfVisningModal
-                åpen={visDokumentModal}
-                onRequestClose={() => settVisDokumentModal(false)}
-                pdfdata={hentetDokument}
-            />
+            {visDokumentModal && (
+                <PdfVisningModal
+                    onRequestClose={() => settVisDokumentModal(false)}
+                    pdfdata={hentetDokument}
+                />
+            )}
 
             <TilbakekrevingSkjemaGruppe legend="Tilbakekreving">
                 <FamilieTextarea

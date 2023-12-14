@@ -240,11 +240,12 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                     </Modal.Footer>
                 </Modal>
             )}
-            <PdfVisningModal
-                åpen={visDokumentModal}
-                onRequestClose={() => settVisDokumentModal(false)}
-                pdfdata={hentetDokument}
-            />
+            {visDokumentModal && (
+                <PdfVisningModal
+                    onRequestClose={() => settVisDokumentModal(false)}
+                    pdfdata={hentetDokument}
+                />
+            )}
         </>
     );
 };
