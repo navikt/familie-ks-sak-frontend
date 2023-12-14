@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { FamilieSelect } from '@navikt/familie-form-elements';
-import type { IFamilieSelectProps } from '@navikt/familie-form-elements/src/select/FamilieSelect';
+import { Select, type SelectProps } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { useApp } from '../../context/AppContext';
@@ -12,22 +11,20 @@ import { ToggleNavn } from '../../typer/toggles';
 interface EgneProps {
     behandlingstema: Felt<IBehandlingstema | undefined>;
     visFeilmeldinger?: boolean;
-    erLesevisning?: boolean;
 }
 
-type Props = EgneProps & Omit<IFamilieSelectProps, 'children'>;
+type Props = EgneProps & Omit<SelectProps, 'children'>;
 
 export const BehandlingstemaSelect = ({
     behandlingstema,
     visFeilmeldinger = false,
-    erLesevisning = false,
-    ...familieSelectProps
+    ...selectProps
 }: Props) => {
     const { toggles } = useApp();
     const { verdi } = behandlingstema;
     return (
-        <FamilieSelect
-            {...familieSelectProps}
+        <Select
+            {...selectProps}
             {...behandlingstema.hentNavInputProps(visFeilmeldinger)}
             value={verdi !== undefined ? verdi.id : ''}
             onChange={evt => {
@@ -35,8 +32,6 @@ export const BehandlingstemaSelect = ({
                     behandlingstemaer[evt.target.value as Behandlingstema]
                 );
             }}
-            erLesevisning={erLesevisning}
-            lesevisningVerdi={verdi !== undefined ? verdi.navn : ''}
         >
             {verdi === undefined && (
                 <option
@@ -62,6 +57,6 @@ export const BehandlingstemaSelect = ({
                     </option>
                 );
             })}
-        </FamilieSelect>
+        </Select>
     );
 };

@@ -2,8 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { BodyShort, Button, Fieldset, Modal } from '@navikt/ds-react';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { BodyShort, Button, Fieldset, Modal, Select } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -90,7 +89,7 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behand
                             kanKunVelgeFremtid
                         />
                     </Feltmargin>
-                    <FamilieSelect
+                    <Select
                         {...årsak.hentNavInputProps(skjema.visFeilmeldinger)}
                         label={'Årsak'}
                         placeholder={'Årsak'}
@@ -101,7 +100,7 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behand
                                 {settPåVentÅrsaker[årsak]}
                             </option>
                         ))}
-                    </FamilieSelect>
+                    </Select>
                 </Fieldset>
             </Modal.Body>
             <Modal.Footer>

@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { FileContent } from '@navikt/ds-icons';
-import { Alert, BodyShort, Button, Modal } from '@navikt/ds-react';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { Alert, BodyShort, Button, Modal, Select } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
@@ -149,9 +148,9 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                     </BehandlingKorrigertAlert>
                 )}
                 {åpenBehandling.resultat === BehandlingResultat.FORTSATT_INNVILGET && (
-                    <FamilieSelect
+                    <Select
                         label="Velg brev med eller uten perioder"
-                        erLesevisning={erLesevisning}
+                        readOnly={erLesevisning}
                         onChange={(
                             event: React.ChangeEvent<FortsattInnvilgetPerioderSelect>
                         ): void => {
@@ -165,7 +164,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                         <option value={PeriodetypeIVedtaksbrev.MED_PERIODER}>
                             Fortsatt innvilget: Med perioder
                         </option>
-                    </FamilieSelect>
+                    </Select>
                 )}
                 {åpenBehandling.årsak === BehandlingÅrsak.DØDSFALL ||
                 åpenBehandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||

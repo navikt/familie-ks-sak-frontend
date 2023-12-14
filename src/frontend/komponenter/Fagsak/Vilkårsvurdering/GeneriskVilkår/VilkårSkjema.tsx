@@ -6,14 +6,9 @@ import styled from 'styled-components';
 import { Radio } from 'nav-frontend-skjema';
 
 import { Delete } from '@navikt/ds-icons';
-import { Button, Fieldset, Label } from '@navikt/ds-react';
+import { Button, Fieldset, Label, Select, Textarea } from '@navikt/ds-react';
 import { ABorderDefault, ABorderWarning, ASurfaceAction } from '@navikt/ds-tokens/dist/tokens';
-import {
-    FamilieKnapp,
-    FamilieRadioGruppe,
-    FamilieSelect,
-    FamilieTextarea,
-} from '@navikt/familie-form-elements';
+import { FamilieKnapp, FamilieRadioGruppe } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import AvslagSkjema from './AvslagSkjema';
@@ -114,14 +109,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
         <Fieldset error={feilmelding} errorPropagation={false} legend={'Endre vilkår'} hideLegend>
             <Container lesevisning={false} vilkårResultat={undefined}>
                 {visVurderesEtter && (
-                    <FamilieSelect
-                        erLesevisning={lesevisning}
-                        lesevisningVerdi={
-                            skjema.felter.vurderesEtter.verdi
-                                ? alleRegelverk[skjema.felter.vurderesEtter.verdi as Regelverk]
-                                      .tekst
-                                : 'Generell vurdering'
-                        }
+                    <Select
+                        readOnly={lesevisning}
                         value={skjema.felter.vurderesEtter.verdi}
                         label={'Vurderes etter'}
                         onChange={event => {
@@ -158,7 +147,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                                 );
                             }
                         )}
-                    </FamilieSelect>
+                    </Select>
                 )}
                 {visSpørsmål && (
                     <StyledFamilieRadioGruppe
@@ -223,8 +212,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     visFeilmeldinger={skjema.visFeilmeldinger}
                     children={periodeChildren}
                 />
-                <FamilieTextarea
-                    erLesevisning={lesevisning}
+                <Textarea
+                    readOnly={lesevisning}
                     id={vilkårBegrunnelseFeilmeldingId(vilkårResultat)}
                     label={`Begrunnelse ${
                         erBegrunnelsePåkrevd(

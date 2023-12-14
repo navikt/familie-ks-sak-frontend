@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opprettBehandlingUtils';
@@ -47,9 +47,9 @@ const BehandlingstypeFelt: React.FC<IProps> = ({
     const kanOppretteTilbakekreving = !manuellJournalfør;
 
     return (
-        <FamilieSelect
+        <Select
             {...behandlingstype.hentNavBaseSkjemaProps(visFeilmeldinger)}
-            erLesevisning={erLesevisning}
+            readOnly={erLesevisning}
             name={'Behandling'}
             label={'Velg type behandling'}
             onChange={(event: React.ChangeEvent<BehandlingstypeSelect>): void => {
@@ -104,7 +104,7 @@ const BehandlingstypeFelt: React.FC<IProps> = ({
                     Klage
                 </option>
             )}
-        </FamilieSelect>
+        </Select>
     );
 };
 
