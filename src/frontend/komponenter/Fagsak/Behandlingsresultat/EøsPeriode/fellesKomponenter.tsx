@@ -19,17 +19,17 @@ import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../util
 import { lagPersonLabel } from '../../../../utils/formatter';
 
 interface IEøsPeriodeSkjemaContainerProps {
-    lesevisning: boolean;
-    status: EøsPeriodeStatus;
+    $lesevisning: boolean;
+    $status: EøsPeriodeStatus;
 }
 
-export const EøsPeriodeSkjemaContainer = styled.div`
+export const EøsPeriodeSkjemaContainer = styled.div<IEøsPeriodeSkjemaContainerProps>`
     max-width: 34rem;
     border-left: 0.125rem solid
-        ${(props: IEøsPeriodeSkjemaContainerProps) => {
-            if (props.lesevisning) return ABorderDefault;
-            if (props.status === EøsPeriodeStatus.IKKE_UTFYLT) return ABorderWarning;
-            if (props.status === EøsPeriodeStatus.UFULLSTENDIG) return ABorderDanger;
+        ${props => {
+            if (props.$lesevisning) return ABorderDefault;
+            if (props.$status === EøsPeriodeStatus.IKKE_UTFYLT) return ABorderWarning;
+            if (props.$status === EøsPeriodeStatus.UFULLSTENDIG) return ABorderDanger;
             return ASurfaceAction;
         }};
     padding-left: 2rem;

@@ -13,10 +13,9 @@ import Hendelsesoversikt from '../../Felleskomponenter/Hendelsesoversikt/Hendels
 import type { Hendelse } from '../../Felleskomponenter/Hendelsesoversikt/typer';
 import Behandlingskort from '../Behandlingskort/Behandlingskort';
 
-const ToggleVisningHøyremeny = styled(Button)`
+const ToggleVisningHøyremeny = styled(Button)<{ $åpenhøyremeny: boolean }>`
     position: absolute;
-    margin-left: ${(props: { åpenhøyremeny: boolean }) =>
-        !props.åpenhøyremeny ? '-20px' : '-17px'};
+    margin-left: ${props => (!props.$åpenhøyremeny ? '-20px' : '-17px')};
     top: 370px;
     width: 34px;
     min-width: 34px;
@@ -46,7 +45,7 @@ const Høyremeny: React.FunctionComponent = () => {
                     }}
                     size="small"
                     aria-label="Skjul høyremeny"
-                    åpenhøyremeny={åpenHøyremeny ? 1 : 0}
+                    $åpenhøyremeny={åpenHøyremeny ? 1 : 0}
                     title={åpenHøyremeny ? 'Skjul høyremeny' : 'Vis høyremeny'}
                 >
                     {åpenHøyremeny ? (

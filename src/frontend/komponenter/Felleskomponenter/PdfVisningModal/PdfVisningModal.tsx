@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import Modal from 'nav-frontend-modal';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 
-import { Alert, Heading } from '@navikt/ds-react';
+import { Alert, Heading, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
@@ -13,7 +12,6 @@ interface IPdfVisningModalProps {
     onRequestClose: () => void;
     onRequestOpen?: () => void;
     pdfdata: Ressurs<string>;
-    åpen: boolean;
 }
 
 const StyledModal = styled(Modal)`
@@ -31,20 +29,21 @@ const PdfVisningModal: React.FC<IPdfVisningModalProps> = ({
     onRequestClose,
     onRequestOpen,
     pdfdata,
-    åpen,
 }) => {
     useEffect(() => {
-        if (åpen && onRequestOpen) {
+        if (onRequestOpen) {
             onRequestOpen();
         }
-    }, [åpen]);
+    }, []);
 
     return (
         <StyledModal
-            className={'pdfvisning-modal'}
-            isOpen={åpen}
-            onRequestClose={onRequestClose}
-            contentLabel={'pdfvisning'}
+            open
+            onClose={onRequestClose}
+            aria-label={'pdfvisning'}
+            header={{ heading: '', closeButton: true }}
+            width={'100rem'}
+            portal
         >
             <Dokument pdfdata={pdfdata} />
         </StyledModal>

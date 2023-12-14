@@ -128,19 +128,20 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                 visFeilutbetaltValuta={() => settVisFeilutbetaltValuta(true)}
                 visRefusjonEøs={() => settVisRefusjonEøs(true)}
             />
-            <PdfVisningModal
-                onRequestOpen={() => {
-                    if (hentetDokument.status !== RessursStatus.HENTER) {
-                        hentVedtaksbrev();
-                    }
-                }}
-                åpen={visDokumentModal}
-                onRequestClose={() => {
-                    settVisDokumentModal(false);
-                    nullstillDokument();
-                }}
-                pdfdata={hentetDokument}
-            />
+            {visDokumentModal && (
+                <PdfVisningModal
+                    onRequestOpen={() => {
+                        if (hentetDokument.status !== RessursStatus.HENTER) {
+                            hentVedtaksbrev();
+                        }
+                    }}
+                    onRequestClose={() => {
+                        settVisDokumentModal(false);
+                        nullstillDokument();
+                    }}
+                    pdfdata={hentetDokument}
+                />
+            )}
             <div>
                 {åpenBehandling.korrigertVedtak && (
                     <BehandlingKorrigertAlert variant="info">
