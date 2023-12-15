@@ -58,4 +58,4 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: build_n_deploy/naiserator/gcp-dev.yaml
-          VAR: image=${{ needs.build.outputs.image }},VERSION=${{ env.VERSION }}
+          VAR: image=${{ needs.build.outputs.image }}
