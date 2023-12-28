@@ -56,6 +56,14 @@ const datoErPersonsXÅrsdag = (person: IGrunnlagPerson, dato: Date, antallÅr: n
     return isSameDay(dato, personsXÅrsdag);
 };
 
+const datoErPersonsDødsfallsdag = (person: IGrunnlagPerson, dato: Date) => {
+    const personsDødsfallsdag = person.dødsfallDato;
+
+    return (
+        personsDødsfallsdag !== undefined && isSameDay(dato, isoStringTilDate(personsDødsfallsdag))
+    );
+};
+
 const datoDifferanseMerEnn1År = (fom: Date, tom: Date) => {
     const fomDatoPluss1År = addYears(fom, 1);
     return isBefore(fomDatoPluss1År, tom);
@@ -127,7 +135,11 @@ export const erPeriodeGyldig = (
                         if (!datoErPersonsXÅrsdag(person, fom, 1)) {
                             return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
                         }
-                        if (tom && !datoErPersonsXÅrsdag(person, tom, 2)) {
+                        if (
+                            tom &&
+                            !datoErPersonsXÅrsdag(person, tom, 2) &&
+                            !datoErPersonsDødsfallsdag(person, tom)
+                        ) {
                             return feil(felt, 'T.o.m datoen må være lik barnets 2 års dag');
                         }
                     }
