@@ -9,6 +9,7 @@ export interface IVedtaksperiodeMedBegrunnelser {
     tom?: IsoDatoString;
     type: Vedtaksperiodetype;
     begrunnelser: IRestVedtaksbegrunnelse[];
+    eøsBegrunnelser: IRestVedtaksbegrunnelse[];
     fritekster: string[];
     gyldigeBegrunnelser: Begrunnelse[];
     utbetalingsperiodeDetaljer: IUtbetalingsperiodeDetalj[];
