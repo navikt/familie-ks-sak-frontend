@@ -103,11 +103,11 @@ export const mapBegrunnelserTilSelectOptions = (
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser,
     vilkårBegrunnelser: Ressurs<VedtaksbegrunnelseTekster>
 ): ISelectOption[] => {
-    const begrunnelser = [
+    const alleBegrunnelser = [
         ...vedtaksperiodeMedBegrunnelser.begrunnelser,
         ...vedtaksperiodeMedBegrunnelser.eøsBegrunnelser,
     ];
-    return begrunnelser.map((begrunnelse: IRestVedtaksbegrunnelse) => ({
+    return alleBegrunnelser.map((begrunnelse: IRestVedtaksbegrunnelse) => ({
         value: begrunnelse.begrunnelse.toString(),
         label: hentLabelForOption(
             begrunnelse.begrunnelseType,
