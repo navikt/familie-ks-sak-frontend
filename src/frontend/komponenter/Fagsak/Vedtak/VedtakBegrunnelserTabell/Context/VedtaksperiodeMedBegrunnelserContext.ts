@@ -54,6 +54,11 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
             vedtaksperiodeMedBegrunnelser.type === Vedtaksperiodetype.FORTSATT_INNVILGET ? 1 : 3;
         const makslengdeFritekst = 220;
 
+        const alleBegrunnelser = [
+            ...vedtaksperiodeMedBegrunnelser.begrunnelser,
+            ...vedtaksperiodeMedBegrunnelser.eøsBegrunnelser,
+        ];
+
         const periode = useFelt<IIsoDatoPeriode>({
             verdi: {
                 fom: vedtaksperiodeMedBegrunnelser.fom,
@@ -119,7 +124,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
                 case 'select-option':
                     if (action.option) {
                         oppdaterBegrunnelser([
-                            ...vedtaksperiodeMedBegrunnelser.begrunnelser.map(
+                            ...alleBegrunnelser.map(
                                 vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse
                             ),
                             action.option?.value as Begrunnelse,
@@ -131,7 +136,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
                     if (action.removedValue) {
                         oppdaterBegrunnelser(
                             [
-                                ...vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
+                                ...alleBegrunnelser.filter(
                                     persistertBegrunnelse =>
                                         persistertBegrunnelse.begrunnelse !==
                                         (action.removedValue?.value as Begrunnelse)

@@ -10,6 +10,7 @@ interface IMockVedtaksperiode {
     fom?: IsoDatoString;
     tom?: IsoDatoString;
     begrunnelser?: IRestVedtaksbegrunnelse[];
+    eøsBegrunnelser?: IRestVedtaksbegrunnelse[];
 }
 
 const mockBegrunnelse = (): IRestVedtaksbegrunnelse => {
@@ -20,10 +21,19 @@ const mockBegrunnelse = (): IRestVedtaksbegrunnelse => {
     };
 };
 
+const mockEøsBegrunnelse = (): IRestVedtaksbegrunnelse => {
+    return {
+        begrunnelse: 'Test',
+        begrunnelseType: BegrunnelseType.EØS_INNVILGET,
+        støtterFritekst: false,
+    };
+};
+
 export const mockUtbetalingsperiode = ({
     fom = '2020-01-01',
     tom = '2020-02-28',
     begrunnelser = [mockBegrunnelse()],
+    eøsBegrunnelser = [mockEøsBegrunnelse()],
 }: IMockVedtaksperiode = {}): IVedtaksperiodeMedBegrunnelser => {
     return {
         id: 0,
@@ -34,6 +44,7 @@ export const mockUtbetalingsperiode = ({
         fritekster: [],
         gyldigeBegrunnelser: [],
         utbetalingsperiodeDetaljer: [],
+        eøsBegrunnelser,
     };
 };
 
@@ -41,6 +52,7 @@ export const mockOpphørsperiode = ({
     fom = '2020-03-01',
     tom = '',
     begrunnelser = [mockBegrunnelse()],
+    eøsBegrunnelser = [mockEøsBegrunnelse()],
 }: IMockVedtaksperiode = {}): IVedtaksperiodeMedBegrunnelser => {
     return {
         id: 0,
@@ -51,6 +63,7 @@ export const mockOpphørsperiode = ({
         fritekster: [],
         gyldigeBegrunnelser: [],
         utbetalingsperiodeDetaljer: [],
+        eøsBegrunnelser,
     };
 };
 
@@ -58,6 +71,7 @@ export const mockAvslagsperiode = ({
     fom = '2019-06-01',
     tom = '2019-06-30',
     begrunnelser = [mockBegrunnelse()],
+    eøsBegrunnelser = [mockEøsBegrunnelse()],
 }: IMockVedtaksperiode = {}): IVedtaksperiodeMedBegrunnelser => {
     return {
         id: 0,
@@ -68,5 +82,6 @@ export const mockAvslagsperiode = ({
         fritekster: [],
         gyldigeBegrunnelser: [],
         utbetalingsperiodeDetaljer: [],
+        eøsBegrunnelser,
     };
 };
