@@ -4,8 +4,7 @@ import styled from 'styled-components';
 
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { Alert, Button, HelpText } from '@navikt/ds-react';
-import { Dropdown } from '@navikt/ds-react-internal';
+import { Alert, Button, HelpText, Dropdown } from '@navikt/ds-react';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import { ok, useFelt, useSkjema } from '@navikt/familie-skjema';

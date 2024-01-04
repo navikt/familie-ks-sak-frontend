@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { Button, Select, Textarea } from '@navikt/ds-react';
-import { Dropdown } from '@navikt/ds-react-internal';
+import { Button, Select, Textarea, Dropdown } from '@navikt/ds-react';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlendeEnhet from './useEndreBehandlendeEnhet';
@@ -62,79 +61,81 @@ const EndreBehandlendeEnhet: React.FC = () => {
             <Dropdown.Menu.List.Item onClick={() => settVisModal(true)}>
                 Endre behandlende enhet
             </Dropdown.Menu.List.Item>
-            <UIModalWrapper
-                modal={{
-                    actions: [
-                        <Button
-                            key={'avbryt'}
-                            size="small"
-                            variant="secondary"
-                            onClick={lukkBehandlendeEnhetModal}
-                            children={'Avbryt'}
-                        />,
-                        <Button
-                            key={'bekreft'}
-                            variant="primary"
-                            size="small"
-                            disabled={submitRessurs.status === RessursStatus.HENTER}
-                            onClick={() => {
-                                if (åpenBehandling.status === RessursStatus.SUKSESS) {
-                                    endreEnhet(åpenBehandling.data.behandlingId);
-                                }
-                            }}
-                            children={'Bekreft'}
-                            loading={submitRessurs.status === RessursStatus.HENTER}
-                        />,
-                    ],
-                    onClose: lukkBehandlendeEnhetModal,
-                    lukkKnapp: true,
-                    tittel: 'Endre enhet for denne behandlingen',
-                    visModal: visModal && !erBehandlingAvsluttet,
-                }}
-            >
-                <SkjemaGruppe feil={hentFrontendFeilmelding(submitRessurs)}>
-                    <SkjultLegend>Endre enhet</SkjultLegend>
-                    <Select
-                        readOnly={erLesevisningPåBehandling()}
-                        name="enhet"
-                        value={enhetId}
-                        label={'Velg ny enhet'}
-                        onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
-                            settEnhetId(event.target.value);
-                            settSubmitRessurs(byggTomRessurs());
-                        }}
-                    >
-                        {behandendeEnheter.map((enhet: IArbeidsfordelingsenhet) => {
-                            return (
-                                <option
-                                    aria-selected={enhetId === enhet.enhetId}
-                                    key={enhet.enhetId}
-                                    value={enhet.enhetId}
-                                    disabled={
-                                        hentDataFraRessurs(åpenBehandling)
-                                            ?.arbeidsfordelingPåBehandling.behandlendeEnhetId ===
-                                        enhet.enhetId
+            {visModal && (
+                <UIModalWrapper
+                    modal={{
+                        actions: [
+                            <Button
+                                key={'avbryt'}
+                                size="small"
+                                variant="secondary"
+                                onClick={lukkBehandlendeEnhetModal}
+                                children={'Avbryt'}
+                            />,
+                            <Button
+                                key={'bekreft'}
+                                variant="primary"
+                                size="small"
+                                disabled={submitRessurs.status === RessursStatus.HENTER}
+                                onClick={() => {
+                                    if (åpenBehandling.status === RessursStatus.SUKSESS) {
+                                        endreEnhet(åpenBehandling.data.behandlingId);
                                     }
-                                >
-                                    {`${enhet.enhetId} ${enhet.enhetNavn}`}
-                                </option>
-                            );
-                        })}
-                    </Select>
+                                }}
+                                children={'Bekreft'}
+                                loading={submitRessurs.status === RessursStatus.HENTER}
+                            />,
+                        ],
+                        onClose: lukkBehandlendeEnhetModal,
+                        lukkKnapp: true,
+                        tittel: 'Endre enhet for denne behandlingen',
+                        visModal: visModal && !erBehandlingAvsluttet,
+                    }}
+                >
+                    <SkjemaGruppe feil={hentFrontendFeilmelding(submitRessurs)}>
+                        <SkjultLegend>Endre enhet</SkjultLegend>
+                        <Select
+                            readOnly={erLesevisningPåBehandling()}
+                            name="enhet"
+                            value={enhetId}
+                            label={'Velg ny enhet'}
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
+                                settEnhetId(event.target.value);
+                                settSubmitRessurs(byggTomRessurs());
+                            }}
+                        >
+                            {behandendeEnheter.map((enhet: IArbeidsfordelingsenhet) => {
+                                return (
+                                    <option
+                                        aria-selected={enhetId === enhet.enhetId}
+                                        key={enhet.enhetId}
+                                        value={enhet.enhetId}
+                                        disabled={
+                                            hentDataFraRessurs(åpenBehandling)
+                                                ?.arbeidsfordelingPåBehandling
+                                                .behandlendeEnhetId === enhet.enhetId
+                                        }
+                                    >
+                                        {`${enhet.enhetId} ${enhet.enhetNavn}`}
+                                    </option>
+                                );
+                            })}
+                        </Select>
 
-                    <Textarea
-                        disabled={submitRessurs.status === RessursStatus.HENTER}
-                        readOnly={erLesevisningPåBehandling()}
-                        label={'Begrunnelse'}
-                        value={begrunnelse}
-                        maxLength={4000}
-                        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            settBegrunnelse(event.target.value);
-                            settSubmitRessurs(byggTomRessurs());
-                        }}
-                    />
-                </SkjemaGruppe>
-            </UIModalWrapper>
+                        <Textarea
+                            disabled={submitRessurs.status === RessursStatus.HENTER}
+                            readOnly={erLesevisningPåBehandling()}
+                            label={'Begrunnelse'}
+                            value={begrunnelse}
+                            maxLength={4000}
+                            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                settBegrunnelse(event.target.value);
+                                settSubmitRessurs(byggTomRessurs());
+                            }}
+                        />
+                    </SkjemaGruppe>
+                </UIModalWrapper>
+            )}
         </>
     );
 };

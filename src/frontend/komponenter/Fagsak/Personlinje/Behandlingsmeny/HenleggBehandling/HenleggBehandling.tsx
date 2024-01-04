@@ -6,8 +6,7 @@ import styled from 'styled-components';
 import Lenke from 'nav-frontend-lenker';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { BodyShort, Button, Modal, Select, Textarea } from '@navikt/ds-react';
-import { Dropdown } from '@navikt/ds-react-internal';
+import { BodyShort, Button, Modal, Select, Textarea, Dropdown } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useHenleggBehandling from './useHenleggBehandling';
