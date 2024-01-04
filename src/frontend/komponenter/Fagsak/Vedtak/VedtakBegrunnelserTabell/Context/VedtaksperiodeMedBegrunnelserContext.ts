@@ -136,7 +136,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
                     if (action.removedValue) {
                         oppdaterBegrunnelser(
                             [
-                                ...vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
+                                ...alleBegrunnelser.filter(
                                     persistertBegrunnelse =>
                                         persistertBegrunnelse.begrunnelse !==
                                         (action.removedValue?.value as Begrunnelse)
