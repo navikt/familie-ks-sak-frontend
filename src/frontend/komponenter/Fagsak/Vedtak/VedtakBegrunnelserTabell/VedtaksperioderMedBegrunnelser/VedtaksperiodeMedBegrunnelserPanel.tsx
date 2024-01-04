@@ -40,11 +40,11 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
         ).length > 0;
 
     const vedtaksperiodeInneholderBegrunnelseSomStøtterFritekst = () => {
-        const begrunnelser = [
+        const alleBegrunnelser = [
             ...vedtaksperiodeMedBegrunnelser.begrunnelser,
             ...vedtaksperiodeMedBegrunnelser.eøsBegrunnelser,
         ];
-        return begrunnelser.some(vedtaksbegrunnelse => vedtaksbegrunnelse.støtterFritekst);
+        return alleBegrunnelser.some(vedtaksbegrunnelse => vedtaksbegrunnelse.støtterFritekst);
     };
 
     const erReduksjonsbegrunnelseSomSkalViseFritekst = (
