@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Calender } from '@navikt/ds-icons';
-import { Dropdown } from '@navikt/ds-react-internal';
+import { Dropdown } from '@navikt/ds-react';
 
 import { OppdaterEndringstidspunktModal } from './OppdaterEndringstidspunktModal';
 import type { IBehandling } from '../../../../typer/behandling';

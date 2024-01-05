@@ -41,8 +41,6 @@ updates:
           - "@navikt/ds-*"
         exclude-patterns:
           - "@navikt/ds-icons"
-          - "@navikt/ds-css-internal"
-          - "@navikt/ds-react-internal"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

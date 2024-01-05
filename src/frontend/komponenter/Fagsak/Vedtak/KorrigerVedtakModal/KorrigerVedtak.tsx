@@ -3,8 +3,7 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 
 import { Cancel, Warning } from '@navikt/ds-icons';
-import { BodyLong, Button, Fieldset, Modal } from '@navikt/ds-react';
-import { Dropdown } from '@navikt/ds-react-internal';
+import { BodyLong, Button, Fieldset, Modal, Dropdown } from '@navikt/ds-react';
 import { FamilieTextarea } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 

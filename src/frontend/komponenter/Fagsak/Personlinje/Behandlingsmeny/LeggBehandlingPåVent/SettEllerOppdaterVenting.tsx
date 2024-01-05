@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Dropdown } from '@navikt/ds-react-internal';
+import { Dropdown } from '@navikt/ds-react';
 
 import { SettBehandlingPåVentModal } from './SettBehandlingPåVentModal';
 import type { IBehandling } from '../../../../../typer/behandling';
