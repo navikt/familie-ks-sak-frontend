@@ -64,8 +64,8 @@ const [TidslinjeProvider, useTidslinje] = createUseContext(() => {
         } else {
             settAktivtTidslinjeVindu(({ sluttDato, startDato, vindu }) => ({
                 ...aktivtTidslinjeVindu,
-                startDato: endOfMonth(subMonths(startDato, vindu.måneder)),
-                sluttDato: endOfMonth(subMonths(sluttDato, vindu.måneder)),
+                startDato: endOfMonth(addMonths(startDato, vindu.måneder)),
+                sluttDato: endOfMonth(addMonths(sluttDato, vindu.måneder)),
             }));
         }
     };
