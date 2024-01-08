@@ -8266,16 +8266,6 @@ nav-frontend-tabell-style@^2.1.1:
   resolved "https://registry.npmjs.org/nav-frontend-tabell-style/-/nav-frontend-tabell-style-2.1.1.tgz"
   integrity sha512-aoMw6g+vh5uZTBJFQBGfQILZfo1cdWBlKiZLiKdgbg6b5t2A93JeYjjAUYERGkcHvJODJFbroqqll1jTIZeTAQ==
 
-nav-frontend-tabs-style@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/nav-frontend-tabs-style/-/nav-frontend-tabs-style-2.0.1.tgz"
-  integrity sha512-5YGeSdGu/4p3aqZLp3cJMJxYXUEoIZCmJ0r2r84JF2C5OKFcpr5QWlUO6eAVwEjaTwhL1J43R+9enyasEidvIg==
-
-nav-frontend-tabs@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/nav-frontend-tabs/-/nav-frontend-tabs-2.0.1.tgz"
-  integrity sha512-KKbKhmIKT42D3NUzFejqoxmYXsmZkhvYJQiiflIrJyqR6AYJeh5jG4aDA2AhAgrPH5cfxlNUDFC7RXlX+WG0pQ==
-
 nav-frontend-typografi-style@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/nav-frontend-typografi-style/-/nav-frontend-typografi-style-2.0.1.tgz"
