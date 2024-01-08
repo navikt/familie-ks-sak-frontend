@@ -4,7 +4,6 @@ import { addMonths, differenceInMilliseconds, startOfMonth } from 'date-fns';
 import styled from 'styled-components';
 
 import Lenke from 'nav-frontend-lenker';
-import Tabs from 'nav-frontend-tabs';
 
 import { Alert, Heading } from '@navikt/ds-react';
 import { byggTomRessurs } from '@navikt/familie-typer';
@@ -33,8 +32,6 @@ interface IProps {
     minimalFagsak: IMinimalFagsak;
 }
 
-const ksSakTab = { label: 'KS-sak', tabnr: 0 };
-
 const FlexSpaceBetween = styled.div`
     display: flex;
     justify-content: space-between;
@@ -49,15 +46,14 @@ const StyledHeading = styled(Heading)`
     margin-top: 3.75rem;
 `;
 
-const StyledTabs = styled(Tabs)`
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-`;
-
 const StyledAlert = styled(Alert)`
     .navds-alert__wrapper {
         flex: 1;
     }
+`;
+
+const SaksoversiktHeading = styled(Heading)`
+    margin-bottom: 1rem;
 `;
 
 const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
@@ -160,8 +156,7 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
 
     return (
         <SaksoversiktWrapper>
-            <Heading size={'large'} level={'1'} children={'Saksoversikt'} />
-            <StyledTabs tabs={[{ label: ksSakTab.label }]} />
+            <SaksoversiktHeading size={'large'} level={'1'} children={'Saksoversikt'} />
             <FagsakLenkepanel minimalFagsak={minimalFagsak} />
             {minimalFagsak.status === FagsakStatus.LØPENDE && (
                 <>
