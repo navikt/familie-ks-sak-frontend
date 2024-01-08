@@ -3,7 +3,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import Lenke from 'nav-frontend-lenker';
 import { Feiloppsummering, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { ExternalLink } from '@navikt/ds-icons';
@@ -15,6 +14,7 @@ import {
     Heading,
     HelpText,
     Label,
+    Link,
     Radio,
     RadioGroup,
     Tag,
@@ -313,7 +313,7 @@ const TilbakekrevingSkjema: React.FC<{
                                                                     for perioden (Fom dato - Tom
                                                                     dato).
                                                                 </BodyLong>
-                                                                <Lenke
+                                                                <Link
                                                                     href="https://navno.sharepoint.com/sites/intranett-kommunikasjon/SitePages/Språk.aspx"
                                                                     target="_blank"
                                                                 >
@@ -322,7 +322,7 @@ const TilbakekrevingSkjema: React.FC<{
                                                                         klarspråk:
                                                                     </span>
                                                                     <ExternalLink />
-                                                                </Lenke>
+                                                                </Link>
                                                             </StyledHelpTextContainer>
                                                         </StyledHelpText>
                                                     </FlexRad>

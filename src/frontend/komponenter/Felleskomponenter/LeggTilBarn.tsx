@@ -3,11 +3,10 @@ import { useState } from 'react';
 
 import styled from 'styled-components';
 
-import Lenke from 'nav-frontend-lenker';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { AddCircle, ExternalLink } from '@navikt/ds-icons';
-import { HelpText, BodyLong, Heading, Button } from '@navikt/ds-react';
+import { HelpText, BodyLong, Heading, Button, Link } from '@navikt/ds-react';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
@@ -323,7 +322,7 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                         ref={fnrInputRef}
                     />
                     <DrekLenkeContainer>
-                        <Lenke
+                        <Link
                             href="#"
                             target="_blank"
                             onClick={(e: React.UIEvent) => {
@@ -334,7 +333,7 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                         >
                             <span>Rekvirer D-nummer i DREK</span>
                             <ExternalLink aria-label="Rekvirer D-nummer i DREK" />
-                        </Lenke>
+                        </Link>
                     </DrekLenkeContainer>
                     {registrerBarnSkjema.felter.erFolkeregistrert.erSynlig && (
                         <LeggTilUregistrertBarn registrerBarnSkjema={registrerBarnSkjema} />
