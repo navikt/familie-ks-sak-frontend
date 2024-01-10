@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import NavFrontendSpinner from 'nav-frontend-spinner';
-
-import { Alert, Heading, Modal } from '@navikt/ds-react';
+import { Alert, Heading, Loader, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
@@ -62,7 +60,7 @@ const Dokument: React.FC<{ pdfdata: Ressurs<string> }> = ({ pdfdata }) => {
             return (
                 <div className={'pdfvisning-modal__spinner'}>
                     <Heading size={'small'} level={'2'} children={'Innhenter dokument'} />
-                    <NavFrontendSpinner className={'pdfvisning-modal__spinner--item'} />
+                    <Loader size="xlarge" title="Innhenter dokument" />
                 </div>
             );
         case RessursStatus.SUKSESS:

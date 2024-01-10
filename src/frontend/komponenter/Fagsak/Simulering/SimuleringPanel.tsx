@@ -4,9 +4,8 @@ import { isBefore } from 'date-fns';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import Panel from 'nav-frontend-paneler';
 
-import { BodyShort, Label } from '@navikt/ds-react';
+import { BodyShort, Label, Panel } from '@navikt/ds-react';
 
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../typer/simulering';
 import {
