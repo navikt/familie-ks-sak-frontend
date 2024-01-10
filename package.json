@@ -139,7 +139,7 @@
     "compression-webpack-plugin": "^10.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "copyfiles": "^2.2.0",
-    "css-loader": "^6.8.1",
+    "css-loader": "^6.9.0",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "cypress": "13.6.0",
     "eslint": "^8.56.0",
