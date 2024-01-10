@@ -82,6 +82,7 @@ const useBehandlingssteg = (
         return vedtaksperioderMedBegrunnelser.some(
             vedtaksperioderMedBegrunnelse =>
                 vedtaksperioderMedBegrunnelse.begrunnelser.length !== 0 ||
+                vedtaksperioderMedBegrunnelse.eøsBegrunnelser.length !== 0 ||
                 vedtaksperioderMedBegrunnelse.fritekster.length !== 0
         );
     };
