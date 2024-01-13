@@ -143,6 +143,11 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                 />
             )}
             <div>
+                {åpenBehandling.korrigertEtterbetaling && (
+                    <BehandlingKorrigertAlert variant="info">
+                        Etterbetalingsbeløp i brevet er manuelt korrigert
+                    </BehandlingKorrigertAlert>
+                )}
                 {åpenBehandling.korrigertVedtak && (
                     <BehandlingKorrigertAlert variant="info">
                         Vedtaket er korrigert etter § 35
