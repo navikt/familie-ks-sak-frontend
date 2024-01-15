@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, Fieldset, Dropdown } from '@navikt/ds-react';
+import { Button, Fieldset, Dropdown, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';
@@ -50,16 +50,67 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                 Opprett behandling
             </Dropdown.Menu.List.Item>
 
-            <UIModalWrapper
-                modal={{
-                    actions: [
-                        <Button
-                            key={'avbryt'}
-                            variant="tertiary"
-                            size="small"
-                            onClick={lukkOpprettBehandlingModal}
-                            children={'Avbryt'}
-                        />,
+            {visModal && (
+                <Modal
+                    open
+                    portal
+                    width={'35rem'}
+                    header={{
+                        heading: 'Opprett ny behandling',
+                        size: 'medium',
+                    }}
+                    onClose={lukkOpprettBehandlingModal}
+                >
+                    <Modal.Body>
+                        <StyledFieldset
+                            error={hentFrontendFeilmelding(opprettBehandlingSkjema.submitRessurs)}
+                            legend={'Opprett ny behandling'}
+                            hideLegend
+                        >
+                            <BehandlingstypeFelt
+                                behandlingstype={opprettBehandlingSkjema.felter.behandlingstype}
+                                visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                minimalFagsak={minimalFagsak}
+                            />
+
+                            {opprettBehandlingSkjema.felter.behandlingsårsak.erSynlig && (
+                                <BehandlingårsakFelt
+                                    behandlingsårsak={
+                                        opprettBehandlingSkjema.felter.behandlingsårsak
+                                    }
+                                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                />
+                            )}
+
+                            {opprettBehandlingSkjema.felter.behandlingstema.erSynlig && (
+                                <BehandlingstemaSelect
+                                    behandlingstema={opprettBehandlingSkjema.felter.behandlingstema}
+                                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                    name="Behandlingstema"
+                                    label="Velg behandlingstema"
+                                />
+                            )}
+
+                            {opprettBehandlingSkjema.felter.kravMottattDato.erSynlig && (
+                                <Datovelger
+                                    felt={opprettBehandlingSkjema.felter.kravMottattDato}
+                                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                    label={'Krav mottatt'}
+                                    kanKunVelgeFortid
+                                />
+                            )}
+                            {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
+                                <Datovelger
+                                    felt={opprettBehandlingSkjema.felter.søknadMottattDato}
+                                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                    label={'Mottatt dato'}
+                                    kanKunVelgeFortid
+                                />
+                            )}
+                        </StyledFieldset>
+                    </Modal.Body>
+
+                    <Modal.Footer>
                         <Button
                             key={'bekreft'}
                             variant="primary"
@@ -74,59 +125,17 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                                 opprettBehandlingSkjema.submitRessurs.status ===
                                 RessursStatus.HENTER
                             }
-                        />,
-                    ],
-                    onClose: lukkOpprettBehandlingModal,
-                    lukkKnapp: true,
-                    tittel: 'Opprett ny behandling',
-                    visModal,
-                }}
-            >
-                <StyledFieldset
-                    error={hentFrontendFeilmelding(opprettBehandlingSkjema.submitRessurs)}
-                    legend={'Opprett ny behandling'}
-                    hideLegend
-                >
-                    <BehandlingstypeFelt
-                        behandlingstype={opprettBehandlingSkjema.felter.behandlingstype}
-                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                        minimalFagsak={minimalFagsak}
-                    />
-
-                    {opprettBehandlingSkjema.felter.behandlingsårsak.erSynlig && (
-                        <BehandlingårsakFelt
-                            behandlingsårsak={opprettBehandlingSkjema.felter.behandlingsårsak}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                         />
-                    )}
-
-                    {opprettBehandlingSkjema.felter.behandlingstema.erSynlig && (
-                        <BehandlingstemaSelect
-                            behandlingstema={opprettBehandlingSkjema.felter.behandlingstema}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                            name="Behandlingstema"
-                            label="Velg behandlingstema"
+                        <Button
+                            key={'avbryt'}
+                            variant="tertiary"
+                            size="small"
+                            onClick={lukkOpprettBehandlingModal}
+                            children={'Avbryt'}
                         />
-                    )}
-
-                    {opprettBehandlingSkjema.felter.kravMottattDato.erSynlig && (
-                        <Datovelger
-                            felt={opprettBehandlingSkjema.felter.kravMottattDato}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                            label={'Krav mottatt'}
-                            kanKunVelgeFortid
-                        />
-                    )}
-                    {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
-                        <Datovelger
-                            felt={opprettBehandlingSkjema.felter.søknadMottattDato}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                            label={'Mottatt dato'}
-                            kanKunVelgeFortid
-                        />
-                    )}
-                </StyledFieldset>
-            </UIModalWrapper>
+                    </Modal.Footer>
+                </Modal>
+            )}
 
             {visBekreftelseTilbakekrevingModal && (
                 <UIModalWrapper
