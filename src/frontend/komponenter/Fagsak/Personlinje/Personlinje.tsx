@@ -1,8 +1,6 @@
 import React from 'react';
 
-import Lenke from 'nav-frontend-lenker';
-
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, Link } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
 import Visittkort from '@navikt/familie-visittkort';
 
@@ -39,18 +37,18 @@ const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
             <div style={{ flex: 1 }}></div>
             {minimalFagsak !== undefined && (
                 <>
-                    <Lenke
+                    <Link
                         className={'visittkort__lenke'}
                         href={`/fagsak/${minimalFagsak.id}/saksoversikt`}
                     >
                         <BodyShort>Saksoversikt</BodyShort>
-                    </Lenke>
-                    <Lenke
+                    </Link>
+                    <Link
                         className={'visittkort__lenke'}
                         href={`/fagsak/${minimalFagsak.id}/dokumenter`}
                     >
                         <BodyShort>Dokumenter</BodyShort>
-                    </Lenke>
+                    </Link>
                     {harInnloggetSaksbehandlerSkrivetilgang() && (
                         <Behandlingsmeny bruker={bruker} minimalFagsak={minimalFagsak} />
                     )}

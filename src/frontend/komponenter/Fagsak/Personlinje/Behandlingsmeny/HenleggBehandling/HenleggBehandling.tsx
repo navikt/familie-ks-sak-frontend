@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Lenke from 'nav-frontend-lenker';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 
-import { BodyShort, Button, Modal, Select, Textarea, Dropdown } from '@navikt/ds-react';
+import { BodyShort, Button, Modal, Select, Textarea, Dropdown, Link } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useHenleggBehandling from './useHenleggBehandling';
@@ -181,7 +180,7 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                             children={'Avbryt'}
                         />
                         {skjema.felter.årsak.verdi === HenleggÅrsak.SØKNAD_TRUKKET && (
-                            <Lenke
+                            <Link
                                 key={'forhåndsvis'}
                                 href="#"
                                 onClick={() => {
@@ -193,7 +192,7 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                                 }}
                             >
                                 Forhåndsvis
-                            </Lenke>
+                            </Link>
                         )}
                     </Modal.Footer>
                 </Modal>
