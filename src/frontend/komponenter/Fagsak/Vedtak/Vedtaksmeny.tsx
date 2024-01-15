@@ -7,6 +7,7 @@ import { Calculator, ExpandFilled } from '@navikt/ds-icons';
 import { Button, Dropdown } from '@navikt/ds-react';
 import { ASpacing10 } from '@navikt/ds-tokens/dist/tokens';
 
+import KorrigerEtterbetaling from './KorrigerEtterbetaling/KorrigerEtterbetaling';
 import KorrigerVedtak from './KorrigerVedtakModal/KorrigerVedtak';
 import EndreEndringstidspunkt from './VedtakBegrunnelserTabell/EndreEndringstidspunkt';
 import { useApp } from '../../../context/AppContext';
@@ -42,6 +43,8 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
     const { vurderErLesevisning } = useBehandling();
     const { toggles } = useApp();
 
+    const erLesevisning = vurderErLesevisning();
+
     return (
         <Dropdown>
             <KnappHøyreHjørne
@@ -56,11 +59,18 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
             <StyledDropdownMeny>
                 <Dropdown.Menu.List>
                     {erBehandlingMedVedtaksbrevutsending && (
-                        <KorrigerVedtak
-                            erLesevisning={vurderErLesevisning()}
-                            korrigertVedtak={åpenBehandling.korrigertVedtak}
-                            behandlingId={åpenBehandling.behandlingId}
-                        />
+                        <>
+                            <KorrigerEtterbetaling
+                                erLesevisning={erLesevisning}
+                                korrigertEtterbetaling={åpenBehandling.korrigertEtterbetaling}
+                                behandlingId={åpenBehandling.behandlingId}
+                            />
+                            <KorrigerVedtak
+                                erLesevisning={erLesevisning}
+                                korrigertVedtak={åpenBehandling.korrigertVedtak}
+                                behandlingId={åpenBehandling.behandlingId}
+                            />
+                        </>
                     )}
                     {åpenBehandling.endringstidspunkt && (
                         <EndreEndringstidspunkt åpenBehandling={åpenBehandling} />

@@ -52,3 +52,16 @@ export interface IRestKorrigertVedtak {
     vedtaksdato: IsoDatoString;
     begrunnelse: string | undefined;
 }
+
+export interface IRestKorrigertEtterbetaling {
+    årsak: KorrigertEtterbetalingÅrsak;
+    beløp: number;
+    begrunnelse: string;
+}
+
+export enum KorrigertEtterbetalingÅrsak {
+    FEIL_TIDLIGERE_UTBETALT_BELØP = 'FEIL_TIDLIGERE_UTBETALT_BELØP',
+    REFUSJON_FRA_UDI = 'REFUSJON_FRA_UDI',
+    REFUSJON_FRA_ANDRE_MYNDIGHETER = 'REFUSJON_FRA_ANDRE_MYNDIGHETER',
+    MOTREGNING = 'MOTREGNING',
+}

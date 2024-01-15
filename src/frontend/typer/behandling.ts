@@ -15,7 +15,11 @@ import type {
 } from './tilbakekrevingsbehandling';
 import type { ITotrinnskontroll } from './totrinnskontroll';
 import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
-import type { IRestKorrigertVedtak, IVedtakForBehandling } from './vedtak';
+import type {
+    IRestKorrigertEtterbetaling,
+    IRestKorrigertVedtak,
+    IVedtakForBehandling,
+} from './vedtak';
 import type { Utbetalingsperiode } from './vedtaksperiode';
 import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 import type { IsoDatoString } from '../utils/dato';
@@ -212,6 +216,7 @@ export interface IBehandling {
     utenlandskePeriodebeløp: IRestUtenlandskPeriodeBeløp[];
     valutakurser: IRestValutakurs[];
     korrigertVedtak?: IRestKorrigertVedtak;
+    korrigertEtterbetaling?: IRestKorrigertEtterbetaling;
     sisteVedtaksperiodeVisningDato?: IsoDatoString;
     feilutbetaltValuta: IRestFeilutbetaltValuta[];
     refusjonEøs: IRestRefusjonEøs[];
