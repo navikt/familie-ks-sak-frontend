@@ -2,9 +2,8 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { Xknapp } from 'nav-frontend-ikonknapper';
-
-import { Alert, BodyShort, Label } from '@navikt/ds-react';
+import { XMarkIcon } from '@navikt/aksel-icons';
+import { Alert, BodyShort, Button, Label } from '@navikt/ds-react';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
@@ -165,7 +164,9 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
 
                     {utbetalingsperiode === undefined && <BodyShort>Ingen utbetalinger</BodyShort>}
                 </div>
-                <Xknapp
+                <Button
+                    variant="tertiary"
+                    icon={<XMarkIcon />}
                     onClick={() => {
                         settAktivEtikett(undefined);
                     }}
