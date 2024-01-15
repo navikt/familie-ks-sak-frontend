@@ -13,7 +13,6 @@ import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
 import Datovelger from '../../../../Felleskomponenter/Datovelger/Datovelger';
-import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 
 const StyledFieldset = styled(Fieldset)`
     && > div:not(:last-child):not(:empty) {
@@ -138,38 +137,42 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
             )}
 
             {visBekreftelseTilbakekrevingModal && (
-                <UIModalWrapper
-                    modal={{
-                        tittel: 'Tilbakekreving opprettes...',
-                        lukkKnapp: false,
-                        visModal: visBekreftelseTilbakekrevingModal,
-                        actions: [
-                            <Button
-                                key={'saksoversikt'}
-                                variant="secondary"
-                                size="small"
-                                onClick={() => {
-                                    settVisBekreftelseTilbakekrevingModal(false);
-                                    navigate(`/fagsak/${minimalFagsak.id}/saksoversikt`);
-                                }}
-                                children={'Gå til saksoversikten'}
-                            />,
-                            <Button
-                                key={'oppgavebenk'}
-                                variant="primary"
-                                size="small"
-                                onClick={() => {
-                                    settVisBekreftelseTilbakekrevingModal(false);
-                                    navigate('/oppgaver');
-                                }}
-                                children={'Gå til oppgavebenken'}
-                            />,
-                        ],
+                <Modal
+                    open
+                    header={{
+                        heading: 'Tilbakekrevingsbehandling opprettes...',
+                        size: 'medium',
                     }}
+                    portal
+                    width={'35rem'}
                 >
-                    Tilbakekrevingsbehandling opprettes, men det kan ta litt tid (ca 30 sekunder)
-                    før den blir tilgjengelig i saksoversikten og oppgavebenken.
-                </UIModalWrapper>
+                    <Modal.Body>
+                        Tilbakekrevingsbehandling opprettes, men det kan ta litt tid (ca 30
+                        sekunder) før den blir tilgjengelig i saksoversikten og oppgavebenken.
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            key={'oppgavebenk'}
+                            variant="primary"
+                            size="small"
+                            onClick={() => {
+                                settVisBekreftelseTilbakekrevingModal(false);
+                                navigate('/oppgaver');
+                            }}
+                            children={'Gå til oppgavebenken'}
+                        />
+                        <Button
+                            key={'saksoversikt'}
+                            variant="secondary"
+                            size="small"
+                            onClick={() => {
+                                settVisBekreftelseTilbakekrevingModal(false);
+                                navigate(`/fagsak/${minimalFagsak.id}/saksoversikt`);
+                            }}
+                            children={'Gå til saksoversikten'}
+                        />
+                    </Modal.Footer>
+                </Modal>
             )}
         </>
     );
