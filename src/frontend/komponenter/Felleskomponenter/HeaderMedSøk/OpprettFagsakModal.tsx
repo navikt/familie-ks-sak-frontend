@@ -2,14 +2,13 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { BodyShort, Button, ErrorMessage, Heading } from '@navikt/ds-react';
+import { BodyShort, Button, ErrorMessage, Modal } from '@navikt/ds-react';
 import type { ISøkeresultat } from '@navikt/familie-header';
 
 import useOpprettFagsak from './useOpprettFagsak';
 import { useApp } from '../../../context/AppContext';
 import type { IPersonInfo } from '../../../typer/person';
 import { formaterIdent } from '../../../utils/formatter';
-import UIModalWrapper from '../Modal/UIModalWrapper';
 
 export interface IOpprettFagsakModal {
     lukkModal: () => void;
@@ -17,9 +16,8 @@ export interface IOpprettFagsakModal {
     personInfo?: IPersonInfo;
 }
 
-const StyledHeading = styled(Heading)`
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
+const StyledBodyShort = styled(BodyShort)`
+    margin-bottom: 2rem;
 `;
 
 const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
@@ -31,58 +29,59 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
     const { sjekkTilgang } = useApp();
     const visModal = !!søkeresultat || !!personInfo;
 
-    return (
-        <UIModalWrapper
-            modal={{
-                actions: [
-                    <Button
-                        variant={'secondary'}
-                        key={'avbryt'}
-                        size={'small'}
-                        onClick={lukkModal}
-                        children={'Avbryt'}
-                    />,
-                    <Button
-                        key={'bekreft'}
-                        variant={'primary'}
-                        size={'small'}
-                        onClick={async () => {
-                            settSenderInn(true);
-                            if (søkeresultat && (await sjekkTilgang(søkeresultat.ident))) {
-                                opprettFagsak(
-                                    {
-                                        personIdent: søkeresultat.ident,
-                                        aktørId: null,
-                                    },
-                                    lukkModal
-                                );
-                            } else {
-                                settSenderInn(false);
-                            }
-                        }}
-                        children={'Ja, opprett fagsak'}
-                        disabled={senderInn}
-                        loading={senderInn}
-                    />,
-                ],
-                onClose: lukkModal,
-                lukkKnapp: true,
-                tittel: 'Opprett fagsak',
-                visModal: visModal,
-            }}
+    return visModal ? (
+        <Modal
+            open
+            onClose={lukkModal}
+            portal
+            width={'35rem'}
+            header={{ heading: 'Opprett fagsak', size: 'medium' }}
         >
-            <StyledHeading size={'small'} level={'3'}>
-                Personen har ingen tilknyttet fagsak. Ønsker du å opprette fagsak for denne
-                personen?
-            </StyledHeading>
-            {søkeresultat && (
-                <BodyShort>{`${søkeresultat.navn} (${formaterIdent(
-                    søkeresultat.ident
-                )})`}</BodyShort>
-            )}
-            {!!feilmelding && <ErrorMessage children={feilmelding} />}
-        </UIModalWrapper>
-    );
+            <Modal.Body>
+                <StyledBodyShort size={'small'} level={'3'}>
+                    Personen har ingen tilknyttet fagsak. Ønsker du å opprette fagsak for denne
+                    personen?
+                </StyledBodyShort>
+                {søkeresultat && (
+                    <BodyShort>{`${søkeresultat.navn} (${formaterIdent(
+                        søkeresultat.ident
+                    )})`}</BodyShort>
+                )}
+                {!!feilmelding && <ErrorMessage children={feilmelding} />}
+            </Modal.Body>
+            <Modal.Footer>
+                <Button
+                    key={'bekreft'}
+                    variant={'primary'}
+                    size={'small'}
+                    onClick={async () => {
+                        settSenderInn(true);
+                        if (søkeresultat && (await sjekkTilgang(søkeresultat.ident))) {
+                            opprettFagsak(
+                                {
+                                    personIdent: søkeresultat.ident,
+                                    aktørId: null,
+                                },
+                                lukkModal
+                            );
+                        } else {
+                            settSenderInn(false);
+                        }
+                    }}
+                    children={'Ja, opprett fagsak'}
+                    disabled={senderInn}
+                    loading={senderInn}
+                />
+                <Button
+                    variant={'secondary'}
+                    key={'avbryt'}
+                    size={'small'}
+                    onClick={lukkModal}
+                    children={'Avbryt'}
+                />
+            </Modal.Footer>
+        </Modal>
+    ) : null;
 };
 
 export default OpprettFagsakModal;
