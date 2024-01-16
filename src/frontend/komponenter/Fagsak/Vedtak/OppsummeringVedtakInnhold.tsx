@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { FileContent } from '@navikt/ds-icons';
-import { Alert, BodyShort, Button, Modal, Select } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
 import RefusjonEøs from './RefusjonEøs/RefusjonEøs';
-import { PeriodetypeIVedtaksbrev, useVedtak } from './useVedtak';
 import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
 import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
 import Vedtaksmeny from './Vedtaksmeny';
@@ -20,7 +19,6 @@ import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../typer/behandling';
 import {
     BehandlerRolle,
-    BehandlingResultat,
     BehandlingStatus,
     BehandlingSteg,
     BehandlingÅrsak,
@@ -45,10 +43,6 @@ const Modaltekst = styled(BodyShort)`
     margin: 2rem 0;
 `;
 
-interface FortsattInnvilgetPerioderSelect extends HTMLSelectElement {
-    value: PeriodetypeIVedtaksbrev;
-}
-
 const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnholdProps> = ({
     åpenBehandling,
     settErUlagretNyFeilutbetaltValutaPeriode,
@@ -61,11 +55,6 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
-
-    const { overstyrFortsattInnvilgetVedtaksperioder, periodetypeIVedtaksbrev } = useVedtak({
-        åpenBehandling,
-    });
-
     const navigate = useNavigate();
 
     const {
@@ -152,25 +141,6 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                     <BehandlingKorrigertAlert variant="info">
                         Vedtaket er korrigert etter § 35
                     </BehandlingKorrigertAlert>
-                )}
-                {åpenBehandling.resultat === BehandlingResultat.FORTSATT_INNVILGET && (
-                    <Select
-                        label="Velg brev med eller uten perioder"
-                        readOnly={erLesevisning}
-                        onChange={(
-                            event: React.ChangeEvent<FortsattInnvilgetPerioderSelect>
-                        ): void => {
-                            overstyrFortsattInnvilgetVedtaksperioder(event.target.value);
-                        }}
-                        value={periodetypeIVedtaksbrev}
-                    >
-                        <option value={PeriodetypeIVedtaksbrev.UTEN_PERIODER}>
-                            Fortsatt innvilget: Uten perioder
-                        </option>
-                        <option value={PeriodetypeIVedtaksbrev.MED_PERIODER}>
-                            Fortsatt innvilget: Med perioder
-                        </option>
-                    </Select>
                 )}
                 {åpenBehandling.årsak === BehandlingÅrsak.DØDSFALL ||
                 åpenBehandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
