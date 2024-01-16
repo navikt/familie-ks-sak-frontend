@@ -3,18 +3,23 @@ import { useState } from 'react';
 
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
 import { AddCircle, ExternalLink } from '@navikt/ds-icons';
-import { HelpText, BodyLong, Heading, Button, Link } from '@navikt/ds-react';
-import { FamilieInput } from '@navikt/familie-form-elements';
+import {
+    HelpText,
+    BodyLong,
+    Heading,
+    Button,
+    Link,
+    Modal,
+    Fieldset,
+    TextField,
+} from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Avhengigheter, Felt } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggFeiletRessurs, byggHenterRessurs, RessursStatus } from '@navikt/familie-typer';
 
-import UIModalWrapper from './Modal/UIModalWrapper';
 import { useBehandling } from '../../context/behandlingContext/BehandlingContext';
 import type { IPersonInfo, IRestTilgang } from '../../typer/person';
 import { adressebeskyttelsestyper } from '../../typer/person';
@@ -23,26 +28,13 @@ import { dateTilIsoDatoStringEllerUndefined } from '../../utils/dato';
 import { identValidator } from '../../utils/validators';
 import LeggTilUregistrertBarn from '../Fagsak/Søknad/LeggTilUregistrertBarn';
 
-const StyledUIModalWrapper = styled(UIModalWrapper)`
-    min-height: 20rem !important;
-`;
-
-const LeggTilBarnLegend = styled.div`
-    margin-top: 1rem;
+const ModalHeaderFlex = styled.div`
     display: flex;
-`;
-
-const StyledHelpText = styled(HelpText)`
-    margin-left: 0.5rem;
-
-    .hjelpetekst__innhold {
-        max-width: 36rem;
-    }
+    gap: 0.5rem;
 `;
 
 const DrekLenkeContainer = styled.div`
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem;
+    padding: 1.25rem 0;
 `;
 
 export interface IRegistrerBarnSkjema {
@@ -238,12 +230,14 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                 {'Legg til barn'}
             </Button>
 
-            <StyledUIModalWrapper
-                modal={{
-                    tittel: (
-                        <LeggTilBarnLegend>
-                            Legg til barn
-                            <StyledHelpText placement="top">
+            {visModal && (
+                <Modal open onClose={onAvbryt} width={'35rem'}>
+                    <Modal.Header>
+                        <ModalHeaderFlex>
+                            <Heading level="2" size="medium" spacing>
+                                Legg til barn
+                            </Heading>
+                            <HelpText placement="top">
                                 <Heading level="3" size="xsmall">
                                     Nasjonale saker:
                                 </Heading>
@@ -264,20 +258,58 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                                     Dersom Folkeregisteret ikke har registrerte barn tilknyttet
                                     denne søkeren kan du registrere D-nummer i DREK.
                                 </BodyLong>
-                            </StyledHelpText>
-                        </LeggTilBarnLegend>
-                    ),
-                    visModal: visModal,
-                    lukkKnapp: true,
-                    onClose: onAvbryt,
-                    actions: [
-                        <Button
-                            variant={'tertiary'}
-                            key={'Avbryt'}
-                            size={'small'}
-                            onClick={onAvbryt}
-                            children={'Avbryt'}
-                        />,
+                            </HelpText>
+                        </ModalHeaderFlex>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Fieldset
+                            error={
+                                registrerBarnSkjema.visFeilmeldinger &&
+                                (registrerBarnSkjema.submitRessurs.status ===
+                                    RessursStatus.FEILET ||
+                                    registrerBarnSkjema.submitRessurs.status ===
+                                        RessursStatus.FUNKSJONELL_FEIL ||
+                                    registrerBarnSkjema.submitRessurs.status ===
+                                        RessursStatus.IKKE_TILGANG)
+                                    ? registrerBarnSkjema.submitRessurs.frontendFeilmelding
+                                    : undefined
+                            }
+                            errorPropagation={false}
+                            legend={'Legg til barn'}
+                            hideLegend
+                        >
+                            <TextField
+                                {...registrerBarnSkjema.felter.ident.hentNavInputProps(
+                                    registrerBarnSkjema.visFeilmeldinger
+                                )}
+                                disabled={
+                                    registrerBarnSkjema.felter.erFolkeregistrert.erSynlig &&
+                                    !registrerBarnSkjema.felter.erFolkeregistrert.verdi
+                                }
+                                label={'Fødselsnummer / D-nummer'}
+                                placeholder={'11 siffer'}
+                                ref={fnrInputRef}
+                            />
+                            <DrekLenkeContainer>
+                                <Link
+                                    href="#"
+                                    target="_blank"
+                                    onClick={(e: React.UIEvent) => {
+                                        e.preventDefault();
+                                        fnrInputNode?.focus();
+                                        window.open('/redirect/drek', '_new');
+                                    }}
+                                >
+                                    <span>Rekvirer D-nummer i DREK</span>
+                                    <ExternalLink aria-label="Rekvirer D-nummer i DREK" />
+                                </Link>
+                            </DrekLenkeContainer>
+                            {registrerBarnSkjema.felter.erFolkeregistrert.erSynlig && (
+                                <LeggTilUregistrertBarn registrerBarnSkjema={registrerBarnSkjema} />
+                            )}
+                        </Fieldset>
+                    </Modal.Body>
+                    <Modal.Footer>
                         <Button
                             variant={'primary'}
                             key={'Legg til'}
@@ -290,56 +322,17 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                             disabled={
                                 registrerBarnSkjema.submitRessurs.status === RessursStatus.HENTER
                             }
-                        />,
-                    ],
-                    style: {
-                        minHeight: '20rem !important',
-                    },
-                }}
-            >
-                <SkjemaGruppe
-                    feil={
-                        registrerBarnSkjema.visFeilmeldinger &&
-                        (registrerBarnSkjema.submitRessurs.status === RessursStatus.FEILET ||
-                            registrerBarnSkjema.submitRessurs.status ===
-                                RessursStatus.FUNKSJONELL_FEIL ||
-                            registrerBarnSkjema.submitRessurs.status === RessursStatus.IKKE_TILGANG)
-                            ? registrerBarnSkjema.submitRessurs.frontendFeilmelding
-                            : undefined
-                    }
-                    utenFeilPropagering={true}
-                >
-                    <FamilieInput
-                        {...registrerBarnSkjema.felter.ident.hentNavInputProps(
-                            registrerBarnSkjema.visFeilmeldinger
-                        )}
-                        disabled={
-                            registrerBarnSkjema.felter.erFolkeregistrert.erSynlig &&
-                            !registrerBarnSkjema.felter.erFolkeregistrert.verdi
-                        }
-                        label={'Fødselsnummer / D-nummer'}
-                        placeholder={'11 siffer'}
-                        ref={fnrInputRef}
-                    />
-                    <DrekLenkeContainer>
-                        <Link
-                            href="#"
-                            target="_blank"
-                            onClick={(e: React.UIEvent) => {
-                                e.preventDefault();
-                                fnrInputNode?.focus();
-                                window.open('/redirect/drek', '_new');
-                            }}
-                        >
-                            <span>Rekvirer D-nummer i DREK</span>
-                            <ExternalLink aria-label="Rekvirer D-nummer i DREK" />
-                        </Link>
-                    </DrekLenkeContainer>
-                    {registrerBarnSkjema.felter.erFolkeregistrert.erSynlig && (
-                        <LeggTilUregistrertBarn registrerBarnSkjema={registrerBarnSkjema} />
-                    )}
-                </SkjemaGruppe>
-            </StyledUIModalWrapper>
+                        />
+                        <Button
+                            variant={'tertiary'}
+                            key={'Avbryt'}
+                            size={'small'}
+                            onClick={onAvbryt}
+                            children={'Avbryt'}
+                        />
+                    </Modal.Footer>
+                </Modal>
+            )}
         </>
     );
 };
