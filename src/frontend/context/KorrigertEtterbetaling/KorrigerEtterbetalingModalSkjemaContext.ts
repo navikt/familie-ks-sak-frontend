@@ -124,7 +124,7 @@ export const useKorrigerEtterbetalingSkjemaContext = ({
 
     const visAngreKorrigering = korrigertEtterbetaling != null;
 
-    const korrigertEtterbetalingURL = `/familie-ba-sak/api/korrigertetterbetaling/behandling/${behandlingId}`;
+    const korrigertEtterbetalingURL = `/familie-ks-sak/api/korrigertetterbetaling/behandling/${behandlingId}`;
 
     const lagreKorrigering = () => {
         if (kanSendeSkjema()) {
