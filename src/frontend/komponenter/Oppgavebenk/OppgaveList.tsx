@@ -62,7 +62,6 @@ const OppgaveList: React.FunctionComponent = () => {
                 onSortChange={(nøkkel?: string) =>
                     nøkkel && settOgLagreSortering(nøkkel as Sorteringsnøkkel)
                 }
-                size={'large'}
             >
                 <Table.Header>
                     <Table.Row>
