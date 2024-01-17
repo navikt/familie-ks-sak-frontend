@@ -8,7 +8,6 @@ import { hentFnrFraOppgaveIdenter } from '../utils/oppgave';
 export enum Sorteringsnøkkel {
     OPPRETTET_TIDSPUNKT = 'opprettetTidspunkt',
     OPPGAVETYPE = 'oppgavetype',
-    BEHANDLINGSTEMA = 'behandlingstema',
     BEHANDLINGSTYPE = 'behandlingstype',
     FRIST_FERDIGSTILLELSE = 'fristFerdigstillelse',
     PRIORITET = 'prioritet',
@@ -61,7 +60,6 @@ export const mapIOppgaverTilOppgaveRad = (
         return {
             ...oppg,
             ident: oppg.identer,
-            behandlingstema: oppg.behandlingstema,
             behandlingstype: oppg.behandlingstype
                 ? behandlingstypeFilter[oppg.behandlingstype as BehandlingstypeFilter]?.navn ??
                   oppg.behandlingstype
