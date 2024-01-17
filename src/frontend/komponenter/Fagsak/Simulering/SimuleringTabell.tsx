@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 import { isAfter } from 'date-fns';
 import styled from 'styled-components';
-import 'nav-frontend-tabell-style';
 
 import { BodyShort, Heading, Table } from '@navikt/ds-react';
 import {
