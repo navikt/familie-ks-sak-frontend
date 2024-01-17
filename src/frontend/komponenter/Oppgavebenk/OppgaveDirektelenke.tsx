@@ -43,17 +43,15 @@ const OppgaveDirektelenke: React.FC<IOppgaveDirektelenke> = ({ oppgave }) => {
         settLaster(true);
 
         const brukerident = hentFnrFraOppgaveIdenter(oppgave.identer);
-        if (brukerident) {
-            if (await sjekkTilgang(brukerident, false)) {
-                const fagsak = await hentFagsakForPerson(brukerident);
-                if (fagsak.status === RessursStatus.SUKSESS && fagsak.data?.id) {
-                    navigate(`/fagsak/${fagsak.data.id}/saksoversikt`);
-                } else {
-                    settToast(ToastTyper.FANT_IKKE_FAGSAK, {
-                        alertType: AlertType.WARNING,
-                        tekst: 'Fant ikke fagsak',
-                    });
-                }
+        if (brukerident && (await sjekkTilgang(brukerident, false))) {
+            const fagsak = await hentFagsakForPerson(brukerident);
+            if (fagsak.status === RessursStatus.SUKSESS && fagsak.data?.id) {
+                navigate(`/fagsak/${fagsak.data.id}/saksoversikt`);
+            } else {
+                settToast(ToastTyper.FANT_IKKE_FAGSAK, {
+                    alertType: AlertType.WARNING,
+                    tekst: 'Fant ikke fagsak',
+                });
             }
         } else {
             settToast(ToastTyper.MANGLER_TILGANG, {
