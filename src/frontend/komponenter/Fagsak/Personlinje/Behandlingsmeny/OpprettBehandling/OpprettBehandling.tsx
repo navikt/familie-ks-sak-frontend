@@ -141,7 +141,8 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                     open
                     header={{
                         heading: 'Tilbakekrevingsbehandling opprettes...',
-                        size: 'medium',
+                        size: 'small',
+                        closeButton: false,
                     }}
                     portal
                     width={'35rem'}
