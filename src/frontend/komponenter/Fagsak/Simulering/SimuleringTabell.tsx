@@ -5,7 +5,7 @@ import { isAfter } from 'date-fns';
 import styled from 'styled-components';
 import 'nav-frontend-tabell-style';
 
-import { BodyShort, Label, Table } from '@navikt/ds-react';
+import { BodyShort, Heading, Table } from '@navikt/ds-react';
 import {
     AFontWeightBold,
     AGreen700,
@@ -64,13 +64,6 @@ const FørsteKolonne = styled(Table.HeaderCell)`
     width: 10rem;
 `;
 
-const SimuleringTabellOverskrift = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 1rem;
-`;
-
 interface ISimuleringProps {
     simulering: ISimuleringDTO;
 }
@@ -117,17 +110,15 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
 
     return (
         <>
-            <SimuleringTabellOverskrift>
-                <Label>
-                    Simuleringsresultat for{' '}
-                    {perioder.length === 1
-                        ? `${isoStringTilFormatertString({
-                              isoString: perioder[0].fom,
-                              tilFormat: Datoformat.MÅNED_ÅR_NAVN,
-                          })}`
-                        : `perioden ${tilOgFraDatoForSimulering}`}
-                </Label>
-            </SimuleringTabellOverskrift>
+            <Heading size={'small'} level={'2'} spacing>
+                Simuleringsresultat for{' '}
+                {perioder.length === 1
+                    ? `${isoStringTilFormatertString({
+                          isoString: perioder[0].fom,
+                          tilFormat: Datoformat.MÅNED_ÅR_NAVN,
+                      })}`
+                    : `perioden ${tilOgFraDatoForSimulering}`}
+            </Heading>
 
             <IkkeFullBreddeTabell
                 aria-label={`Simuleringsresultat for ${
