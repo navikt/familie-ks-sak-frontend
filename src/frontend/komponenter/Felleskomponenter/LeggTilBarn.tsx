@@ -237,7 +237,7 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                             <Heading level="2" size="medium" spacing>
                                 Legg til barn
                             </Heading>
-                            <HelpText placement="top">
+                            <HelpText placement="top" strategy={'fixed'}>
                                 <Heading level="3" size="xsmall">
                                     Nasjonale saker:
                                 </Heading>
