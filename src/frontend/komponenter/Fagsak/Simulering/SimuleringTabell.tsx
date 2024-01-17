@@ -168,7 +168,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                 periodeSkalVisesITabell(periode) && (
                                     <HeaderCelle
                                         key={'måned - ' + periode.fom}
-                                        align={'right'}
+                                        align={'center'}
                                         $skalViseStipletLinje={erNestePeriode(periode)}
                                     >
                                         {kapitaliserTekst(
@@ -191,7 +191,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                 periodeSkalVisesITabell(periode) && (
                                     <DataCelle
                                         key={'nytt beløp - ' + periode.fom}
-                                        align={'right'}
+                                        align={'center'}
                                         $skalViseStipletLinje={erNestePeriode(periode)}
                                     >
                                         {formaterBeløpUtenValutakode(periode.nyttBeløp)}
@@ -206,7 +206,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                 periodeSkalVisesITabell(periode) && (
                                     <DataCelle
                                         key={'tidligere utbetalt - ' + periode.fom}
-                                        align={'right'}
+                                        align={'center'}
                                         $skalViseStipletLinje={erNestePeriode(periode)}
                                     >
                                         {formaterBeløpUtenValutakode(periode.tidligereUtbetalt)}
@@ -221,7 +221,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                 periodeSkalVisesITabell(periode) && (
                                     <DataCellMedFarge
                                         key={'resultat - ' + periode.fom}
-                                        align={'right'}
+                                        align={'center'}
                                         $erNegativtBeløp={
                                             !!periode.resultat && periode.resultat < 0
                                         }
