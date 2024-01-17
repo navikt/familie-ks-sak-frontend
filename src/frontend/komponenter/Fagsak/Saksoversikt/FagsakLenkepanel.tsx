@@ -92,7 +92,7 @@ const FagsakLenkepanel: React.FC<IFagsakLinkPanel> = ({ minimalFagsak }) => {
             </LinkPanel.Description>
         </FagsakPanelMedAktivBehandling>
     ) : (
-        <FagsakPanel>
+        <FagsakPanel borderColor="border-strong" borderWidth="1" borderRadius="small" padding="8">
             <Innholdstabell minimalFagsak={minimalFagsak} />
         </FagsakPanel>
     );
