@@ -18,7 +18,6 @@ import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { isoStringTilDate } from '../../../utils/dato';
 
 const SwitchHøyre = styled(Switch)`
-    margin-top: 1rem;
     margin-right: 0.275rem;
     float: right;
 `;
@@ -52,7 +51,22 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
 
     return (
         <>
-            <StyledHeading level="2" size={'medium'} children={'Behandlinger'} spacing />
+            <StyledHeading level="2" size={'medium'} spacing>
+                Behandlinger
+                {finnesRadSomKanFiltreresBort && (
+                    <SwitchHøyre
+                        size="small"
+                        position="left"
+                        id={'vis-henlagte-behandlinger'}
+                        checked={visHenlagteBehandlinger}
+                        onChange={() => {
+                            setVisHenlagteBehandlinger(!visHenlagteBehandlinger);
+                        }}
+                    >
+                        Vis henlagte behandlinger
+                    </SwitchHøyre>
+                )}
+            </StyledHeading>
             {behandlinger.length > 0 ? (
                 <Table size={'large'}>
                     <Table.Header>
@@ -86,19 +100,6 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                 </Table>
             ) : (
                 <BodyShort children={'Ingen tidligere behandlinger'} />
-            )}
-            {finnesRadSomKanFiltreresBort && (
-                <SwitchHøyre
-                    size="small"
-                    position="left"
-                    id={'vis-henlagte-behandlinger'}
-                    checked={visHenlagteBehandlinger}
-                    onChange={() => {
-                        setVisHenlagteBehandlinger(!visHenlagteBehandlinger);
-                    }}
-                >
-                    Vis henlagte behandlinger
-                </SwitchHøyre>
             )}
         </>
     );
