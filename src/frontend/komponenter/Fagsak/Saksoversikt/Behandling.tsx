@@ -26,12 +26,12 @@ export const Behandling: React.FC<IBehandlingshistorikkProps> = ({
 }) => {
     return (
         <Table.Row key={hentBehandlingId(saksoversiktsbehandling)}>
-            <Table.DataCell
-                children={`${isoStringTilFormatertString({
+            <Table.DataCell>
+                {isoStringTilFormatertString({
                     isoString: hentOpprettetTidspunkt(saksoversiktsbehandling),
                     tilFormat: Datoformat.DATO,
-                })}`}
-            />
+                })}
+            </Table.DataCell>
             <Table.DataCell>{finnÅrsak(saksoversiktsbehandling)}</Table.DataCell>
             <Table.DataCell>
                 {lagLenkePåType(minimalFagsak.id, saksoversiktsbehandling)}
@@ -40,13 +40,13 @@ export const Behandling: React.FC<IBehandlingshistorikkProps> = ({
                 {hentBehandlingstema(saksoversiktsbehandling)?.navn ?? '-'}
             </Table.DataCell>
             <Table.DataCell>{behandlingsstatuser[saksoversiktsbehandling.status]}</Table.DataCell>
-            <Table.DataCell
-                children={isoStringTilFormatertString({
+            <Table.DataCell>
+                {isoStringTilFormatertString({
                     isoString: saksoversiktsbehandling.vedtaksdato,
                     tilFormat: Datoformat.DATO,
                     defaultString: '-',
                 })}
-            />
+            </Table.DataCell>
             <Table.DataCell>
                 {lagLenkePåResultat(minimalFagsak, saksoversiktsbehandling)}
             </Table.DataCell>
