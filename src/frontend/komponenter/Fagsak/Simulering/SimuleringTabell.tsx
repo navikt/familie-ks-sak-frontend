@@ -5,7 +5,7 @@ import { isAfter } from 'date-fns';
 import styled from 'styled-components';
 import 'nav-frontend-tabell-style';
 
-import { Detail, Label, Table } from '@navikt/ds-react';
+import { BodyShort, Label, Table } from '@navikt/ds-react';
 import {
     AFontWeightBold,
     AGreen700,
@@ -156,9 +156,9 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                             aktueltÅr - 1
                                         }`}
                                     >
-                                        <Detail size={'small'}>
+                                        <BodyShort size={'small'}>
                                             {årISimuleringen[indexFramvistÅr]}
-                                        </Detail>{' '}
+                                        </BodyShort>
                                     </TidslinjeNavigering>
                                 </Årsvelger>
                             )}
