@@ -51,7 +51,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
     const [visHenlagteBehandlinger, setVisHenlagteBehandlinger] = useState(false);
 
     return (
-        <div className={'saksoversikt__behandlingshistorikk'}>
+        <>
             <StyledHeading level="2" size={'medium'} children={'Behandlinger'} spacing />
             {behandlinger.length > 0 ? (
                 <Table size={'large'}>
@@ -100,7 +100,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                     Vis henlagte behandlinger
                 </SwitchHøyre>
             )}
-        </div>
+        </>
     );
 };
 
