@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { Button, Select, Textarea, Dropdown } from '@navikt/ds-react';
+import { Button, Select, Textarea, Dropdown, Modal, Fieldset } from '@navikt/ds-react';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlendeEnhet from './useEndreBehandlendeEnhet';
@@ -12,8 +10,6 @@ import { BehandlingSteg, hentStegNummer } from '../../../../../typer/behandling'
 import type { IArbeidsfordelingsenhet } from '../../../../../typer/enhet';
 import { behandendeEnheter } from '../../../../../typer/enhet';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
-import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
 
 const EndreBehandlendeEnhet: React.FC = () => {
     const {
@@ -61,80 +57,87 @@ const EndreBehandlendeEnhet: React.FC = () => {
             <Dropdown.Menu.List.Item onClick={() => settVisModal(true)}>
                 Endre behandlende enhet
             </Dropdown.Menu.List.Item>
-            {visModal && (
-                <UIModalWrapper
-                    modal={{
-                        actions: [
-                            <Button
-                                key={'avbryt'}
-                                size="small"
-                                variant="secondary"
-                                onClick={lukkBehandlendeEnhetModal}
-                                children={'Avbryt'}
-                            />,
-                            <Button
-                                key={'bekreft'}
-                                variant="primary"
-                                size="small"
-                                disabled={submitRessurs.status === RessursStatus.HENTER}
-                                onClick={() => {
-                                    if (åpenBehandling.status === RessursStatus.SUKSESS) {
-                                        endreEnhet(åpenBehandling.data.behandlingId);
-                                    }
-                                }}
-                                children={'Bekreft'}
-                                loading={submitRessurs.status === RessursStatus.HENTER}
-                            />,
-                        ],
-                        onClose: lukkBehandlendeEnhetModal,
-                        lukkKnapp: true,
-                        tittel: 'Endre enhet for denne behandlingen',
-                        visModal: visModal && !erBehandlingAvsluttet,
+            {visModal && !erBehandlingAvsluttet && (
+                <Modal
+                    open
+                    onClose={lukkBehandlendeEnhetModal}
+                    width={'35rem'}
+                    header={{
+                        heading: 'Endre enhet for denne behandlingen',
+                        size: 'small',
                     }}
+                    portal
                 >
-                    <SkjemaGruppe feil={hentFrontendFeilmelding(submitRessurs)}>
-                        <SkjultLegend>Endre enhet</SkjultLegend>
-                        <Select
-                            readOnly={erLesevisningPåBehandling()}
-                            name="enhet"
-                            value={enhetId}
-                            label={'Velg ny enhet'}
-                            onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
-                                settEnhetId(event.target.value);
-                                settSubmitRessurs(byggTomRessurs());
-                            }}
+                    <Modal.Body>
+                        <Fieldset
+                            error={hentFrontendFeilmelding(submitRessurs)}
+                            legend="Endre enhet"
+                            hideLegend
                         >
-                            {behandendeEnheter.map((enhet: IArbeidsfordelingsenhet) => {
-                                return (
-                                    <option
-                                        aria-selected={enhetId === enhet.enhetId}
-                                        key={enhet.enhetId}
-                                        value={enhet.enhetId}
-                                        disabled={
-                                            hentDataFraRessurs(åpenBehandling)
-                                                ?.arbeidsfordelingPåBehandling
-                                                .behandlendeEnhetId === enhet.enhetId
-                                        }
-                                    >
-                                        {`${enhet.enhetId} ${enhet.enhetNavn}`}
-                                    </option>
-                                );
-                            })}
-                        </Select>
+                            <Select
+                                readOnly={erLesevisningPåBehandling()}
+                                name="enhet"
+                                value={enhetId}
+                                label={'Velg ny enhet'}
+                                onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
+                                    settEnhetId(event.target.value);
+                                    settSubmitRessurs(byggTomRessurs());
+                                }}
+                            >
+                                {behandendeEnheter.map((enhet: IArbeidsfordelingsenhet) => {
+                                    return (
+                                        <option
+                                            aria-selected={enhetId === enhet.enhetId}
+                                            key={enhet.enhetId}
+                                            value={enhet.enhetId}
+                                            disabled={
+                                                hentDataFraRessurs(åpenBehandling)
+                                                    ?.arbeidsfordelingPåBehandling
+                                                    .behandlendeEnhetId === enhet.enhetId
+                                            }
+                                        >
+                                            {`${enhet.enhetId} ${enhet.enhetNavn}`}
+                                        </option>
+                                    );
+                                })}
+                            </Select>
 
-                        <Textarea
+                            <Textarea
+                                disabled={submitRessurs.status === RessursStatus.HENTER}
+                                readOnly={erLesevisningPåBehandling()}
+                                label={'Begrunnelse'}
+                                value={begrunnelse}
+                                maxLength={4000}
+                                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                    settBegrunnelse(event.target.value);
+                                    settSubmitRessurs(byggTomRessurs());
+                                }}
+                            />
+                        </Fieldset>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            key={'bekreft'}
+                            variant="primary"
+                            size="small"
                             disabled={submitRessurs.status === RessursStatus.HENTER}
-                            readOnly={erLesevisningPåBehandling()}
-                            label={'Begrunnelse'}
-                            value={begrunnelse}
-                            maxLength={4000}
-                            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                                settBegrunnelse(event.target.value);
-                                settSubmitRessurs(byggTomRessurs());
+                            onClick={() => {
+                                if (åpenBehandling.status === RessursStatus.SUKSESS) {
+                                    endreEnhet(åpenBehandling.data.behandlingId);
+                                }
                             }}
+                            children={'Bekreft'}
+                            loading={submitRessurs.status === RessursStatus.HENTER}
                         />
-                    </SkjemaGruppe>
-                </UIModalWrapper>
+                        <Button
+                            key={'avbryt'}
+                            size="small"
+                            variant="secondary"
+                            onClick={lukkBehandlendeEnhetModal}
+                            children={'Avbryt'}
+                        />
+                    </Modal.Footer>
+                </Modal>
             )}
         </>
     );

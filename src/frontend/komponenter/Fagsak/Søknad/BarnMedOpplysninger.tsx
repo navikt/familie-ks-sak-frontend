@@ -4,14 +4,13 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { BodyShort, Button, Checkbox } from '@navikt/ds-react';
+import { BodyShort, Button, Checkbox, Modal } from '@navikt/ds-react';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useSøknad } from '../../../context/SøknadContext';
 import Slett from '../../../ikoner/Slett';
 import type { IBarnMedOpplysninger } from '../../../typer/søknad';
 import { formaterIdent, hentAlderSomString } from '../../../utils/formatter';
-import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
 
 interface IProps {
     barn: IBarnMedOpplysninger;
@@ -127,21 +126,24 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                     {'Fjern barn'}
                 </FjernBarnKnapp>
             )}
-            <UIModalWrapper
-                modal={{
-                    tittel: 'Søker mottar allerede kontantstøtte for dette barnet',
-                    lukkKnapp: true,
-                    visModal: visHarLøpendeModal,
-                    actions: [
-                        <Button
-                            variant={'secondary'}
-                            key={'avbryt'}
-                            size={'small'}
-                            onClick={() => {
-                                settVisHarLøpendeModal(false);
-                            }}
-                            children={'Avbryt'}
-                        />,
+            {visHarLøpendeModal && (
+                <Modal
+                    open
+                    portal
+                    onClose={() => settVisHarLøpendeModal(false)}
+                    width={'35rem'}
+                    header={{
+                        heading: 'Søker mottar allerede kontantstøtte for dette barnet',
+                        size: 'small',
+                    }}
+                >
+                    <Modal.Body>
+                        <BodyShort>
+                            Barnet ({formaterIdent(barn.ident)}) har løpende kontantstøtte. Du skal
+                            kun velge barn som det ikke utbetales kontantstøtte for.
+                        </BodyShort>
+                    </Modal.Body>
+                    <Modal.Footer>
                         <Button
                             variant={'secondary'}
                             key={'velg-barnet'}
@@ -151,15 +153,19 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                                 oppdaterBarnMerket(true);
                             }}
                             children={'Velg barnet'}
-                        />,
-                    ],
-                }}
-            >
-                <BodyShort>
-                    Barnet ({formaterIdent(barn.ident)}) har løpende kontantstøtte. Du skal kun
-                    velge barn som det ikke utbetales kontantstøtte for.
-                </BodyShort>
-            </UIModalWrapper>
+                        />
+                        <Button
+                            variant={'secondary'}
+                            key={'avbryt'}
+                            size={'small'}
+                            onClick={() => {
+                                settVisHarLøpendeModal(false);
+                            }}
+                            children={'Avbryt'}
+                        />
+                    </Modal.Footer>
+                </Modal>
+            )}
         </CheckboxOgSlettknapp>
     );
 };
