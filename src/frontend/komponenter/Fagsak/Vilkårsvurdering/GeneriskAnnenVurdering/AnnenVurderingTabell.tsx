@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styled from 'styled-components';
+import { Table } from '@navikt/ds-react';
 
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../typer/vilkår';
@@ -18,62 +18,36 @@ interface IProps {
     annenVurderingConfig: IAnnenVurderingConfig;
 }
 
-const Tabell = styled.table`
-    table-layout: fixed;
-    td:first-child .checkboks + .skjemaelement__label {
-        margin-bottom: 1rem;
-        text-indent: 2rem;
-        width: 13rem;
-    }
-`;
-// Midlertidig styling. Se issue: https://github.com/navikt/nav-frontend-moduler/issues/997
-
-const TabellHeader = styled.th`
-    &:nth-of-type(1) {
-        width: 10rem;
-    }
-    &:nth-of-type(2) {
-        width: 12rem;
-    }
-    &:nth-of-type(4) {
-        width: 7rem;
-    }
-    &:nth-of-type(5) {
-        width: 3rem;
-    }
-    &:nth-of-type(6) {
-        width: 15rem;
-    }
-`;
-
 const AnnenVurderingTabell: React.FC<IProps> = ({
     person,
     annenVurderingConfig,
     andreVurderinger,
 }) => {
     return (
-        <Tabell className={'tabell'}>
-            <thead>
-                <tr>
-                    <TabellHeader>Vurdering</TabellHeader>
-                    <TabellHeader />
-                    <TabellHeader>Begrunnelse</TabellHeader>
-                    <TabellHeader />
-                    <TabellHeader />
-                    <TabellHeader />
-                </tr>
-            </thead>
-            {andreVurderinger.map((annenVurdering: IAnnenVurdering, index: number) => {
-                return (
-                    <AnnenVurderingTabellRad
-                        key={`${index}_${person.fødselsdato}_${annenVurdering.type}`}
-                        annenVurderingConfig={annenVurderingConfig}
-                        person={person}
-                        annenVurdering={annenVurdering}
-                    />
-                );
-            })}
-        </Tabell>
+        <Table>
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>Vurdering</Table.HeaderCell>
+                    <Table.HeaderCell />
+                    <Table.HeaderCell>Begrunnelse</Table.HeaderCell>
+                    <Table.HeaderCell />
+                    <Table.HeaderCell />
+                    <Table.HeaderCell />
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {andreVurderinger.map((annenVurdering: IAnnenVurdering, index: number) => {
+                    return (
+                        <AnnenVurderingTabellRad
+                            key={`${index}_${person.fødselsdato}_${annenVurdering.type}`}
+                            annenVurderingConfig={annenVurderingConfig}
+                            person={person}
+                            annenVurdering={annenVurdering}
+                        />
+                    );
+                })}
+            </Table.Body>
+        </Table>
     );
 };
 
