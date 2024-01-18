@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
-import { Alert, Button, HelpText, Dropdown, Modal, Fieldset, Heading } from '@navikt/ds-react';
+import {
+    Alert,
+    Button,
+    HelpText,
+    Dropdown,
+    Modal,
+    Fieldset,
+    Heading,
+    HStack,
+} from '@navikt/ds-react';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import { ok, useFelt, useSkjema } from '@navikt/familie-skjema';
@@ -20,11 +27,6 @@ import type { IPersonInfo, IRestTilgang } from '../../../../../typer/person';
 import { adressebeskyttelsestyper } from '../../../../../typer/person';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { identValidator } from '../../../../../utils/validators';
-
-const ModalHeaderFlex = styled.div`
-    display: flex;
-    gap: 0.5rem;
-`;
 
 interface IProps {
     behandling: IBehandling;
@@ -119,7 +121,7 @@ const LeggTiLBarnPåBehandling: React.FC<IProps> = ({ behandling }) => {
             {visModal && (
                 <Modal open onClose={onAvbryt} aria-label={'Legg til barn'} width={'35rem'} portal>
                     <Modal.Header>
-                        <ModalHeaderFlex>
+                        <HStack gap={'2'}>
                             <Heading level="2" size="small">
                                 Legg til barn
                             </Heading>
@@ -128,7 +130,7 @@ const LeggTiLBarnPåBehandling: React.FC<IProps> = ({ behandling }) => {
                                 som ikke lenger ligger på behandlingen fordi vi tidligere har
                                 avslått eller opphørt.
                             </HelpText>
-                        </ModalHeaderFlex>
+                        </HStack>
                     </Modal.Header>
                     <Modal.Body>
                         <Fieldset

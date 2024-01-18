@@ -13,6 +13,7 @@ import {
     Modal,
     Fieldset,
     TextField,
+    HStack,
 } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
@@ -27,11 +28,6 @@ import type { IBarnMedOpplysninger } from '../../typer/søknad';
 import { dateTilIsoDatoStringEllerUndefined } from '../../utils/dato';
 import { identValidator } from '../../utils/validators';
 import LeggTilUregistrertBarn from '../Fagsak/Søknad/LeggTilUregistrertBarn';
-
-const ModalHeaderFlex = styled.div`
-    display: flex;
-    gap: 0.5rem;
-`;
 
 const DrekLenkeContainer = styled.div`
     padding: 1.25rem 0;
@@ -233,7 +229,7 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
             {visModal && (
                 <Modal open onClose={onAvbryt} width={'35rem'}>
                     <Modal.Header>
-                        <ModalHeaderFlex>
+                        <HStack gap={'2'}>
                             <Heading level="2" size="medium" spacing>
                                 Legg til barn
                             </Heading>
@@ -259,7 +255,7 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                                     denne søkeren kan du registrere D-nummer i DREK.
                                 </BodyLong>
                             </HelpText>
-                        </ModalHeaderFlex>
+                        </HStack>
                     </Modal.Header>
                     <Modal.Body>
                         <Fieldset
