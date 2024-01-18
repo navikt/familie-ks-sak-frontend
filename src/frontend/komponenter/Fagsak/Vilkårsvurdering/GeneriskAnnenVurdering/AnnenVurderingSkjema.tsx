@@ -3,15 +3,15 @@ import React from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import { Radio, SkjemaGruppe } from 'nav-frontend-skjema';
 
+import { Fieldset, Radio } from '@navikt/ds-react';
 import { FamilieKnapp, FamilieRadioGruppe, FamilieTextarea } from '@navikt/familie-form-elements';
 
 import { useAnnenVurderingSkjema } from './AnnenVurderingSkjemaContext';
 import { annenVurderingBegrunnelseFeilmeldingId } from './AnnenVurderingTabell';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../typer/vilkår';
-import { Resultat, resultater } from '../../../../typer/vilkår';
+import { Resultat } from '../../../../typer/vilkår';
 
 const Container = styled.div`
     max-width: 30rem;
@@ -49,11 +49,11 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
     const { skjema, lagreAnnenVurdering, lagrerAnnenVurdering, lagreAnnenVurderingFeilmelding } =
         useAnnenVurderingSkjema(annenVurdering, toggleForm);
     return (
-        <SkjemaGruppe feil={lagreAnnenVurderingFeilmelding} utenFeilPropagering={true}>
+        <Fieldset error={lagreAnnenVurderingFeilmelding} errorPropagation={false} legend={''}>
             <Container>
                 <FamilieRadioGruppe
                     erLesevisning={lesevinsing}
-                    value={resultater[skjema.felter.resultat.verdi]}
+                    value={skjema.felter.resultat.verdi}
                     legend={
                         annenVurderingConfig.spørsmål
                             ? annenVurderingConfig.spørsmål(person.type.toLowerCase())
@@ -62,19 +62,21 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
                     error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
                 >
                     <Radio
-                        label={'Ja'}
                         name={`${annenVurdering.type}_${annenVurdering.id}`}
-                        checked={skjema.felter.resultat.verdi === Resultat.OPPFYLT}
+                        value={Resultat.OPPFYLT}
                         onChange={() => skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT)}
-                    />
+                    >
+                        Ja
+                    </Radio>
                     <Radio
-                        label={'Nei'}
                         name={`${annenVurdering.type}_${annenVurdering.id}`}
-                        checked={skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT}
+                        value={Resultat.IKKE_OPPFYLT}
                         onChange={() =>
                             skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)
                         }
-                    />
+                    >
+                        Nei
+                    </Radio>
                 </FamilieRadioGruppe>
 
                 <FamilieTextarea
@@ -116,6 +118,6 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
                     </div>
                 </Knapperad>
             </Container>
-        </SkjemaGruppe>
+        </Fieldset>
     );
 };
