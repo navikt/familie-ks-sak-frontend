@@ -8192,11 +8192,6 @@ nav-frontend-skjema@^4.0.2:
   resolved "https://registry.npmjs.org/nav-frontend-skjema/-/nav-frontend-skjema-4.0.5.tgz"
   integrity sha512-rY/PycRYqBSpUk9rnePAJ9fd+QRBC3vbE8e5d9YKmxKeF5Q73azbb3hoHWjm0CfpeEgRttRDfbIWRFH2SPwvCw==
 
-nav-frontend-tabell-style@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.npmjs.org/nav-frontend-tabell-style/-/nav-frontend-tabell-style-2.1.1.tgz"
-  integrity sha512-aoMw6g+vh5uZTBJFQBGfQILZfo1cdWBlKiZLiKdgbg6b5t2A93JeYjjAUYERGkcHvJODJFbroqqll1jTIZeTAQ==
-
 nav-frontend-typografi-style@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/nav-frontend-typografi-style/-/nav-frontend-typografi-style-2.0.1.tgz"
