@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
-import classNames from 'classnames';
 import { differenceInMilliseconds } from 'date-fns';
 import styled from 'styled-components';
 
-import { BodyShort, Heading, Switch } from '@navikt/ds-react';
+import { BodyShort, Heading, Switch, Table } from '@navikt/ds-react';
 
 import { Behandling } from './Behandling';
 import type { Saksoversiktsbehandling } from './utils';
@@ -19,7 +18,6 @@ import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { isoStringTilDate } from '../../../utils/dato';
 
 const SwitchHøyre = styled(Switch)`
-    margin-top: 1rem;
     margin-right: 0.275rem;
     float: right;
 `;
@@ -28,11 +26,11 @@ const StyledHeading = styled(Heading)`
     margin-top: 3.75rem;
 `;
 
-const StyledOpprettetKolonne = styled.th`
+const StyledOpprettetKolonne = styled(Table.HeaderCell)`
     width: 10%;
 `;
 
-const StyledResultatKolonne = styled.th`
+const StyledResultatKolonne = styled(Table.HeaderCell)`
     width: 22%;
 `;
 
@@ -52,24 +50,37 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
     const [visHenlagteBehandlinger, setVisHenlagteBehandlinger] = useState(false);
 
     return (
-        <div className={'saksoversikt__behandlingshistorikk'}>
-            <StyledHeading level="2" size={'medium'} children={'Behandlinger'} spacing />
+        <>
+            <StyledHeading level="2" size={'medium'} spacing>
+                Behandlinger
+                {finnesRadSomKanFiltreresBort && (
+                    <SwitchHøyre
+                        size="small"
+                        position="left"
+                        id={'vis-henlagte-behandlinger'}
+                        checked={visHenlagteBehandlinger}
+                        onChange={() => {
+                            setVisHenlagteBehandlinger(!visHenlagteBehandlinger);
+                        }}
+                    >
+                        Vis henlagte behandlinger
+                    </SwitchHøyre>
+                )}
+            </StyledHeading>
             {behandlinger.length > 0 ? (
-                <table
-                    className={classNames('tabell', 'saksoversikt__behandlingshistorikk__tabell')}
-                >
-                    <thead>
-                        <tr>
+                <Table size={'large'}>
+                    <Table.Header>
+                        <Table.Row>
                             <StyledOpprettetKolonne children={'Opprettet'} />
-                            <th children={'Årsak'} />
-                            <th children={'Type'} />
-                            <th children={'Behandlingstema'} />
-                            <th children={'Status'} />
-                            <th children={'Vedtaksdato'} />
+                            <Table.HeaderCell children={'Årsak'} />
+                            <Table.HeaderCell children={'Type'} />
+                            <Table.HeaderCell children={'Behandlingstema'} />
+                            <Table.HeaderCell children={'Status'} />
+                            <Table.HeaderCell children={'Vedtaksdato'} />
                             <StyledResultatKolonne children={'Resultat'} />
-                        </tr>
-                    </thead>
-                    <tbody>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
                         {behandlinger
                             .filter(behandling => skalRadVises(behandling, visHenlagteBehandlinger))
                             .sort((a, b) =>
@@ -85,25 +96,12 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                                     minimalFagsak={minimalFagsak}
                                 />
                             ))}
-                    </tbody>
-                </table>
+                    </Table.Body>
+                </Table>
             ) : (
                 <BodyShort children={'Ingen tidligere behandlinger'} />
             )}
-            {finnesRadSomKanFiltreresBort && (
-                <SwitchHøyre
-                    size="small"
-                    position="left"
-                    id={'vis-henlagte-behandlinger'}
-                    checked={visHenlagteBehandlinger}
-                    onChange={() => {
-                        setVisHenlagteBehandlinger(!visHenlagteBehandlinger);
-                    }}
-                >
-                    Vis henlagte behandlinger
-                </SwitchHøyre>
-            )}
-        </div>
+        </>
     );
 };
 
