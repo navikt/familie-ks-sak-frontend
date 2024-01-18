@@ -20,7 +20,7 @@ const Knapperad = styled.div`
 
 interface IProps {
     annenVurdering: IAnnenVurdering;
-    lesevinsing: boolean;
+    erLesevisning: boolean;
     annenVurderingConfig: IAnnenVurderingConfig;
     person: IGrunnlagPerson;
     toggleForm: (visSkjema: boolean) => void;
@@ -28,7 +28,7 @@ interface IProps {
 
 export const AnnenVurderingSkjema: React.FC<IProps> = ({
     annenVurdering,
-    lesevinsing,
+    erLesevisning,
     annenVurderingConfig,
     person,
     toggleForm,
@@ -42,7 +42,7 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
             legend={''}
         >
             <FamilieRadioGruppe
-                erLesevisning={lesevinsing}
+                erLesevisning={erLesevisning}
                 value={skjema.felter.resultat.verdi}
                 legend={
                     annenVurderingConfig.spørsmål
@@ -68,7 +68,7 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
             </FamilieRadioGruppe>
 
             <Textarea
-                readOnly={lesevinsing}
+                readOnly={erLesevisning}
                 defaultValue={skjema.felter.begrunnelse.verdi}
                 id={annenVurderingBegrunnelseFeilmeldingId(annenVurdering)}
                 label={'Begrunnelse (valgfri)'}
@@ -83,7 +83,7 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
             <Knapperad>
                 <div>
                     <FamilieKnapp
-                        erLesevisning={lesevinsing}
+                        erLesevisning={erLesevisning}
                         onClick={lagreAnnenVurdering}
                         size="small"
                         variant="secondary"
@@ -94,7 +94,7 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
                     </FamilieKnapp>
                     <FamilieKnapp
                         style={{ marginLeft: '1rem' }}
-                        erLesevisning={lesevinsing}
+                        erLesevisning={erLesevisning}
                         onClick={() => toggleForm(false)}
                         size="small"
                         variant="tertiary"

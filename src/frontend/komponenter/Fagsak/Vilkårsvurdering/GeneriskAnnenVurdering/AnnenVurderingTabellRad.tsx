@@ -66,7 +66,7 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
                     annenVurderingConfig={annenVurderingConfig}
                     annenVurdering={annenVurdering}
                     toggleForm={toggleForm}
-                    lesevinsing={erLesevisning}
+                    erLesevisning={erLesevisning}
                 />
             }
         >
