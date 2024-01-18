@@ -17,7 +17,7 @@ export interface IOpprettFagsakModal {
 }
 
 const StyledBodyShort = styled(BodyShort)`
-    margin-bottom: 2rem;
+    margin-top: 2rem;
 `;
 
 const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
@@ -38,14 +38,14 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
             header={{ heading: 'Opprett fagsak', size: 'medium' }}
         >
             <Modal.Body>
-                <StyledBodyShort size={'small'} level={'3'}>
+                <BodyShort size={'small'} level={'3'}>
                     Personen har ingen tilknyttet fagsak. Ønsker du å opprette fagsak for denne
                     personen?
-                </StyledBodyShort>
+                </BodyShort>
                 {søkeresultat && (
-                    <BodyShort>{`${søkeresultat.navn} (${formaterIdent(
+                    <StyledBodyShort>{`${søkeresultat.navn} (${formaterIdent(
                         søkeresultat.ident
-                    )})`}</BodyShort>
+                    )})`}</StyledBodyShort>
                 )}
                 {!!feilmelding && <ErrorMessage children={feilmelding} />}
             </Modal.Body>
