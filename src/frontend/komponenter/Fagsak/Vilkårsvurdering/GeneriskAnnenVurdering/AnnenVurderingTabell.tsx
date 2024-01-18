@@ -28,7 +28,6 @@ const AnnenVurderingTabell: React.FC<IProps> = ({
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Vurdering</Table.HeaderCell>
-                    <Table.HeaderCell />
                     <Table.HeaderCell>Begrunnelse</Table.HeaderCell>
                     <Table.HeaderCell />
                     <Table.HeaderCell />

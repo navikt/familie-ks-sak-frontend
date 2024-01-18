@@ -76,7 +76,6 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
                     <BodyShort children={uiResultat[annenVurdering.resultat]} />
                 </HStack>
             </Table.DataCell>
-            <Table.DataCell />
             <Table.DataCell>
                 <BeskrivelseCelle children={annenVurdering.begrunnelse} />
             </Table.DataCell>
