@@ -26,7 +26,7 @@ import type {
 import { Regelverk, Resultat, VilkårType } from '../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../utils/vilkår';
 
-const StyledFieldset = styled(Fieldset)<{
+export const FieldsetForVilkårSkjema = styled(Fieldset)<{
     $lesevisning: boolean;
     $vilkårResultat: Resultat | undefined;
 }>`
@@ -100,7 +100,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
         vilkårSkjemaContext;
 
     return (
-        <StyledFieldset
+        <FieldsetForVilkårSkjema
             error={feilmelding}
             errorPropagation={false}
             legend={'Endre vilkår'}
@@ -270,7 +270,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     </Button>
                 )}
             </Knapperad>
-        </StyledFieldset>
+        </FieldsetForVilkårSkjema>
     );
 };
 
