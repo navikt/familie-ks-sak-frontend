@@ -83,11 +83,9 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
                 <ManuellVurdering />
             </Table.DataCell>
             <Table.DataCell>
-                <i>
-                    {åpenBehandling.status === RessursStatus.SUKSESS && annenVurdering.erVurdert
-                        ? 'Vurdert i denne behandlingen'
-                        : ''}
-                </i>
+                {åpenBehandling.status === RessursStatus.SUKSESS && annenVurdering.erVurdert
+                    ? 'Vurdert i denne behandlingen'
+                    : ''}
             </Table.DataCell>
         </Table.ExpandableRow>
     );
