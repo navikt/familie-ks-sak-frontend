@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import { Feiloppsummering, SkjemaGruppe } from 'nav-frontend-skjema';
+import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { ExternalLink } from '@navikt/ds-icons';
 import {
@@ -11,6 +11,7 @@ import {
     BodyLong,
     BodyShort,
     Button,
+    ErrorSummary,
     Heading,
     HelpText,
     Label,
@@ -394,10 +395,16 @@ const TilbakekrevingSkjema: React.FC<{
                 )}
 
                 {tilbakekrevingSkjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
-                    <Feiloppsummering
-                        tittel={'For å gå videre må du rette opp følgende:'}
-                        feil={hentFeilTilOppsummering()}
-                    />
+                    <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
+                        {hentFeilTilOppsummering().map(item => (
+                            <ErrorSummary.Item
+                                href={`#${item.skjemaelementId}`}
+                                key={item.skjemaelementId}
+                            >
+                                {item.feilmelding}
+                            </ErrorSummary.Item>
+                        ))}
+                    </ErrorSummary>
                 )}
             </TilbakekrevingSkjemaGruppe>
         </>
