@@ -4,7 +4,7 @@ import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button } from '@navikt/ds-react';
+import { Button, Modal } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import {
     byggFeiletRessurs,
@@ -23,7 +23,6 @@ import type { IBehandling } from '../../../../typer/behandling';
 import { BehandlingStatus } from '../../../../typer/behandling';
 import type { ITotrinnskontrollData } from '../../../../typer/totrinnskontroll';
 import { TotrinnskontrollBeslutning } from '../../../../typer/totrinnskontroll';
-import UIModalWrapper from '../../Modal/UIModalWrapper';
 import type { ITrinn } from '../../Venstremeny/sider';
 import { KontrollertStatus } from '../../Venstremeny/sider';
 
@@ -147,38 +146,38 @@ const Totrinnskontroll: React.FunctionComponent<IProps> = ({ åpenBehandling }) 
                 </Container>
             )}
 
-            {modalVerdi && (
-                <UIModalWrapper
-                    modal={{
-                        tittel: 'Totrinnskontroll',
-                        lukkKnapp: false,
-                        visModal: modalVerdi.skalVises,
-                        actions: [
-                            <Button
-                                variant={'secondary'}
-                                key={'saksoversikt'}
-                                size={'small'}
-                                onClick={() => {
-                                    settModalVerdi(initiellModalVerdi);
-                                    navigate(`/fagsak/${fagsakId}/saksoversikt`);
-                                }}
-                                children={'Gå til saksoversikten'}
-                            />,
-                            <Button
-                                key={'oppgavebenk'}
-                                variant={'primary'}
-                                size={'small'}
-                                onClick={() => {
-                                    settModalVerdi(initiellModalVerdi);
-                                    navigate('/oppgaver');
-                                }}
-                                children={'Gå til oppgavebenken'}
-                            />,
-                        ],
-                    }}
+            {modalVerdi.skalVises && (
+                <Modal
+                    open
+                    header={{ heading: 'Totrinnskontroll', size: 'small', closeButton: false }}
+                    width={'35rem'}
                 >
-                    <TotrinnskontrollModalInnhold beslutning={modalVerdi.beslutning} />
-                </UIModalWrapper>
+                    <Modal.Body>
+                        <TotrinnskontrollModalInnhold beslutning={modalVerdi.beslutning} />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            key={'oppgavebenk'}
+                            variant={'primary'}
+                            size={'small'}
+                            onClick={() => {
+                                settModalVerdi(initiellModalVerdi);
+                                navigate('/oppgaver');
+                            }}
+                            children={'Gå til oppgavebenken'}
+                        />
+                        <Button
+                            variant={'secondary'}
+                            key={'saksoversikt'}
+                            size={'small'}
+                            onClick={() => {
+                                settModalVerdi(initiellModalVerdi);
+                                navigate(`/fagsak/${fagsakId}/saksoversikt`);
+                            }}
+                            children={'Gå til saksoversikten'}
+                        />
+                    </Modal.Footer>
+                </Modal>
             )}
         </>
     );

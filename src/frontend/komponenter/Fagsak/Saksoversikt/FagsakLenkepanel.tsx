@@ -1,8 +1,14 @@
 import React from 'react';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { BodyShort, Label, LinkPanel, Panel } from '@navikt/ds-react';
+import { BodyShort, Box, HStack, LinkPanel } from '@navikt/ds-react';
+import {
+    AFontSizeHeadingMedium,
+    AFontSizeXlarge,
+    ASpacing8,
+    ASpacing16,
+} from '@navikt/ds-tokens/dist/tokens';
 
 import type { VisningBehandling } from './visningBehandling';
 import { BehandlingStatus } from '../../../typer/behandling';
@@ -20,24 +26,12 @@ interface IInnholdstabell {
     behandling?: VisningBehandling;
 }
 
-const StyledLabel = styled(Label)`
-    display: inline-block;
-    font-size: var(--a-font-size-xlarge);
-    font-weight: var(--a-font-weight-regular);
+const HeaderTekst = styled(BodyShort)`
+    font-size: ${AFontSizeXlarge};
 `;
 
-const StyledBodyShort = styled(BodyShort)`
-    font-size: var(--a-font-size-heading-medium);
-    font-weight: var(--a-font-weight-bold);
-`;
-
-const Container = styled.div`
-    width: 100%;
-    display: flex;
-
-    div:first-child {
-        margin-right: 5rem;
-    }
+const BodyTekst = styled(BodyShort)`
+    font-size: ${AFontSizeHeadingMedium};
 `;
 
 const Innholdstabell: React.FC<IInnholdstabell> = ({ minimalFagsak }) => {
@@ -45,38 +39,37 @@ const Innholdstabell: React.FC<IInnholdstabell> = ({ minimalFagsak }) => {
         minimalFagsak.løpendeKategori && tilBehandlingstema(minimalFagsak.løpendeKategori);
 
     return (
-        <Container>
+        <HStack gap="20">
             <div>
-                <StyledLabel for={'behandlingstema'} spacing>
+                <HeaderTekst for={'behandlingstema'} spacing>
                     Behandlingstema
-                </StyledLabel>
-                <StyledBodyShort name={'behandlingstema'}>
+                </HeaderTekst>
+                <BodyTekst name={'behandlingstema'} weight="semibold">
                     {behandlingstema ? behandlingstema.navn : '-'}
-                </StyledBodyShort>
+                </BodyTekst>
             </div>
             <div>
-                <StyledLabel for={'status'} spacing>
+                <HeaderTekst for={'status'} spacing>
                     Status
-                </StyledLabel>
-                <StyledBodyShort name={'status'}>
+                </HeaderTekst>
+                <BodyTekst name={'status'} weight="semibold">
                     {hentFagsakStatusVisning(minimalFagsak)}
-                </StyledBodyShort>
+                </BodyTekst>
             </div>
-        </Container>
+        </HStack>
     );
 };
+export const SaksoversiktPanelBredde = `calc(10 * ${ASpacing16})`;
 
-const panelStyle = css`
-    width: 39rem;
-    padding: 2rem;
+const FagsakPanelMedAktivBehandling = styled(LinkPanel)`
+    width: ${SaksoversiktPanelBredde};
+    margin-top: ${ASpacing8};
+    padding: ${ASpacing8};
 `;
 
-const StyledLinkPanel = styled(LinkPanel)`
-    ${panelStyle}
-`;
-
-const StyledPanel = styled(Panel)`
-    ${panelStyle}
+const FagsakPanel = styled(Box)`
+    width: ${SaksoversiktPanelBredde};
+    margin-top: ${ASpacing8};
 `;
 
 const genererHoverTekst = (behandling: VisningBehandling) => {
@@ -90,22 +83,18 @@ const FagsakLenkepanel: React.FC<IFagsakLinkPanel> = ({ minimalFagsak }) => {
         hentAktivBehandlingPåMinimalFagsak(minimalFagsak);
 
     return aktivBehandling ? (
-        <>
-            <StyledLinkPanel
-                title={genererHoverTekst(aktivBehandling)}
-                href={`/fagsak/${minimalFagsak.id}/${aktivBehandling.behandlingId}`}
-            >
-                <LinkPanel.Description>
-                    <Innholdstabell minimalFagsak={minimalFagsak} />
-                </LinkPanel.Description>
-            </StyledLinkPanel>
-        </>
-    ) : (
-        <>
-            <StyledPanel border>
+        <FagsakPanelMedAktivBehandling
+            title={genererHoverTekst(aktivBehandling)}
+            href={`/fagsak/${minimalFagsak.id}/${aktivBehandling.behandlingId}`}
+        >
+            <LinkPanel.Description>
                 <Innholdstabell minimalFagsak={minimalFagsak} />
-            </StyledPanel>
-        </>
+            </LinkPanel.Description>
+        </FagsakPanelMedAktivBehandling>
+    ) : (
+        <FagsakPanel borderColor="border-strong" borderWidth="1" borderRadius="small" padding="8">
+            <Innholdstabell minimalFagsak={minimalFagsak} />
+        </FagsakPanel>
     );
 };
 

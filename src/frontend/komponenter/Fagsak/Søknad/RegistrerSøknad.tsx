@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Feiloppsummering } from 'nav-frontend-skjema';
 
-import { Alert, BodyShort, Button } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import Annet from './Annet';
@@ -12,7 +12,6 @@ import Barna from './Barna';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useSøknad } from '../../../context/SøknadContext';
 import { BehandlingSteg } from '../../../typer/behandling';
-import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
 import MålformVelger from '../../Felleskomponenter/MålformVelger';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
 
@@ -84,43 +83,47 @@ const RegistrerSøknad: React.FC = () => {
             )}
 
             {visBekreftModal && (
-                <UIModalWrapper
-                    modal={{
-                        className: 'søknad-modal',
-                        tittel: 'Er du sikker på at du vil gå videre?',
-                        lukkKnapp: false,
-                        visModal: visBekreftModal,
-                        actions: [
-                            <Button
-                                variant={'secondary'}
-                                key={'nei'}
-                                size={'small'}
-                                onClick={() => {
-                                    settVisBekreftModal(false);
-                                }}
-                                children={'Nei'}
-                            />,
-                            <Button
-                                key={'ja'}
-                                variant={'primary'}
-                                size={'small'}
-                                onClick={() => {
-                                    settVisBekreftModal(false);
-                                    nesteAction(true);
-                                }}
-                                children={'Ja'}
-                                loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
-                            />,
-                        ],
+                <Modal
+                    open
+                    onClose={() => settVisBekreftModal(false)}
+                    header={{
+                        heading: 'Er du sikker på at du vil gå videre?',
+                        size: 'small',
+                        closeButton: false,
                     }}
+                    width={'35rem'}
                 >
-                    <FjernVilkårAdvarsel>
-                        {skjema.submitRessurs.status === RessursStatus.FEILET ||
-                            (skjema.submitRessurs.status === RessursStatus.FUNKSJONELL_FEIL &&
-                                skjema.submitRessurs.frontendFeilmelding)}
-                    </FjernVilkårAdvarsel>
-                </UIModalWrapper>
+                    <Modal.Body>
+                        <FjernVilkårAdvarsel>
+                            {skjema.submitRessurs.status === RessursStatus.FEILET ||
+                                (skjema.submitRessurs.status === RessursStatus.FUNKSJONELL_FEIL &&
+                                    skjema.submitRessurs.frontendFeilmelding)}
+                        </FjernVilkårAdvarsel>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            key={'ja'}
+                            variant={'primary'}
+                            size={'small'}
+                            onClick={() => {
+                                settVisBekreftModal(false);
+                                nesteAction(true);
+                            }}
+                            children={'Ja'}
+                            loading={skjema.submitRessurs.status === RessursStatus.HENTER}
+                            disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
+                        />
+                        <Button
+                            variant={'secondary'}
+                            key={'nei'}
+                            size={'small'}
+                            onClick={() => {
+                                settVisBekreftModal(false);
+                            }}
+                            children={'Nei'}
+                        />
+                    </Modal.Footer>
+                </Modal>
             )}
         </StyledSkjemasteg>
     );

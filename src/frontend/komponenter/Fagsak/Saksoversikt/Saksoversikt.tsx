@@ -3,11 +3,11 @@ import React from 'react';
 import { addMonths, differenceInMilliseconds, startOfMonth } from 'date-fns';
 import styled from 'styled-components';
 
-import { Alert, Heading, Link } from '@navikt/ds-react';
+import { Alert, Heading, Link, VStack } from '@navikt/ds-react';
 import { byggTomRessurs } from '@navikt/familie-typer';
 
 import Behandlinger from './Behandlinger';
-import FagsakLenkepanel from './FagsakLenkepanel';
+import FagsakLenkepanel, { SaksoversiktPanelBredde } from './FagsakLenkepanel';
 import Utbetalinger from './Utbetalinger';
 import type { VisningBehandling } from './visningBehandling';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
@@ -30,11 +30,6 @@ interface IProps {
     minimalFagsak: IMinimalFagsak;
 }
 
-const FlexSpaceBetween = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
 const SaksoversiktWrapper = styled.div`
     max-width: 70rem;
     margin: 4rem;
@@ -44,14 +39,12 @@ const StyledHeading = styled(Heading)`
     margin-top: 3.75rem;
 `;
 
-const StyledAlert = styled(Alert)`
-    .navds-alert__wrapper {
-        flex: 1;
-    }
-`;
-
 const SaksoversiktHeading = styled(Heading)`
     margin-bottom: 1rem;
+`;
+
+const StyledAlert = styled(Alert)`
+    width: ${SaksoversiktPanelBredde};
 `;
 
 const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
@@ -110,21 +103,21 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
         ) {
             return utbetalingsperiodeInneværendeMåned.utbetaltPerMnd < 1 &&
                 gjeldendeBehandling?.kategori === BehandlingKategori.EØS ? (
-                <Alert className={'saksoversikt__alert'} variant="info">
+                <StyledAlert variant="info">
                     Siste gjeldende vedtak er en EØS-sak uten månedlige utbetalinger fra NAV
-                </Alert>
+                </StyledAlert>
             ) : (
                 <>
                     {utbetalingsperiodeNesteMåned &&
                         utbetalingsperiodeNesteMåned !== utbetalingsperiodeInneværendeMåned && (
-                            <StyledAlert className={'saksoversikt__alert'} variant="info">
-                                <FlexSpaceBetween>
+                            <StyledAlert variant="info">
+                                <VStack>
                                     {`Utbetalingen endres fra og med ${dateTilFormatertString({
                                         date: nesteMåned,
                                         tilFormat: Datoformat.MÅNED_ÅR_NAVN,
                                     })}`}
                                     {lenkeTilBehandlingsresultat()}
-                                </FlexSpaceBetween>
+                                </VStack>
                             </StyledAlert>
                         )}
                     <Utbetalinger vedtaksperiode={utbetalingsperiodeInneværendeMåned} />
@@ -132,22 +125,22 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
             );
         } else if (utbetalingsperiodeNesteMåned) {
             return (
-                <StyledAlert className={'saksoversikt__alert'} variant="info">
-                    <FlexSpaceBetween>
+                <StyledAlert variant="info">
+                    <VStack>
                         {`Utbetalingen starter ${dateTilFormatertString({
                             date: nesteMåned,
                             tilFormat: Datoformat.MÅNED_ÅR_NAVN,
                         })}`}
                         {lenkeTilBehandlingsresultat()}
-                    </FlexSpaceBetween>
+                    </VStack>
                 </StyledAlert>
             );
         } else {
             return (
-                <Alert className={'saksoversikt__alert'} variant="error">
+                <StyledAlert variant="error">
                     Noe gikk galt ved henting av utbetalinger. Prøv igjen eller kontakt brukerstøtte
                     hvis problemet vedvarer.
-                </Alert>
+                </StyledAlert>
             );
         }
     };
