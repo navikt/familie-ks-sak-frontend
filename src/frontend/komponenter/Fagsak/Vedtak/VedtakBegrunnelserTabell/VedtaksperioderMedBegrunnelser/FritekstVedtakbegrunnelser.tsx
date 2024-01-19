@@ -3,10 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import { Label, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { AddCircle, Delete, ExternalLink } from '@navikt/ds-icons';
-import { BodyLong, Button, Heading, HelpText, Link, Tag } from '@navikt/ds-react';
+import { BodyLong, Button, Fieldset, Heading, HelpText, Label, Link, Tag } from '@navikt/ds-react';
 import { FamilieKnapp, FamilieTextarea } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -16,7 +15,6 @@ import { målform } from '../../../../../typer/søknad';
 import type { IFritekstFelt } from '../../../../../utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import Knapperekke from '../../../../Felleskomponenter/Knapperekke';
-import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
 import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
 
 const FritekstContainer = styled.div`
@@ -113,7 +111,6 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
     return vedtaksperiodeMedBegrunnelser.fritekster.length > 0 ||
         skjema.felter.fritekster.verdi.length > 0 ? (
         <FritekstContainer>
-            <SkjultLegend>Fritekst til kulepunkt i brev</SkjultLegend>
             <InfoBoks>
                 <StyledLabel htmlFor={skjemaGruppeId}>Fritekst til kulepunkt i brev</StyledLabel>
                 <StyledHelpText placement="top-start">
@@ -151,11 +148,13 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                 </StyledList>
             ) : (
                 <>
-                    <SkjemaGruppe
+                    <Fieldset
                         id={skjemaGruppeId}
-                        feil={
+                        error={
                             skjema.visFeilmeldinger && hentFrontendFeilmelding(skjema.submitRessurs)
                         }
+                        legend={'Fritekst til kulepunkt i brev'}
+                        hideLegend
                     >
                         {skjema.felter.fritekster.verdi.map(
                             (fritekst: FeltState<IFritekstFelt>) => {
@@ -201,7 +200,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                                 );
                             }
                         )}
-                    </SkjemaGruppe>
+                    </Fieldset>
                     {!erMaksAntallKulepunkter && !erLesevisning && (
                         <Button
                             variant={'tertiary'}
