@@ -1,23 +1,17 @@
 import React from 'react';
 
-import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { BodyShort, Checkbox, Fieldset, Heading } from '@navikt/ds-react';
+import { Checkbox, Fieldset, Heading } from '@navikt/ds-react';
+import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
 import BehandlingstypeFelt from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingstypeFelt';
 import { BehandlingårsakFelt } from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingsårsakFelt';
 import { BehandlingstemaSelect } from '../Felleskomponenter/BehandlingstemaSelect';
 
-const StyledCheckboxDiv = styled.div`
-    width: 20rem;
-`;
-
 const StyledFieldset = styled(Fieldset)`
-    && > div:not(:last-child):not(:empty) {
-        margin-bottom: 1rem;
-    }
+    margin-top: ${ASpacing8};
 `;
 
 /**
@@ -33,27 +27,17 @@ export const KnyttTilNyBehandling: React.FC = () => {
             <Heading size={'small'} level={'2'}>
                 Knytt til ny behandling
             </Heading>
-            <StyledCheckboxDiv>
-                {!kanKnytteJournalpostTilBehandling() ? (
-                    knyttTilNyBehandling.verdi ? (
-                        <BodyShort
-                            className={classNames('skjemaelement', 'lese-felt')}
-                            children={'Knytt til ny behandling'}
-                        />
-                    ) : null
-                ) : (
-                    <Checkbox
-                        id={knyttTilNyBehandling.id}
-                        value={'Knytt til ny behandling'}
-                        checked={knyttTilNyBehandling.verdi}
-                        onChange={() => {
-                            knyttTilNyBehandling.validerOgSettFelt(!knyttTilNyBehandling.verdi);
-                        }}
-                    >
-                        {'Knytt til ny behandling'}
-                    </Checkbox>
-                )}
-            </StyledCheckboxDiv>
+            <Checkbox
+                id={knyttTilNyBehandling.id}
+                value={'Knytt til ny behandling'}
+                checked={knyttTilNyBehandling.verdi}
+                onChange={() => {
+                    knyttTilNyBehandling.validerOgSettFelt(!knyttTilNyBehandling.verdi);
+                }}
+                readOnly={!kanKnytteJournalpostTilBehandling()}
+            >
+                {'Knytt til ny behandling'}
+            </Checkbox>
             {behandlingstype.erSynlig && (
                 <BehandlingstypeFelt
                     behandlingstype={skjema.felter.behandlingstype}

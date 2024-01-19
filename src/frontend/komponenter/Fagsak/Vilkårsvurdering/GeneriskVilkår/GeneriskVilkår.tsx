@@ -61,13 +61,13 @@ const GeneriskVilkår: React.FC<IProps> = ({
     return (
         <Container>
             <Fieldset
+                legend={vilkårFraConfig.tittel}
+                hideLegend
                 error={
                     visFeilmeldingerForVilkår
                         ? vilkårsvurderingApi.opprettVilkårFeilmelding
                         : undefined
                 }
-                legend={vilkårFraConfig.tittel}
-                hideLegend
             >
                 <Heading size="medium" level="3">
                     {vilkårFraConfig.tittel}
