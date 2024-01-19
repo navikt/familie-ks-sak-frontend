@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
 import { AddCircle } from '@navikt/ds-icons';
-import { Button, Heading } from '@navikt/ds-react';
+import { Button, Fieldset, Heading } from '@navikt/ds-react';
 import { ASpacing5, ASpacing8, ASpacing16 } from '@navikt/ds-tokens/dist/tokens';
 
 import VilkårTabell from './VilkårTabell';
@@ -62,12 +60,14 @@ const GeneriskVilkår: React.FC<IProps> = ({
 
     return (
         <Container>
-            <SkjemaGruppe
-                feil={
+            <Fieldset
+                error={
                     visFeilmeldingerForVilkår
                         ? vilkårsvurderingApi.opprettVilkårFeilmelding
                         : undefined
                 }
+                legend={vilkårFraConfig.tittel}
+                hideLegend
             >
                 <Heading size="medium" level="3">
                     {vilkårFraConfig.tittel}
@@ -99,7 +99,7 @@ const GeneriskVilkår: React.FC<IProps> = ({
                         Legg til periode
                     </UtførKnapp>
                 )}
-            </SkjemaGruppe>
+            </Fieldset>
         </Container>
     );
 };
