@@ -2,9 +2,7 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { Feiloppsummering } from 'nav-frontend-skjema';
-
-import { Alert, BodyShort, Button, Modal } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, ErrorSummary, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import Annet from './Annet';
@@ -76,10 +74,13 @@ const RegistrerSøknad: React.FC = () => {
                 <Alert variant="error">{skjema.submitRessurs.frontendFeilmelding}</Alert>
             )}
             {skjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
-                <Feiloppsummering
-                    tittel={'For å gå videre må du rette opp følgende:'}
-                    feil={hentFeilTilOppsummering()}
-                />
+                <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
+                    {hentFeilTilOppsummering().map(item => (
+                        <ErrorSummary.Item href={`#${item.skjemaelementId}`}>
+                            {item.feilmelding}
+                        </ErrorSummary.Item>
+                    ))}
+                </ErrorSummary>
             )}
 
             {visBekreftModal && (
