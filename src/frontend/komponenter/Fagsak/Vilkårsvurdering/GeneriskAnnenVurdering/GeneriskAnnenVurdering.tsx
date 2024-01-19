@@ -2,7 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Fieldset } from '@navikt/ds-react';
+import { Fieldset, Heading } from '@navikt/ds-react';
+import { ASpacing16 } from '@navikt/ds-tokens/dist/tokens';
 
 import AnnenVurderingTabell from './AnnenVurderingTabell';
 import type { IGrunnlagPerson } from '../../../../typer/person';
@@ -14,11 +15,8 @@ interface IProps {
     annenVurderingConfig: IAnnenVurderingConfig;
 }
 
-const Container = styled.div`
-    margin-top: 1rem;
-    :not(:first-child) {
-        margin-top: 2.5rem;
-    }
+const StyledFieldset = styled(Fieldset)`
+    margin-top: ${ASpacing16};
 `;
 
 const GeneriskAnnenVurdering: React.FC<IProps> = ({
@@ -27,15 +25,16 @@ const GeneriskAnnenVurdering: React.FC<IProps> = ({
     andreVurderinger,
 }) => {
     return (
-        <Container>
-            <Fieldset legend={annenVurderingConfig.tittel}>
-                <AnnenVurderingTabell
-                    person={person}
-                    annenVurderingConfig={annenVurderingConfig}
-                    andreVurderinger={andreVurderinger}
-                />
-            </Fieldset>
-        </Container>
+        <StyledFieldset legend={annenVurderingConfig.tittel} hideLegend>
+            <Heading size="medium" level="3">
+                {annenVurderingConfig.tittel}
+            </Heading>
+            <AnnenVurderingTabell
+                person={person}
+                annenVurderingConfig={annenVurderingConfig}
+                andreVurderinger={andreVurderinger}
+            />
+        </StyledFieldset>
     );
 };
 
