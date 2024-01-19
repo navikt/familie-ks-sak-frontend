@@ -1,7 +1,16 @@
 import { addMonths, differenceInMilliseconds, isAfter, isBefore, startOfMonth } from 'date-fns';
 
-import navFarger from 'nav-frontend-core';
-
+import {
+    ABlue100,
+    AGray100,
+    AGray600,
+    AGreen100,
+    AGreen500,
+    AOrange100,
+    AOrange600,
+    ARed50,
+    ARed600,
+} from '@navikt/ds-tokens/dist/tokens';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -104,15 +113,15 @@ export const hentBakgrunnsfarge = (begrunnelseType?: BegrunnelseType) => {
     switch (begrunnelseType) {
         case BegrunnelseType.INNVILGET:
         case BegrunnelseType.FORTSATT_INNVILGET:
-            return navFarger.navGronnLighten80;
+            return AGreen100;
         case BegrunnelseType.AVSLAG:
-            return navFarger.redErrorLighten80;
+            return ARed50;
         case BegrunnelseType.REDUKSJON:
-            return navFarger.navOransjeLighten80;
+            return AOrange100;
         case BegrunnelseType.OPPHØR:
-            return navFarger.navLysGra;
+            return AGray100;
         default:
-            return navFarger.navBlaLighten80;
+            return ABlue100;
     }
 };
 
@@ -120,15 +129,15 @@ export const hentBorderfarge = (begrunnelseType?: BegrunnelseType) => {
     switch (begrunnelseType) {
         case BegrunnelseType.INNVILGET:
         case BegrunnelseType.FORTSATT_INNVILGET:
-            return navFarger.navGronn;
+            return AGreen500;
         case BegrunnelseType.AVSLAG:
-            return navFarger.redErrorDarken20;
+            return ARed600;
         case BegrunnelseType.REDUKSJON:
-            return navFarger.navOransjeDarken20;
+            return AOrange600;
         case BegrunnelseType.OPPHØR:
-            return navFarger.navGra60;
+            return AGray600;
         default:
-            return navFarger.navBlaLighten80;
+            return ABlue100;
     }
 };
 

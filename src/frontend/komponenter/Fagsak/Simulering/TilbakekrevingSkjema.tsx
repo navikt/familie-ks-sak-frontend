@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
 import { Feiloppsummering, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { ExternalLink } from '@navikt/ds-icons';
@@ -19,6 +18,7 @@ import {
     RadioGroup,
     Tag,
 } from '@navikt/ds-react';
+import { AGray100, AGray600 } from '@navikt/ds-tokens/dist/tokens';
 import { FamilieTextarea, FlexDiv } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -66,8 +66,8 @@ const StyledHelpTextContainer = styled.div`
 
 const StyledTag = styled(Tag)`
     margin-left: auto;
-    background-color: ${navFarger.navLysGra};
-    border-color: ${navFarger.navGra60};
+    background-color: ${AGray100};
+    border-color: ${AGray600};
 `;
 
 const TilbakekrevingSkjemaGruppe = styled(SkjemaGruppe)`

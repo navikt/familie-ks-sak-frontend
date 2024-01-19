@@ -2,7 +2,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
 import { Label, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { AddCircle, Delete, ExternalLink } from '@navikt/ds-icons';
@@ -20,7 +19,6 @@ import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
 import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
 
 const FritekstContainer = styled.div`
-    background-color: ${navFarger.navGraBakgrunn};
     padding: 1rem;
 `;
 
@@ -53,8 +51,6 @@ const InfoBoks = styled.div`
 
 const StyledTag = styled(Tag)`
     margin-left: auto;
-    background-color: ${navFarger.navLysGra};
-    border-color: ${navFarger.navGra60};
 `;
 
 const SletteKnapp = styled(Button)`

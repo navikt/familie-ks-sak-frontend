@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
 import { Label, SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { AddCircle, Delete, FileContent } from '@navikt/ds-icons';
 import { Button, Select, Tag, Textarea } from '@navikt/ds-react';
+import { AGray100, AGray600 } from '@navikt/ds-tokens/dist/tokens';
 import { FamilieInput, FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -66,8 +66,8 @@ const StyledButton = styled(Button)`
 `;
 
 const StyledTag = styled(Tag)`
-    background-color: ${navFarger.navLysGra};
-    border-color: ${navFarger.navGra60};
+    background-color: ${AGray100};
+    border-color: ${AGray600};
 `;
 
 const LabelOgEtikett = styled.div`
