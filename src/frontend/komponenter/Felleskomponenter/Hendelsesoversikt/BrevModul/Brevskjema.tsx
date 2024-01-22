@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import { Label } from 'nav-frontend-skjema';
 
 import { AddCircle, Delete, FileContent } from '@navikt/ds-icons';
-import { Button, Fieldset, Select, Tag, Textarea } from '@navikt/ds-react';
+import { Button, Fieldset, Label, Select, Tag, Textarea } from '@navikt/ds-react';
 import { FamilieInput, FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
