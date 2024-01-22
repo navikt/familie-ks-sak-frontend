@@ -23,7 +23,6 @@ import { BehandlingSteg, hentStegNummer } from '../../../../typer/behandling';
 import type { IManueltBrevRequestPåBehandling } from '../../../../typer/dokument';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import { PersonType } from '../../../../typer/person';
-import type { IBarnMedOpplysninger } from '../../../../typer/søknad';
 import { målform } from '../../../../typer/søknad';
 import { lagPersonLabel } from '../../../../utils/formatter';
 import type { IFritekstFelt } from '../../../../utils/fritekstfelter';
@@ -346,21 +345,6 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                         behandlingsSteg={behandlingSteg}
                         visFeilmeldinger={skjema.visFeilmeldinger}
                         settVisFeilmeldinger={settVisfeilmeldinger}
-                        alternativer={personer
-                            .filter(person => person.type === PersonType.BARN)
-                            .map(
-                                (person: IGrunnlagPerson): IBarnMedOpplysninger => ({
-                                    ident: person.personIdent,
-                                    fødselsdato: person.fødselsdato,
-                                    navn: person.navn,
-                                    merket:
-                                        skjema.felter.barnBrevetGjelder.verdi.find(
-                                            markertFelt => markertFelt.ident === person.personIdent
-                                        )?.merket ?? false,
-                                    manueltRegistrert: false,
-                                    erFolkeregistrert: true,
-                                })
-                            )}
                     />
                 )}
                 {skjema.felter.brevmal.verdi === Brevmal.FORLENGET_SVARTIDSBREV && (
