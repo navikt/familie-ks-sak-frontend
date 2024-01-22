@@ -3,7 +3,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { XMarkIcon } from '@navikt/aksel-icons';
-import { Alert, BodyShort, Button, Label } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Button, Heading, HGrid, Label, VStack } from '@navikt/ds-react';
+import { ASpacing10, ASpacing4, ASpacing6 } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
@@ -25,39 +26,26 @@ import {
     sorterUtbetaling,
 } from '../../../utils/formatter';
 
-const TableHeaderAlignedRight = styled.th`
-    text-align: right;
-`;
-
-const TableDataAlignedRight = styled.td`
-    text-align: right;
-`;
-
 const AlertAlignedRight = styled(Alert)`
     float: right;
 `;
 
-const FlexDiv = styled.div`
-    display: flex;
+const UtbetalingsbeløpStack = styled(VStack)`
+    padding: ${ASpacing6} ${ASpacing10} ${ASpacing4} 0;
 `;
 
-const UtbetalingsbeløpTable = styled.table`
-    width: 100%;
-    padding-bottom: 1rem;
-`;
+interface UtbetalingsbeløpRadProps {
+    children?: React.ReactElement[];
+}
+const UtbetalingsbeløpRad: React.FC<UtbetalingsbeløpRadProps> = ({ children }) => (
+    <HGrid columns="1fr 10rem 9rem 5rem" gap={'4'}>
+        {children}
+    </HGrid>
+);
 
-const VenstreTekst = styled(BodyShort)`
-    text-align: left;
-    font-weight: bold;
-    width: 50%;
-    margin: 1.25rem 0;
-`;
-
-const HøyreTekst = styled(BodyShort)`
-    text-align: right;
-    font-weight: bold;
-    width: 50%;
-    margin: 1.25rem 2.5rem 1.25rem 0;
+const TotaltUtbetaltRad = styled(HGrid)`
+    border-top: 1px dashed;
+    padding-top: ${ASpacing4};
 `;
 
 interface IProps {
@@ -157,13 +145,13 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
     }, [utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser]);
 
     return (
-        <div className={'behandlingsresultat-informasjonsboks'}>
-            <div className={'behandlingsresultat-informasjonsboks__header'}>
-                <div className={'behandlingsresultat-informasjonsboks__header__info'}>
+        <Box borderColor="border-strong" borderWidth="1" padding="10">
+            <HGrid columns="1fr 3rem" align="center">
+                <Heading level="3" size="xsmall">
                     <Label>{månedNavnOgÅr()}</Label>
 
                     {utbetalingsperiode === undefined && <BodyShort>Ingen utbetalinger</BodyShort>}
-                </div>
+                </Heading>
                 <Button
                     variant="tertiary"
                     icon={<XMarkIcon />}
@@ -171,76 +159,54 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                         settAktivEtikett(undefined);
                     }}
                 />
-            </div>
+            </HGrid>
             {utbetalingsperiode !== undefined && (
                 <>
-                    <UtbetalingsbeløpTable>
-                        <thead>
-                            <tr>
-                                <th>Person</th>
-                                <th>Barnehageplass</th>
-                                <th>Kontantstøtte</th>
-                                <TableHeaderAlignedRight>Beløp</TableHeaderAlignedRight>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {utbetalingsperiode.utbetalingsperiodeDetaljer
-                                .sort(sorterUtbetaling)
-                                .map((detalj, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>
-                                                <BodyShort>{`${
-                                                    detalj.person.navn
-                                                } (${hentAlderSomString(
-                                                    detalj.person.fødselsdato
-                                                )}) | ${formaterIdent(
-                                                    detalj.person.personIdent
-                                                )}`}</BodyShort>
-                                            </td>
-                                            <td>
-                                                <BodyShort>
-                                                    {hentBarnehageplassBeskrivelse(
-                                                        detalj.prosent,
-                                                        detalj.erPåvirketAvEndring
-                                                    )}
-                                                </BodyShort>
-                                            </td>
-                                            <td>
-                                                <BodyShort>{detalj.prosent + '%'}</BodyShort>
-                                            </td>
-                                            <TableDataAlignedRight>
-                                                {utbetalingsBeløpStatusMap.get(
-                                                    detalj.person.personIdent
-                                                ) ? (
-                                                    <BodyShort>
-                                                        {formaterBeløp(detalj.utbetaltPerMnd)}
-                                                    </BodyShort>
-                                                ) : (
-                                                    <AlertAlignedRight
-                                                        variant="warning"
-                                                        children={'Må beregnes'}
-                                                        size={'small'}
-                                                        inline
-                                                    />
-                                                )}
-                                            </TableDataAlignedRight>
-                                        </tr>
-                                    );
-                                })}
-                        </tbody>
-                    </UtbetalingsbeløpTable>
-
-                    <div className="dashed-hr" style={{ marginRight: '2.5rem' }}>
-                        <div className="line" />
-                    </div>
-                    <FlexDiv>
-                        <VenstreTekst>Totalt utbetalt per mnd</VenstreTekst>
-                        <HøyreTekst>{formaterBeløp(utbetalingsperiode.utbetaltPerMnd)}</HøyreTekst>
-                    </FlexDiv>
+                    <UtbetalingsbeløpStack gap="4">
+                        <UtbetalingsbeløpRad>
+                            <BodyShort>Person</BodyShort>
+                            <BodyShort>Barnehageplass</BodyShort>
+                            <BodyShort>Kontantstøtte</BodyShort>
+                            <BodyShort>Beløp</BodyShort>
+                        </UtbetalingsbeløpRad>
+                        {utbetalingsperiode.utbetalingsperiodeDetaljer
+                            .sort(sorterUtbetaling)
+                            .map(detalj => (
+                                <UtbetalingsbeløpRad key={detalj.person.navn}>
+                                    <BodyShort>{`${detalj.person.navn} (${hentAlderSomString(
+                                        detalj.person.fødselsdato
+                                    )}) | ${formaterIdent(detalj.person.personIdent)}`}</BodyShort>
+                                    <BodyShort>
+                                        {hentBarnehageplassBeskrivelse(
+                                            detalj.prosent,
+                                            detalj.erPåvirketAvEndring
+                                        )}
+                                    </BodyShort>
+                                    <BodyShort>{detalj.prosent + '%'}</BodyShort>
+                                    {utbetalingsBeløpStatusMap.get(detalj.person.personIdent) ? (
+                                        <BodyShort>
+                                            {formaterBeløp(detalj.utbetaltPerMnd)}
+                                        </BodyShort>
+                                    ) : (
+                                        <AlertAlignedRight
+                                            variant="warning"
+                                            children={'Må beregnes'}
+                                            size={'small'}
+                                            inline
+                                        />
+                                    )}
+                                </UtbetalingsbeløpRad>
+                            ))}
+                        <TotaltUtbetaltRad columns="1fr 5rem">
+                            <BodyShort weight="semibold">Totalt utbetalt per mnd</BodyShort>
+                            <BodyShort weight="semibold">
+                                {formaterBeløp(utbetalingsperiode.utbetaltPerMnd)}
+                            </BodyShort>
+                        </TotaltUtbetaltRad>
+                    </UtbetalingsbeløpStack>
                 </>
             )}
-        </div>
+        </Box>
     );
 };
 export { Oppsummeringsboks };
