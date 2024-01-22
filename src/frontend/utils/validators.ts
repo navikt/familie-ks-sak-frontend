@@ -59,9 +59,7 @@ const datoErPersonsXÅrsdag = (person: IGrunnlagPerson, dato: Date, antallÅr: n
 const datoErPersonsDødsfallsdag = (person: IGrunnlagPerson, dato: Date) => {
     const personsDødsfallsdag = person.dødsfallDato;
 
-    return (
-        personsDødsfallsdag !== undefined && isSameDay(dato, isoStringTilDate(personsDødsfallsdag))
-    );
+    return !!personsDødsfallsdag && isSameDay(dato, isoStringTilDate(personsDødsfallsdag));
 };
 
 const datoDifferanseMerEnn1År = (fom: Date, tom: Date) => {
