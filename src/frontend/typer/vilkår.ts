@@ -18,13 +18,6 @@ export const uiResultat: Record<Resultat, string> = {
     IKKE_AKTUELT: 'Ikke aktuelt',
 };
 
-export const resultater: Record<Resultat, string> = {
-    OPPFYLT: 'Ja',
-    IKKE_OPPFYLT: 'Nei',
-    IKKE_VURDERT: 'Kanskje',
-    IKKE_AKTUELT: 'Ikke aktuelt',
-};
-
 export enum AnnenVurderingType {
     OPPLYSNINGSPLIKT = 'OPPLYSNINGSPLIKT',
 }
