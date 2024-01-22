@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { XMarkIcon } from '@navikt/aksel-icons';
-import { Alert, BodyShort, Box, Button, Heading, HGrid, Label, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Button, Heading, HGrid, VStack } from '@navikt/ds-react';
 import { ASpacing10, ASpacing4, ASpacing6 } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
@@ -148,9 +148,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
         <Box borderColor="border-strong" borderWidth="1" padding="10">
             <HGrid columns="1fr 3rem" align="center">
                 <Heading level="3" size="xsmall">
-                    <Label>{månedNavnOgÅr()}</Label>
-
-                    {utbetalingsperiode === undefined && <BodyShort>Ingen utbetalinger</BodyShort>}
+                    {månedNavnOgÅr()}
                 </Heading>
                 <Button
                     variant="tertiary"
@@ -160,7 +158,9 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                     }}
                 />
             </HGrid>
-            {utbetalingsperiode !== undefined && (
+            {utbetalingsperiode === undefined ? (
+                <BodyShort spacing>Ingen utbetalinger</BodyShort>
+            ) : (
                 <>
                     <UtbetalingsbeløpStack gap="4">
                         <UtbetalingsbeløpRad>
