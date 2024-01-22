@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import { Label, SkjemaGruppe } from 'nav-frontend-skjema';
+import { Label } from 'nav-frontend-skjema';
 
 import { AddCircle, Delete, FileContent } from '@navikt/ds-icons';
-import { Button, Select, Tag, Textarea } from '@navikt/ds-react';
+import { Button, Fieldset, Select, Tag, Textarea } from '@navikt/ds-react';
 import { FamilieInput, FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -156,13 +156,14 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                     pdfdata={hentetDokument}
                 />
             )}
-            <SkjemaGruppe
-                feil={
+            <Fieldset
+                error={
                     hentFrontendFeilmelding(skjema.submitRessurs) ||
                     hentFrontendFeilmelding(hentetDokument)
                 }
+                legend={'Send brev'}
+                hideLegend
             >
-                <SkjultLegend>Send brev</SkjultLegend>
                 <Select
                     {...skjema.felter.mottakerIdent.hentNavInputProps(skjema.visFeilmeldinger)}
                     label={'Velg mottaker'}
@@ -256,12 +257,13 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                             </StyledList>
                         ) : (
                             <>
-                                <SkjemaGruppe
+                                <Fieldset
                                     id={skjemaGruppeId}
-                                    feil={
+                                    error={
                                         skjema.visFeilmeldinger &&
                                         hentFrontendFeilmelding(skjema.submitRessurs)
                                     }
+                                    legend={''}
                                 >
                                     {skjema.felter.fritekster.verdi.map(
                                         (fritekst: FeltState<IFritekstFelt>, index: number) => {
@@ -322,7 +324,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                             );
                                         }
                                     )}
-                                </SkjemaGruppe>
+                                </Fieldset>
 
                                 {!erMaksAntallKulepunkter && !erLesevisning && (
                                     <Button
@@ -371,7 +373,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                         size={'small'}
                     />
                 )}
-            </SkjemaGruppe>
+            </Fieldset>
             <Knapperekke>
                 {!erLesevisning && (
                     <Button
