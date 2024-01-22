@@ -3,7 +3,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import navFarger from 'nav-frontend-core';
-import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 import { ExternalLink } from '@navikt/ds-icons';
 import {
@@ -12,6 +11,7 @@ import {
     BodyShort,
     Button,
     ErrorSummary,
+    Fieldset,
     Heading,
     HelpText,
     Label,
@@ -71,14 +71,10 @@ const StyledTag = styled(Tag)`
     border-color: ${navFarger.navGra60};
 `;
 
-const TilbakekrevingSkjemaGruppe = styled(SkjemaGruppe)`
+const TilbakekrevingSkjemaGruppe = styled(Fieldset)`
     margin-top: 4rem;
     width: 90%;
     max-width: 40rem;
-
-    .radiogruppe {
-        margin-top: 2rem;
-    }
 `;
 
 const StyledAlert = styled(Alert)`
