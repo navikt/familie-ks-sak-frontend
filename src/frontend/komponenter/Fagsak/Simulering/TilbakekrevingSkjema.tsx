@@ -71,7 +71,7 @@ const StyledTag = styled(Tag)`
     border-color: ${navFarger.navGra60};
 `;
 
-const TilbakekrevingSkjemaGruppe = styled(Fieldset)`
+const StyledFieldset = styled(Fieldset)`
     margin-top: 4rem;
     width: 90%;
     max-width: 40rem;
@@ -159,7 +159,7 @@ const TilbakekrevingSkjema: React.FC<{
                 />
             )}
 
-            <TilbakekrevingSkjemaGruppe legend="Tilbakekreving">
+            <StyledFieldset legend="Tilbakekreving">
                 <FamilieTextarea
                     label={
                         <FlexDiv>
@@ -402,7 +402,7 @@ const TilbakekrevingSkjema: React.FC<{
                         ))}
                     </ErrorSummary>
                 )}
-            </TilbakekrevingSkjemaGruppe>
+            </StyledFieldset>
         </>
     );
 };

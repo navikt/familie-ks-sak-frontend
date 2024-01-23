@@ -89,7 +89,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
 
     const erMaksAntallKulepunkter = skjema.felter.fritekster.verdi.length >= maksAntallKulepunkter;
 
-    const skjemaGruppeId = `Fritekster ${id}`;
+    const fieldsetId = `Fritekster ${id}`;
 
     const onChangeFritekst = (event: React.ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
         skjema.felter.fritekster.validerOgSettFelt([
@@ -112,7 +112,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
         skjema.felter.fritekster.verdi.length > 0 ? (
         <FritekstContainer>
             <InfoBoks>
-                <StyledLabel htmlFor={skjemaGruppeId}>Fritekst til kulepunkt i brev</StyledLabel>
+                <StyledLabel htmlFor={fieldsetId}>Fritekst til kulepunkt i brev</StyledLabel>
                 <StyledHelpText placement="top-start">
                     <BodyLong size="small" spacing>
                         Brev som sendes ut bør være så kortfattede og presise som mulig.{' '}
@@ -141,7 +141,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
             </InfoBoks>
 
             {erLesevisning ? (
-                <StyledList id={skjemaGruppeId}>
+                <StyledList id={fieldsetId}>
                     {skjema.felter.fritekster.verdi.map((fritekst: FeltState<IFritekstFelt>) => (
                         <li>{fritekst.verdi.tekst}</li>
                     ))}
@@ -149,7 +149,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
             ) : (
                 <>
                     <Fieldset
-                        id={skjemaGruppeId}
+                        id={fieldsetId}
                         error={
                             skjema.visFeilmeldinger && hentFrontendFeilmelding(skjema.submitRessurs)
                         }

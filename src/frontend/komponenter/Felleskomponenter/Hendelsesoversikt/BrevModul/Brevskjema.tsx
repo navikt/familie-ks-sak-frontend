@@ -123,7 +123,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
     const behandlingId =
         åpenBehandling.status === RessursStatus.SUKSESS && åpenBehandling.data.behandlingId;
 
-    const skjemaGruppeId = 'Fritekster-brev';
+    const fieldsetId = 'Fritekster-brev';
     const erMaksAntallKulepunkter = skjema.felter.fritekster.verdi.length >= maksAntallKulepunkter;
 
     const behandlingSteg =
@@ -244,9 +244,9 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 )}
                 {skjema.felter.fritekster.erSynlig && (
                     <FritekstWrapper>
-                        <Label htmlFor={skjemaGruppeId}>Legg til kulepunkt</Label>
+                        <Label htmlFor={fieldsetId}>Legg til kulepunkt</Label>
                         {erLesevisning ? (
-                            <StyledList id={skjemaGruppeId}>
+                            <StyledList id={fieldsetId}>
                                 {skjema.felter.fritekster.verdi.map(
                                     (fritekst: FeltState<IFritekstFelt>) => (
                                         <li>{fritekst.verdi.tekst}</li>
@@ -256,7 +256,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                         ) : (
                             <>
                                 <Fieldset
-                                    id={skjemaGruppeId}
+                                    id={fieldsetId}
                                     error={
                                         skjema.visFeilmeldinger &&
                                         hentFrontendFeilmelding(skjema.submitRessurs)

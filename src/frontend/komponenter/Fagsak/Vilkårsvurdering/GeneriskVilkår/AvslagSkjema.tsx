@@ -19,7 +19,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const MarginSkjemaGruppe = styled(Fieldset)`
+const StyledFieldset = styled(Fieldset)`
     margin: 1.5rem 0 2.5rem 0 !important;
     > div:nth-child(2) {
         margin: 0.5rem 0 0 0;
@@ -40,7 +40,7 @@ const AvslagSkjema: React.FC<IProps> = ({
     const lesevisning = vurderErLesevisning();
 
     return (
-        <MarginSkjemaGruppe
+        <StyledFieldset
             legend={'Vurderingen er et avslag'}
             hideLegend
             error={visFeilmeldinger ? avslagBegrunnelser.feilmelding : ''}
@@ -71,7 +71,7 @@ const AvslagSkjema: React.FC<IProps> = ({
                     />
                 </VedtaksbegrunnelseTeksterProvider>
             )}
-        </MarginSkjemaGruppe>
+        </StyledFieldset>
     );
 };
 
