@@ -9,9 +9,9 @@ import {
     Heading,
     HStack,
     RadioGroup,
-    VStack,
     Radio,
     Textarea,
+    Fieldset,
 } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -41,10 +41,6 @@ const StyledButton = styled(Button)`
     width: fit-content;
 `;
 
-const MarginBottom = styled.div`
-    margin-bottom: 1rem;
-`;
-
 const Totrinnskontrollskjema: React.FunctionComponent<IProps> = ({
     innsendtVedtak,
     sendInnVedtak,
@@ -69,52 +65,52 @@ const Totrinnskontrollskjema: React.FunctionComponent<IProps> = ({
         totrinnskontroll?.saksbehandler === innloggetSaksbehandler?.displayName ?? false;
 
     return (
-        <RadioGroup
-            value={beslutning}
+        <Fieldset
             legend={
-                <MarginBottom>
-                    {egetVedtak ? (
-                        <Heading size={'medium'} level={'2'}>
-                            Totrinnskontroll
-                        </Heading>
-                    ) : (
-                        <BodyShort>
-                            Kontrollér opplysninger og faglige vurderinger som er gjort
-                        </BodyShort>
-                    )}
-                </MarginBottom>
-            }
-            error={hentFrontendFeilmelding(innsendtVedtak)}
-        >
-            <VStack gap={'6'}>
-                {egetVedtak ? (
-                    <div>
-                        <BodyShort>
-                            {isoStringTilFormatertString({
-                                isoString: opprettetTidspunkt,
-                                tilFormat: Datoformat.DATO_FORLENGET_MED_TID,
-                                defaultString: 'UKJENT OPPRETTELSESTIDSPUNKT',
-                            })}
-                        </BodyShort>
-                        <BodyShort>{saksbehandler}</BodyShort>
-                        <br />
-                        <Detail>Vedtaket er sendt til godkjenning</Detail>
-                    </div>
+                egetVedtak ? (
+                    <Heading size={'medium'} level={'2'}>
+                        Totrinnskontroll
+                    </Heading>
                 ) : (
-                    <div>
-                        <BodyShort weight={'semibold'}>Kontrollerte trinn</BodyShort>
-
-                        {Object.entries(trinnPåBehandling).map(([_, trinn], index) => {
-                            return (
-                                <TrinnStatus
-                                    kontrollertStatus={trinn.kontrollert}
-                                    navn={`${index + 1}. ${trinn.navn}`}
-                                />
-                            );
+                    <BodyShort>
+                        Kontrollér opplysninger og faglige vurderinger som er gjort
+                    </BodyShort>
+                )
+            }
+        >
+            {egetVedtak ? (
+                <div>
+                    <BodyShort>
+                        {isoStringTilFormatertString({
+                            isoString: opprettetTidspunkt,
+                            tilFormat: Datoformat.DATO_FORLENGET_MED_TID,
+                            defaultString: 'UKJENT OPPRETTELSESTIDSPUNKT',
                         })}
-                    </div>
-                )}
+                    </BodyShort>
+                    <BodyShort>{saksbehandler}</BodyShort>
+                    <br />
+                    <Detail>Vedtaket er sendt til godkjenning</Detail>
+                </div>
+            ) : (
+                <div>
+                    <BodyShort weight={'semibold'}>Kontrollerte trinn</BodyShort>
 
+                    {Object.entries(trinnPåBehandling).map(([_, trinn], index) => {
+                        return (
+                            <TrinnStatus
+                                kontrollertStatus={trinn.kontrollert}
+                                navn={`${index + 1}. ${trinn.navn}`}
+                            />
+                        );
+                    })}
+                </div>
+            )}
+            <RadioGroup
+                value={beslutning}
+                legend={'Vurder om vedtaket er godkjent'}
+                hideLegend
+                error={hentFrontendFeilmelding(innsendtVedtak)}
+            >
                 <HStack gap={'2'}>
                     <Radio
                         name={'totrinnskontroll'}
@@ -141,43 +137,41 @@ const Totrinnskontrollskjema: React.FunctionComponent<IProps> = ({
                         Vurdér på nytt
                     </Radio>
                 </HStack>
+            </RadioGroup>
 
-                {beslutning === TotrinnskontrollBeslutning.UNDERKJENT && (
-                    <Textarea
-                        label={''}
-                        defaultValue={begrunnelse}
-                        value={begrunnelse}
-                        placeholder={'Begrunnelse'}
-                        onChange={event => settBegrunnelse(event.target.value)}
-                    />
-                )}
-
-                <StyledButton
-                    variant={'primary'}
-                    loading={senderInn}
-                    disabled={senderInn}
-                    size={'small'}
-                    onClick={() => {
-                        if (!senderInn) {
-                            sendInnVedtak(
-                                beslutning,
-                                beslutning === TotrinnskontrollBeslutning.UNDERKJENT
-                                    ? begrunnelse
-                                    : '',
-                                egetVedtak
-                            );
-                        }
-                    }}
-                    children={
-                        egetVedtak
-                            ? 'Underkjenn eget vedtak'
-                            : beslutning === TotrinnskontrollBeslutning.UNDERKJENT
-                              ? 'Send til saksbehandler'
-                              : 'Godkjenn vedtaket'
-                    }
+            {beslutning === TotrinnskontrollBeslutning.UNDERKJENT && (
+                <Textarea
+                    label={''}
+                    defaultValue={begrunnelse}
+                    value={begrunnelse}
+                    placeholder={'Begrunnelse'}
+                    onChange={event => settBegrunnelse(event.target.value)}
                 />
-            </VStack>
-        </RadioGroup>
+            )}
+
+            <StyledButton
+                variant={'primary'}
+                loading={senderInn}
+                disabled={senderInn}
+                size={'small'}
+                onClick={() => {
+                    if (!senderInn) {
+                        sendInnVedtak(
+                            beslutning,
+                            beslutning === TotrinnskontrollBeslutning.UNDERKJENT ? begrunnelse : '',
+                            egetVedtak
+                        );
+                    }
+                }}
+                children={
+                    egetVedtak
+                        ? 'Underkjenn eget vedtak'
+                        : beslutning === TotrinnskontrollBeslutning.UNDERKJENT
+                          ? 'Send til saksbehandler'
+                          : 'Godkjenn vedtaket'
+                }
+            />
+        </Fieldset>
     );
 };
 
