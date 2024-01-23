@@ -157,7 +157,6 @@ const Totrinnskontrollskjema: React.FunctionComponent<IProps> = ({
                     loading={senderInn}
                     disabled={senderInn}
                     size={'small'}
-                    width={'small'}
                     onClick={() => {
                         if (!senderInn) {
                             sendInnVedtak(
