@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 
 import { AddCircle, Delete, FileContent } from '@navikt/ds-icons';
-import { Button, Fieldset, Label, Select, Tag, Textarea } from '@navikt/ds-react';
-import { FamilieInput, FamilieReactSelect } from '@navikt/familie-form-elements';
+import { Button, Fieldset, Label, Select, Tag, Textarea, TextField } from '@navikt/ds-react';
+import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -73,7 +73,7 @@ const FritekstWrapper = styled.div`
     margin-bottom: 1rem;
 `;
 
-const StyledFamilieInput = styled(FamilieInput)`
+const StyledTextField = styled(TextField)`
     width: fit-content;
 `;
 
@@ -328,7 +328,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                     />
                 )}
                 {skjema.felter.brevmal.verdi === Brevmal.FORLENGET_SVARTIDSBREV && (
-                    <StyledFamilieInput
+                    <StyledTextField
                         {...skjema.felter.antallUkerSvarfrist.hentNavInputProps(
                             skjema.visFeilmeldinger
                         )}
