@@ -83,24 +83,7 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                     />
                 ) : null
             ) : (
-                <StyledCheckbox
-                    value={
-                        <LabelContent>
-                            <LabelTekst title={navnOgIdentTekst}>{navnOgIdentTekst}</LabelTekst>
-                        </LabelContent>
-                    }
-                    checked={barn.merket}
-                    onChange={() => {
-                        const nyMerketStatus = !barn.merket;
-
-                        if (barnetHarLøpendeUtbetaling && nyMerketStatus) {
-                            settVisHarLøpendeModal(true);
-                        } else {
-                            oppdaterBarnMerket(nyMerketStatus);
-                        }
-                    }}
-                >
-                    {' '}
+                <StyledCheckbox value={barn.ident}>
                     <LabelContent>
                         <LabelTekst title={navnOgIdentTekst}>{navnOgIdentTekst}</LabelTekst>
                     </LabelContent>
