@@ -35,11 +35,6 @@ interface IProps {
     onSubmitSuccess: () => void;
 }
 
-const StyledList = styled.ul`
-    padding-inline-start: 1rem;
-    margin: 0;
-`;
-
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
 `;
@@ -146,6 +141,10 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
             }),
         ]);
 
+    if (erLesevisning) {
+        return null;
+    }
+
     return (
         <div>
             {visForhåndsvisningModal && (
@@ -230,7 +229,6 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                             </LabelOgEtikett>
                         }
                         creatable={false}
-                        erLesevisning={erLesevisning}
                         isMulti={true}
                         onChange={valgteOptions => {
                             skjema.felter.dokumenter.onChange(
@@ -245,97 +243,79 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 {skjema.felter.fritekster.erSynlig && (
                     <FritekstWrapper>
                         <Label htmlFor={fieldsetId}>Legg til kulepunkt</Label>
-                        {erLesevisning ? (
-                            <StyledList id={fieldsetId}>
-                                {skjema.felter.fritekster.verdi.map(
-                                    (fritekst: FeltState<IFritekstFelt>) => (
-                                        <li>{fritekst.verdi.tekst}</li>
-                                    )
-                                )}
-                            </StyledList>
-                        ) : (
-                            <>
-                                <Fieldset
-                                    id={fieldsetId}
-                                    error={
-                                        skjema.visFeilmeldinger &&
-                                        hentFrontendFeilmelding(skjema.submitRessurs)
-                                    }
-                                    legend={''}
-                                >
-                                    {skjema.felter.fritekster.verdi.map(
-                                        (fritekst: FeltState<IFritekstFelt>, index: number) => {
-                                            const fritekstId = fritekst.verdi.id;
+                        <Fieldset
+                            id={fieldsetId}
+                            error={
+                                skjema.visFeilmeldinger &&
+                                hentFrontendFeilmelding(skjema.submitRessurs)
+                            }
+                            legend={''}
+                        >
+                            {skjema.felter.fritekster.verdi.map(
+                                (fritekst: FeltState<IFritekstFelt>, index: number) => {
+                                    const fritekstId = fritekst.verdi.id;
 
-                                            return (
-                                                <StyledFamilieFritekstFelt
-                                                    key={`fritekst-${fritekstId}`}
+                                    return (
+                                        <StyledFamilieFritekstFelt key={`fritekst-${fritekstId}`}>
+                                            <SkjultLegend>{`Kulepunkt ${fritekstId}`}</SkjultLegend>
+                                            <TextareaBegrunnelseFritekst
+                                                key={`fritekst-${fritekstId}`}
+                                                id={`${fritekstId}`}
+                                                label={`Kulepunkt ${fritekstId}`}
+                                                hideLabel
+                                                size={'small'}
+                                                className={'fritekst-textarea'}
+                                                value={fritekst.verdi.tekst}
+                                                maxLength={makslengdeFritekst}
+                                                onChange={event =>
+                                                    onChangeFritekst(event, fritekstId)
+                                                }
+                                                error={
+                                                    skjema.visFeilmeldinger && fritekst.feilmelding
+                                                }
+                                                /* eslint-disable-next-line jsx-a11y/no-autofocus */
+                                                autoFocus
+                                            />
+                                            {!(
+                                                erBrevmalMedObligatoriskFritekst(
+                                                    skjema.felter.brevmal.verdi as Brevmal
+                                                ) && index === 0
+                                            ) && (
+                                                <StyledButton
+                                                    onClick={() => {
+                                                        skjema.felter.fritekster.validerOgSettFelt([
+                                                            ...skjema.felter.fritekster.verdi.filter(
+                                                                mapFritekst =>
+                                                                    mapFritekst.verdi.id !==
+                                                                    fritekst.verdi.id
+                                                            ),
+                                                        ]);
+                                                    }}
+                                                    id={`fjern_fritekst-${fritekstId}`}
+                                                    size={'small'}
+                                                    variant={'tertiary'}
+                                                    aria-label={'Fjern fritekst'}
+                                                    icon={<Delete />}
                                                 >
-                                                    <SkjultLegend>{`Kulepunkt ${fritekstId}`}</SkjultLegend>
-                                                    <TextareaBegrunnelseFritekst
-                                                        key={`fritekst-${fritekstId}`}
-                                                        id={`${fritekstId}`}
-                                                        label={`Kulepunkt ${fritekstId}`}
-                                                        hideLabel
-                                                        size={'small'}
-                                                        className={'fritekst-textarea'}
-                                                        value={fritekst.verdi.tekst}
-                                                        maxLength={makslengdeFritekst}
-                                                        onChange={event =>
-                                                            onChangeFritekst(event, fritekstId)
-                                                        }
-                                                        error={
-                                                            skjema.visFeilmeldinger &&
-                                                            fritekst.feilmelding
-                                                        }
-                                                        /* eslint-disable-next-line jsx-a11y/no-autofocus */
-                                                        autoFocus
-                                                    />
-                                                    {!(
-                                                        erBrevmalMedObligatoriskFritekst(
-                                                            skjema.felter.brevmal.verdi as Brevmal
-                                                        ) && index === 0
-                                                    ) && (
-                                                        <StyledButton
-                                                            onClick={() => {
-                                                                skjema.felter.fritekster.validerOgSettFelt(
-                                                                    [
-                                                                        ...skjema.felter.fritekster.verdi.filter(
-                                                                            mapFritekst =>
-                                                                                mapFritekst.verdi
-                                                                                    .id !==
-                                                                                fritekst.verdi.id
-                                                                        ),
-                                                                    ]
-                                                                );
-                                                            }}
-                                                            id={`fjern_fritekst-${fritekstId}`}
-                                                            size={'small'}
-                                                            variant={'tertiary'}
-                                                            aria-label={'Fjern fritekst'}
-                                                            icon={<Delete />}
-                                                        >
-                                                            {'Fjern'}
-                                                        </StyledButton>
-                                                    )}
-                                                </StyledFamilieFritekstFelt>
-                                            );
-                                        }
-                                    )}
-                                </Fieldset>
+                                                    {'Fjern'}
+                                                </StyledButton>
+                                            )}
+                                        </StyledFamilieFritekstFelt>
+                                    );
+                                }
+                            )}
+                        </Fieldset>
 
-                                {!erMaksAntallKulepunkter && !erLesevisning && (
-                                    <Button
-                                        onClick={() => leggTilFritekst()}
-                                        id={`legg-til-fritekst`}
-                                        size={'small'}
-                                        variant={'tertiary'}
-                                        icon={<AddCircle />}
-                                    >
-                                        {'Legg til kulepunkt'}
-                                    </Button>
-                                )}
-                            </>
+                        {!erMaksAntallKulepunkter && (
+                            <Button
+                                onClick={() => leggTilFritekst()}
+                                id={`legg-til-fritekst`}
+                                size={'small'}
+                                variant={'tertiary'}
+                                icon={<AddCircle />}
+                            >
+                                {'Legg til kulepunkt'}
+                            </Button>
                         )}
                     </FritekstWrapper>
                 )}
@@ -358,27 +338,25 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 )}
             </Fieldset>
             <Knapperekke>
-                {!erLesevisning && (
-                    <Button
-                        id={'forhandsvis-vedtaksbrev'}
-                        variant={'tertiary'}
-                        size={'medium'}
-                        icon={<FileContent />}
-                        loading={hentetDokument.status === RessursStatus.HENTER}
-                        disabled={skjemaErLåst}
-                        onClick={() => {
-                            if (kanSendeSkjema()) {
-                                hentForhåndsvisning<IManueltBrevRequestPåBehandling>({
-                                    method: 'POST',
-                                    data: hentSkjemaData(),
-                                    url: `/familie-ks-sak/api/brev/forhaandsvis-brev/${behandlingId}`,
-                                });
-                            }
-                        }}
-                    >
-                        {'Forhåndsvis'}
-                    </Button>
-                )}
+                <Button
+                    id={'forhandsvis-vedtaksbrev'}
+                    variant={'tertiary'}
+                    size={'medium'}
+                    icon={<FileContent />}
+                    loading={hentetDokument.status === RessursStatus.HENTER}
+                    disabled={skjemaErLåst}
+                    onClick={() => {
+                        if (kanSendeSkjema()) {
+                            hentForhåndsvisning<IManueltBrevRequestPåBehandling>({
+                                method: 'POST',
+                                data: hentSkjemaData(),
+                                url: `/familie-ks-sak/api/brev/forhaandsvis-brev/${behandlingId}`,
+                            });
+                        }
+                    }}
+                >
+                    {'Forhåndsvis'}
+                </Button>
                 <Button
                     variant={'secondary'}
                     size={'medium'}
