@@ -70,10 +70,6 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
         oppdaterResultat(harBarnehageplass, vilkårSkjemaContext.skjema.felter.antallTimer.verdi);
     }, [vilkårSkjemaContext.skjema.felter.utdypendeVilkårsvurdering]);
 
-    const skalKrysseAvPåJaForBarnehageplass =
-        vilkårSkjemaContext.skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT &&
-        harBarnehageplass;
-
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
@@ -90,7 +86,11 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
         >
             <RadioGroup
                 legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål() : ''}
-                value={skalKrysseAvPåJaForBarnehageplass}
+                value={
+                    vilkårSkjemaContext.skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT
+                        ? harBarnehageplass
+                        : undefined
+                }
                 error={
                     vilkårSkjemaContext.skjema.visFeilmeldinger
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
