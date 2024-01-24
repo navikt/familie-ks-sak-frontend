@@ -8149,16 +8149,6 @@ nav-frontend-paneler-style@^2.0.1:
   resolved "https://registry.yarnpkg.com/nav-frontend-paneler-style/-/nav-frontend-paneler-style-2.0.2.tgz#f36a1705103ca8603dca1c9fa2dae809eea00439"
   integrity sha512-bb0Gc/XUPJqgEQKQd37Zj/xRq875zMmHhdn621xd2/BXVpO1f1Eu6V6IPhf4y0jqNlNrvDLDSh4DxHHHf/s9/A==
 
-nav-frontend-skjema-style@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/nav-frontend-skjema-style/-/nav-frontend-skjema-style-3.0.1.tgz"
-  integrity sha512-RUJ1rfsDX1I6JChWyVPF70vTrVijISnOSjvH+8fA8HCNygZ16cG4FzO8SRzARqkJuzlND4zaqJkqNTENOLDBaQ==
-
-nav-frontend-skjema@^4.0.2:
-  version "4.0.5"
-  resolved "https://registry.npmjs.org/nav-frontend-skjema/-/nav-frontend-skjema-4.0.5.tgz"
-  integrity sha512-rY/PycRYqBSpUk9rnePAJ9fd+QRBC3vbE8e5d9YKmxKeF5Q73azbb3hoHWjm0CfpeEgRttRDfbIWRFH2SPwvCw==
-
 nav-frontend-typografi-style@^2.0.1:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/nav-frontend-typografi-style/-/nav-frontend-typografi-style-2.0.2.tgz#03d39354b9c5af483a76672bb98761c432579496"
