@@ -8097,79 +8097,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-nav-frontend-chevron-style@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/nav-frontend-chevron-style/-/nav-frontend-chevron-style-1.0.4.tgz#9cad6d1f19507147771e9ff26ebecf6e0964a50c"
-  integrity sha512-GFc/IZpb1+E9ZBMoWALmKeTjySxRcwNCtz55P+45k5vUryNh2rnxxErhKh7J3OrIHVAy8BdTLjug3sC5Tscffw==
-
-nav-frontend-chevron@^1.0.30:
-  version "1.0.30"
-  resolved "https://registry.yarnpkg.com/nav-frontend-chevron/-/nav-frontend-chevron-1.0.30.tgz#1739d8b60d6a7ac3341a70c861b74725efb859ad"
-  integrity sha512-lc7DV09rflT6oHaZqGHhoSEOn3uMjdIpGId/QpW2wGF1pc9h/cOZUPNzdqneXPi4JeC3do3gHS+M5dB3J+wSmA==
-
 nav-frontend-core@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/nav-frontend-core/-/nav-frontend-core-6.0.1.tgz"
   integrity sha512-zFAPRXgmS3Nhu5SyafsTnCFg2/PEbrUF+g1xGo+pKIxGfJgCeLi47gPSe7Kjeh3IwIo0ex3cA7tfbUIWOY65dQ==
-
-nav-frontend-ikoner-assets@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/nav-frontend-ikoner-assets/-/nav-frontend-ikoner-assets-3.0.1.tgz"
-  integrity sha512-rRzdUl7w02xcX0ZljE3cmkow4haEePNP1gPuWRSvQt5ybL2eiE573l3lgsd4PuPuQp1T4fYFqFlPWjkUwpXVqw==
-
-nav-frontend-js-utils@^1.0.19:
-  version "1.0.20"
-  resolved "https://registry.npmjs.org/nav-frontend-js-utils/-/nav-frontend-js-utils-1.0.20.tgz"
-  integrity sha512-rCEbgtLmk/95TJeke3Njgm0lBJuBa0N8p8h5Oqhxjov529UjTT2Vx4XJzjQd7/ApgeCkdc5DB9GW5jGTEFoYTA==
-  dependencies:
-    lodash.throttle "^4.1.1"
-
-nav-frontend-lenker-style@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/nav-frontend-lenker-style/-/nav-frontend-lenker-style-2.0.1.tgz"
-  integrity sha512-F9UVJpN2i9tepmp/61UvEN5U7O2eHGIYBcVJdUp678BtokXH4SNt7G32y+fqOxW87vWaG1FKR1zXpWf5saw02g==
-
-nav-frontend-lenker@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/nav-frontend-lenker/-/nav-frontend-lenker-2.0.1.tgz"
-  integrity sha512-OYHNKMZE6W2T1DvBdfeR7m6EWKYb27s013RhrmDT9P2j3paC6b0e/6nYuepftHyE4ydxv2GJUKTr6byRvVlmzg==
-
-nav-frontend-lukknapp-style@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp-style/-/nav-frontend-lukknapp-style-2.0.2.tgz#eef84b1c3d1ecac5659507ddb6fd814da9efd1d2"
-  integrity sha512-mROE+VwmYVQtMxCtwLjqGZmOzoRRgAR391VMz/lYcZsRljcvNAMF9oFIQEAdd/Fg32WUGcOG0SUPDP6vbsZrrQ==
-
-nav-frontend-lukknapp@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp/-/nav-frontend-lukknapp-2.0.2.tgz#c074bbf4b1a6a89b3d00ac4358c739ec2b46bd8d"
-  integrity sha512-ItSQSmbfSE8GPDcAGkWGIVydYUuzvYAMVJ9pMKpItvAUfZ+Dt7HyYLXjfSxwi10ign4fpi9dsZGKfsFYyOQ2RQ==
-
-nav-frontend-paneler-style@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/nav-frontend-paneler-style/-/nav-frontend-paneler-style-2.0.2.tgz#f36a1705103ca8603dca1c9fa2dae809eea00439"
-  integrity sha512-bb0Gc/XUPJqgEQKQd37Zj/xRq875zMmHhdn621xd2/BXVpO1f1Eu6V6IPhf4y0jqNlNrvDLDSh4DxHHHf/s9/A==
-
-nav-frontend-skjema-style@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/nav-frontend-skjema-style/-/nav-frontend-skjema-style-3.0.1.tgz"
-  integrity sha512-RUJ1rfsDX1I6JChWyVPF70vTrVijISnOSjvH+8fA8HCNygZ16cG4FzO8SRzARqkJuzlND4zaqJkqNTENOLDBaQ==
-
-nav-frontend-skjema@^4.0.2:
-  version "4.0.5"
-  resolved "https://registry.npmjs.org/nav-frontend-skjema/-/nav-frontend-skjema-4.0.5.tgz"
-  integrity sha512-rY/PycRYqBSpUk9rnePAJ9fd+QRBC3vbE8e5d9YKmxKeF5Q73azbb3hoHWjm0CfpeEgRttRDfbIWRFH2SPwvCw==
-
-nav-frontend-typografi-style@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/nav-frontend-typografi-style/-/nav-frontend-typografi-style-2.0.2.tgz#03d39354b9c5af483a76672bb98761c432579496"
-  integrity sha512-/vKawzUV29g2iDxAEBA535l0WdUGKcCF4dzoqAKdcTv6M8Y7ypJiV1U7d2PieRKgCINH7bINoBAKEOXQw1Kl2Q==
-  dependencies:
-    nav-frontend-core "^6.0.1"
-
-nav-frontend-typografi@^4.0.1:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/nav-frontend-typografi/-/nav-frontend-typografi-4.0.2.tgz#470cc95f4b4ff3a94363dd86eeea45bd9dc6014a"
-  integrity sha512-WUlhb9hXp1Z0CIqULGTYnD7EBPW5dTpBq0qlv+CcjiE4ooqWaRjvhDycj/rR9sjaB4EciF8uViUpIZk4YATqlw==
 
 nav-hoykontrast@^2.1.2:
   version "2.1.2"
