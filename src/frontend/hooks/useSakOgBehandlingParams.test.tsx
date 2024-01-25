@@ -1,3 +1,4 @@
+import type { PropsWithChildren } from 'react';
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
@@ -9,7 +10,7 @@ const renderUseSakOgBehandlingParamsHookMedPath = (path: string) => {
     const {
         result: { current },
     } = renderHook(() => useSakOgBehandlingParams(), {
-        wrapper: ({ children }) => {
+        wrapper: ({ children }: PropsWithChildren) => {
             return <Router initialEntries={[{ pathname: path }]}>{children}</Router>;
         },
     });

@@ -4,10 +4,8 @@ import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Feiloppsummering } from 'nav-frontend-skjema';
-
 import { Refresh } from '@navikt/ds-icons';
-import { Alert, BodyShort, ErrorMessage } from '@navikt/ds-react';
+import { Alert, BodyShort, ErrorMessage, ErrorSummary } from '@navikt/ds-react';
 import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
 import { FamilieKnapp } from '@navikt/familie-form-elements';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -167,10 +165,16 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                 </Alert>
             )}
             {erFeilISkjema && visFeilmeldinger && (
-                <Feiloppsummering
-                    tittel={'For å gå videre må du rette opp følgende:'}
-                    feil={feiloppsummeringFeil}
-                />
+                <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
+                    {feiloppsummeringFeil.map(item => (
+                        <ErrorSummary.Item
+                            href={`#${item.skjemaelementId}`}
+                            key={item.skjemaelementId}
+                        >
+                            {item.feilmelding}
+                        </ErrorSummary.Item>
+                    ))}
+                </ErrorSummary>
             )}
             {skjemaFeilmelding !== '' && skjemaFeilmelding !== undefined && (
                 <ErrorMessage>{skjemaFeilmelding}</ErrorMessage>
