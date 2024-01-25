@@ -51,10 +51,6 @@ export const useKorrigerEtterbetalingSkjemaContext = ({
             value: KorrigertEtterbetalingÅrsak.FEIL_TIDLIGERE_UTBETALT_BELØP,
         },
         {
-            label: 'Refusjon fra UDI',
-            value: KorrigertEtterbetalingÅrsak.REFUSJON_FRA_UDI,
-        },
-        {
             label: 'Refusjon fra andre myndigheter',
             value: KorrigertEtterbetalingÅrsak.REFUSJON_FRA_ANDRE_MYNDIGHETER,
         },
