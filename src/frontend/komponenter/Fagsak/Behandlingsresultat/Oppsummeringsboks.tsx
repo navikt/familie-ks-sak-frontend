@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { PropsWithChildren } from 'react';
 
 import styled from 'styled-components';
 
@@ -34,10 +35,7 @@ const UtbetalingsbeløpStack = styled(VStack)`
     padding: ${ASpacing6} ${ASpacing10} ${ASpacing4} 0;
 `;
 
-interface UtbetalingsbeløpRadProps {
-    children?: React.ReactElement[];
-}
-const UtbetalingsbeløpRad: React.FC<UtbetalingsbeløpRadProps> = ({ children }) => (
+const UtbetalingsbeløpRad: React.FC<PropsWithChildren> = ({ children }) => (
     <HGrid columns="1fr 10rem 9rem 5rem" gap={'4'}>
         {children}
     </HGrid>
