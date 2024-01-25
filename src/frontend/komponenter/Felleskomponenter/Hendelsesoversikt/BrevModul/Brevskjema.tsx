@@ -160,7 +160,6 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 <Select
                     {...skjema.felter.mottakerIdent.hentNavInputProps(skjema.visFeilmeldinger)}
                     label={'Velg mottaker'}
-                    placeholder={'Velg mottaker'}
                     onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
                         skjema.felter.mottakerIdent.onChange(event.target.value);
                     }}
@@ -185,7 +184,6 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 <StyledSelect
                     {...skjema.felter.brevmal.hentNavInputProps(skjema.visFeilmeldinger)}
                     label={'Velg brevmal'}
-                    placeholder={'Velg brevmal'}
                     onChange={(event: React.ChangeEvent<BrevtypeSelect>): void => {
                         skjema.felter.brevmal.onChange(event.target.value);
                         skjema.felter.dokumenter.nullstill();

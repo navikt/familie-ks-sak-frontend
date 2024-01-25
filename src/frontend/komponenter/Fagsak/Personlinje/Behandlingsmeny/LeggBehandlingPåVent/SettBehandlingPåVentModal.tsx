@@ -89,11 +89,7 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behand
                             kanKunVelgeFremtid
                         />
                     </Feltmargin>
-                    <Select
-                        {...årsak.hentNavInputProps(skjema.visFeilmeldinger)}
-                        label={'Årsak'}
-                        placeholder={'Årsak'}
-                    >
+                    <Select {...årsak.hentNavInputProps(skjema.visFeilmeldinger)} label={'Årsak'}>
                         <option value={undefined}>Velg årsak</option>
                         {årsaker.map(årsak => (
                             <option value={årsak.valueOf()} key={årsak.valueOf()}>
