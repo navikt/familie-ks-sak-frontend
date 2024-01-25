@@ -207,6 +207,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
             ].includes(avhengigheter?.brevmal.verdi);
         },
         avhengigheter: { brevmal },
+        nullstillVedAvhengighetEndring: false,
     });
 
     const { kanSendeSkjema, onSubmit, skjema, settVisfeilmeldinger } = useSkjema<
@@ -234,13 +235,34 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
     const [navigerTilOpplysningsplikt, settNavigerTilOpplysningsplikt] =
         React.useState<boolean>(false);
 
+    const nullstillBarnBrevetGjelder = () => {
+        const barn = personer
+            .filter(person => person.type === PersonType.BARN)
+            .map(
+                (person: IGrunnlagPerson): IBarnMedOpplysninger => ({
+                    ident: person.personIdent,
+                    fødselsdato: person.fødselsdato,
+                    navn: person.navn,
+                    merket: false,
+                    manueltRegistrert: false,
+                    erFolkeregistrert: true,
+                })
+            );
+        skjema.felter.barnBrevetGjelder.validerOgSettFelt(barn);
+    };
+
     /**
      * Nullstill enkelte felter i skjemaet ved oppdatering av åpenbehandling i staten.
      * Dette fordi at man kan ha gjort endring på målform
      */
     useEffect(() => {
         skjema.felter.dokumenter.nullstill();
+        nullstillBarnBrevetGjelder();
     }, [åpenBehandling]);
+
+    useEffect(() => {
+        nullstillBarnBrevetGjelder();
+    }, [skjema.felter.brevmal.verdi]);
 
     const personer =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.personer : [];

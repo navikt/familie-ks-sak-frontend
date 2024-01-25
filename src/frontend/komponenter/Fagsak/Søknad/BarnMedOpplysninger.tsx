@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { useState } from 'react';
 
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { BodyShort, Button, Checkbox, Modal } from '@navikt/ds-react';
+import { BodyShort, Button, Checkbox } from '@navikt/ds-react';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useSøknad } from '../../../context/SøknadContext';
@@ -47,27 +46,11 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
     const { skjema, barnMedLøpendeUtbetaling } = useSøknad();
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
-    const [visHarLøpendeModal, settVisHarLøpendeModal] = useState(false);
-
     const barnetHarLøpendeUtbetaling = barnMedLøpendeUtbetaling.has(barn.ident);
 
     const navnOgIdentTekst = `${barn.navn ?? 'Navn ukjent'} (${hentAlderSomString(
         barn.fødselsdato
     )}) | ${formaterIdent(barn.ident)} ${barnetHarLøpendeUtbetaling ? '(løpende)' : ''}`;
-
-    const oppdaterBarnMerket = (nyMerketStatus: boolean) => {
-        skjema.felter.barnaMedOpplysninger.validerOgSettFelt(
-            skjema.felter.barnaMedOpplysninger.verdi.map(
-                (barnMedOpplysninger: IBarnMedOpplysninger) =>
-                    barnMedOpplysninger.ident === barn.ident
-                        ? {
-                              ...barnMedOpplysninger,
-                              merket: nyMerketStatus,
-                          }
-                        : barnMedOpplysninger
-            )
-        );
-    };
 
     return (
         <CheckboxOgSlettknapp>
@@ -83,24 +66,7 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                     />
                 ) : null
             ) : (
-                <StyledCheckbox
-                    value={
-                        <LabelContent>
-                            <LabelTekst title={navnOgIdentTekst}>{navnOgIdentTekst}</LabelTekst>
-                        </LabelContent>
-                    }
-                    checked={barn.merket}
-                    onChange={() => {
-                        const nyMerketStatus = !barn.merket;
-
-                        if (barnetHarLøpendeUtbetaling && nyMerketStatus) {
-                            settVisHarLøpendeModal(true);
-                        } else {
-                            oppdaterBarnMerket(nyMerketStatus);
-                        }
-                    }}
-                >
-                    {' '}
+                <StyledCheckbox value={barn.ident}>
                     <LabelContent>
                         <LabelTekst title={navnOgIdentTekst}>{navnOgIdentTekst}</LabelTekst>
                     </LabelContent>
@@ -125,46 +91,6 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
                 >
                     {'Fjern barn'}
                 </FjernBarnKnapp>
-            )}
-            {visHarLøpendeModal && (
-                <Modal
-                    open
-                    portal
-                    onClose={() => settVisHarLøpendeModal(false)}
-                    width={'35rem'}
-                    header={{
-                        heading: 'Søker mottar allerede kontantstøtte for dette barnet',
-                        size: 'small',
-                    }}
-                >
-                    <Modal.Body>
-                        <BodyShort>
-                            Barnet ({formaterIdent(barn.ident)}) har løpende kontantstøtte. Du skal
-                            kun velge barn som det ikke utbetales kontantstøtte for.
-                        </BodyShort>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            variant={'secondary'}
-                            key={'velg-barnet'}
-                            size={'small'}
-                            onClick={() => {
-                                settVisHarLøpendeModal(false);
-                                oppdaterBarnMerket(true);
-                            }}
-                            children={'Velg barnet'}
-                        />
-                        <Button
-                            variant={'secondary'}
-                            key={'avbryt'}
-                            size={'small'}
-                            onClick={() => {
-                                settVisHarLøpendeModal(false);
-                            }}
-                            children={'Avbryt'}
-                        />
-                    </Modal.Footer>
-                </Modal>
             )}
         </CheckboxOgSlettknapp>
     );

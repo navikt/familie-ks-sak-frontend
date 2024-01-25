@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Radio } from 'nav-frontend-skjema';
-
-import { FamilieInput, FamilieRadioGruppe } from '@navikt/familie-form-elements';
+import { Radio, RadioGroup } from '@navikt/ds-react';
+import { FamilieInput } from '@navikt/familie-form-elements';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import {
@@ -71,14 +70,6 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
         oppdaterResultat(harBarnehageplass, vilkårSkjemaContext.skjema.felter.antallTimer.verdi);
     }, [vilkårSkjemaContext.skjema.felter.utdypendeVilkårsvurdering]);
 
-    const skalKrysseAvPåJaForBarnehageplass =
-        vilkårSkjemaContext.skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT &&
-        harBarnehageplass;
-
-    const skalKrysseAvPåNeiForBarnehageplass =
-        vilkårSkjemaContext.skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT &&
-        !harBarnehageplass;
-
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
@@ -93,34 +84,40 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
             person={person}
             lesevisning={lesevisning}
         >
-            <FamilieRadioGruppe
+            <RadioGroup
                 legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål() : ''}
+                value={
+                    vilkårSkjemaContext.skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT
+                        ? harBarnehageplass
+                        : undefined
+                }
                 error={
                     vilkårSkjemaContext.skjema.visFeilmeldinger
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
                         : ''
                 }
-                value={skalKrysseAvPåJaForBarnehageplass ? 'Ja' : 'Nei'}
-                erLesevisning={lesevisning}
+                readOnly={lesevisning}
             >
                 <Radio
-                    label={'Ja'}
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                    checked={skalKrysseAvPåJaForBarnehageplass}
+                    value={true}
                     onChange={() => {
                         onBarnehageplassOppdatert(true);
                     }}
-                />
+                >
+                    Ja
+                </Radio>
                 <Radio
-                    label={'Nei'}
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                    checked={skalKrysseAvPåNeiForBarnehageplass}
+                    value={false}
                     onChange={() => {
                         vilkårSkjemaContext.skjema.felter.antallTimer.validerOgSettFelt('');
                         onBarnehageplassOppdatert(false);
                     }}
-                />
-            </FamilieRadioGruppe>
+                >
+                    Nei
+                </Radio>
+            </RadioGroup>
             {harBarnehageplass && (
                 <StyledFamilieInput
                     label={'Antall timer'}

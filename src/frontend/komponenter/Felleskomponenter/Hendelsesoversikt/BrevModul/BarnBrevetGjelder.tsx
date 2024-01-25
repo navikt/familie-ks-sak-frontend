@@ -3,9 +3,7 @@ import React from 'react';
 import { differenceInMilliseconds } from 'date-fns';
 import styled from 'styled-components';
 
-import { CheckboxGruppe } from 'nav-frontend-skjema';
-
-import { Alert, Checkbox } from '@navikt/ds-react';
+import { Alert, Checkbox, CheckboxGroup } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { BehandlingSteg, hentStegNummer } from '../../../../typer/behandling';
@@ -37,73 +35,65 @@ interface IProps {
     behandlingsSteg?: BehandlingSteg;
     visFeilmeldinger: boolean;
     settVisFeilmeldinger: (visFeilmeldinger: boolean) => void;
-    alternativer: IBarnMedOpplysninger[];
 }
 
 const BarnBrevetGjelder = (props: IProps) => {
-    const {
-        barnBrevetGjelderFelt,
-        behandlingsSteg,
-        visFeilmeldinger,
-        settVisFeilmeldinger,
-        alternativer,
-    } = props;
+    const { barnBrevetGjelderFelt, behandlingsSteg, visFeilmeldinger, settVisFeilmeldinger } =
+        props;
 
     const skalViseVarselOmManglendeBarn =
         behandlingsSteg &&
         hentStegNummer(behandlingsSteg) <= hentStegNummer(BehandlingSteg.REGISTRERE_SØKNAD) &&
-        alternativer.length === 0;
+        barnBrevetGjelderFelt.verdi.length === 0;
 
-    alternativer.sort((a: IBarnMedOpplysninger, b: IBarnMedOpplysninger) => {
-        if (!a.fødselsdato || a.fødselsdato === '') {
-            return 1;
+    const sorterteBarn = barnBrevetGjelderFelt.verdi.sort(
+        (a: IBarnMedOpplysninger, b: IBarnMedOpplysninger) => {
+            if (!a.fødselsdato || a.fødselsdato === '') {
+                return 1;
+            }
+
+            if (!b.fødselsdato || b.fødselsdato === '') {
+                return -1;
+            }
+
+            return !a.ident
+                ? 1
+                : differenceInMilliseconds(
+                      isoStringTilDate(b.fødselsdato),
+                      isoStringTilDate(a.fødselsdato)
+                  );
         }
+    );
 
-        if (!b.fødselsdato || b.fødselsdato === '') {
-            return -1;
-        }
-
-        return !a.ident
-            ? 1
-            : differenceInMilliseconds(
-                  isoStringTilDate(b.fødselsdato),
-                  isoStringTilDate(a.fødselsdato)
-              );
-    });
+    const oppdaterBarnMedNyMerketStatus = (barnaSomErMerket: string[]) => {
+        barnBrevetGjelderFelt.validerOgSettFelt(
+            barnBrevetGjelderFelt.verdi.flatMap((barnMedOpplysninger: IBarnMedOpplysninger) => {
+                return barnMedOpplysninger.ident
+                    ? {
+                          ...barnMedOpplysninger,
+                          merket: barnaSomErMerket.includes(barnMedOpplysninger.ident),
+                      }
+                    : [];
+            })
+        );
+    };
 
     return (
-        <CheckboxGruppe
+        <CheckboxGroup
             {...barnBrevetGjelderFelt.hentNavBaseSkjemaProps(visFeilmeldinger)}
             legend={'Hvilke barn gjelder brevet?'}
+            value={barnBrevetGjelderFelt.verdi
+                .filter((barn: IBarnMedOpplysninger) => barn.merket)
+                .map((barn: IBarnMedOpplysninger) => barn.ident)}
+            onChange={(barnaSomErMerket: string[]) => {
+                oppdaterBarnMedNyMerketStatus(barnaSomErMerket);
+                settVisFeilmeldinger(false);
+            }}
         >
-            {alternativer.map((barn: IBarnMedOpplysninger, index: number) => {
+            {sorterteBarn.map((barn: IBarnMedOpplysninger, index: number) => {
                 const barnLabel = lagBarnLabel(barn);
                 return (
-                    <StyledCheckbox
-                        value={
-                            <LabelContent>
-                                <LabelTekst title={barnLabel}>{barnLabel}</LabelTekst>
-                            </LabelContent>
-                        }
-                        checked={barn.merket}
-                        key={'barn-' + index}
-                        onChange={event => {
-                            const barnSkalMerkes = event.target.checked;
-                            if (barnSkalMerkes) {
-                                barnBrevetGjelderFelt.validerOgSettFelt([
-                                    ...barnBrevetGjelderFelt.verdi,
-                                    { ...barn, merket: true },
-                                ]);
-                            } else {
-                                barnBrevetGjelderFelt.validerOgSettFelt(
-                                    barnBrevetGjelderFelt.verdi.filter(
-                                        it => it.ident !== barn.ident
-                                    )
-                                );
-                            }
-                            settVisFeilmeldinger(false);
-                        }}
-                    >
+                    <StyledCheckbox value={barn.ident} key={'barn-' + index}>
                         <LabelContent>
                             <LabelTekst title={barnLabel}>{barnLabel}</LabelTekst>
                         </LabelContent>
@@ -118,7 +108,7 @@ const BarnBrevetGjelder = (props: IProps) => {
                     inline
                 />
             )}
-        </CheckboxGruppe>
+        </CheckboxGroup>
     );
 };
 
