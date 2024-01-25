@@ -1,3 +1,4 @@
+import type { PropsWithChildren } from 'react';
 import React from 'react';
 
 import styled from 'styled-components';
@@ -11,7 +12,7 @@ import type { IIsoDatoPeriode, IsoDatoString } from '../../../../utils/dato';
 import { nyIsoDatoPeriode } from '../../../../utils/dato';
 import DatovelgerForGammelSkjemaløsning from '../../../Felleskomponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 
-interface IProps {
+interface IProps extends PropsWithChildren {
     periode: Felt<IIsoDatoPeriode>;
     erEksplisittAvslagPåSøknad: Felt<boolean>;
     resultat: Felt<Resultat>;
