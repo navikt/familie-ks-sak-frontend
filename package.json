@@ -80,7 +80,6 @@
     "express": "^4.18.2",
     "http-proxy-middleware": "^2.0.6",
     "lodash.throttle": "^4.1.1",
-    "nav-frontend-core": "^6.0.1",
     "nav-hoykontrast": "^2.1.2",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
@@ -158,9 +157,7 @@
       }
     },
     "moduleNameMapper": {
-      "\\.(css|less|svg)$": "<rootDir>/src/mockFile.js",
-      "nav-(.*)-style": "<rootDir>/src/mockFile.js",
-      "nav-frontend-core": "<rootDir>/src/mockFile.js"
+      "\\.(css|less|svg)$": "<rootDir>/src/mockFile.js"
     },
     "transformIgnorePatterns": [
       "/node_modules/(?!(@navikt)/)"
