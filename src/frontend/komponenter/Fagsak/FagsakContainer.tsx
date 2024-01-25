@@ -4,7 +4,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
-import { AGray300 } from '@navikt/ds-tokens/dist/tokens';
+import { ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingContainer from './BehandlingContainer';
@@ -31,12 +31,12 @@ const Hovedinnhold = styled.div`
 
 const VenstremenyContainer = styled.div`
     min-width: 1rem;
-    border-right: 1px solid ${AGray300};
+    border-right: 1px solid ${ABorderDivider};
     overflow: hidden;
 `;
 
 const HøyremenyContainer = styled.div`
-    border-left: 1px solid ${AGray300};
+    border-left: 1px solid ${ABorderDivider};
     overflow-x: hidden;
     overflow-y: scroll;
 `;

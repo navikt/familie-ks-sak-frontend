@@ -1,15 +1,16 @@
 import { addMonths, differenceInMilliseconds, isAfter, isBefore, startOfMonth } from 'date-fns';
 
 import {
-    ABlue100,
-    AGray100,
-    AGray600,
-    AGreen100,
-    AGreen500,
-    AOrange100,
-    AOrange600,
-    ARed50,
-    ARed600,
+    ABorderDanger,
+    ABorderDefault,
+    ABorderSubtle,
+    ABorderSuccess,
+    ABorderWarning,
+    ASurfaceActionSubtle,
+    ASurfaceDangerSubtle,
+    ASurfaceNeutralSubtle,
+    ASurfaceSuccessSubtle,
+    ASurfaceWarningSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -113,15 +114,15 @@ export const hentBakgrunnsfarge = (begrunnelseType?: BegrunnelseType) => {
     switch (begrunnelseType) {
         case BegrunnelseType.INNVILGET:
         case BegrunnelseType.FORTSATT_INNVILGET:
-            return AGreen100;
+            return ASurfaceSuccessSubtle;
         case BegrunnelseType.AVSLAG:
-            return ARed50;
+            return ASurfaceDangerSubtle;
         case BegrunnelseType.REDUKSJON:
-            return AOrange100;
+            return ASurfaceWarningSubtle;
         case BegrunnelseType.OPPHØR:
-            return AGray100;
+            return ASurfaceNeutralSubtle;
         default:
-            return ABlue100;
+            return ASurfaceActionSubtle;
     }
 };
 
@@ -129,15 +130,15 @@ export const hentBorderfarge = (begrunnelseType?: BegrunnelseType) => {
     switch (begrunnelseType) {
         case BegrunnelseType.INNVILGET:
         case BegrunnelseType.FORTSATT_INNVILGET:
-            return AGreen500;
+            return ABorderSuccess;
         case BegrunnelseType.AVSLAG:
-            return ARed600;
+            return ABorderDanger;
         case BegrunnelseType.REDUKSJON:
-            return AOrange600;
+            return ABorderWarning;
         case BegrunnelseType.OPPHØR:
-            return AGray600;
+            return ABorderDefault;
         default:
-            return ABlue100;
+            return ABorderSubtle;
     }
 };
 

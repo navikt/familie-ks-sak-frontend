@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Alert } from '@navikt/ds-react';
-import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
+import { ASurfaceActionHover } from '@navikt/ds-tokens/dist/tokens';
 import type { ActionMeta, ISelectOption } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
@@ -120,7 +120,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnel
                 multiValueRemove: provided => ({
                     ...provided,
                     ':hover': {
-                        backgroundColor: ABlue500,
+                        backgroundColor: ASurfaceActionHover,
                         color: 'white',
                         borderRadius: '0 .4rem .4rem 0',
                     },
