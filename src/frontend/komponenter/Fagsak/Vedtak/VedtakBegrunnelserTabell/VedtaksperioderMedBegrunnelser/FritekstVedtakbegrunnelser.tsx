@@ -130,7 +130,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                         Opplysningene fra Folkeregisteret viser at barnet ikke bor sammen med deg
                     </ItalicText>
                 </StyledHelpText>
-                <StyledTag variant="info" size="small">
+                <StyledTag variant="neutral" size="small">
                     Skriv {målform[søkersMålform].toLowerCase()}
                 </StyledTag>
             </InfoBoks>
