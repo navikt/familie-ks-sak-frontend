@@ -73,7 +73,7 @@
     "body-parser": "^1.20.2",
     "classnames": "^2.5.1",
     "constate": "^3.3.2",
-    "date-fns": "3.2.0",
+    "date-fns": "3.3.1",
     "dayjs": "^1.11.0",
     "deep-equal": "^2.2.2",
     "dotenv": "^16.4.1",
