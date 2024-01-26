@@ -2721,13 +2721,6 @@
     "@types/history" "*"
     "@types/react" "*"
 
-"@types/react-table@^7.7.6":
-  version "7.7.6"
-  resolved "https://registry.npmjs.org/@types/react-table/-/react-table-7.7.6.tgz"
-  integrity sha512-ZMFHh1sG5AGDmhVRpz9mgGByGmBFAqnZ7QnyqGa5iAlKtcSC3vb/gul47lM0kJ1uvlawc+qN5k+++pe+GBdJ+g==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-transition-group@^4.4.0":
   version "4.4.5"
   resolved "https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.5.tgz"
