@@ -9090,7 +9090,7 @@ qs@6.11.0:
   dependencies:
     side-channel "^1.0.4"
 
-query-string@8.1.0, query-string@^8.1.0:
+query-string@8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-8.1.0.tgz#e7f95367737219544cd360a11a4f4ca03836e115"
   integrity sha512-BFQeWxJOZxZGix7y+SByG3F36dA0AbTy9o6pSmKFcFz7DAj0re9Frkty3saBn3nHo3D0oZJ/+rx3r8H8r8Jbpw==
