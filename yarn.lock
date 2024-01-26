@@ -1840,7 +1840,7 @@
     "@sentry/core" "^7.48.0"
     constate "^3.3.2"
 
-"@navikt/familie-ikoner@^7.0.0", "@navikt/familie-ikoner@^7.0.1":
+"@navikt/familie-ikoner@^7.0.1":
   version "7.0.1"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-ikoner/7.0.1/548ee43f1d104947a45b11978b4f8429ab600629#548ee43f1d104947a45b11978b4f8429ab600629"
   integrity sha512-kNCcEic8DS2jNGKVWFguKEFM0Y8j154ofXVBRNBT5PfQcR61DYioZLz6knSmXPGWrQQqYxAGNSdKqDUpO8jn5Q==
