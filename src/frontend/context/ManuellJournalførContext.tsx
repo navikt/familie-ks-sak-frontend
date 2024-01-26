@@ -37,7 +37,6 @@ import type { IPersonInfo } from '../typer/person';
 import { Adressebeskyttelsegradering } from '../typer/person';
 import type { ISamhandlerInfo } from '../typer/samhandler';
 import type { Tilbakekrevingsbehandlingstype } from '../typer/tilbakekrevingsbehandling';
-import { ToggleNavn } from '../typer/toggles';
 import { isoStringTilDate } from '../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../utils/fagsak';
 
@@ -56,7 +55,7 @@ export interface ManuellJournalføringSkjemaFelter {
 }
 
 const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() => {
-    const { innloggetSaksbehandler, toggles } = useApp();
+    const { innloggetSaksbehandler } = useApp();
     const { hentFagsakForPerson } = useFagsakContext();
     const navigate = useNavigate();
     const { request } = useHttp();
@@ -490,8 +489,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
 
         if (
             dataForManuellJournalføring.data.oppgave.oppgavetype === OppgavetypeFilter.BEH_SED &&
-            tilordnetInnloggetSaksbehandler() &&
-            toggles[ToggleNavn.brukEøs]
+            tilordnetInnloggetSaksbehandler()
         ) {
             return true;
         }

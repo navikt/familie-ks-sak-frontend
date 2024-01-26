@@ -15,11 +15,9 @@ import { LovligOpphold } from './Vilkår/LovligOpphold/LovligOpphold';
 import { Medlemskap } from './Vilkår/Medlemskap/Medlemskap';
 import { MedlemskapAnnenForelder } from './Vilkår/MedlemskapAnnenForelder/MedlemskapAnnenForelder';
 import { vilkårFeilmeldingId } from './VilkårTabell';
-import { useApp } from '../../../../context/AppContext';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import VilkårResultatIkon from '../../../../ikoner/VilkårResultatIkon';
 import type { IGrunnlagPerson } from '../../../../typer/person';
-import { ToggleNavn } from '../../../../typer/toggles';
 import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
 import { Resultat, uiResultat, VilkårType } from '../../../../typer/vilkår';
 import {
@@ -61,7 +59,6 @@ const FlexDiv = styled.div`
 `;
 
 const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårResultat }) => {
-    const { toggles } = useApp();
     const { vurderErLesevisning, åpenBehandling, behandlingPåVent } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
@@ -186,18 +183,17 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                 <BeskrivelseCelle children={vilkårResultat.begrunnelse} />
             </Table.DataCell>
             <Table.DataCell>
-                {toggles[ToggleNavn.brukEøs] &&
-                    (redigerbartVilkår.vurderesEtter ? (
-                        <FlexDiv>
-                            {alleRegelverk[redigerbartVilkår.vurderesEtter].symbol}
-                            <div>{alleRegelverk[redigerbartVilkår.vurderesEtter].tekst}</div>
-                        </FlexDiv>
-                    ) : (
-                        <FlexDiv>
-                            <Settings width={24} height={24} viewBox={'0 0 24 24'} />
-                            <div>Generell vurdering</div>
-                        </FlexDiv>
-                    ))}
+                {redigerbartVilkår.vurderesEtter ? (
+                    <FlexDiv>
+                        {alleRegelverk[redigerbartVilkår.vurderesEtter].symbol}
+                        <div>{alleRegelverk[redigerbartVilkår.vurderesEtter].tekst}</div>
+                    </FlexDiv>
+                ) : (
+                    <FlexDiv>
+                        <Settings width={24} height={24} viewBox={'0 0 24 24'} />
+                        <div>Generell vurdering</div>
+                    </FlexDiv>
+                )}
             </Table.DataCell>
             <Table.DataCell>
                 <FlexDiv>
