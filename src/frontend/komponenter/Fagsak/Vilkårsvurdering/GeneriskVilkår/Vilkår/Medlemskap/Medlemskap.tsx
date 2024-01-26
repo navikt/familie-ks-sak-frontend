@@ -2,8 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Alert, Label, Radio } from '@navikt/ds-react';
-import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
+import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useMedlemskap } from './MedlemskapContext';
 import { Regelverk, Resultat } from '../../../../../../typer/vilkår';
@@ -60,7 +59,7 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
                 </>
             )}
 
-            <FamilieRadioGruppe
+            <RadioGroup
                 legend={
                     <Label>
                         {vilkårFraConfig.spørsmål
@@ -74,7 +73,7 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
                         : ''
                 }
-                erLesevisning={lesevisning}
+                readOnly={lesevisning}
             >
                 <Radio
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
@@ -114,7 +113,7 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
                         Ikke aktuelt
                     </Radio>
                 )}
-            </FamilieRadioGruppe>
+            </RadioGroup>
         </VilkårSkjema>
     );
 };

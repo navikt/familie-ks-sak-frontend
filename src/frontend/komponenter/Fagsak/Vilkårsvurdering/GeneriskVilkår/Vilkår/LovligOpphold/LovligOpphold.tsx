@@ -2,8 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Alert, Label, Radio } from '@navikt/ds-react';
-import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
+import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useLovligOpphold } from './LovligOppholdContext';
 import { Resultat } from '../../../../../../typer/vilkår';
@@ -50,7 +49,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
         >
             <br />
 
-            <FamilieRadioGruppe
+            <RadioGroup
                 legend={
                     <Label>
                         {vilkårFraConfig.spørsmål
@@ -64,7 +63,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
                         : ''
                 }
-                erLesevisning={lesevisning}
+                readOnly={lesevisning}
             >
                 <Radio
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
@@ -101,7 +100,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                 >
                     Ikke aktuelt
                 </Radio>
-            </FamilieRadioGruppe>
+            </RadioGroup>
         </VilkårSkjema>
     );
 };
