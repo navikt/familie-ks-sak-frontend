@@ -9,8 +9,8 @@ import {
     Fieldset,
     Heading,
     HStack,
+    TextField,
 } from '@navikt/ds-react';
-import { FamilieInput } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import { ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -139,7 +139,7 @@ const LeggTiLBarnPåBehandling: React.FC<IProps> = ({ behandling }) => {
                             legend="Legg til barn på behandling"
                             hideLegend
                         >
-                            <FamilieInput
+                            <TextField
                                 {...skjema.felter.ident.hentNavInputProps(skjema.visFeilmeldinger)}
                                 label={'Fødselsnummer'}
                                 placeholder={'11 siffer'}
