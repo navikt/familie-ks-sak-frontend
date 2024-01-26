@@ -19,8 +19,9 @@ import {
     RadioGroup,
     Spacer,
     Tag,
+    Textarea,
 } from '@navikt/ds-react';
-import { FamilieTextarea, FlexDiv } from '@navikt/familie-form-elements';
+import { FlexDiv } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
@@ -141,7 +142,7 @@ const TilbakekrevingSkjema: React.FC<{
             )}
 
             <StyledFieldset legend="Tilbakekreving">
-                <FamilieTextarea
+                <Textarea
                     label={
                         <FlexDiv>
                             Årsak til feilutbetaling og videre behandling
@@ -186,7 +187,7 @@ const TilbakekrevingSkjema: React.FC<{
                         tilbakekrevingSkjema.visFeilmeldinger ||
                             begrunnelse.verdi.length > maksLengdeTekst
                     )}
-                    erLesevisning={vurderErLesevisning()}
+                    readOnly={vurderErLesevisning()}
                     maxLength={maksLengdeTekst}
                     description="Hva er årsaken til feilutbetaling? Hvordan og når ble feilutbetalingen oppdaget? Begrunn hvordan feilutbetalingen skal behandles videre."
                 />
@@ -251,7 +252,7 @@ const TilbakekrevingSkjema: React.FC<{
                                 </Radio>
                                 {fritekstVarsel.erSynlig && (
                                     <FritekstVarsel>
-                                        <FamilieTextarea
+                                        <Textarea
                                             label={
                                                 <HStack
                                                     align="center"
@@ -318,7 +319,7 @@ const TilbakekrevingSkjema: React.FC<{
                                                 tilbakekrevingSkjema.visFeilmeldinger ||
                                                     fritekstVarsel.verdi.length > maksLengdeTekst
                                             )}
-                                            erLesevisning={vurderErLesevisning()}
+                                            readOnly={vurderErLesevisning()}
                                             maxLength={maksLengdeTekst}
                                         />
 
@@ -369,10 +370,10 @@ const TilbakekrevingSkjema: React.FC<{
                     </RadioGroup>
                 )}
                 {vurderErLesevisning() && fritekstVarsel.erSynlig && (
-                    <FamilieTextarea
+                    <Textarea
                         label="Fritekst i varselet"
                         {...fritekstVarsel.hentNavInputProps(tilbakekrevingSkjema.visFeilmeldinger)}
-                        erLesevisning={vurderErLesevisning()}
+                        readOnly={vurderErLesevisning()}
                     />
                 )}
 
