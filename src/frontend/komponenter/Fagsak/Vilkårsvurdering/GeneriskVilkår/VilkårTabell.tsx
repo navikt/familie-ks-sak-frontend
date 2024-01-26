@@ -5,9 +5,7 @@ import styled from 'styled-components';
 import { Table } from '@navikt/ds-react';
 
 import VilkårTabellRad from './VilkårTabellRad';
-import { useApp } from '../../../../context/AppContext';
 import type { IGrunnlagPerson } from '../../../../typer/person';
-import { ToggleNavn } from '../../../../typer/toggles';
 import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
 
 export const vilkårFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
@@ -50,7 +48,6 @@ const VilkårTabell: React.FC<IProps> = ({
     vilkårResultater,
     settFokusPåKnapp,
 }) => {
-    const { toggles } = useApp();
     return (
         <Table>
             <Table.Header>
@@ -58,9 +55,7 @@ const VilkårTabell: React.FC<IProps> = ({
                     <TabellHeader scope="col">Vurdering</TabellHeader>
                     <TabellHeader scope="col">Periode</TabellHeader>
                     <TabellHeader scope="col">Begrunnelse</TabellHeader>
-                    <TabellHeader scope="col">
-                        {toggles[ToggleNavn.brukEøs] ? 'Vurderes etter' : ''}
-                    </TabellHeader>
+                    <TabellHeader scope="col">Vurderes etter</TabellHeader>
                     <TabellHeader scope="col">Vurdert av</TabellHeader>
                     <TabellHeader />
                 </Table.Row>

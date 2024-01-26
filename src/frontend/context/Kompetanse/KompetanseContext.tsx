@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import type { IBehandling } from '../../typer/behandling';
 import { EøsPeriodeStatus } from '../../typer/eøsPerioder';
 import type { IRestKompetanse } from '../../typer/eøsPerioder';
-import { ToggleNavn } from '../../typer/toggles';
-import { useApp } from '../AppContext';
 import { sorterEøsPerioder } from '../Eøs/EøsContext';
 
 interface IProps {
@@ -12,11 +10,10 @@ interface IProps {
 }
 
 const useKompetanse = ({ åpenBehandling }: IProps) => {
-    const { toggles } = useApp();
     const [kompetanser, settKompetanser] = useState<IRestKompetanse[]>([]);
 
     useEffect(() => {
-        if (toggles[ToggleNavn.brukEøs] && åpenBehandling.kompetanser.length > 0) {
+        if (åpenBehandling.kompetanser.length > 0) {
             settKompetanser(
                 åpenBehandling.kompetanser.sort((periodeA, periodeB) =>
                     sorterEøsPerioder(periodeA, periodeB, åpenBehandling.personer)
