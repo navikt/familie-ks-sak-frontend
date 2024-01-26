@@ -108,7 +108,6 @@
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "compression-webpack-plugin": "^11.0.0",
     "copy-webpack-plugin": "^12.0.2",
-    "copyfiles": "^2.2.0",
     "css-loader": "^6.9.0",
     "css-minimizer-webpack-plugin": "^6.0.0",
     "cypress": "13.6.0",
