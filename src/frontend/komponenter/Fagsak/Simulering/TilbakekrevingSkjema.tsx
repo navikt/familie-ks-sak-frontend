@@ -2,8 +2,6 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
-
 import { ExternalLink } from '@navikt/ds-icons';
 import {
     Alert,
@@ -14,10 +12,12 @@ import {
     Fieldset,
     Heading,
     HelpText,
+    HStack,
     Label,
     Link,
     Radio,
     RadioGroup,
+    Spacer,
     Tag,
 } from '@navikt/ds-react';
 import { FamilieTextarea, FlexDiv } from '@navikt/familie-form-elements';
@@ -44,31 +44,12 @@ const FritekstVarsel = styled.div`
     margin-left: 2rem;
 `;
 
-const FritektsVarselLabel = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
-`;
-
-const FlexRad = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-`;
-
 const StyledHelpText = styled(HelpText)`
     margin-left: 1rem;
 `;
 
 const StyledHelpTextContainer = styled.div`
     max-width: 20rem;
-`;
-
-const StyledTag = styled(Tag)`
-    margin-left: auto;
-    background-color: ${navFarger.navLysGra};
-    border-color: ${navFarger.navGra60};
 `;
 
 const StyledFieldset = styled(Fieldset)`
@@ -272,8 +253,12 @@ const TilbakekrevingSkjema: React.FC<{
                                     <FritekstVarsel>
                                         <FamilieTextarea
                                             label={
-                                                <FritektsVarselLabel>
-                                                    <FlexRad>
+                                                <HStack
+                                                    align="center"
+                                                    justify="space-between"
+                                                    wrap={false}
+                                                >
+                                                    <HStack align="center" wrap={false}>
                                                         <Label>Fritekst i varselet</Label>
                                                         <StyledHelpText placement="right">
                                                             <StyledHelpTextContainer>
@@ -322,11 +307,12 @@ const TilbakekrevingSkjema: React.FC<{
                                                                 </Link>
                                                             </StyledHelpTextContainer>
                                                         </StyledHelpText>
-                                                    </FlexRad>
-                                                    <StyledTag variant="info" size="small">
+                                                    </HStack>
+                                                    <Spacer />
+                                                    <Tag variant="neutral" size="small">
                                                         Skriv {målform[søkerMålform].toLowerCase()}
-                                                    </StyledTag>
-                                                </FritektsVarselLabel>
+                                                    </Tag>
+                                                </HStack>
                                             }
                                             {...fritekstVarsel.hentNavInputProps(
                                                 tilbakekrevingSkjema.visFeilmeldinger ||

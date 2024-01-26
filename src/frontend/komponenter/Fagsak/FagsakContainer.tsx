@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
+import { ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingContainer from './BehandlingContainer';
@@ -17,6 +19,27 @@ import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import { useAmplitude } from '../../utils/amplitude';
 import Venstremeny from '../Felleskomponenter/Venstremeny/Venstremeny';
 
+const Innhold = styled.div`
+    height: calc(100vh - 6rem);
+    display: flex;
+`;
+
+const Hovedinnhold = styled.div`
+    flex: 1;
+    overflow: auto;
+`;
+
+const VenstremenyContainer = styled.div`
+    min-width: 1rem;
+    border-right: 1px solid ${ABorderDivider};
+    overflow: hidden;
+`;
+
+const HøyremenyContainer = styled.div`
+    border-left: 1px solid ${ABorderDivider};
+    overflow-x: hidden;
+    overflow-y: scroll;
+`;
 const FagsakContainer: React.FunctionComponent = () => {
     const { fagsakId } = useSakOgBehandlingParams();
 
@@ -63,16 +86,13 @@ const FagsakContainer: React.FunctionComponent = () => {
                         <>
                             <Personlinje bruker={bruker.data} minimalFagsak={minimalFagsak.data} />
 
-                            <div className={'fagsakcontainer__content'}>
+                            <Innhold>
                                 {skalHaVenstremeny && (
-                                    <div className={'fagsakcontainer__content--venstremeny'}>
+                                    <VenstremenyContainer>
                                         <Venstremeny />
-                                    </div>
+                                    </VenstremenyContainer>
                                 )}
-                                <div
-                                    id={'fagsak-main'}
-                                    className={'fagsakcontainer__content--main'}
-                                >
+                                <Hovedinnhold id={'fagsak-main'}>
                                     <Routes>
                                         <Route
                                             path="/saksoversikt"
@@ -108,13 +128,13 @@ const FagsakContainer: React.FunctionComponent = () => {
                                             }
                                         />
                                     </Routes>
-                                </div>
+                                </Hovedinnhold>
                                 {skalHaHøyremeny && (
-                                    <div className={'fagsakcontainer__content--høyremeny'}>
+                                    <HøyremenyContainer>
                                         <Høyremeny />
-                                    </div>
+                                    </HøyremenyContainer>
                                 )}
-                            </div>
+                            </Innhold>
                         </>
                     );
                 case RessursStatus.FEILET:

@@ -2,8 +2,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
-
 import { AddCircle, Delete, ExternalLink } from '@navikt/ds-icons';
 import { BodyLong, Button, Fieldset, Heading, HelpText, Label, Link, Tag } from '@navikt/ds-react';
 import { FamilieKnapp, FamilieTextarea } from '@navikt/familie-form-elements';
@@ -18,7 +16,6 @@ import Knapperekke from '../../../../Felleskomponenter/Knapperekke';
 import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
 
 const FritekstContainer = styled.div`
-    background-color: ${navFarger.navGraBakgrunn};
     padding: 1rem;
 `;
 
@@ -51,8 +48,6 @@ const InfoBoks = styled.div`
 
 const StyledTag = styled(Tag)`
     margin-left: auto;
-    background-color: ${navFarger.navLysGra};
-    border-color: ${navFarger.navGra60};
 `;
 
 const SletteKnapp = styled(Button)`
@@ -135,7 +130,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                         Opplysningene fra Folkeregisteret viser at barnet ikke bor sammen med deg
                     </ItalicText>
                 </StyledHelpText>
-                <StyledTag variant="info" size="small">
+                <StyledTag variant="neutral" size="small">
                     Skriv {målform[søkersMålform].toLowerCase()}
                 </StyledTag>
             </InfoBoks>

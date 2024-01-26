@@ -5,14 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Refresh } from '@navikt/ds-icons';
-import { Alert, BodyShort, ErrorMessage, ErrorSummary } from '@navikt/ds-react';
+import { Alert, BodyShort, Detail, ErrorMessage, ErrorSummary } from '@navikt/ds-react';
 import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
 import { FamilieKnapp } from '@navikt/familie-form-elements';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderingITestmiljøKnapp';
-import { HentetLabel } from './Registeropplysninger/HentetLabel';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useVilkårsvurdering } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
@@ -99,8 +98,8 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
         >
             <>
                 <HentetLabelOgKnappDiv>
-                    <HentetLabel
-                        size={'small'}
+                    <Detail
+                        textColor="subtle"
                         children={
                             registeropplysningerHentetTidpsunkt
                                 ? `Registeropplysninger hentet ${isoStringTilFormatertString({

@@ -2,8 +2,13 @@ import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
-
+import {
+    ABorderFocus,
+    ABorderSubtle,
+    ATextAction,
+    ATextActionSelected,
+    ATextDefault,
+} from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { TidslinjeVindu, useTidslinje } from '../../../context/TidslinjeContext';
@@ -18,15 +23,15 @@ const EtikettKnapp = styled(FamilieBaseKnapp)<{ disabled: boolean; valgt: boolea
     width: 90%;
     text-align: left;
     cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
-    border-left: ${({ valgt }) => (valgt ? `1px solid ${navFarger.navGra20}` : 'none')};
+    border-left: ${({ valgt }) => (valgt ? `1px solid ${ABorderSubtle}` : 'none')};
 
     > span {
         text-decoration: ${({ disabled, valgt }) => (disabled || valgt ? 'none' : 'underline')};
         font-weight: ${({ valgt }) => (valgt ? 'bold' : 'normal')};
         color: ${({ disabled, valgt }) => {
-            if (disabled) return navFarger.navMorkGra;
-            else if (valgt) return navFarger.navDypBla;
-            else return navFarger.navBla;
+            if (disabled) return ATextDefault;
+            else if (valgt) return ATextActionSelected;
+            else return ATextAction;
         }};
     }
 
@@ -38,7 +43,7 @@ const EtikettKnapp = styled(FamilieBaseKnapp)<{ disabled: boolean; valgt: boolea
 
     :focus,
     :active {
-        background-color: ${navFarger.fokusFarge};
+        background-color: ${ABorderFocus};
         > span {
             color: #fff;
         }

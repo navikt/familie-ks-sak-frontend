@@ -1,10 +1,21 @@
 import * as React from 'react';
 
-import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { BackFilled, NextFilled } from '@navikt/ds-icons';
-import { BodyShort, Button } from '@navikt/ds-react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
+import { BodyShort, Box, Button, HStack, VStack } from '@navikt/ds-react';
+import {
+    ABorderWarning,
+    ABorderFocus,
+    AGrayalpha500,
+    ASurfaceDefault,
+    ASurfaceHover,
+    ASurfaceWarning,
+    ASpacing2,
+    ASpacing6,
+    ASpacing8,
+    ATextDefault,
+} from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import Link from './Link';
@@ -23,15 +34,42 @@ const ToggleVisningVenstremeny = styled(Button)<{ $åpenvenstremeny: boolean }>`
     padding: 0;
     border-radius: 50%;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    background-color: ${ASurfaceDefault};
 `;
 
-const ÅpenMenyContainer = styled.div`
-    display: flex;
-    justify-content: flex-start;
+const Meny = styled(VStack)`
+    padding: ${ASpacing8} 0;
 `;
 
-const MenyItem = styled.div`
-    display: inline-block;
+const MenyLenke = styled(Link)<{ $erLenkenAktiv: boolean }>`
+    text-decoration: none;
+    color: ${props => (props.$erLenkenAktiv ? ATextDefault : AGrayalpha500)};
+    padding: ${ASpacing2} ${ASpacing8};
+
+    &:focus {
+        box-shadow: 0 0 0 3px ${ABorderFocus};
+        outline: none;
+    }
+
+    ${props => {
+        if (props.$erLenkenAktiv)
+            return `
+                &:hover {
+                    background: ${ASurfaceHover};
+                }
+        `;
+    }};
+`;
+
+const UndersideSirkel = styled.span`
+    border-color: ${ABorderWarning};
+    border-radius: 50%;
+    background-color: ${ASurfaceWarning};
+    display: inline-grid;
+    grid-column: circle;
+    place-items: center;
+    height: ${ASpacing6};
+    width: ${ASpacing6};
 `;
 
 const Venstremeny: React.FunctionComponent = () => {
@@ -40,90 +78,62 @@ const Venstremeny: React.FunctionComponent = () => {
         useBehandling();
 
     return (
-        <ÅpenMenyContainer>
+        <HStack justify="start">
             {åpenVenstremeny && (
-                <MenyItem>
-                    <nav className={'venstremeny'}>
-                        {åpenBehandling.status === RessursStatus.SUKSESS ? (
-                            <>
-                                {Object.entries(trinnPåBehandling).map(
-                                    ([sideId, side], index: number) => {
-                                        const tilPath = `/fagsak/${fagsakId}/${åpenBehandling.data.behandlingId}/${side.href}`;
+                <Meny as="nav">
+                    {åpenBehandling.status === RessursStatus.SUKSESS &&
+                        Object.entries(trinnPåBehandling).map(([sideId, side], index: number) => {
+                            const tilPath = `/fagsak/${fagsakId}/${åpenBehandling.data.behandlingId}/${side.href}`;
 
-                                        const undersider: IUnderside[] = side.undersider
-                                            ? side.undersider(åpenBehandling.data)
-                                            : [];
+                            const undersider: IUnderside[] = side.undersider
+                                ? side.undersider(åpenBehandling.data)
+                                : [];
 
+                            return (
+                                <VStack key={sideId}>
+                                    <MenyLenke
+                                        active={erSidenAktiv(side, åpenBehandling.data)}
+                                        id={sideId}
+                                        to={tilPath}
+                                        $erLenkenAktiv={erSidenAktiv(side, åpenBehandling.data)}
+                                    >
+                                        {`${side.steg ? `${index + 1}. ` : ''}${side.navn}`}
+                                    </MenyLenke>
+                                    {undersider.map((underside: IUnderside) => {
+                                        const antallAksjonspunkter =
+                                            underside.antallAksjonspunkter();
                                         return (
-                                            <React.Fragment key={sideId}>
-                                                <Link
-                                                    active={erSidenAktiv(side, åpenBehandling.data)}
-                                                    id={sideId}
-                                                    to={tilPath}
-                                                    className={classNames(
-                                                        'venstremeny__link',
-                                                        erSidenAktiv(side, åpenBehandling.data) &&
-                                                            'hover-effekt'
+                                            <MenyLenke
+                                                active={erSidenAktiv(side, åpenBehandling.data)}
+                                                key={`${sideId}_${underside.hash}`}
+                                                id={`${sideId}_${underside.hash}`}
+                                                to={`${tilPath}#${underside.hash}`}
+                                                $erLenkenAktiv={erSidenAktiv(
+                                                    side,
+                                                    åpenBehandling.data
+                                                )}
+                                            >
+                                                <HStack align="center" gap="1">
+                                                    {antallAksjonspunkter > 0 ? (
+                                                        <UndersideSirkel>
+                                                            {antallAksjonspunkter}
+                                                        </UndersideSirkel>
+                                                    ) : (
+                                                        <Box padding="3" />
                                                     )}
-                                                >
-                                                    {`${side.steg ? `${index + 1}. ` : ''}${
-                                                        side.navn
-                                                    }`}
-                                                </Link>
-                                                {undersider.map((underside: IUnderside) => {
-                                                    const antallAksjonspunkter =
-                                                        underside.antallAksjonspunkter();
-                                                    return (
-                                                        <Link
-                                                            active={erSidenAktiv(
-                                                                side,
-                                                                åpenBehandling.data
-                                                            )}
-                                                            key={`${sideId}_${underside.hash}`}
-                                                            id={`${sideId}_${underside.hash}`}
-                                                            to={`${tilPath}#${underside.hash}`}
-                                                            className={classNames(
-                                                                'venstremeny__link',
-                                                                'underside',
-                                                                erSidenAktiv(
-                                                                    side,
-                                                                    åpenBehandling.data
-                                                                ) && 'hover-effekt'
-                                                            )}
-                                                        >
-                                                            <>
-                                                                {antallAksjonspunkter > 0 ? (
-                                                                    <div
-                                                                        className={
-                                                                            'underside__sirkel-tall'
-                                                                        }
-                                                                    >
-                                                                        {antallAksjonspunkter}
-                                                                    </div>
-                                                                ) : (
-                                                                    <div
-                                                                        className={
-                                                                            'underside__sirkel-plass'
-                                                                        }
-                                                                    />
-                                                                )}
-                                                                <BodyShort size="small">
-                                                                    {underside.navn}
-                                                                </BodyShort>
-                                                            </>
-                                                        </Link>
-                                                    );
-                                                })}
-                                            </React.Fragment>
+                                                    <BodyShort size="small">
+                                                        {underside.navn}
+                                                    </BodyShort>
+                                                </HStack>
+                                            </MenyLenke>
                                         );
-                                    }
-                                )}
-                            </>
-                        ) : null}
-                    </nav>
-                </MenyItem>
+                                    })}
+                                </VStack>
+                            );
+                        })}
+                </Meny>
             )}
-            <MenyItem>
+            <div>
                 <ToggleVisningVenstremeny
                     variant="secondary"
                     onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
@@ -134,15 +144,16 @@ const Venstremeny: React.FunctionComponent = () => {
                     aria-label="Skjul venstremeny"
                     $åpenvenstremeny={åpenVenstremeny ? 1 : 0}
                     title={åpenVenstremeny ? 'Skjul venstremeny' : 'Vis venstremeny'}
-                >
-                    {åpenVenstremeny ? (
-                        <BackFilled aria-label="Vis venstremeny" />
-                    ) : (
-                        <NextFilled aria-label="Skjul venstremeny" />
-                    )}
-                </ToggleVisningVenstremeny>
-            </MenyItem>
-        </ÅpenMenyContainer>
+                    icon={
+                        åpenVenstremeny ? (
+                            <ChevronLeftIcon aria-label="Vis venstremeny" />
+                        ) : (
+                            <ChevronRightIcon aria-label="Skjul venstremeny" />
+                        )
+                    }
+                />
+            </div>
+        </HStack>
     );
 };
 

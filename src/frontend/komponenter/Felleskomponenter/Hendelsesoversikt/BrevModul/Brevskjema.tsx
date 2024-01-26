@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
-
 import { AddCircle, Delete, FileContent } from '@navikt/ds-icons';
 import { Button, Fieldset, Label, Select, Tag, Textarea, TextField } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
@@ -56,11 +54,6 @@ const TextareaBegrunnelseFritekst = styled(Textarea)`
 const StyledButton = styled(Button)`
     height: fit-content;
     align-self: center;
-`;
-
-const StyledTag = styled(Tag)`
-    background-color: ${navFarger.navLysGra};
-    border-color: ${navFarger.navGra60};
 `;
 
 const LabelOgEtikett = styled.div`
@@ -217,9 +210,9 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                                 >
                                     Velg dokumenter
                                 </Label>
-                                <StyledTag variant="info" size="small">
+                                <Tag variant="neutral" size="small">
                                     Skriv {målform[mottakersMålform()].toLowerCase()}
-                                </StyledTag>
+                                </Tag>
                             </LabelOgEtikett>
                         }
                         creatable={false}
