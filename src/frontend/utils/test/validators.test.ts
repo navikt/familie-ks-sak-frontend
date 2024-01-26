@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 
 import type { FeltState } from '@navikt/familie-skjema';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
