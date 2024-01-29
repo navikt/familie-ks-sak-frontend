@@ -1,22 +1,15 @@
 import React from 'react';
 
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExpandFilled } from '@navikt/ds-icons';
 import { Button, Dropdown } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import EndreBehandlendeEnhet from './EndreBehandlendeEnhet/EndreBehandlendeEnhet';
-import EndreBehandlingstema from './EndreBehandling/EndreBehandlingstema';
-import HenleggBehandling from './HenleggBehandling/HenleggBehandling';
-import SettEllerOppdaterVenting from './LeggBehandlingPåVent/SettEllerOppdaterVenting';
-import TaBehandlingAvVent from './LeggBehandlingPåVent/TaBehandlingAvVent';
-import LeggTilBarnPBehandling from './LeggTilBarnPåBehandling/LeggTilBarnPåBehandling';
-import OpprettBehandling from './OpprettBehandling/OpprettBehandling';
-import OpprettFagsak from './OpprettFagsak/OpprettFagsak';
+import MenyvalgFagsak from './MenyvalgFagsak';
+import MenyvalgBehandling from './OpprettFagsak/MenyvalgBehandling';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import { BehandlingÅrsak } from '../../../../typer/behandling';
+import { BehandlingStatus } from '../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
 import type { IPersonInfo } from '../../../../typer/person';
 
@@ -29,9 +22,16 @@ const PosisjonertMenyknapp = styled(Button)`
     margin-left: 3rem;
 `;
 
+const StyledDropdownMenu = styled(Dropdown.Menu)`
+    width: 30ch;
+`;
+
 const Behandlingsmeny: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
-    const { åpenBehandling, vurderErLesevisning } = useBehandling();
-    const navigate = useNavigate();
+    const { åpenBehandling } = useBehandling();
+
+    const skalViseMenyvalgForBehandling =
+        åpenBehandling.status === RessursStatus.SUKSESS &&
+        åpenBehandling.data.status !== BehandlingStatus.AVSLUTTET;
 
     return (
         <Dropdown>
@@ -44,43 +44,18 @@ const Behandlingsmeny: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
             >
                 Meny
             </PosisjonertMenyknapp>
-            <Dropdown.Menu>
+            <StyledDropdownMenu>
                 <Dropdown.Menu.List>
-                    {åpenBehandling.status === RessursStatus.SUKSESS && <EndreBehandlendeEnhet />}
-                    {åpenBehandling.status === RessursStatus.SUKSESS &&
-                        åpenBehandling.data.årsak !== BehandlingÅrsak.SØKNAD && (
-                            <EndreBehandlingstema />
-                        )}
-                    <OpprettBehandling minimalFagsak={minimalFagsak} />
-                    {!!bruker && <OpprettFagsak personInfo={bruker} />}
-                    {åpenBehandling.status === RessursStatus.SUKSESS && (
-                        <HenleggBehandling
-                            fagsakId={minimalFagsak.id}
-                            behandling={åpenBehandling.data}
+                    <MenyvalgFagsak minimalFagsak={minimalFagsak} bruker={bruker} />
+                    {skalViseMenyvalgForBehandling && <Dropdown.Menu.Divider />}
+                    {skalViseMenyvalgForBehandling && (
+                        <MenyvalgBehandling
+                            minimalFagsak={minimalFagsak}
+                            åpenBehandling={åpenBehandling.data}
                         />
                     )}
-                    {åpenBehandling.status === RessursStatus.SUKSESS &&
-                        !vurderErLesevisning() &&
-                        (åpenBehandling.data.årsak === BehandlingÅrsak.NYE_OPPLYSNINGER ||
-                            åpenBehandling.data.årsak === BehandlingÅrsak.KLAGE ||
-                            åpenBehandling.data.årsak ===
-                                BehandlingÅrsak.KORREKSJON_VEDTAKSBREV) && (
-                            <LeggTilBarnPBehandling behandling={åpenBehandling.data} />
-                        )}
-                    {åpenBehandling.status === RessursStatus.SUKSESS &&
-                        åpenBehandling.data.behandlingPåVent && (
-                            <TaBehandlingAvVent behandling={åpenBehandling.data} />
-                        )}
-                    {åpenBehandling.status === RessursStatus.SUKSESS && (
-                        <SettEllerOppdaterVenting behandling={åpenBehandling.data} />
-                    )}
-                    <Dropdown.Menu.List.Item
-                        onClick={() => navigate(`/fagsak/${minimalFagsak.id}/dokumentutsending`)}
-                    >
-                        Send informasjonsbrev
-                    </Dropdown.Menu.List.Item>
                 </Dropdown.Menu.List>
-            </Dropdown.Menu>
+            </StyledDropdownMenu>
         </Dropdown>
     );
 };

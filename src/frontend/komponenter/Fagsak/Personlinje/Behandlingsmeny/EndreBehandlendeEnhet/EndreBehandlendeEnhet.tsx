@@ -12,12 +12,7 @@ import { behandendeEnheter } from '../../../../../typer/enhet';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 
 const EndreBehandlendeEnhet: React.FC = () => {
-    const {
-        åpenBehandling,
-        vurderErLesevisning,
-        erBehandleneEnhetMidlertidig,
-        erBehandlingAvsluttet,
-    } = useBehandling();
+    const { åpenBehandling, vurderErLesevisning, erBehandleneEnhetMidlertidig } = useBehandling();
     const [visModal, settVisModal] = useState(erBehandleneEnhetMidlertidig);
     const { innloggetSaksbehandler } = useApp();
 
@@ -57,7 +52,7 @@ const EndreBehandlendeEnhet: React.FC = () => {
             <Dropdown.Menu.List.Item onClick={() => settVisModal(true)}>
                 Endre behandlende enhet
             </Dropdown.Menu.List.Item>
-            {visModal && !erBehandlingAvsluttet && (
+            {visModal && (
                 <Modal
                     open
                     onClose={lukkBehandlendeEnhetModal}
