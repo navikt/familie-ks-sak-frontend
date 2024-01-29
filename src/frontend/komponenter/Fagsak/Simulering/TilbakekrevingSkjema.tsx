@@ -21,7 +21,6 @@ import {
     Tag,
     Textarea,
 } from '@navikt/ds-react';
-import { FlexDiv } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
@@ -144,7 +143,7 @@ const TilbakekrevingSkjema: React.FC<{
             <StyledFieldset legend="Tilbakekreving">
                 <Textarea
                     label={
-                        <FlexDiv>
+                        <HStack>
                             Årsak til feilutbetaling og videre behandling
                             <StyledHelpText
                                 title="Hvordan skal feltet fylles ut?"
@@ -181,7 +180,7 @@ const TilbakekrevingSkjema: React.FC<{
                                     </BodyLong>
                                 </StyledHelpTextContainer>
                             </StyledHelpText>
-                        </FlexDiv>
+                        </HStack>
                     }
                     {...begrunnelse.hentNavInputProps(
                         tilbakekrevingSkjema.visFeilmeldinger ||
@@ -208,7 +207,7 @@ const TilbakekrevingSkjema: React.FC<{
                         value={tilbakekrevingsvalg.verdi}
                         onChange={(val: Tilbakekrevingsvalg) => radioOnChange(val)}
                         legend={
-                            <FlexDiv>
+                            <HStack>
                                 Fastsett videre behandling
                                 <StyledHelpText placement="right">
                                     <StyledHelpTextContainer>
@@ -238,7 +237,7 @@ const TilbakekrevingSkjema: React.FC<{
                                         </BodyLong>
                                     </StyledHelpTextContainer>
                                 </StyledHelpText>
-                            </FlexDiv>
+                            </HStack>
                         }
                     >
                         {bruker && !bruker.dødsfallDato && (
