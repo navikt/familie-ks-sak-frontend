@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import { BodyShort, Checkbox, ExpansionCard } from '@navikt/ds-react';
-import { FamilieInput } from '@navikt/familie-form-elements';
+import { BodyShort, Checkbox, ExpansionCard, TextField } from '@navikt/ds-react';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
 import { DeltagerInfo } from './DeltagerInfo';
@@ -85,9 +84,9 @@ export const AvsenderPanel: React.FC = () => {
                     </Checkbox>
                 )}
                 <br />
-                <FamilieInput
+                <TextField
                     {...skjema.felter.avsenderNavn.hentNavInputProps(skjema.visFeilmeldinger)}
-                    erLesevisning={erLesevisning()}
+                    readOnly={erLesevisning()}
                     label={'Navn'}
                     size={'medium'}
                     placeholder={'navn'}
@@ -95,9 +94,9 @@ export const AvsenderPanel: React.FC = () => {
                 />
 
                 <br />
-                <FamilieInput
+                <TextField
                     {...skjema.felter.avsenderIdent.hentNavInputProps(skjema.visFeilmeldinger)}
-                    erLesevisning={erLesevisning()}
+                    readOnly={erLesevisning()}
                     label={'Ident'}
                     size={'medium'}
                     placeholder={'Fnr/dnr/orgnr'}

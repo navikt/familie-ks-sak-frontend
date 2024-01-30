@@ -2,8 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Radio, Textarea } from '@navikt/ds-react';
-import { FamilieKnapp, FamilieRadioGruppe } from '@navikt/familie-form-elements';
+import { Radio, RadioGroup, Textarea } from '@navikt/ds-react';
+import { FamilieKnapp } from '@navikt/familie-form-elements';
 
 import { useAnnenVurderingSkjema } from './AnnenVurderingSkjemaContext';
 import { annenVurderingBegrunnelseFeilmeldingId } from './AnnenVurderingTabell';
@@ -41,8 +41,8 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
             errorPropagation={false}
             legend={''}
         >
-            <FamilieRadioGruppe
-                erLesevisning={erLesevisning}
+            <RadioGroup
+                readOnly={erLesevisning}
                 value={skjema.felter.resultat.verdi}
                 legend={
                     annenVurderingConfig.spørsmål
@@ -65,7 +65,7 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
                 >
                     Nei
                 </Radio>
-            </FamilieRadioGruppe>
+            </RadioGroup>
 
             <Textarea
                 readOnly={erLesevisning}

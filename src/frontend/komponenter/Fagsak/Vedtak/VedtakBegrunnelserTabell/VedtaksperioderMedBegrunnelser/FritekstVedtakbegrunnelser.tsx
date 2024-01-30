@@ -3,8 +3,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { AddCircle, Delete, ExternalLink } from '@navikt/ds-icons';
-import { BodyLong, Button, Fieldset, Heading, HelpText, Label, Link, Tag } from '@navikt/ds-react';
-import { FamilieKnapp, FamilieTextarea } from '@navikt/familie-form-elements';
+import {
+    BodyLong,
+    Button,
+    Fieldset,
+    Heading,
+    HelpText,
+    Label,
+    Link,
+    Tag,
+    Textarea,
+} from '@navikt/ds-react';
+import { FamilieKnapp } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -19,7 +29,7 @@ const FritekstContainer = styled.div`
     padding: 1rem;
 `;
 
-const FamilieTextareaBegrunnelseFritekst = styled(FamilieTextarea)`
+const StyledTextarea = styled(Textarea)`
     margin-bottom: 0.5rem;
     display: flex;
     flex: auto;
@@ -157,8 +167,8 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
 
                                 return (
                                     <StyledFamilieFritekstFelt key={`fritekst-${fritekstId}`}>
-                                        <FamilieTextareaBegrunnelseFritekst
-                                            erLesevisning={false}
+                                        <StyledTextarea
+                                            readOnly={false}
                                             key={`fritekst-${fritekstId}`}
                                             id={`${fritekstId}`}
                                             className={'fritekst-textarea'}

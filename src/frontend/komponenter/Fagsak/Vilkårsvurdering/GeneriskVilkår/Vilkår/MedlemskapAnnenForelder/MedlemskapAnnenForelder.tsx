@@ -2,8 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Alert, Label, Radio } from '@navikt/ds-react';
-import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
+import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
 import { Regelverk, Resultat } from '../../../../../../typer/vilkår';
@@ -56,7 +55,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                 </>
             )}
 
-            <FamilieRadioGruppe
+            <RadioGroup
                 legend={
                     <Label>
                         {vilkårFraConfig.spørsmål
@@ -70,7 +69,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
                         : ''
                 }
-                erLesevisning={lesevisning}
+                readOnly={lesevisning}
             >
                 <Radio
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
@@ -107,7 +106,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                 >
                     Ikke aktuelt - Bor ikke sammen
                 </Radio>
-            </FamilieRadioGruppe>
+            </RadioGroup>
         </VilkårSkjema>
     );
 };

@@ -4,9 +4,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Delete } from '@navikt/ds-icons';
-import { Button, Fieldset, Label, Radio, Select, Textarea } from '@navikt/ds-react';
+import { Button, Fieldset, Label, Radio, RadioGroup, Select, Textarea } from '@navikt/ds-react';
 import { ABorderDefault, ABorderWarning, ASurfaceAction } from '@navikt/ds-tokens/dist/tokens';
-import { FamilieKnapp, FamilieRadioGruppe } from '@navikt/familie-form-elements';
+import { FamilieKnapp } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import AvslagSkjema from './AvslagSkjema';
@@ -49,15 +49,6 @@ const Knapperad = styled.div`
     display: flex;
     justify-content: space-between;
     margin: 1rem 0;
-`;
-
-const StyledFamilieRadioGruppe = styled(FamilieRadioGruppe)`
-    && {
-        margin: 1rem 0;
-        legend {
-            margin-bottom: 0;
-        }
-    }
 `;
 
 export interface IVilkårSkjemaBaseProps {
@@ -148,8 +139,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 </Select>
             )}
             {visSpørsmål && (
-                <StyledFamilieRadioGruppe
-                    erLesevisning={lesevisning}
+                <RadioGroup
+                    readOnly={lesevisning}
                     value={skjema.felter.resultat.verdi}
                     legend={
                         <Label>
@@ -184,7 +175,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     >
                         Nei
                     </Radio>
-                </StyledFamilieRadioGruppe>
+                </RadioGroup>
             )}
             {children}
             <UtdypendeVilkårsvurderingMultiselect

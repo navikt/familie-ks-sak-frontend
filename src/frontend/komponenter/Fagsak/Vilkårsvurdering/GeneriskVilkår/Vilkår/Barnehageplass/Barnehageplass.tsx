@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Radio, RadioGroup } from '@navikt/ds-react';
-import { FamilieInput } from '@navikt/familie-form-elements';
+import { Radio, RadioGroup, TextField } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import {
@@ -16,7 +15,7 @@ import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
-const StyledFamilieInput = styled(FamilieInput)`
+const StyledTextField = styled(TextField)`
     margin-bottom: 1rem;
 `;
 
@@ -119,10 +118,10 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                 </Radio>
             </RadioGroup>
             {harBarnehageplass && (
-                <StyledFamilieInput
+                <StyledTextField
                     label={'Antall timer'}
                     type={'number'}
-                    erLesevisning={lesevisning}
+                    readOnly={lesevisning}
                     value={vilkårSkjemaContext.skjema.felter.antallTimer.verdi}
                     onChange={event => {
                         vilkårSkjemaContext.skjema.felter.antallTimer.validerOgSettFelt(
