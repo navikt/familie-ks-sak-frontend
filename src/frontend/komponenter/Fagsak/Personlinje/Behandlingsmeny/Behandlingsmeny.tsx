@@ -11,10 +11,8 @@ import MenyvalgBehandling from './OpprettFagsak/MenyvalgBehandling';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingStatus } from '../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
-import type { IPersonInfo } from '../../../../typer/person';
 
 interface IProps {
-    bruker?: IPersonInfo;
     minimalFagsak: IMinimalFagsak;
 }
 
@@ -26,7 +24,7 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
     width: 30ch;
 `;
 
-const Behandlingsmeny: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
+const Behandlingsmeny: React.FC<IProps> = ({ minimalFagsak }) => {
     const { åpenBehandling } = useBehandling();
 
     const skalViseMenyvalgForBehandling =
@@ -46,7 +44,7 @@ const Behandlingsmeny: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
             </PosisjonertMenyknapp>
             <StyledDropdownMenu>
                 <Dropdown.Menu.List>
-                    <MenyvalgFagsak minimalFagsak={minimalFagsak} bruker={bruker} />
+                    <MenyvalgFagsak minimalFagsak={minimalFagsak} />
                     {skalViseMenyvalgForBehandling && <Dropdown.Menu.Divider />}
                     {skalViseMenyvalgForBehandling && (
                         <MenyvalgBehandling
