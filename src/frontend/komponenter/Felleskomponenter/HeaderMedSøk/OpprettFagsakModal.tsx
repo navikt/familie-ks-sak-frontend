@@ -6,30 +6,22 @@ import { BodyShort, Button, ErrorMessage, Modal } from '@navikt/ds-react';
 import type { ISøkeresultat } from '@navikt/familie-header';
 
 import useOpprettFagsak from './useOpprettFagsak';
-import { useApp } from '../../../context/AppContext';
-import type { IPersonInfo } from '../../../typer/person';
 import { formaterIdent } from '../../../utils/formatter';
 
 export interface IOpprettFagsakModal {
     lukkModal: () => void;
-    søkeresultat?: ISøkeresultat | undefined;
-    personInfo?: IPersonInfo;
+    søkeresultat: ISøkeresultat;
 }
 
 const StyledBodyShort = styled(BodyShort)`
     margin-top: 2rem;
 `;
 
-const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
-    lukkModal,
-    søkeresultat,
-    personInfo,
-}) => {
+const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({ lukkModal, søkeresultat }) => {
     const { opprettFagsak, feilmelding, senderInn, settSenderInn } = useOpprettFagsak();
-    const { sjekkTilgang } = useApp();
-    const visModal = !!søkeresultat || !!personInfo;
+    const { navn, ident } = søkeresultat;
 
-    return visModal ? (
+    return (
         <Modal
             open
             onClose={lukkModal}
@@ -42,11 +34,7 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
                     Personen har ingen tilknyttet fagsak. Ønsker du å opprette fagsak for denne
                     personen?
                 </BodyShort>
-                {søkeresultat && (
-                    <StyledBodyShort>{`${søkeresultat.navn} (${formaterIdent(
-                        søkeresultat.ident
-                    )})`}</StyledBodyShort>
-                )}
+                <StyledBodyShort>{`${navn} (${formaterIdent(ident)})`}</StyledBodyShort>
                 {!!feilmelding && <ErrorMessage children={feilmelding} />}
             </Modal.Body>
             <Modal.Footer>
@@ -56,17 +44,13 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
                     size={'small'}
                     onClick={async () => {
                         settSenderInn(true);
-                        if (søkeresultat && (await sjekkTilgang(søkeresultat.ident))) {
-                            opprettFagsak(
-                                {
-                                    personIdent: søkeresultat.ident,
-                                    aktørId: null,
-                                },
-                                lukkModal
-                            );
-                        } else {
-                            settSenderInn(false);
-                        }
+                        opprettFagsak(
+                            {
+                                personIdent: ident,
+                                aktørId: null,
+                            },
+                            lukkModal
+                        );
                     }}
                     children={'Ja, opprett fagsak'}
                     disabled={senderInn}
@@ -81,7 +65,7 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({
                 />
             </Modal.Footer>
         </Modal>
-    ) : null;
+    );
 };
 
 export default OpprettFagsakModal;
