@@ -2,52 +2,19 @@ import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import {
-    ABorderFocus,
-    ABorderSubtle,
-    ATextAction,
-    ATextActionSelected,
-    ATextDefault,
-} from '@navikt/ds-tokens/dist/tokens';
+import { Button } from '@navikt/ds-react';
+import { ASurfaceSelected, ATextActionSelected } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { TidslinjeVindu, useTidslinje } from '../../../context/TidslinjeContext';
-import FamilieBaseKnapp from '../../Felleskomponenter/FamilieBaseKnapp';
 
 interface IEtikettProp {
     etikett: Etikett;
 }
 
-const EtikettKnapp = styled(FamilieBaseKnapp)<{ disabled: boolean; valgt: boolean }>`
-    padding: 3px 3px 3px ${({ valgt }) => (valgt ? '5px' : '3px')};
-    width: 90%;
-    text-align: left;
-    cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
-    border-left: ${({ valgt }) => (valgt ? `1px solid ${ABorderSubtle}` : 'none')};
-
-    > span {
-        text-decoration: ${({ disabled, valgt }) => (disabled || valgt ? 'none' : 'underline')};
-        font-weight: ${({ valgt }) => (valgt ? 'bold' : 'normal')};
-        color: ${({ disabled, valgt }) => {
-            if (disabled) return ATextDefault;
-            else if (valgt) return ATextActionSelected;
-            else return ATextAction;
-        }};
-    }
-
-    :hover {
-        > span {
-            text-decoration: none;
-        }
-    }
-
-    :focus,
-    :active {
-        background-color: ${ABorderFocus};
-        > span {
-            color: #fff;
-        }
-    }
+const EtikettKnapp = styled(Button)<{ $valgt: boolean }>`
+    color: ${({ $valgt }) => $valgt && ATextActionSelected};
+    background-color: ${({ $valgt }) => $valgt && ASurfaceSelected};
 `;
 
 const TidslinjeEtikett: React.FunctionComponent<IEtikettProp> = ({ etikett }) => {
@@ -76,14 +43,15 @@ const TidslinjeEtikett: React.FunctionComponent<IEtikettProp> = ({ etikett }) =>
 
     return (
         <EtikettKnapp
-            aria-label={etikett.label}
+            variant="tertiary"
+            size="xsmall"
             disabled={aktivtTidslinjeVindu.vindu.id === TidslinjeVindu.TRE_ÅR}
-            valgt={
+            onClick={onEtikettClick}
+            $valgt={
                 !!aktivEtikett && aktivEtikett.date.toDateString() === etikett.date.toDateString()
             }
-            onClick={onEtikettClick}
         >
-            <span>{etikett.label}</span>
+            {etikett.label}
         </EtikettKnapp>
     );
 };
