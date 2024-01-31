@@ -1847,13 +1847,13 @@
     "@navikt/familie-typer" "^8.0.2"
     "@navikt/familie-validering" "^6.0.0"
 
-"@navikt/familie-http@^6.0.0", "@navikt/familie-http@^6.0.2":
-  version "6.0.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/6.0.2/98c92e337b3638a76e43b76ad8b2cd74b62855f9#98c92e337b3638a76e43b76ad8b2cd74b62855f9"
-  integrity sha512-eaID3VB2MvGRBNxq7MqZEcikwdDGy7kAgnybzvfP2TVa2LBTJcQLjW/fNYFZ2n2+YG42rIZI1Fu6Kf9nHDj5hQ==
+"@navikt/familie-http@^6.0.0", "@navikt/familie-http@^6.0.6":
+  version "6.0.6"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/6.0.6/f1e1fb57af1069dd0260ad2de5765234cdcdee90#f1e1fb57af1069dd0260ad2de5765234cdcdee90"
+  integrity sha512-griRw7a+hwQmwEgkZuRNYTMT7sMPnjFaxlUqHx26o7d2TCWwlfv58QA1L6p6dOh49qRE7JmD2rVgRcWXlz6cBg==
   dependencies:
-    "@navikt/familie-typer" "^8.0.0"
-    "@sentry/core" "^7.48.0"
+    "@navikt/familie-typer" "^8.0.2"
+    "@sentry/core" "^7.98.0"
     constate "^3.3.2"
 
 "@navikt/familie-ikoner@^9.0.0", "@navikt/familie-ikoner@^9.0.1":
@@ -1870,16 +1870,16 @@
   dependencies:
     winston "^3.11.0"
 
-"@navikt/familie-skjema@^7.0.3":
-  version "7.0.7"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/7.0.7/c7d0b5740e0b75ec73560c7c70e0f6ae929ebef3#c7d0b5740e0b75ec73560c7c70e0f6ae929ebef3"
-  integrity sha512-C+Otf3iJwo+M5MD2oynrPf4/7c6W9/yw9jqyv3sMFCIWZABhzpgXy8i8hQiGfjrQnWEBsxvVI2tGRoWpWgDuGA==
+"@navikt/familie-skjema@^8.0.2":
+  version "8.0.2"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.0.2/6b56fdc304f0c7538343f90bafdbbeb95baafd39#6b56fdc304f0c7538343f90bafdbbeb95baafd39"
+  integrity sha512-AuCuQckjcuWvuWoPEUB53Yi4lE5aObl98vNDTl6IiTyRCXwfvbcuP3aiyyH1DT9ox9fnLa2/O85c+bw0E2bmlQ==
   dependencies:
-    "@navikt/familie-http" "^6.0.2"
-    "@navikt/familie-typer" "^8.0.0"
-    "@types/deep-equal" "^1.0.1"
-    deep-equal "^2.2.0"
-    hashids "^2.2.10"
+    "@navikt/familie-http" "^6.0.6"
+    "@navikt/familie-typer" "^8.0.2"
+    "@types/deep-equal" "^1.0.4"
+    deep-equal "^2.2.3"
+    hashids "^2.3.0"
 
 "@navikt/familie-tidslinje@^8.0.0":
   version "8.0.0"
@@ -2264,7 +2264,7 @@
     "@sentry/types" "7.80.1"
     "@sentry/utils" "7.80.1"
 
-"@sentry/core@7.99.0", "@sentry/core@^7.48.0", "@sentry/core@^7.99.0":
+"@sentry/core@7.99.0", "@sentry/core@^7.98.0", "@sentry/core@^7.99.0":
   version "7.99.0"
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.99.0.tgz#6881aae5ac1436637b3d88e0b12df4ab56016c5f"
   integrity sha512-vOAtzcAXEUtS/oW7wi3wMkZ3hsb5Ch96gKyrrj/mXdOp2zrcwdNV6N9/pawq2E9P/7Pw8AXw4CeDZztZrjQLuA==
@@ -2487,10 +2487,10 @@
   dependencies:
     "@types/express" "*"
 
-"@types/deep-equal@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/@types/deep-equal/-/deep-equal-1.0.1.tgz"
-  integrity sha512-mMUu4nWHLBlHtxXY17Fg6+ucS/MnndyOWyOe7MmwkoMYxvfQU2ajtRaEvqSUv+aVkMqH/C0NCI8UoVfRNQ10yg==
+"@types/deep-equal@^1.0.1", "@types/deep-equal@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@types/deep-equal/-/deep-equal-1.0.4.tgz#c0a854be62d6b9fae665137a6639aab53389a147"
+  integrity sha512-tqdiS4otQP4KmY0PR3u6KbZ5EWvhNdUoS/jc93UuK23C220lOZ/9TvjfxdPcKvqwwDVtmtSCrnr0p/2dirAxkA==
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.3"
@@ -4638,7 +4638,7 @@ dedent@^1.0.0:
   resolved "https://registry.yarnpkg.com/dedent/-/dedent-1.5.1.tgz#4f3fc94c8b711e9bb2800d185cd6ad20f2a90aff"
   integrity sha512-+LxW+KLWxu3HW3M2w2ympwtqPrqYRzU8fqi6Fhd18fBALe15blJPI/I4+UHveMVG6lJqB4JNd4UG0S5cnVHwIg==
 
-deep-equal@^2.0.5:
+deep-equal@^2.0.5, deep-equal@^2.2.2, deep-equal@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-2.2.3.tgz#af89dafb23a396c7da3e862abc0be27cf51d56e1"
   integrity sha512-ZIwpnevOurS8bpT4192sqAowWM76JDKSHYzMLty3BZGSswgq6pBaH3DhCSW5xVAZICZyKdOBPjwww5wfgT/6PA==
@@ -4661,30 +4661,6 @@ deep-equal@^2.0.5:
     which-boxed-primitive "^1.0.2"
     which-collection "^1.0.1"
     which-typed-array "^1.1.13"
-
-deep-equal@^2.2.0, deep-equal@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-2.2.2.tgz#9b2635da569a13ba8e1cc159c2f744071b115daa"
-  integrity sha512-xjVyBf0w5vH0I42jdAZzOKVldmPgSulmiyPRywoyq7HXC9qdgo17kxJE+rdnif5Tz6+pIrpJI8dCpMNLIGkUiA==
-  dependencies:
-    array-buffer-byte-length "^1.0.0"
-    call-bind "^1.0.2"
-    es-get-iterator "^1.1.3"
-    get-intrinsic "^1.2.1"
-    is-arguments "^1.1.1"
-    is-array-buffer "^3.0.2"
-    is-date-object "^1.0.5"
-    is-regex "^1.1.4"
-    is-shared-array-buffer "^1.0.2"
-    isarray "^2.0.5"
-    object-is "^1.1.5"
-    object-keys "^1.1.1"
-    object.assign "^4.1.4"
-    regexp.prototype.flags "^1.5.0"
-    side-channel "^1.0.4"
-    which-boxed-primitive "^1.0.2"
-    which-collection "^1.0.1"
-    which-typed-array "^1.1.9"
 
 deep-is@^0.1.3, deep-is@~0.1.3:
   version "0.1.4"
@@ -6275,10 +6251,10 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hashids@^2.2.10:
-  version "2.2.10"
-  resolved "https://registry.npmjs.org/hashids/-/hashids-2.2.10.tgz"
-  integrity sha512-nXnYums7F8B5Y+GSThutLPlKMaamW1yjWNZVt0WModiJfdjaDZHnhYTWblS+h1OoBx3yjwiBwxldPP3nIbFSSA==
+hashids@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/hashids/-/hashids-2.3.0.tgz#af92c9cdb093c0ed3542cf0dcbd6c289125df387"
+  integrity sha512-ljM73TE/avEhNnazxaj0Dw3BbEUuLC5yYCQ9RSkSUcT4ZSU6ZebdKCIBJ+xT/DnSYW36E9k82GH1Q6MydSIosQ==
 
 hasown@^2.0.0:
   version "2.0.0"
@@ -9299,15 +9275,6 @@ regexp.prototype.flags@^1.4.3:
     call-bind "^1.0.2"
     define-properties "^1.1.3"
     functions-have-names "^1.2.2"
-
-regexp.prototype.flags@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/regexp.prototype.flags/-/regexp.prototype.flags-1.5.0.tgz#fe7ce25e7e4cca8db37b6634c8a2c7009199b9cb"
-  integrity sha512-0SutC3pNudRKgquxGoRGIz946MZVHqbNfPjBdxeOhBrdgDKlRoXmYLQN9xRbrR09ZXWeGAdPuif7egofn6v5LA==
-  dependencies:
-    call-bind "^1.0.2"
-    define-properties "^1.2.0"
-    functions-have-names "^1.2.3"
 
 regexp.prototype.flags@^1.5.1:
   version "1.5.1"
