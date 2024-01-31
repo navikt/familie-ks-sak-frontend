@@ -156,8 +156,5 @@
     "transform": {
       "\\.[jt]sx?$": "babel-jest"
     }
-  },
-  "resolutions": {
-    "styled-components": "^5"
   }
 }
