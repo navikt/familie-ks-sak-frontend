@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { Button, Modal } from '@navikt/ds-react';
 
@@ -11,6 +12,10 @@ interface IProps {
     onIModalClick: () => void;
 }
 
+const BoksMedMargin = styled.div`
+    margin: 1rem 1.25rem;
+`;
+
 const Brev = ({ onIModalClick }: IProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
@@ -18,7 +23,7 @@ const Brev = ({ onIModalClick }: IProps) => {
     const [visInnsendtBrevModal, settVisInnsendtBrevModal] = React.useState(false);
 
     return (
-        <div className={'brev'}>
+        <BoksMedMargin>
             <Brevskjema
                 onSubmitSuccess={() => {
                     settVisInnsendtBrevModal(true);
@@ -62,7 +67,7 @@ const Brev = ({ onIModalClick }: IProps) => {
                     </Modal.Footer>
                 </Modal>
             )}
-        </div>
+        </BoksMedMargin>
     );
 };
 export default Brev;
