@@ -89,12 +89,16 @@ export const erPeriodeGyldig = (
     const erEksplisittAvslagPåSøknad: boolean | undefined =
         avhengigheter?.erEksplisittAvslagPåSøknad;
     const erBarnetsAlderVilkår: boolean = vilkår === VilkårType.BARNETS_ALDER;
+    const erBarnehageVilkår: boolean = vilkår === VilkårType.BARNEHAGEPLASS;
 
     const erMedlemskapAnnenForelderVilkår: boolean =
         avhengigheter?.erMedlemskapAnnenForelderVilkår ?? false;
 
     const utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering | undefined =
         avhengigheter?.utdypendeVilkårsvurdering;
+
+    const søkerHarMeldtFraOmBarnehageplass: boolean | undefined =
+        avhengigheter?.søkerHarMeldtFraOmBarnehageplass;
 
     if (felt.verdi.fom) {
         const fom = parseISO(felt.verdi.fom);
@@ -165,10 +169,15 @@ export const erPeriodeGyldig = (
         }
         if (!erUendelig(tom)) {
             if (!erBarnetsAlderVilkår && valgtDatoErSenereEnnNesteMåned(tom)) {
-                return feil(
-                    felt,
-                    'Du kan ikke legge inn til og med dato som er senere enn neste måned'
-                );
+                const skalTillateFremtidigOpphør =
+                    erBarnehageVilkår && søkerHarMeldtFraOmBarnehageplass;
+
+                if (!skalTillateFremtidigOpphør) {
+                    return feil(
+                        felt,
+                        'Du kan ikke legge inn til og med dato som er senere enn neste måned'
+                    );
+                }
             }
 
             if (person?.dødsfallDato) {

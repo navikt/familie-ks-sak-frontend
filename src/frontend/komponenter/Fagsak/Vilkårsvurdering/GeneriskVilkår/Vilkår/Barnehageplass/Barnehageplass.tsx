@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Radio, RadioGroup, TextField } from '@navikt/ds-react';
+import { Checkbox, Radio, RadioGroup, TextField } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import {
@@ -82,6 +82,20 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
             toggleForm={toggleForm}
             person={person}
             lesevisning={lesevisning}
+            periodeChildren={
+                felter.periode.verdi.tom && (
+                    <Checkbox
+                        defaultChecked={felter.søkerHarMeldtFraOmBarnehageplass.verdi}
+                        onChange={event => {
+                            felter.søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(
+                                event.target.checked
+                            );
+                        }}
+                    >
+                        Søker har meldt fra om barnehageplass
+                    </Checkbox>
+                )
+            }
         >
             <RadioGroup
                 legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål() : ''}
