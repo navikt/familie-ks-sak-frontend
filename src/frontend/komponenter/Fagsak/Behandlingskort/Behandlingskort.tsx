@@ -76,13 +76,13 @@ const hentResultatfargeTekst = (behandlingResultat: BehandlingResultat) => {
     }
 };
 
-const Container = styled.div<{ behandlingResultat: BehandlingResultat }>`
+const Container = styled.div<{ $behandlingResultat: BehandlingResultat }>`
     border: 1px solid ${ABorderSubtle};
     border-left: 0.5rem solid ${ABorderSubtle};
     border-radius: 0.25rem;
     padding: 0.5rem;
     margin: 0.5rem;
-    border-color: ${({ behandlingResultat }) => hentResultatfarge(behandlingResultat)};
+    border-color: ${({ $behandlingResultat }) => hentResultatfarge($behandlingResultat)};
 `;
 
 const StyledHeading = styled(Heading)`
@@ -110,7 +110,7 @@ const Behandlingskort: React.FC<IBehandlingskortProps> = ({ åpenBehandling }) =
     } (${åpenBehandlingIndex}/${antallBehandlinger}) - ${sakstype(åpenBehandling).toLowerCase()}`;
 
     return (
-        <Container behandlingResultat={åpenBehandling.resultat}>
+        <Container $behandlingResultat={åpenBehandling.resultat}>
             <StyledHeading size={'small'} level={'2'}>
                 {tittel}
             </StyledHeading>
