@@ -12,12 +12,14 @@ import { useBehandling } from '../../../../context/behandlingContext/BehandlingC
 import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../../../../typer/vedtak';
 import { BegrunnelseType } from '../../../../typer/vedtak';
 import type { VilkårType } from '../../../../typer/vilkår';
+import type { Regelverk } from '../../../../typer/vilkår';
 import { hentBakgrunnsfarge, hentBorderfarge } from '../../../../utils/vedtakUtils';
 import { useVedtaksbegrunnelseTekster } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
 
 interface IProps {
     vilkårType: VilkårType;
     begrunnelser: Felt<Begrunnelse[]>;
+    regelverk?: Regelverk;
 }
 
 interface IOptionType {
@@ -25,12 +27,18 @@ interface IOptionType {
     label: string;
 }
 
-const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnelser }) => {
+const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
+    vilkårType,
+    begrunnelser,
+    regelverk,
+}) => {
     const { vurderErLesevisning } = useBehandling();
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
 
-    const { avslagBegrunnelseTeksterForGjeldendeVilkår } =
-        useAvslagBegrunnelseMultiselect(vilkårType);
+    const { avslagBegrunnelseTeksterForGjeldendeVilkår } = useAvslagBegrunnelseMultiselect(
+        vilkårType,
+        regelverk
+    );
 
     const valgteBegrunnlser = begrunnelser
         ? begrunnelser.verdi.map((valgtBegrunnelse: Begrunnelse) => ({
