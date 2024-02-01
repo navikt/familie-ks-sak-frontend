@@ -109,6 +109,7 @@ export interface IRestVilkårResultat {
     vurderesEtter: Regelverk | undefined;
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
     antallTimer: number | undefined;
+    søkerHarMeldtFraOmBarnehageplass: boolean | undefined;
 }
 
 export interface IRestAnnenVurdering {
