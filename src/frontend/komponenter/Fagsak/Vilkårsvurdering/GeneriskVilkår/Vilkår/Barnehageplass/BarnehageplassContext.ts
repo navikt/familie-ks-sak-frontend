@@ -36,7 +36,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         antallTimer: vilkår.antallTimer ? vilkår.antallTimer.toString() : '',
         utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
         periode: vilkår.periode,
-        søkerHarMeldtFraOmBarnehageplass: undefined, // todo: legg inn data fra backend
+        søkerHarMeldtFraOmBarnehageplass: vilkår.søkerHarMeldtFraOmBarnehageplass,
         begrunnelse: vilkår.begrunnelse,
         erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: vilkår.avslagBegrunnelser,

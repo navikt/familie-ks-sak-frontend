@@ -72,6 +72,7 @@ export interface IVilkårResultat {
     vurderesEtter: Regelverk | undefined;
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
     antallTimer?: number;
+    søkerHarMeldtFraOmBarnehageplass?: boolean;
 }
 
 // Vilkårsvurdering typer for api
@@ -109,7 +110,7 @@ export interface IRestVilkårResultat {
     vurderesEtter: Regelverk | undefined;
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
     antallTimer: number | undefined;
-    søkerHarMeldtFraOmBarnehageplass: boolean | undefined;
+    søkerHarMeldtFraOmBarnehageplass?: boolean;
 }
 
 export interface IRestAnnenVurdering {
