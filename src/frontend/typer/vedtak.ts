@@ -44,10 +44,10 @@ export const begrunnelseTyper: Record<BegrunnelseType, string> = {
 };
 
 export enum Standardbegrunnelse {
-    REDUKSJON_SATSENDRING = 'REDUKSJON_SATSENDRING',
-    REDUKSJON_UNDER_6_ÅR = 'REDUKSJON_UNDER_6_ÅR',
-    REDUKSJON_UNDER_18_ÅR = 'REDUKSJON_UNDER_18_ÅR',
-    ETTER_ENDRET_UTBETALING_ETTERBETALING = 'ETTER_ENDRET_UTBETALING_ETTERBETALING',
+    REDUKSJON_SATSENDRING = 'NasjonalEllerFellesBegrunnelse$REDUKSJON_SATSENDRING',
+    REDUKSJON_UNDER_6_ÅR = 'NasjonalEllerFellesBegrunnelse$REDUKSJON_UNDER_6_ÅR',
+    REDUKSJON_UNDER_18_ÅR = 'NasjonalEllerFellesBegrunnelse$REDUKSJON_UNDER_18_ÅR',
+    ETTER_ENDRET_UTBETALING_ETTERBETALING = 'NasjonalEllerFellesBegrunnelse$ETTER_ENDRET_UTBETALING_ETTERBETALING',
 }
 
 export interface IRestKorrigertVedtak {
