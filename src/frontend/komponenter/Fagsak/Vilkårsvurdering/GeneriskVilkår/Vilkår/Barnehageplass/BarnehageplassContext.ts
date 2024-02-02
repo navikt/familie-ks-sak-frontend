@@ -26,7 +26,7 @@ export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = 
 
 export interface IBarnehageplassVilkårSkjemaContext extends IVilkårSkjemaContext {
     antallTimer: string;
-    søkerHarMeldtFraOmBarnehageplass: boolean | undefined;
+    søkerHarMeldtFraOmBarnehageplass: boolean;
 }
 
 export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
@@ -36,7 +36,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         antallTimer: vilkår.antallTimer ? vilkår.antallTimer.toString() : '',
         utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
         periode: vilkår.periode,
-        søkerHarMeldtFraOmBarnehageplass: vilkår.søkerHarMeldtFraOmBarnehageplass,
+        søkerHarMeldtFraOmBarnehageplass: vilkår.søkerHarMeldtFraOmBarnehageplass ?? false,
         begrunnelse: vilkår.begrunnelse,
         erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: vilkår.avslagBegrunnelser,
@@ -60,7 +60,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });
 
-    const søkerHarMeldtFraOmBarnehageplass = useFelt<boolean | undefined>({
+    const søkerHarMeldtFraOmBarnehageplass = useFelt<boolean>({
         verdi: vilkårSkjema.søkerHarMeldtFraOmBarnehageplass,
     });
 
@@ -104,7 +104,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
 
     useEffect(() => {
         if (!periode.verdi.tom) {
-            søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(undefined);
+            søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(false);
         }
     }, [periode.verdi.tom]);
 
