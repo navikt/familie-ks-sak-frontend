@@ -10,6 +10,8 @@ import {
     vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie,
     vilkårOppfyltOgAntallTimerKvalifiserer,
 } from './BarnehageplassUtils';
+import { useApp } from '../../../../../../context/AppContext';
+import { ToggleNavn } from '../../../../../../typer/toggles';
 import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
@@ -30,6 +32,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
 }: BarnehageplassProps) => {
     const { felter } = useBarnehageplass(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+    const { toggles } = useApp();
 
     const [harBarnehageplass, settHarBarnehageplass] = useState(
         vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(vilkårSkjemaContext.skjema) ||
@@ -83,6 +86,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
             person={person}
             lesevisning={lesevisning}
             periodeChildren={
+                toggles[ToggleNavn.framtidigOpphør] &&
                 felter.periode.verdi.tom && (
                     <Checkbox
                         defaultChecked={felter.søkerHarMeldtFraOmBarnehageplass.verdi}
