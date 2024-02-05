@@ -90,6 +90,8 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                                     utdypendeVilkårsvurderinger:
                                         vilkårResultat.utdypendeVilkårsvurderinger,
                                     antallTimer: vilkårResultat.antallTimer,
+                                    søkerHarMeldtFraOmBarnehageplass:
+                                        vilkårResultat.søkerHarMeldtFraOmBarnehageplass,
                                 };
                             }
                         )

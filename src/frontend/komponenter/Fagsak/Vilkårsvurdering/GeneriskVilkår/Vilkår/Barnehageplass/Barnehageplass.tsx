@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Radio, RadioGroup, TextField } from '@navikt/ds-react';
+import { Checkbox, Radio, RadioGroup, TextField } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import {
@@ -10,6 +10,8 @@ import {
     vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie,
     vilkårOppfyltOgAntallTimerKvalifiserer,
 } from './BarnehageplassUtils';
+import { useApp } from '../../../../../../context/AppContext';
+import { ToggleNavn } from '../../../../../../typer/toggles';
 import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
@@ -30,6 +32,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
 }: BarnehageplassProps) => {
     const { felter } = useBarnehageplass(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+    const { toggles } = useApp();
 
     const [harBarnehageplass, settHarBarnehageplass] = useState(
         vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(vilkårSkjemaContext.skjema) ||
@@ -82,6 +85,21 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
             toggleForm={toggleForm}
             person={person}
             lesevisning={lesevisning}
+            periodeChildren={
+                toggles[ToggleNavn.framtidigOpphør] &&
+                felter.periode.verdi.tom && (
+                    <Checkbox
+                        defaultChecked={felter.søkerHarMeldtFraOmBarnehageplass.verdi}
+                        onChange={event => {
+                            felter.søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(
+                                event.target.checked
+                            );
+                        }}
+                    >
+                        Søker har meldt fra om barnehageplass
+                    </Checkbox>
+                )
+            }
         >
             <RadioGroup
                 legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål() : ''}
