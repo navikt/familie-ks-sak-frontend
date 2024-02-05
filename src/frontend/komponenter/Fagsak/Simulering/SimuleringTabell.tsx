@@ -3,11 +3,15 @@ import { useState } from 'react';
 
 import { isAfter } from 'date-fns';
 import styled from 'styled-components';
-import 'nav-frontend-tabell-style';
 
-import navFarger from 'nav-frontend-core';
-
-import { BodyShort, Detail, Label } from '@navikt/ds-react';
+import { BodyShort, Heading, Table } from '@navikt/ds-react';
+import {
+    AFontWeightBold,
+    AGreen700,
+    ASpacing18,
+    ATextDefault,
+} from '@navikt/ds-tokens/dist/tokens';
+import { AFontWeightRegular, ATextDanger } from '@navikt/ds-tokens/dist/tokens';
 
 import { NavigeringsRetning } from '../../../context/TidslinjeContext';
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../typer/simulering';
@@ -26,59 +30,37 @@ const Årsvelger = styled.div`
     flex-direction: column;
 `;
 
-const StyledTable = styled.table<{ $bredde: number }>`
-    width: ${props => props.$bredde}rem;
-    border-collapse: collapse;
-    table-layout: fixed;
+const IkkeFullBreddeTabell = styled(Table)`
+    width: unset;
 `;
 
-const HøyresiltTd = styled.td`
-    text-align: right !important;
+const HeaderCelle = styled(Table.HeaderCell)<{ $skalViseStipletLinje: boolean }>`
+    border-left: ${props => props.$skalViseStipletLinje && '1px dashed'};
 `;
 
-const HøyresiltTh = styled.th`
-    text-align: right !important;
+const DataCelle = styled(Table.DataCell)<{ $skalViseStipletLinje: boolean }>`
+    width: ${ASpacing18};
+    border-left: ${props => props.$skalViseStipletLinje && '1px dashed'};
 `;
 
-const BodyShortMedFarge = styled(BodyShort)<{ $farge?: string }>`
-    color: ${props => (props.$farge ? props.$farge : navFarger.navMorkGra)};
+const DataCellMedFarge = styled(DataCelle)<{
+    $erNegativtBeløp: boolean;
+    $erNesteUtbetalingsperiode: boolean;
+    $skalViseStipletLinje: boolean; // Sendes videre til DataCelle
+}>`
+    color: ${props => {
+        if (props.$erNegativtBeløp) return ATextDanger;
+        else if (props.$erNesteUtbetalingsperiode) {
+            return AGreen700;
+        }
+        return ATextDefault;
+    }};
+    font-weight: ${props =>
+        props.$erNesteUtbetalingsperiode ? AFontWeightBold : AFontWeightRegular};
 `;
 
-const VenstreKolonne = styled.col`
-    width: 9.375rem;
-`;
-
-const DataKolonne = styled.col`
-    width: 4.6875rem;
-`;
-
-const SkillelinjeKolonne = styled.col`
-    width: 1.125rem;
-`;
-
-const Skillelinje = styled.td<{ $erHeader?: boolean }>`
-    position: relative;
-    padding: 0.5rem !important;
-    border: none !important;
-
-    hr {
-        border: none;
-        border-right: 1px dashed ${navFarger.navGra60};
-        height: ${props => (props.$erHeader ? '3.875rem' : '3.25rem')};
-        position: absolute;
-        top: -0.375rem;
-    }
-`;
-
-const SimuleringTabellOverskrift = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 1rem;
-`;
-
-const LabelMedFarge = styled(Label)<{ farge?: string }>`
-    color: ${props => (props.$farge ? props.$farge : navFarger.navMorkGra)};
+const FørsteKolonne = styled(Table.HeaderCell)`
+    width: 10rem;
 `;
 
 interface ISimuleringProps {
@@ -115,22 +97,10 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
     const formaterBeløpUtenValutakode = (beløp?: number) =>
         beløp ? formaterBeløp(beløp).slice(0, -3) : '-';
 
-    const antallPerioderIFremvistÅr = perioder.filter(p => periodeSkalVisesITabell(p)).length;
-
     const erISisteÅrAvPerioden = indexFramvistÅr === hentÅrISimuleringen(perioder).length - 1;
 
-    const tabellbredde =
-        9.375 +
-        (fomDatoNestePeriode && erISisteÅrAvPerioden ? 1.125 : 0) +
-        4.6875 * antallPerioderIFremvistÅr;
-
-    const erNestePeriode = (periode: ISimuleringPeriode) => periode.fom === fomDatoNestePeriode;
-
-    const TabellSkillelinje = (props: { erHeader?: boolean }) => (
-        <Skillelinje $erHeader={props.erHeader}>
-            <hr />
-        </Skillelinje>
-    );
+    const erNestePeriode = (periode: ISimuleringPeriode): boolean =>
+        periode.fom === fomDatoNestePeriode;
 
     const tilOgFraDatoForSimulering = `${isoDatoPeriodeTilFormatertString({
         fom,
@@ -139,46 +109,26 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
 
     return (
         <>
-            <SimuleringTabellOverskrift>
-                <Label>
-                    Simuleringsresultat for{' '}
-                    {perioder.length === 1
-                        ? `${isoStringTilFormatertString({
-                              isoString: perioder[0].fom,
-                              tilFormat: Datoformat.MÅNED_ÅR_NAVN,
-                          })}`
-                        : `perioden ${tilOgFraDatoForSimulering}`}
-                </Label>
-            </SimuleringTabellOverskrift>
+            <Heading size={'small'} level={'2'} spacing>
+                Simuleringsresultat for{' '}
+                {perioder.length === 1
+                    ? `${isoStringTilFormatertString({
+                          isoString: perioder[0].fom,
+                          tilFormat: Datoformat.MÅNED_ÅR_NAVN,
+                      })}`
+                    : `perioden ${tilOgFraDatoForSimulering}`}
+            </Heading>
 
-            <StyledTable
+            <IkkeFullBreddeTabell
                 aria-label={`Simuleringsresultat for ${
                     erMerEnn12MånederISimulering
                         ? aktueltÅr
                         : `perioden ${tilOgFraDatoForSimulering}`
                 }`}
-                className="tabell"
-                $bredde={tabellbredde}
             >
-                <colgroup>
-                    <VenstreKolonne />
-                    {perioder.map(
-                        periode =>
-                            periodeSkalVisesITabell(periode) &&
-                            (fomDatoNestePeriode === periode.fom ? (
-                                <React.Fragment key={'col - ' + periode.fom}>
-                                    <SkillelinjeKolonne />
-                                    <DataKolonne />
-                                </React.Fragment>
-                            ) : (
-                                <DataKolonne key={'col - ' + periode.fom} />
-                            ))
-                    )}
-                </colgroup>
-
-                <thead>
-                    <tr>
-                        <td>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.DataCell>
                             {erMerEnn12MånederISimulering && (
                                 <Årsvelger>
                                     <TidslinjeNavigering
@@ -196,105 +146,85 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                             aktueltÅr - 1
                                         }`}
                                     >
-                                        <Detail size={'small'}>
+                                        <BodyShort size={'small'}>
                                             {årISimuleringen[indexFramvistÅr]}
-                                        </Detail>{' '}
+                                        </BodyShort>
                                     </TidslinjeNavigering>
                                 </Årsvelger>
                             )}
-                        </td>
+                        </Table.DataCell>
                         {perioder.map(
                             periode =>
                                 periodeSkalVisesITabell(periode) && (
-                                    <React.Fragment key={'måned - ' + periode.fom}>
-                                        {erNestePeriode(periode) && <TabellSkillelinje erHeader />}
-                                        <HøyresiltTh>
-                                            <Label>
-                                                {kapitaliserTekst(
-                                                    isoStringTilFormatertString({
-                                                        isoString: periode.fom,
-                                                        tilFormat: Datoformat.MÅNED_NAVN,
-                                                    })
-                                                )}
-                                            </Label>
-                                        </HøyresiltTh>
-                                    </React.Fragment>
+                                    <HeaderCelle
+                                        key={'måned - ' + periode.fom}
+                                        align={'center'}
+                                        $skalViseStipletLinje={erNestePeriode(periode)}
+                                    >
+                                        {kapitaliserTekst(
+                                            isoStringTilFormatertString({
+                                                isoString: periode.fom,
+                                                tilFormat: Datoformat.MÅNED_NAVN,
+                                            })
+                                        )}
+                                    </HeaderCelle>
                                 )
                         )}
-                    </tr>
-                </thead>
+                    </Table.Row>
+                </Table.Header>
 
-                <tbody>
-                    <tr>
-                        <td>Nytt beløp</td>
+                <Table.Body>
+                    <Table.Row>
+                        <FørsteKolonne>Nytt beløp</FørsteKolonne>
                         {perioder.map(
                             periode =>
                                 periodeSkalVisesITabell(periode) && (
-                                    <React.Fragment key={'nytt beløp - ' + periode.fom}>
-                                        {erNestePeriode(periode) && <TabellSkillelinje />}
-                                        <HøyresiltTd>
-                                            <BodyShort>
-                                                {formaterBeløpUtenValutakode(periode.nyttBeløp)}
-                                            </BodyShort>
-                                        </HøyresiltTd>
-                                    </React.Fragment>
+                                    <DataCelle
+                                        key={'nytt beløp - ' + periode.fom}
+                                        align={'center'}
+                                        $skalViseStipletLinje={erNestePeriode(periode)}
+                                    >
+                                        {formaterBeløpUtenValutakode(periode.nyttBeløp)}
+                                    </DataCelle>
                                 )
                         )}
-                    </tr>
-                    <tr>
-                        <td>Tidligere utbetalt</td>
+                    </Table.Row>
+                    <Table.Row>
+                        <FørsteKolonne>Tidligere utbetalt</FørsteKolonne>
                         {perioder.map(
                             periode =>
                                 periodeSkalVisesITabell(periode) && (
-                                    <React.Fragment key={'tidligere utbetalt - ' + periode.fom}>
-                                        {erNestePeriode(periode) && <TabellSkillelinje />}
-                                        <HøyresiltTd>
-                                            <BodyShort>
-                                                {formaterBeløpUtenValutakode(
-                                                    periode.tidligereUtbetalt
-                                                )}
-                                            </BodyShort>
-                                        </HøyresiltTd>
-                                    </React.Fragment>
+                                    <DataCelle
+                                        key={'tidligere utbetalt - ' + periode.fom}
+                                        align={'center'}
+                                        $skalViseStipletLinje={erNestePeriode(periode)}
+                                    >
+                                        {formaterBeløpUtenValutakode(periode.tidligereUtbetalt)}
+                                    </DataCelle>
                                 )
                         )}
-                    </tr>
-                    <tr>
-                        <td>Resultat</td>
+                    </Table.Row>
+                    <Table.Row>
+                        <FørsteKolonne>Resultat</FørsteKolonne>
                         {perioder.map(
                             periode =>
                                 periodeSkalVisesITabell(periode) && (
-                                    <React.Fragment key={'resultat - ' + periode.fom}>
-                                        {erNestePeriode(periode) && <TabellSkillelinje />}
-                                        <HøyresiltTd>
-                                            {fomDatoNestePeriode === periode.fom ? (
-                                                <LabelMedFarge
-                                                    $farge={
-                                                        periode.resultat && periode.resultat < 0
-                                                            ? navFarger.navRod
-                                                            : navFarger.navGronnDarken40
-                                                    }
-                                                >
-                                                    {formaterBeløpUtenValutakode(periode.resultat)}
-                                                </LabelMedFarge>
-                                            ) : (
-                                                <BodyShortMedFarge
-                                                    $farge={
-                                                        periode.resultat && periode.resultat < 0
-                                                            ? navFarger.navRod
-                                                            : navFarger.navMorkGra
-                                                    }
-                                                >
-                                                    {formaterBeløpUtenValutakode(periode.resultat)}
-                                                </BodyShortMedFarge>
-                                            )}
-                                        </HøyresiltTd>
-                                    </React.Fragment>
+                                    <DataCellMedFarge
+                                        key={'resultat - ' + periode.fom}
+                                        align={'center'}
+                                        $erNegativtBeløp={
+                                            !!periode.resultat && periode.resultat < 0
+                                        }
+                                        $erNesteUtbetalingsperiode={erNestePeriode(periode)}
+                                        $skalViseStipletLinje={erNestePeriode(periode)}
+                                    >
+                                        {formaterBeløpUtenValutakode(periode.resultat)}
+                                    </DataCellMedFarge>
                                 )
                         )}
-                    </tr>
-                </tbody>
-            </StyledTable>
+                    </Table.Row>
+                </Table.Body>
+            </IkkeFullBreddeTabell>
         </>
     );
 };

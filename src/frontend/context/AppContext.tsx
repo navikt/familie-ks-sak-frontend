@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode, JSX, PropsWithChildren } from 'react';
 import React, { useEffect, useState } from 'react';
 
 import type { AxiosRequestConfig } from 'axios';
@@ -28,22 +28,18 @@ export type FamilieAxiosRequestConfig<D> = AxiosRequestConfig & {
 
 export interface IModal {
     actions?: JSX.Element[] | JSX.Element;
-    className?: string;
-    innhold?: () => React.ReactNode;
-    lukkKnapp: boolean;
+    innhold?: () => ReactNode;
     onClose?: () => void;
-    style?: CSSProperties;
-    tittel: ReactNode;
+    tittel: string;
     visModal: boolean;
 }
 
 const initalState: IModal = {
-    lukkKnapp: true,
     tittel: '',
     visModal: false,
 };
 
-interface IProps {
+interface IProps extends PropsWithChildren {
     autentisertSaksbehandler: ISaksbehandler | undefined;
 }
 
@@ -76,7 +72,7 @@ const [AppContentProvider, useApp] = createUseContext(() => {
     const [toggles, settToggles] = useState<IToggles>(alleTogglerAv());
     const [appVersjon, settAppVersjon] = useState('');
 
-    const [modal, settModal] = React.useState<IModal>(initalState);
+    const [appInfoModal, settAppInfoModal] = React.useState<IModal>(initalState);
     const [toasts, settToasts] = useState<{ [toastId: string]: IToast }>({});
 
     const verifiserVersjon = () => {
@@ -86,7 +82,7 @@ const [AppContentProvider, useApp] = createUseContext(() => {
         }).then((versjon: Ressurs<string>) => {
             if (versjon.status === RessursStatus.SUKSESS) {
                 if (appVersjon !== '' && appVersjon !== versjon.data) {
-                    settModal({
+                    settAppInfoModal({
                         tittel: 'Løsningen er utdatert',
                         innhold: () => {
                             return (
@@ -100,17 +96,9 @@ const [AppContentProvider, useApp] = createUseContext(() => {
                                 </div>
                             );
                         },
-                        lukkKnapp: true,
                         visModal: true,
                         onClose: () => lukkModal(),
                         actions: [
-                            <Button
-                                key={'avbryt'}
-                                size={'small'}
-                                variant={'tertiary'}
-                                onClick={() => lukkModal()}
-                                children={'Avbryt'}
-                            />,
                             <Button
                                 key={'oppdater'}
                                 variant={'primary'}
@@ -119,6 +107,13 @@ const [AppContentProvider, useApp] = createUseContext(() => {
                                     window.location.reload();
                                 }}
                                 children={'Ok, oppdater'}
+                            />,
+                            <Button
+                                key={'avbryt'}
+                                size={'small'}
+                                variant={'tertiary'}
+                                onClick={() => lukkModal()}
+                                children={'Avbryt'}
                             />,
                         ],
                     });
@@ -149,15 +144,8 @@ const [AppContentProvider, useApp] = createUseContext(() => {
         });
     }, []);
 
-    const åpneModal = () => {
-        settModal({
-            ...modal,
-            visModal: true,
-        });
-    };
-
     const lukkModal = () => {
-        settModal(initalState);
+        settAppInfoModal(initalState);
     };
 
     const sjekkTilgang = async (
@@ -171,9 +159,8 @@ const [AppContentProvider, useApp] = createUseContext(() => {
             påvirkerSystemLaster: visSystemetLaster,
         }).then((ressurs: Ressurs<IRestTilgang>) => {
             if (ressurs.status === RessursStatus.SUKSESS) {
-                settModal({
+                settAppInfoModal({
                     tittel: 'Diskresjonskode',
-                    lukkKnapp: true,
                     visModal: !ressurs.data.saksbehandlerHarTilgang,
                     onClose: () => lukkModal(),
                     innhold: () => {
@@ -242,8 +229,7 @@ const [AppContentProvider, useApp] = createUseContext(() => {
         harInnloggetSaksbehandlerSkrivetilgang,
         harInnloggetSaksbehandlerSuperbrukerTilgang,
         lukkModal,
-        modal,
-        settModal,
+        appInfoModal,
         settToast: (toastId: ToastTyper, toast: IToast) =>
             settToasts({
                 ...toasts,
@@ -254,11 +240,10 @@ const [AppContentProvider, useApp] = createUseContext(() => {
         systemetLaster,
         toasts,
         toggles,
-        åpneModal,
     };
 });
 
-const AuthOgHttpProvider: React.FC = ({ children }) => {
+const AuthOgHttpProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const { innloggetSaksbehandler, settAutentisert } = useAuth();
 
     return (

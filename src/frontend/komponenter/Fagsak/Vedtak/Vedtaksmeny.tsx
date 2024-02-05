@@ -10,11 +10,9 @@ import { ASpacing10 } from '@navikt/ds-tokens/dist/tokens';
 import KorrigerEtterbetaling from './KorrigerEtterbetaling/KorrigerEtterbetaling';
 import KorrigerVedtak from './KorrigerVedtakModal/KorrigerVedtak';
 import EndreEndringstidspunkt from './VedtakBegrunnelserTabell/EndreEndringstidspunkt';
-import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingKategori } from '../../../typer/behandlingstema';
-import { ToggleNavn } from '../../../typer/toggles';
 import { vedtakHarFortsattUtbetaling } from '../../../utils/vedtakUtils';
 
 interface IVedtakmenyProps {
@@ -41,7 +39,6 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
     visRefusjonEøs,
 }) => {
     const { vurderErLesevisning } = useBehandling();
-    const { toggles } = useApp();
 
     const erLesevisning = vurderErLesevisning();
 
@@ -81,13 +78,12 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
                             Legg til feilutbetalt valuta
                         </Dropdown.Menu.List.Item>
                     )}
-                    {toggles[ToggleNavn.brukEøs] &&
-                        vedtakHarFortsattUtbetaling(åpenBehandling.resultat) && (
-                            <Dropdown.Menu.List.Item onClick={visRefusjonEøs}>
-                                <StarsEuIcon />
-                                Legg til refusjon EØS
-                            </Dropdown.Menu.List.Item>
-                        )}
+                    {vedtakHarFortsattUtbetaling(åpenBehandling.resultat) && (
+                        <Dropdown.Menu.List.Item onClick={visRefusjonEøs}>
+                            <StarsEuIcon />
+                            Legg til refusjon EØS
+                        </Dropdown.Menu.List.Item>
+                    )}
                 </Dropdown.Menu.List>
             </StyledDropdownMeny>
         </Dropdown>

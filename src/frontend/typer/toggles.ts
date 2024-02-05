@@ -5,7 +5,6 @@ export interface IToggles {
 export enum ToggleNavn {
     kanBehandleTekniskEndring = 'familie-ks-sak.behandling.teknisk-endring',
     kanManueltKorrigereMedVedtaksbrev = 'familie-ks-sak.behandling.korreksjon-vedtaksbrev',
-    brukEøs = 'familie-ks-sak.behandling.eos',
     tekniskVedlikeholdHenleggelse = 'familie-ks-sak.teknisk-vedlikehold-henleggelse.tilgangsstyring',
     kanBehandleKlage = 'familie-ks-sak.klage',
 }

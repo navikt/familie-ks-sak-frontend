@@ -9,7 +9,6 @@ import { useApp } from '../../context/AppContext';
 import { useFagsakContext } from '../../context/fagsak/FagsakContext';
 import type { IOppgave } from '../../typer/oppgave';
 import { oppgaveTypeFilter, OppgavetypeFilter } from '../../typer/oppgave';
-import { ToggleNavn } from '../../typer/toggles';
 import { hentFnrFraOppgaveIdenter } from '../../utils/oppgave';
 import { AlertType, ToastTyper } from '../Felleskomponenter/Toast/typer';
 
@@ -20,7 +19,7 @@ interface IOppgaveDirektelenke {
 const OppgaveDirektelenke: React.FC<IOppgaveDirektelenke> = ({ oppgave }) => {
     const { settToast } = useApp();
     const { hentFagsakForPerson } = useFagsakContext();
-    const { sjekkTilgang, toggles } = useApp();
+    const { sjekkTilgang } = useApp();
     const [laster, settLaster] = useState<boolean>(false);
     const navigate = useNavigate();
     const oppgavetype = oppgaveTypeFilter[oppgave.oppgavetype as OppgavetypeFilter]?.id;
@@ -43,17 +42,15 @@ const OppgaveDirektelenke: React.FC<IOppgaveDirektelenke> = ({ oppgave }) => {
         settLaster(true);
 
         const brukerident = hentFnrFraOppgaveIdenter(oppgave.identer);
-        if (brukerident) {
-            if (await sjekkTilgang(brukerident, false)) {
-                const fagsak = await hentFagsakForPerson(brukerident);
-                if (fagsak.status === RessursStatus.SUKSESS && fagsak.data?.id) {
-                    navigate(`/fagsak/${fagsak.data.id}/saksoversikt`);
-                } else {
-                    settToast(ToastTyper.FANT_IKKE_FAGSAK, {
-                        alertType: AlertType.WARNING,
-                        tekst: 'Fant ikke fagsak',
-                    });
-                }
+        if (brukerident && (await sjekkTilgang(brukerident, false))) {
+            const fagsak = await hentFagsakForPerson(brukerident);
+            if (fagsak.status === RessursStatus.SUKSESS && fagsak.data?.id) {
+                navigate(`/fagsak/${fagsak.data.id}/saksoversikt`);
+            } else {
+                settToast(ToastTyper.FANT_IKKE_FAGSAK, {
+                    alertType: AlertType.WARNING,
+                    tekst: 'Fant ikke fagsak',
+                });
             }
         } else {
             settToast(ToastTyper.MANGLER_TILGANG, {
@@ -81,21 +78,17 @@ const OppgaveDirektelenke: React.FC<IOppgaveDirektelenke> = ({ oppgave }) => {
                     />
                 );
             case OppgavetypeFilter.BEH_SED:
-                if (oppgavetype === OppgavetypeFilter.BEH_SED && toggles[ToggleNavn.brukEøs]) {
-                    return (
-                        <Button
-                            variant="tertiary"
-                            size="small"
-                            key={'tiloppg'}
-                            onClick={() => {
-                                visTilgangsmodalEllerSendVidere(oppgave);
-                            }}
-                            children={'Gå til oppgave'}
-                        />
-                    );
-                } else {
-                    return <></>;
-                }
+                return (
+                    <Button
+                        variant="tertiary"
+                        size="small"
+                        key={'tiloppg'}
+                        onClick={() => {
+                            visTilgangsmodalEllerSendVidere(oppgave);
+                        }}
+                        children={'Gå til oppgave'}
+                    />
+                );
             case OppgavetypeFilter.BEH_SAK:
             case OppgavetypeFilter.GOD_VED:
             case OppgavetypeFilter.BEH_UND_VED:

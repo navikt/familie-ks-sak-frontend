@@ -51,10 +51,6 @@ export const useKorrigerEtterbetalingSkjemaContext = ({
             value: KorrigertEtterbetalingÅrsak.FEIL_TIDLIGERE_UTBETALT_BELØP,
         },
         {
-            label: 'Refusjon fra UDI',
-            value: KorrigertEtterbetalingÅrsak.REFUSJON_FRA_UDI,
-        },
-        {
             label: 'Refusjon fra andre myndigheter',
             value: KorrigertEtterbetalingÅrsak.REFUSJON_FRA_ANDRE_MYNDIGHETER,
         },
@@ -124,7 +120,7 @@ export const useKorrigerEtterbetalingSkjemaContext = ({
 
     const visAngreKorrigering = korrigertEtterbetaling != null;
 
-    const korrigertEtterbetalingURL = `/familie-ba-sak/api/korrigertetterbetaling/behandling/${behandlingId}`;
+    const korrigertEtterbetalingURL = `/familie-ks-sak/api/korrigertetterbetaling/behandling/${behandlingId}`;
 
     const lagreKorrigering = () => {
         if (kanSendeSkjema()) {

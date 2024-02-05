@@ -4,10 +4,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Feiloppsummering } from 'nav-frontend-skjema';
-
 import { Edit } from '@navikt/ds-icons';
-import { Alert, Button, ErrorMessage, Label } from '@navikt/ds-react';
+import { Alert, Button, ErrorMessage, ErrorSummary, Label } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -18,7 +16,6 @@ import { Oppsummeringsboks } from './Oppsummeringsboks';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import UtbetaltAnnetLand from './UtbetaltAnnetLand/UtbetaltAnnetLand';
 import Valutakurser from './Valutakurs/Valutakurser';
-import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useEøs } from '../../../context/Eøs/EøsContext';
 import { kompetanseFeilmeldingId } from '../../../context/Kompetanse/KompetanseSkjemaContext';
@@ -33,7 +30,6 @@ import type {
     IRestUtenlandskPeriodeBeløp,
     IRestValutakurs,
 } from '../../../typer/eøsPerioder';
-import { ToggleNavn } from '../../../typer/toggles';
 import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
 import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
 import { periodeOverlapperMedValgtDato } from '../../../utils/dato';
@@ -55,7 +51,7 @@ const StyledAlert = styled(Alert)`
     margin-bottom: 1rem;
 `;
 
-const StyledFeiloppsummering = styled(Feiloppsummering)`
+const StyledErrorSummary = styled(ErrorSummary)`
     margin-top: 5rem;
 `;
 
@@ -68,7 +64,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
 }) => {
     const navigate = useNavigate();
     const { fagsakId } = useSakOgBehandlingParams();
-    const { toggles } = useApp();
 
     const [visFeilmeldinger, settVisFeilmeldinger] = React.useState(false);
     const [opprettelseFeilmelding, settOpprettelseFeilmelding] = React.useState('');
@@ -162,11 +157,9 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             }
         });
     };
-    const harKompetanser = toggles[ToggleNavn.brukEøs] && åpenBehandling.kompetanser?.length > 0;
-    const harUtenlandskeBeløper =
-        toggles[ToggleNavn.brukEøs] && åpenBehandling.utenlandskePeriodebeløp?.length > 0;
-    const harValutakurser =
-        toggles[ToggleNavn.brukEøs] && åpenBehandling.utenlandskePeriodebeløp?.length > 0;
+    const harKompetanser = åpenBehandling.kompetanser?.length > 0;
+    const harUtenlandskeBeløper = åpenBehandling.utenlandskePeriodebeløp?.length > 0;
+    const harValutakurser = åpenBehandling.utenlandskePeriodebeløp?.length > 0;
 
     const harEøs = harKompetanser || harUtenlandskeBeløper || harValutakurser;
 
@@ -253,10 +246,9 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                     åpenBehandling={åpenBehandling}
                 />
             )}
-            {visFeilmeldinger && toggles[ToggleNavn.brukEøs] && !erEøsInformasjonGyldig() && (
-                <StyledFeiloppsummering
-                    tittel={'For å gå videre må du rette opp følgende:'}
-                    feil={[
+            {visFeilmeldinger && !erEøsInformasjonGyldig() && (
+                <StyledErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
+                    {[
                         ...hentKompetanserMedFeil().map((kompetanse: IRestKompetanse) => ({
                             feilmelding: `Kompetanse barn: ${kompetanse.barnIdenter}, f.o.m.: ${kompetanse.fom} er ikke fullstendig.`,
                             skjemaelementId: kompetanseFeilmeldingId(kompetanse),
@@ -272,8 +264,15 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                             feilmelding: `Valutakurs barn: ${valutakurs.barnIdenter}, f.o.m.: ${valutakurs.fom} er ikke fullstendig.`,
                             skjemaelementId: valutakursFeilmeldingId(valutakurs),
                         })),
-                    ]}
-                />
+                    ].map(item => (
+                        <ErrorSummary.Item
+                            key={item.skjemaelementId}
+                            href={`#${item.skjemaelementId}`}
+                        >
+                            {item.feilmelding}
+                        </ErrorSummary.Item>
+                    ))}
+                </StyledErrorSummary>
             )}
         </Skjemasteg>
     );

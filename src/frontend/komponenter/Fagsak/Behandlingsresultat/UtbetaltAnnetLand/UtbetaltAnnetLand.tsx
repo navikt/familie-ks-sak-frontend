@@ -15,10 +15,6 @@ const UtenlandskPeriodeBeløperContainer = styled.div`
 
 const StyledTable = styled(Table)`
     margin-top: 2rem;
-
-    & fieldset.skjemagruppe {
-        margin-bottom: 1.5rem;
-    }
 `;
 
 const TabellHeader = styled(Table.HeaderCell)`

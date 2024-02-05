@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BodyShort, Link } from '@navikt/ds-react';
+import { BodyShort, Link, Spacer } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
 import Visittkort from '@navikt/familie-visittkort';
 
@@ -24,33 +24,28 @@ const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
             ident={formaterIdent(bruker?.personIdent ?? '')}
             alder={hentAlder(bruker?.fødselsdato ?? '')}
             kjønn={bruker?.kjønn ?? kjønnType.UKJENT}
+            dempetKantlinje
+            padding
         >
-            <div className="visittkort__pipe">|</div>
+            <div>|</div>
             <BodyShort>{`Kommunenr: ${bruker?.kommunenummer ?? 'ukjent'}`}</BodyShort>
             {bruker?.dødsfallDato?.length && (
                 <>
-                    <div className="visittkort__pipe"></div>
+                    <div>|</div>
                     <DødsfallTag dødsfallDato={bruker.dødsfallDato} />
                 </>
             )}
-            <div style={{ flex: 1 }}></div>
-            <div style={{ flex: 1 }}></div>
+            <Spacer />
             {minimalFagsak !== undefined && (
                 <>
-                    <Link
-                        className={'visittkort__lenke'}
-                        href={`/fagsak/${minimalFagsak.id}/saksoversikt`}
-                    >
+                    <Link href={`/fagsak/${minimalFagsak.id}/saksoversikt`}>
                         <BodyShort>Saksoversikt</BodyShort>
                     </Link>
-                    <Link
-                        className={'visittkort__lenke'}
-                        href={`/fagsak/${minimalFagsak.id}/dokumenter`}
-                    >
+                    <Link href={`/fagsak/${minimalFagsak.id}/dokumenter`}>
                         <BodyShort>Dokumenter</BodyShort>
                     </Link>
                     {harInnloggetSaksbehandlerSkrivetilgang() && (
-                        <Behandlingsmeny bruker={bruker} minimalFagsak={minimalFagsak} />
+                        <Behandlingsmeny minimalFagsak={minimalFagsak} />
                     )}
                 </>
             )}

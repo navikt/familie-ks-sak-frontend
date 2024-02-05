@@ -1,15 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 
-import styled from 'styled-components';
-
-import { Alert, BodyShort, Button } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, HGrid } from '@navikt/ds-react';
 import type { ISaksbehandler } from '@navikt/familie-typer';
 
 import { useApp } from '../../context/AppContext';
 import { useOppgaver } from '../../context/OppgaverContext';
 import type { IOppgave } from '../../typer/oppgave';
 import { OppgavetypeFilter } from '../../typer/oppgave';
-import { ToggleNavn } from '../../typer/toggles';
 import { hentFnrFraOppgaveIdenter } from '../../utils/oppgave';
 
 interface IOppgavelisteSaksbehandler {
@@ -17,23 +14,12 @@ interface IOppgavelisteSaksbehandler {
     innloggetSaksbehandler?: ISaksbehandler;
 }
 
-const StyledNormaltekst = styled(BodyShort)`
-    width: 5rem;
-    margin-right: 2.5rem;
-    text-align: left;
-`;
-
-const StyledButton = styled(Button)`
-    text-align: center;
-    min-width: fit-content;
-`;
-
 const OppgavelisteSaksbehandler: React.FunctionComponent<IOppgavelisteSaksbehandler> = ({
     oppgave,
     innloggetSaksbehandler,
 }) => {
     const { fordelOppgave, tilbakestillFordelingPåOppgave } = useOppgaver();
-    const { sjekkTilgang, toggles } = useApp();
+    const { sjekkTilgang } = useApp();
     const oppgaveRef = useRef<IOppgave | null>(null);
 
     useEffect(() => {
@@ -47,26 +33,24 @@ const OppgavelisteSaksbehandler: React.FunctionComponent<IOppgavelisteSaksbehand
         return <Alert variant="error">Klarte ikke hente innlogget saksbehandler</Alert>;
     }
 
-    let oppgaveTypeErStøttet =
+    const oppgaveTypeErStøttet =
         [
             OppgavetypeFilter.JFR,
             OppgavetypeFilter.BEH_SAK,
             OppgavetypeFilter.BEH_UND_VED,
             OppgavetypeFilter.GOD_VED,
             OppgavetypeFilter.VURD_LIVS,
+            OppgavetypeFilter.BEH_SED,
         ].find(
             (type: OppgavetypeFilter) =>
                 OppgavetypeFilter[oppgave.oppgavetype as keyof typeof OppgavetypeFilter] === type
         ) !== undefined;
-    oppgaveTypeErStøttet =
-        oppgaveTypeErStøttet ||
-        (toggles[ToggleNavn.brukEøs] && oppgave.oppgavetype === OppgavetypeFilter.BEH_SED);
 
     return oppgave.tilordnetRessurs ? (
-        <div className={'kolonne'}>
-            <StyledNormaltekst>{oppgave.tilordnetRessurs}</StyledNormaltekst>
+        <HGrid columns={2} gap={'2'} align="center">
+            <BodyShort>{oppgave.tilordnetRessurs}</BodyShort>
             {oppgaveTypeErStøttet && (
-                <StyledButton
+                <Button
                     variant="tertiary"
                     size="small"
                     key={'tilbakestill'}
@@ -76,12 +60,12 @@ const OppgavelisteSaksbehandler: React.FunctionComponent<IOppgavelisteSaksbehand
                     children={'Tilbakestill'}
                 />
             )}
-        </div>
+        </HGrid>
     ) : (
-        <div className={'kolonne'}>
-            <StyledNormaltekst>Ikke tildelt</StyledNormaltekst>
+        <HGrid columns={2} gap={'2'} align="center">
+            <BodyShort>Ikke tildelt</BodyShort>
             {oppgaveTypeErStøttet && (
-                <StyledButton
+                <Button
                     variant="secondary"
                     size="small"
                     key={'plukk'}
@@ -95,7 +79,7 @@ const OppgavelisteSaksbehandler: React.FunctionComponent<IOppgavelisteSaksbehand
                     children={'Tildel meg'}
                 />
             )}
-        </div>
+        </HGrid>
     );
 };
 

@@ -3,10 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { FlowerBladeFall, Globe, Heart, Home, Passport } from '@navikt/ds-icons';
-import { Alert, Heading } from '@navikt/ds-react';
+import { Alert, Detail, Heading } from '@navikt/ds-react';
 import { AFontWeightRegular, ASpacing4 } from '@navikt/ds-tokens/dist/tokens';
 
-import { HentetLabel } from './HentetLabel';
 import RegisteropplysningerTabell from './RegisteropplysningerTabell';
 import type { IRestRegisterhistorikk } from '../../../../typer/person';
 import { Registeropplysning } from '../../../../typer/registeropplysning';
@@ -40,8 +39,8 @@ const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({ opplysning
                 </Alert>
             ) : (
                 <Container>
-                    <HentetLabel
-                        size={'small'}
+                    <Detail
+                        textColor="subtle"
                         style={{ marginBottom: ASpacing4 }}
                         children={
                             'Sist hentet fra Folkeregisteret ' +

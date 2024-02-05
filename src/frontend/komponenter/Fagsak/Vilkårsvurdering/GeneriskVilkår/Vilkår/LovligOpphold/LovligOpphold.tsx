@@ -2,13 +2,10 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Radio } from 'nav-frontend-skjema';
-
-import { Alert, Label } from '@navikt/ds-react';
-import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
+import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useLovligOpphold } from './LovligOppholdContext';
-import { Resultat, resultater } from '../../../../../../typer/vilkår';
+import { Resultat } from '../../../../../../typer/vilkår';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -52,7 +49,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
         >
             <br />
 
-            <FamilieRadioGruppe
+            <RadioGroup
                 legend={
                     <Label>
                         {vilkårFraConfig.spørsmål
@@ -60,51 +57,50 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                             : ''}
                     </Label>
                 }
-                value={resultater[felter.resultat.verdi]}
+                value={felter.resultat.verdi}
                 error={
                     vilkårSkjemaContext.skjema.visFeilmeldinger
                         ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
                         : ''
                 }
-                erLesevisning={lesevisning}
+                readOnly={lesevisning}
             >
                 <Radio
-                    label={'Ja'}
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                    checked={vilkårSkjemaContext.skjema.felter.resultat.verdi === Resultat.OPPFYLT}
+                    value={Resultat.OPPFYLT}
                     onChange={() => {
                         vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
                             Resultat.OPPFYLT
                         );
                         nullstillAvslagBegrunnelser();
                     }}
-                />
+                >
+                    Ja
+                </Radio>
                 <Radio
-                    label={'Nei'}
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                    checked={
-                        vilkårSkjemaContext.skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT
-                    }
+                    value={Resultat.IKKE_OPPFYLT}
                     onChange={() => {
                         vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
                             Resultat.IKKE_OPPFYLT
                         );
                     }}
-                />
+                >
+                    Nei
+                </Radio>
                 <Radio
-                    label={'Ikke aktuelt'}
                     name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                    checked={
-                        vilkårSkjemaContext.skjema.felter.resultat.verdi === Resultat.IKKE_AKTUELT
-                    }
+                    value={Resultat.IKKE_AKTUELT}
                     onChange={() => {
                         vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
                             Resultat.IKKE_AKTUELT
                         );
                         nullstillAvslagBegrunnelser();
                     }}
-                />
-            </FamilieRadioGruppe>
+                >
+                    Ikke aktuelt
+                </Radio>
+            </RadioGroup>
         </VilkårSkjema>
     );
 };

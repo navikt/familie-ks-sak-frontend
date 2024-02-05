@@ -1,7 +1,17 @@
 import { addMonths, differenceInMilliseconds, isAfter, isBefore, startOfMonth } from 'date-fns';
 
-import navFarger from 'nav-frontend-core';
-
+import {
+    ABorderDanger,
+    ABorderDefault,
+    ABorderSubtle,
+    ABorderSuccess,
+    ABorderWarning,
+    ASurfaceActionSubtle,
+    ASurfaceDangerSubtle,
+    ASurfaceNeutralSubtle,
+    ASurfaceSuccessSubtle,
+    ASurfaceWarningSubtle,
+} from '@navikt/ds-tokens/dist/tokens';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -104,15 +114,15 @@ export const hentBakgrunnsfarge = (begrunnelseType?: BegrunnelseType) => {
     switch (begrunnelseType) {
         case BegrunnelseType.INNVILGET:
         case BegrunnelseType.FORTSATT_INNVILGET:
-            return navFarger.navGronnLighten80;
+            return ASurfaceSuccessSubtle;
         case BegrunnelseType.AVSLAG:
-            return navFarger.redErrorLighten80;
+            return ASurfaceDangerSubtle;
         case BegrunnelseType.REDUKSJON:
-            return navFarger.navOransjeLighten80;
+            return ASurfaceWarningSubtle;
         case BegrunnelseType.OPPHØR:
-            return navFarger.navLysGra;
+            return ASurfaceNeutralSubtle;
         default:
-            return navFarger.navBlaLighten80;
+            return ASurfaceActionSubtle;
     }
 };
 
@@ -120,15 +130,15 @@ export const hentBorderfarge = (begrunnelseType?: BegrunnelseType) => {
     switch (begrunnelseType) {
         case BegrunnelseType.INNVILGET:
         case BegrunnelseType.FORTSATT_INNVILGET:
-            return navFarger.navGronn;
+            return ABorderSuccess;
         case BegrunnelseType.AVSLAG:
-            return navFarger.redErrorDarken20;
+            return ABorderDanger;
         case BegrunnelseType.REDUKSJON:
-            return navFarger.navOransjeDarken20;
+            return ABorderWarning;
         case BegrunnelseType.OPPHØR:
-            return navFarger.navGra60;
+            return ABorderDefault;
         default:
-            return navFarger.navBlaLighten80;
+            return ABorderSubtle;
     }
 };
 

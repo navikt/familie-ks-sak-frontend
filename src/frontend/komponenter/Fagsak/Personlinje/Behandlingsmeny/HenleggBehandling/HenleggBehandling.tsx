@@ -3,9 +3,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { BodyShort, Button, Modal, Select, Textarea, Dropdown, Link } from '@navikt/ds-react';
+import {
+    BodyShort,
+    Button,
+    Modal,
+    Select,
+    Textarea,
+    Dropdown,
+    Link,
+    Fieldset,
+} from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useHenleggBehandling from './useHenleggBehandling';
@@ -18,7 +25,6 @@ import { BehandlingSteg, henleggÅrsak, HenleggÅrsak } from '../../../../../typ
 import { ToggleNavn } from '../../../../../typer/toggles';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import PdfVisningModal from '../../../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
-import SkjultLegend from '../../../../Felleskomponenter/SkjultLegend';
 
 interface IProps {
     fagsakId: number;
@@ -79,16 +85,20 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
     const harTilgangTilTekniskVedlikeholdHenleggelse =
         toggles[ToggleNavn.tekniskVedlikeholdHenleggelse];
 
+    const kanHenlegge =
+        harTilgangTilTekniskVedlikeholdHenleggelse ||
+        (!vurderErLesevisning() && erPåHenleggbartSteg);
+
+    if (!kanHenlegge) {
+        return null;
+    }
+
     return (
         <>
             <Dropdown.Menu.List.Item
                 onClick={() => {
                     settVisModal(true);
                 }}
-                disabled={
-                    (vurderErLesevisning() || !erPåHenleggbartSteg) &&
-                    !harTilgangTilTekniskVedlikeholdHenleggelse
-                }
             >
                 Henlegg behandling
             </Dropdown.Menu.List.Item>
@@ -105,12 +115,13 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                     portal
                 >
                     <Modal.Body>
-                        <SkjemaGruppe
-                            feil={
+                        <Fieldset
+                            error={
                                 hentFrontendFeilmelding(skjema.submitRessurs) ||
                                 hentFrontendFeilmelding(hentetDokument)
                             }
-                            legend={SkjultLegend({ children: 'Henlegg behandling' })}
+                            legend={'Henlegg behandling'}
+                            hideLegend
                         >
                             <Select
                                 {...skjema.felter.årsak.hentNavBaseSkjemaProps(
@@ -153,7 +164,7 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
                                 label={'Begrunnelse'}
                                 maxLength={4000}
                             />
-                        </SkjemaGruppe>
+                        </Fieldset>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button

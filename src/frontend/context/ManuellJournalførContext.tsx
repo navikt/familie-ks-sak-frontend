@@ -31,13 +31,12 @@ import type {
     IRestJournalføring,
 } from '../typer/manuell-journalføring';
 import { JournalpostKanal } from '../typer/manuell-journalføring';
-import { OppgavetypeFilter } from '../typer/oppgave';
 import type { IRestLukkOppgaveOgKnyttJournalpost } from '../typer/oppgave';
+import { OppgavetypeFilter } from '../typer/oppgave';
 import type { IPersonInfo } from '../typer/person';
 import { Adressebeskyttelsegradering } from '../typer/person';
 import type { ISamhandlerInfo } from '../typer/samhandler';
 import type { Tilbakekrevingsbehandlingstype } from '../typer/tilbakekrevingsbehandling';
-import { ToggleNavn } from '../typer/toggles';
 import { isoStringTilDate } from '../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../utils/fagsak';
 
@@ -56,7 +55,7 @@ export interface ManuellJournalføringSkjemaFelter {
 }
 
 const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() => {
-    const { innloggetSaksbehandler, toggles } = useApp();
+    const { innloggetSaksbehandler } = useApp();
     const { hentFagsakForPerson } = useFagsakContext();
     const navigate = useNavigate();
     const { request } = useHttp();
@@ -484,13 +483,18 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     };
 
     const kanKnytteJournalpostTilBehandling = () => {
-        return dataForManuellJournalføring.status !== RessursStatus.SUKSESS
-            ? false
-            : dataForManuellJournalføring.data.oppgave.oppgavetype === OppgavetypeFilter.BEH_SED &&
-                tilordnetInnloggetSaksbehandler() &&
-                toggles[ToggleNavn.brukEøs]
-              ? true
-              : !erLesevisning();
+        if (dataForManuellJournalføring.status !== RessursStatus.SUKSESS) {
+            return false;
+        }
+
+        if (
+            dataForManuellJournalføring.data.oppgave.oppgavetype === OppgavetypeFilter.BEH_SED &&
+            tilordnetInnloggetSaksbehandler()
+        ) {
+            return true;
+        }
+
+        return !erLesevisning();
     };
 
     const settAvsenderLikBruker = () => {

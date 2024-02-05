@@ -1,3 +1,4 @@
+import type { PropsWithChildren } from 'react';
 import * as React from 'react';
 import { useEffect } from 'react';
 
@@ -21,7 +22,7 @@ import { behandlingErEtterSteg } from '../../../utils/steg';
 import type { ISide } from '../Venstremeny/sider';
 import { sider } from '../Venstremeny/sider';
 
-interface IProps {
+interface IProps extends PropsWithChildren {
     className?: string;
     forrigeKnappTittel?: string;
     forrigeOnClick?: () => void;
@@ -36,10 +37,10 @@ interface IProps {
     steg: BehandlingSteg;
 }
 
-const Container = styled.div<{ maxWidthStyle: string }>`
+const Container = styled.div<{ $maxWidthStyle: string }>`
     position: relative;
     padding: ${ASpacing10};
-    max-width: ${({ maxWidthStyle }) => maxWidthStyle};
+    max-width: ${({ $maxWidthStyle }) => $maxWidthStyle};
 `;
 
 const StyledErrorMessage = styled(ErrorMessage)`
@@ -123,7 +124,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
                 </StyledAlert>
             )}
 
-            <Container id={'skjemasteg'} className={className} maxWidthStyle={maxWidthStyle}>
+            <Container id={'skjemasteg'} className={className} $maxWidthStyle={maxWidthStyle}>
                 <Heading size={'large'} level={'1'} children={tittel} spacing />
 
                 {children}

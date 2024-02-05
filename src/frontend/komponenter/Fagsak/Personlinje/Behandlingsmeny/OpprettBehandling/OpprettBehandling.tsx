@@ -4,7 +4,7 @@ import { isBefore, subDays } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, Fieldset, Dropdown, Alert } from '@navikt/ds-react';
+import { Button, Fieldset, Dropdown, Modal, Alert } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';
@@ -15,7 +15,6 @@ import { dagensDato } from '../../../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
 import Datovelger from '../../../../Felleskomponenter/Datovelger/Datovelger';
-import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
 
 const StyledFieldset = styled(Fieldset)`
     && > div:not(:last-child):not(:empty) {
@@ -60,16 +59,73 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                 Opprett behandling
             </Dropdown.Menu.List.Item>
 
-            <UIModalWrapper
-                modal={{
-                    actions: [
-                        <Button
-                            key={'avbryt'}
-                            variant="tertiary"
-                            size="small"
-                            onClick={lukkOpprettBehandlingModal}
-                            children={'Avbryt'}
-                        />,
+            {visModal && (
+                <Modal
+                    open
+                    portal
+                    width={'35rem'}
+                    header={{
+                        heading: 'Opprett ny behandling',
+                        size: 'medium',
+                    }}
+                    onClose={lukkOpprettBehandlingModal}
+                >
+                    <Modal.Body>
+                        <StyledFieldset
+                            error={hentFrontendFeilmelding(opprettBehandlingSkjema.submitRessurs)}
+                            legend={'Opprett ny behandling'}
+                            hideLegend
+                        >
+                            <BehandlingstypeFelt
+                                behandlingstype={opprettBehandlingSkjema.felter.behandlingstype}
+                                visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                minimalFagsak={minimalFagsak}
+                            />
+
+                            {opprettBehandlingSkjema.felter.behandlingsårsak.erSynlig && (
+                                <BehandlingårsakFelt
+                                    behandlingsårsak={
+                                        opprettBehandlingSkjema.felter.behandlingsårsak
+                                    }
+                                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                />
+                            )}
+
+                            {opprettBehandlingSkjema.felter.behandlingstema.erSynlig && (
+                                <BehandlingstemaSelect
+                                    behandlingstema={opprettBehandlingSkjema.felter.behandlingstema}
+                                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                    name="Behandlingstema"
+                                    label="Velg behandlingstema"
+                                />
+                            )}
+
+                            {opprettBehandlingSkjema.felter.kravMottattDato.erSynlig && (
+                                <Datovelger
+                                    felt={opprettBehandlingSkjema.felter.kravMottattDato}
+                                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                    label={'Krav mottatt'}
+                                    kanKunVelgeFortid
+                                />
+                            )}
+                            {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
+                                <Datovelger
+                                    felt={opprettBehandlingSkjema.felter.søknadMottattDato}
+                                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                    label={'Mottatt dato'}
+                                    kanKunVelgeFortid
+                                />
+                            )}
+                        </StyledFieldset>
+                        {søknadMottattDatoErMerEnn360DagerSiden && (
+                            <StyledAlert variant={'warning'}>
+                                Er mottatt dato riktig? <br />
+                                Det er mer enn 360 dager siden denne datoen.
+                            </StyledAlert>
+                        )}
+                    </Modal.Body>
+
+                    <Modal.Footer>
                         <Button
                             key={'bekreft'}
                             variant="primary"
@@ -84,99 +140,56 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                                 opprettBehandlingSkjema.submitRessurs.status ===
                                 RessursStatus.HENTER
                             }
-                        />,
-                    ],
-                    onClose: lukkOpprettBehandlingModal,
-                    lukkKnapp: true,
-                    tittel: 'Opprett ny behandling',
-                    visModal,
-                }}
-            >
-                <StyledFieldset
-                    error={hentFrontendFeilmelding(opprettBehandlingSkjema.submitRessurs)}
-                    legend={'Opprett ny behandling'}
-                    hideLegend
-                >
-                    <BehandlingstypeFelt
-                        behandlingstype={opprettBehandlingSkjema.felter.behandlingstype}
-                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                        minimalFagsak={minimalFagsak}
-                    />
-
-                    {opprettBehandlingSkjema.felter.behandlingsårsak.erSynlig && (
-                        <BehandlingårsakFelt
-                            behandlingsårsak={opprettBehandlingSkjema.felter.behandlingsårsak}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                         />
-                    )}
-
-                    {opprettBehandlingSkjema.felter.behandlingstema.erSynlig && (
-                        <BehandlingstemaSelect
-                            behandlingstema={opprettBehandlingSkjema.felter.behandlingstema}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                            name="Behandlingstema"
-                            label="Velg behandlingstema"
+                        <Button
+                            key={'avbryt'}
+                            variant="tertiary"
+                            size="small"
+                            onClick={lukkOpprettBehandlingModal}
+                            children={'Avbryt'}
                         />
-                    )}
-
-                    {opprettBehandlingSkjema.felter.kravMottattDato.erSynlig && (
-                        <Datovelger
-                            felt={opprettBehandlingSkjema.felter.kravMottattDato}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                            label={'Krav mottatt'}
-                            kanKunVelgeFortid
-                        />
-                    )}
-                    {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
-                        <Datovelger
-                            felt={opprettBehandlingSkjema.felter.søknadMottattDato}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                            label={'Mottatt dato'}
-                            kanKunVelgeFortid
-                        />
-                    )}
-                </StyledFieldset>
-                {søknadMottattDatoErMerEnn360DagerSiden && (
-                    <StyledAlert variant={'warning'}>
-                        Er mottatt dato riktig? <br />
-                        Det er mer enn 360 dager siden denne datoen.
-                    </StyledAlert>
-                )}
-            </UIModalWrapper>
+                    </Modal.Footer>
+                </Modal>
+            )}
 
             {visBekreftelseTilbakekrevingModal && (
-                <UIModalWrapper
-                    modal={{
-                        tittel: 'Tilbakekreving opprettes...',
-                        lukkKnapp: false,
-                        visModal: visBekreftelseTilbakekrevingModal,
-                        actions: [
-                            <Button
-                                key={'saksoversikt'}
-                                variant="secondary"
-                                size="small"
-                                onClick={() => {
-                                    settVisBekreftelseTilbakekrevingModal(false);
-                                    navigate(`/fagsak/${minimalFagsak.id}/saksoversikt`);
-                                }}
-                                children={'Gå til saksoversikten'}
-                            />,
-                            <Button
-                                key={'oppgavebenk'}
-                                variant="primary"
-                                size="small"
-                                onClick={() => {
-                                    settVisBekreftelseTilbakekrevingModal(false);
-                                    navigate('/oppgaver');
-                                }}
-                                children={'Gå til oppgavebenken'}
-                            />,
-                        ],
+                <Modal
+                    open
+                    header={{
+                        heading: 'Tilbakekrevingsbehandling opprettes...',
+                        size: 'small',
+                        closeButton: false,
                     }}
+                    portal
+                    width={'35rem'}
                 >
-                    Tilbakekrevingsbehandling opprettes, men det kan ta litt tid (ca 30 sekunder)
-                    før den blir tilgjengelig i saksoversikten og oppgavebenken.
-                </UIModalWrapper>
+                    <Modal.Body>
+                        Tilbakekrevingsbehandling opprettes, men det kan ta litt tid (ca 30
+                        sekunder) før den blir tilgjengelig i saksoversikten og oppgavebenken.
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            key={'oppgavebenk'}
+                            variant="primary"
+                            size="small"
+                            onClick={() => {
+                                settVisBekreftelseTilbakekrevingModal(false);
+                                navigate('/oppgaver');
+                            }}
+                            children={'Gå til oppgavebenken'}
+                        />
+                        <Button
+                            key={'saksoversikt'}
+                            variant="secondary"
+                            size="small"
+                            onClick={() => {
+                                settVisBekreftelseTilbakekrevingModal(false);
+                                navigate(`/fagsak/${minimalFagsak.id}/saksoversikt`);
+                            }}
+                            children={'Gå til saksoversikten'}
+                        />
+                    </Modal.Footer>
+                </Modal>
             )}
         </>
     );

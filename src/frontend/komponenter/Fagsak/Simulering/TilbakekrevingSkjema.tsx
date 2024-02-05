@@ -2,24 +2,25 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import navFarger from 'nav-frontend-core';
-import { Feiloppsummering, SkjemaGruppe } from 'nav-frontend-skjema';
-
 import { ExternalLink } from '@navikt/ds-icons';
 import {
     Alert,
     BodyLong,
     BodyShort,
     Button,
+    ErrorSummary,
+    Fieldset,
     Heading,
     HelpText,
+    HStack,
     Label,
     Link,
     Radio,
     RadioGroup,
+    Spacer,
     Tag,
+    Textarea,
 } from '@navikt/ds-react';
-import { FamilieTextarea, FlexDiv } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
@@ -43,19 +44,6 @@ const FritekstVarsel = styled.div`
     margin-left: 2rem;
 `;
 
-const FritektsVarselLabel = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
-`;
-
-const FlexRad = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-`;
-
 const StyledHelpText = styled(HelpText)`
     margin-left: 1rem;
 `;
@@ -64,20 +52,10 @@ const StyledHelpTextContainer = styled.div`
     max-width: 20rem;
 `;
 
-const StyledTag = styled(Tag)`
-    margin-left: auto;
-    background-color: ${navFarger.navLysGra};
-    border-color: ${navFarger.navGra60};
-`;
-
-const TilbakekrevingSkjemaGruppe = styled(SkjemaGruppe)`
+const StyledFieldset = styled(Fieldset)`
     margin-top: 4rem;
     width: 90%;
     max-width: 40rem;
-
-    .radiogruppe {
-        margin-top: 2rem;
-    }
 `;
 
 const StyledAlert = styled(Alert)`
@@ -162,10 +140,10 @@ const TilbakekrevingSkjema: React.FC<{
                 />
             )}
 
-            <TilbakekrevingSkjemaGruppe legend="Tilbakekreving">
-                <FamilieTextarea
+            <StyledFieldset legend="Tilbakekreving">
+                <Textarea
                     label={
-                        <FlexDiv>
+                        <HStack>
                             Årsak til feilutbetaling og videre behandling
                             <StyledHelpText
                                 title="Hvordan skal feltet fylles ut?"
@@ -202,13 +180,13 @@ const TilbakekrevingSkjema: React.FC<{
                                     </BodyLong>
                                 </StyledHelpTextContainer>
                             </StyledHelpText>
-                        </FlexDiv>
+                        </HStack>
                     }
                     {...begrunnelse.hentNavInputProps(
                         tilbakekrevingSkjema.visFeilmeldinger ||
                             begrunnelse.verdi.length > maksLengdeTekst
                     )}
-                    erLesevisning={vurderErLesevisning()}
+                    readOnly={vurderErLesevisning()}
                     maxLength={maksLengdeTekst}
                     description="Hva er årsaken til feilutbetaling? Hvordan og når ble feilutbetalingen oppdaget? Begrunn hvordan feilutbetalingen skal behandles videre."
                 />
@@ -229,7 +207,7 @@ const TilbakekrevingSkjema: React.FC<{
                         value={tilbakekrevingsvalg.verdi}
                         onChange={(val: Tilbakekrevingsvalg) => radioOnChange(val)}
                         legend={
-                            <FlexDiv>
+                            <HStack>
                                 Fastsett videre behandling
                                 <StyledHelpText placement="right">
                                     <StyledHelpTextContainer>
@@ -259,7 +237,7 @@ const TilbakekrevingSkjema: React.FC<{
                                         </BodyLong>
                                     </StyledHelpTextContainer>
                                 </StyledHelpText>
-                            </FlexDiv>
+                            </HStack>
                         }
                     >
                         {bruker && !bruker.dødsfallDato && (
@@ -273,10 +251,14 @@ const TilbakekrevingSkjema: React.FC<{
                                 </Radio>
                                 {fritekstVarsel.erSynlig && (
                                     <FritekstVarsel>
-                                        <FamilieTextarea
+                                        <Textarea
                                             label={
-                                                <FritektsVarselLabel>
-                                                    <FlexRad>
+                                                <HStack
+                                                    align="center"
+                                                    justify="space-between"
+                                                    wrap={false}
+                                                >
+                                                    <HStack align="center" wrap={false}>
                                                         <Label>Fritekst i varselet</Label>
                                                         <StyledHelpText placement="right">
                                                             <StyledHelpTextContainer>
@@ -325,17 +307,18 @@ const TilbakekrevingSkjema: React.FC<{
                                                                 </Link>
                                                             </StyledHelpTextContainer>
                                                         </StyledHelpText>
-                                                    </FlexRad>
-                                                    <StyledTag variant="info" size="small">
+                                                    </HStack>
+                                                    <Spacer />
+                                                    <Tag variant="neutral" size="small">
                                                         Skriv {målform[søkerMålform].toLowerCase()}
-                                                    </StyledTag>
-                                                </FritektsVarselLabel>
+                                                    </Tag>
+                                                </HStack>
                                             }
                                             {...fritekstVarsel.hentNavInputProps(
                                                 tilbakekrevingSkjema.visFeilmeldinger ||
                                                     fritekstVarsel.verdi.length > maksLengdeTekst
                                             )}
-                                            erLesevisning={vurderErLesevisning()}
+                                            readOnly={vurderErLesevisning()}
                                             maxLength={maksLengdeTekst}
                                         />
 
@@ -386,20 +369,26 @@ const TilbakekrevingSkjema: React.FC<{
                     </RadioGroup>
                 )}
                 {vurderErLesevisning() && fritekstVarsel.erSynlig && (
-                    <FamilieTextarea
+                    <Textarea
                         label="Fritekst i varselet"
                         {...fritekstVarsel.hentNavInputProps(tilbakekrevingSkjema.visFeilmeldinger)}
-                        erLesevisning={vurderErLesevisning()}
+                        readOnly={vurderErLesevisning()}
                     />
                 )}
 
                 {tilbakekrevingSkjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
-                    <Feiloppsummering
-                        tittel={'For å gå videre må du rette opp følgende:'}
-                        feil={hentFeilTilOppsummering()}
-                    />
+                    <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
+                        {hentFeilTilOppsummering().map(item => (
+                            <ErrorSummary.Item
+                                href={`#${item.skjemaelementId}`}
+                                key={item.skjemaelementId}
+                            >
+                                {item.feilmelding}
+                            </ErrorSummary.Item>
+                        ))}
+                    </ErrorSummary>
                 )}
-            </TilbakekrevingSkjemaGruppe>
+            </StyledFieldset>
         </>
     );
 };

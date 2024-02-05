@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-
-import { Alert, Button, HelpText, Dropdown } from '@navikt/ds-react';
-import { FamilieInput } from '@navikt/familie-form-elements';
+import {
+    Alert,
+    Button,
+    HelpText,
+    Dropdown,
+    Modal,
+    Fieldset,
+    Heading,
+    HStack,
+    TextField,
+} from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import { ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -22,12 +27,6 @@ import type { IPersonInfo, IRestTilgang } from '../../../../../typer/person';
 import { adressebeskyttelsestyper } from '../../../../../typer/person';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { identValidator } from '../../../../../utils/validators';
-import UIModalWrapper from '../../../../Felleskomponenter/Modal/UIModalWrapper';
-
-const LeggTilBarnLegend = styled.div`
-    margin-top: 1rem;
-    display: flex;
-`;
 
 interface IProps {
     behandling: IBehandling;
@@ -119,29 +118,39 @@ const LeggTiLBarnPåBehandling: React.FC<IProps> = ({ behandling }) => {
             <Dropdown.Menu.List.Item onClick={() => settVisModal(true)}>
                 Legg til barn
             </Dropdown.Menu.List.Item>
-            <UIModalWrapper
-                modal={{
-                    tittel: (
-                        <LeggTilBarnLegend>
-                            Legg til barn
-                            <HelpText style={{ marginLeft: '0.5rem' }}>
+            {visModal && (
+                <Modal open onClose={onAvbryt} aria-label={'Legg til barn'} width={'35rem'} portal>
+                    <Modal.Header>
+                        <HStack gap={'2'}>
+                            <Heading level="2" size="small">
+                                Legg til barn
+                            </Heading>
+                            <HelpText strategy={'fixed'} placement={'top'}>
                                 Her kan du, ved klage eller ettersendt dokumentasjon, legge til barn
                                 som ikke lenger ligger på behandlingen fordi vi tidligere har
                                 avslått eller opphørt.
                             </HelpText>
-                        </LeggTilBarnLegend>
-                    ),
-                    visModal: visModal,
-                    lukkKnapp: true,
-                    onClose: onAvbryt,
-                    actions: [
-                        <Button
-                            key={'Avbryt'}
-                            variant="tertiary"
-                            size="small"
-                            onClick={onAvbryt}
-                            children={'Avbryt'}
-                        />,
+                        </HStack>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Fieldset
+                            error={hentFrontendFeilmelding(skjema.submitRessurs)}
+                            errorPropagation={false}
+                            legend="Legg til barn på behandling"
+                            hideLegend
+                        >
+                            <TextField
+                                {...skjema.felter.ident.hentNavInputProps(skjema.visFeilmeldinger)}
+                                label={'Fødselsnummer'}
+                                placeholder={'11 siffer'}
+                            />
+                            <Alert variant="info" inline={true}>
+                                Du er i ferd med å legge til et barn på behandlingen. Handlingen kan
+                                ikke reverseres uten å henlegge.
+                            </Alert>
+                        </Fieldset>
+                    </Modal.Body>
+                    <Modal.Footer>
                         <Button
                             key={'Legg til'}
                             variant="primary"
@@ -150,28 +159,17 @@ const LeggTiLBarnPåBehandling: React.FC<IProps> = ({ behandling }) => {
                             children={'Legg til'}
                             loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                             disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
-                        />,
-                    ],
-                    style: {
-                        minHeight: '20rem !important',
-                    },
-                }}
-            >
-                <SkjemaGruppe
-                    feil={hentFrontendFeilmelding(skjema.submitRessurs)}
-                    utenFeilPropagering={true}
-                >
-                    <FamilieInput
-                        {...skjema.felter.ident.hentNavInputProps(skjema.visFeilmeldinger)}
-                        label={'Fødselsnummer'}
-                        placeholder={'11 siffer'}
-                    />
-                    <Alert variant="info" inline={true}>
-                        Du er i ferd med å legge til et barn på behandlingen. Handlingen kan ikke
-                        reverseres uten å henlegge.
-                    </Alert>
-                </SkjemaGruppe>
-            </UIModalWrapper>
+                        />
+                        <Button
+                            key={'Avbryt'}
+                            variant="tertiary"
+                            size="small"
+                            onClick={onAvbryt}
+                            children={'Avbryt'}
+                        />
+                    </Modal.Footer>
+                </Modal>
+            )}
         </>
     );
 };
