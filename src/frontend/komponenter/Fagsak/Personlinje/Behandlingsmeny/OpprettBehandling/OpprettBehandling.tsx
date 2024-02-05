@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 
+import { isBefore, subDays } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, Fieldset, Dropdown, Modal } from '@navikt/ds-react';
+import { Button, Fieldset, Dropdown, Modal, Alert } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';
 import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
 import useOpprettBehandling from './useOpprettBehandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
+import { dagensDato } from '../../../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
 import Datovelger from '../../../../Felleskomponenter/Datovelger/Datovelger';
@@ -18,6 +20,10 @@ const StyledFieldset = styled(Fieldset)`
     && > div:not(:last-child):not(:empty) {
         margin-bottom: 1rem;
     }
+`;
+
+const StyledAlert = styled(Alert)`
+    margin-top: 1.5rem;
 `;
 
 interface IProps {
@@ -42,6 +48,10 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
         nullstillSkjemaStatus();
         settVisModal(false);
     };
+
+    const søknadMottattDatoErMerEnn360DagerSiden =
+        opprettBehandlingSkjema.felter.søknadMottattDato.verdi &&
+        isBefore(opprettBehandlingSkjema.felter.søknadMottattDato.verdi, subDays(dagensDato, 360));
 
     return (
         <>
@@ -107,6 +117,12 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                                 />
                             )}
                         </StyledFieldset>
+                        {søknadMottattDatoErMerEnn360DagerSiden && (
+                            <StyledAlert variant={'warning'}>
+                                Er mottatt dato riktig? <br />
+                                Det er mer enn 360 dager siden denne datoen.
+                            </StyledAlert>
+                        )}
                     </Modal.Body>
 
                     <Modal.Footer>

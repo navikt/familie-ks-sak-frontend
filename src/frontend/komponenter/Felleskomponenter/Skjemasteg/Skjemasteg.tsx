@@ -37,10 +37,10 @@ interface IProps extends PropsWithChildren {
     steg: BehandlingSteg;
 }
 
-const Container = styled.div<{ maxWidthStyle: string }>`
+const Container = styled.div<{ $maxWidthStyle: string }>`
     position: relative;
     padding: ${ASpacing10};
-    max-width: ${({ maxWidthStyle }) => maxWidthStyle};
+    max-width: ${({ $maxWidthStyle }) => $maxWidthStyle};
 `;
 
 const StyledErrorMessage = styled(ErrorMessage)`
@@ -124,7 +124,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
                 </StyledAlert>
             )}
 
-            <Container id={'skjemasteg'} className={className} maxWidthStyle={maxWidthStyle}>
+            <Container id={'skjemasteg'} className={className} $maxWidthStyle={maxWidthStyle}>
                 <Heading size={'large'} level={'1'} children={tittel} spacing />
 
                 {children}

@@ -2,50 +2,52 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import Dokumenterknapp from './Dokumenterknapp';
-import Historikkknapp from './Historikkknapp';
-import Meldingerknapp from './Meldingerknapp';
-import TotrinnskontrollKnapp from './TotrinnskontrollKnapp';
+import { Tabs } from '@navikt/ds-react';
+
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import { Tabs } from '../typer';
+import IkonDokumenter from '../ikoner/IkonDokumenter';
+import IkonHistorikk from '../ikoner/IkonHistorikk';
+import IkonMeldinger from '../ikoner/IkonMeldinger';
+import IkonTotrinnskontroll from '../ikoner/IkonTotrinnskontroll';
+import { TabValg } from '../typer';
 
 interface IProps {
-    aktivTab: Tabs;
-    settAktivTab: (tab: Tabs) => void;
     skalViseTotrinnskontroll: boolean;
 }
 
-const StyledHeader = styled.header`
-    height: 4rem;
-    margin-bottom: 1rem;
-    display: flex;
+const FullBreddeTabListe = styled(Tabs.List)`
+    width: 100%;
+    > button {
+        flex: 1;
+    }
 `;
 
-const Header = ({ aktivTab, settAktivTab, skalViseTotrinnskontroll }: IProps) => {
+const Header = ({ skalViseTotrinnskontroll }: IProps) => {
     const { vurderErLesevisning } = useBehandling();
 
     return (
-        <StyledHeader>
+        <FullBreddeTabListe>
             {skalViseTotrinnskontroll && (
-                <TotrinnskontrollKnapp
-                    aktiv={aktivTab === Tabs.Totrinnskontroll}
-                    onClick={() => settAktivTab(Tabs.Totrinnskontroll)}
+                <Tabs.Tab
+                    value={TabValg.Totrinnskontroll}
+                    label={TabValg.Totrinnskontroll}
+                    icon={<IkonTotrinnskontroll />}
                 />
             )}
-            <Historikkknapp
-                aktiv={aktivTab === Tabs.Historikk}
-                onClick={() => settAktivTab(Tabs.Historikk)}
+            <Tabs.Tab
+                value={TabValg.Historikk}
+                label={TabValg.Historikk}
+                icon={<IkonHistorikk />}
             />
-            <Dokumenterknapp
-                aktiv={aktivTab === Tabs.Dokumenter}
-                onClick={() => settAktivTab(Tabs.Dokumenter)}
+            <Tabs.Tab
+                value={TabValg.Dokumenter}
+                label={TabValg.Dokumenter}
+                icon={<IkonDokumenter />}
             />
-            <Meldingerknapp
-                aktiv={aktivTab === Tabs.Meldinger}
-                disabled={vurderErLesevisning()}
-                onClick={() => settAktivTab(Tabs.Meldinger)}
-            />
-        </StyledHeader>
+            {!vurderErLesevisning() && (
+                <Tabs.Tab value={TabValg.Meldinger} label={'Send brev'} icon={<IkonMeldinger />} />
+            )}
+        </FullBreddeTabListe>
     );
 };
 

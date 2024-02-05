@@ -2,12 +2,14 @@ import * as React from 'react';
 
 import classNames from 'classnames';
 
+import { Tabs } from '@navikt/ds-react';
+
 import Brev from './BrevModul/Brev';
 import Header from './Header/Header';
-import HendelseItem from './komponenter/HendelseItem';
+import Historikk from './Historikk';
 import Totrinnskontroll from './Totrinnskontroll/Totrinnskontroll';
 import type { Hendelse } from './typer';
-import { Tabs } from './typer';
+import { TabValg } from './typer';
 import { useApp } from '../../../context/AppContext';
 import { BrevModulProvider } from '../../../context/BrevModulContext';
 import { BehandlerRolle, BehandlingStatus } from '../../../typer/behandling';
@@ -19,10 +21,6 @@ export interface IHendelsesoversiktProps {
     åpenBehandling: IBehandling;
 }
 
-const tilHendelseItem = (hendelse: Hendelse) => (
-    <HendelseItem key={hendelse.id} hendelse={hendelse} />
-);
-
 const Hendelsesoversikt = ({ hendelser, className, åpenBehandling }: IHendelsesoversiktProps) => {
     const { hentSaksbehandlerRolle } = useApp();
 
@@ -30,31 +28,32 @@ const Hendelsesoversikt = ({ hendelser, className, åpenBehandling }: IHendelses
         BehandlerRolle.BESLUTTER === hentSaksbehandlerRolle() &&
         åpenBehandling?.status === BehandlingStatus.FATTER_VEDTAK;
 
-    const [aktivTab, settAktivTab] = React.useState<Tabs>(
-        skalViseTotrinnskontroll ? Tabs.Totrinnskontroll : Tabs.Historikk
+    const [aktivTab, settAktivTab] = React.useState<TabValg>(
+        skalViseTotrinnskontroll ? TabValg.Totrinnskontroll : TabValg.Historikk
     );
 
     return (
         <div className={classNames('hendelsesoversikt', className)}>
             <BrevModulProvider>
-                <Header
-                    aktivTab={aktivTab}
-                    settAktivTab={settAktivTab}
-                    skalViseTotrinnskontroll={skalViseTotrinnskontroll}
-                />
-                {aktivTab === Tabs.Totrinnskontroll && (
-                    <Totrinnskontroll åpenBehandling={åpenBehandling} />
-                )}
-                {aktivTab === Tabs.Historikk && hendelser.length > 0 && (
-                    <div className={'historikk'}>
-                        <ul className={'hendelsesoversikt__list'}>
-                            {hendelser?.map(tilHendelseItem)}
-                        </ul>
-                    </div>
-                )}
-                {aktivTab === Tabs.Meldinger && (
-                    <Brev onIModalClick={() => settAktivTab(Tabs.Historikk)} />
-                )}
+                <Tabs
+                    value={aktivTab}
+                    onChange={tab => settAktivTab(tab as TabValg)}
+                    iconPosition="top"
+                >
+                    <Header skalViseTotrinnskontroll={skalViseTotrinnskontroll} />
+
+                    {aktivTab === TabValg.Totrinnskontroll && (
+                        <Tabs.Panel value={TabValg.Totrinnskontroll}>
+                            <Totrinnskontroll åpenBehandling={åpenBehandling} />
+                        </Tabs.Panel>
+                    )}
+                    {aktivTab === TabValg.Historikk && hendelser.length > 0 && (
+                        <Historikk hendelser={hendelser} />
+                    )}
+                    {aktivTab === TabValg.Meldinger && (
+                        <Brev onIModalClick={() => settAktivTab(TabValg.Historikk)} />
+                    )}
+                </Tabs>
             </BrevModulProvider>
         </div>
     );
