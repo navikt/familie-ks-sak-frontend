@@ -21,6 +21,7 @@ export interface IVilkårSkjemaContext {
     erEksplisittAvslagPåSøknad: boolean;
     avslagBegrunnelser: Begrunnelse[];
     antallTimer?: string;
+    søkerHarMeldtFraOmBarnehageplass?: boolean;
 }
 
 export interface VilkårSkjemaContextValue<T extends IVilkårSkjemaContext> {
@@ -75,6 +76,9 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
                         ? skjema.felter.antallTimer.verdi !== ''
                             ? Number(skjema.felter.antallTimer.verdi)
                             : undefined
+                        : undefined,
+                    søkerHarMeldtFraOmBarnehageplass: skjema.felter.søkerHarMeldtFraOmBarnehageplass
+                        ? skjema.felter.søkerHarMeldtFraOmBarnehageplass.verdi
                         : undefined,
                 },
             };

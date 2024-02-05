@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useFelt } from '@navikt/familie-skjema';
 
 import {
@@ -24,6 +26,7 @@ export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = 
 
 export interface IBarnehageplassVilkårSkjemaContext extends IVilkårSkjemaContext {
     antallTimer: string;
+    søkerHarMeldtFraOmBarnehageplass: boolean;
 }
 
 export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
@@ -33,6 +36,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         antallTimer: vilkår.antallTimer ? vilkår.antallTimer.toString() : '',
         utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
         periode: vilkår.periode,
+        søkerHarMeldtFraOmBarnehageplass: vilkår.søkerHarMeldtFraOmBarnehageplass ?? false,
         begrunnelse: vilkår.begrunnelse,
         erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: vilkår.avslagBegrunnelser,
@@ -56,6 +60,21 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });
 
+    const søkerHarMeldtFraOmBarnehageplass = useFelt<boolean>({
+        verdi: vilkårSkjema.søkerHarMeldtFraOmBarnehageplass,
+    });
+
+    const periode = useFelt<IIsoDatoPeriode>({
+        verdi: vilkårSkjema.periode,
+        avhengigheter: {
+            person,
+            erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
+            søkerHarMeldtFraOmBarnehageplass: søkerHarMeldtFraOmBarnehageplass.verdi,
+        },
+        valideringsfunksjon: (felt, avhengigheter) =>
+            erPeriodeGyldig(felt, VilkårType.BARNEHAGEPLASS, avhengigheter),
+    });
+
     const felter = {
         vurderesEtter,
         resultat,
@@ -68,15 +87,8 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             valideringsfunksjon: erAntallTimerGyldig,
         }),
         utdypendeVilkårsvurdering,
-        periode: useFelt<IIsoDatoPeriode>({
-            verdi: vilkårSkjema.periode,
-            avhengigheter: {
-                person,
-                erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-            },
-            valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(felt, VilkårType.BARNEHAGEPLASS, avhengigheter),
-        }),
+        periode,
+        søkerHarMeldtFraOmBarnehageplass,
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,
         }),
@@ -89,6 +101,12 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             },
         }),
     };
+
+    useEffect(() => {
+        if (!periode.verdi.tom) {
+            søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(false);
+        }
+    }, [periode.verdi.tom]);
 
     return {
         felter,
