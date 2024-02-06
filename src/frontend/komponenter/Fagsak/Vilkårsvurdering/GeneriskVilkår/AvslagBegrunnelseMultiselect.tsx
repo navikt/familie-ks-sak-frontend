@@ -130,7 +130,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
                         </BodyShort>
                     );
                 } else {
-                    // Formattering når alternativet er i nedtrekkslisten
+                    // Formatering når alternativet er i nedtrekkslisten
                     return <BodyShort>{option.label}</BodyShort>;
                 }
             }}
