@@ -117,7 +117,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
                 formatOptionLabelMeta: FormatOptionLabelMeta<ISelectOption>
             ) => {
                 if (formatOptionLabelMeta.context == 'value') {
-                    // Formattering når alternativet er valgt
+                    // Formatering når alternativet er valgt
                     const begrunnelseType = finnBegrunnelseType(
                         vedtaksbegrunnelseTekster,
                         option.value as Begrunnelse
@@ -130,7 +130,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
                         </BodyShort>
                     );
                 } else {
-                    // Formattering når alternativet er i nedtrekkslisten
+                    // Formatering når alternativet er i nedtrekkslisten
                     return <BodyShort>{option.label}</BodyShort>;
                 }
             }}
