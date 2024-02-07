@@ -88,6 +88,7 @@ export const mockBehandling = ({
         valutakurser: [],
         feilutbetaltValuta: [],
         refusjonEøs: [],
+        brevmottakere: [],
     };
 };
 
