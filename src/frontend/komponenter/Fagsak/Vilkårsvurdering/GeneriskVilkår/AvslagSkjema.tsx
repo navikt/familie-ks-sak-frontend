@@ -68,6 +68,7 @@ const AvslagSkjema: React.FC<IProps> = ({
                     <AvslagBegrunnelseMultiselect
                         vilkårType={vilkår.vilkårType}
                         begrunnelser={avslagBegrunnelser}
+                        regelverk={vilkår.vurderesEtter}
                     />
                 </VedtaksbegrunnelseTeksterProvider>
             )}

@@ -1,45 +1,62 @@
 import React from 'react';
 
-import { Alert } from '@navikt/ds-react';
+import type { GroupBase } from 'react-select';
+import styled from 'styled-components';
+
+import { Alert, BodyShort, Label } from '@navikt/ds-react';
 import { ASurfaceActionHover } from '@navikt/ds-tokens/dist/tokens';
-import type { ActionMeta, ISelectOption } from '@navikt/familie-form-elements';
+import type {
+    ActionMeta,
+    FormatOptionLabelMeta,
+    ISelectOption,
+} from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../../../../typer/vedtak';
-import { BegrunnelseType } from '../../../../typer/vedtak';
+import type { Begrunnelse } from '../../../../typer/vedtak';
+import { BegrunnelseType, begrunnelseTyper } from '../../../../typer/vedtak';
 import type { VilkårType } from '../../../../typer/vilkår';
-import { hentBakgrunnsfarge, hentBorderfarge } from '../../../../utils/vedtakUtils';
+import type { Regelverk } from '../../../../typer/vilkår';
+import {
+    finnBegrunnelseType,
+    hentBakgrunnsfarge,
+    hentBorderfarge,
+} from '../../../../utils/vedtakUtils';
 import { useVedtaksbegrunnelseTekster } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
 
 interface IProps {
     vilkårType: VilkårType;
     begrunnelser: Felt<Begrunnelse[]>;
+    regelverk?: Regelverk;
 }
 
-interface IOptionType {
-    value: string;
-    label: string;
-}
+const GroupLabel = styled.div`
+    color: black;
+`;
 
-const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnelser }) => {
+const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
+    vilkårType,
+    begrunnelser,
+    regelverk,
+}) => {
     const { vurderErLesevisning } = useBehandling();
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
 
-    const { avslagBegrunnelseTeksterForGjeldendeVilkår } =
-        useAvslagBegrunnelseMultiselect(vilkårType);
+    const { grupperteAvslagsbegrunnelser } = useAvslagBegrunnelseMultiselect(vilkårType, regelverk);
 
     const valgteBegrunnlser = begrunnelser
         ? begrunnelser.verdi.map((valgtBegrunnelse: Begrunnelse) => ({
               value: valgtBegrunnelse?.toString() ?? '',
               label:
-                  avslagBegrunnelseTeksterForGjeldendeVilkår.find(
-                      (restVedtakBegrunnelseTilknyttetVilkår: IRestBegrunnelseTilknyttetVilkår) =>
-                          restVedtakBegrunnelseTilknyttetVilkår.id === valgtBegrunnelse
-                  )?.navn ?? '',
+                  grupperteAvslagsbegrunnelser
+                      .flatMap(valgGruppertPåType => valgGruppertPåType.options)
+                      .find(
+                          (restVedtakBegrunnelseTilknyttetVilkår: ISelectOption) =>
+                              restVedtakBegrunnelseTilknyttetVilkår.value === valgtBegrunnelse
+                      )?.label ?? '',
           }))
         : [];
 
@@ -71,13 +88,6 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnel
         }
     };
 
-    const muligeOptions: IOptionType[] = avslagBegrunnelseTeksterForGjeldendeVilkår.map(
-        (begrunnelse: IRestBegrunnelseTilknyttetVilkår) => ({
-            value: begrunnelse.id,
-            label: begrunnelse.navn,
-        })
-    );
-
     if (vedtaksbegrunnelseTekster.status === RessursStatus.FEILET) {
         return <Alert variant="error">Klarte ikke å hente inn begrunnelser for vilkår.</Alert>;
     }
@@ -93,7 +103,37 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnel
             onChange={(_, action: ActionMeta<ISelectOption>) => {
                 onChangeBegrunnelse(action);
             }}
-            options={muligeOptions}
+            options={grupperteAvslagsbegrunnelser}
+            formatGroupLabel={(group: GroupBase<ISelectOption>) => {
+                return (
+                    <GroupLabel>
+                        <Label>{group.label}</Label>
+                        <hr />
+                    </GroupLabel>
+                );
+            }}
+            formatOptionLabel={(
+                option: ISelectOption,
+                formatOptionLabelMeta: FormatOptionLabelMeta<ISelectOption>
+            ) => {
+                if (formatOptionLabelMeta.context == 'value') {
+                    // Formatering når alternativet er valgt
+                    const begrunnelseType = finnBegrunnelseType(
+                        vedtaksbegrunnelseTekster,
+                        option.value as Begrunnelse
+                    );
+                    const begrunnelseTypeLabel =
+                        begrunnelseTyper[begrunnelseType as BegrunnelseType];
+                    return (
+                        <BodyShort>
+                            <b>{begrunnelseTypeLabel}</b>: {option.label}
+                        </BodyShort>
+                    );
+                } else {
+                    // Formatering når alternativet er i nedtrekkslisten
+                    return <BodyShort>{option.label}</BodyShort>;
+                }
+            }}
             propSelectStyles={{
                 container: provided => ({
                     ...provided,
