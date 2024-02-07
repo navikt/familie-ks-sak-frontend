@@ -24,9 +24,6 @@ const StyledHeading = styled(Heading)`
 const LeggTilKnapp = styled(Button)`
     margin-top: 1rem;
 `;
-const LukkKnapp = styled(Button)`
-    margin-top: 2.5rem;
-`;
 
 interface Props<T extends SkjemaBrevmottaker | IRestBrevmottaker> {
     lukkModal: () => void;
@@ -118,14 +115,11 @@ export const LeggTilBrevmottakerModal = <T extends SkjemaBrevmottaker | IRestBre
                                 Legg til ny mottaker
                             </LeggTilKnapp>
                         )}
-                        <div>
-                            <LukkKnapp onClick={lukkModal}>Lukk vindu</LukkKnapp>
-                        </div>
                     </>
                 )}
             </Modal.Body>
             <Modal.Footer>
-                {!erLesevisning ? (
+                {!erLesevisning && erSkjemaSynlig ? (
                     <>
                         <Button variant="tertiary" onClick={lukkModal}>
                             Avbryt
@@ -140,7 +134,7 @@ export const LeggTilBrevmottakerModal = <T extends SkjemaBrevmottaker | IRestBre
                         </Button>
                     </>
                 ) : (
-                    <Button onClick={lukkModal}>Lukk</Button>
+                    <Button onClick={lukkModal}>Lukk vindu</Button>
                 )}
             </Modal.Footer>
         </Modal>
