@@ -19,6 +19,7 @@ export const useLagreEllerFjernMottakerPåBehandling = ({ behandlingId }: Props)
 
     const lagreMottaker = (verdierFraBrevmottakerUseSkjema: BrevmottakerUseSkjema) => {
         const felter = verdierFraBrevmottakerUseSkjema.skjema.felter;
+
         if (verdierFraBrevmottakerUseSkjema.kanSendeSkjema()) {
             verdierFraBrevmottakerUseSkjema.settSubmitRessurs(byggHenterRessurs());
             verdierFraBrevmottakerUseSkjema.settVisfeilmeldinger(false);

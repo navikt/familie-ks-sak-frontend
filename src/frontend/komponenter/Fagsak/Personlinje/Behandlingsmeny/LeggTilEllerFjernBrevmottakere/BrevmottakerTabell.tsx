@@ -3,19 +3,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Button, Heading } from '@navikt/ds-react';
+import { Button, Heading, HStack, Spacer } from '@navikt/ds-react';
 import { AFontWeightBold } from '@navikt/ds-tokens/dist/tokens';
 import CountryData from '@navikt/land-verktoy';
 
 import type { IRestBrevmottaker, SkjemaBrevmottaker } from './useBrevmottakerSkjema';
 import { mottakerVisningsnavn } from './useBrevmottakerSkjema';
 
-const FlexDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
-const StyledDiv = styled.div`
+const MarginTop = styled.div`
     margin-top: 2.5rem;
 `;
 
@@ -48,22 +43,25 @@ const BrevmottakerTabell = <T extends SkjemaBrevmottaker | IRestBrevmottaker>({
     const land = CountryData.getCountryInstance('nb').findByValue(mottaker.landkode);
 
     return (
-        <StyledDiv>
-            <FlexDiv>
+        <MarginTop>
+            <HStack>
                 <Heading size="medium" children={mottakerVisningsnavn[mottaker.type]} />
                 {!erLesevisning && (
-                    <Button
-                        variant={'tertiary'}
-                        onClick={() => fjernMottaker(mottaker)}
-                        loading={false}
-                        disabled={false}
-                        size={'small'}
-                        icon={<TrashIcon />}
-                    >
-                        {'Fjern'}
-                    </Button>
+                    <>
+                        <Spacer />
+                        <Button
+                            variant={'tertiary'}
+                            onClick={() => fjernMottaker(mottaker)}
+                            loading={false}
+                            disabled={false}
+                            size={'small'}
+                            icon={<TrashIcon />}
+                        >
+                            {'Fjern'}
+                        </Button>
+                    </>
                 )}
-            </FlexDiv>
+            </HStack>
             <DefinitionList>
                 <dt>Navn</dt>
                 <dd>{mottaker.navn}</dd>
@@ -78,7 +76,7 @@ const BrevmottakerTabell = <T extends SkjemaBrevmottaker | IRestBrevmottaker>({
                 <dt>Land</dt>
                 <dd>{land.label}</dd>
             </DefinitionList>
-        </StyledDiv>
+        </MarginTop>
     );
 };
 
