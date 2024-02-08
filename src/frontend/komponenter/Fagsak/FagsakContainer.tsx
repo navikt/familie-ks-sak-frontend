@@ -131,7 +131,7 @@ const FagsakContainer: React.FunctionComponent = () => {
                                 </Hovedinnhold>
                                 {skalHaHøyremeny && (
                                     <HøyremenyContainer>
-                                        <Høyremeny />
+                                        <Høyremeny bruker={bruker.data} />
                                     </HøyremenyContainer>
                                 )}
                             </Innhold>

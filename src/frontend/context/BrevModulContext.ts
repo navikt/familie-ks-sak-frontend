@@ -107,6 +107,9 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
     const behandlingKategori =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.kategori : undefined;
 
+    const brevmottakere =
+        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere : [];
+
     const mottakerIdent = useFelt({
         verdi: '',
         valideringsfunksjon: (felt: FeltState<string>) =>
@@ -350,6 +353,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
         maksAntallKulepunkter,
         settVisfeilmeldinger,
         erBrevmalMedObligatoriskFritekst,
+        brevmottakere,
     };
 });
 

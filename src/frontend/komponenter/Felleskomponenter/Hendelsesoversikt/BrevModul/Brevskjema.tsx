@@ -11,6 +11,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnBrevetGjelder from './BarnBrevetGjelder';
+import BrevmottakerListe from './BrevmottakerListe';
 import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
@@ -19,7 +20,7 @@ import useDokument from '../../../../hooks/useDokument';
 import type { IBehandling } from '../../../../typer/behandling';
 import { BehandlingSteg, hentStegNummer } from '../../../../typer/behandling';
 import type { IManueltBrevRequestPåBehandling } from '../../../../typer/dokument';
-import type { IGrunnlagPerson } from '../../../../typer/person';
+import type { IGrunnlagPerson, IPersonInfo } from '../../../../typer/person';
 import { PersonType } from '../../../../typer/person';
 import { målform } from '../../../../typer/søknad';
 import { lagPersonLabel } from '../../../../utils/formatter';
@@ -31,6 +32,7 @@ import SkjultLegend from '../../SkjultLegend';
 
 interface IProps {
     onSubmitSuccess: () => void;
+    bruker: IPersonInfo;
 }
 
 const StyledSelect = styled(Select)`
@@ -66,7 +68,7 @@ const StyledTextField = styled(TextField)`
     width: fit-content;
 `;
 
-const Brevskjema = ({ onSubmitSuccess }: IProps) => {
+const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
     const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } = useBehandling();
     const erLesevisning = vurderErLesevisning();
     const { hentForhåndsvisning, hentetDokument } = useDokument();
@@ -85,6 +87,7 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
         leggTilFritekst,
         settVisfeilmeldinger,
         erBrevmalMedObligatoriskFritekst,
+        brevmottakere,
     } = useBrevModul();
 
     const [visForhåndsvisningModal, settForhåndsviningModal] = useState(false);
@@ -150,6 +153,8 @@ const Brevskjema = ({ onSubmitSuccess }: IProps) => {
                 legend={'Send brev'}
                 hideLegend
             >
+                <Label>Brev sendes til</Label>
+                <BrevmottakerListe bruker={bruker} brevmottakere={brevmottakere} />
                 <Select
                     {...skjema.felter.mottakerIdent.hentNavInputProps(skjema.visFeilmeldinger)}
                     label={'Velg mottaker'}
