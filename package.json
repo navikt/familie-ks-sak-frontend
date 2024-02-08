@@ -30,10 +30,10 @@
   },
   "dependencies": {
     "@axe-core/react": "^4.8.1",
-    "@navikt/aksel-icons": "5.17.2",
-    "@navikt/ds-css": "^5.17.2",
+    "@navikt/aksel-icons": "5.18.0",
+    "@navikt/ds-css": "^5.18.0",
     "@navikt/ds-icons": "^2.2.0",
-    "@navikt/ds-react": "^5.17.2",
+    "@navikt/ds-react": "^5.18.0",
     "@navikt/ds-tokens": "^5.17.2",
     "@navikt/familie-backend": "^10.0.14",
     "@navikt/familie-form-elements": "^14.0.0",
