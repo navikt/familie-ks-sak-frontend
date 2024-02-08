@@ -104,26 +104,22 @@ export const LeggTilBrevmottakerModal = <T extends SkjemaBrevmottaker | IRestBre
                         />
                     </>
                 ) : (
-                    <>
-                        {brevmottakere.length === 1 && !erLesevisning && (
-                            <LeggTilKnapp
-                                variant="tertiary"
-                                size="small"
-                                icon={<PlusCircleIcon />}
-                                onClick={() => settVisSkjemaNårDetErÉnBrevmottaker(true)}
-                            >
-                                Legg til ny mottaker
-                            </LeggTilKnapp>
-                        )}
-                    </>
+                    brevmottakere.length === 1 &&
+                    !erLesevisning && (
+                        <LeggTilKnapp
+                            variant="tertiary"
+                            size="small"
+                            icon={<PlusCircleIcon />}
+                            onClick={() => settVisSkjemaNårDetErÉnBrevmottaker(true)}
+                        >
+                            Legg til ny mottaker
+                        </LeggTilKnapp>
+                    )
                 )}
             </Modal.Body>
             <Modal.Footer>
                 {!erLesevisning && erSkjemaSynlig ? (
                     <>
-                        <Button variant="tertiary" onClick={lukkModal}>
-                            Avbryt
-                        </Button>
                         <Button
                             variant={valideringErOk() ? 'primary' : 'secondary'}
                             loading={skjema.submitRessurs.status === RessursStatus.HENTER}
@@ -131,6 +127,9 @@ export const LeggTilBrevmottakerModal = <T extends SkjemaBrevmottaker | IRestBre
                             onClick={() => lagreMottaker(verdierFraBrevmottakerUseSkjema)}
                         >
                             Legg til mottaker
+                        </Button>
+                        <Button variant="tertiary" onClick={lukkModal}>
+                            Avbryt
                         </Button>
                     </>
                 ) : (
