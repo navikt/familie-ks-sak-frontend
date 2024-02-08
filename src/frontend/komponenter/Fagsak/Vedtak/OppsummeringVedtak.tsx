@@ -15,11 +15,13 @@ import {
     Behandlingstype,
     BehandlingÅrsak,
 } from '../../../typer/behandling';
+import type { IPersonInfo } from '../../../typer/person';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
 
 interface IVedtakProps {
     åpenBehandling: IBehandling;
+    bruker: IPersonInfo;
 }
 
 const StyledSkjemaSteg = styled(Skjemasteg)`
@@ -28,7 +30,7 @@ const StyledSkjemaSteg = styled(Skjemasteg)`
     }
 `;
 
-const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehandling }) => {
+const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehandling, bruker }) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } =
         useBehandling();
@@ -79,6 +81,7 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
                 visModal={visModal}
                 settVisModal={settVisModal}
                 settErUlagretNyRefusjonEøsPeriode={settErUlagretNyRefusjonEøsPeriode}
+                bruker={bruker}
             ></OppsummeringVedtakInnhold>
         </StyledSkjemaSteg>
     );
