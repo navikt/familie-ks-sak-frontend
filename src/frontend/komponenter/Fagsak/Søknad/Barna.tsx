@@ -40,10 +40,12 @@ const IngenBarnRegistrertInfo = styled(Alert)`
 `;
 
 const Barna: React.FunctionComponent = () => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning, åpenBehandling } = useBehandling();
     const lesevisning = vurderErLesevisning();
     const { bruker } = useFagsakContext();
     const { skjema } = useSøknad();
+    const brevmottakere =
+        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere : [];
 
     const sorterteBarnMedOpplysninger = skjema.felter.barnaMedOpplysninger.verdi.sort(
         (a: IBarnMedOpplysninger, b: IBarnMedOpplysninger) => {
@@ -135,7 +137,10 @@ const Barna: React.FunctionComponent = () => {
                 )}
 
                 {!lesevisning && (
-                    <LeggTilBarn barnaMedOpplysninger={skjema.felter.barnaMedOpplysninger} />
+                    <LeggTilBarn
+                        barnaMedOpplysninger={skjema.felter.barnaMedOpplysninger}
+                        manuelleBrevmottakere={brevmottakere}
+                    />
                 )}
             </StyledCheckboxGroup>
         </BarnaWrapper>
