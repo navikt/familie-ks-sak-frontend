@@ -76,8 +76,6 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
         åpenBehandling.refusjonEøs.length > 0
     );
 
-    const brevmottakere = åpenBehandling.brevmottakere;
-
     const hentVedtaksbrev = () => {
         const rolle = hentSaksbehandlerRolle();
         const skalOgsåLagreBrevPåVedtak =
@@ -152,7 +150,6 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                     bruker={bruker}
                     erPåBehandling={true}
                     erLesevisning={erLesevisning}
-                    brevmottakere={brevmottakere}
                     åpenBehandling={åpenBehandling}
                 />
                 {åpenBehandling.årsak === BehandlingÅrsak.DØDSFALL ||

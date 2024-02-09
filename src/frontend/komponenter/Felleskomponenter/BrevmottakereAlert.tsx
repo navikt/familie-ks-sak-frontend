@@ -13,7 +13,6 @@ import type { IBehandling } from '../../typer/behandling';
 import type { IPersonInfo } from '../../typer/person';
 import { hentSideHref } from '../../utils/miljø';
 import { LeggTilBrevmottakerModalBehandling } from '../Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/LeggTilBrevmottakerModalBehandling';
-import type { IRestBrevmottaker } from '../Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 
 interface Props {
     bruker: IPersonInfo;
@@ -22,7 +21,6 @@ interface Props {
 
 export interface BrevmottakereAlertBehandlingProps extends Props {
     erPåBehandling: true;
-    brevmottakere: IRestBrevmottaker[];
     erLesevisning: boolean;
     åpenBehandling: IBehandling;
 }
@@ -32,10 +30,12 @@ const StyledAlert = styled(Alert)`
 `;
 
 export const BrevmottakereAlert: React.FC<BrevmottakereAlertBehandlingProps> = props => {
-    const { brevmottakere, className, bruker, åpenBehandling, erLesevisning } = props;
+    const { className, bruker, åpenBehandling, erLesevisning } = props;
 
     const location = useLocation();
     const [visManuelleMottakereModal, settVisManuelleMottakereModal] = useState(false);
+
+    const brevmottakere = åpenBehandling.brevmottakere;
 
     function hentBrevtypetekst(pathname: string) {
         if (hentSideHref(pathname) === sider.SIMULERING.href) {
