@@ -93,3 +93,15 @@ export const erIsoStringGyldig = (isoString?: IsoDatoString): boolean => {
     const dato = parseISO(isoString);
     return isValid(dato);
 };
+
+export const parseTilOgMedDato = (tom: IsoDatoString | undefined) =>
+    isoStringTilDateMedFallback({
+        isoString: tom,
+        fallbackDate: tidenesEnde,
+    });
+
+export const parseFraOgMedDato = (fom: IsoDatoString | undefined) =>
+    isoStringTilDateMedFallback({
+        isoString: fom,
+        fallbackDate: tidenesMorgen,
+    });

@@ -6,8 +6,14 @@ import { annenVurderingFeilmeldingId } from '../../komponenter/Fagsak/Vilkårsvu
 import { vilkårFeilmeldingId } from '../../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
 import type { IPersonResultat, IVilkårResultat, IAnnenVurdering } from '../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig, VilkårType } from '../../typer/vilkår';
-import type { IIsoDatoPeriode, IsoDatoString } from '../../utils/dato';
-import { isoStringTilDateMedFallback, tidenesEnde, tidenesMorgen } from '../../utils/dato';
+import type { IIsoDatoPeriode } from '../../utils/dato';
+import {
+    isoStringTilDateMedFallback,
+    parseTilOgMedDato,
+    parseFraOgMedDato,
+    tidenesEnde,
+    tidenesMorgen,
+} from '../../utils/dato';
 
 export const hentFeilIVilkårsvurdering = (
     personResultater: IPersonResultat[]
@@ -195,15 +201,3 @@ const erEtterHverandre = (første: IIsoDatoPeriode | undefined, andre: IIsoDatoP
 
     return isSameDay(dagenEtterTomDatoFørste, fomDatoNeste);
 };
-
-const parseTilOgMedDato = (tom: IsoDatoString | undefined) =>
-    isoStringTilDateMedFallback({
-        isoString: tom,
-        fallbackDate: tidenesEnde,
-    });
-
-const parseFraOgMedDato = (fom: IsoDatoString | undefined) =>
-    isoStringTilDateMedFallback({
-        isoString: fom,
-        fallbackDate: tidenesMorgen,
-    });
