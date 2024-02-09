@@ -1,6 +1,6 @@
 import { useFelt } from '@navikt/familie-skjema';
 
-import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BosattIRiketValidering';
+import { erUtdypendeVilkårsvurderingerGyldig } from './BosattIRiketValidering';
 import { PersonType } from '../../../../../../typer/person';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
@@ -18,6 +18,7 @@ import {
     erAvslagBegrunnelserGyldig,
     erPeriodeGyldig,
     erResultatGyldig,
+    erBegrunnelseGyldig,
 } from '../../../../../../utils/validators';
 import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
