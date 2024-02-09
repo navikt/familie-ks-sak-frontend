@@ -211,7 +211,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         skjema.felter.vurderesEtter.verdi,
                         skjema.felter.utdypendeVilkårsvurdering.verdi,
                         person.type,
-                        vilkårResultat.vilkårType
+                        vilkårResultat.vilkårType,
+                        skjema.felter.søkerHarMeldtFraOmBarnehageplass?.verdi
                     )
                         ? ''
                         : '(valgfri)'
