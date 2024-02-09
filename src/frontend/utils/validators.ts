@@ -170,10 +170,10 @@ export const erPeriodeGyldig = (
         }
         if (!erUendelig(tom)) {
             if (!erBarnetsAlderVilkår && valgtDatoErSenereEnnNesteMåned(tom)) {
-                const skalTillateFremtidigOpphør =
+                const skalTillateFramtidigOpphør =
                     erBarnehageVilkår && søkerHarMeldtFraOmBarnehageplass;
 
-                if (!skalTillateFremtidigOpphør) {
+                if (!skalTillateFramtidigOpphør) {
                     return feil(
                         felt,
                         'Du kan ikke legge inn til og med dato som er senere enn neste måned'
