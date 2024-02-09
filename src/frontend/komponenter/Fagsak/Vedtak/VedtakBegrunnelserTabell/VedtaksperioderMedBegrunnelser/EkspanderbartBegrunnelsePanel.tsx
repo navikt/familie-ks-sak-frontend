@@ -13,6 +13,7 @@ import {
     isoStringTilDateMedFallback,
     tidenesEnde,
     isoDatoPeriodeTilFormatertString,
+    erSammeFom,
 } from '../../../../../utils/dato';
 import { formaterBeløp, summer } from '../../../../../utils/formatter';
 
@@ -33,6 +34,7 @@ const StyledExpansionTitle = styled(ExpansionCard.Title)`
 
 interface IEkspanderbartBegrunnelsePanelProps extends PropsWithChildren {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
+    sisteFom?: string;
     åpen: boolean;
     onClick?: () => void;
 }
@@ -43,8 +45,16 @@ const slutterSenereEnnInneværendeMåned = (tom?: string) =>
         endOfMonth(dagensDato)
     );
 
+const finnPresentertTomDato = (periodeFom?: string, periodeTom?: string, sisteFom?: string) => {
+    if (erSammeFom(periodeFom, sisteFom)) {
+        return slutterSenereEnnInneværendeMåned(periodeTom) ? '' : periodeTom;
+    }
+    return periodeTom;
+};
+
 const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProps> = ({
     vedtaksperiodeMedBegrunnelser,
+    sisteFom,
     åpen,
     onClick,
     children,
@@ -70,9 +80,7 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
                         <Label>
                             {isoDatoPeriodeTilFormatertString({
                                 fom: periode.fom,
-                                tom: slutterSenereEnnInneværendeMåned(periode.tom)
-                                    ? ''
-                                    : periode.tom,
+                                tom: finnPresentertTomDato(periode.fom, periode.tom, sisteFom),
                             })}
                         </Label>
                     )}

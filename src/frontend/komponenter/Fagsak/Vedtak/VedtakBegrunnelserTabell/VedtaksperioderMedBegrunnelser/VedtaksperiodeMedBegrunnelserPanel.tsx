@@ -18,10 +18,12 @@ import Utbetalingsresultat from '../Felles/Utbetalingsresultat';
 
 interface IProps {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
+    sisteFom?: string;
 }
 
 const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
     vedtaksperiodeMedBegrunnelser,
+    sisteFom,
 }) => {
     const { erPanelEkspandert, onPanelClose, genererteBrevbegrunnelser } =
         useVedtaksperiodeMedBegrunnelser();
@@ -72,6 +74,7 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
     return (
         <EkspanderbartBegrunnelsePanel
             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
+            sisteFom={sisteFom}
             åpen={erPanelEkspandert}
             onClick={() => onPanelClose(true)}
         >

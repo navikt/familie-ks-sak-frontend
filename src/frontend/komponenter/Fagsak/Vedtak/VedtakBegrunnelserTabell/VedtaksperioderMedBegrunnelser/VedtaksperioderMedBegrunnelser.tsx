@@ -51,7 +51,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
         return <Alert variant="error">Klarte ikke å hente inn begrunnelser for vedtak.</Alert>;
     }
 
-    const avslagOgResterende = partition(
+    const [avslagsperioder, andreVedtaksperioder] = partition(
         vedtaksperiode => vedtaksperiode.type === Vedtaksperiodetype.AVSLAG,
         vedtaksperioderSomSkalvises
     );
@@ -59,7 +59,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
     return vedtaksperioderSomSkalvises.length > 0 ? (
         <>
             <VedtaksperiodeListe
-                vedtaksperioderMedBegrunnelser={avslagOgResterende[1]}
+                vedtaksperioderMedBegrunnelser={andreVedtaksperioder}
                 overskrift={'Begrunnelser i vedtaksbrev'}
                 hjelpetekst={
                     'Her skal du sette begrunnelsestekster for innvilgelse, reduksjon og opphør.'
@@ -68,7 +68,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
             />
 
             <VedtaksperiodeListe
-                vedtaksperioderMedBegrunnelser={avslagOgResterende[0]}
+                vedtaksperioderMedBegrunnelser={avslagsperioder}
                 overskrift={'Begrunnelser for avslag i vedtaksbrev'}
                 hjelpetekst={
                     'Her har vi hentet begrunnelser for avslag som er satt tidligere i behandlingen.'
@@ -91,6 +91,8 @@ const VedtaksperiodeListe: React.FC<{
         return null;
     }
 
+    const sisteFom = vedtaksperioderMedBegrunnelser[vedtaksperioderMedBegrunnelser.length - 1].fom;
+
     return (
         <>
             <StyledHeading level="2" size="small" spacing>
@@ -106,6 +108,7 @@ const VedtaksperiodeListe: React.FC<{
                     >
                         <VedtaksperiodeMedBegrunnelserPanel
                             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
+                            sisteFom={sisteFom}
                         />
                     </VedtaksperiodeMedBegrunnelserProvider>
                 )
