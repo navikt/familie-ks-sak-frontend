@@ -90,7 +90,6 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
             {vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.AVSLAG && (
                 <BegrunnelserMultiselect
                     ikkeRedigerbar={vedtaksperiodeInneholderFramtidigOpphørBegrunnelse}
-                    vedtaksperiodetype={vedtaksperiodeMedBegrunnelser.type}
                 />
             )}
             {genererteBrevbegrunnelser.status === RessursStatus.SUKSESS &&

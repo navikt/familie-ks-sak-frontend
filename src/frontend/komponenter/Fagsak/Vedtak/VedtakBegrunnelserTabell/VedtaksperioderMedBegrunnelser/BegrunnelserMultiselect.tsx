@@ -16,7 +16,6 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { Begrunnelse, BegrunnelseType } from '../../../../../typer/vedtak';
 import { begrunnelseTyper } from '../../../../../typer/vedtak';
-import { Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
 import {
     finnBegrunnelseType,
     hentBakgrunnsfarge,
@@ -27,7 +26,6 @@ import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBe
 import { mapBegrunnelserTilSelectOptions } from '../Hooks/useVedtaksbegrunnelser';
 
 interface IProps {
-    vedtaksperiodetype: Vedtaksperiodetype;
     ikkeRedigerbar: boolean;
 }
 
@@ -35,10 +33,9 @@ const GroupLabel = styled.div`
     color: black;
 `;
 
-const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype, ikkeRedigerbar }) => {
+const BegrunnelserMultiselect: React.FC<IProps> = ({ ikkeRedigerbar }) => {
     const { vurderErLesevisning } = useBehandling();
-    const skalIkkeEditeres =
-        vurderErLesevisning() || ikkeRedigerbar || vedtaksperiodetype === Vedtaksperiodetype.AVSLAG;
+    const skalIkkeEditeres = vurderErLesevisning() || ikkeRedigerbar;
 
     const {
         id,
