@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Fieldset, HStack, Select, Spacer, TextField, VStack } from '@navikt/ds-react';
@@ -24,7 +25,11 @@ interface Props {
 }
 
 const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) => {
-    const gyldigeMottakerTyper = Object.values(Mottaker);
+    const erPåDokumentutsending = useLocation().pathname.includes('dokumentutsending');
+
+    const gyldigeMottakerTyper = erPåDokumentutsending
+        ? Object.values(Mottaker).filter(mottakerType => mottakerType !== Mottaker.DØDSBO)
+        : Object.values(Mottaker);
 
     return (
         <>

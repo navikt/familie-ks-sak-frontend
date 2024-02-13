@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import type { FieldDictionary } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { UseSkjemaVerdi } from '@navikt/familie-skjema/dist/typer';
 import { hentDataFraRessurs } from '@navikt/familie-typer';
@@ -201,4 +202,23 @@ export const useBrevmottakerSkjema = ({ eksisterendeMottakere }: Props) => {
     });
 
     return { verdierFraBrevmottakerUseSkjema: verdierFraUseSkjema, navnErPreutfylt };
+};
+
+export const felterTilSkjemaBrevmottaker = (
+    felter: FieldDictionary<ILeggTilFjernBrevmottakerSkjemaFelter>
+): SkjemaBrevmottaker => {
+    if (felter.mottaker.verdi !== '') {
+        return {
+            type: felter.mottaker.verdi,
+            navn: felter.navn.verdi,
+            adresselinje1: felter.adresselinje1.verdi,
+            adresselinje2:
+                felter.adresselinje2.verdi !== '' ? felter.adresselinje2.verdi : undefined,
+            postnummer: felter.postnummer.verdi,
+            poststed: felter.poststed.verdi,
+            landkode: felter.land.verdi,
+        };
+    } else {
+        throw new Error('Mottaker ikke satt');
+    }
 };

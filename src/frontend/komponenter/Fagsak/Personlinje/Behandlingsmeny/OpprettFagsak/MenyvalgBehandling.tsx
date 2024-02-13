@@ -50,6 +50,7 @@ const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
                 (åpenBehandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING ||
                     åpenBehandling.type === Behandlingstype.REVURDERING) && (
                     <LeggTilEllerFjernBrevmottakere
+                        erPåBehandling={true}
                         behandling={åpenBehandling}
                         erLesevisning={erLesevisning}
                     />
