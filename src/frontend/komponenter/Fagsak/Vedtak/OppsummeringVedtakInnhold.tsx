@@ -24,6 +24,8 @@ import {
     BehandlingÅrsak,
     hentStegNummer,
 } from '../../../typer/behandling';
+import type { IPersonInfo } from '../../../typer/person';
+import { BrevmottakereAlert } from '../../Felleskomponenter/BrevmottakereAlert';
 import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 
 interface IOppsummeringVedtakInnholdProps {
@@ -33,6 +35,7 @@ interface IOppsummeringVedtakInnholdProps {
     settErUlagretNyFeilutbetaltValutaPeriode: (erUlagretNyFeilutbetaltValuta: boolean) => void;
     settErUlagretNyRefusjonEøsPeriode: (erUlagretNyRefusjonEøsPeriode: boolean) => void;
     erBehandlingMedVedtaksbrevutsending: boolean;
+    bruker: IPersonInfo;
 }
 
 const BehandlingKorrigertAlert = styled(Alert)`
@@ -50,6 +53,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
     visModal,
     settVisModal,
     settErUlagretNyRefusjonEøsPeriode,
+    bruker,
 }) => {
     const { hentSaksbehandlerRolle } = useApp();
     const { fagsakId } = useSakOgBehandlingParams();
@@ -142,6 +146,12 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                         Vedtaket er korrigert etter § 35
                     </BehandlingKorrigertAlert>
                 )}
+                <BrevmottakereAlert
+                    bruker={bruker}
+                    erPåBehandling={true}
+                    erLesevisning={erLesevisning}
+                    åpenBehandling={åpenBehandling}
+                />
                 {åpenBehandling.årsak === BehandlingÅrsak.DØDSFALL ||
                 åpenBehandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
                 åpenBehandling.status === BehandlingStatus.AVSLUTTET ? (

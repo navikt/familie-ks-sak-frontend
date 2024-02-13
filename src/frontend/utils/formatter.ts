@@ -1,7 +1,7 @@
 import { differenceInMilliseconds, isBefore } from 'date-fns';
 
 import { dagensDato, isoStringTilDate } from './dato';
-import type { IGrunnlagPerson } from '../typer/person';
+import type { IGrunnlagPerson, IPersonInfo } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
 import type { IUtbetalingsperiodeDetalj } from '../typer/vedtaksperiode';
@@ -101,3 +101,6 @@ export const sorterUtbetaling = (
 export const slåSammenListeTilStreng = (liste: string[]) => {
     return liste.join(', ').replace(new RegExp('(.*),'), '$1 og');
 };
+
+export const lagBrukerLabel = (bruker: IPersonInfo): string =>
+    `${bruker.navn} (${hentAlder(bruker.fødselsdato)} år) ${formaterIdent(bruker.personIdent)}`;

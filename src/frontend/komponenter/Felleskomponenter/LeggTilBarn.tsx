@@ -19,7 +19,12 @@ import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Avhengigheter, Felt } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
-import { byggFeiletRessurs, byggHenterRessurs, RessursStatus } from '@navikt/familie-typer';
+import {
+    byggFeiletRessurs,
+    byggHenterRessurs,
+    RessursStatus,
+    Adressebeskyttelsegradering,
+} from '@navikt/familie-typer';
 
 import { useBehandling } from '../../context/behandlingContext/BehandlingContext';
 import type { IPersonInfo, IRestTilgang } from '../../typer/person';
@@ -27,6 +32,10 @@ import { adressebeskyttelsestyper } from '../../typer/person';
 import type { IBarnMedOpplysninger } from '../../typer/søknad';
 import { dateTilIsoDatoStringEllerUndefined } from '../../utils/dato';
 import { identValidator } from '../../utils/validators';
+import type {
+    IRestBrevmottaker,
+    SkjemaBrevmottaker,
+} from '../Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import LeggTilUregistrertBarn from '../Fagsak/Søknad/LeggTilUregistrertBarn';
 
 const DrekLenkeContainer = styled.div`
@@ -43,9 +52,14 @@ export interface IRegistrerBarnSkjema {
 interface IProps {
     barnaMedOpplysninger: Felt<IBarnMedOpplysninger[]>;
     onSuccess?: (barn: IPersonInfo) => void;
+    manuelleBrevmottakere?: SkjemaBrevmottaker[] | IRestBrevmottaker[]; // Todo: endre denne til å være required når vi får inn manuelle brevmottakre på fagsak
 }
 
-const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
+const LeggTilBarn: React.FC<IProps> = ({
+    barnaMedOpplysninger,
+    onSuccess,
+    manuelleBrevmottakere = [],
+}) => {
     const { request } = useHttp();
     const { logg } = useBehandling();
 
@@ -126,6 +140,18 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
         nullstillRegistrerBarnSkjema();
     };
 
+    const harBrevMottakereOgHarStrengtFortroligAdressebeskyttelse = (
+        adressebeskyttelsegradering: Adressebeskyttelsegradering,
+        antallBrevmottakere: number
+    ): boolean => {
+        return (
+            (adressebeskyttelsegradering === Adressebeskyttelsegradering.STRENGT_FORTROLIG ||
+                adressebeskyttelsegradering ===
+                    Adressebeskyttelsegradering.STRENGT_FORTROLIG_UTLAND) &&
+            antallBrevmottakere > 0
+        );
+    };
+
     const leggTilOnClick = () => {
         const erSkjemaOk = kanSendeSkjema();
         if (
@@ -171,20 +197,37 @@ const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess }) => {
                             }).then((hentetPerson: Ressurs<IPersonInfo>) => {
                                 settSubmitRessurs(hentetPerson);
                                 if (hentetPerson.status === RessursStatus.SUKSESS) {
-                                    barnaMedOpplysninger.validerOgSettFelt([
-                                        ...barnaMedOpplysninger.verdi,
-                                        {
-                                            fødselsdato: hentetPerson.data.fødselsdato,
-                                            ident: hentetPerson.data.personIdent,
-                                            merket: true,
-                                            manueltRegistrert: true,
-                                            navn: hentetPerson.data.navn,
-                                            erFolkeregistrert: true,
-                                        },
-                                    ]);
-                                    onSuccess && onSuccess(hentetPerson.data);
-                                    nullstillRegistrerBarnSkjema();
-                                    settVisModal(false);
+                                    if (
+                                        harBrevMottakereOgHarStrengtFortroligAdressebeskyttelse(
+                                            ressurs.data.adressebeskyttelsegradering,
+                                            manuelleBrevmottakere.length
+                                        )
+                                    ) {
+                                        settSubmitRessurs(
+                                            byggFeiletRessurs(
+                                                `Barnet du prøver å legge til har diskresjonskode: "${
+                                                    adressebeskyttelsestyper[
+                                                        ressurs.data.adressebeskyttelsegradering
+                                                    ] ?? 'ukjent'
+                                                }". Brevmottaker(e) er endret og må fjernes før du kan legge til barnet.`
+                                            )
+                                        );
+                                    } else {
+                                        barnaMedOpplysninger.validerOgSettFelt([
+                                            ...barnaMedOpplysninger.verdi,
+                                            {
+                                                fødselsdato: hentetPerson.data.fødselsdato,
+                                                ident: hentetPerson.data.personIdent,
+                                                merket: true,
+                                                manueltRegistrert: true,
+                                                navn: hentetPerson.data.navn,
+                                                erFolkeregistrert: true,
+                                            },
+                                        ]);
+                                        onSuccess && onSuccess(hentetPerson.data);
+                                        nullstillRegistrerBarnSkjema();
+                                        settVisModal(false);
+                                    }
                                 }
                             });
                         } else {

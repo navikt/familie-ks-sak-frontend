@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import React from 'react';
 
-import { endOfMonth, isAfter } from 'date-fns';
+import { endOfMonth, isAfter, isSameDay } from 'date-fns';
 import styled from 'styled-components';
 
 import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
@@ -13,6 +13,8 @@ import {
     isoStringTilDateMedFallback,
     tidenesEnde,
     isoDatoPeriodeTilFormatertString,
+    parseFraOgMedDato,
+    type IsoDatoString,
 } from '../../../../../utils/dato';
 import { formaterBeløp, summer } from '../../../../../utils/formatter';
 
@@ -33,9 +35,13 @@ const StyledExpansionTitle = styled(ExpansionCard.Title)`
 
 interface IEkspanderbartBegrunnelsePanelProps extends PropsWithChildren {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
+    sisteVedtaksperiodeFom?: string;
     åpen: boolean;
     onClick?: () => void;
 }
+
+const erSammeFom = (dato1?: IsoDatoString, dato2?: IsoDatoString): boolean =>
+    isSameDay(parseFraOgMedDato(dato1), parseFraOgMedDato(dato2));
 
 const slutterSenereEnnInneværendeMåned = (tom?: string) =>
     isAfter(
@@ -43,8 +49,20 @@ const slutterSenereEnnInneværendeMåned = (tom?: string) =>
         endOfMonth(dagensDato)
     );
 
+const finnPresentertTomDato = (
+    periodeFom?: string,
+    periodeTom?: string,
+    sisteVedtaksperiodeFom?: string
+) => {
+    if (erSammeFom(periodeFom, sisteVedtaksperiodeFom)) {
+        return slutterSenereEnnInneværendeMåned(periodeTom) ? '' : periodeTom;
+    }
+    return periodeTom;
+};
+
 const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProps> = ({
     vedtaksperiodeMedBegrunnelser,
+    sisteVedtaksperiodeFom,
     åpen,
     onClick,
     children,
@@ -70,9 +88,11 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
                         <Label>
                             {isoDatoPeriodeTilFormatertString({
                                 fom: periode.fom,
-                                tom: slutterSenereEnnInneværendeMåned(periode.tom)
-                                    ? ''
-                                    : periode.tom,
+                                tom: finnPresentertTomDato(
+                                    periode.fom,
+                                    periode.tom,
+                                    sisteVedtaksperiodeFom
+                                ),
                             })}
                         </Label>
                     )}
