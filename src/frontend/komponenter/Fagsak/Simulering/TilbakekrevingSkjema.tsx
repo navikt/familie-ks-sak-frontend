@@ -263,6 +263,7 @@ const TilbakekrevingSkjema: React.FC<{
                                             erPåBehandling={true}
                                             erLesevisning={erLesevisning}
                                             åpenBehandling={åpenBehandling.data}
+                                            brevmottakere={åpenBehandling.data.brevmottakere}
                                         />
                                     )}
                                 {fritekstVarsel.erSynlig && (

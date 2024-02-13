@@ -107,7 +107,7 @@ const FagsakContainer: React.FunctionComponent = () => {
                                                 <DokumentutsendingProvider
                                                     fagsakId={minimalFagsak.data.id}
                                                 >
-                                                    <Dokumentutsending />
+                                                    <Dokumentutsending bruker={bruker.data} />
                                                 </DokumentutsendingProvider>
                                             }
                                         />

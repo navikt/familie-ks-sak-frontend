@@ -13,6 +13,11 @@ import type { IBehandling } from '../../typer/behandling';
 import type { IPersonInfo } from '../../typer/person';
 import { hentSideHref } from '../../utils/miljø';
 import { LeggTilBrevmottakerModalBehandling } from '../Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/LeggTilBrevmottakerModalBehandling';
+import { LeggTilBrevmottakerModalFagsak } from '../Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/LeggTilBrevmottakerModalFagsak';
+import type {
+    IRestBrevmottaker,
+    SkjemaBrevmottaker,
+} from '../Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 
 interface Props {
     bruker: IPersonInfo;
@@ -22,20 +27,26 @@ interface Props {
 export interface BrevmottakereAlertBehandlingProps extends Props {
     erPåBehandling: true;
     erLesevisning: boolean;
+    brevmottakere: IRestBrevmottaker[];
     åpenBehandling: IBehandling;
+}
+
+interface BrevmottakereAlertFagsakProps extends Props {
+    erPåBehandling: false;
+    brevmottakere: SkjemaBrevmottaker[];
 }
 
 const StyledAlert = styled(Alert)`
     margin-bottom: 1.5rem;
 `;
 
-export const BrevmottakereAlert: React.FC<BrevmottakereAlertBehandlingProps> = props => {
-    const { className, bruker, åpenBehandling, erLesevisning } = props;
-
+export const BrevmottakereAlert: React.FC<
+    BrevmottakereAlertBehandlingProps | BrevmottakereAlertFagsakProps
+> = props => {
     const location = useLocation();
     const [visManuelleMottakereModal, settVisManuelleMottakereModal] = useState(false);
 
-    const brevmottakere = åpenBehandling.brevmottakere;
+    const brevmottakere = props.brevmottakere;
 
     function hentBrevtypetekst(pathname: string) {
         if (hentSideHref(pathname) === sider.SIMULERING.href) {
@@ -50,11 +61,11 @@ export const BrevmottakereAlert: React.FC<BrevmottakereAlertBehandlingProps> = p
     return (
         <>
             {brevmottakere && brevmottakere.length !== 0 && (
-                <StyledAlert variant="info" className={className}>
+                <StyledAlert variant="info" className={props.className}>
                     {`Brevmottaker(e) er endret, og ${hentBrevtypetekst(
                         location.pathname
                     )} sendes til:`}
-                    <BrevmottakerListe brevmottakere={brevmottakere} bruker={bruker} />
+                    <BrevmottakerListe brevmottakere={brevmottakere} bruker={props.bruker} />
                     <Button
                         variant={'tertiary'}
                         onClick={() => settVisManuelleMottakereModal(true)}
@@ -66,13 +77,18 @@ export const BrevmottakereAlert: React.FC<BrevmottakereAlertBehandlingProps> = p
                 </StyledAlert>
             )}
 
-            {visManuelleMottakereModal && (
-                <LeggTilBrevmottakerModalBehandling
-                    lukkModal={() => settVisManuelleMottakereModal(false)}
-                    behandling={åpenBehandling}
-                    erLesevisning={erLesevisning}
-                />
-            )}
+            {visManuelleMottakereModal &&
+                (props.erPåBehandling ? (
+                    <LeggTilBrevmottakerModalBehandling
+                        lukkModal={() => settVisManuelleMottakereModal(false)}
+                        behandling={props.åpenBehandling}
+                        erLesevisning={props.erLesevisning}
+                    />
+                ) : (
+                    <LeggTilBrevmottakerModalFagsak
+                        lukkModal={() => settVisManuelleMottakereModal(false)}
+                    />
+                ))}
         </>
     );
 };

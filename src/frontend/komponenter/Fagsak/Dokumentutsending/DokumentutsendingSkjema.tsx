@@ -12,7 +12,14 @@ import {
     DokumentÅrsak,
     useDokumentutsending,
 } from '../../../context/DokumentutsendingContext';
+import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
+import type { IPersonInfo } from '../../../typer/person';
+import { BrevmottakereAlert } from '../../Felleskomponenter/BrevmottakereAlert';
 import MålformVelger from '../../Felleskomponenter/MålformVelger';
+
+interface Props {
+    bruker: IPersonInfo;
+}
 
 const Container = styled.div`
     padding: 2rem;
@@ -42,7 +49,11 @@ const SendBrevKnapp = styled(Button)`
     margin-right: 1rem;
 `;
 
-const DokumentutsendingSkjema: React.FC = () => {
+const StyledBrevmottakereAlert = styled(BrevmottakereAlert)`
+    margin: 1rem 0;
+`;
+
+const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
     const {
         hentForhåndsvisningPåFagsak,
         hentetDokument,
@@ -56,6 +67,8 @@ const DokumentutsendingSkjema: React.FC = () => {
         visForhåndsvisningBeskjed,
     } = useDokumentutsending();
 
+    const { manuelleBrevmottakerePåFagsak } = useFagsakContext();
+
     const årsakVerdi = skjema.felter.årsak.verdi;
 
     const barnSøktForÅrsaker = [
@@ -67,6 +80,15 @@ const DokumentutsendingSkjema: React.FC = () => {
     return (
         <Container>
             <Heading size={'large'} level={'1'} children={'Send informasjonsbrev'} />
+
+            {manuelleBrevmottakerePåFagsak.length > 0 && (
+                <StyledBrevmottakereAlert
+                    erPåBehandling={false}
+                    brevmottakere={manuelleBrevmottakerePåFagsak}
+                    bruker={bruker}
+                />
+            )}
+
             <StyledFieldset
                 error={hentSkjemaFeilmelding()}
                 errorPropagation={false}
