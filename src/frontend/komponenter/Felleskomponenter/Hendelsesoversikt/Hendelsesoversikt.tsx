@@ -14,14 +14,21 @@ import { useApp } from '../../../context/AppContext';
 import { BrevModulProvider } from '../../../context/BrevModulContext';
 import { BehandlerRolle, BehandlingStatus } from '../../../typer/behandling';
 import type { IBehandling } from '../../../typer/behandling';
+import type { IPersonInfo } from '../../../typer/person';
 
 export interface IHendelsesoversiktProps {
     className?: string;
     hendelser: Hendelse[];
     åpenBehandling: IBehandling;
+    bruker: IPersonInfo;
 }
 
-const Hendelsesoversikt = ({ hendelser, className, åpenBehandling }: IHendelsesoversiktProps) => {
+const Hendelsesoversikt = ({
+    hendelser,
+    className,
+    åpenBehandling,
+    bruker,
+}: IHendelsesoversiktProps) => {
     const { hentSaksbehandlerRolle } = useApp();
 
     const skalViseTotrinnskontroll =
@@ -51,7 +58,10 @@ const Hendelsesoversikt = ({ hendelser, className, åpenBehandling }: IHendelses
                         <Historikk hendelser={hendelser} />
                     )}
                     {aktivTab === TabValg.Meldinger && (
-                        <Brev onIModalClick={() => settAktivTab(TabValg.Historikk)} />
+                        <Brev
+                            onIModalClick={() => settAktivTab(TabValg.Historikk)}
+                            bruker={bruker}
+                        />
                     )}
                 </Tabs>
             </BrevModulProvider>

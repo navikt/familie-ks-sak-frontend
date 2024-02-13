@@ -32,6 +32,8 @@ import { DokumentIkon } from '../../../ikoner/DokumentIkon';
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../typer/simulering';
 import type { Målform } from '../../../typer/søknad';
 import { målform } from '../../../typer/søknad';
+import type { BrevmottakereAlertBehandlingProps } from '../../Felleskomponenter/BrevmottakereAlert';
+import { BrevmottakereAlert } from '../../Felleskomponenter/BrevmottakereAlert';
 import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 
 const ForhåndsvisVarselKnappContainer = styled.div`
@@ -69,6 +71,10 @@ const StyledLabel = styled(Label)`
 interface IForhåndsvisTilbakekrevingsvarselbrevRequest {
     fritekst: string;
 }
+
+const StyledBrevmottakereAlert = styled(BrevmottakereAlert)<BrevmottakereAlertBehandlingProps>`
+    margin: 1rem 0 3rem 2rem;
+`;
 
 const TilbakekrevingSkjema: React.FC<{
     søkerMålform: Målform;
@@ -249,6 +255,16 @@ const TilbakekrevingSkjema: React.FC<{
                                 >
                                     Opprett tilbakekreving, send varsel
                                 </Radio>
+                                {åpenBehandling.status === RessursStatus.SUKSESS &&
+                                    tilbakekrevingsvalg.verdi ===
+                                        Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL && (
+                                        <StyledBrevmottakereAlert
+                                            bruker={bruker}
+                                            erPåBehandling={true}
+                                            erLesevisning={erLesevisning}
+                                            åpenBehandling={åpenBehandling.data}
+                                        />
+                                    )}
                                 {fritekstVarsel.erSynlig && (
                                     <FritekstVarsel>
                                         <Textarea

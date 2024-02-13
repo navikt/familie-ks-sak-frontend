@@ -119,7 +119,7 @@ const FagsakContainer: React.FunctionComponent = () => {
 
                                         <Route
                                             path="/:behandlingId/*"
-                                            element={<BehandlingContainer />}
+                                            element={<BehandlingContainer bruker={bruker.data} />}
                                         />
                                         <Route
                                             path="/"
@@ -131,7 +131,7 @@ const FagsakContainer: React.FunctionComponent = () => {
                                 </Hovedinnhold>
                                 {skalHaHøyremeny && (
                                     <HøyremenyContainer>
-                                        <Høyremeny />
+                                        <Høyremeny bruker={bruker.data} />
                                     </HøyremenyContainer>
                                 )}
                             </Innhold>
