@@ -37,7 +37,7 @@ const hentBarnMedOpplysningerFraBruker = () => {
     const { bruker: brukerRessurs } = useFagsakContext();
 
     if (brukerRessurs.status === RessursStatus.SUKSESS) {
-        const iBarnMedOpplysningers =
+        return (
             brukerRessurs.data.forelderBarnRelasjon
                 .filter(
                     (relasjon: IForelderBarnRelasjon) =>
@@ -52,9 +52,8 @@ const hentBarnMedOpplysningerFraBruker = () => {
                         manueltRegistrert: false,
                         erFolkeregistrert: true,
                     })
-                ) ?? [];
-
-        return iBarnMedOpplysningers;
+                ) ?? []
+        );
     } else return [];
 };
 
