@@ -34,7 +34,7 @@ const StyledExpansionTitle = styled(ExpansionCard.Title)`
 
 interface IEkspanderbartBegrunnelsePanelProps extends PropsWithChildren {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
-    sisteFom?: string;
+    sisteVedtaksperiodeFom?: string;
     åpen: boolean;
     onClick?: () => void;
 }
@@ -45,8 +45,12 @@ const slutterSenereEnnInneværendeMåned = (tom?: string) =>
         endOfMonth(dagensDato)
     );
 
-const finnPresentertTomDato = (periodeFom?: string, periodeTom?: string, sisteFom?: string) => {
-    if (erSammeFom(periodeFom, sisteFom)) {
+const finnPresentertTomDato = (
+    periodeFom?: string,
+    periodeTom?: string,
+    sisteVedtaksperiodeFom?: string
+) => {
+    if (erSammeFom(periodeFom, sisteVedtaksperiodeFom)) {
         return slutterSenereEnnInneværendeMåned(periodeTom) ? '' : periodeTom;
     }
     return periodeTom;
@@ -54,7 +58,7 @@ const finnPresentertTomDato = (periodeFom?: string, periodeTom?: string, sisteFo
 
 const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProps> = ({
     vedtaksperiodeMedBegrunnelser,
-    sisteFom,
+    sisteVedtaksperiodeFom,
     åpen,
     onClick,
     children,
@@ -80,7 +84,11 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
                         <Label>
                             {isoDatoPeriodeTilFormatertString({
                                 fom: periode.fom,
-                                tom: finnPresentertTomDato(periode.fom, periode.tom, sisteFom),
+                                tom: finnPresentertTomDato(
+                                    periode.fom,
+                                    periode.tom,
+                                    sisteVedtaksperiodeFom
+                                ),
                             })}
                         </Label>
                     )}
