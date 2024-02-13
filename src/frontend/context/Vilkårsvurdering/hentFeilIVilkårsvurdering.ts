@@ -134,7 +134,7 @@ const barnetsAlderPeriodeManglerBarnehagePeriode = (
         vilkårResultat => vilkårResultat.periode
     );
     const sammenSlåtteBarnehageperioder =
-        slåSammenPerioderSomLiggerInntilHveranre(barnehagePerioder);
+        slåSammenPerioderSomLiggerInntilHverandre(barnehagePerioder);
 
     const periodeMedFramtidigOpphørPgaBarnehageplass = barnehageplassVilkårResultater.find(
         vilkårresultat => vilkårresultat.søkerHarMeldtFraOmBarnehageplass
@@ -179,7 +179,7 @@ function starterEtter(
     );
 }
 
-const slåSammenPerioderSomLiggerInntilHveranre = (
+const slåSammenPerioderSomLiggerInntilHverandre = (
     perioder: IIsoDatoPeriode[]
 ): IIsoDatoPeriode[] => {
     return perioder.reduce((acc: IIsoDatoPeriode[], periode) => {
