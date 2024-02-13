@@ -26,16 +26,16 @@ import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBe
 import { mapBegrunnelserTilSelectOptions } from '../Hooks/useVedtaksbegrunnelser';
 
 interface IProps {
-    ikkeRedigerbar: boolean;
+    tillatKunLesevisning: boolean;
 }
 
 const GroupLabel = styled.div`
     color: black;
 `;
 
-const BegrunnelserMultiselect: React.FC<IProps> = ({ ikkeRedigerbar }) => {
+const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => {
     const { vurderErLesevisning } = useBehandling();
-    const skalIkkeEditeres = vurderErLesevisning() || ikkeRedigerbar;
+    const erLesevisning = vurderErLesevisning() || tillatKunLesevisning;
 
     const {
         id,
@@ -95,7 +95,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ ikkeRedigerbar }) => {
                 }),
             }}
             placeholder={'Velg begrunnelse(r)'}
-            isDisabled={skalIkkeEditeres || begrunnelserPut.status === RessursStatus.HENTER}
+            isDisabled={erLesevisning || begrunnelserPut.status === RessursStatus.HENTER}
             feil={
                 begrunnelserPut.status === RessursStatus.FUNKSJONELL_FEIL ||
                 begrunnelserPut.status === RessursStatus.FEILET
@@ -104,7 +104,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ ikkeRedigerbar }) => {
             }
             label="Velg standardtekst i brev"
             creatable={false}
-            erLesevisning={skalIkkeEditeres}
+            erLesevisning={erLesevisning}
             isMulti={true}
             onChange={(_, action: ActionMeta<ISelectOption>) => {
                 onChangeBegrunnelse(action);
