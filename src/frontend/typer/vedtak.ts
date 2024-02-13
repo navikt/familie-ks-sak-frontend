@@ -48,6 +48,7 @@ export enum Standardbegrunnelse {
     REDUKSJON_UNDER_6_ÅR = 'NasjonalEllerFellesBegrunnelse$REDUKSJON_UNDER_6_ÅR',
     REDUKSJON_UNDER_18_ÅR = 'NasjonalEllerFellesBegrunnelse$REDUKSJON_UNDER_18_ÅR',
     ETTER_ENDRET_UTBETALING_ETTERBETALING = 'NasjonalEllerFellesBegrunnelse$ETTER_ENDRET_UTBETALING_ETTERBETALING',
+    OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS = 'NasjonalEllerFellesBegrunnelse$OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS',
 }
 
 export interface IRestKorrigertVedtak {

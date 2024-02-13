@@ -28,16 +28,17 @@ import { mapBegrunnelserTilSelectOptions } from '../Hooks/useVedtaksbegrunnelser
 
 interface IProps {
     vedtaksperiodetype: Vedtaksperiodetype;
+    ikkeRedigerbar: boolean;
 }
 
 const GroupLabel = styled.div`
     color: black;
 `;
 
-const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
+const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype, ikkeRedigerbar }) => {
     const { vurderErLesevisning } = useBehandling();
     const skalIkkeEditeres =
-        vurderErLesevisning() || vedtaksperiodetype === Vedtaksperiodetype.AVSLAG;
+        vurderErLesevisning() || ikkeRedigerbar || vedtaksperiodetype === Vedtaksperiodetype.AVSLAG;
 
     const {
         id,
