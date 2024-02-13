@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import React from 'react';
 
-import { endOfMonth, isAfter } from 'date-fns';
+import { endOfMonth, isAfter, isSameDay } from 'date-fns';
 import styled from 'styled-components';
 
 import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
@@ -13,7 +13,8 @@ import {
     isoStringTilDateMedFallback,
     tidenesEnde,
     isoDatoPeriodeTilFormatertString,
-    erSammeFom,
+    parseFraOgMedDato,
+    type IsoDatoString,
 } from '../../../../../utils/dato';
 import { formaterBeløp, summer } from '../../../../../utils/formatter';
 
@@ -38,6 +39,9 @@ interface IEkspanderbartBegrunnelsePanelProps extends PropsWithChildren {
     åpen: boolean;
     onClick?: () => void;
 }
+
+const erSammeFom = (dato1?: IsoDatoString, dato2?: IsoDatoString): boolean =>
+    isSameDay(parseFraOgMedDato(dato1), parseFraOgMedDato(dato2));
 
 const slutterSenereEnnInneværendeMåned = (tom?: string) =>
     isAfter(

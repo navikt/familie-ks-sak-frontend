@@ -1,4 +1,4 @@
-import { format, isSameDay, isValid, parseISO, startOfToday } from 'date-fns';
+import { format, isValid, parseISO, startOfToday } from 'date-fns';
 
 import type { FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
@@ -105,6 +105,3 @@ export const parseFraOgMedDato = (fom: IsoDatoString | undefined) =>
         isoString: fom,
         fallbackDate: tidenesMorgen,
     });
-
-export const erSammeFom = (dato1?: IsoDatoString, dato2?: IsoDatoString): boolean =>
-    isSameDay(parseFraOgMedDato(dato1), parseFraOgMedDato(dato2));
