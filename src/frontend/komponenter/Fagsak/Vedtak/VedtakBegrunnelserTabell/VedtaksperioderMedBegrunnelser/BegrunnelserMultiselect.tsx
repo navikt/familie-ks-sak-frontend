@@ -35,7 +35,7 @@ const GroupLabel = styled.div`
 
 const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => {
     const { vurderErLesevisning } = useBehandling();
-    const erLesevisning = vurderErLesevisning() || tillatKunLesevisning;
+    const erLesevisning = tillatKunLesevisning || vurderErLesevisning();
 
     const {
         id,
