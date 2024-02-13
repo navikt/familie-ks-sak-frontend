@@ -16,7 +16,6 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { Begrunnelse, BegrunnelseType } from '../../../../../typer/vedtak';
 import { begrunnelseTyper } from '../../../../../typer/vedtak';
-import { Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
 import {
     finnBegrunnelseType,
     hentBakgrunnsfarge,
@@ -27,17 +26,16 @@ import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBe
 import { mapBegrunnelserTilSelectOptions } from '../Hooks/useVedtaksbegrunnelser';
 
 interface IProps {
-    vedtaksperiodetype: Vedtaksperiodetype;
+    tillatKunLesevisning: boolean;
 }
 
 const GroupLabel = styled.div`
     color: black;
 `;
 
-const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
+const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => {
     const { vurderErLesevisning } = useBehandling();
-    const skalIkkeEditeres =
-        vurderErLesevisning() || vedtaksperiodetype === Vedtaksperiodetype.AVSLAG;
+    const erLesevisning = tillatKunLesevisning || vurderErLesevisning();
 
     const {
         id,
@@ -97,7 +95,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
                 }),
             }}
             placeholder={'Velg begrunnelse(r)'}
-            isDisabled={skalIkkeEditeres || begrunnelserPut.status === RessursStatus.HENTER}
+            isDisabled={erLesevisning || begrunnelserPut.status === RessursStatus.HENTER}
             feil={
                 begrunnelserPut.status === RessursStatus.FUNKSJONELL_FEIL ||
                 begrunnelserPut.status === RessursStatus.FEILET
@@ -106,7 +104,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ vedtaksperiodetype }) => {
             }
             label="Velg standardtekst i brev"
             creatable={false}
-            erLesevisning={skalIkkeEditeres}
+            erLesevisning={erLesevisning}
             isMulti={true}
             onChange={(_, action: ActionMeta<ISelectOption>) => {
                 onChangeBegrunnelse(action);
