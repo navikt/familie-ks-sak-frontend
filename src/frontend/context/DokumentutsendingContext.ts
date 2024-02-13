@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import createUseContext from 'constate';
 import deepEqual from 'deep-equal';
 
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { FeltState } from '@navikt/familie-skjema';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useFagsakContext } from './fagsak/FagsakContext';
@@ -60,7 +60,8 @@ const hentBarnMedOpplysningerFraBruker = () => {
 
 export const [DokumentutsendingProvider, useDokumentutsending] = createUseContext(
     ({ fagsakId }: { fagsakId: number }) => {
-        const { bruker } = useFagsakContext();
+        const { bruker, manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak } =
+            useFagsakContext();
         const [visInnsendtBrevModal, settVisInnsendtBrevModal] = useState(false);
         const { hentForhåndsvisning, hentetDokument } = useDokument();
 
@@ -141,6 +142,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                             bruker: bruker,
                             målform: målform.verdi ?? Målform.NB,
                             brevmal: Informasjonsbrev.INFORMASJONSBREV_KAN_SØKE_EØS,
+                            manuelleBrevmottakerePåFagsak,
                         });
                     case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING:
                         return hentBarnSøktForSkjemaData(
@@ -184,6 +186,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                     },
                     () => {
                         settVisInnsendtBrevModal(true);
+                        settManuelleBrevmottakerePåFagsak([]);
                         nullstillSkjema();
                     }
                 );
@@ -212,6 +215,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                     mottakerMålform: målform,
                     mottakerNavn: bruker.data.navn,
                     brevmal: brevmal,
+                    manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
                 };
             } else {
                 throw Error('Bruker ikke hentet inn og vi kan ikke sende inn skjema');
