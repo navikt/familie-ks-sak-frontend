@@ -16,6 +16,7 @@ import {
 import type { Ressurs } from '@navikt/familie-typer';
 
 import { useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
+import type { SkjemaBrevmottaker } from '../../komponenter/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IMinimalFagsak, IInternstatistikk } from '../../typer/fagsak';
 import type { IKlagebehandling } from '../../typer/klage';
 import type { IPersonInfo } from '../../typer/person';
@@ -29,6 +30,9 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const [internstatistikk, settInternstatistikk] =
         React.useState<Ressurs<IInternstatistikk>>(byggTomRessurs());
     const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[]>([]);
+    const [manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak] = useState<
+        SkjemaBrevmottaker[]
+    >([]);
 
     const { request } = useHttp();
 
@@ -152,6 +156,8 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         hentBruker,
         klagebehandlinger,
         oppdaterKlagebehandlingerPåFagsak,
+        manuelleBrevmottakerePåFagsak,
+        settManuelleBrevmottakerePåFagsak,
     };
 });
 
