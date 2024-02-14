@@ -66,7 +66,7 @@ export const LeggTilBrevmottakerModal = <T extends SkjemaBrevmottaker | IRestBre
         (brevmottakere.length === 0 && !erLesevisning) ||
         (brevmottakere.length === 1 && visSkjemaNårDetErÉnBrevmottaker);
 
-    const erPåDokumentutsending = useLocation().pathname.includes('dokumentutsending');
+    const erPåDokumentutsendingPåFagsak = useLocation().pathname.includes('dokumentutsending');
 
     const lukkModalOgSkjema = () => {
         lukkModal();
@@ -85,7 +85,7 @@ export const LeggTilBrevmottakerModal = <T extends SkjemaBrevmottaker | IRestBre
                 <StyledAlert variant="info">
                     Brev sendes til brukers folkeregistrerte adresse eller annen foretrukken kanal.
                     Legg til mottaker dersom brev skal sendes til utenlandsk adresse, fullmektig
-                    {erPåDokumentutsending ? ' eller verge' : ', verge eller dødsbo'}.
+                    {erPåDokumentutsendingPåFagsak ? ' eller verge' : ', verge eller dødsbo'}.
                 </StyledAlert>
                 {brevmottakere.map((mottaker, index) => (
                     <BrevmottakerTabell

@@ -25,9 +25,9 @@ interface Props {
 }
 
 const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) => {
-    const erPåDokumentutsending = useLocation().pathname.includes('dokumentutsending');
+    const erPåDokumentutsendingPåFagsak = useLocation().pathname.includes('dokumentutsending');
 
-    const gyldigeMottakerTyper = erPåDokumentutsending
+    const gyldigeMottakerTyper = erPåDokumentutsendingPåFagsak
         ? Object.values(Mottaker).filter(mottakerType => mottakerType !== Mottaker.DØDSBO)
         : Object.values(Mottaker);
 
