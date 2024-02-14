@@ -18,10 +18,12 @@ import Utbetalingsresultat from '../Felles/Utbetalingsresultat';
 
 interface IProps {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
+    sisteVedtaksperiodeFom?: string;
 }
 
 const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
     vedtaksperiodeMedBegrunnelser,
+    sisteVedtaksperiodeFom,
 }) => {
     const { erPanelEkspandert, onPanelClose, genererteBrevbegrunnelser } =
         useVedtaksperiodeMedBegrunnelser();
@@ -31,6 +33,13 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
         Standardbegrunnelse.REDUKSJON_UNDER_6_ÅR,
         Standardbegrunnelse.REDUKSJON_UNDER_18_ÅR,
     ];
+
+    const vedtaksperiodeInneholderFramtidigOpphørBegrunnelse =
+        vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
+            vedtaksBegrunnelser =>
+                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
+                Standardbegrunnelse.OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS
+        ).length > 0;
 
     const vedtaksperiodeInneholderEtterbetaling3MånedBegrunnelse = () =>
         vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
@@ -72,6 +81,7 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
     return (
         <EkspanderbartBegrunnelsePanel
             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
+            sisteVedtaksperiodeFom={sisteVedtaksperiodeFom}
             åpen={erPanelEkspandert}
             onClick={() => onPanelClose(true)}
         >
@@ -81,7 +91,9 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
                 }
             />
             {vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.AVSLAG && (
-                <BegrunnelserMultiselect vedtaksperiodetype={vedtaksperiodeMedBegrunnelser.type} />
+                <BegrunnelserMultiselect
+                    tillatKunLesevisning={vedtaksperiodeInneholderFramtidigOpphørBegrunnelse}
+                />
             )}
             {genererteBrevbegrunnelser.status === RessursStatus.SUKSESS &&
                 genererteBrevbegrunnelser.data.length > 0 && (

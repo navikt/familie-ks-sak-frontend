@@ -37,7 +37,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
 }) => {
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
 
-    const vedtaksperioderSomSkalvises = filtrerOgSorterPerioderMedBegrunnelseBehov(
+    const sorterteVedtaksperioderSomSkalvises = filtrerOgSorterPerioderMedBegrunnelseBehov(
         åpenBehandling.vedtak?.vedtaksperioderMedBegrunnelser ?? [],
         åpenBehandling.resultat,
         åpenBehandling.status,
@@ -51,15 +51,15 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
         return <Alert variant="error">Klarte ikke å hente inn begrunnelser for vedtak.</Alert>;
     }
 
-    const avslagOgResterende = partition(
+    const [sorterteAvslagsperioder, sorterteAndreVedtaksperioder] = partition(
         vedtaksperiode => vedtaksperiode.type === Vedtaksperiodetype.AVSLAG,
-        vedtaksperioderSomSkalvises
+        sorterteVedtaksperioderSomSkalvises
     );
 
-    return vedtaksperioderSomSkalvises.length > 0 ? (
+    return sorterteVedtaksperioderSomSkalvises.length > 0 ? (
         <>
             <VedtaksperiodeListe
-                vedtaksperioderMedBegrunnelser={avslagOgResterende[1]}
+                sorterteVedtaksperioderMedBegrunnelser={sorterteAndreVedtaksperioder}
                 overskrift={'Begrunnelser i vedtaksbrev'}
                 hjelpetekst={
                     'Her skal du sette begrunnelsestekster for innvilgelse, reduksjon og opphør.'
@@ -68,7 +68,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
             />
 
             <VedtaksperiodeListe
-                vedtaksperioderMedBegrunnelser={avslagOgResterende[0]}
+                sorterteVedtaksperioderMedBegrunnelser={sorterteAvslagsperioder}
                 overskrift={'Begrunnelser for avslag i vedtaksbrev'}
                 hjelpetekst={
                     'Her har vi hentet begrunnelser for avslag som er satt tidligere i behandlingen.'
@@ -82,14 +82,18 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
 };
 
 const VedtaksperiodeListe: React.FC<{
-    vedtaksperioderMedBegrunnelser: IVedtaksperiodeMedBegrunnelser[];
+    sorterteVedtaksperioderMedBegrunnelser: IVedtaksperiodeMedBegrunnelser[];
     overskrift: string;
     hjelpetekst: string;
     åpenBehandling: IBehandling;
-}> = ({ vedtaksperioderMedBegrunnelser, overskrift, hjelpetekst, åpenBehandling }) => {
-    if (vedtaksperioderMedBegrunnelser.length === 0) {
+}> = ({ sorterteVedtaksperioderMedBegrunnelser, overskrift, hjelpetekst, åpenBehandling }) => {
+    if (sorterteVedtaksperioderMedBegrunnelser.length === 0) {
         return null;
     }
+
+    const sisteVedtaksperiodeFom =
+        sorterteVedtaksperioderMedBegrunnelser[sorterteVedtaksperioderMedBegrunnelser.length - 1]
+            .fom;
 
     return (
         <>
@@ -97,7 +101,7 @@ const VedtaksperiodeListe: React.FC<{
                 {overskrift}
                 <StyledHelpText placement="right">{hjelpetekst}</StyledHelpText>
             </StyledHeading>
-            {vedtaksperioderMedBegrunnelser.map(
+            {sorterteVedtaksperioderMedBegrunnelser.map(
                 (vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser) => (
                     <VedtaksperiodeMedBegrunnelserProvider
                         key={vedtaksperiodeMedBegrunnelser.id}
@@ -106,6 +110,7 @@ const VedtaksperiodeListe: React.FC<{
                     >
                         <VedtaksperiodeMedBegrunnelserPanel
                             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
+                            sisteVedtaksperiodeFom={sisteVedtaksperiodeFom}
                         />
                     </VedtaksperiodeMedBegrunnelserProvider>
                 )

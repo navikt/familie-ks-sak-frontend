@@ -211,7 +211,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         skjema.felter.vurderesEtter.verdi,
                         skjema.felter.utdypendeVilkårsvurdering.verdi,
                         person.type,
-                        vilkårResultat.vilkårType
+                        vilkårResultat.vilkårType,
+                        skjema.felter.søkerHarMeldtFraOmBarnehageplass?.verdi
                     )
                         ? ''
                         : '(valgfri)'
@@ -269,9 +270,11 @@ export const erBegrunnelsePåkrevd = (
     vurderesEtter: Regelverk | undefined,
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[],
     personType: PersonType,
-    vilkårType: VilkårType
+    vilkårType: VilkårType,
+    søkerHarMeldtFraOmBarnehageplass?: boolean
 ): boolean => {
     return (
+        (vilkårType == VilkårType.BARNEHAGEPLASS && søkerHarMeldtFraOmBarnehageplass) ||
         (vurderesEtter === Regelverk.NASJONALE_REGLER && utdypendeVilkårsvurderinger.length > 0) ||
         (vurderesEtter === Regelverk.EØS_FORORDNINGEN &&
             personType === PersonType.SØKER &&

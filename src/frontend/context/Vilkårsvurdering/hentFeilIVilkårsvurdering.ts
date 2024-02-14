@@ -6,8 +6,14 @@ import { annenVurderingFeilmeldingId } from '../../komponenter/Fagsak/Vilkårsvu
 import { vilkårFeilmeldingId } from '../../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
 import type { IPersonResultat, IVilkårResultat, IAnnenVurdering } from '../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig, VilkårType } from '../../typer/vilkår';
-import type { IIsoDatoPeriode, IsoDatoString } from '../../utils/dato';
-import { isoStringTilDateMedFallback, tidenesEnde, tidenesMorgen } from '../../utils/dato';
+import type { IIsoDatoPeriode } from '../../utils/dato';
+import {
+    isoStringTilDateMedFallback,
+    parseTilOgMedDato,
+    parseFraOgMedDato,
+    tidenesEnde,
+    tidenesMorgen,
+} from '../../utils/dato';
 
 export const hentFeilIVilkårsvurdering = (
     personResultater: IPersonResultat[]
@@ -104,7 +110,7 @@ const hentBarnetsalderVilkårManglerBarnehagePeriodeFeil = (
         .filter(barnetsAlderPeriode => {
             return barnetsAlderPeriodeManglerBarnehagePeriode(
                 barnetsAlderPeriode.periode,
-                barnehageplassVilkårResultater.map(vilkårResultat => vilkårResultat.periode)
+                barnehageplassVilkårResultater
             );
         })
         .map(vilkårResultat => ({
@@ -122,21 +128,37 @@ const erEtterEllerSammeDato = (dato1: Date, dato2: Date) =>
 
 const barnetsAlderPeriodeManglerBarnehagePeriode = (
     barnetsAlderPeriode: IIsoDatoPeriode,
-    barnehagePerioder: IIsoDatoPeriode[]
+    barnehageplassVilkårResultater: IVilkårResultat[]
 ): boolean => {
+    const barnehagePerioder = barnehageplassVilkårResultater.map(
+        vilkårResultat => vilkårResultat.periode
+    );
     const sammenSlåtteBarnehageperioder =
-        slåSammenPerioderSomLiggerInntilHveranre(barnehagePerioder);
+        slåSammenPerioderSomLiggerInntilHverandre(barnehagePerioder);
+
+    const periodeMedFramtidigOpphørPgaBarnehageplass = barnehageplassVilkårResultater.find(
+        vilkårresultat => vilkårresultat.søkerHarMeldtFraOmBarnehageplass
+    )?.periode;
 
     return !sammenSlåtteBarnehageperioder.some(sammenslåttBarnehageperiode => {
-        return (
-            erFørEllerSammeDato(
-                parseFraOgMedDato(sammenslåttBarnehageperiode.fom),
-                parseFraOgMedDato(barnetsAlderPeriode.fom)
-            ) &&
+        const barnehageperiodeOverlapperFraBarnetErEttÅr = erFørEllerSammeDato(
+            parseFraOgMedDato(sammenslåttBarnehageperiode.fom),
+            parseFraOgMedDato(barnetsAlderPeriode.fom)
+        );
+        const sistePeriodeHarFramtidigOpphørPgaBarnehageplass =
+            periodeMedFramtidigOpphørPgaBarnehageplass &&
             erEtterEllerSammeDato(
-                parseTilOgMedDato(sammenslåttBarnehageperiode.tom),
-                parseTilOgMedDato(barnetsAlderPeriode.tom)
-            )
+                parseTilOgMedDato(periodeMedFramtidigOpphørPgaBarnehageplass.tom),
+                parseTilOgMedDato(sammenslåttBarnehageperiode.tom)
+            );
+        const barnehageperiodeOverlapperTilBarnetErToÅr = erEtterEllerSammeDato(
+            parseTilOgMedDato(sammenslåttBarnehageperiode.tom),
+            parseTilOgMedDato(barnetsAlderPeriode.tom)
+        );
+        return (
+            barnehageperiodeOverlapperFraBarnetErEttÅr &&
+            (sistePeriodeHarFramtidigOpphørPgaBarnehageplass ||
+                barnehageperiodeOverlapperTilBarnetErToÅr)
         );
     });
 };
@@ -157,7 +179,7 @@ function starterEtter(
     );
 }
 
-const slåSammenPerioderSomLiggerInntilHveranre = (
+const slåSammenPerioderSomLiggerInntilHverandre = (
     perioder: IIsoDatoPeriode[]
 ): IIsoDatoPeriode[] => {
     return perioder.reduce((acc: IIsoDatoPeriode[], periode) => {
@@ -179,15 +201,3 @@ const erEtterHverandre = (første: IIsoDatoPeriode | undefined, andre: IIsoDatoP
 
     return isSameDay(dagenEtterTomDatoFørste, fomDatoNeste);
 };
-
-const parseTilOgMedDato = (tom: IsoDatoString | undefined) =>
-    isoStringTilDateMedFallback({
-        isoString: tom,
-        fallbackDate: tidenesEnde,
-    });
-
-const parseFraOgMedDato = (fom: IsoDatoString | undefined) =>
-    isoStringTilDateMedFallback({
-        isoString: fom,
-        fallbackDate: tidenesMorgen,
-    });

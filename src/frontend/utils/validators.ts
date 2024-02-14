@@ -15,6 +15,7 @@ import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 
 import type { IIsoDatoPeriode } from './dato';
 import { dagensDato, isoStringTilDate } from './dato';
+import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { Begrunnelse } from '../typer/vedtak';
@@ -169,10 +170,10 @@ export const erPeriodeGyldig = (
         }
         if (!erUendelig(tom)) {
             if (!erBarnetsAlderVilkår && valgtDatoErSenereEnnNesteMåned(tom)) {
-                const skalTillateFremtidigOpphør =
+                const skalTillateFramtidigOpphør =
                     erBarnehageVilkår && søkerHarMeldtFraOmBarnehageplass;
 
-                if (!skalTillateFremtidigOpphør) {
+                if (!skalTillateFramtidigOpphør) {
                     return feil(
                         felt,
                         'Du kan ikke legge inn til og med dato som er senere enn neste måned'
@@ -228,4 +229,29 @@ export const erLik0 = (string: string) => {
     const tall = Number(string);
 
     return Number.isInteger(tall) && tall === 0;
+};
+
+export const erBegrunnelseGyldig = (
+    felt: FeltState<string>,
+    avhengigheter?: Avhengigheter
+): FeltState<string> => {
+    if (!avhengigheter) {
+        return feil(felt, 'Begrunnelse er ugyldig');
+    }
+
+    const begrunnelseOppgitt = felt.verdi.length > 0;
+
+    if (
+        erBegrunnelsePåkrevd(
+            avhengigheter.vurderesEtter,
+            avhengigheter.utdypendeVilkårsvurderinger,
+            avhengigheter.personType,
+            avhengigheter.vilkårType,
+            avhengigheter.søkerHarMeldtFraOmBarnehageplass
+        )
+    ) {
+        return begrunnelseOppgitt ? ok(felt) : feil(felt, 'Du må fylle inn en begrunnelse');
+    } else {
+        return ok(felt);
+    }
 };

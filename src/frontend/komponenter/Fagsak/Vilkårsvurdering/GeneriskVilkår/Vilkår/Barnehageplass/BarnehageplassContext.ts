@@ -15,6 +15,7 @@ import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typ
 import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     erAvslagBegrunnelserGyldig,
+    erBegrunnelseGyldig,
     erPeriodeGyldig,
     erResultatGyldig,
 } from '../../../../../../utils/validators';
@@ -91,6 +92,11 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         søkerHarMeldtFraOmBarnehageplass,
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,
+            valideringsfunksjon: erBegrunnelseGyldig,
+            avhengigheter: {
+                søkerHarMeldtFraOmBarnehageplass: søkerHarMeldtFraOmBarnehageplass.verdi,
+                vilkårType: VilkårType.BARNEHAGEPLASS,
+            },
         }),
         erEksplisittAvslagPåSøknad,
         avslagBegrunnelser: useFelt<Begrunnelse[]>({

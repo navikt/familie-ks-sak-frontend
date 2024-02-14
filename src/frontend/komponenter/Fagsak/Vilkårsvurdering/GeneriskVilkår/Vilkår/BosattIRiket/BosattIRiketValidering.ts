@@ -4,7 +4,6 @@ import { feil, ok } from '@navikt/familie-skjema';
 import { bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår } from './BosattIRiketContext';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import { Regelverk } from '../../../../../../typer/vilkår';
-import { erBegrunnelsePåkrevd } from '../../VilkårSkjema';
 
 export const erUtdypendeVilkårsvurderingerGyldig = (
     felt: FeltState<UtdypendeVilkårsvurdering[]>,
@@ -37,28 +36,4 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
     }
 
     return ok(felt);
-};
-
-export const erBegrunnelseGyldig = (
-    felt: FeltState<string>,
-    avhengigheter?: Avhengigheter
-): FeltState<string> => {
-    if (!avhengigheter) {
-        return feil(felt, 'Begrunnelse er ugyldig');
-    }
-
-    const begrunnelseOppgitt = felt.verdi.length > 0;
-
-    if (
-        erBegrunnelsePåkrevd(
-            avhengigheter.vurderesEtter,
-            avhengigheter.utdypendeVilkårsvurderinger,
-            avhengigheter.personType,
-            avhengigheter.vilkårType
-        )
-    ) {
-        return begrunnelseOppgitt ? ok(felt) : feil(felt, 'Du må fylle inn en begrunnelse');
-    } else {
-        return ok(felt);
-    }
 };

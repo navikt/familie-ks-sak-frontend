@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Checkbox, Radio, RadioGroup, TextField } from '@navikt/ds-react';
+import { BodyShort, Checkbox, Radio, RadioGroup, TextField } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import {
@@ -88,16 +88,23 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
             periodeChildren={
                 toggles[ToggleNavn.framtidigOpphør] &&
                 felter.periode.verdi.tom && (
-                    <Checkbox
-                        defaultChecked={felter.søkerHarMeldtFraOmBarnehageplass.verdi}
-                        onChange={event => {
-                            felter.søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(
-                                event.target.checked
-                            );
-                        }}
-                    >
-                        Søker har meldt fra om barnehageplass
-                    </Checkbox>
+                    <>
+                        {felter.søkerHarMeldtFraOmBarnehageplass.verdi && (
+                            <BodyShort as={'em'} size="small">
+                                Merk at tom-dato skal være dagen før barnehagestart
+                            </BodyShort>
+                        )}
+                        <Checkbox
+                            defaultChecked={felter.søkerHarMeldtFraOmBarnehageplass.verdi}
+                            onChange={event => {
+                                felter.søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(
+                                    event.target.checked
+                                );
+                            }}
+                        >
+                            Søker har meldt fra om barnehageplass
+                        </Checkbox>
+                    </>
                 )
             }
         >
