@@ -151,6 +151,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                     erPåBehandling={true}
                     erLesevisning={erLesevisning}
                     åpenBehandling={åpenBehandling}
+                    brevmottakere={åpenBehandling.brevmottakere}
                 />
                 {åpenBehandling.årsak === BehandlingÅrsak.DØDSFALL ||
                 åpenBehandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||

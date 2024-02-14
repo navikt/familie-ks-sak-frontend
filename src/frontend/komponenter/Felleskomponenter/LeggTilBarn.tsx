@@ -52,13 +52,13 @@ export interface IRegistrerBarnSkjema {
 interface IProps {
     barnaMedOpplysninger: Felt<IBarnMedOpplysninger[]>;
     onSuccess?: (barn: IPersonInfo) => void;
-    manuelleBrevmottakere?: SkjemaBrevmottaker[] | IRestBrevmottaker[]; // Todo: endre denne til å være required når vi får inn manuelle brevmottakre på fagsak
+    manuelleBrevmottakere: SkjemaBrevmottaker[] | IRestBrevmottaker[];
 }
 
 const LeggTilBarn: React.FC<IProps> = ({
     barnaMedOpplysninger,
     onSuccess,
-    manuelleBrevmottakere = [],
+    manuelleBrevmottakere,
 }) => {
     const { request } = useHttp();
     const { logg } = useBehandling();
