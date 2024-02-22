@@ -57,13 +57,6 @@ const OppgaveList: React.FunctionComponent = () => {
                 </Heading>
                 <OppgavelisteNavigator />
             </HeaderMedPaginering>
-            <button
-                onClick={() => {
-                    throw new Error('sentry test error');
-                }}
-            >
-                Test Sentry Error-knapp. Fjernes snart.
-            </button>
             <Table
                 sort={sortering}
                 onSortChange={(nøkkel?: string) =>
