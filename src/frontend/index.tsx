@@ -22,7 +22,7 @@ const environment = window.location.hostname;
 
 if (process.env.NODE_ENV !== 'development') {
     init({
-        dsn: 'https://10239ce4baed4db79d080d85f08b5878@sentry.gc.nav.no/26',
+        dsn: 'https://e15fa1f00e3e445887790956a0d8bbe2@sentry.gc.nav.no/146',
         environment,
         integrations: [new Integrations.BrowserTracing()],
         tracesSampleRate: 0.2,
