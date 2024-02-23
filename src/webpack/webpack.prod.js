@@ -5,11 +5,11 @@ import CompressionPlugin from 'compression-webpack-plugin';
 import CssMinimizerWebpackPlugin from 'css-minimizer-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
-import merge from 'webpack-merge';
+import { mergeWithRules } from 'webpack-merge';
 
 import baseConfig from './webpack.common.js';
 
-const prodConfig = merge.mergeWithRules({
+const prodConfig = mergeWithRules({
     module: {
         rules: {
             test: 'match',
@@ -58,18 +58,19 @@ const prodConfig = merge.mergeWithRules({
             minRatio: 0.8,
         }),
         sentryWebpackPlugin({
-            sourcemaps: {
-                assets: ['frontend_production'],
-            },
             org: 'nav',
             project: 'familie-ks-sak-frontend',
             authToken: process.env.SENTRY_AUTH_TOKEN,
             url: 'https://sentry.gc.nav.no/',
-            release: process.env.SENTRY_RELEASE,
-            urlPrefix: `~/assets`,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            errorHandler: (err, invokeErr, compilation) => {
-                compilation.warnings.push('Sentry CLI Plugin: ' + err.message);
+            release: {
+                name: process.env.SENTRY_RELEASE,
+                uploadLegacySourcemaps: {
+                    paths: ['frontend_production'],
+                    urlPrefix: `~/assets`,
+                },
+            },
+            errorHandler: err => {
+                console.warn('Sentry CLI Plugin: ' + err.message);
             },
         }),
     ],
