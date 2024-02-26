@@ -30,7 +30,7 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({ lukkModal, søkeres
             header={{ heading: 'Opprett fagsak', size: 'medium' }}
         >
             <Modal.Body>
-                <BodyShort size={'small'} level={'3'}>
+                <BodyShort size={'small'}>
                     Personen har ingen tilknyttet fagsak. Ønsker du å opprette fagsak for denne
                     personen?
                 </BodyShort>
