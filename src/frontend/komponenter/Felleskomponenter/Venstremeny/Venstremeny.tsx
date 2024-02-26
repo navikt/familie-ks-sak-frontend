@@ -135,6 +135,7 @@ const Venstremeny: React.FunctionComponent = () => {
             )}
             <div>
                 <ToggleVisningVenstremeny
+                    forwardedAs={Button}
                     variant="secondary"
                     onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
                     onClick={() => {
