@@ -1906,18 +1906,18 @@
     prom-client "^14.2.0"
     redis "^4.6.10"
 
-"@navikt/familie-form-elements@^14.0.0":
-  version "14.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/14.0.0/2e7b6e26fde5e677096fcf1c523ed25159926bb1#2e7b6e26fde5e677096fcf1c523ed25159926bb1"
-  integrity sha512-P5cMOmDkC2UEshd4P7RmMwfzGq9Lj1z5hRyuHMOtw4KDXaiaNpY6x6CKuP9dxu/MgsOPbuy5vxMNCRBpMHALyA==
+"@navikt/familie-form-elements@^15.0.0":
+  version "15.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/15.0.0/e57b16e473f85e3bddaf809644c1412be886ed6e#e57b16e473f85e3bddaf809644c1412be886ed6e"
+  integrity sha512-NGcIgqJL4/mARhHMUI2VENh9xyPzJfzzw8gP/7t85I7kAFaWbREZYqIOWXdCb4tr630Jo7Lp0f+HP+qkzI10DQ==
   dependencies:
     classnames "^2.5.1"
     react-select "^5.8.0"
 
-"@navikt/familie-header@^13.1.0":
-  version "13.1.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/13.1.0/a09491252ae6f0391d4284d7f7b0385af405e729#a09491252ae6f0391d4284d7f7b0385af405e729"
-  integrity sha512-2ZT/9yoF012oknjpbVp0RgzXP3lBDkV13CrpMHOgeJuRVpBhY3tNRqIvlO3o68LU664U6GqzRqykZ4ZTocH2ww==
+"@navikt/familie-header@^14.0.0":
+  version "14.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/14.0.0/ffc65218c212b44938a5f04ba9babf9e9d919806#ffc65218c212b44938a5f04ba9babf9e9d919806"
+  integrity sha512-Zwz730wMagg3vxyIGTDobAPbefyQ7FI8jOmSjPA8EqmwaQeVziaOr05xdX+U7QujRFNHLpmLFhEv2dYQfkOsSg==
   dependencies:
     "@navikt/familie-ikoner" "^9.0.1"
     "@navikt/familie-typer" "^8.0.2"
@@ -1930,6 +1930,15 @@
   dependencies:
     "@navikt/familie-typer" "^8.0.2"
     "@sentry/core" "^7.99.0"
+    constate "^3.3.2"
+
+"@navikt/familie-http@^7.0.3":
+  version "7.0.3"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/7.0.3/bcf01d1ceca7c4343a9477db0433cc1800af6939#bcf01d1ceca7c4343a9477db0433cc1800af6939"
+  integrity sha512-PPaSmyaqeSjmZkQ8zSpHN1qKdBDUi1u9Dkv6FiIWvnf4TihnONCPqcMaYkoLYMcz6gm7YZL4QlkZ7f4WKJVomA==
+  dependencies:
+    "@navikt/familie-typer" "^8.0.2"
+    "@sentry/core" "^7.102.1"
     constate "^3.3.2"
 
 "@navikt/familie-ikoner@^9.0.0", "@navikt/familie-ikoner@^9.0.1":
@@ -1946,37 +1955,37 @@
   dependencies:
     winston "^3.11.0"
 
-"@navikt/familie-skjema@^8.0.5":
-  version "8.0.5"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.0.5/e2d01e9ab14f4c9b34f7130db0d67625c58d6301#e2d01e9ab14f4c9b34f7130db0d67625c58d6301"
-  integrity sha512-06iyi9sOhphceeLCdJMJfV+8fWbFUApcTkCSjo6dEL4FDQG/GCpBtOMIAQImbkHXlT4E/tErx+3iiZhW8JyZBg==
+"@navikt/familie-skjema@^8.0.0":
+  version "8.0.8"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.0.8/8dd5f292a35ebd64c9d224875e76e5c585457f79#8dd5f292a35ebd64c9d224875e76e5c585457f79"
+  integrity sha512-Ij5cVgaAdV+Va/C6LmRvo7+POKF5Jha7g9Q6hZRhoDFxOhD8eVfMIuoydTF6zthAodxySZFNj2hj62o8D/y4ow==
   dependencies:
-    "@navikt/familie-http" "^7.0.1"
+    "@navikt/familie-http" "^7.0.3"
     "@navikt/familie-typer" "^8.0.2"
     "@types/deep-equal" "^1.0.4"
     deep-equal "^2.2.3"
     hashids "^2.3.0"
 
-"@navikt/familie-tidslinje@^9.0.0":
-  version "9.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-tidslinje/9.0.0/c47784edeede9ac706cd57c03ada59f90f687cd2#c47784edeede9ac706cd57c03ada59f90f687cd2"
-  integrity sha512-CuOILz0YYAOb1/XP4A/Tv/ZOHL5GVfWnhcW8DGJzeAd276hNtJv9qreTKDuYONRoRQpAUMLzxKQNz5Tb4h7ABQ==
+"@navikt/familie-tidslinje@^10.0.0":
+  version "10.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-tidslinje/10.0.0/c9419e864955b4376cf8da65c11351f801eabac3#c9419e864955b4376cf8da65c11351f801eabac3"
+  integrity sha512-GWPGBX+DkBL9P46FHliJsu/TxN8saTFlEPYtzo4IadtjBeGX2n756EYTIjN2Ywtkqhgqvbba1HKnUasfZp41BQ==
   dependencies:
     classnames "^2.5.1"
     nanoid "^5.0.4"
 
-"@navikt/familie-typer@^8.0.0", "@navikt/familie-typer@^8.0.1", "@navikt/familie-typer@^8.0.2":
+"@navikt/familie-typer@^8.0.0", "@navikt/familie-typer@^8.0.2":
   version "8.0.2"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/8.0.2/21bcc780c35b6a8699d1c52b54e61d83580736f7#21bcc780c35b6a8699d1c52b54e61d83580736f7"
   integrity sha512-pKSpCzryJE6eiN/Ssox1oLLKPW5ezsT+/gTHbhgxOtM/frFSZLguSjwhgiDp2kovckJ84nxhnQurK6igw8GEHw==
 
-"@navikt/familie-visittkort@^14.0.0":
-  version "14.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/14.0.0/d9dc43d6cd97c9469039266d2a4ba5a1a6f1e674#d9dc43d6cd97c9469039266d2a4ba5a1a6f1e674"
-  integrity sha512-hqO3IwZ0yUuRGoJuWPt4FNS1AEVfObH17IxUMgO9iZ0EH8ZOs8skHMlZ+WClSNC/71qUgpviZ3UD5ya/cb4xKg==
+"@navikt/familie-visittkort@^15.0.0":
+  version "15.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/15.0.0/2843b0b58deacd9b41ae17dec52753eebf16b9ae#2843b0b58deacd9b41ae17dec52753eebf16b9ae"
+  integrity sha512-AYtp8fW5VxsKqHwli2JIRDnM07DAQA8nHhqvayJ259p1kBAMJd4ntLtsmH2wP0GYAa8RsibaSoOwEiRw3vQxNA==
   dependencies:
-    "@navikt/familie-ikoner" "^9.0.0"
-    "@navikt/familie-typer" "^8.0.1"
+    "@navikt/familie-ikoner" "^9.0.1"
+    "@navikt/familie-typer" "^8.0.2"
     classnames "^2.5.1"
 
 "@navikt/flagg-ikoner@^3.2.7":
@@ -2374,6 +2383,14 @@
     "@sentry/types" "7.101.1"
     "@sentry/utils" "7.101.1"
 
+"@sentry/core@^7.102.1":
+  version "7.103.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.103.0.tgz#8f626362c96f9aa4b4a52042c431d16372491dc1"
+  integrity sha512-LCI+PIDoF/RLqN41fNXum3ilmS6ukni6L7t38vSdibbe2G0804EbPLtOIpv2PkS8E6CFuRW5zOb+8OwEAAtZWw==
+  dependencies:
+    "@sentry/types" "7.103.0"
+    "@sentry/utils" "7.103.0"
+
 "@sentry/replay@7.101.1":
   version "7.101.1"
   resolved "https://registry.yarnpkg.com/@sentry/replay/-/replay-7.101.1.tgz#129ca5ac70690e78468b037a71a9b756bc3d965f"
@@ -2396,12 +2413,24 @@
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.101.1.tgz#7f936022d9b373f85ebf357634bf03a9e433a3d0"
   integrity sha512-bwtkQvrCZ6JGc7vqX7TEAKBgkbQFORt84FFS3JQQb8G3efTt9fZd2ReY4buteKQdlALl8h1QWVngTLmI+kyUuw==
 
+"@sentry/types@7.103.0":
+  version "7.103.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.103.0.tgz#f413f922216c97ec86bae39f9d527669d8afedbd"
+  integrity sha512-NCvKyx8d2AGBQKPARrJemZmZ16DiMo688OEikZg4BbvFNDUzK5Egm2BH0vfLDhbNkU19o3maJowrYo42m8r9Zw==
+
 "@sentry/utils@7.101.1":
   version "7.101.1"
   resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.101.1.tgz#97399b1e6a63a15e8f9fec5112ac4834239f1db6"
   integrity sha512-Nrg0nrEI3nrOCd9SLJ/WGzxS5KMQE4cryLOvrDcHJRWpsSyGBF1hLLerk84Nsw/0myMsn7zTYU+xoq7idNsX5A==
   dependencies:
     "@sentry/types" "7.101.1"
+
+"@sentry/utils@7.103.0":
+  version "7.103.0"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.103.0.tgz#803b76e2adfdcec0d4ab6369cc8990dde19b55f4"
+  integrity sha512-phkUJt3F0UOkVq+M4GfdAh2ewI3ASrNiJddx9aO7GnT0aDwwVBHZltnqt95qgAB8W+BipTSt1dAh8yUbbq1Ceg==
+  dependencies:
+    "@sentry/types" "7.103.0"
 
 "@sentry/webpack-plugin@^2.14.2":
   version "2.14.2"
