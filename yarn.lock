@@ -1955,7 +1955,7 @@
   dependencies:
     winston "^3.11.0"
 
-"@navikt/familie-skjema@^8.0.0":
+"@navikt/familie-skjema@^8.0.5":
   version "8.0.8"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.0.8/8dd5f292a35ebd64c9d224875e76e5c585457f79#8dd5f292a35ebd64c9d224875e76e5c585457f79"
   integrity sha512-Ij5cVgaAdV+Va/C6LmRvo7+POKF5Jha7g9Q6hZRhoDFxOhD8eVfMIuoydTF6zthAodxySZFNj2hj62o8D/y4ow==
