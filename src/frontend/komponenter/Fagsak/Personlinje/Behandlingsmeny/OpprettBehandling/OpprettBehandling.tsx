@@ -154,7 +154,6 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
 
             {visBekreftelseTilbakekrevingModal && (
                 <Modal
-                    open
                     header={{
                         heading: 'Tilbakekrevingsbehandling opprettes...',
                         size: 'small',

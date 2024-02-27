@@ -270,7 +270,7 @@ const LeggTilBarn: React.FC<IProps> = ({
             </Button>
 
             {visModal && (
-                <Modal open onClose={onAvbryt} width={'35rem'}>
+                <Modal open onClose={onAvbryt} width={'35rem'} aria-label={'Legg til barn'}>
                     <Modal.Header>
                         <HStack gap={'2'}>
                             <Heading level="2" size="medium" spacing>
