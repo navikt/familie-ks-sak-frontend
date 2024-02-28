@@ -1923,15 +1923,6 @@
     "@navikt/familie-typer" "^8.0.2"
     "@navikt/fnrvalidator" "^1.3.1"
 
-"@navikt/familie-http@^7.0.1":
-  version "7.0.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/7.0.1/fdc9aad38d1a2a108251023724a6c17d6bcbc181#fdc9aad38d1a2a108251023724a6c17d6bcbc181"
-  integrity sha512-z/3/O+ranRoLErhv95GSO3SQlw9derBsFcExMVVlRjQ50zXENAJaausdbn5EJ4dZHPYVMgBrpw0yNOi63zuyiw==
-  dependencies:
-    "@navikt/familie-typer" "^8.0.2"
-    "@sentry/core" "^7.99.0"
-    constate "^3.3.2"
-
 "@navikt/familie-http@^7.0.3":
   version "7.0.3"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-http/7.0.3/bcf01d1ceca7c4343a9477db0433cc1800af6939#bcf01d1ceca7c4343a9477db0433cc1800af6939"
@@ -1955,7 +1946,7 @@
   dependencies:
     winston "^3.11.0"
 
-"@navikt/familie-skjema@^8.0.5":
+"@navikt/familie-skjema@^8.0.8":
   version "8.0.8"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.0.8/8dd5f292a35ebd64c9d224875e76e5c585457f79#8dd5f292a35ebd64c9d224875e76e5c585457f79"
   integrity sha512-Ij5cVgaAdV+Va/C6LmRvo7+POKF5Jha7g9Q6hZRhoDFxOhD8eVfMIuoydTF6zthAodxySZFNj2hj62o8D/y4ow==
@@ -2375,7 +2366,7 @@
     "@sentry/cli-win32-i686" "2.27.0"
     "@sentry/cli-win32-x64" "2.27.0"
 
-"@sentry/core@7.103.0", "@sentry/core@^7.102.1", "@sentry/core@^7.99.0":
+"@sentry/core@7.103.0", "@sentry/core@^7.102.1":
   version "7.103.0"
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.103.0.tgz#8f626362c96f9aa4b4a52042c431d16372491dc1"
   integrity sha512-LCI+PIDoF/RLqN41fNXum3ilmS6ukni6L7t38vSdibbe2G0804EbPLtOIpv2PkS8E6CFuRW5zOb+8OwEAAtZWw==
