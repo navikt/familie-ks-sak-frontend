@@ -12,6 +12,7 @@ import {
 
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
+import { idnr } from '@navikt/fnrvalidator';
 
 import type { IIsoDatoPeriode } from './dato';
 import { dagensDato, isoStringTilDate } from './dato';
@@ -22,9 +23,6 @@ import type { Begrunnelse } from '../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../typer/vilkår';
 
-// eslint-disable-next-line
-const validator = require('@navikt/fnrvalidator');
-
 const harFyltInnIdent = (felt: FeltState<string>): FeltState<string> => {
     return /^\d{11}$/.test(felt.verdi.replace(' ', ''))
         ? ok(felt)
@@ -32,9 +30,7 @@ const harFyltInnIdent = (felt: FeltState<string>): FeltState<string> => {
 };
 
 const validerIdent = (felt: FeltState<string>): FeltState<string> => {
-    return validator.idnr(felt.verdi).status === 'valid'
-        ? ok(felt)
-        : feil(felt, 'Identen er ugyldig');
+    return idnr(felt.verdi).status === 'valid' ? ok(felt) : feil(felt, 'Identen er ugyldig');
 };
 
 export const identValidator = (identFelt: FeltState<string>): FeltState<string> => {
