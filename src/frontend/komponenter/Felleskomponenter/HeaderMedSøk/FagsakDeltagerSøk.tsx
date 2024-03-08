@@ -14,14 +14,12 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { idnr } from '@navikt/fnrvalidator';
 
 import OpprettFagsakModal from './OpprettFagsakModal';
 import IkkeTilgang from '../../../ikoner/IkkeTilgang';
 import type { IFagsakDeltager, ISøkParam } from '../../../typer/fagsakdeltager';
 import { fagsakdeltagerRoller } from '../../../typer/fagsakdeltager';
-
-// eslint-disable-next-line
-const validator = require('@navikt/fnrvalidator');
 
 const FagsakDeltagerSøk: React.FC = () => {
     const { request } = useHttp();
@@ -35,7 +33,7 @@ const FagsakDeltagerSøk: React.FC = () => {
     >(undefined);
 
     const fnrValidator = (verdi: string): boolean => {
-        return validator.idnr(verdi).status === 'valid';
+        return idnr(verdi).status === 'valid';
     };
 
     const søk = (personIdent: string): void => {
