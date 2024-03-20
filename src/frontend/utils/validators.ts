@@ -118,6 +118,9 @@ export const erPeriodeGyldig = (
                             UtdypendeVilkårsvurderingGenerell.ADOPSJON
                         )
                     ) {
+                        if (!tom) {
+                            return feil(felt, 'Det må registreres en t.o.m dato');
+                        }
                         if (tom && datoDifferanseMerEnn1År(fom, tom)) {
                             return feil(
                                 felt,
