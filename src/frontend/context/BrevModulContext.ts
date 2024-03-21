@@ -285,6 +285,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
             lagInitiellFritekst(
                 '',
                 genererIdBasertPåAndreFritekster(fritekster),
+                makslengdeFritekst,
                 valideringsmelding
             ),
         ]);
