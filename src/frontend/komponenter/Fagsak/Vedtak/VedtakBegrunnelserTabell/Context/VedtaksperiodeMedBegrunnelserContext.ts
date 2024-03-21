@@ -50,7 +50,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
             useState<Ressurs<string[]>>(byggTomRessurs());
 
         const maksAntallKulepunkter = 3;
-        const makslengdeFritekst = 220;
+        const makslengdeFritekst = 350;
 
         const alleBegrunnelser = [
             ...vedtaksperiodeMedBegrunnelser.begrunnelser,
@@ -105,7 +105,7 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
 
             skjema.felter.fritekster.validerOgSettFelt(
                 vedtaksperiodeMedBegrunnelser.fritekster.map((fritekst, id) =>
-                    lagInitiellFritekst(fritekst, id)
+                    lagInitiellFritekst(fritekst, id, makslengdeFritekst)
                 )
             );
         };
@@ -196,7 +196,11 @@ const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] 
         const leggTilFritekst = () => {
             skjema.felter.fritekster.validerOgSettFelt([
                 ...skjema.felter.fritekster.verdi,
-                lagInitiellFritekst('', genererIdBasertPåAndreFritekster(skjema.felter.fritekster)),
+                lagInitiellFritekst(
+                    '',
+                    genererIdBasertPåAndreFritekster(skjema.felter.fritekster),
+                    makslengdeFritekst
+                ),
             ]);
         };
 
