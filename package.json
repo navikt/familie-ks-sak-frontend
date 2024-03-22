@@ -29,11 +29,11 @@
     ]
   },
   "dependencies": {
-    "@navikt/aksel-icons": "6.1.0",
-    "@navikt/ds-css": "^6.1.0",
+    "@navikt/aksel-icons": "6.3.3",
+    "@navikt/ds-css": "^6.3.3",
     "@navikt/ds-icons": "^2.2.0",
-    "@navikt/ds-react": "^6.1.0",
-    "@navikt/ds-tokens": "^6.1.0",
+    "@navikt/ds-react": "^6.3.3",
+    "@navikt/ds-tokens": "^6.3.3",
     "@navikt/familie-backend": "^10.0.14",
     "@navikt/familie-form-elements": "^15.0.0",
     "@navikt/familie-header": "^14.0.0",
