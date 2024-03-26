@@ -68,6 +68,7 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
             ...vedtaksperiodeMedBegrunnelser.eøsBegrunnelser,
         ];
         return (
+            vedtaksperiodeMedBegrunnelser.fritekster.length > 0 ||
             (vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.UTBETALING &&
                 vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.ENDRET_UTBETALING) ||
             vedtaksperiodeInneholderEtterbetaling3MånedBegrunnelse() ||
