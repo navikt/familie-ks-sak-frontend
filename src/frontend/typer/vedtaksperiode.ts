@@ -13,6 +13,7 @@ export interface IVedtaksperiodeMedBegrunnelser {
     fritekster: string[];
     gyldigeBegrunnelser: Begrunnelse[];
     utbetalingsperiodeDetaljer: IUtbetalingsperiodeDetalj[];
+    støtterFritekst: boolean;
 }
 
 export interface IRestVedtaksbegrunnelse {

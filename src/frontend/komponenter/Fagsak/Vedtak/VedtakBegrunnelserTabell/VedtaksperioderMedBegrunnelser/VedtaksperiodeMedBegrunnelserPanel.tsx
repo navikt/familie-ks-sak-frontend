@@ -6,12 +6,8 @@ import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 import BegrunnelserMultiselect from './BegrunnelserMultiselect';
 import EkspanderbartBegrunnelsePanel from './EkspanderbartBegrunnelsePanel';
 import FritekstVedtakbegrunnelser from './FritekstVedtakbegrunnelser';
-import type { Begrunnelse } from '../../../../../typer/vedtak';
-import { Standardbegrunnelse, BegrunnelseType } from '../../../../../typer/vedtak';
-import type {
-    IRestVedtaksbegrunnelse,
-    IVedtaksperiodeMedBegrunnelser,
-} from '../../../../../typer/vedtaksperiode';
+import { Standardbegrunnelse } from '../../../../../typer/vedtak';
+import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
 import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
 import Utbetalingsresultat from '../Felles/Utbetalingsresultat';
@@ -28,56 +24,12 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
     const { erPanelEkspandert, onPanelClose, genererteBrevbegrunnelser } =
         useVedtaksperiodeMedBegrunnelser();
 
-    const ugyldigeReduksjonsteksterForÅTriggeFritekst: Begrunnelse[] = [
-        Standardbegrunnelse.REDUKSJON_SATSENDRING,
-        Standardbegrunnelse.REDUKSJON_UNDER_6_ÅR,
-        Standardbegrunnelse.REDUKSJON_UNDER_18_ÅR,
-    ];
-
     const vedtaksperiodeInneholderFramtidigOpphørBegrunnelse =
         vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
             vedtaksBegrunnelser =>
                 (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
                 Standardbegrunnelse.OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS
         ).length > 0;
-
-    const vedtaksperiodeInneholderEtterbetaling3MånedBegrunnelse = () =>
-        vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
-            vedtaksBegrunnelser =>
-                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
-                Standardbegrunnelse.ETTER_ENDRET_UTBETALING_ETTERBETALING
-        ).length > 0;
-
-    const vedtaksperiodeInneholderBegrunnelseSomStøtterFritekst = () => {
-        const alleBegrunnelser = [
-            ...vedtaksperiodeMedBegrunnelser.begrunnelser,
-            ...vedtaksperiodeMedBegrunnelser.eøsBegrunnelser,
-        ];
-        return alleBegrunnelser.some(vedtaksbegrunnelse => vedtaksbegrunnelse.støtterFritekst);
-    };
-
-    const erReduksjonsbegrunnelseSomSkalViseFritekst = (
-        vedtaksBegrunnelse: IRestVedtaksbegrunnelse
-    ) =>
-        !ugyldigeReduksjonsteksterForÅTriggeFritekst.includes(vedtaksBegrunnelse.begrunnelse) &&
-        vedtaksBegrunnelse.begrunnelseType === BegrunnelseType.REDUKSJON;
-
-    const visFritekster = () => {
-        const begrunnelser = [
-            ...vedtaksperiodeMedBegrunnelser.begrunnelser,
-            ...vedtaksperiodeMedBegrunnelser.eøsBegrunnelser,
-        ];
-        return (
-            vedtaksperiodeMedBegrunnelser.fritekster.length > 0 ||
-            (vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.UTBETALING &&
-                vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.ENDRET_UTBETALING) ||
-            vedtaksperiodeInneholderEtterbetaling3MånedBegrunnelse() ||
-            vedtaksperiodeInneholderBegrunnelseSomStøtterFritekst() ||
-            begrunnelser.filter(begrunnelse =>
-                erReduksjonsbegrunnelseSomSkalViseFritekst(begrunnelse)
-            ).length > 0
-        );
-    };
 
     return (
         <EkspanderbartBegrunnelsePanel
@@ -116,7 +68,7 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
                     <ErrorMessage>{genererteBrevbegrunnelser.frontendFeilmelding}</ErrorMessage>
                 </>
             )}
-            {visFritekster() && <FritekstVedtakbegrunnelser />}
+            {vedtaksperiodeMedBegrunnelser.støtterFritekst && <FritekstVedtakbegrunnelser />}
         </EkspanderbartBegrunnelsePanel>
     );
 };
