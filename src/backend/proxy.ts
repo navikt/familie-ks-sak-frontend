@@ -7,7 +7,7 @@ import type { Client } from '@navikt/familie-backend';
 import { getOnBehalfOfAccessToken } from '@navikt/familie-backend';
 import { stdoutLogger } from '@navikt/familie-logging';
 
-import { endringsloggProxyUrl, oboConfig, proxyUrl, redirectRecords } from './config.js';
+import { oboConfig, proxyUrl, redirectRecords } from './config.js';
 
 const restream = (proxyReq: ClientRequest, req: Request, _res: Response) => {
     if (req.body) {
@@ -20,33 +20,12 @@ const restream = (proxyReq: ClientRequest, req: Request, _res: Response) => {
 
 // eslint-disable-next-line
 export const doProxy: any = () => {
-    return createProxyMiddleware('/familie-ks-sak/api', {
+    return createProxyMiddleware({
         changeOrigin: true,
-        logLevel: 'info',
-        onProxyReq: restream,
-        pathRewrite: (path: string, _req: Request) => {
-            const newPath = path.replace('/familie-ks-sak/api', '');
-            return `/api${newPath}`;
-        },
+        on: { proxyReq: restream },
         secure: true,
         target: `${proxyUrl}`,
-        logProvider: () => stdoutLogger,
-    });
-};
-
-// eslint-disable-next-line
-export const doEndringslogProxy: any = () => {
-    return createProxyMiddleware('/endringslogg', {
-        changeOrigin: true,
-        logLevel: 'info',
-        onProxyReq: restream,
-        pathRewrite: (path: string, _req: Request) => {
-            const newPath = path.replace('/endringslogg', '');
-            return `${newPath}`;
-        },
-        secure: true,
-        target: `${endringsloggProxyUrl}`,
-        logProvider: () => stdoutLogger,
+        logger: stdoutLogger,
     });
 };
 

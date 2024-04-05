@@ -8,47 +8,42 @@ const Environment = () => {
         return {
             buildPath: 'frontend_development',
             namespace: 'local',
-            proxyUrl: 'http://localhost:8083',
+            proxyUrl: 'http://localhost:8083/api',
             familieTilbakeUrl: 'http://localhost:8000',
             familieKlageUrl: 'http://localhost:8000',
-            endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
         };
     } else if (process.env.ENV === 'lokalt-mot-preprod') {
         return {
             buildPath: 'frontend_development',
             namespace: 'local',
-            proxyUrl: 'https://familie-kontantstotte-sak.intern.dev.nav.no',
+            proxyUrl: 'https://familie-kontantstotte-sak.intern.dev.nav.no/api',
             familieTilbakeUrl: 'https://familie-tilbake.intern.dev.nav.no',
             familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
-            endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
         };
     } else if (process.env.ENV === 'e2e') {
         return {
             buildPath: 'frontend_production',
             namespace: 'e2e',
-            proxyUrl: 'http://familie-ks-sak:8089',
+            proxyUrl: 'http://familie-ks-sak:8089/api',
             familieTilbakeUrl: 'http://familie-tilbake-frontend:8000',
             familieKlageUrl: '',
-            endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
         };
     } else if (process.env.ENV === 'preprod') {
         return {
             buildPath: 'frontend_production',
             namespace: 'preprod',
-            proxyUrl: 'http://familie-ks-sak',
+            proxyUrl: 'http://familie-ks-sak/api',
             familieTilbakeUrl: 'https://familie-tilbake-frontend.intern.dev.nav.no',
             familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
-            endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
         };
     }
 
     return {
         buildPath: 'frontend_production',
         namespace: 'production',
-        proxyUrl: 'http://familie-ks-sak',
+        proxyUrl: 'http://familie-ks-sak/api',
         familieTilbakeUrl: 'https://familietilbakekreving.intern.nav.no',
         familieKlageUrl: 'https://familie-klage.intern.nav.no',
-        endringsloggProxyUrl: 'https://familie-endringslogg.intern.nav.no',
     };
 };
 const env = Environment();
@@ -67,11 +62,6 @@ export const sessionConfig: ISessionKonfigurasjon = {
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
 
-export const saksbehandlerConfig: IApi = {
-    clientId: appConfig.clientId,
-    scopes: [`${appConfig.clientId}/.default`],
-};
-
 if (!process.env.KS_SAK_SCOPE) {
     throw new Error('Scope mot familie-ks-sak er ikke konfigurert');
 }
@@ -87,8 +77,6 @@ export const oboConfig: IApi = {
 
 export const buildPath = env.buildPath;
 export const proxyUrl = env.proxyUrl;
-export const endringsloggProxyUrl = env.endringsloggProxyUrl;
-export const namespace = env.namespace;
 
 export const redirectRecords: Record<string, string> = {
     '/redirect/familie-tilbake': env.familieTilbakeUrl,

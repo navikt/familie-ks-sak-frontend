@@ -46,8 +46,6 @@ spec:
     outbound:
       rules:
         - application: familie-ks-sak
-      external:
-        - host: familie-endringslogg.intern.dev.nav.no
   envFrom:
     - secret: ks-sak-frontend
   env:
