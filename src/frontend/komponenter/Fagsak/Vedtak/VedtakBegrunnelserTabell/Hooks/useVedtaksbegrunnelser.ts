@@ -34,22 +34,12 @@ export const useVilkårBegrunnelser = ({
                 ];
             case Vedtaksperiodetype.FORTSATT_INNVILGET:
                 return [BegrunnelseType.FORTSATT_INNVILGET];
-            case Vedtaksperiodetype.UTBETALING_MED_REDUKSJON_FRA_SIST_IVERKSATTE_BEHANDLING:
-                return [
-                    BegrunnelseType.REDUKSJON,
-                    BegrunnelseType.INNVILGET,
-                    BegrunnelseType.EØS_INNVILGET,
-                    BegrunnelseType.ETTER_ENDRET_UTBETALING,
-                    BegrunnelseType.ENDRET_UTBETALING,
-                ];
             case Vedtaksperiodetype.OPPHØR:
                 return [
                     BegrunnelseType.OPPHØR,
                     BegrunnelseType.EØS_OPPHØR,
                     BegrunnelseType.ETTER_ENDRET_UTBETALING,
                 ];
-            case Vedtaksperiodetype.ENDRET_UTBETALING:
-                return [BegrunnelseType.ENDRET_UTBETALING];
             default:
                 return [];
         }
