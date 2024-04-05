@@ -31,6 +31,10 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
                 Standardbegrunnelse.OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS
         ).length > 0;
 
+    const vedtaksperiodeStøtterFritekst =
+        vedtaksperiodeMedBegrunnelser.støtterFritekst ||
+        vedtaksperiodeMedBegrunnelser.fritekster.length > 0;
+
     return (
         <EkspanderbartBegrunnelsePanel
             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
@@ -68,7 +72,7 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
                     <ErrorMessage>{genererteBrevbegrunnelser.frontendFeilmelding}</ErrorMessage>
                 </>
             )}
-            {vedtaksperiodeMedBegrunnelser.støtterFritekst && <FritekstVedtakbegrunnelser />}
+            {vedtaksperiodeStøtterFritekst && <FritekstVedtakbegrunnelser />}
         </EkspanderbartBegrunnelsePanel>
     );
 };

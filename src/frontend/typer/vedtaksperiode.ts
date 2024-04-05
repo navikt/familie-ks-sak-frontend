@@ -28,11 +28,9 @@ export interface IRestPutVedtaksperiodeMedFritekster {
 
 export enum Vedtaksperiodetype {
     UTBETALING = 'UTBETALING',
-    UTBETALING_MED_REDUKSJON_FRA_SIST_IVERKSATTE_BEHANDLING = 'UTBETALING_MED_REDUKSJON_FRA_SIST_IVERKSATTE_BEHANDLING',
     OPPHØR = 'OPPHØR',
     AVSLAG = 'AVSLAG',
     FORTSATT_INNVILGET = 'FORTSATT_INNVILGET',
-    ENDRET_UTBETALING = 'ENDRET_UTBETALING',
 }
 
 export type Vedtaksperiode =
@@ -89,7 +87,6 @@ export const hentVedtaksperiodeTittel = (
 
     if (
         (type === Vedtaksperiodetype.UTBETALING ||
-            type === Vedtaksperiodetype.UTBETALING_MED_REDUKSJON_FRA_SIST_IVERKSATTE_BEHANDLING ||
             type === Vedtaksperiodetype.FORTSATT_INNVILGET) &&
         utbetalingsperiodeDetaljer.length > 0
     ) {
@@ -97,8 +94,6 @@ export const hentVedtaksperiodeTittel = (
     }
 
     switch (type) {
-        case Vedtaksperiodetype.ENDRET_UTBETALING:
-            return 'Endret utbetalingsperiode';
         case Vedtaksperiodetype.OPPHØR:
             return 'Opphør';
         case Vedtaksperiodetype.AVSLAG:
