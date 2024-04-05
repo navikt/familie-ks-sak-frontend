@@ -19,7 +19,7 @@ import { sessionConfig } from './config.js';
 import { prometheusTellere } from './metrikker.js';
 import { attachToken, doProxy, doRedirectProxy } from './proxy.js';
 import setupRouter from './router.js';
-import webpackDevConfig from '../webpack/webpack.dev';
+import webpackDevConfig from '../webpack/webpack.dev.js';
 
 const port = 8000;
 
