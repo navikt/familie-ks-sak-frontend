@@ -17,7 +17,7 @@ const Environment = () => {
             buildPath: 'frontend_development',
             namespace: 'local',
             proxyUrl: 'https://familie-kontantstotte-sak.intern.dev.nav.no/api',
-            familieTilbakeUrl: 'https://familie-tilbake.intern.dev.nav.no',
+            familieTilbakeUrl: 'https://familie-tilbake-frontend.intern.dev.nav.no',
             familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
         };
     } else if (process.env.ENV === 'e2e') {
