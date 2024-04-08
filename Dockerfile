@@ -10,4 +10,4 @@ COPY frontend_production ./frontend_production
 COPY node_modules ./node_modules
 COPY package.json .
 
-CMD ["--import=./backend/backend/register.js --es-module-specifier-resolution=node", "backend/backend/server.js"]
+CMD ["--import=./backend/backend/register.js", "--es-module-specifier-resolution=node", "backend/backend/server.js"]
