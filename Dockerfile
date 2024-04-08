@@ -1,6 +1,4 @@
-FROM gcr.io/distroless/nodejs20-debian12
-USER root
-USER apprunner
+FROM gcr.io/distroless/nodejs20-debian12:nonroot
 
 COPY assets ./assets
 COPY backend ./backend
