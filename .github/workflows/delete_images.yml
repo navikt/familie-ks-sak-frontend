@@ -13,6 +13,6 @@ jobs:
     steps:
       - uses: actions/delete-package-versions@v5
         with:
-          package-name: 'familie-ba-sak-frontend'
+          package-name: 'familie-ks-sak-frontend'
           package-type: 'container'
           min-versions-to-keep: 1
