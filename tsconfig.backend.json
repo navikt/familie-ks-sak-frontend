@@ -3,6 +3,7 @@
     "compilerOptions": {
         "allowJs": true,
         "skipLibCheck": true,
+        "module": "esnext",
         "outDir": "backend",
         "rootDir": "./src",
         "resolveJsonModule": true,
