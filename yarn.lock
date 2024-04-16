@@ -1836,7 +1836,7 @@
     date-fns "^3.0.0"
     react-day-picker "8.10.0"
 
-"@navikt/ds-tokens@^6.3.3", "@navikt/ds-tokens@^6.5.0":
+"@navikt/ds-tokens@^6.5.0":
   version "6.5.0"
   resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/6.5.0/5ceb4651fcc5a8a5cfd13909340421de6c9fe2a1#5ceb4651fcc5a8a5cfd13909340421de6c9fe2a1"
   integrity sha512-DP60yhxQHBMGJtJtrBwQGlobrxM4njBkJpmNnOeMpPOmOGO5CPwiF/BSvhOB/FV6rbbsaGma9lkFdTOwcz4aAQ==
