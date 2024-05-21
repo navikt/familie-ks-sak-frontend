@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useApp } from '../../../../../context/AppContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import {
@@ -9,7 +8,6 @@ import {
     BehandlingÅrsak,
 } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
-import { ToggleNavn } from '../../../../../typer/toggles';
 import EndreBehandlendeEnhet from '../EndreBehandlendeEnhet/EndreBehandlendeEnhet';
 import EndreBehandlingstema from '../EndreBehandling/EndreBehandlingstema';
 import HenleggBehandling from '../HenleggBehandling/HenleggBehandling';
@@ -25,7 +23,6 @@ interface IProps {
 
 const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
     const { vurderErLesevisning } = useBehandling();
-    const { toggles } = useApp();
 
     const erLesevisning = vurderErLesevisning();
 
@@ -45,16 +42,16 @@ const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
             )}
             {åpenBehandling.behandlingPåVent && <TaBehandlingAvVent behandling={åpenBehandling} />}
 
-            {toggles[ToggleNavn.manuellBrevmottaker] &&
-                (!erLesevisning || åpenBehandling.brevmottakere.length > 0) &&
-                (åpenBehandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING ||
-                    åpenBehandling.type === Behandlingstype.REVURDERING) && (
-                    <LeggTilEllerFjernBrevmottakere
-                        erPåBehandling={true}
-                        behandling={åpenBehandling}
-                        erLesevisning={erLesevisning}
-                    />
-                )}
+            {!erLesevisning ||
+                (åpenBehandling.brevmottakere.length > 0 &&
+                    (åpenBehandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING ||
+                        åpenBehandling.type === Behandlingstype.REVURDERING) && (
+                        <LeggTilEllerFjernBrevmottakere
+                            erPåBehandling={true}
+                            behandling={åpenBehandling}
+                            erLesevisning={erLesevisning}
+                        />
+                    ))}
         </>
     );
 };
