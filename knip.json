@@ -1,4 +1,0 @@
-{
-  "entry": ["src/frontend/index.{js,ts,tsx,jsx}"],
-  "project": ["**/*.{js,ts,tsx,jsx}"]
-}
