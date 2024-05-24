@@ -10,7 +10,7 @@ import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../utils/fagsak';
 import type { VisningBehandling } from '../../Fagsak/Saksoversikt/visningBehandling';
 
-export interface IOpprettFagsakData {
+interface IOpprettFagsakData {
     personIdent: string | null;
     aktørId: string | null;
 }

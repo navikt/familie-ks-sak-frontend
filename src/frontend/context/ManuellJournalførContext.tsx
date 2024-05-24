@@ -40,7 +40,7 @@ import type { Tilbakekrevingsbehandlingstype } from '../typer/tilbakekrevingsbeh
 import { isoStringTilDate } from '../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../utils/fagsak';
 
-export interface ManuellJournalføringSkjemaFelter {
+interface ManuellJournalføringSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
     behandlingsårsak: BehandlingÅrsak | '';
     behandlingstema: IBehandlingstema | undefined;

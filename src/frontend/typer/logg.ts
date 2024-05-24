@@ -11,7 +11,7 @@ export interface ILogg {
     tekst: string;
 }
 
-export enum LoggType {
+enum LoggType {
     BEHANDLING_OPPRETTET = 'BEHANDLING_OPPRETTET',
     BEHANDLENDE_ENHET_ENDRET = 'BEHANDLENDE_ENHET_ENDRET',
     DOKUMENT_MOTTATT = 'DOKUMENT_MOTTATT',

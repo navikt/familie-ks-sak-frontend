@@ -224,7 +224,7 @@ export interface IBehandling {
     brevmottakere: IRestBrevmottaker[];
 }
 
-export interface IArbeidsfordelingPåBehandling {
+interface IArbeidsfordelingPåBehandling {
     behandlendeEnhetId: string;
     behandlendeEnhetNavn: string;
     manueltOverstyrt: boolean;

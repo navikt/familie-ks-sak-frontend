@@ -16,7 +16,7 @@ import { BehandlerRolle, BehandlingStatus } from '../../../typer/behandling';
 import type { IBehandling } from '../../../typer/behandling';
 import type { IPersonInfo } from '../../../typer/person';
 
-export interface IHendelsesoversiktProps {
+interface IHendelsesoversiktProps {
     className?: string;
     hendelser: Hendelse[];
     åpenBehandling: IBehandling;

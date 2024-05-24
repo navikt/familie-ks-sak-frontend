@@ -1,4 +1,4 @@
-export interface ISamhandlerAdresse {
+interface ISamhandlerAdresse {
     adresselinjer: string[];
     postNr: string;
     postSted: string;

@@ -38,7 +38,7 @@ export enum IEndretUtbetalingAndelFullSats {
     FULL_SATS = 'FULL_SATS',
 }
 
-export interface SatsOption extends OptionType {
+interface SatsOption extends OptionType {
     fullSats: boolean;
 }
 

@@ -18,7 +18,7 @@ export const uiResultat: Record<Resultat, string> = {
     IKKE_AKTUELT: 'Ikke aktuelt',
 };
 
-export enum AnnenVurderingType {
+enum AnnenVurderingType {
     OPPLYSNINGSPLIKT = 'OPPLYSNINGSPLIKT',
 }
 

@@ -13,7 +13,7 @@ export interface IDataForManuellJournalføring {
     minimalFagsak?: IMinimalFagsak;
 }
 
-export interface IRestJournalpostDokument {
+interface IRestJournalpostDokument {
     dokumentTittel?: string;
     dokumentInfoId: string;
     brevkode?: string;
@@ -37,7 +37,7 @@ export interface IRestJournalføring {
     journalførendeEnhet: string;
 }
 
-export interface ILogiskVedlegg {
+interface ILogiskVedlegg {
     logiskVedleggId: string;
     tittel: string;
 }

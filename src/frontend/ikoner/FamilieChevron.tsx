@@ -1,8 +1,8 @@
 import React from 'react';
 
-export type FamilieChevronRetning = 'opp' | 'ned' | 'høyre' | 'venstre';
+type FamilieChevronRetning = 'opp' | 'ned' | 'høyre' | 'venstre';
 
-export interface Props {
+interface Props {
     retning?: FamilieChevronRetning;
     farge?: string;
     title?: string;

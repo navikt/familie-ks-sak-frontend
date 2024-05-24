@@ -22,7 +22,7 @@ import {
     validerGyldigDato,
 } from '../../../../../utils/dato';
 
-export interface IOpprettBehandlingSkjemaFelter {
+interface IOpprettBehandlingSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
     behandlingsårsak: BehandlingÅrsak | '';
     behandlingstema: IBehandlingstema | undefined;
