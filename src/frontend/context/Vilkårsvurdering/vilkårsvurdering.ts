@@ -28,7 +28,7 @@ const periodeDiff = (periodeA: IIsoDatoPeriode, periodeB: IIsoDatoPeriode) => {
     );
 };
 
-export const sorterVilkårsvurderingForPerson = (
+const sorterVilkårsvurderingForPerson = (
     vilkårResultater: IVilkårResultat[]
 ): IVilkårResultat[] => {
     return vilkårResultater.sort(

@@ -3,7 +3,7 @@ import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { FagsakStatus } from '../../../../../typer/fagsak';
 import type { VisningBehandling } from '../../../Saksoversikt/visningBehandling';
 
-export const kanOppretteNyBehandling = (aktivBehandling: VisningBehandling | undefined) =>
+const kanOppretteNyBehandling = (aktivBehandling: VisningBehandling | undefined) =>
     !aktivBehandling || aktivBehandling?.status === BehandlingStatus.AVSLUTTET;
 
 export const kanOppretteFørstegangsbehandling = (

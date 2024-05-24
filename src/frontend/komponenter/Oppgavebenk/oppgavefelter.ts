@@ -164,9 +164,3 @@ export const initialOppgaveFelter = (innloggetSaksbehandler?: ISaksbehandler): I
         },
     };
 };
-
-export const ariaSortMap = new Map<FeltSortOrder, 'none' | 'descending' | 'ascending'>([
-    [FeltSortOrder.NONE, 'none'],
-    [FeltSortOrder.DESCENDANT, 'descending'],
-    [FeltSortOrder.ASCENDANT, 'ascending'],
-]);

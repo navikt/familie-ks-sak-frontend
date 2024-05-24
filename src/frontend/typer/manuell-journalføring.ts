@@ -2,7 +2,6 @@ import type { IJournalpost } from '@navikt/familie-typer';
 
 import type { Behandlingstype, BehandlingÅrsak } from './behandling';
 import type { BehandlingKategori } from './behandlingstema';
-import type { INøkkelPar } from './common';
 import type { IMinimalFagsak } from './fagsak';
 import type { IOppgave } from './oppgave';
 import type { IPersonInfo } from './person';
@@ -13,22 +12,6 @@ export interface IDataForManuellJournalføring {
     person?: IPersonInfo;
     minimalFagsak?: IMinimalFagsak;
 }
-
-export enum LogiskeVedleggTyper {
-    OPPHOLDSTILLATELSE = 'OPPHOLDSTILLATELSE',
-    PASS_OG_ID_PAPIRER = 'PASS_OG_ID_PAPIRER',
-}
-
-export const logiskeVedleggTyper: INøkkelPar = {
-    OPPHOLDSTILLATELSE: {
-        id: 'OPPHOLDSTILLATELSE',
-        navn: 'Oppholdstillatelse',
-    },
-    PASS_OG_ID_PAPIRER: {
-        id: 'PASS_OG_ID_PAPIRER',
-        navn: 'Pass/ID-papirer og annet',
-    },
-};
 
 export interface IRestJournalpostDokument {
     dokumentTittel?: string;

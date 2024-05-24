@@ -14,9 +14,6 @@ export const vilkårFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
 export const vilkårBegrunnelseFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
     `vilkår-begrunnelse_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
 
-export const vilkårPeriodeFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
-    `vilkår-periode_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
-
 interface IProps {
     person: IGrunnlagPerson;
     vilkårResultater: IVilkårResultat[];

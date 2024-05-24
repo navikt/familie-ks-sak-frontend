@@ -22,7 +22,7 @@ interface IRestResultaterMock {
     vurderesEtter?: Regelverk;
 }
 
-export const mockRestVilkårResultat = ({
+const mockRestVilkårResultat = ({
     id = 1,
     resultat = Resultat.OPPFYLT,
     behandlingId = 1,
