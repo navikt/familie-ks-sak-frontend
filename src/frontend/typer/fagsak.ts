@@ -13,7 +13,7 @@ export enum FagsakStatus {
 }
 
 // Interface
-export interface IBaseFagsak {
+interface IBaseFagsak {
     id: number;
     opprettetTidspunkt: string;
     saksnummer: string;

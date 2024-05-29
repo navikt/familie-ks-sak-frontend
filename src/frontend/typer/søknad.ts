@@ -9,7 +9,7 @@ export interface ISøknadDTO {
     endringAvOpplysningerBegrunnelse: string;
 }
 
-export interface ISøkerMedOpplysninger {
+interface ISøkerMedOpplysninger {
     ident: string;
     målform: Målform | undefined;
 }

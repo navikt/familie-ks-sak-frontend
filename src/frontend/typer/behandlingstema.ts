@@ -43,7 +43,7 @@ export const tilBehandlingstema = (kategori: BehandlingKategori): IBehandlingste
     );
 };
 
-export const kodeTilBehandlingKategoriMap: Record<string, BehandlingKategori> = {
+const kodeTilBehandlingKategoriMap: Record<string, BehandlingKategori> = {
     ae0118: BehandlingKategori.NASJONAL,
     ae0120: BehandlingKategori.EØS,
 };

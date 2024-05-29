@@ -32,12 +32,12 @@ export interface IBarnehagebarnInfotrygd {
     endretTid: string;
 }
 
-export interface ISort {
+interface ISort {
     empty: boolean;
     sorted: boolean;
     unsorted: boolean;
 }
-export interface IPageable {
+interface IPageable {
     sort: ISort;
     offset: number;
     pageNumber: number;

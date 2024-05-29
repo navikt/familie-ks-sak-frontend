@@ -6,7 +6,7 @@ import { PersonType } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
 import type { IUtbetalingsperiodeDetalj } from '../typer/vedtaksperiode';
 
-export const millisekunderIEttÅr = 3.15576e10;
+const millisekunderIEttÅr = 3.15576e10;
 
 export const hentAlder = (fødselsdato: string): number => {
     return fødselsdato !== ''

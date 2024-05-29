@@ -10,7 +10,7 @@ import type { IGrunnlagPerson } from '../typer/person';
 import { dagensDato, isoStringTilDate } from '../utils/dato';
 import { sorterPersonTypeOgFødselsdato } from '../utils/formatter';
 
-export interface ITidslinjeVindu {
+interface ITidslinjeVindu {
     id: number;
     label: string;
     måneder: number;

@@ -47,7 +47,7 @@ import {
 const OPPGAVEBENK_SORTERINGSNØKKEL = 'OPPGAVEBENK_SORTERINGSNØKKEL';
 export const oppgaveSideLimit = 15;
 
-export const maksAntallOppgaver = 150;
+const maksAntallOppgaver = 150;
 
 const [OppgaverProvider, useOppgaver] = createUseContext(() => {
     const navigate = useNavigate();

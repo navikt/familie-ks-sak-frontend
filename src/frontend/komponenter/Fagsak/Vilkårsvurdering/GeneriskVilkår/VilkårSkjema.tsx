@@ -59,7 +59,7 @@ export interface IVilkårSkjemaBaseProps {
     toggleForm: (visSkjema: boolean) => void;
 }
 
-export interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjemaBaseProps {
+interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjemaBaseProps {
     vilkårSkjemaContext: VilkårSkjemaContextValue<T>;
     visVurderesEtter?: boolean;
     visSpørsmål?: boolean;

@@ -71,7 +71,7 @@ export interface IForelderBarnRelasjonMaskert {
     relasjonRolle: ForelderBarnRelasjonRolle;
 }
 
-export interface IBostedsadresse {
+interface IBostedsadresse {
     adresse?: string;
     postnummer: string;
 }

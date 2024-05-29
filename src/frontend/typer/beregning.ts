@@ -17,7 +17,7 @@ export interface IYtelsePeriode {
     skalUtbetales: boolean;
 }
 
-export enum YtelseType {
+enum YtelseType {
     ORDINÆR_KONTANTSTØTTE = 'ORDINÆR_KONTANTSTØTTE',
 }
 

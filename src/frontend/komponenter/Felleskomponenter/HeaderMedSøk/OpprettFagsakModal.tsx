@@ -8,7 +8,7 @@ import type { ISøkeresultat } from '@navikt/familie-header';
 import useOpprettFagsak from './useOpprettFagsak';
 import { formaterIdent } from '../../../utils/formatter';
 
-export interface IOpprettFagsakModal {
+interface IOpprettFagsakModal {
     lukkModal: () => void;
     søkeresultat: ISøkeresultat;
 }
