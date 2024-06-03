@@ -42,16 +42,15 @@ const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
             )}
             {åpenBehandling.behandlingPåVent && <TaBehandlingAvVent behandling={åpenBehandling} />}
 
-            {!erLesevisning ||
-                (åpenBehandling.brevmottakere.length > 0 &&
-                    (åpenBehandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING ||
-                        åpenBehandling.type === Behandlingstype.REVURDERING) && (
-                        <LeggTilEllerFjernBrevmottakere
-                            erPåBehandling={true}
-                            behandling={åpenBehandling}
-                            erLesevisning={erLesevisning}
-                        />
-                    ))}
+            {(!erLesevisning || åpenBehandling.brevmottakere.length > 0) &&
+                (åpenBehandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING ||
+                    åpenBehandling.type === Behandlingstype.REVURDERING) && (
+                    <LeggTilEllerFjernBrevmottakere
+                        erPåBehandling={true}
+                        behandling={åpenBehandling}
+                        erLesevisning={erLesevisning}
+                    />
+                )}
         </>
     );
 };
