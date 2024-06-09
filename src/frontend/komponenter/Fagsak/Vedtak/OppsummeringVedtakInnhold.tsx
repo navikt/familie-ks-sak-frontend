@@ -123,11 +123,6 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
             />
             {visDokumentModal && (
                 <PdfVisningModal
-                    onRequestOpen={() => {
-                        if (hentetDokument.status !== RessursStatus.HENTER) {
-                            hentVedtaksbrev();
-                        }
-                    }}
                     onRequestClose={() => {
                         settVisDokumentModal(false);
                         nullstillDokument();
@@ -193,7 +188,10 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                     id={'forhandsvis-vedtaksbrev'}
                     variant={'secondary'}
                     size={'medium'}
-                    onClick={() => settVisDokumentModal(!visDokumentModal)}
+                    onClick={() => {
+                        settVisDokumentModal(true);
+                        hentVedtaksbrev();
+                    }}
                     loading={hentetDokument.status === RessursStatus.HENTER}
                     icon={<FileContent aria-hidden />}
                 >
