@@ -64,7 +64,7 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(felt, VilkårType.BOR_MED_SØKER, avhengigheter),
+                erPeriodeGyldig(felt, VilkårType.BOR_MED_SØKER, vilkår.regelsett, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

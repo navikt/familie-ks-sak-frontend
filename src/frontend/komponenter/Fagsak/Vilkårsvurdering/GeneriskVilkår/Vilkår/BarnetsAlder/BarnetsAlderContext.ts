@@ -60,7 +60,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(felt, VilkårType.BARNETS_ALDER, avhengigheter),
+                erPeriodeGyldig(felt, VilkårType.BARNETS_ALDER, vilkår.regelsett, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

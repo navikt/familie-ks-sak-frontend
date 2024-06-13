@@ -53,7 +53,8 @@ export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IG
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
                 erMedlemskapAnnenForelderVilkår: true,
             },
-            valideringsfunksjon: erPeriodeGyldig,
+            valideringsfunksjon: (felt, avhengigheter) =>
+                erPeriodeGyldig(felt, vilkår.regelsett, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

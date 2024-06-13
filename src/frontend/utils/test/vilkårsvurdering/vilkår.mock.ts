@@ -3,7 +3,7 @@ import type {
     IRestPersonResultat,
     IRestVilkårResultat,
 } from '../../../typer/vilkår';
-import { Regelverk, Resultat, VilkårType } from '../../../typer/vilkår';
+import { Regelverk, Resultat, VilkårRegelsett, VilkårType } from "../../../typer/vilkår";
 import { erIkkeGenereltVilkår } from '../../vilkår';
 
 interface IMockRestPersonResultat {
@@ -20,6 +20,7 @@ interface IRestResultaterMock {
     periodeFom?: string;
     periodeTom?: string;
     vurderesEtter?: Regelverk;
+    regelsett?: VilkårRegelsett;
 }
 
 const mockRestVilkårResultat = ({
@@ -30,6 +31,7 @@ const mockRestVilkårResultat = ({
     periodeFom = '2000-01-01',
     periodeTom = undefined,
     vurderesEtter = Regelverk.NASJONALE_REGLER,
+    regelsett = VilkårRegelsett.LOV_AUGUST_2021,
 }: IRestResultaterMock = {}): IRestVilkårResultat => ({
     id,
     vilkårType,
@@ -47,6 +49,7 @@ const mockRestVilkårResultat = ({
     utdypendeVilkårsvurderinger: [],
     antallTimer: undefined,
     søkerHarMeldtFraOmBarnehageplass: undefined,
+    regelsett: regelsett,
 });
 
 export const mockRestPersonResultat = ({

@@ -58,7 +58,7 @@ export const useLovligOpphold = (vilkår: IVilkårResultat, person: IGrunnlagPer
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(felt, VilkårType.LOVLIG_OPPHOLD, avhengigheter),
+                erPeriodeGyldig(felt, VilkårType.LOVLIG_OPPHOLD, vilkår.regelsett, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

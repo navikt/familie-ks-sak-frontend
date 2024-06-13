@@ -80,6 +80,7 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
                     søkerHarMeldtFraOmBarnehageplass: skjema.felter.søkerHarMeldtFraOmBarnehageplass
                         ? skjema.felter.søkerHarMeldtFraOmBarnehageplass.verdi
                         : undefined,
+                    regelsett: vilkår.regelsett,
                 },
             };
             vilkårsvurderingApi.lagreVilkår(
