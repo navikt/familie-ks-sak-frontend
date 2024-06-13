@@ -3,7 +3,7 @@ import type {
     IRestPersonResultat,
     IRestVilkårResultat,
 } from '../../../typer/vilkår';
-import { Regelverk, Resultat, VilkårRegelsett, VilkårType } from "../../../typer/vilkår";
+import { Regelverk, Resultat, VilkårRegelsett, VilkårType } from '../../../typer/vilkår';
 import { erIkkeGenereltVilkår } from '../../vilkår';
 
 interface IMockRestPersonResultat {
