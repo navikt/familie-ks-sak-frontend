@@ -73,7 +73,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             søkerHarMeldtFraOmBarnehageplass: søkerHarMeldtFraOmBarnehageplass.verdi,
         },
         valideringsfunksjon: (felt, avhengigheter) =>
-            erPeriodeGyldig(felt, VilkårType.BARNEHAGEPLASS, avhengigheter),
+            erPeriodeGyldig(felt, VilkårType.BARNEHAGEPLASS, vilkår.regelsett, avhengigheter),
     });
 
     const felter = {

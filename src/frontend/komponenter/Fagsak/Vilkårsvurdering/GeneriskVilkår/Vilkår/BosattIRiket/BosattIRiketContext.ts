@@ -66,7 +66,7 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(felt, VilkårType.BOSATT_I_RIKET, avhengigheter),
+                erPeriodeGyldig(felt, VilkårType.BOSATT_I_RIKET, vilkår.regelsett, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,
