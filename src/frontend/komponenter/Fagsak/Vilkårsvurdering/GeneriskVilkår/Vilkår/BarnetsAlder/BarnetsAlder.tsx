@@ -10,7 +10,7 @@ import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 type BarnetsAlderProps = IVilkårSkjemaBaseProps;
 
-const hentSpørsmålBasertPåREgelsett = (regelsett: VilkårRegelsett) => {
+const hentSpørsmålBasertPåRegelsett = (regelsett: VilkårRegelsett) => {
     switch (regelsett) {
         case VilkårRegelsett.LOV_AUGUST_2021:
             return 'Er barnet mellom 1 og 2 år eller adoptert?';
@@ -28,7 +28,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
 }: BarnetsAlderProps) => {
     const { felter } = useBarnetsAlder(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
-    const spørsmål = hentSpørsmålBasertPåREgelsett(vilkårResultat.regelsett);
+    const spørsmål = hentSpørsmålBasertPåRegelsett(vilkårResultat.regelsett);
 
     return (
         <VilkårSkjema
