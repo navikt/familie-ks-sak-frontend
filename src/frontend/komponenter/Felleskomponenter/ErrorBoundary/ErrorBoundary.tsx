@@ -1,7 +1,6 @@
 import * as React from 'react';
 import type { PropsWithChildren } from 'react';
 
-import { showReportDialog } from '@sentry/browser';
 import * as Sentry from '@sentry/browser';
 
 import type { ISaksbehandler } from '@navikt/familie-typer';
@@ -36,7 +35,7 @@ class ErrorBoundary extends React.Component<IProps> {
                 });
             });
 
-            showReportDialog({
+            Sentry.showReportDialog({
                 title: 'En feil har oppstått i vedtaksløsningen',
                 subtitle: '',
                 subtitle2:
