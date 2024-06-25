@@ -62,17 +62,6 @@ export const hentOpprettetTidspunkt = (saksoversiktsbehandling: Saksoversiktsbeh
     }
 };
 
-export const hentTidspunktForSortering = (saksoversiktsbehandling: Saksoversiktsbehandling) => {
-    switch (saksoversiktsbehandling.saksoversiktstype) {
-        case Saksoversiktstype.KONTANTSTØTTE:
-            return saksoversiktsbehandling.aktivertTidspunkt;
-        case Saksoversiktstype.TILBAKEBETALING:
-            return saksoversiktsbehandling.opprettetTidspunkt;
-        case Saksoversiktstype.KLAGE:
-            return saksoversiktsbehandling.opprettet;
-    }
-};
-
 export const hentBehandlingId = (saksoversiktsbehandling: Saksoversiktsbehandling) => {
     switch (saksoversiktsbehandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:

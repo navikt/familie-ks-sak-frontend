@@ -10,7 +10,7 @@ import type { Saksoversiktsbehandling } from './utils';
 import {
     hentBehandlingerTilSaksoversikten,
     hentBehandlingId,
-    hentTidspunktForSortering,
+    hentOpprettetTidspunkt,
     skalRadVises,
 } from './utils';
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
@@ -85,8 +85,8 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                             .filter(behandling => skalRadVises(behandling, visHenlagteBehandlinger))
                             .sort((a, b) =>
                                 differenceInMilliseconds(
-                                    isoStringTilDate(hentTidspunktForSortering(b)),
-                                    isoStringTilDate(hentTidspunktForSortering(a))
+                                    isoStringTilDate(hentOpprettetTidspunkt(b)),
+                                    isoStringTilDate(hentOpprettetTidspunkt(a))
                                 )
                             )
                             .map((behandling: Saksoversiktsbehandling) => (
