@@ -106,7 +106,6 @@ export const mockVisningBehandling = ({
         type: type,
         resultat: BehandlingResultat.INNVILGET,
         opprettetTidspunkt,
-        aktivertTidspunkt: opprettetTidspunkt,
         kategori: BehandlingKategori.NASJONAL,
         status,
         årsak,

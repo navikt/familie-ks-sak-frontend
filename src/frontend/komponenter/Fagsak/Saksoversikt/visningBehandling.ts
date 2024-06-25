@@ -10,7 +10,6 @@ export interface VisningBehandling {
     aktiv: boolean;
     behandlingId: number | string;
     opprettetTidspunkt: string;
-    aktivertTidspunkt: string;
     resultat?: BehandlingResultat;
     status: BehandlingStatus;
     type: Behandlingstype;

@@ -140,10 +140,7 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
         skalIgnorereOmEnhetErMidlertidig = false
     ): boolean => {
         const åpenBehandlingData = hentDataFraRessurs(åpenBehandling);
-        if (
-            åpenBehandlingData?.behandlingPåVent ||
-            åpenBehandlingData?.status === BehandlingStatus.SATT_PÅ_MASKINELL_VENT
-        ) {
+        if (åpenBehandlingData?.behandlingPåVent) {
             return true;
         }
         if (erBehandleneEnhetMidlertidig && !skalIgnorereOmEnhetErMidlertidig) {
