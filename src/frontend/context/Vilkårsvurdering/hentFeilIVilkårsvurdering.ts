@@ -105,20 +105,27 @@ const hentBarnehageplassPeriodeStarterForSentFeil = (
 const hentBarnetsalderVilkårManglerBarnehagePeriodeFeil = (
     oppfylteBarnetsAlderVilkårResultater: IVilkårResultat[],
     barnehageplassVilkårResultater: IVilkårResultat[]
-): FeiloppsummeringFeil[] =>
-    oppfylteBarnetsAlderVilkårResultater
-        .filter(barnetsAlderPeriode => {
+): FeiloppsummeringFeil[] => {
+    const feiledeVilkårResultater = oppfylteBarnetsAlderVilkårResultater.filter(
+        barnetsAlderPeriode => {
             return barnetsAlderPeriodeManglerBarnehagePeriode(
                 barnetsAlderPeriode.periode,
                 barnehageplassVilkårResultater
             );
-        })
-        .map(vilkårResultat => ({
-            skjemaelementId: vilkårFeilmeldingId(vilkårResultat),
-            feilmelding:
-                'Det mangler vurdering på vilkåret "barnehageplass". ' +
-                'Hele eller deler av perioden der barnet er mellom 1 og 2 år er ikke vurdert.',
-        }));
+        }
+    );
+
+    return feiledeVilkårResultater.length > 0
+        ? [
+              {
+                  skjemaelementId: vilkårFeilmeldingId(feiledeVilkårResultater[0]),
+                  feilmelding:
+                      'Det mangler vurdering på vilkåret "barnehageplass". ' +
+                      'Hele eller deler av perioden der barnet er mellom 1 og 2 år er ikke vurdert.',
+              },
+          ]
+        : [];
+};
 
 const erFørEllerSammeDato = (dato1: Date, dato2: Date) =>
     isBefore(dato1, dato2) || isSameDay(dato1, dato2);
@@ -136,31 +143,35 @@ const barnetsAlderPeriodeManglerBarnehagePeriode = (
     const sammenSlåtteBarnehageperioder =
         slåSammenPerioderSomLiggerInntilHverandre(barnehagePerioder);
 
+    if (sammenSlåtteBarnehageperioder.length !== 1) {
+        return true;
+    }
+
     const periodeMedFramtidigOpphørPgaBarnehageplass = barnehageplassVilkårResultater.find(
         vilkårresultat => vilkårresultat.søkerHarMeldtFraOmBarnehageplass
     )?.periode;
 
-    return !sammenSlåtteBarnehageperioder.some(sammenslåttBarnehageperiode => {
-        const barnehageperiodeOverlapperFraBarnetErEttÅr = erFørEllerSammeDato(
-            parseFraOgMedDato(sammenslåttBarnehageperiode.fom),
-            parseFraOgMedDato(barnetsAlderPeriode.fom)
+    const sammenslåttBarnehageperiode = sammenSlåtteBarnehageperioder[0];
+
+    const barnehageperiodeOverlapperFraStartenAvBarnetsAlderPeriode = erFørEllerSammeDato(
+        parseFraOgMedDato(sammenslåttBarnehageperiode.fom),
+        parseFraOgMedDato(barnetsAlderPeriode.fom)
+    );
+    const sistePeriodeHarFramtidigOpphørPgaBarnehageplass =
+        periodeMedFramtidigOpphørPgaBarnehageplass &&
+        erEtterEllerSammeDato(
+            parseTilOgMedDato(periodeMedFramtidigOpphørPgaBarnehageplass.tom),
+            parseTilOgMedDato(sammenslåttBarnehageperiode.tom)
         );
-        const sistePeriodeHarFramtidigOpphørPgaBarnehageplass =
-            periodeMedFramtidigOpphørPgaBarnehageplass &&
-            erEtterEllerSammeDato(
-                parseTilOgMedDato(periodeMedFramtidigOpphørPgaBarnehageplass.tom),
-                parseTilOgMedDato(sammenslåttBarnehageperiode.tom)
-            );
-        const barnehageperiodeOverlapperTilBarnetErToÅr = erEtterEllerSammeDato(
-            parseTilOgMedDato(sammenslåttBarnehageperiode.tom),
-            parseTilOgMedDato(barnetsAlderPeriode.tom)
-        );
-        return (
-            barnehageperiodeOverlapperFraBarnetErEttÅr &&
-            (sistePeriodeHarFramtidigOpphørPgaBarnehageplass ||
-                barnehageperiodeOverlapperTilBarnetErToÅr)
-        );
-    });
+    const barnehageperiodeOverlapperTilSluttenAvBarnetsAlderPeriode = erEtterEllerSammeDato(
+        parseTilOgMedDato(sammenslåttBarnehageperiode.tom),
+        parseTilOgMedDato(barnetsAlderPeriode.tom)
+    );
+    return !(
+        barnehageperiodeOverlapperFraStartenAvBarnetsAlderPeriode &&
+        (sistePeriodeHarFramtidigOpphørPgaBarnehageplass ||
+            barnehageperiodeOverlapperTilSluttenAvBarnetsAlderPeriode)
+    );
 };
 
 function starterEtter(
