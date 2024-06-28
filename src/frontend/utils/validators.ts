@@ -4,6 +4,7 @@ import {
     endOfMonth,
     isAfter,
     isBefore,
+    isEqual,
     isSameDay,
     isValid,
     parseISO,
@@ -86,6 +87,8 @@ const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Da
 };
 
 const erNesteMånedEllerSenere = (dato: Date) => isAfter(dato, endOfMonth(dagensDato));
+
+const erDatoForLovendringAugust24 = (dato: Date) => isEqual(dato, new Date(2024, 7, 1));
 
 const erUendelig = (date: Date | undefined): date is undefined => date === undefined;
 
@@ -204,20 +207,36 @@ export const erPeriodeGyldig = (
         const fomDatoErLikDødsfallDato =
             !!person?.dødsfallDato && isSameDay(fom, isoStringTilDate(person.dødsfallDato));
 
-        if (
-            vilkår === VilkårType.BARNEHAGEPLASS
-                ? valgtDatoErSenereEnnNesteMåned(fom)
-                : erNesteMånedEllerSenere(fom)
-        ) {
-            return feil(
-                felt,
-                `Du kan ikke legge inn fra og med dato som er ${
-                    vilkår === VilkårType.BARNEHAGEPLASS
-                        ? 'senere enn neste måned'
-                        : 'neste måned eller senere'
-                }`
-            );
+        switch (vilkår) {
+            case VilkårType.BARNETS_ALDER:
+                if (erNesteMånedEllerSenere(fom) && !erDatoForLovendringAugust24(fom)) {
+                    return feil(
+                        felt,
+                        'Du kan ikke legge inn fra og med dato som er senere enn neste måned med mindre datoen er 01.08.24'
+                    );
+                }
+                break;
+            case VilkårType.BARNEHAGEPLASS:
+                if (valgtDatoErSenereEnnNesteMåned(fom)) {
+                    return feil(
+                        felt,
+                        'Du kan ikke legge inn fra og med dato som er senere enn neste måned'
+                    );
+                }
+                break;
+            case VilkårType.BOR_MED_SØKER:
+            case VilkårType.BOSATT_I_RIKET:
+            case VilkårType.LOVLIG_OPPHOLD:
+            case VilkårType.MEDLEMSKAP:
+            case VilkårType.MEDLEMSKAP_ANNEN_FORELDER:
+                if (erNesteMånedEllerSenere(fom)) {
+                    return feil(
+                        felt,
+                        'Du kan ikke legge inn fra og med dato som er neste måned eller senere'
+                    );
+                }
         }
+
         if (!erUendelig(tom)) {
             if (!erBarnetsAlderVilkår && valgtDatoErSenereEnnNesteMåned(tom)) {
                 const skalTillateFramtidigOpphør =
