@@ -15,7 +15,7 @@ import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 import { idnr } from '@navikt/fnrvalidator';
 
-import type { IIsoDatoPeriode } from './dato';
+import { datoForLovendringAugust24, type IIsoDatoPeriode } from './dato';
 import { dagensDato, isoStringTilDate } from './dato';
 import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
 import type { IGrunnlagPerson } from '../typer/person';
@@ -88,7 +88,7 @@ const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Da
 
 const erNesteMånedEllerSenere = (dato: Date) => isAfter(dato, endOfMonth(dagensDato));
 
-const erDatoForLovendringAugust24 = (dato: Date) => isEqual(dato, new Date(2024, 7, 1));
+const erDatoForLovendringAugust24 = (dato: Date) => isEqual(dato, datoForLovendringAugust24);
 
 const erUendelig = (date: Date | undefined): date is undefined => date === undefined;
 
