@@ -33,7 +33,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
     };
 
     const { toggles } = useApp();
-    const erLovendringTogglePå = toggles[ToggleNavn.lovEndring7mndNyeBehandlinger];
+    const erLovendringTogglePå = toggles[ToggleNavn.lovendring7MndNyeBehandlinger];
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
         verdi: vilkårSkjema.vurderesEtter,

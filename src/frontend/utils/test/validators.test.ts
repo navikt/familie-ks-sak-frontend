@@ -21,23 +21,10 @@ describe('utils/validators', () => {
         verdi,
     });
 
-    const grunnlagPersonFixture = (overstyrendeProps: Partial<IGrunnlagPerson> = {}) => {
+    const lagGrunnlagPerson = (overstyrendeProps: Partial<IGrunnlagPerson> = {}) => {
         const defaults: IGrunnlagPerson = {
             personIdent: '12345678930',
             fødselsdato: '2000-05-17',
-            type: PersonType.BARN,
-            kjønn: kjønnType.KVINNE,
-            navn: 'Mock Barn',
-            målform: Målform.NB,
-        };
-
-        return { ...defaults, ...overstyrendeProps };
-    };
-
-    const grunnlagUngPersonFixture = (overstyrendeProps: Partial<IGrunnlagPerson> = {}) => {
-        const defaults: IGrunnlagPerson = {
-            personIdent: '12345678930',
-            fødselsdato: '2023-05-17',
             type: PersonType.BARN,
             kjønn: kjønnType.KVINNE,
             navn: 'Mock Barn',
@@ -52,7 +39,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('400220', undefined)
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -64,7 +51,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('2020-06-17', '400220')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -76,7 +63,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode(undefined, undefined)
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -88,7 +75,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode(undefined, '2010-05-17')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: true,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -102,7 +89,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode(undefined, undefined)
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: true,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
@@ -113,7 +100,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('2010-06-17', '2010-01-17')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: true,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -125,7 +112,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('1999-05-17', '2018-05-17')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -139,7 +126,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('2000-05-17', '2021-05-17')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture({ dødsfallDato: '2020-12-12' }),
+            person: lagGrunnlagPerson({ dødsfallDato: '2020-12-12' }),
             erEksplisittAvslagPåSøknad: true,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -153,7 +140,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('2020-12-12', '2020-12-12')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -165,7 +152,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('2020-12-12', '2020-12-12')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture({ dødsfallDato: '2020-12-12' }),
+            person: lagGrunnlagPerson({ dødsfallDato: '2020-12-12' }),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
@@ -176,7 +163,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('2001-05-17', '2018-05-17')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -190,7 +177,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('2024-08-01', '2024-12-01')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, true, {
-            person: grunnlagUngPersonFixture(),
+            person: lagGrunnlagPerson({ fødselsdato: '2023-05-17' }),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -204,7 +191,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('2001-05-17', '2018-05-18')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
@@ -215,7 +202,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('2001-05-17', '2002-05-17')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, true, {
-            person: grunnlagPersonFixture(),
+            person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
@@ -226,7 +213,7 @@ describe('utils/validators', () => {
             nyIsoDatoPeriode('2024-05-17', '2025-05-17')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, false, {
-            person: grunnlagUngPersonFixture(),
+            person: lagGrunnlagPerson({ fødselsdato: '2023-05-17' }),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);

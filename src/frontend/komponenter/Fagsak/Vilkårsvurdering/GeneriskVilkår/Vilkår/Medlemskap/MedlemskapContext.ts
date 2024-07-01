@@ -30,7 +30,7 @@ export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson
     };
 
     const { toggles } = useApp();
-    const erLovendringTogglePå = toggles[ToggleNavn.lovEndring7mndNyeBehandlinger];
+    const erLovendringTogglePå = toggles[ToggleNavn.lovendring7MndNyeBehandlinger];
 
     const skalViseDatoVarsel =
         vilkår.resultat === Resultat.IKKE_VURDERT && vilkår.periode.fom !== undefined;

@@ -42,7 +42,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     const { felter } = useBarnetsAlder(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
     const { toggles } = useApp();
-    const erLovendringTogglePå = toggles[ToggleNavn.lovEndring7mndNyeBehandlinger];
+    const erLovendringTogglePå = toggles[ToggleNavn.lovendring7MndNyeBehandlinger];
     const spørsmål = hentSpørsmålForPeriode(vilkårResultat.periode, erLovendringTogglePå);
 
     return (

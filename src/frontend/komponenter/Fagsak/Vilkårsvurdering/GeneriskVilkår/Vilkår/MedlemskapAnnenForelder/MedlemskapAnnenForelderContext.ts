@@ -27,7 +27,7 @@ export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IG
     };
 
     const { toggles } = useApp();
-    const erLovendringTogglePå = toggles[ToggleNavn.lovEndring7mndNyeBehandlinger];
+    const erLovendringTogglePå = toggles[ToggleNavn.lovendring7MndNyeBehandlinger];
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
         verdi: vilkårSkjema.vurderesEtter,
