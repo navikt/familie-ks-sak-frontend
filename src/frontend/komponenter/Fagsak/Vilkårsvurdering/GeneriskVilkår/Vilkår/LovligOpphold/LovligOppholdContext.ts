@@ -1,6 +1,8 @@
 import { useFelt } from '@navikt/familie-skjema';
 
+import { useApp } from '../../../../../../context/AppContext';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
+import { ToggleNavn } from '../../../../../../typer/toggles';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type {
     IVilkårResultat,
@@ -26,6 +28,9 @@ export const useLovligOpphold = (vilkår: IVilkårResultat, person: IGrunnlagPer
         erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: vilkår.avslagBegrunnelser,
     };
+
+    const { toggles } = useApp();
+    const erLovendringTogglePå = toggles[ToggleNavn.lovEndring7mndNyeBehandlinger];
 
     const skalViseDatoVarsel =
         vilkår.resultat === Resultat.IKKE_VURDERT && vilkår.periode.fom !== undefined;
@@ -58,7 +63,12 @@ export const useLovligOpphold = (vilkår: IVilkårResultat, person: IGrunnlagPer
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(felt, VilkårType.LOVLIG_OPPHOLD, vilkår.regelsett, avhengigheter),
+                erPeriodeGyldig(
+                    felt,
+                    VilkårType.LOVLIG_OPPHOLD,
+                    erLovendringTogglePå,
+                    avhengigheter
+                ),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

@@ -1,7 +1,9 @@
 import { useFelt } from '@navikt/familie-skjema';
 
 import { erUtdypendeVilkårsvurderingerGyldig } from './BorMedSøkerValidering';
+import { useApp } from '../../../../../../context/AppContext';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
+import { ToggleNavn } from '../../../../../../typer/toggles';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
@@ -31,6 +33,9 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
         erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: vilkår.avslagBegrunnelser,
     };
+
+    const { toggles } = useApp();
+    const erLovendringTogglePå = toggles[ToggleNavn.lovEndring7mndNyeBehandlinger];
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
         verdi: vilkårSkjema.vurderesEtter,
@@ -64,7 +69,12 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(felt, VilkårType.BOR_MED_SØKER, vilkår.regelsett, avhengigheter),
+                erPeriodeGyldig(
+                    felt,
+                    VilkårType.BOR_MED_SØKER,
+                    erLovendringTogglePå,
+                    avhengigheter
+                ),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

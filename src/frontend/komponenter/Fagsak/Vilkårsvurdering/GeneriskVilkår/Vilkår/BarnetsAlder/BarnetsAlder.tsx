@@ -5,6 +5,8 @@ import { isBefore } from 'date-fns';
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
+import { useApp } from '../../../../../../context/AppContext';
+import { ToggleNavn } from '../../../../../../typer/toggles';
 import { Resultat } from '../../../../../../typer/vilkår';
 import {
     datoForLovendringAugust24,
@@ -17,8 +19,11 @@ import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 type BarnetsAlderProps = IVilkårSkjemaBaseProps;
 
-const hentSpørsmålForPeriode = (periode: IIsoDatoPeriode) => {
-    switch (isBefore(parseTilOgMedDato(periode.tom), datoForLovendringAugust24)) {
+const hentSpørsmålForPeriode = (periode: IIsoDatoPeriode, erLovendringTogglePå: boolean) => {
+    switch (
+        isBefore(parseTilOgMedDato(periode.tom), datoForLovendringAugust24) ||
+        !erLovendringTogglePå
+    ) {
         case true:
             return 'Er barnet mellom 1 og 2 år eller adoptert?';
         case false:
@@ -36,7 +41,9 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
 }: BarnetsAlderProps) => {
     const { felter } = useBarnetsAlder(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
-    const spørsmål = hentSpørsmålForPeriode(vilkårResultat.periode);
+    const { toggles } = useApp();
+    const erLovendringTogglePå = toggles[ToggleNavn.lovEndring7mndNyeBehandlinger];
+    const spørsmål = hentSpørsmålForPeriode(vilkårResultat.periode, erLovendringTogglePå);
 
     return (
         <VilkårSkjema

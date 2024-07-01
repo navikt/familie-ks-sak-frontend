@@ -102,6 +102,7 @@ const valgtDatoErSenereEnnNesteMåned = (valgtDato: Date) =>
 export const erPeriodeGyldig = (
     felt: FeltState<IIsoDatoPeriode>,
     vilkår: VilkårType,
+    erLovendringTogglePå: boolean,
     avhengigheter?: Avhengigheter
 ): FeltState<IIsoDatoPeriode> => {
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
@@ -150,7 +151,7 @@ export const erPeriodeGyldig = (
                             );
                         }
 
-                        switch (isBefore(tom, datoForLovendringAugust24)) {
+                        switch (isBefore(tom, datoForLovendringAugust24) || !erLovendringTogglePå) {
                             case true:
                                 if (tom && datoDifferanseMerEnn1År(fom, tom)) {
                                     return feil(
@@ -169,7 +170,7 @@ export const erPeriodeGyldig = (
                                 break;
                         }
                     } else {
-                        switch (isBefore(tom, datoForLovendringAugust24)) {
+                        switch (isBefore(tom, datoForLovendringAugust24) || !erLovendringTogglePå) {
                             case true:
                                 if (!datoErPersonsXÅrsdag(person, fom, 1)) {
                                     return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');

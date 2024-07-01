@@ -51,7 +51,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('400220', undefined)
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -63,7 +63,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2020-06-17', '400220')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
             person: grunnlagPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -75,15 +75,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode(undefined, undefined)
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.LOVLIG_OPPHOLD,
-
-            {
-                person: grunnlagPersonFixture(),
-                erEksplisittAvslagPåSøknad: false,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+            person: grunnlagPersonFixture(),
+            erEksplisittAvslagPåSøknad: false,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual('F.o.m. må settes før du kan gå videre');
     });
@@ -92,15 +87,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode(undefined, '2010-05-17')
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.LOVLIG_OPPHOLD,
-
-            {
-                person: grunnlagPersonFixture(),
-                erEksplisittAvslagPåSøknad: true,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+            person: grunnlagPersonFixture(),
+            erEksplisittAvslagPåSøknad: true,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual(
             'F.o.m. må settes eller t.o.m. må fjernes før du kan gå videre'
@@ -111,15 +101,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode(undefined, undefined)
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.LOVLIG_OPPHOLD,
-
-            {
-                person: grunnlagPersonFixture(),
-                erEksplisittAvslagPåSøknad: true,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+            person: grunnlagPersonFixture(),
+            erEksplisittAvslagPåSøknad: true,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
@@ -127,15 +112,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2010-06-17', '2010-01-17')
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.LOVLIG_OPPHOLD,
-
-            {
-                person: grunnlagPersonFixture(),
-                erEksplisittAvslagPåSøknad: true,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+            person: grunnlagPersonFixture(),
+            erEksplisittAvslagPåSøknad: true,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual('F.o.m må settes tidligere enn t.o.m');
     });
@@ -144,15 +124,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('1999-05-17', '2018-05-17')
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.LOVLIG_OPPHOLD,
-
-            {
-                person: grunnlagPersonFixture(),
-                erEksplisittAvslagPåSøknad: false,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+            person: grunnlagPersonFixture(),
+            erEksplisittAvslagPåSøknad: false,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual(
             'Du kan ikke legge til periode før barnets fødselsdato'
@@ -163,15 +138,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2000-05-17', '2021-05-17')
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.LOVLIG_OPPHOLD,
-
-            {
-                person: grunnlagPersonFixture({ dødsfallDato: '2020-12-12' }),
-                erEksplisittAvslagPåSøknad: true,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+            person: grunnlagPersonFixture({ dødsfallDato: '2020-12-12' }),
+            erEksplisittAvslagPåSøknad: true,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual(
             'Du kan ikke sette til og med dato etter dødsfalldato'
@@ -182,15 +152,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2020-12-12', '2020-12-12')
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.LOVLIG_OPPHOLD,
-
-            {
-                person: grunnlagPersonFixture(),
-                erEksplisittAvslagPåSøknad: false,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+            person: grunnlagPersonFixture(),
+            erEksplisittAvslagPåSøknad: false,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual('F.o.m må settes tidligere enn t.o.m');
     });
@@ -199,15 +164,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2020-12-12', '2020-12-12')
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.LOVLIG_OPPHOLD,
-
-            {
-                person: grunnlagPersonFixture({ dødsfallDato: '2020-12-12' }),
-                erEksplisittAvslagPåSøknad: false,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+            person: grunnlagPersonFixture({ dødsfallDato: '2020-12-12' }),
+            erEksplisittAvslagPåSøknad: false,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
@@ -215,15 +175,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2001-05-17', '2018-05-17')
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.BARNETS_ALDER,
-
-            {
-                person: grunnlagPersonFixture(),
-                erEksplisittAvslagPåSøknad: false,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, true, {
+            person: grunnlagPersonFixture(),
+            erEksplisittAvslagPåSøknad: false,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual(
             'T.o.m datoen må være lik barnets 2 års dag'
@@ -234,7 +189,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2024-08-01', '2024-12-01')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, true, {
             person: grunnlagUngPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -248,15 +203,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2001-05-17', '2018-05-18')
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.LOVLIG_OPPHOLD,
-
-            {
-                person: grunnlagPersonFixture(),
-                erEksplisittAvslagPåSøknad: false,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+            person: grunnlagPersonFixture(),
+            erEksplisittAvslagPåSøknad: false,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
@@ -264,15 +214,10 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2001-05-17', '2002-05-17')
         );
-        const valideringsresultat = erPeriodeGyldig(
-            periode,
-            VilkårType.BARNETS_ALDER,
-
-            {
-                person: grunnlagPersonFixture(),
-                erEksplisittAvslagPåSøknad: false,
-            }
-        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, true, {
+            person: grunnlagPersonFixture(),
+            erEksplisittAvslagPåSøknad: false,
+        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
