@@ -158,7 +158,7 @@ describe('utils/validators', () => {
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
-    test('Periode med etter barnets fødselsdato pluss 2 år gir feil på BarnetsAlder-vilkåret dersom vilkår er før lovendring 2024', () => {
+    test('Periode etter barnets fødselsdato pluss 2 år gir feil på BarnetsAlder-vilkåret dersom vilkår er før lovendring 2024', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2001-05-17', '2018-05-17')
         );
@@ -172,7 +172,7 @@ describe('utils/validators', () => {
         );
     });
 
-    test('Periode med etter barnets fødselsdato pluss 19 måneder gir feil på BarnetsAlder-vilkåret dersom vilkår er etter lovendring-2024', () => {
+    test('Periode etter barnets fødselsdato pluss 19 måneder gir feil på BarnetsAlder-vilkåret dersom vilkår er etter lovendring-2024', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2024-08-01', '2024-12-01')
         );
@@ -186,7 +186,7 @@ describe('utils/validators', () => {
         );
     });
 
-    test('Periode med etter barnets fødselsdato gir ok på andre vilkår', () => {
+    test('Periode etter barnets fødselsdato gir ok på andre vilkår', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2001-05-17', '2018-05-18')
         );
