@@ -1,20 +1,26 @@
 import React from 'react';
 
+import { isBefore } from 'date-fns';
+
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
-import { Resultat, VilkårRegelsett } from '../../../../../../typer/vilkår';
+import { Resultat } from '../../../../../../typer/vilkår';
+import { parseTilOgMedDato, type IIsoDatoPeriode } from '../../../../../../utils/dato';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 type BarnetsAlderProps = IVilkårSkjemaBaseProps;
 
-const hentSpørsmålBasertPåRegelsett = (regelsett: VilkårRegelsett) => {
-    switch (regelsett) {
-        case VilkårRegelsett.LOV_AUGUST_2021:
+const FØRSTE_FOMDATO_LOV_AUGUST_2024 = new Date('2024-08-01T00:00:00+02:00');
+
+const hentSpørsmålForPeriode = (periode: IIsoDatoPeriode) => {
+    switch (isBefore(parseTilOgMedDato(periode.tom), FØRSTE_FOMDATO_LOV_AUGUST_2024)) {
+        case true:
             return 'Er barnet mellom 1 og 2 år eller adoptert?';
-        case VilkårRegelsett.LOV_AUGUST_2024:
+        case false:
+        default:
             return 'Er barnet mellom 13 og 19 måneder eller adoptert?';
     }
 };
@@ -28,7 +34,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
 }: BarnetsAlderProps) => {
     const { felter } = useBarnetsAlder(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
-    const spørsmål = hentSpørsmålBasertPåRegelsett(vilkårResultat.regelsett);
+    const spørsmål = hentSpørsmålForPeriode(vilkårResultat.periode);
 
     return (
         <VilkårSkjema
