@@ -221,6 +221,17 @@ describe('utils/validators', () => {
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
+    test('Skal validere ok etter gamle regler hvis toggle er av', () => {
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2024-05-17', '2025-05-17')
+        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, false, {
+            person: grunnlagUngPersonFixture(),
+            erEksplisittAvslagPåSøknad: false,
+        });
+        expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
+    });
+
     test('Validering av ident', () => {
         const fnrGenerator = generator(new Date('10.02.2020'));
         const { result } = renderHook(() =>
