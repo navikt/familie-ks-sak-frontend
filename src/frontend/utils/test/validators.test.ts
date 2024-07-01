@@ -34,6 +34,19 @@ describe('utils/validators', () => {
         return { ...defaults, ...overstyrendeProps };
     };
 
+    const grunnlagUngPersonFixture = (overstyrendeProps: Partial<IGrunnlagPerson> = {}) => {
+        const defaults: IGrunnlagPerson = {
+            personIdent: '12345678930',
+            fødselsdato: '2023-05-17',
+            type: PersonType.BARN,
+            kjønn: kjønnType.KVINNE,
+            navn: 'Mock Barn',
+            målform: Målform.NB,
+        };
+
+        return { ...defaults, ...overstyrendeProps };
+    };
+
     test('Periode med ugyldig fom gir feil', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('400220', undefined)
@@ -198,7 +211,7 @@ describe('utils/validators', () => {
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
-    test('Periode med etter barnets fødselsdato pluss 2 år gir feil på BarnetsAlder-vilkåret dersom regelsett er LOV_AUGUST_2021', () => {
+    test('Periode med etter barnets fødselsdato pluss 2 år gir feil på BarnetsAlder-vilkåret dersom vilkår er før lovendring 2024', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2001-05-17', '2018-05-17')
         );
@@ -217,12 +230,12 @@ describe('utils/validators', () => {
         );
     });
 
-    test('Periode med etter barnets fødselsdato pluss 19 måneder gir feil på BarnetsAlder-vilkåret dersom regelsett er LOV_AUGUST_2024', () => {
+    test('Periode med etter barnets fødselsdato pluss 19 måneder gir feil på BarnetsAlder-vilkåret dersom vilkår er etter lovendring-2024', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
-            nyIsoDatoPeriode('2001-06-17', '2018-05-17')
+            nyIsoDatoPeriode('2024-08-01', '2024-12-01')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
-            person: grunnlagPersonFixture(),
+            person: grunnlagUngPersonFixture(),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
@@ -247,7 +260,7 @@ describe('utils/validators', () => {
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
-    test('Periode med innenfor 1-2 år gir ok på BarnetsAlder-vilkåret dersom regelsett er LOV_AUGUST_2021', () => {
+    test('Periode med innenfor 1-2 år gir ok på BarnetsAlder-vilkåret dersom vilkår er før lovendring 2024', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2001-05-17', '2002-05-17')
         );
@@ -260,17 +273,6 @@ describe('utils/validators', () => {
                 erEksplisittAvslagPåSøknad: false,
             }
         );
-        expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
-    });
-
-    test('Periode med innenfor 13-19 måneder gir ok på BarnetsAlder-vilkåret dersom regelsett er LOV_AUGUST_2024', () => {
-        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
-            nyIsoDatoPeriode('2001-06-17', '2001-12-17')
-        );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
-            person: grunnlagPersonFixture(),
-            erEksplisittAvslagPåSøknad: false,
-        });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 

@@ -9,6 +9,7 @@ import {
     isValid,
     parseISO,
     setMonth,
+    subDays,
 } from 'date-fns';
 
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
@@ -176,13 +177,17 @@ export const erPeriodeGyldig = (
                                 if (
                                     tom &&
                                     !datoErPersonsXÅrsdag(person, tom, 2) &&
+                                    !isSameDay(tom, subDays(datoForLovendringAugust24, 1)) &&
                                     !datoErPersonsDødsfallsdag(person, tom)
                                 ) {
                                     return feil(felt, 'T.o.m datoen må være lik barnets 2 års dag');
                                 }
                                 break;
                             case false:
-                                if (!datoErXAntallMånederEtterFødselsdato(person, fom, 13)) {
+                                if (
+                                    !datoErXAntallMånederEtterFødselsdato(person, fom, 13) &&
+                                    !isSameDay(fom, datoForLovendringAugust24)
+                                ) {
                                     return feil(
                                         felt,
                                         'F.o.m datoen må være lik datoen barnet fyller 13 måneder'
