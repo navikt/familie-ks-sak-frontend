@@ -151,60 +151,54 @@ export const erPeriodeGyldig = (
                             );
                         }
 
-                        switch (isBefore(tom, datoForLovendringAugust24) || !erLovendringTogglePå) {
-                            case true:
-                                if (tom && datoDifferanseMerEnn1År(fom, tom)) {
-                                    return feil(
-                                        felt,
-                                        'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
-                                    );
-                                }
-                                break;
-                            case false:
-                                if (tom && datoDifferanseMerEnnXAntallMåneder(fom, tom, 7)) {
-                                    return feil(
-                                        felt,
-                                        'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 7 måneder'
-                                    );
-                                }
-                                break;
+                        if (isBefore(tom, datoForLovendringAugust24) || !erLovendringTogglePå) {
+                            if (tom && datoDifferanseMerEnn1År(fom, tom)) {
+                                return feil(
+                                    felt,
+                                    'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
+                                );
+                            }
+                        } else {
+                            if (tom && datoDifferanseMerEnnXAntallMåneder(fom, tom, 7)) {
+                                return feil(
+                                    felt,
+                                    'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 7 måneder'
+                                );
+                            }
                         }
                     } else {
-                        switch (isBefore(tom, datoForLovendringAugust24) || !erLovendringTogglePå) {
-                            case true:
-                                if (!datoErPersonsXÅrsdag(person, fom, 1)) {
-                                    return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
-                                }
-                                if (
-                                    tom &&
-                                    !datoErPersonsXÅrsdag(person, tom, 2) &&
-                                    !isSameDay(tom, subDays(datoForLovendringAugust24, 1)) &&
-                                    !datoErPersonsDødsfallsdag(person, tom)
-                                ) {
-                                    return feil(felt, 'T.o.m datoen må være lik barnets 2 års dag');
-                                }
-                                break;
-                            case false:
-                                if (
-                                    !datoErXAntallMånederEtterFødselsdato(person, fom, 13) &&
-                                    !isSameDay(fom, datoForLovendringAugust24)
-                                ) {
-                                    return feil(
-                                        felt,
-                                        'F.o.m datoen må være lik datoen barnet fyller 13 måneder'
-                                    );
-                                }
-                                if (
-                                    tom &&
-                                    !datoErXAntallMånederEtterFødselsdato(person, tom, 19) &&
-                                    !datoErPersonsDødsfallsdag(person, tom)
-                                ) {
-                                    return feil(
-                                        felt,
-                                        'T.o.m datoen må være lik datoen barnet fyller 19 måneder'
-                                    );
-                                }
-                                break;
+                        if (isBefore(tom, datoForLovendringAugust24) || !erLovendringTogglePå) {
+                            if (!datoErPersonsXÅrsdag(person, fom, 1)) {
+                                return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
+                            }
+                            if (
+                                tom &&
+                                !datoErPersonsXÅrsdag(person, tom, 2) &&
+                                !isSameDay(tom, subDays(datoForLovendringAugust24, 1)) &&
+                                !datoErPersonsDødsfallsdag(person, tom)
+                            ) {
+                                return feil(felt, 'T.o.m datoen må være lik barnets 2 års dag');
+                            }
+                        } else {
+                            if (
+                                !datoErXAntallMånederEtterFødselsdato(person, fom, 13) &&
+                                !isSameDay(fom, datoForLovendringAugust24)
+                            ) {
+                                return feil(
+                                    felt,
+                                    'F.o.m datoen må være lik datoen barnet fyller 13 måneder'
+                                );
+                            }
+                            if (
+                                tom &&
+                                !datoErXAntallMånederEtterFødselsdato(person, tom, 19) &&
+                                !datoErPersonsDødsfallsdag(person, tom)
+                            ) {
+                                return feil(
+                                    felt,
+                                    'T.o.m datoen må være lik datoen barnet fyller 19 måneder'
+                                );
+                            }
                         }
                     }
                 }

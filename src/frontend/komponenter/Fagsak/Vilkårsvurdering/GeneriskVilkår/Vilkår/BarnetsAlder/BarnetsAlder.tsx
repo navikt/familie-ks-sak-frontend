@@ -20,15 +20,13 @@ import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 type BarnetsAlderProps = IVilkårSkjemaBaseProps;
 
 const hentSpørsmålForPeriode = (periode: IIsoDatoPeriode, erLovendringTogglePå: boolean) => {
-    switch (
+    if (
         isBefore(parseTilOgMedDato(periode.tom), datoForLovendringAugust24) ||
         !erLovendringTogglePå
     ) {
-        case true:
-            return 'Er barnet mellom 1 og 2 år eller adoptert?';
-        case false:
-        default:
-            return 'Er barnet mellom 13 og 19 måneder eller adoptert?';
+        return 'Er barnet mellom 1 og 2 år eller adoptert?';
+    } else {
+        return 'Er barnet mellom 13 og 19 måneder eller adoptert?';
     }
 };
 
