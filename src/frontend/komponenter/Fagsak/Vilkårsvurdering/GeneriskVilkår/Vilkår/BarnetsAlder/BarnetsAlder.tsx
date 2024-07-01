@@ -6,17 +6,19 @@ import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
 import { Resultat } from '../../../../../../typer/vilkår';
-import { parseTilOgMedDato, type IIsoDatoPeriode } from '../../../../../../utils/dato';
+import {
+    datoForLovendringAugust24,
+    type IIsoDatoPeriode,
+    parseTilOgMedDato,
+} from '../../../../../../utils/dato';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 type BarnetsAlderProps = IVilkårSkjemaBaseProps;
 
-const FØRSTE_FOMDATO_LOV_AUGUST_2024 = new Date('2024-08-01T00:00:00+02:00');
-
 const hentSpørsmålForPeriode = (periode: IIsoDatoPeriode) => {
-    switch (isBefore(parseTilOgMedDato(periode.tom), FØRSTE_FOMDATO_LOV_AUGUST_2024)) {
+    switch (isBefore(parseTilOgMedDato(periode.tom), datoForLovendringAugust24)) {
         case true:
             return 'Er barnet mellom 1 og 2 år eller adoptert?';
         case false:
