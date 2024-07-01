@@ -37,11 +37,6 @@ export enum Regelverk {
     EØS_FORORDNINGEN = 'EØS_FORORDNINGEN',
 }
 
-export enum VilkårRegelsett {
-    LOV_AUGUST_2021 = 'LOV_AUGUST_2021',
-    LOV_AUGUST_2024 = 'LOV_AUGUST_2024',
-}
-
 // Vilkårsvurdering typer for ui
 export interface IPersonResultat {
     personIdent: string;
@@ -78,7 +73,6 @@ export interface IVilkårResultat {
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
     antallTimer?: number;
     søkerHarMeldtFraOmBarnehageplass?: boolean;
-    regelsett: VilkårRegelsett;
 }
 
 // Vilkårsvurdering typer for api
@@ -117,7 +111,6 @@ export interface IRestVilkårResultat {
     utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
     antallTimer: number | undefined;
     søkerHarMeldtFraOmBarnehageplass?: boolean;
-    regelsett: VilkårRegelsett;
 }
 
 export interface IRestAnnenVurdering {

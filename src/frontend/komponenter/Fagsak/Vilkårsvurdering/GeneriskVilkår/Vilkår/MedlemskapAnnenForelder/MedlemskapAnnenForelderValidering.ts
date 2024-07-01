@@ -1,14 +1,13 @@
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { ok } from '@navikt/familie-skjema';
 
-import type { VilkårRegelsett } from '../../../../../../typer/vilkår';
 import { Resultat, VilkårType } from '../../../../../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import { erPeriodeGyldig as erPeriodeGyldigDefault } from '../../../../../../utils/validators';
 
 export const erPeriodeGyldig = (
     felt: FeltState<IIsoDatoPeriode>,
-    regelsett: VilkårRegelsett,
+    erLovendringTogglePå: boolean,
     avhengigheter?: Avhengigheter
 ): FeltState<IIsoDatoPeriode> => {
     if (avhengigheter && avhengigheter.resultat.verdi === Resultat.IKKE_AKTUELT) {
@@ -17,7 +16,7 @@ export const erPeriodeGyldig = (
     return erPeriodeGyldigDefault(
         felt,
         VilkårType.MEDLEMSKAP_ANNEN_FORELDER,
-        regelsett,
+        erLovendringTogglePå,
         avhengigheter
     );
 };

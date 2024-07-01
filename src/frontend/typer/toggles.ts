@@ -7,6 +7,7 @@ export enum ToggleNavn {
     kanManueltKorrigereMedVedtaksbrev = 'familie-ks-sak.behandling.korreksjon-vedtaksbrev',
     tekniskVedlikeholdHenleggelse = 'familie-ks-sak.teknisk-vedlikehold-henleggelse.tilgangsstyring',
     kanBehandleKlage = 'familie-ks-sak.klage',
+    lovendring7MndNyeBehandlinger = 'familie-ks-sak.lov-endring-7-mnd-nye-behandlinger',
 }
 
 export const alleTogglerAv = (): IToggles => {

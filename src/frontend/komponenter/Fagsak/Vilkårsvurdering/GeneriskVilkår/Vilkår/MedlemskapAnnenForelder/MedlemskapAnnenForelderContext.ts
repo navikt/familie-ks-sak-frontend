@@ -1,7 +1,9 @@
 import { useFelt } from '@navikt/familie-skjema';
 
 import { erPeriodeGyldig } from './MedlemskapAnnenForelderValidering';
+import { useApp } from '../../../../../../context/AppContext';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
+import { ToggleNavn } from '../../../../../../typer/toggles';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type {
@@ -23,6 +25,9 @@ export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IG
         erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: vilkår.avslagBegrunnelser,
     };
+
+    const { toggles } = useApp();
+    const erLovendringTogglePå = toggles[ToggleNavn.lovendring7MndNyeBehandlinger];
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
         verdi: vilkårSkjema.vurderesEtter,
@@ -54,7 +59,7 @@ export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IG
                 erMedlemskapAnnenForelderVilkår: true,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(felt, vilkår.regelsett, avhengigheter),
+                erPeriodeGyldig(felt, erLovendringTogglePå, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

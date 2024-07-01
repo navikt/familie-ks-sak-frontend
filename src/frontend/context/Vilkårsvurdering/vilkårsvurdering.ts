@@ -92,7 +92,6 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                                     antallTimer: vilkårResultat.antallTimer,
                                     søkerHarMeldtFraOmBarnehageplass:
                                         vilkårResultat.søkerHarMeldtFraOmBarnehageplass,
-                                    regelsett: vilkårResultat.regelsett,
                                 };
                             }
                         )

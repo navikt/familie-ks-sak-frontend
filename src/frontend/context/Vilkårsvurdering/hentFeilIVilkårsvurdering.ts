@@ -127,9 +127,15 @@ const hentBarnetsalderVilkårManglerBarnehagePeriodeFeil = (
         : [];
 };
 
+/**
+ * @returns true hvis dato1 er før eller samme dato som dato2
+ */
 const erFørEllerSammeDato = (dato1: Date, dato2: Date) =>
     isBefore(dato1, dato2) || isSameDay(dato1, dato2);
 
+/**
+ * @returns true hvis dato1 er etter eller samme dato som dato2
+ */
 const erEtterEllerSammeDato = (dato1: Date, dato2: Date) =>
     isAfter(dato1, dato2) || isSameDay(dato1, dato2);
 
