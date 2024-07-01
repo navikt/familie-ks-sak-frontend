@@ -15,14 +15,17 @@ import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 import { idnr } from '@navikt/fnrvalidator';
 
-import { datoForLovendringAugust24, type IIsoDatoPeriode } from './dato';
-import { dagensDato, isoStringTilDate } from './dato';
+import {
+    dagensDato,
+    datoForLovendringAugust24,
+    type IIsoDatoPeriode,
+    isoStringTilDate,
+} from './dato';
 import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { Begrunnelse } from '../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
-import { VilkårRegelsett } from '../typer/vilkår';
 import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../typer/vilkår';
 
 const harFyltInnIdent = (felt: FeltState<string>): FeltState<string> => {
@@ -98,7 +101,6 @@ const valgtDatoErSenereEnnNesteMåned = (valgtDato: Date) =>
 export const erPeriodeGyldig = (
     felt: FeltState<IIsoDatoPeriode>,
     vilkår: VilkårType,
-    regelsett: VilkårRegelsett,
     avhengigheter?: Avhengigheter
 ): FeltState<IIsoDatoPeriode> => {
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
@@ -135,11 +137,11 @@ export const erPeriodeGyldig = (
                     const erAdopsjon = utdypendeVilkårsvurdering?.includes(
                         UtdypendeVilkårsvurderingGenerell.ADOPSJON
                     );
-                    if (erAdopsjon) {
-                        if (!tom) {
-                            return feil(felt, 'Det må registreres en t.o.m dato');
-                        }
+                    if (!tom) {
+                        return feil(felt, 'Det må registreres en t.o.m dato');
+                    }
 
+                    if (erAdopsjon) {
                         if (tomEtterAugustÅretBarnetFyller6(person, tom)) {
                             return feil(
                                 felt,
@@ -147,8 +149,8 @@ export const erPeriodeGyldig = (
                             );
                         }
 
-                        switch (regelsett) {
-                            case VilkårRegelsett.LOV_AUGUST_2021:
+                        switch (isBefore(tom, datoForLovendringAugust24)) {
+                            case true:
                                 if (tom && datoDifferanseMerEnn1År(fom, tom)) {
                                     return feil(
                                         felt,
@@ -156,7 +158,7 @@ export const erPeriodeGyldig = (
                                     );
                                 }
                                 break;
-                            case VilkårRegelsett.LOV_AUGUST_2024:
+                            case false:
                                 if (tom && datoDifferanseMerEnnXAntallMåneder(fom, tom, 7)) {
                                     return feil(
                                         felt,
@@ -166,8 +168,8 @@ export const erPeriodeGyldig = (
                                 break;
                         }
                     } else {
-                        switch (regelsett) {
-                            case VilkårRegelsett.LOV_AUGUST_2021:
+                        switch (isBefore(tom, datoForLovendringAugust24)) {
+                            case true:
                                 if (!datoErPersonsXÅrsdag(person, fom, 1)) {
                                     return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
                                 }
@@ -179,7 +181,7 @@ export const erPeriodeGyldig = (
                                     return feil(felt, 'T.o.m datoen må være lik barnets 2 års dag');
                                 }
                                 break;
-                            case VilkårRegelsett.LOV_AUGUST_2024:
+                            case false:
                                 if (!datoErXAntallMånederEtterFødselsdato(person, fom, 13)) {
                                     return feil(
                                         felt,
