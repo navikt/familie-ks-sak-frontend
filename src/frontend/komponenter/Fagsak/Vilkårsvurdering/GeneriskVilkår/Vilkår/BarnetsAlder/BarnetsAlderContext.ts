@@ -2,6 +2,7 @@ import { useFelt } from '@navikt/familie-skjema';
 
 import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BarnetsAlderValidering';
 import { useApp } from '../../../../../../context/AppContext';
+import { useVilkårsvurdering } from '../../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import { ToggleNavn } from '../../../../../../typer/toggles';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
@@ -9,7 +10,7 @@ import { UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../../../../
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
-import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
+import { type IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     erAvslagBegrunnelserGyldig,
     erPeriodeGyldig,
@@ -31,6 +32,17 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
         erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: vilkår.avslagBegrunnelser,
     };
+
+    const { personResultater } = useVilkårsvurdering();
+
+    const alleBarnetsAlderVilkårsResultater =
+        personResultater
+            .find(personResultat => person.personIdent === personResultat.personIdent)
+            ?.vilkårResultater.filter(
+                vilkårResultat => vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER
+            ) || [];
+
+    const førsteLagredeFom = alleBarnetsAlderVilkårsResultater[0]?.periodeFom;
 
     const { toggles } = useApp();
     const erLovendringTogglePå = toggles[ToggleNavn.lovendring7MndNyeBehandlinger];
@@ -63,6 +75,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
                 utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
+                førsteLagredeFom,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
                 erPeriodeGyldig(
