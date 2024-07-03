@@ -11,7 +11,7 @@ import { Resultat } from '../../../../../../typer/vilkår';
 import {
     datoForLovendringAugust24,
     type IIsoDatoPeriode,
-    parseTilOgMedDato,
+    isoStringTilDateEllerUndefined,
 } from '../../../../../../utils/dato';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
@@ -20,10 +20,10 @@ import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 type BarnetsAlderProps = IVilkårSkjemaBaseProps;
 
 const hentSpørsmålForPeriode = (periode: IIsoDatoPeriode, erLovendringTogglePå: boolean) => {
-    if (
-        isBefore(parseTilOgMedDato(periode.tom), datoForLovendringAugust24) ||
-        !erLovendringTogglePå
-    ) {
+    const fraOgMedDato = isoStringTilDateEllerUndefined(periode.fom);
+    const fraOgMedErFørLovendring =
+        fraOgMedDato && isBefore(fraOgMedDato, datoForLovendringAugust24);
+    if (fraOgMedErFørLovendring || !erLovendringTogglePå) {
         return 'Er barnet mellom 1 og 2 år eller adoptert?';
     } else {
         return 'Er barnet mellom 13 og 19 måneder eller adoptert?';

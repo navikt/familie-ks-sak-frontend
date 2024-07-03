@@ -96,6 +96,12 @@ export const erIsoStringGyldig = (isoString?: IsoDatoString): boolean => {
     return isValid(dato);
 };
 
+export const isoStringTilDateEllerUndefined = (
+    isoDatoString: IsoDatoString | undefined
+): Date | undefined => {
+    return isoDatoString ? isoStringTilDate(isoDatoString) : undefined;
+};
+
 export const parseTilOgMedDato = (tom: IsoDatoString | undefined) =>
     isoStringTilDateMedFallback({
         isoString: tom,
