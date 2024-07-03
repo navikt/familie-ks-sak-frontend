@@ -1,4 +1,4 @@
-import { addDays, isAfter, isBefore, isSameDay } from 'date-fns';
+import { addDays, isAfter, isSameDay } from 'date-fns';
 
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
@@ -13,6 +13,8 @@ import {
     parseFraOgMedDato,
     tidenesEnde,
     tidenesMorgen,
+    erFørEllerSammeDato,
+    erEtterEllerSammeDato,
 } from '../../utils/dato';
 
 export const hentFeilIVilkårsvurdering = (
@@ -126,18 +128,6 @@ const hentBarnetsalderVilkårManglerBarnehagePeriodeFeil = (
           ]
         : [];
 };
-
-/**
- * @returns true hvis dato1 er før eller samme dato som dato2
- */
-const erFørEllerSammeDato = (dato1: Date, dato2: Date) =>
-    isBefore(dato1, dato2) || isSameDay(dato1, dato2);
-
-/**
- * @returns true hvis dato1 er etter eller samme dato som dato2
- */
-const erEtterEllerSammeDato = (dato1: Date, dato2: Date) =>
-    isAfter(dato1, dato2) || isSameDay(dato1, dato2);
 
 const barnetsAlderPeriodeManglerBarnehagePeriode = (
     barnetsAlderPeriode: IIsoDatoPeriode,
