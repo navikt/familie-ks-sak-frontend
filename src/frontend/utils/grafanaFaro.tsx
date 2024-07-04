@@ -23,7 +23,7 @@ export function initGrafanaFaro() {
             isolate: true,
             url: getTelemetryCollectorURL(),
             app: {
-                name: 'familie-ba-sak-frontend',
+                name: 'familie-ks-sak-frontend',
             },
             instrumentations: [
                 ...getWebInstrumentations({
