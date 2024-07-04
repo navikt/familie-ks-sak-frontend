@@ -30,6 +30,7 @@
     ]
   },
   "dependencies": {
+    "@grafana/faro-web-sdk": "^1.7.3",
     "@navikt/aksel-icons": "6.11.0",
     "@navikt/ds-css": "^6.11.0",
     "@navikt/ds-icons": "^2.2.0",
