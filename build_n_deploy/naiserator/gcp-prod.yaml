@@ -64,3 +64,7 @@ spec:
       access: readwrite
     - instance: lookup
       access: read
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
