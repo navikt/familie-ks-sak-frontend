@@ -11,6 +11,7 @@ import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
 import { type IIsoDatoPeriode } from '../../../../../../utils/dato';
+import { sorterPåDato } from '../../../../../../utils/formatter';
 import {
     erAvslagBegrunnelserGyldig,
     erPeriodeGyldig,
@@ -35,14 +36,21 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
 
     const { personResultater } = useVilkårsvurdering();
 
-    const alleBarnetsAlderVilkårsResultater =
+    const alleBarnetsAlderVilkårsResultaterSortert =
         personResultater
             .find(personResultat => person.personIdent === personResultat.personIdent)
             ?.vilkårResultater.filter(
                 vilkårResultat => vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER
-            ) || [];
+            )
+            .sort((a, b) => {
+                if (!a.periodeFom || !b.periodeFom) {
+                    return 1; //Perioder som ikke har fom skal sorteres sist i lista
+                } else {
+                    return sorterPåDato(b.periodeFom, a.periodeFom);
+                }
+            }) || [];
 
-    const førsteLagredeFom = alleBarnetsAlderVilkårsResultater[0]?.periodeFom;
+    const førsteLagredeFom = alleBarnetsAlderVilkårsResultaterSortert[0].periodeFom;
 
     const { toggles } = useApp();
     const erLovendringTogglePå = toggles[ToggleNavn.lovendring7MndNyeBehandlinger];
