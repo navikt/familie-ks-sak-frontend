@@ -136,6 +136,8 @@ export const erPeriodeGyldig = (
                     return feil(felt, 'Du kan ikke legge til periode før barnets fødselsdato');
                 }
                 if (erBarnetsAlderVilkår) {
+                    const førsteLagredeFom = avhengigheter?.førsteLagredeFom;
+
                     const erAdopsjon = utdypendeVilkårsvurdering?.includes(
                         UtdypendeVilkårsvurderingGenerell.ADOPSJON
                     );
@@ -159,10 +161,13 @@ export const erPeriodeGyldig = (
                                 );
                             }
                         } else {
-                            if (tom && datoDifferanseMerEnnXAntallMåneder(fom, tom, 7)) {
+                            if (
+                                tom &&
+                                datoDifferanseMerEnnXAntallMåneder(førsteLagredeFom, tom, 7)
+                            ) {
                                 return feil(
                                     felt,
-                                    'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 7 måneder'
+                                    'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 7 måneder'
                                 );
                             }
                         }
