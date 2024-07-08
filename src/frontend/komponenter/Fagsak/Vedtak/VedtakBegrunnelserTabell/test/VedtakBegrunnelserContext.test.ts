@@ -53,7 +53,7 @@ describe('VedtakBegrunnelserContext', () => {
         });
 
         describe('Test filtrering av perioder frem i tid', () => {
-            test(`Test at perioder med fom-dato før 2 mnd frem i tid returneres`, () => {
+            test(`Test at perioder med fom-dato før eller lik 2 mnd frem i tid returneres`, () => {
                 const toMndFremITidFom = addMonths(startOfMonth(dagensDato), 2);
                 const toMndFremITidTom = addMonths(endOfMonth(dagensDato), 2);
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
