@@ -1,4 +1,11 @@
-import { addMonths, differenceInMilliseconds, isAfter, isBefore, startOfMonth } from 'date-fns';
+import {
+    addMonths,
+    differenceInMilliseconds,
+    isAfter,
+    isBefore,
+    isSameMonth,
+    startOfMonth,
+} from 'date-fns';
 
 import {
     ABorderDanger,
@@ -48,7 +55,7 @@ export const filtrerOgSorterPerioderMedBegrunnelseBehov = (
                             sisteVedtaksperiodeVisningDato,
                             vedtaksperiode.fom
                         )) ||
-                    erPeriodeMindreEnn2MndFramITid(vedtaksperiode.fom)
+                    erPeriode2MndFramITidEllerMindre(vedtaksperiode.fom)
                 );
             }
         });
@@ -73,11 +80,11 @@ const erPeriodeMindreEllerLikEnnSisteVedtaksperiodeVisningDato = (
     );
 };
 
-const erPeriodeMindreEnn2MndFramITid = (periodeFom: string | undefined) => {
+const erPeriode2MndFramITidEllerMindre = (periodeFom: string | undefined) => {
     const fom = isoStringTilDateMedFallback({ isoString: periodeFom, fallbackDate: tidenesMorgen });
     const toMånederFremITid = addMonths(startOfMonth(dagensDato), 2);
 
-    return isBefore(fom, toMånederFremITid);
+    return isBefore(fom, toMånederFremITid) || isSameMonth(fom, toMånederFremITid);
 };
 
 const harPeriodeBegrunnelse = (vedtaksperiode: IVedtaksperiodeMedBegrunnelser) => {
