@@ -148,6 +148,8 @@ const Totrinnskontroll: React.FunctionComponent<IProps> = ({ åpenBehandling }) 
 
             {modalVerdi.skalVises && (
                 <Modal
+                    open
+                    onClose={() => settModalVerdi({ ...modalVerdi, skalVises: false })}
                     header={{ heading: 'Totrinnskontroll', size: 'small', closeButton: false }}
                     width={'35rem'}
                 >
