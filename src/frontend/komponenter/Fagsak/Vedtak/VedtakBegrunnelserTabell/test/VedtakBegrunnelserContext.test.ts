@@ -53,14 +53,14 @@ describe('VedtakBegrunnelserContext', () => {
         });
 
         describe('Test filtrering av perioder frem i tid', () => {
-            test(`Test at perioder med fom-dato før 2 mnd frem i tid returneres`, () => {
-                const enMndFremITidFom = addMonths(startOfMonth(dagensDato), 1);
-                const enMndFremITidTom = addMonths(endOfMonth(dagensDato), 1);
+            test(`Test at perioder med fom-dato før eller lik 2 mnd frem i tid returneres`, () => {
+                const toMndFremITidFom = addMonths(startOfMonth(dagensDato), 2);
+                const toMndFremITidTom = addMonths(endOfMonth(dagensDato), 2);
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                     [
                         mockUtbetalingsperiode({
-                            fom: dateTilIsoDatoString(enMndFremITidFom),
-                            tom: dateTilIsoDatoString(enMndFremITidTom),
+                            fom: dateTilIsoDatoString(toMndFremITidFom),
+                            tom: dateTilIsoDatoString(toMndFremITidTom),
                         }),
                     ],
                     BehandlingResultat.INNVILGET,
@@ -69,15 +69,15 @@ describe('VedtakBegrunnelserContext', () => {
                 );
                 expect(perioder.length).toBe(1);
             });
-            test(`Test at perioder med fom-dato fra og med 2 mnd frem i tid ikke returneres`, () => {
-                const toMndFremITidFom = addMonths(startOfMonth(dagensDato), 2);
-                const toMndFremITidTom = addMonths(endOfMonth(dagensDato), 2);
+            test(`Test at perioder med fom-dato etter 2 mnd frem i tid ikke returneres`, () => {
+                const treMndFremITidFom = addMonths(startOfMonth(dagensDato), 3);
+                const treMndFremITidTom = addMonths(endOfMonth(dagensDato), 3);
 
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                     [
                         mockUtbetalingsperiode({
-                            fom: dateTilIsoDatoString(toMndFremITidFom),
-                            tom: dateTilIsoDatoString(toMndFremITidTom),
+                            fom: dateTilIsoDatoString(treMndFremITidFom),
+                            tom: dateTilIsoDatoString(treMndFremITidTom),
                         }),
                     ],
                     BehandlingResultat.INNVILGET,
