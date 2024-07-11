@@ -5,17 +5,14 @@ import styled from 'styled-components';
 
 import { Alert, BodyShort, Label } from '@navikt/ds-react';
 import { ASurfaceActionHover } from '@navikt/ds-tokens/dist/tokens';
-import type {
-    ActionMeta,
-    FormatOptionLabelMeta,
-    ISelectOption,
-} from '@navikt/familie-form-elements';
+import type { ActionMeta, FormatOptionLabelMeta } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
+import type { OptionType } from '../../../../typer/common';
 import type { Begrunnelse } from '../../../../typer/vedtak';
 import { BegrunnelseType, begrunnelseTyper } from '../../../../typer/vedtak';
 import type { VilkårType } from '../../../../typer/vilkår';
@@ -54,13 +51,13 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
                   grupperteAvslagsbegrunnelser
                       .flatMap(valgGruppertPåType => valgGruppertPåType.options)
                       .find(
-                          (restVedtakBegrunnelseTilknyttetVilkår: ISelectOption) =>
+                          (restVedtakBegrunnelseTilknyttetVilkår: OptionType) =>
                               restVedtakBegrunnelseTilknyttetVilkår.value === valgtBegrunnelse
                       )?.label ?? '',
           }))
         : [];
 
-    const onChangeBegrunnelse = (action: ActionMeta<ISelectOption>) => {
+    const onChangeBegrunnelse = (action: ActionMeta<OptionType>) => {
         switch (action.action) {
             case 'select-option':
                 if (action.option) {
@@ -100,11 +97,11 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
             placeholder={'Velg begrunnelse(r)'}
             erLesevisning={vurderErLesevisning()}
             isMulti={true}
-            onChange={(_, action: ActionMeta<ISelectOption>) => {
+            onChange={(_, action: ActionMeta<OptionType>) => {
                 onChangeBegrunnelse(action);
             }}
             options={grupperteAvslagsbegrunnelser}
-            formatGroupLabel={(group: GroupBase<ISelectOption>) => {
+            formatGroupLabel={(group: GroupBase<OptionType>) => {
                 return (
                     <GroupLabel>
                         <Label>{group.label}</Label>
@@ -113,8 +110,8 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
                 );
             }}
             formatOptionLabel={(
-                option: ISelectOption,
-                formatOptionLabelMeta: FormatOptionLabelMeta<ISelectOption>
+                option: OptionType,
+                formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>
             ) => {
                 if (formatOptionLabelMeta.context == 'value') {
                     // Formatering når alternativet er valgt

@@ -3,10 +3,11 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import type { ActionMeta, ISelectOption } from '@navikt/familie-form-elements';
+import type { ActionMeta } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 
+import type { OptionType } from '../../../../typer/common';
 import {
     UtdypendeVilkårsvurderingDeltBosted,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
@@ -61,7 +62,7 @@ const StyledFamilieReactSelect = styled(FamilieReactSelect)`
 
 const mapUtdypendeVilkårsvurderingTilOption = (
     utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering
-): ISelectOption => ({
+): OptionType => ({
     value: utdypendeVilkårsvurdering,
     label: utdypendeVilkårsvurderingTekst[utdypendeVilkårsvurdering],
 });
@@ -72,7 +73,7 @@ export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
     erLesevisning,
     feilhåndtering,
 }) => {
-    const håndterEndring = (action: ActionMeta<ISelectOption>) => {
+    const håndterEndring = (action: ActionMeta<OptionType>) => {
         switch (action.action) {
             case 'select-option':
                 utdypendeVilkårsvurderinger.validerOgSettFelt([
@@ -116,7 +117,7 @@ export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
             creatable={false}
             erLesevisning={erLesevisning}
             isMulti
-            onChange={(_, action: ActionMeta<ISelectOption>) => {
+            onChange={(_, action: ActionMeta<OptionType>) => {
                 håndterEndring(action);
             }}
             options={muligeUtdypendeVilkårsvurderinger.map(mapUtdypendeVilkårsvurderingTilOption)}

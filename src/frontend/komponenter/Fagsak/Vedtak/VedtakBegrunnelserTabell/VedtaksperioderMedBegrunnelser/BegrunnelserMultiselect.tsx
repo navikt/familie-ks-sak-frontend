@@ -5,15 +5,12 @@ import styled from 'styled-components';
 
 import { BodyShort, Label } from '@navikt/ds-react';
 import { AZIndexPopover } from '@navikt/ds-tokens/dist/tokens';
-import type {
-    ActionMeta,
-    FormatOptionLabelMeta,
-    ISelectOption,
-} from '@navikt/familie-form-elements';
+import type { ActionMeta, FormatOptionLabelMeta } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import type { OptionType } from '../../../../../typer/common';
 import type { Begrunnelse, BegrunnelseType } from '../../../../../typer/vedtak';
 import { begrunnelseTyper } from '../../../../../typer/vedtak';
 import {
@@ -46,7 +43,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
     } = useVedtaksperiodeMedBegrunnelser();
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
 
-    const [begrunnelser, settBegrunnelser] = useState<ISelectOption[]>([]);
+    const [begrunnelser, settBegrunnelser] = useState<OptionType[]>([]);
 
     useEffect(() => {
         if (vedtaksbegrunnelseTekster.status === RessursStatus.SUKSESS) {
@@ -74,7 +71,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
                     textTransform: 'none',
                 }),
                 multiValue: (provided, props) => {
-                    const currentOption = props.data as ISelectOption;
+                    const currentOption = props.data as OptionType;
                     const begrunnelseType: BegrunnelseType | undefined = finnBegrunnelseType(
                         vedtaksbegrunnelseTekster,
                         currentOption.value as Begrunnelse
@@ -106,12 +103,12 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
             creatable={false}
             erLesevisning={erLesevisning}
             isMulti={true}
-            onChange={(_, action: ActionMeta<ISelectOption>) => {
+            onChange={(_, action: ActionMeta<OptionType>) => {
                 onChangeBegrunnelse(action);
             }}
             formatOptionLabel={(
-                option: ISelectOption,
-                formatOptionLabelMeta: FormatOptionLabelMeta<ISelectOption>
+                option: OptionType,
+                formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>
             ) => {
                 const begrunnelseType = finnBegrunnelseType(
                     vedtaksbegrunnelseTekster,
@@ -129,7 +126,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
                     return <BodyShort>{option.label}</BodyShort>;
                 }
             }}
-            formatGroupLabel={(group: GroupBase<ISelectOption>) => {
+            formatGroupLabel={(group: GroupBase<OptionType>) => {
                 return (
                     <GroupLabel>
                         <Label>{group.label}</Label>
