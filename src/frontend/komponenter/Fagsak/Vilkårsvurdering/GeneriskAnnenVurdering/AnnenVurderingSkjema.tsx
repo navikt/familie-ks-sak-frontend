@@ -2,8 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Radio, RadioGroup, Textarea } from '@navikt/ds-react';
-import { FamilieKnapp } from '@navikt/familie-form-elements';
+import { Button, Radio, RadioGroup, Textarea } from '@navikt/ds-react';
 
 import { useAnnenVurderingSkjema } from './AnnenVurderingSkjemaContext';
 import { annenVurderingBegrunnelseFeilmeldingId } from './AnnenVurderingTabell';
@@ -80,29 +79,29 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
                 }}
             />
 
-            <Knapperad>
-                <div>
-                    <FamilieKnapp
-                        erLesevisning={erLesevisning}
-                        onClick={lagreAnnenVurdering}
-                        size="small"
-                        variant="secondary"
-                        loading={lagrerAnnenVurdering}
-                        disabled={lagrerAnnenVurdering}
-                    >
-                        Ferdig
-                    </FamilieKnapp>
-                    <FamilieKnapp
-                        style={{ marginLeft: '1rem' }}
-                        erLesevisning={erLesevisning}
-                        onClick={() => toggleForm(false)}
-                        size="small"
-                        variant="tertiary"
-                    >
-                        Avbryt
-                    </FamilieKnapp>
-                </div>
-            </Knapperad>
+            {!erLesevisning && (
+                <Knapperad>
+                    <div>
+                        <Button
+                            onClick={lagreAnnenVurdering}
+                            size="small"
+                            variant="secondary"
+                            loading={lagrerAnnenVurdering}
+                            disabled={lagrerAnnenVurdering}
+                        >
+                            Ferdig
+                        </Button>
+                        <Button
+                            style={{ marginLeft: '1rem' }}
+                            onClick={() => toggleForm(false)}
+                            size="small"
+                            variant="tertiary"
+                        >
+                            Avbryt
+                        </Button>
+                    </div>
+                </Knapperad>
+            )}
         </FieldsetForVilkårSkjema>
     );
 };

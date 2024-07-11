@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Delete } from '@navikt/ds-icons';
 import { Alert, BodyShort, Button, Fieldset, Select, TextField } from '@navikt/ds-react';
-import { FamilieKnapp, FamilieReactSelect } from '@navikt/familie-form-elements';
+import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
@@ -197,31 +197,29 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                     </UtbetaltBeløpRad>
                 </StyledFieldset>
 
-                <Knapperad>
-                    <div>
-                        <FamilieKnapp
-                            erLesevisning={lesevisning}
-                            onClick={() => sendInnSkjema()}
-                            size="small"
-                            variant={valideringErOk() ? 'primary' : 'secondary'}
-                            loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                            disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
-                        >
-                            Ferdig
-                        </FamilieKnapp>
-                        <FamilieKnapp
-                            style={{ marginLeft: '1rem' }}
-                            erLesevisning={lesevisning}
-                            onClick={() => toggleForm(false)}
-                            size="small"
-                            variant="tertiary"
-                        >
-                            Avbryt
-                        </FamilieKnapp>
-                    </div>
+                {!lesevisning && (
+                    <Knapperad>
+                        <div>
+                            <Button
+                                onClick={() => sendInnSkjema()}
+                                size="small"
+                                variant={valideringErOk() ? 'primary' : 'secondary'}
+                                loading={skjema.submitRessurs.status === RessursStatus.HENTER}
+                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
+                            >
+                                Ferdig
+                            </Button>
+                            <Button
+                                style={{ marginLeft: '1rem' }}
+                                onClick={() => toggleForm(false)}
+                                size="small"
+                                variant="tertiary"
+                            >
+                                Avbryt
+                            </Button>
+                        </div>
 
-                    {skjema.felter.status?.verdi !== EøsPeriodeStatus.IKKE_UTFYLT &&
-                        !lesevisning && (
+                        {skjema.felter.status?.verdi !== EøsPeriodeStatus.IKKE_UTFYLT && (
                             <Button
                                 variant={'tertiary'}
                                 onClick={() => slettUtenlandskPeriodeBeløp()}
@@ -236,7 +234,8 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                                 {'Fjern'}
                             </Button>
                         )}
-                </Knapperad>
+                    </Knapperad>
+                )}
             </EøsPeriodeSkjemaContainer>
         </Fieldset>
     );

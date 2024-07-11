@@ -5,9 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Refresh } from '@navikt/ds-icons';
-import { Alert, BodyShort, Detail, ErrorMessage, ErrorSummary } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Detail, ErrorMessage, ErrorSummary } from '@navikt/ds-react';
 import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
-import { FamilieKnapp } from '@navikt/familie-form-elements';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
@@ -109,28 +108,33 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                                 : 'Kunne ikke hente innhentingstidspunkt for registeropplysninger'
                         }
                     />
-                    <FamilieKnapp
-                        className={classNames('oppdater-registeropplysninger-knapp')}
-                        id={'oppdater-registeropplysninger'}
-                        aria-label={'Oppdater registeropplysninger'}
-                        title={'Oppdater'}
-                        onClick={() => {
-                            settHentOpplysningerRessurs(byggHenterRessurs());
-                            oppdaterRegisteropplysninger().then(
-                                (response: Ressurs<IBehandling>) => {
-                                    settHentOpplysningerRessurs(response);
-                                }
-                            );
-                        }}
-                        loading={hentOpplysningerRessurs.status === RessursStatus.HENTER}
-                        variant="tertiary"
-                        size="small"
-                        erLesevisning={erLesevisning}
-                    >
-                        {hentOpplysningerRessurs.status !== RessursStatus.HENTER && (
-                            <Refresh style={{ fontSize: '1.5rem' }} role="img" focusable="false" />
-                        )}
-                    </FamilieKnapp>
+                    {!erLesevisning && (
+                        <Button
+                            className={classNames('oppdater-registeropplysninger-knapp')}
+                            id={'oppdater-registeropplysninger'}
+                            aria-label={'Oppdater registeropplysninger'}
+                            title={'Oppdater'}
+                            onClick={() => {
+                                settHentOpplysningerRessurs(byggHenterRessurs());
+                                oppdaterRegisteropplysninger().then(
+                                    (response: Ressurs<IBehandling>) => {
+                                        settHentOpplysningerRessurs(response);
+                                    }
+                                );
+                            }}
+                            loading={hentOpplysningerRessurs.status === RessursStatus.HENTER}
+                            variant="tertiary"
+                            size="small"
+                        >
+                            {hentOpplysningerRessurs.status !== RessursStatus.HENTER && (
+                                <Refresh
+                                    style={{ fontSize: '1.5rem' }}
+                                    role="img"
+                                    focusable="false"
+                                />
+                            )}
+                        </Button>
+                    )}
                 </HentetLabelOgKnappDiv>
                 {hentOpplysningerRessurs.status === RessursStatus.FEILET && (
                     <ErrorMessage>{hentOpplysningerRessurs.frontendFeilmelding}</ErrorMessage>
