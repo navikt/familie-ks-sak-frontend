@@ -2305,15 +2305,7 @@
     "@sentry/cli-win32-i686" "2.27.0"
     "@sentry/cli-win32-x64" "2.27.0"
 
-"@sentry/core@8.17.0":
-  version "8.17.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-8.17.0.tgz#95145bedaf1a338b7f045598d4fafee3471f689b"
-  integrity sha512-s62O0Re6WcvaVbH1IEeAWmj/ca8UhaRoFaDnc5TR68reOycBrgnqCNq3qHxBsELOA6NJowoK+T29DDGs9QVXhQ==
-  dependencies:
-    "@sentry/types" "8.17.0"
-    "@sentry/utils" "8.17.0"
-
-"@sentry/core@^8.11.0":
+"@sentry/core@8.17.0", "@sentry/core@^8.11.0":
   version "8.17.0"
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-8.17.0.tgz#95145bedaf1a338b7f045598d4fafee3471f689b"
   integrity sha512-s62O0Re6WcvaVbH1IEeAWmj/ca8UhaRoFaDnc5TR68reOycBrgnqCNq3qHxBsELOA6NJowoK+T29DDGs9QVXhQ==
@@ -2325,18 +2317,6 @@
   version "8.17.0"
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-8.17.0.tgz#0100b5decb2bac55a6c6a231de1db2c79bad7f89"
   integrity sha512-v0nI0+ajiGTijhF1W/ryn2+zFVFr6VPn6lao3W4qKj9MlltIHa4/uuGzTaiCFwoPw7g5bZ1Q09SStpDXVMkz2A==
-
-"@sentry/types@8.17.0":
-  version "8.17.0"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-8.17.0.tgz#0100b5decb2bac55a6c6a231de1db2c79bad7f89"
-  integrity sha512-v0nI0+ajiGTijhF1W/ryn2+zFVFr6VPn6lao3W4qKj9MlltIHa4/uuGzTaiCFwoPw7g5bZ1Q09SStpDXVMkz2A==
-
-"@sentry/utils@8.17.0":
-  version "8.17.0"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-8.17.0.tgz#758207b3e0534aacce97b50f8d418b129c9f8b9f"
-  integrity sha512-HHtAPLOlvzhwgfYzxtuPnLUoGRMtMrFvopkii74zmx/1ZD4VN4PYPB2E5KFf3c18pTovw+kxF0ux6VrGiyAHsw==
-  dependencies:
-    "@sentry/types" "8.17.0"
 
 "@sentry/utils@8.17.0":
   version "8.17.0"
@@ -11137,10 +11117,10 @@ webpack-virtual-modules@^0.5.0:
   resolved "https://registry.yarnpkg.com/webpack-virtual-modules/-/webpack-virtual-modules-0.5.0.tgz#362f14738a56dae107937ab98ea7062e8bdd3b6c"
   integrity sha512-kyDivFZ7ZM0BVOUteVbDFhlRt7Ah/CSPwJdi8hBpkK7QLumUqdLtVfm/PX/hkcnrvr0i77fO5+TjZ94Pe+C9iw==
 
-webpack@^5, webpack@^5.92.0:
-  version "5.92.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.92.0.tgz#cc114c71e6851d220b1feaae90159ed52c876bdf"
-  integrity sha512-Bsw2X39MYIgxouNATyVpCNVWBCuUwDgWtN78g6lSdPJRLaQ/PUVm/oXcaRAyY/sMFoKFQrsPeqvTizWtq7QPCA==
+webpack@^5, webpack@^5.93.0:
+  version "5.93.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.93.0.tgz#2e89ec7035579bdfba9760d26c63ac5c3462a5e5"
+  integrity sha512-Y0m5oEY1LRuwly578VqluorkXbvXKh7U3rLoQCEO04M97ScRr44afGVkI0FQFsXzysk5OgFAxjZAb9rsGQVihA==
   dependencies:
     "@types/eslint-scope" "^3.7.3"
     "@types/estree" "^1.0.5"
