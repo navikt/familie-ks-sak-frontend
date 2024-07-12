@@ -117,7 +117,7 @@ export const JournalpostSkjema: React.FC = () => {
                     </Button>
                 )}
 
-                {!erLesevisning() && kanKnytteJournalpostTilBehandling() && (
+                {erLesevisning() && kanKnytteJournalpostTilBehandling() && (
                     <Button
                         size="small"
                         variant="primary"
