@@ -1,8 +1,8 @@
 import type { GroupBase } from 'react-select';
 
-import type { ISelectOption } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import type { OptionType } from '../../../../typer/common';
 import type { IRestBegrunnelseTilknyttetVilkår } from '../../../../typer/vedtak';
 import { BegrunnelseType, begrunnelseTyper } from '../../../../typer/vedtak';
 import type { VilkårType } from '../../../../typer/vilkår';
@@ -27,7 +27,7 @@ const useAvslagBegrunnelseMultiselect = (vilkårType: VilkårType, regelverk?: R
         .filter((begrunnelseType: BegrunnelseType) =>
             gyldigeBegrunnelseTyper.includes(begrunnelseType)
         )
-        .reduce((acc: GroupBase<ISelectOption>[], begrunnelseType: BegrunnelseType) => {
+        .reduce((acc: GroupBase<OptionType>[], begrunnelseType: BegrunnelseType) => {
             return [
                 ...acc,
                 {

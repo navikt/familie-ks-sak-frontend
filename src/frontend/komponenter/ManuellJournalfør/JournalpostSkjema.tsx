@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Back } from '@navikt/ds-icons';
-import { Alert, ErrorSummary, Heading } from '@navikt/ds-react';
-import { FamilieKnapp } from '@navikt/familie-form-elements';
+import { Alert, Button, ErrorSummary, Heading } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { AvsenderPanel } from './AvsenderPanel';
@@ -99,36 +98,35 @@ export const JournalpostSkjema: React.FC = () => {
             </StyledSectionDiv>
 
             <Knapperekke>
-                <FamilieKnapp
+                <Button
                     size="small"
                     variant={'secondary'}
-                    erLesevisning={false}
                     onClick={() => navigate(`/oppgaver`)}
                     disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                 >
                     {erLesevisning() ? tilbakeKnappInnhold : 'Avbryt'}
-                </FamilieKnapp>
-                <FamilieKnapp
-                    size="small"
-                    variant="primary"
-                    erLesevisning={erLesevisning()}
-                    onClick={journalfør}
-                    spinner={skjema.submitRessurs.status === RessursStatus.HENTER}
-                    disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
-                >
-                    Journalfør
-                </FamilieKnapp>
+                </Button>
+                {!erLesevisning() && (
+                    <Button
+                        size="small"
+                        variant="primary"
+                        onClick={journalfør}
+                        disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
+                    >
+                        Journalfør
+                    </Button>
+                )}
 
-                <FamilieKnapp
-                    size="small"
-                    variant="primary"
-                    onClick={lukkOppgaveOgKnyttJournalpostTilBehandling}
-                    erLesevisning={!erLesevisning() || !kanKnytteJournalpostTilBehandling()}
-                    spinner={skjema.submitRessurs.status === RessursStatus.HENTER}
-                    disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
-                >
-                    Ferdigstill oppgave
-                </FamilieKnapp>
+                {erLesevisning() && kanKnytteJournalpostTilBehandling() && (
+                    <Button
+                        size="small"
+                        variant="primary"
+                        onClick={lukkOppgaveOgKnyttJournalpostTilBehandling}
+                        disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
+                    >
+                        Ferdigstill oppgave
+                    </Button>
+                )}
             </Knapperekke>
         </Container>
     );

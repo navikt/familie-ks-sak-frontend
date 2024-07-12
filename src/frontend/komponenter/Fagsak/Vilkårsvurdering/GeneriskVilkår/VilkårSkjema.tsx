@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { Delete } from '@navikt/ds-icons';
 import { Button, Fieldset, Label, Radio, RadioGroup, Select, Textarea } from '@navikt/ds-react';
 import { ABorderDefault, ABorderWarning, ASurfaceAction } from '@navikt/ds-tokens/dist/tokens';
-import { FamilieKnapp } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import AvslagSkjema from './AvslagSkjema';
@@ -225,30 +224,28 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     skjema.felter.begrunnelse.validerOgSettFelt(event.target.value);
                 }}
             />
-            <Knapperad>
-                <div>
-                    <FamilieKnapp
-                        erLesevisning={lesevisning}
-                        onClick={lagreVilkår}
-                        size="medium"
-                        variant="secondary"
-                        loading={lagrerVilkår}
-                        disabled={lagrerVilkår}
-                    >
-                        Ferdig
-                    </FamilieKnapp>
-                    <FamilieKnapp
-                        style={{ marginLeft: '1rem' }}
-                        erLesevisning={lesevisning}
-                        onClick={() => toggleForm(false)}
-                        size="medium"
-                        variant="tertiary"
-                    >
-                        Avbryt
-                    </FamilieKnapp>
-                </div>
+            {!lesevisning && (
+                <Knapperad>
+                    <div>
+                        <Button
+                            onClick={lagreVilkår}
+                            size="medium"
+                            variant="secondary"
+                            loading={lagrerVilkår}
+                            disabled={lagrerVilkår}
+                        >
+                            Ferdig
+                        </Button>
+                        <Button
+                            style={{ marginLeft: '1rem' }}
+                            onClick={() => toggleForm(false)}
+                            size="medium"
+                            variant="tertiary"
+                        >
+                            Avbryt
+                        </Button>
+                    </div>
 
-                {!lesevisning && (
                     <Button
                         onClick={() => slettVilkår(person.personIdent, vilkårResultat.id)}
                         id={vilkårFeilmeldingId(vilkårResultat)}
@@ -260,8 +257,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     >
                         {'Fjern'}
                     </Button>
-                )}
-            </Knapperad>
+                </Knapperad>
+            )}
         </FieldsetForVilkårSkjema>
     );
 };

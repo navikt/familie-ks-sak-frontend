@@ -1,5 +1,4 @@
-import type { OptionType } from '@navikt/familie-form-elements';
-
+import type { OptionType } from './common';
 import type { IsoDatoString, IsoMånedString } from '../utils/dato';
 
 export interface IRestEndretUtbetalingAndel {
