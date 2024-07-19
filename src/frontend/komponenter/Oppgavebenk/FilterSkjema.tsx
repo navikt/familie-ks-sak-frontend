@@ -17,10 +17,6 @@ const DatoVelgerContainer = styled.div`
     max-width: 12.5rem;
 `;
 
-const StyledFieldset = styled(Fieldset)`
-    margin-bottom: 2rem;
-`;
-
 const FilterSkjema: React.FunctionComponent = () => {
     const { innloggetSaksbehandler } = useApp();
     const {
@@ -98,7 +94,7 @@ const FilterSkjema: React.FunctionComponent = () => {
     }
 
     return (
-        <StyledFieldset legend={'Oppgavebenken filterskjema'} hideLegend>
+        <Fieldset legend={'Oppgavebenken filterskjema'} hideLegend>
             <VStack gap="4">
                 <HStack gap="6">
                     {Object.values(oppgaveFelter)
@@ -123,7 +119,7 @@ const FilterSkjema: React.FunctionComponent = () => {
                     />
                 </HStack>
             </VStack>
-        </StyledFieldset>
+        </Fieldset>
     );
 };
 
