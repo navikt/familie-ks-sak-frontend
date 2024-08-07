@@ -23,8 +23,7 @@ import { useTidslinje } from '../../../context/TidslinjeContext';
 import { utenlandskPeriodeBeløpFeilmeldingId } from '../../../context/UtenlandskPeriodeBeløp/UtenlandskPeriodeBeløpSkjemaContext';
 import { valutakursFeilmeldingId } from '../../../context/Valutakurs/ValutakursSkjemaContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
-import type { IBehandling } from '../../../typer/behandling';
-import { BehandlingSteg } from '../../../typer/behandling';
+import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../typer/behandling';
 import type {
     IRestKompetanse,
     IRestUtenlandskPeriodeBeløp,
@@ -163,6 +162,10 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
 
     const harEøs = harKompetanser || harUtenlandskeBeløper || harValutakurser;
 
+    const skalViseNesteKnapp =
+        åpenBehandling.årsak !== BehandlingÅrsak.LOVENDRING_2024 ||
+        åpenBehandling.stegTilstand.some(steg => steg.behandlingSteg === BehandlingSteg.SIMULERING);
+
     return (
         <Skjemasteg
             senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
@@ -181,6 +184,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             maxWidthStyle={'80rem'}
             feilmelding={hentFrontendFeilmelding(behandlingsstegSubmitressurs)}
             steg={BehandlingSteg.BEHANDLINGSRESULTAT}
+            skalViseNesteKnapp={skalViseNesteKnapp}
         >
             {personerMedUgyldigEtterbetalingsperiode.length > 0 && (
                 <StyledAlert variant={'warning'}>
