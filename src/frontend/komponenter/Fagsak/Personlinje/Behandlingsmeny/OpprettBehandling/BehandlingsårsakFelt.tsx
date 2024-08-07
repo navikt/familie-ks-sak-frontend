@@ -44,6 +44,7 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
                         (årsak !== BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
                             toggles[ToggleNavn.kanManueltKorrigereMedVedtaksbrev])
                 )
+                .filter(årsak => årsak !== BehandlingÅrsak.LOVENDRING_2024)
                 .map(årsak => {
                     return (
                         <option
