@@ -56,7 +56,6 @@ export enum BehandlingÅrsak {
     SATSENDRING = 'SATSENDRING',
     BARNEHAGELISTE = 'BARNEHAGELISTE',
     TEKNISK_ENDRING = 'TEKNISK_ENDRING',
-    LOVENDRING_2024 = 'LOVENDRING_2024',
 }
 
 export const behandlingÅrsak: Record<
@@ -72,7 +71,6 @@ export const behandlingÅrsak: Record<
     SATSENDRING: 'Satsendring',
     BARNEHAGELISTE: 'Barnehageliste',
     TEKNISK_ENDRING: 'Teknisk Endring',
-    LOVENDRING_2024: 'Lovendring 2024',
 
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
