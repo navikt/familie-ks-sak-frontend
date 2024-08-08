@@ -1,6 +1,10 @@
 import { mapFraRestPersonResultatTilPersonResultat } from '../../../context/Vilkårsvurdering/vilkårsvurdering';
-import type { IBehandling } from '../../../typer/behandling';
-import { BehandlingSteg, BehandlingÅrsak, hentStegNummer } from '../../../typer/behandling';
+import {
+    BehandlingSteg,
+    BehandlingÅrsak,
+    hentStegNummer,
+    type IBehandling,
+} from '../../../typer/behandling';
 import type { IPersonResultat, IVilkårResultat } from '../../../typer/vilkår';
 import { Resultat } from '../../../typer/vilkår';
 import { formaterIdent } from '../../../utils/formatter';
@@ -83,13 +87,28 @@ export const sider: Record<SideId, ISide> = {
         href: 'simulering',
         navn: 'Simulering',
         steg: BehandlingSteg.SIMULERING,
+        visSide: (åpenBehandling: IBehandling) => {
+            const erLovendringUtenSimuleringsteg =
+                åpenBehandling.årsak === BehandlingÅrsak.LOVENDRING_2024 &&
+                åpenBehandling.stegTilstand.every(
+                    steg => steg.behandlingSteg !== BehandlingSteg.SIMULERING
+                );
+            return !erLovendringUtenSimuleringsteg;
+        },
     },
     VEDTAK: {
         href: 'vedtak',
         navn: 'Vedtak',
         steg: BehandlingSteg.VEDTAK,
         visSide: (åpenBehandling: IBehandling) => {
-            return åpenBehandling.årsak !== BehandlingÅrsak.SATSENDRING;
+            const erLovendringUtenVedtaksteg =
+                åpenBehandling.årsak === BehandlingÅrsak.LOVENDRING_2024 &&
+                åpenBehandling.stegTilstand.every(
+                    steg => steg.behandlingSteg !== BehandlingSteg.VEDTAK
+                );
+            return (
+                åpenBehandling.årsak !== BehandlingÅrsak.SATSENDRING && !erLovendringUtenVedtaksteg
+            );
         },
     },
 };
@@ -131,9 +150,15 @@ export const finnSideForBehandlingssteg = (behandling: IBehandling): ISide | und
     const steg = behandling.steg;
 
     if (hentStegNummer(steg) >= hentStegNummer(BehandlingSteg.VEDTAK)) {
-        return sider.VEDTAK.visSide && sider.VEDTAK.visSide(behandling)
-            ? sider.VEDTAK
-            : sider.SIMULERING;
+        if (sider.VEDTAK.visSide && sider.VEDTAK.visSide(behandling)) {
+            return sider.VEDTAK;
+        }
+
+        if (sider.SIMULERING.visSide && sider.SIMULERING.visSide(behandling)) {
+            return sider.SIMULERING;
+        }
+
+        return sider.BEHANDLINGRESULTAT;
     }
 
     const sideForSteg = Object.entries(sider).find(([_, side]) => side.steg === steg);
