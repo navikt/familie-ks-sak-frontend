@@ -9,6 +9,7 @@ import Behandlingsresultat from './Behandlingsresultat/Behandlingsresultat';
 import Simulering from './Simulering/Simulering';
 import RegistrerSøknad from './Søknad/RegistrerSøknad';
 import OppsummeringVedtak from './Vedtak/OppsummeringVedtak';
+import { SammensattKontrollsakProvider } from './Vedtak/SammensattKontrollsak/useSammensattKontrollsakContext';
 import Vilkårsvurdering from './Vilkårsvurdering/Vilkårsvurdering';
 import { useBehandling } from '../../context/behandlingContext/BehandlingContext';
 import { EøsProvider } from '../../context/Eøs/EøsContext';
@@ -82,10 +83,12 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker }) => {
                     <Route
                         path="/vedtak"
                         element={
-                            <OppsummeringVedtak
-                                åpenBehandling={åpenBehandling.data}
-                                bruker={bruker}
-                            />
+                            <SammensattKontrollsakProvider behandling={åpenBehandling.data}>
+                                <OppsummeringVedtak
+                                    åpenBehandling={åpenBehandling.data}
+                                    bruker={bruker}
+                                />
+                            </SammensattKontrollsakProvider>
                         }
                     />
                 </Routes>
