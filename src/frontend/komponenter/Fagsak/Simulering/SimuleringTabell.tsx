@@ -4,12 +4,13 @@ import { useState } from 'react';
 import { isAfter } from 'date-fns';
 import styled from 'styled-components';
 
-import { BodyShort, Heading, Table } from '@navikt/ds-react';
+import { Alert, BodyShort, Heading, Switch, Table } from '@navikt/ds-react';
 import {
     AFontWeightBold,
     AGreen700,
     ASpacing18,
     ATextDefault,
+    ASurfaceSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
 import { AFontWeightRegular, ATextDanger } from '@navikt/ds-tokens/dist/tokens';
 
@@ -30,8 +31,20 @@ const Årsvelger = styled.div`
     flex-direction: column;
 `;
 
+const StyledSwitch = styled(Switch)`
+    width: fit-content;
+`;
+
+const StyledAlert = styled(Alert)`
+    margin-bottom: 1rem;
+`;
+
 const IkkeFullBreddeTabell = styled(Table)`
     width: unset;
+`;
+
+const ManuellPosteringRad = styled(Table.Row)`
+    background-color: ${ASurfaceSubtle};
 `;
 
 const HeaderCelle = styled(Table.HeaderCell)<{ $skalViseStipletLinje: boolean }>`
@@ -81,6 +94,21 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
     const aktueltÅr = årISimuleringen[indexFramvistÅr];
     const erMerEnn12MånederISimulering = perioder.length > 12;
 
+    const finnesManuellePosteringer = perioder.some(
+        periode => periode.manuellPostering && periode.manuellPostering !== 0
+    );
+
+    const erManuellPosteringSamtidigSomResultatIkkeErNull = perioder.some(
+        periode =>
+            periode.manuellPostering &&
+            periode.manuellPostering !== 0 &&
+            periode.resultat &&
+            periode.resultat !== 0
+    );
+    const [visManuellePosteringer, setVisManuellePosteringer] = useState(
+        erManuellPosteringSamtidigSomResultatIkkeErNull
+    );
+
     const kapitaliserTekst = (tekst: string): string => {
         return tekst.charAt(0).toUpperCase() + tekst.slice(1).toLowerCase();
     };
@@ -109,6 +137,13 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
 
     return (
         <>
+            {erManuellPosteringSamtidigSomResultatIkkeErNull && (
+                <StyledAlert variant={'warning'}>
+                    Det finnes manuelle posteringer på den forrige behandlingen. Du må mest
+                    sannsynlig sende en oppgave til NØS og be dem gjøre manuelle posteringer
+                    tilsvarende de manuelle posteringene i tabellen.
+                </StyledAlert>
+            )}
             <Heading size={'small'} level={'2'} spacing>
                 Simuleringsresultat for{' '}
                 {perioder.length === 1
@@ -118,7 +153,15 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                       })}`
                     : `perioden ${tilOgFraDatoForSimulering}`}
             </Heading>
-
+            {finnesManuellePosteringer && (
+                <StyledSwitch
+                    checked={visManuellePosteringer}
+                    onChange={() => setVisManuellePosteringer(!visManuellePosteringer)}
+                    size="small"
+                >
+                    Vis manuelle posteringer
+                </StyledSwitch>
+            )}
             <IkkeFullBreddeTabell
                 aria-label={`Simuleringsresultat for ${
                     erMerEnn12MånederISimulering
@@ -223,6 +266,20 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                 )
                         )}
                     </Table.Row>
+                    {visManuellePosteringer && (
+                        <ManuellPosteringRad>
+                            <FørsteKolonne>Manuell postering</FørsteKolonne>
+                            {perioder.map(periode => (
+                                <DataCelle
+                                    key={'manuell postering - ' + periode.fom}
+                                    align={'right'}
+                                    $skalViseStipletLinje={erNestePeriode(periode)}
+                                >
+                                    {formaterBeløpUtenValutakode(periode.manuellPostering)}
+                                </DataCelle>
+                            ))}
+                        </ManuellPosteringRad>
+                    )}
                 </Table.Body>
             </IkkeFullBreddeTabell>
         </>
