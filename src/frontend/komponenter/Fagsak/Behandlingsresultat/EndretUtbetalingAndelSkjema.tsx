@@ -258,12 +258,6 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                             <BodyShort>
                                 {skjema.felter.periodeSkalUtbetalesTilSøker.verdi ? 'Ja' : 'Nei'}
                             </BodyShort>
-                            skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
-                            <BodyShort
-                                className={classNames('skjemaelement', 'lese-felt')}
-                                children={'Vurderingen er et avslag'}
-                            />
-                            )
                         </>
                     ) : (
                         <RadioGroup
@@ -292,18 +286,31 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     )}
                 </Feltmargin>
                 <Feltmargin>
-                    {!skjema.felter.periodeSkalUtbetalesTilSøker.verdi && (
-                        <Checkbox
-                            value={'Vurderingen er et avslag'}
-                            checked={skjema.felter.erEksplisittAvslagPåSøknad.verdi}
-                            onChange={event =>
-                                skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
-                                    event.target.checked
-                                )
-                            }
-                        >
-                            {'Vurderingen er et avslag'}
-                        </Checkbox>
+                    {erLesevisning ? (
+                        <>
+                            {skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
+                                <BodyShort
+                                    className={classNames('skjemaelement', 'lese-felt')}
+                                    children={'Vurderingen er et avslag'}
+                                />
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            {!skjema.felter.periodeSkalUtbetalesTilSøker.verdi && (
+                                <Checkbox
+                                    value={'Vurderingen er et avslag'}
+                                    checked={skjema.felter.erEksplisittAvslagPåSøknad.verdi}
+                                    onChange={event =>
+                                        skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
+                                            event.target.checked
+                                        )
+                                    }
+                                >
+                                    {'Vurderingen er et avslag'}
+                                </Checkbox>
+                            )}
+                        </>
                     )}
                 </Feltmargin>
 
