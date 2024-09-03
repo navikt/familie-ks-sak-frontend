@@ -8,6 +8,7 @@ export enum ToggleNavn {
     tekniskVedlikeholdHenleggelse = 'familie-ks-sak.teknisk-vedlikehold-henleggelse.tilgangsstyring',
     kanBehandleKlage = 'familie-ks-sak.klage',
     lovendring7MndNyeBehandlinger = 'familie-ks-sak.lov-endring-7-mnd-nye-behandlinger',
+    skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
 }
 
 export const alleTogglerAv = (): IToggles => {

@@ -4,18 +4,20 @@ import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { useHttp } from '@navikt/familie-http';
+import type { Ressurs } from '@navikt/familie-typer';
 import {
-    byggTomRessurs,
-    byggHenterRessurs,
     byggFeiletRessurs,
+    byggHenterRessurs,
+    byggTomRessurs,
     RessursStatus,
 } from '@navikt/familie-typer';
-import type { Ressurs } from '@navikt/familie-typer';
 
 import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import type { IBehandling, IOpprettBehandlingData } from '../../typer/behandling';
 import { BehandlingÅrsak } from '../../typer/behandling';
 import type { ILogg } from '../../typer/logg';
+import { obfuskerBehandling, obfuskerLogg } from '../../utils/obfuskerData';
+import { useApp } from '../AppContext';
 
 const useBehandlingApi = (
     behandling: Ressurs<IBehandling>,
@@ -26,6 +28,7 @@ const useBehandlingApi = (
 
     const navigate = useNavigate();
     const [logg, settLogg] = useState<Ressurs<ILogg[]>>(byggTomRessurs());
+    const { skalObfuskereData } = useApp();
 
     useEffect(() => {
         if (behandlingId !== undefined) {
@@ -74,6 +77,10 @@ const useBehandlingApi = (
             url: `/familie-ks-sak/api/behandlinger/${behandlingId}`,
             påvirkerSystemLaster: true,
         }).then((response: Ressurs<IBehandling>) => {
+            if (skalObfuskereData()) {
+                console.log('Obfuskerer data i useBehandlingApi');
+                obfuskerBehandling(response);
+            }
             oppdaterBehandling(response, false);
         });
     };
@@ -88,6 +95,9 @@ const useBehandlingApi = (
                 url: `/familie-ks-sak/api/logg/${behandlingId}`,
             })
                 .then((hentetLogg: Ressurs<ILogg[]>) => {
+                    if (skalObfuskereData()) {
+                        obfuskerLogg(hentetLogg);
+                    }
                     settLogg(hentetLogg);
                 })
                 .catch(() => {

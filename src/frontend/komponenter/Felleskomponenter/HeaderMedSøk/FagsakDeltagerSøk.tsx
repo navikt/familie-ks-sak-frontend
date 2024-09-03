@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ISøkeresultat } from '@navikt/familie-header';
 import { ikoner, Søk } from '@navikt/familie-header';
 import { useHttp } from '@navikt/familie-http';
+import type { Ressurs } from '@navikt/familie-typer';
 import {
     byggFeiletRessurs,
     byggFunksjonellFeilRessurs,
@@ -13,17 +14,19 @@ import {
     kjønnType,
     RessursStatus,
 } from '@navikt/familie-typer';
-import type { Ressurs } from '@navikt/familie-typer';
 import { idnr } from '@navikt/fnrvalidator';
 
 import OpprettFagsakModal from './OpprettFagsakModal';
+import { useApp } from '../../../context/AppContext';
 import IkkeTilgang from '../../../ikoner/IkkeTilgang';
 import type { IFagsakDeltager, ISøkParam } from '../../../typer/fagsakdeltager';
 import { fagsakdeltagerRoller } from '../../../typer/fagsakdeltager';
+import { obfuskerFagsakDeltager } from '../../../utils/obfuskerData';
 
 const FagsakDeltagerSøk: React.FC = () => {
     const { request } = useHttp();
     const navigate = useNavigate();
+    const { skalObfuskereData } = useApp();
 
     const [fagsakDeltagere, settFagsakDeltagere] =
         React.useState<Ressurs<IFagsakDeltager[]>>(byggTomRessurs());
@@ -53,6 +56,9 @@ const FagsakDeltagerSøk: React.FC = () => {
             })
                 .then((response: Ressurs<IFagsakDeltager[]>) => {
                     if (response.status === RessursStatus.SUKSESS) {
+                        if (skalObfuskereData()) {
+                            obfuskerFagsakDeltager(response);
+                        }
                         settFagsakDeltagere(response);
                     } else if (
                         response.status === RessursStatus.FEILET ||
