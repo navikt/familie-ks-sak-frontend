@@ -78,7 +78,6 @@ const useBehandlingApi = (
             påvirkerSystemLaster: true,
         }).then((response: Ressurs<IBehandling>) => {
             if (skalObfuskereData()) {
-                console.log('Obfuskerer data i useBehandlingApi');
                 obfuskerBehandling(response);
             }
             oppdaterBehandling(response, false);
