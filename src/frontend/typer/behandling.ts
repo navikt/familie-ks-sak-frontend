@@ -351,3 +351,18 @@ export const settPåVentÅrsaker: Record<SettPåVentÅrsak, string> = {
     AVVENTER_DOKUMENTASJON: 'Avventer dokumentasjon',
     AVVENTER_BEHANDLING: 'Avventer behandling',
 };
+
+export const erBehandlingAvslått = (behandlingsResultat?: BehandlingResultat): boolean => {
+    return [
+        BehandlingResultat.AVSLÅTT,
+        BehandlingResultat.AVSLÅTT_OG_ENDRET,
+        BehandlingResultat.AVSLÅTT_ENDRET_OG_OPPHØRT,
+        BehandlingResultat.AVSLÅTT_OG_OPPHØRT,
+    ].some(resultat => resultat === behandlingsResultat);
+};
+
+export const erBehandlingFortsattInnvilget = (
+    behandlingsResultat?: BehandlingResultat
+): boolean => {
+    return behandlingsResultat === BehandlingResultat.FORTSATT_INNVILGET;
+};
