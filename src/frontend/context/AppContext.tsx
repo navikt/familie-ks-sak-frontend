@@ -73,6 +73,7 @@ const [AppContentProvider, useApp] = createUseContext(() => {
 
     const [appInfoModal, settAppInfoModal] = React.useState<IModal>(initalState);
     const [toasts, settToasts] = useState<{ [toastId: string]: IToast }>({});
+    const [erTogglesHentet, settErTogglesHentet] = useState(false);
 
     const verifiserVersjon = () => {
         request<void, string>({
@@ -140,6 +141,7 @@ const [AppContentProvider, useApp] = createUseContext(() => {
             } else {
                 settToggles(alleTogglerAv);
             }
+            settErTogglesHentet(true);
         });
     }, []);
 
@@ -243,6 +245,7 @@ const [AppContentProvider, useApp] = createUseContext(() => {
         toasts,
         toggles,
         skalObfuskereData,
+        erTogglesHentet,
     };
 });
 
