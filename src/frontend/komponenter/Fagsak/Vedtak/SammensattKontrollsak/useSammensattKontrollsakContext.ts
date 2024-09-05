@@ -53,7 +53,6 @@ function hook({ behandling }: InputProps) {
             opprettSammensattKontrollsak(fritekst);
         }
     }
-
     function mottaRespons(respons: Ressurs<SammensattKontrollsakDto | undefined>) {
         if (respons.status == RessursStatus.SUKSESS) {
             if (erDefinert(respons.data)) {

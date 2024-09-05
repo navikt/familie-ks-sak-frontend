@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
+import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../typer/behandling';
@@ -34,6 +35,7 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } =
         useBehandling();
+    const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
     const navigate = useNavigate();
 
@@ -52,7 +54,8 @@ const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehand
         foreslåVedtakNesteOnClick(
             (visModal: boolean) => settVisModal(visModal),
             erUlagretNyFeilutbetaltValutaPeriode,
-            erUlagretNyRefusjonEøsPeriode
+            erUlagretNyRefusjonEøsPeriode,
+            erSammensattKontrollsak
         );
     };
 
