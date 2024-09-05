@@ -1,6 +1,6 @@
 import type { Adressebeskyttelsegradering, kjønnType } from '@navikt/familie-typer';
 
-enum FagsakDeltagerRolle {
+export enum FagsakDeltagerRolle {
     Barn = 'BARN',
     Forelder = 'FORELDER',
     Ukjent = 'UKJENT',

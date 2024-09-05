@@ -20,55 +20,58 @@ import { Oppgaver } from '../context/OppgaverContext';
 import { TidslinjeProvider } from '../context/TidslinjeContext';
 
 const Container: React.FC = () => {
-    const { autentisert, systemetLaster, innloggetSaksbehandler, appInfoModal } = useApp();
+    const { autentisert, systemetLaster, innloggetSaksbehandler, appInfoModal, erTogglesHentet } =
+        useApp();
 
     return (
         <Router>
             {appInfoModal.visModal && <AppInfoModal modal={appInfoModal} />}
             {autentisert ? (
-                <>
-                    {systemetLaster() && <SystemetLaster />}
-                    <Toasts />
+                erTogglesHentet && (
+                    <>
+                        {systemetLaster() && <SystemetLaster />}
+                        <Toasts />
 
-                    <main className={classNames('container', systemetLaster() && 'blur')}>
-                        <HeaderMedSøk
-                            brukerNavn={innloggetSaksbehandler?.displayName}
-                            brukerEnhet={innloggetSaksbehandler?.enhet}
-                        />
-                        <FagsakProvider>
-                            <BehandlingProvider>
-                                <Routes>
-                                    <Route
-                                        path="/fagsak/:fagsakId/*"
-                                        element={<FagsakContainer />}
-                                    />
-                                    <Route
-                                        path="/oppgaver/journalfor/:oppgaveId"
-                                        element={<ManuellJournalfør />}
-                                    />
-                                    <Route
-                                        path="/tidslinjer/:behandlingId"
-                                        element={
-                                            <TidslinjeProvider>
-                                                <TidslinjeVisualisering />
-                                            </TidslinjeProvider>
-                                        }
-                                    />
-                                    <Route
-                                        path="/internstatistikk"
-                                        element={<Internstatistikk />}
-                                    />
-                                    <Route
-                                        path="/barnehagelister"
-                                        element={<BarnehagebarnTabComp />}
-                                    />
-                                    <Route path="/oppgaver" element={<Oppgaver />} />
-                                    <Route path="/" element={<Navigate to="/oppgaver" />} />
-                                </Routes>
-                            </BehandlingProvider>
-                        </FagsakProvider>
-                    </main>
-                </>
+                        <main className={classNames('container', systemetLaster() && 'blur')}>
+                            <HeaderMedSøk
+                                brukerNavn={innloggetSaksbehandler?.displayName}
+                                brukerEnhet={innloggetSaksbehandler?.enhet}
+                            />
+                            <FagsakProvider>
+                                <BehandlingProvider>
+                                    <Routes>
+                                        <Route
+                                            path="/fagsak/:fagsakId/*"
+                                            element={<FagsakContainer />}
+                                        />
+                                        <Route
+                                            path="/oppgaver/journalfor/:oppgaveId"
+                                            element={<ManuellJournalfør />}
+                                        />
+                                        <Route
+                                            path="/tidslinjer/:behandlingId"
+                                            element={
+                                                <TidslinjeProvider>
+                                                    <TidslinjeVisualisering />
+                                                </TidslinjeProvider>
+                                            }
+                                        />
+                                        <Route
+                                            path="/internstatistikk"
+                                            element={<Internstatistikk />}
+                                        />
+                                        <Route
+                                            path="/barnehagelister"
+                                            element={<BarnehagebarnTabComp />}
+                                        />
+                                        <Route path="/oppgaver" element={<Oppgaver />} />
+                                        <Route path="/" element={<Navigate to="/oppgaver" />} />
+                                    </Routes>
+                                </BehandlingProvider>
+                            </FagsakProvider>
+                        </main>
+                    </>
+                )
             ) : (
                 <UgyldigSesjon />
             )}

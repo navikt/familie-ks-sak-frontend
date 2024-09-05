@@ -1,14 +1,13 @@
-import type { ReactNode, JSX, PropsWithChildren } from 'react';
+import type { JSX, PropsWithChildren, ReactNode } from 'react';
 import React, { useEffect, useState } from 'react';
 
 import type { AxiosRequestConfig } from 'axios';
 import createUseContext from 'constate';
 
 import { Alert, BodyShort, Button } from '@navikt/ds-react';
-import { HttpProvider, useHttp, loggFeil } from '@navikt/familie-http';
+import { HttpProvider, loggFeil, useHttp } from '@navikt/familie-http';
+import type { ISaksbehandler, Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
-import type { ISaksbehandler } from '@navikt/familie-typer';
-import type { Ressurs } from '@navikt/familie-typer';
 
 import type { IToast, ToastTyper } from '../komponenter/Felleskomponenter/Toast/typer';
 import { BehandlerRolle } from '../typer/behandling';
@@ -74,6 +73,7 @@ const [AppContentProvider, useApp] = createUseContext(() => {
 
     const [appInfoModal, settAppInfoModal] = React.useState<IModal>(initalState);
     const [toasts, settToasts] = useState<{ [toastId: string]: IToast }>({});
+    const [erTogglesHentet, settErTogglesHentet] = useState(false);
 
     const verifiserVersjon = () => {
         request<void, string>({
@@ -141,6 +141,7 @@ const [AppContentProvider, useApp] = createUseContext(() => {
             } else {
                 settToggles(alleTogglerAv);
             }
+            settErTogglesHentet(true);
         });
     }, []);
 
@@ -222,6 +223,9 @@ const [AppContentProvider, useApp] = createUseContext(() => {
         return rolle >= BehandlerRolle.SAKSBEHANDLER;
     };
 
+    const skalObfuskereData = () =>
+        toggles[ToggleNavn.skalObfuskereData] && !harInnloggetSaksbehandlerSkrivetilgang();
+
     return {
         autentisert,
         hentSaksbehandlerRolle,
@@ -240,6 +244,8 @@ const [AppContentProvider, useApp] = createUseContext(() => {
         systemetLaster,
         toasts,
         toggles,
+        skalObfuskereData,
+        erTogglesHentet,
     };
 });
 

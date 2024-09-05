@@ -5,6 +5,7 @@ import createUseContext from 'constate';
 import deepEqual from 'deep-equal';
 
 import { useHttp } from '@navikt/familie-http';
+import type { Ressurs } from '@navikt/familie-typer';
 import {
     byggDataRessurs,
     byggFeiletRessurs,
@@ -13,14 +14,15 @@ import {
     hentDataFraRessurs,
     RessursStatus,
 } from '@navikt/familie-typer';
-import type { Ressurs } from '@navikt/familie-typer';
 
 import { useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import type { SkjemaBrevmottaker } from '../../komponenter/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
-import type { IMinimalFagsak, IInternstatistikk } from '../../typer/fagsak';
+import type { IInternstatistikk, IMinimalFagsak } from '../../typer/fagsak';
 import type { IKlagebehandling } from '../../typer/klage';
 import type { IPersonInfo } from '../../typer/person';
 import { sjekkTilgangTilPerson } from '../../utils/commons';
+import { obfuskerFagsak, obfuskerPersonInfo } from '../../utils/obfuskerData';
+import { useApp } from '../AppContext';
 
 const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const [minimalFagsak, settMinimalFagsak] =
@@ -35,6 +37,7 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     >([]);
 
     const { request } = useHttp();
+    const { skalObfuskereData } = useApp();
 
     const hentMinimalFagsak = (fagsakId: string | number, påvirkerSystemLaster = true): void => {
         if (påvirkerSystemLaster) {
@@ -48,6 +51,9 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         })
             .then((hentetFagsak: Ressurs<IMinimalFagsak>) => {
                 if (påvirkerSystemLaster || !deepEqual(hentetFagsak, minimalFagsak)) {
+                    if (skalObfuskereData()) {
+                        obfuskerFagsak(hentetFagsak);
+                    }
                     settMinimalFagsak(hentetFagsak);
                 }
             })
@@ -86,6 +92,9 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
             if (brukerEtterTilgangssjekk.status === RessursStatus.FEILET) {
                 settBruker(sjekkTilgangTilPerson(hentetPerson));
             } else if (brukerEtterTilgangssjekk.status === RessursStatus.SUKSESS) {
+                if (skalObfuskereData()) {
+                    obfuskerPersonInfo(brukerEtterTilgangssjekk);
+                }
                 const brukerMedFagsakId = brukerEtterTilgangssjekk.data;
                 hentFagsakForPerson(personIdent).then((fagsak: Ressurs<IMinimalFagsak>) => {
                     if (fagsak.status === RessursStatus.SUKSESS) {

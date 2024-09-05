@@ -9,6 +9,7 @@ export enum ToggleNavn {
     kanBehandleKlage = 'familie-ks-sak.klage',
     lovendring7MndNyeBehandlinger = 'familie-ks-sak.lov-endring-7-mnd-nye-behandlinger',
     kanOppretteOgEndreSammensatteKontrollsaker = 'familie-ks-sak.kan-opprette-og-endre-sammensatte-kontrollsaker',
+    skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
 }
 
 export const alleTogglerAv = (): IToggles => {
