@@ -2,13 +2,14 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { StarsEuIcon } from '@navikt/aksel-icons';
+import { ArrowUndoIcon, StarsEuIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { Calculator, ExpandFilled } from '@navikt/ds-icons';
 import { Button, Dropdown } from '@navikt/ds-react';
 import { ASpacing10 } from '@navikt/ds-tokens/dist/tokens';
 
 import KorrigerEtterbetaling from './KorrigerEtterbetaling/KorrigerEtterbetaling';
 import KorrigerVedtak from './KorrigerVedtakModal/KorrigerVedtak';
+import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
 import EndreEndringstidspunkt from './VedtakBegrunnelserTabell/EndreEndringstidspunkt';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
@@ -39,6 +40,13 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
     visRefusjonEøs,
 }) => {
     const { vurderErLesevisning } = useBehandling();
+
+    const {
+        skalViseSammensattKontrollsakMenyvalg,
+        erSammensattKontrollsak,
+        settErSammensattKontrollsak,
+        slettSammensattKontrollsak,
+    } = useSammensattKontrollsakContext();
 
     const erLesevisning = vurderErLesevisning();
 
@@ -84,6 +92,20 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
                             Legg til refusjon EØS
                         </Dropdown.Menu.List.Item>
                     )}
+                    {skalViseSammensattKontrollsakMenyvalg &&
+                        (erSammensattKontrollsak ? (
+                            <Dropdown.Menu.List.Item onClick={slettSammensattKontrollsak}>
+                                <ArrowUndoIcon />
+                                Angre sammensatt kontrollsak
+                            </Dropdown.Menu.List.Item>
+                        ) : (
+                            <Dropdown.Menu.List.Item
+                                onClick={() => settErSammensattKontrollsak(true)}
+                            >
+                                <TasklistStartIcon />
+                                Sammensatt kontrollsak
+                            </Dropdown.Menu.List.Item>
+                        ))}
                 </Dropdown.Menu.List>
             </StyledDropdownMeny>
         </Dropdown>

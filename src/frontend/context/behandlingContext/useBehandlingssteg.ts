@@ -24,7 +24,6 @@ const useBehandlingssteg = (
     const { request } = useHttp();
     const { innloggetSaksbehandler } = useApp();
     const { fagsakId, behandlingId } = useSakOgBehandlingParams();
-
     const navigate = useNavigate();
 
     const [submitRessurs, settSubmitRessurs] = useState(byggTomRessurs());
@@ -96,7 +95,8 @@ const useBehandlingssteg = (
     const foreslåVedtakNesteOnClick = (
         settVisModal: (visModal: boolean) => void,
         erUlagretNyFeilutbetaltValuta: boolean,
-        erUlagretNyRefusjonEøsPeriode: boolean
+        erUlagretNyRefusjonEøsPeriode: boolean,
+        erSammensattKontrollsak: boolean
     ) => {
         if (erUlagretNyFeilutbetaltValuta) {
             return settSubmitRessurs(
@@ -112,7 +112,7 @@ const useBehandlingssteg = (
                 )
             );
         }
-        if (!kanForeslåVedtak()) {
+        if (!kanForeslåVedtak() && !erSammensattKontrollsak) {
             return settSubmitRessurs(
                 byggFeiletRessurs(
                     'Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.'
