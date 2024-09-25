@@ -2,12 +2,14 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { ExternalLink } from '@navikt/ds-icons';
-import { Link } from '@navikt/ds-react';
+import { ExternalLinkIcon, PadlockLockedIcon } from '@navikt/aksel-icons';
+import { BodyShort, HStack, Link } from '@navikt/ds-react';
 import type { IDokumentInfo } from '@navikt/familie-typer';
 
 import { Vedleggsliste, EllipsisBodyShort } from './JournalpostListe';
 import type { FamilieAxiosRequestConfig } from '../../../context/AppContext';
+import type { ITilgangsstyrtJournalpost } from '../../../typer/journalpost';
+import { adressebeskyttelsestyper } from '../../../typer/person';
 
 const ListeElement = styled.li`
     margin-bottom: 1rem;
@@ -16,55 +18,65 @@ const ListeElement = styled.li`
     }
 `;
 
-const DokumentTittelMedLenkeWrapper = styled.div`
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: flex-start;
-`;
-
-const StyledLink = styled(Link)`
-    margin-left: 0.5rem;
-`;
-
 interface IProps {
     dokument: IDokumentInfo;
-    journalpostId: string;
     hentForhåndsvisning: <D>(familieAxiosRequestConfig: FamilieAxiosRequestConfig<D>) => void;
+    tilgangsstyrtJournalpost: ITilgangsstyrtJournalpost;
 }
 
 export const JournalpostDokument: React.FC<IProps> = ({
     dokument,
-    journalpostId,
     hentForhåndsvisning,
+    tilgangsstyrtJournalpost,
 }) => {
+    const { journalpost, harTilgang, adressebeskyttelsegradering } = tilgangsstyrtJournalpost;
+
     const hentPdfDokument = (dokumentId: string | undefined) => {
         if (dokumentId !== undefined) {
             hentForhåndsvisning({
                 method: 'GET',
-                url: `/familie-ks-sak/api/journalpost/${journalpostId}/dokument/${dokumentId}`,
+                url: `/familie-ks-sak/api/journalpost/${journalpost.journalpostId}/dokument/${dokumentId}`,
             });
         } else {
             alert('Klarer ikke å åpne dokument. Ta kontakt med teamet.');
         }
     };
+
+    const dokumentTittel = dokument.tittel || 'Uten tittel';
+
     return (
         <ListeElement>
-            <DokumentTittelMedLenkeWrapper>
-                <EllipsisBodyShort size="small" title={dokument.tittel}>
-                    <Link href="#" onClick={() => hentPdfDokument(dokument.dokumentInfoId)}>
-                        {dokument.tittel}
-                    </Link>
-                </EllipsisBodyShort>
+            <HStack gap="1">
+                {harTilgang ? (
+                    <>
+                        <EllipsisBodyShort size="small" title={dokument.tittel}>
+                            <Link href="#" onClick={() => hentPdfDokument(dokument.dokumentInfoId)}>
+                                {dokument.tittel}
+                            </Link>
+                        </EllipsisBodyShort>
 
-                <StyledLink
-                    href={`/familie-ks-sak/api/journalpost/${journalpostId}/dokument/${dokument.dokumentInfoId}/pdf`}
-                    target="_blank"
-                    aria-label="Åpne dokument i ny fane"
-                    title="Åpne dokument i ny fane"
-                >
-                    <ExternalLink />
-                </StyledLink>
-            </DokumentTittelMedLenkeWrapper>
+                        <Link
+                            href={`/familie-ks-sak/api/journalpost/${journalpost.journalpostId}/dokument/${dokument.dokumentInfoId}/pdf`}
+                            target="_blank"
+                            aria-label="Åpne dokument i ny fane"
+                            title="Åpne dokument i ny fane"
+                        >
+                            <ExternalLinkIcon />
+                        </Link>
+                    </>
+                ) : (
+                    <>
+                        <BodyShort size="small">{dokumentTittel}</BodyShort>
+                        <PadlockLockedIcon
+                            title={
+                                adressebeskyttelsegradering
+                                    ? `Dokumentet krever tilgangen ${adressebeskyttelsestyper[adressebeskyttelsegradering]}`
+                                    : 'Dokumentet krever ekstra tilganger'
+                            }
+                        />
+                    </>
+                )}
+            </HStack>
 
             <Vedleggsliste>
                 {dokument.logiskeVedlegg &&
