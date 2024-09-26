@@ -216,38 +216,38 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {sorterteJournalPoster.map(journalpostMedTilgang => (
-                            <Table.Row key={journalpostMedTilgang.journalpost.journalpostId}>
+                        {sorterteJournalPoster.map(tilgangsstyrtJournalpost => (
+                            <Table.Row key={tilgangsstyrtJournalpost.journalpost.journalpostId}>
                                 <StyledDataCell>
                                     <InnUtWrapper>
                                         <IkonWrapper>
                                             {hentIkonForJournalpostType(
-                                                journalpostMedTilgang.journalpost.journalposttype
+                                                tilgangsstyrtJournalpost.journalpost.journalposttype
                                             )}{' '}
                                         </IkonWrapper>
-                                        {journalpostMedTilgang.journalpost.journalposttype}
+                                        {tilgangsstyrtJournalpost.journalpost.journalposttype}
                                     </InnUtWrapper>
                                 </StyledDataCell>
                                 <StyledDataCell>
                                     {isoStringTilFormatertString({
-                                        isoString: journalpostMedTilgang.journalpost.datoMottatt,
+                                        isoString: tilgangsstyrtJournalpost.journalpost.datoMottatt,
                                         tilFormat: Datoformat.DATO_TID,
                                         defaultString: '-',
                                     })}
                                 </StyledDataCell>
 
                                 <StyledDataCell>
-                                    {(journalpostMedTilgang.journalpost.dokumenter?.length ?? 0) >
-                                    0 ? (
+                                    {(tilgangsstyrtJournalpost.journalpost.dokumenter?.length ??
+                                        0) > 0 ? (
                                         <Vedleggsliste>
-                                            {journalpostMedTilgang.journalpost.dokumenter?.map(
+                                            {tilgangsstyrtJournalpost.journalpost.dokumenter?.map(
                                                 dokument => (
                                                     <JournalpostDokument
                                                         dokument={dokument}
                                                         key={dokument.dokumentInfoId}
                                                         hentForhåndsvisning={hentForhåndsvisning}
                                                         tilgangsstyrtJournalpost={
-                                                            journalpostMedTilgang
+                                                            tilgangsstyrtJournalpost
                                                         }
                                                     />
                                                 )
@@ -262,13 +262,13 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
                                     <EllipsisBodyShort
                                         size="small"
                                         title={formaterFagsak(
-                                            journalpostMedTilgang.journalpost.sak?.fagsaksystem,
-                                            journalpostMedTilgang.journalpost.sak?.fagsakId
+                                            tilgangsstyrtJournalpost.journalpost.sak?.fagsaksystem,
+                                            tilgangsstyrtJournalpost.journalpost.sak?.fagsakId
                                         )}
                                     >
                                         {formaterFagsak(
-                                            journalpostMedTilgang.journalpost.sak?.fagsaksystem,
-                                            journalpostMedTilgang.journalpost.sak?.fagsakId
+                                            tilgangsstyrtJournalpost.journalpost.sak?.fagsaksystem,
+                                            tilgangsstyrtJournalpost.journalpost.sak?.fagsakId
                                         )}
                                     </EllipsisBodyShort>
                                 </StyledDataCell>
@@ -276,18 +276,22 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
                                     <EllipsisBodyShort
                                         size="small"
                                         title={
-                                            journalpostMedTilgang.journalpost.avsenderMottaker?.navn
+                                            tilgangsstyrtJournalpost.journalpost.avsenderMottaker
+                                                ?.navn
                                         }
                                     >
-                                        {journalpostMedTilgang.journalpost.avsenderMottaker?.navn}
+                                        {
+                                            tilgangsstyrtJournalpost.journalpost.avsenderMottaker
+                                                ?.navn
+                                        }
                                     </EllipsisBodyShort>
                                 </StyledDataCell>
                                 <StyledDataCell>
                                     <EllipsisBodyShort
                                         size="small"
-                                        title={journalpostMedTilgang.journalpost.tittel}
+                                        title={tilgangsstyrtJournalpost.journalpost.tittel}
                                     >
-                                        {journalpostMedTilgang.journalpost.tittel}
+                                        {tilgangsstyrtJournalpost.journalpost.tittel}
                                     </EllipsisBodyShort>
                                 </StyledDataCell>
                                 <StyledDataCell>
@@ -295,13 +299,13 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
                                         size="small"
                                         title={
                                             journalpoststatus[
-                                                journalpostMedTilgang.journalpost.journalstatus
+                                                tilgangsstyrtJournalpost.journalpost.journalstatus
                                             ]
                                         }
                                     >
                                         {
                                             journalpoststatus[
-                                                journalpostMedTilgang.journalpost.journalstatus
+                                                tilgangsstyrtJournalpost.journalpost.journalstatus
                                             ]
                                         }
                                     </EllipsisBodyShort>
