@@ -49,7 +49,7 @@ export const JournalpostDokument: React.FC<IProps> = ({
             <HStack gap="1">
                 {harTilgang ? (
                     <>
-                        <EllipsisBodyShort size="small" title={dokument.tittel}>
+                        <EllipsisBodyShort size="small" title={dokumentTittel}>
                             <Link href="#" onClick={() => hentPdfDokument(dokument.dokumentInfoId)}>
                                 {dokumentTittel}
                             </Link>
@@ -78,16 +78,17 @@ export const JournalpostDokument: React.FC<IProps> = ({
                 )}
             </HStack>
 
-            <Vedleggsliste>
-                {dokument.logiskeVedlegg &&
-                    dokument.logiskeVedlegg.map(vedlegg => (
+            {dokument.logiskeVedlegg && dokument.logiskeVedlegg.length > 0 && (
+                <Vedleggsliste>
+                    {dokument.logiskeVedlegg.map(vedlegg => (
                         <ListeElement key={vedlegg.logiskVedleggId}>
                             <EllipsisBodyShort size="small" title={vedlegg.tittel}>
                                 {vedlegg.tittel}
                             </EllipsisBodyShort>
                         </ListeElement>
                     ))}
-            </Vedleggsliste>
+                </Vedleggsliste>
+            )}
         </ListeElement>
     );
 };
