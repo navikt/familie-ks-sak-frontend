@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { styled } from 'styled-components';
+
 import { BodyShort, Label } from '@navikt/ds-react';
 import { ATextDefault } from '@navikt/ds-tokens/dist/tokens';
 
@@ -14,9 +16,15 @@ interface IProps {
     infoTeksFarve?: string;
 }
 
+const InformasjonsbolkContainer = styled.div`
+    column-count: 2;
+    max-width: 30rem;
+    padding: 0.5rem 0;
+`;
+
 const Informasjonsbolk: React.FC<IProps> = ({ informasjon, infoTeksFarve }) => {
     return (
-        <div className={'informasjonsbolk'}>
+        <InformasjonsbolkContainer>
             {informasjon.map((info: IInformasjon) => {
                 return <BodyShort key={info.label + info.tekst} children={info.label} />;
             })}
@@ -30,7 +38,7 @@ const Informasjonsbolk: React.FC<IProps> = ({ informasjon, infoTeksFarve }) => {
                     />
                 );
             })}
-        </div>
+        </InformasjonsbolkContainer>
     );
 };
 
