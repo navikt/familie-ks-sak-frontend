@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
 import { BodyShort, Heading, Alert, Table } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
-import type { Ressurs } from '@navikt/familie-typer';
+import type { IJournalpost, Ressurs } from '@navikt/familie-typer';
 import {
     byggHenterRessurs,
     byggTomRessurs,
@@ -113,6 +113,15 @@ const hentIkonForJournalpostType = (journalposttype: Journalposttype) => {
     }
 };
 
+const settRiktigDatoMottatForJournalpost = (journalpost: IJournalpost): IJournalpost => {
+    return {
+        ...journalpost,
+        datoMottatt:
+            journalpost.datoMottatt ||
+            hentDatoRegistrertSendt(journalpost.relevanteDatoer, journalpost.journalposttype),
+    };
+};
+
 const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
     const { request } = useHttp();
     const [journalposterRessurs, settJournalposterRessurs] =
@@ -168,20 +177,12 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
     if (journalposterRessurs.status === RessursStatus.SUKSESS) {
         const journalposterMedOverstyrtDato = journalposterRessurs.data?.map(
             tilgangsstyrtJournalpost => {
-                const { journalpost } = tilgangsstyrtJournalpost;
-                const journalpostMedRiktigDatoMottatt = {
-                    ...journalpost,
-                    datoMottatt:
-                        journalpost.datoMottatt ||
-                        hentDatoRegistrertSendt(
-                            journalpost.relevanteDatoer,
-                            journalpost.journalposttype
-                        ),
-                };
-
+                const { adressebeskyttelsegradering, harTilgang, journalpost } =
+                    tilgangsstyrtJournalpost;
                 return {
-                    ...tilgangsstyrtJournalpost,
-                    ...journalpostMedRiktigDatoMottatt,
+                    adressebeskyttelsegradering,
+                    harTilgang,
+                    journalpost: settRiktigDatoMottatForJournalpost(journalpost),
                 };
             }
         );
