@@ -87,6 +87,15 @@ export const isoStringTilDate = (isoDatoString: IsoDatoString | IsoMånedString)
     return dato;
 };
 
+export const isoStringTilDateEllerUndefinedHvisUgyldigDato = (
+    isoDatoString: IsoDatoString | IsoMånedString | undefined
+): Date | undefined => {
+    if (isoDatoString === undefined) return undefined;
+    const dato = parseISO(isoDatoString);
+
+    return isValid(dato) ? dato : undefined;
+};
+
 interface IsoStringTilDateProps {
     isoString: IsoDatoString | IsoMånedString | undefined;
     fallbackDate: Date;
@@ -103,12 +112,6 @@ export const erIsoStringGyldig = (isoString?: IsoDatoString): boolean => {
 
     const dato = parseISO(isoString);
     return isValid(dato);
-};
-
-export const isoStringTilDateEllerUndefined = (
-    isoDatoString: IsoDatoString | undefined
-): Date | undefined => {
-    return isoDatoString ? isoStringTilDate(isoDatoString) : undefined;
 };
 
 export const parseTilOgMedDato = (tom: IsoDatoString | undefined) =>
