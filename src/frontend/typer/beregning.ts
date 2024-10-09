@@ -19,16 +19,16 @@ export interface IYtelsePeriode {
 
 export enum YtelseType {
     ORDINÆR_KONTANTSTØTTE = 'ORDINÆR_KONTANTSTØTTE',
-    OVERGANGSORDNING = 'OVERGANGSORDNING',
+    OVERGANGSORDNING = 'OVERGANGSORDNING', //TODO: Denne må sees på når backend er klar: NAV-22613
 }
 
 export const ytelsetype: Record<YtelseType, IPar> = {
     ORDINÆR_KONTANTSTØTTE: {
-        id: 'ORDINÆR_KONTANTSTØTTE',
+        id: YtelseType.ORDINÆR_KONTANTSTØTTE,
         navn: 'Ordinær',
     },
     OVERGANGSORDNING: {
-        id: 'OVERGANGSORDNING',
+        id: YtelseType.OVERGANGSORDNING,
         navn: 'Overgangsordning',
     },
 };
