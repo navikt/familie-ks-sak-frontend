@@ -1,9 +1,5 @@
-import React from 'react';
-
-import { render } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { endOfMonth, startOfMonth } from 'date-fns';
-
-import type { Periode } from '@navikt/familie-tidslinje';
 
 import { YtelseType, type IPersonMedAndelerTilkjentYtelse } from '../../typer/beregning';
 import { TidslinjeProvider, useTidslinje } from '../TidslinjeContext';
@@ -15,18 +11,8 @@ describe('TidslinjeContext', () => {
             { type: 'Ingen betaling', fom: '2024-08', tom: '2024-09' },
         ]);
 
-        let rader: Periode[][] = [[]];
-        const TestComponent = () => {
-            const { genererRader } = useTidslinje();
-            rader = genererRader(tidslinjePersoner);
-            return null;
-        };
-
-        render(
-            <TidslinjeProvider>
-                <TestComponent />
-            </TidslinjeProvider>
-        );
+        const { result } = renderHook(() => useTidslinje(), { wrapper: TidslinjeProvider });
+        const rader = result.current.genererRader(tidslinjePersoner);
 
         const forventetResultat = [
             [
@@ -54,18 +40,8 @@ describe('TidslinjeContext', () => {
             { type: 'Overgangsordning', fom: '2024-08', tom: '2024-09' },
         ]);
 
-        let rader: Periode[][] = [[]];
-        const TestComponent = () => {
-            const { genererRader } = useTidslinje();
-            rader = genererRader(tidslinjePersoner);
-            return null;
-        };
-
-        render(
-            <TidslinjeProvider>
-                <TestComponent />
-            </TidslinjeProvider>
-        );
+        const { result } = renderHook(() => useTidslinje(), { wrapper: TidslinjeProvider });
+        const rader = result.current.genererRader(tidslinjePersoner);
 
         const forventetResultat = [
             [
