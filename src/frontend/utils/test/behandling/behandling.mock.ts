@@ -81,6 +81,7 @@ export const mockBehandling = ({
         },
         utbetalingsperioder: [],
         endretUtbetalingAndeler: [],
+        overgangsordningAndeler: [],
         personerMedAndelerTilkjentYtelse: [],
         årsak: årsak,
         kompetanser: [],
