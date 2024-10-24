@@ -15,4 +15,4 @@ cypress/screenshots
 cypress.env.json
 .eslintcache
 node_dist
-
+coverage
