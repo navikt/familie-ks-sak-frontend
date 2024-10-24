@@ -3,7 +3,8 @@ import type { IsoMånedString } from '../utils/dato';
 export interface IRestOvergangsordningAndel {
     id?: number;
     personIdent?: string;
-    prosent?: number;
+    antallTimer: string | undefined;
+    deltBosted: boolean;
     fom?: IsoMånedString;
     tom?: IsoMånedString;
 }

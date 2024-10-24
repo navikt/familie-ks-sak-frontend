@@ -11,6 +11,7 @@ import {
     Label,
     MonthPicker,
     Select,
+    TextField,
     useMonthpicker,
 } from '@navikt/ds-react';
 import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
@@ -24,6 +25,7 @@ import { useOvergangsordningAndel } from '../../../context/OvergangsordningAndel
 import type { IBehandling } from '../../../typer/behandling';
 import type { IRestOvergangsordningAndel } from '../../../typer/overgangsordningAndel';
 import { dateTilIsoDatoString, type IsoMånedString } from '../../../utils/dato';
+import { isNumeric } from '../../../utils/eøsValidators';
 import { lagPersonLabel } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Knapperekke from '../../Felleskomponenter/Knapperekke';
@@ -47,7 +49,7 @@ const StyledPersonvelger = styled(Select)`
     z-index: 1000;
 `;
 
-const StyledProsentvelger = styled(Select)`
+const StyledAntallTimerVelger = styled(TextField)`
     max-width: 20rem;
     z-index: 1000;
 `;
@@ -184,27 +186,22 @@ const OvergangsordningAndelSkjema: React.FunctionComponent<IOvergangsordningAnde
                     {erLesevisning ? (
                         <>
                             <Label>Beløp</Label>
-                            <BodyShort>{skjema.felter.prosent.verdi}</BodyShort>
+                            <BodyShort>{skjema.felter.antallTimer.verdi}</BodyShort>
                         </>
                     ) : (
-                        <StyledProsentvelger
-                            {...skjema.felter.prosent.hentNavBaseSkjemaProps(
+                        <StyledAntallTimerVelger
+                            {...skjema.felter.antallTimer.hentNavBaseSkjemaProps(
                                 skjema.visFeilmeldinger
                             )}
-                            label={<Label>Prosent</Label>}
-                            value={skjema.felter.prosent.verdi ?? ''}
+                            label={<Label>Antall timer</Label>}
+                            value={skjema.felter.antallTimer.verdi ?? ''}
                             onChange={(event): void => {
-                                skjema.felter.prosent.validerOgSettFelt(Number(event.target.value));
+                                if (isNumeric(event.target.value)) {
+                                    skjema.felter.antallTimer.validerOgSettFelt(event.target.value);
+                                }
                             }}
                             readOnly={erLesevisning}
-                        >
-                            <option value={undefined}>Velg prosent</option>
-                            {[100, 80, 60, 50, 40, 20].map((prosent, index) => (
-                                <option value={prosent} key={`${index}_${prosent}`}>
-                                    {prosent}%
-                                </option>
-                            ))}
-                        </StyledProsentvelger>
+                        />
                     )}
                 </Feltmargin>
                 {!erLesevisning && (

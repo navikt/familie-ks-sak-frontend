@@ -39,9 +39,9 @@ const OvergangsordningAndelRad: React.FunctionComponent<IOvergangsordningRadProp
         !deepEqual(
             {
                 ...overgangsordningAndel,
-                prosent:
-                    typeof overgangsordningAndel.prosent === 'number'
-                        ? overgangsordningAndel.prosent
+                antallTimer:
+                    typeof overgangsordningAndel.antallTimer === 'number'
+                        ? overgangsordningAndel.antallTimer
                         : 0,
             },
             hentSkjemaData()
@@ -92,7 +92,7 @@ const OvergangsordningAndelRad: React.FunctionComponent<IOvergangsordningRadProp
                           })
                         : ''}
                 </Table.DataCell>
-                <Table.DataCell>{overgangsordningAndel.prosent}</Table.DataCell>
+                <Table.DataCell>{overgangsordningAndel.antallTimer}</Table.DataCell>
             </Table.ExpandableRow>
         </>
     );

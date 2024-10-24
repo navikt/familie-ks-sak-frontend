@@ -8,6 +8,7 @@ import type { IBehandling } from '../typer/behandling';
 import type { IRestOvergangsordningAndel } from '../typer/overgangsordningAndel';
 import type { IsoMånedString } from '../utils/dato';
 import { erIsoStringGyldig } from '../utils/dato';
+import { isNumeric } from '../utils/eøsValidators';
 
 interface IProps {
     overgangsordningAndel: IRestOvergangsordningAndel;
@@ -18,7 +19,8 @@ const [OvergangsordningAndelProvider, useOvergangsordningAndel] = createUseConte
         const { skjema, kanSendeSkjema, onSubmit } = useSkjema<
             {
                 person: string | undefined;
-                prosent: number | undefined;
+                antallTimer: string | undefined;
+                deltBosted: boolean;
                 fom: IsoMånedString | undefined;
                 tom: IsoMånedString | undefined;
             },
@@ -30,12 +32,23 @@ const [OvergangsordningAndelProvider, useOvergangsordningAndel] = createUseConte
                     valideringsfunksjon: felt =>
                         felt.verdi ? ok(felt) : feil(felt, 'Du må velge en person'),
                 }),
-                prosent: useFelt<number | undefined>({
-                    verdi: overgangsordningAndel.prosent,
-                    valideringsfunksjon: felt =>
-                        felt.verdi && felt.verdi > -1
-                            ? ok(felt)
-                            : feil(felt, 'Du må velge en prosentandel'),
+                antallTimer: useFelt<string | undefined>({
+                    verdi: overgangsordningAndel.antallTimer,
+                    valideringsfunksjon: felt => {
+                        if (felt.verdi === undefined) {
+                            return ok(felt);
+                        }
+                        if (!isNumeric(felt.verdi)) {
+                            return feil(felt, 'Antall timer må være et tall');
+                        }
+                        if (Number(felt.verdi) < 0) {
+                            return feil(felt, 'Antall timer må være 0 eller større');
+                        }
+                        return ok(felt);
+                    },
+                }),
+                deltBosted: useFelt<boolean>({
+                    verdi: overgangsordningAndel.deltBosted,
                 }),
                 fom: useFelt<IsoMånedString | undefined>({
                     verdi: overgangsordningAndel.fom,
@@ -54,7 +67,6 @@ const [OvergangsordningAndelProvider, useOvergangsordningAndel] = createUseConte
             },
             skjemanavn: 'Endre overgangsandelperiode',
         });
-
         const [forrigeOvergangsordningAndel, settForrigeOvergangsordningAndel] =
             useState<IRestOvergangsordningAndel>();
 
@@ -64,17 +76,19 @@ const [OvergangsordningAndelProvider, useOvergangsordningAndel] = createUseConte
 
         const tilbakestillFelterTilDefault = () => {
             skjema.felter.person.nullstill();
-            skjema.felter.prosent.nullstill();
+            skjema.felter.antallTimer.nullstill();
+            skjema.felter.deltBosted.nullstill();
             skjema.felter.fom.nullstill();
             skjema.felter.tom.nullstill();
         };
 
         const hentSkjemaData = () => {
-            const { person, prosent, fom, tom } = skjema.felter;
+            const { person, antallTimer, deltBosted, fom, tom } = skjema.felter;
             return {
                 id: overgangsordningAndel.id,
                 personIdent: person && person.verdi,
-                prosent: prosent && prosent.verdi,
+                antallTimer: antallTimer && antallTimer.verdi,
+                deltBosted: deltBosted.verdi,
                 fom: fom && fom.verdi,
                 tom: tom && tom.verdi,
             };
@@ -90,5 +104,4 @@ const [OvergangsordningAndelProvider, useOvergangsordningAndel] = createUseConte
         };
     }
 );
-
 export { OvergangsordningAndelProvider, useOvergangsordningAndel };
