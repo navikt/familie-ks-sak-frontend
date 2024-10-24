@@ -87,6 +87,7 @@ const OvergangsordningAndelSkjema: React.FunctionComponent<IOvergangsordningAnde
         useMonthpicker({
             fromDate: new Date('Jan 01 2024'),
             toDate: new Date('Des 31 2025'),
+            defaultSelected: felt.verdi ? new Date(felt.verdi) : undefined,
             onMonthChange: (date?: Date | undefined) => {
                 felt.validerOgSettFelt(dateTilIsoDatoString(date).slice(0, 7));
             },
