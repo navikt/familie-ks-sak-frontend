@@ -104,7 +104,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
             onSubmit<IRestEndretUtbetalingAndel>(
                 {
                     method: 'PUT',
-                    url: `/familie-ks-sak/api/endretutbetalingandel/${åpenBehandling.behandlingId}/${endretUtbetalingAndel.id}`,
+                    url: `/familie-ks-sak/api/endretutbetalingandel/${åpenBehandling.behandlingId}`,
                     påvirkerSystemLaster: true,
                     data: hentSkjemaData(),
                 },

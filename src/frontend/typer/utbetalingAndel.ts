@@ -20,6 +20,7 @@ export enum IEndretUtbetalingAndelÅrsak {
     ENDRE_MOTTAKER = 'ENDRE_MOTTAKER',
     ALLEREDE_UTBETALT = 'ALLEREDE_UTBETALT',
     ETTERBETALING_3MND = 'ETTERBETALING_3MND',
+    FULLTIDSPLASS_I_BARNEHAGE_AUGUST_2024 = 'FULLTIDSPLASS_I_BARNEHAGE_AUGUST_2024',
 }
 
 export const årsakTekst: { [key in IEndretUtbetalingAndelÅrsak]: string } = {
@@ -27,6 +28,7 @@ export const årsakTekst: { [key in IEndretUtbetalingAndelÅrsak]: string } = {
     ENDRE_MOTTAKER: 'Foreldrene bor sammen, endret mottaker',
     ALLEREDE_UTBETALT: 'Allerede utbetalt',
     ETTERBETALING_3MND: 'Etterbetaling 3 måned',
+    FULLTIDSPLASS_I_BARNEHAGE_AUGUST_2024: 'Fulltidsplass i barnehage august 2024',
 };
 
 export const årsaker: IEndretUtbetalingAndelÅrsak[] = Object.keys(IEndretUtbetalingAndelÅrsak).map(
