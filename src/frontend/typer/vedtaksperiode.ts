@@ -121,7 +121,7 @@ export function finnUnikeIdenterForPersonTypeIUtbetalingsperioder(
 export function finnUtbetalingsperioderHvorTomErEnBestemtMåned(
     utbetalingsperioder: Utbetalingsperiode[],
     bestemtMåned: Date
-) {
+): Utbetalingsperiode[] {
     return utbetalingsperioder.filter(utbetalingsperiode => {
         if (utbetalingsperiode.periodeTom == undefined) {
             return false;
