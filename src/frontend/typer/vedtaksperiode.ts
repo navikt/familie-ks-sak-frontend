@@ -1,7 +1,8 @@
 import { isSameMonth } from 'date-fns/isSameMonth';
 
 import { ytelsetype } from './beregning';
-import { type IGrunnlagPerson, PersonType } from './person';
+import type { PersonType } from './person';
+import { type IGrunnlagPerson } from './person';
 import type { Begrunnelse, BegrunnelseType } from './vedtak';
 import { type IsoDatoString, isoStringTilDate } from '../utils/dato';
 
@@ -105,13 +106,14 @@ export const hentVedtaksperiodeTittel = (
     }
 };
 
-export function finnUnikeIdenterForBarnIUtbetalingsperioder(
-    utbetalingsperioder: Utbetalingsperiode[]
+export function finnUnikeIdenterForPersonTypeIUtbetalingsperioder(
+    utbetalingsperioder: Utbetalingsperiode[],
+    personType: PersonType
 ): string[] {
     const identer = utbetalingsperioder
         .flatMap(utbetalingsperiode => utbetalingsperiode.utbetalingsperiodeDetaljer)
         .map(detalj => detalj.person)
-        .filter(person => person.type == PersonType.BARN)
+        .filter(person => person.type == personType)
         .map(person => person.personIdent);
     return [...new Set(identer)];
 }

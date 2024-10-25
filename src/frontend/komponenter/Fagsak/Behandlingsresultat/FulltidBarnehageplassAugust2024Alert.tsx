@@ -2,8 +2,9 @@ import React from 'react';
 
 import { Alert } from '@navikt/ds-react';
 
+import { PersonType } from '../../../typer/person';
 import {
-    finnUnikeIdenterForBarnIUtbetalingsperioder,
+    finnUnikeIdenterForPersonTypeIUtbetalingsperioder,
     finnUtbetalingsperioderHvorTomErEnBestemtMåned,
     type Utbetalingsperiode,
 } from '../../../typer/vedtaksperiode';
@@ -25,8 +26,9 @@ export function FulltidBarnehageplassAugust2024Alert({ utbetalingsperioder }: Pr
         return null;
     }
 
-    const identerForBarn = finnUnikeIdenterForBarnIUtbetalingsperioder(
-        utbetalingsperioderHvorTomErAugust2024
+    const identerForBarn = finnUnikeIdenterForPersonTypeIUtbetalingsperioder(
+        utbetalingsperioderHvorTomErAugust2024,
+        PersonType.BARN
     )
         .map(ident => formaterIdent(ident))
         .join(', ');

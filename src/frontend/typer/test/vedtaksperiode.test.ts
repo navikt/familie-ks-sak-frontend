@@ -3,15 +3,15 @@ import { kjønnType } from '@navikt/familie-typer';
 import { type IGrunnlagPerson, PersonType } from '../person';
 import { Målform } from '../søknad';
 import {
-    finnUnikeIdenterForBarnIUtbetalingsperioder,
+    finnUnikeIdenterForPersonTypeIUtbetalingsperioder,
     finnUtbetalingsperioderHvorTomErEnBestemtMåned,
     type IUtbetalingsperiodeDetalj,
     type Utbetalingsperiode,
     Vedtaksperiodetype,
 } from '../vedtaksperiode';
 
-describe('Tester for metoden finnUnikeIdenterForBarnIUtbetalingsperioder', () => {
-    test('skal finne unike identer for barn i utbetalingsperioder', () => {
+describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder', () => {
+    test('skal finne unike identer for person type i utbetalingsperioder', () => {
         // Arrange
         const barn: IGrunnlagPerson = {
             fødselsdato: '2023-08-01',
@@ -73,7 +73,10 @@ describe('Tester for metoden finnUnikeIdenterForBarnIUtbetalingsperioder', () =>
         ];
 
         // Act
-        const identer = finnUnikeIdenterForBarnIUtbetalingsperioder(utbetalingsperioder);
+        const identer = finnUnikeIdenterForPersonTypeIUtbetalingsperioder(
+            utbetalingsperioder,
+            PersonType.BARN
+        );
 
         // Assert
         expect(identer).toHaveLength(1);
