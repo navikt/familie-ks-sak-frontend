@@ -1,7 +1,9 @@
+import { isSameMonth } from 'date-fns/isSameMonth';
+
 import { ytelsetype } from './beregning';
-import type { IGrunnlagPerson } from './person';
+import { type IGrunnlagPerson, PersonType } from './person';
 import type { Begrunnelse, BegrunnelseType } from './vedtak';
-import type { IsoDatoString } from '../utils/dato';
+import { type IsoDatoString, isoStringTilDate } from '../utils/dato';
 
 export interface IVedtaksperiodeMedBegrunnelser {
     id: number;
@@ -102,3 +104,27 @@ export const hentVedtaksperiodeTittel = (
             return '';
     }
 };
+
+export function finnUnikeIdenterForBarnIUtbetalingsperioder(
+    utbetalingsperioder: Utbetalingsperiode[]
+): string[] {
+    const identer = utbetalingsperioder
+        .flatMap(utbetalingsperiode => utbetalingsperiode.utbetalingsperiodeDetaljer)
+        .map(detalj => detalj.person)
+        .filter(person => person.type == PersonType.BARN)
+        .map(person => person.personIdent);
+    return [...new Set(identer)];
+}
+
+export function finnUtbetalingsperioderHvorTomErEnBestemtMåned(
+    utbetalingsperioder: Utbetalingsperiode[],
+    bestemtMåned: Date
+) {
+    return utbetalingsperioder.filter(utbetalingsperiode => {
+        if (utbetalingsperiode.periodeTom == undefined) {
+            return false;
+        }
+        const tomDato = isoStringTilDate(utbetalingsperiode.periodeTom);
+        return isSameMonth(tomDato, bestemtMåned);
+    });
+}

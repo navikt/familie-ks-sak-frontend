@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import { isSameMonth } from 'date-fns/isSameMonth';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -12,6 +11,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import EndretUtbetalingAndelTabell from './EndretUtbetalingAndelTabell';
+import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAugust2024Alert';
 import KompetanseSkjema from './Kompetanse/KompetanseSkjema';
 import { Oppsummeringsboks } from './Oppsummeringsboks';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
@@ -30,10 +30,9 @@ import type {
     IRestUtenlandskPeriodeBeløp,
     IRestValutakurs,
 } from '../../../typer/eøsPerioder';
-import { PersonType } from '../../../typer/person';
 import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
 import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
-import { isoStringTilDate, periodeOverlapperMedValgtDato, tidenesEnde } from '../../../utils/dato';
+import { periodeOverlapperMedValgtDato } from '../../../utils/dato';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
@@ -168,24 +167,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         åpenBehandling.årsak !== BehandlingÅrsak.LOVENDRING_2024 ||
         åpenBehandling.stegTilstand.some(steg => steg.behandlingSteg === BehandlingSteg.SIMULERING);
 
-    const utbetalingsperioderHvorTomErAugust2024 = åpenBehandling.utbetalingsperioder.filter(
-        utbetalingsperiode =>
-            isSameMonth(
-                utbetalingsperiode.periodeTom == undefined
-                    ? tidenesEnde
-                    : isoStringTilDate(utbetalingsperiode.periodeTom),
-                new Date(2024, 7)
-            )
-    );
-
-    const barnIdenter = utbetalingsperioderHvorTomErAugust2024
-        .flatMap(i => i.utbetalingsperiodeDetaljer)
-        .map(i => i.person)
-        .filter(i => i.type == PersonType.BARN)
-        .map(i => i.personIdent)
-        .map(i => formaterIdent(i))
-        .join(', ');
-
     return (
         <Skjemasteg
             senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
@@ -206,14 +187,9 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             steg={BehandlingSteg.BEHANDLINGSRESULTAT}
             skalViseNesteKnapp={skalViseNesteKnapp}
         >
-            {utbetalingsperioderHvorTomErAugust2024.length > 0 && (
-                <StyledAlert variant={'warning'}>
-                    Det er perioder som kan føre til utbetaling for barn {barnIdenter}. Kontroller
-                    om barnet hører inn under regelverk før lovendring 1. august 24. Bruk «Endret
-                    utbetalingsperiode» for å stoppe etterbetalingen hvis barnet hadde fulltidsplass
-                    i barnehage i august 24.
-                </StyledAlert>
-            )}
+            <FulltidBarnehageplassAugust2024Alert
+                utbetalingsperioder={åpenBehandling.utbetalingsperioder}
+            />
             {personerMedUgyldigEtterbetalingsperiode.length > 0 && (
                 <StyledAlert variant={'warning'}>
                     Du har perioder som kan føre til etterbetaling utover 3 måneder for person{' '}
