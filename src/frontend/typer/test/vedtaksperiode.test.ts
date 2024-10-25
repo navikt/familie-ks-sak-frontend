@@ -13,11 +13,20 @@ import {
 describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder', () => {
     test('skal finne unike identer for person type i utbetalingsperioder', () => {
         // Arrange
-        const barn: IGrunnlagPerson = {
+        const barn1: IGrunnlagPerson = {
             fødselsdato: '2023-08-01',
             kjønn: kjønnType.MANN,
             navn: 'Albus',
-            personIdent: '123',
+            personIdent: '12345678901',
+            type: PersonType.BARN,
+            målform: Målform.NB,
+        };
+
+        const barn2: IGrunnlagPerson = {
+            fødselsdato: '2023-08-01',
+            kjønn: kjønnType.MANN,
+            navn: 'Albus',
+            personIdent: '12345678902',
             type: PersonType.BARN,
             målform: Målform.NB,
         };
@@ -26,13 +35,20 @@ describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder',
             fødselsdato: '1993-08-01',
             kjønn: kjønnType.MANN,
             navn: 'Harry',
-            personIdent: '321',
+            personIdent: '12345678903',
             type: PersonType.SØKER,
             målform: Målform.NB,
         };
 
-        const utbetalingsperiodeDetaljForBarn: IUtbetalingsperiodeDetalj = {
-            person: barn,
+        const utbetalingsperiodeDetaljForBarn1: IUtbetalingsperiodeDetalj = {
+            person: barn1,
+            utbetaltPerMnd: 1,
+            prosent: 50,
+            erPåvirketAvEndring: false,
+        };
+
+        const utbetalingsperiodeDetaljForBarn2: IUtbetalingsperiodeDetalj = {
+            person: barn2,
             utbetaltPerMnd: 1,
             prosent: 50,
             erPåvirketAvEndring: false,
@@ -58,7 +74,7 @@ describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder',
                 periodeFom: '2024-05-01',
                 periodeTom: '2024-07-31',
                 vedtaksperiodetype: Vedtaksperiodetype.UTBETALING,
-                utbetalingsperiodeDetaljer: [utbetalingsperiodeDetaljForBarn],
+                utbetalingsperiodeDetaljer: [utbetalingsperiodeDetaljForBarn1],
                 antallBarn: 1,
                 utbetaltPerMnd: 1,
             },
@@ -66,7 +82,7 @@ describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder',
                 periodeFom: '2024-08-01',
                 periodeTom: '2024-10-31',
                 vedtaksperiodetype: Vedtaksperiodetype.UTBETALING,
-                utbetalingsperiodeDetaljer: [utbetalingsperiodeDetaljForBarn],
+                utbetalingsperiodeDetaljer: [utbetalingsperiodeDetaljForBarn2],
                 antallBarn: 1,
                 utbetaltPerMnd: 1,
             },
@@ -79,8 +95,9 @@ describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder',
         );
 
         // Assert
-        expect(identer).toHaveLength(1);
-        expect(identer).toContain('123');
+        expect(identer).toHaveLength(2);
+        expect(identer).toContain('12345678901');
+        expect(identer).toContain('12345678902');
     });
 });
 
