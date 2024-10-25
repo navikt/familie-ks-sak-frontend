@@ -30,6 +30,15 @@ const ToggleVisningHøyremeny = styled(Button)<{ $åpenhøyremeny: boolean }>`
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `;
 
+const HøyremenyContainer = styled.div`
+    &.høyremeny--åpen {
+        display: flex;
+        flex-direction: column;
+        width: 25rem;
+        height: calc(100vh - 8rem);
+    }
+`;
+
 const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
     const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } = useBehandling();
 
@@ -41,7 +50,7 @@ const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
 
     return åpenBehandling.status === RessursStatus.SUKSESS ? (
         <>
-            <div className={åpenHøyremeny ? 'høyremeny' : ''}>
+            <HøyremenyContainer className={åpenHøyremeny ? 'høyremeny--åpen' : ''}>
                 <ToggleVisningHøyremeny
                     forwardedAs={Button}
                     variant="secondary"
@@ -84,7 +93,7 @@ const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
                         />
                     </>
                 )}
-            </div>
+            </HøyremenyContainer>
         </>
     ) : null;
 };

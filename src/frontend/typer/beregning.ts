@@ -17,13 +17,18 @@ export interface IYtelsePeriode {
     skalUtbetales: boolean;
 }
 
-enum YtelseType {
+export enum YtelseType {
     ORDINÆR_KONTANTSTØTTE = 'ORDINÆR_KONTANTSTØTTE',
+    OVERGANGSORDNING = 'OVERGANGSORDNING',
 }
 
 export const ytelsetype: Record<YtelseType, IPar> = {
     ORDINÆR_KONTANTSTØTTE: {
-        id: 'ORDINÆR_KONTANTSTØTTE',
+        id: YtelseType.ORDINÆR_KONTANTSTØTTE,
         navn: 'Ordinær',
+    },
+    OVERGANGSORDNING: {
+        id: YtelseType.OVERGANGSORDNING,
+        navn: 'Overgangsordning',
     },
 };
