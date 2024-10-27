@@ -5,10 +5,9 @@ import { Målform } from '../søknad';
 import {
     finnUnikeIdenterForPersonTypeIUtbetalingsperioder,
     finnUtbetalingsperioderHvorTomErEnBestemtMåned,
-    type IUtbetalingsperiodeDetalj,
     type Utbetalingsperiode,
-    Vedtaksperiodetype,
-} from '../vedtaksperiode';
+} from '../utbetalingsperiode';
+import { type IUtbetalingsperiodeDetalj, Vedtaksperiodetype } from '../vedtaksperiode';
 
 describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder', () => {
     test('skal finne unike identer for person type i utbetalingsperioder', () => {

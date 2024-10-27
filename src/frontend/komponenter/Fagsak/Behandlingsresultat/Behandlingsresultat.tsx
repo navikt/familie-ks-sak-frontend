@@ -31,7 +31,7 @@ import type {
     IRestValutakurs,
 } from '../../../typer/eøsPerioder';
 import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
-import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
+import type { Utbetalingsperiode } from '../../../typer/utbetalingsperiode';
 import { periodeOverlapperMedValgtDato } from '../../../utils/dato';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';

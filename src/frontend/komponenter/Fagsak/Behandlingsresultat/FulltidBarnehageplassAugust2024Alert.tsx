@@ -7,7 +7,7 @@ import {
     finnUnikeIdenterForPersonTypeIUtbetalingsperioder,
     finnUtbetalingsperioderHvorTomErEnBestemtMåned,
     type Utbetalingsperiode,
-} from '../../../typer/vedtaksperiode';
+} from '../../../typer/utbetalingsperiode';
 import { formaterIdent } from '../../../utils/formatter';
 
 interface Props {

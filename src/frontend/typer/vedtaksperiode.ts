@@ -1,10 +1,7 @@
-import { isSameMonth } from 'date-fns/isSameMonth';
-
 import { ytelsetype } from './beregning';
-import type { PersonType } from './person';
 import { type IGrunnlagPerson } from './person';
 import type { Begrunnelse, BegrunnelseType } from './vedtak';
-import { type IsoDatoString, isoStringTilDate } from '../utils/dato';
+import { type IsoDatoString } from '../utils/dato';
 
 export interface IVedtaksperiodeMedBegrunnelser {
     id: number;
@@ -62,15 +59,6 @@ export type Vedtaksperiode =
           utbetalingsperiode: Vedtaksperiode;
       };
 
-export type Utbetalingsperiode = {
-    periodeFom: IsoDatoString;
-    periodeTom?: IsoDatoString;
-    vedtaksperiodetype: Vedtaksperiodetype.UTBETALING;
-    utbetalingsperiodeDetaljer: IUtbetalingsperiodeDetalj[];
-    antallBarn: number;
-    utbetaltPerMnd: number;
-};
-
 export interface IUtbetalingsperiodeDetalj {
     person: IGrunnlagPerson;
     utbetaltPerMnd: number;
@@ -105,28 +93,3 @@ export const hentVedtaksperiodeTittel = (
             return '';
     }
 };
-
-export function finnUnikeIdenterForPersonTypeIUtbetalingsperioder(
-    utbetalingsperioder: Utbetalingsperiode[],
-    personType: PersonType
-): string[] {
-    const identer = utbetalingsperioder
-        .flatMap(utbetalingsperiode => utbetalingsperiode.utbetalingsperiodeDetaljer)
-        .map(detalj => detalj.person)
-        .filter(person => person.type == personType)
-        .map(person => person.personIdent);
-    return [...new Set(identer)];
-}
-
-export function finnUtbetalingsperioderHvorTomErEnBestemtMåned(
-    utbetalingsperioder: Utbetalingsperiode[],
-    bestemtMåned: Date
-): Utbetalingsperiode[] {
-    return utbetalingsperioder.filter(utbetalingsperiode => {
-        if (utbetalingsperiode.periodeTom == undefined) {
-            return false;
-        }
-        const tomDato = isoStringTilDate(utbetalingsperiode.periodeTom);
-        return isSameMonth(tomDato, bestemtMåned);
-    });
-}
