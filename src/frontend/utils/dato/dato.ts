@@ -55,6 +55,9 @@ export const dateTilFormatertString = ({
 export const dateTilIsoDatoString = (dato?: Date): IsoDatoString =>
     dateTilFormatertString({ date: dato, tilFormat: Datoformat.ISO_DAG, defaultString: '' });
 
+export const dateTilIsoMånedÅrString = (dato?: Date): IsoDatoString =>
+    dateTilFormatertString({ date: dato, tilFormat: Datoformat.ISO_MÅNED, defaultString: '' });
+
 export const dateTilIsoDatoStringEllerUndefined = (dato?: Date): IsoDatoString | undefined =>
     dato && isValid(dato) ? format(dato, Datoformat.ISO_DAG) : undefined;
 

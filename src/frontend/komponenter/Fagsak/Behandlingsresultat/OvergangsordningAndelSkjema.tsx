@@ -4,19 +4,9 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import {
-    BodyShort,
-    Button,
-    Fieldset,
-    Label,
-    MonthPicker,
-    Select,
-    TextField,
-    useMonthpicker,
-} from '@navikt/ds-react';
+import { BodyShort, Button, Fieldset, Label, Select, TextField } from '@navikt/ds-react';
 import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 import { useHttp } from '@navikt/familie-http';
-import type { Felt } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -24,10 +14,10 @@ import { useBehandling } from '../../../context/behandlingContext/BehandlingCont
 import { useOvergangsordningAndel } from '../../../context/OvergangsordningAndelContext';
 import type { IBehandling } from '../../../typer/behandling';
 import type { IRestOvergangsordningAndel } from '../../../typer/overgangsordningAndel';
-import { dateTilIsoDatoString, type IsoMånedString } from '../../../utils/dato';
 import { isNumeric } from '../../../utils/eøsValidators';
 import { lagPersonLabel } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
+import Månedvelger, { DagIMåneden } from '../../Felleskomponenter/Datovelger/Månedvelger';
 import Knapperekke from '../../Felleskomponenter/Knapperekke';
 
 const KnapperekkeVenstre = styled.div`
@@ -62,6 +52,11 @@ const StyledFerdigKnapp = styled(Button)`
     margin-right: 0.5rem;
 `;
 
+const FlexDiv = styled.div`
+    display: flex;
+    gap: 1.125rem;
+`;
+
 interface IOvergangsordningAndelSkjemaProps {
     åpenBehandling: IBehandling;
     lukkSkjema: () => void;
@@ -82,24 +77,6 @@ const OvergangsordningAndelSkjema: React.FunctionComponent<IOvergangsordningAnde
         hentSkjemaData,
         tilbakestillFelterTilDefault,
     } = useOvergangsordningAndel();
-
-    const brukMonthpicker = (felt: Felt<IsoMånedString | undefined>) =>
-        useMonthpicker({
-            fromDate: new Date('Jan 01 2024'),
-            toDate: new Date('Des 31 2025'),
-            defaultSelected: felt.verdi ? new Date(felt.verdi) : undefined,
-            onMonthChange: (date?: Date | undefined) => {
-                felt.validerOgSettFelt(dateTilIsoDatoString(date).slice(0, 7));
-            },
-        });
-
-    const { monthpickerProps: monthpickerPropsFom, inputProps: inputPropsFom } = brukMonthpicker(
-        skjema.felter.fom
-    );
-
-    const { monthpickerProps: monthpickerPropsTom, inputProps: inputPropsTom } = brukMonthpicker(
-        skjema.felter.tom
-    );
 
     const oppdaterOvergangsordningAndel = (avbrytOvergangsordningAndelPeriode: () => void) => {
         if (kanSendeSkjema()) {
@@ -145,11 +122,13 @@ const OvergangsordningAndelSkjema: React.FunctionComponent<IOvergangsordningAnde
             >
                 <Feltmargin>
                     <StyledPersonvelger
-                        {...skjema.felter.person.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
+                        {...skjema.felter.personIdent.hentNavBaseSkjemaProps(
+                            skjema.visFeilmeldinger
+                        )}
                         label={<Label>Velg hvem det gjelder</Label>}
-                        value={skjema.felter.person.verdi ?? ''}
+                        value={skjema.felter.personIdent.verdi ?? ''}
                         onChange={(event): void => {
-                            skjema.felter.person.validerOgSettFelt(event.target.value);
+                            skjema.felter.personIdent.validerOgSettFelt(event.target.value);
                         }}
                         readOnly={erLesevisning}
                     >
@@ -173,14 +152,20 @@ const OvergangsordningAndelSkjema: React.FunctionComponent<IOvergangsordningAnde
 
                 <Feltmargin>
                     <Label>Fastsett periode</Label>
-                    <Feltmargin>
-                        <MonthPicker {...monthpickerPropsFom}>
-                            <MonthPicker.Input {...inputPropsFom} label="F.o.m" />
-                        </MonthPicker>
-                    </Feltmargin>
-                    <MonthPicker {...monthpickerPropsTom}>
-                        <MonthPicker.Input {...inputPropsTom} label="T.o.m" />
-                    </MonthPicker>
+                    <FlexDiv>
+                        <Månedvelger
+                            felt={skjema.felter.fom}
+                            label={'F.o.m.'}
+                            visFeilmeldinger={skjema.visFeilmeldinger}
+                            dagIMåneden={DagIMåneden.FØRSTE_DAG}
+                        />
+                        <Månedvelger
+                            felt={skjema.felter.tom}
+                            label={'T.o.m.'}
+                            visFeilmeldinger={skjema.visFeilmeldinger}
+                            dagIMåneden={DagIMåneden.SISTE_DAG}
+                        />
+                    </FlexDiv>
                 </Feltmargin>
 
                 <Feltmargin>
