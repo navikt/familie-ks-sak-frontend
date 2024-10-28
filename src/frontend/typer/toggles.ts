@@ -10,6 +10,7 @@ export enum ToggleNavn {
     lovendring7MndNyeBehandlinger = 'familie-ks-sak.lov-endring-7-mnd-nye-behandlinger',
     kanOppretteOgEndreSammensatteKontrollsaker = 'familie-ks-sak.kan-opprette-og-endre-sammensatte-kontrollsaker',
     skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
+    overgangsordningErTilgjengelig = 'familie-ks-sak.overgangsordning',
 }
 
 export const alleTogglerAv = (): IToggles => {
