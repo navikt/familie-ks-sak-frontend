@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { BodyShort, Button, Fieldset, Label, Select, TextField } from '@navikt/ds-react';
+import { BodyShort, Button, Checkbox, Fieldset, Label, Select, TextField } from '@navikt/ds-react';
 import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -169,6 +169,18 @@ const OvergangsordningAndelSkjema: React.FunctionComponent<IOvergangsordningAnde
                 </Feltmargin>
 
                 <Feltmargin>
+                    <Checkbox
+                        checked={skjema.felter.deltBosted.verdi}
+                        onChange={event => {
+                            skjema.felter.deltBosted.validerOgSettFelt(event.target.checked);
+                            skjema.felter.antallTimer.validerOgSettFelt('0');
+                        }}
+                    >
+                        {'Barnet har delt bosted'}
+                    </Checkbox>
+                </Feltmargin>
+
+                <Feltmargin>
                     {erLesevisning ? (
                         <>
                             <Label>Beløp</Label>
@@ -186,7 +198,7 @@ const OvergangsordningAndelSkjema: React.FunctionComponent<IOvergangsordningAnde
                                     skjema.felter.antallTimer.validerOgSettFelt(event.target.value);
                                 }
                             }}
-                            readOnly={erLesevisning}
+                            readOnly={erLesevisning || skjema.felter.deltBosted.verdi}
                         />
                     )}
                 </Feltmargin>
