@@ -14,7 +14,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import EndretUtbetalingAndelTabell from './EndretUtbetalingAndelTabell';
 import KompetanseSkjema from './Kompetanse/KompetanseSkjema';
 import { Oppsummeringsboks } from './Oppsummeringsboks';
-import OvergangsordningAndelTabell from './OvergangsordningAndelTabell';
+import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import UtbetaltAnnetLand from './UtbetaltAnnetLand/UtbetaltAnnetLand';
 import Valutakurser from './Valutakurs/Valutakurser';

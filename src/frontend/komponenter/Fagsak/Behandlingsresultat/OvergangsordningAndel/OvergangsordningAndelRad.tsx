@@ -7,11 +7,11 @@ import styled from 'styled-components';
 import { Table } from '@navikt/ds-react';
 
 import OvergangsordningAndelSkjema from './OvergangsordningAndelSkjema';
-import { useOvergangsordningAndel } from '../../../context/OvergangsordningAndelContext';
-import type { IBehandling } from '../../../typer/behandling';
-import type { IRestOvergangsordningAndel } from '../../../typer/overgangsordningAndel';
-import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../utils/dato';
-import { lagPersonLabel } from '../../../utils/formatter';
+import { useOvergangsordningAndel } from '../../../../context/OvergangsordningAndelContext';
+import type { IBehandling } from '../../../../typer/behandling';
+import type { IRestOvergangsordningAndel } from '../../../../typer/overgangsordningAndel';
+import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../utils/dato';
+import { lagPersonLabel } from '../../../../utils/formatter';
 
 interface IOvergangsordningRadProps {
     overgangsordningAndel: IRestOvergangsordningAndel;

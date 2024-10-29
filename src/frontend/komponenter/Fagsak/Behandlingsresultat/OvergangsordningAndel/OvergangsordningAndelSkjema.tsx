@@ -10,15 +10,15 @@ import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { useOvergangsordningAndel } from '../../../context/OvergangsordningAndelContext';
-import type { IBehandling } from '../../../typer/behandling';
-import type { IRestOvergangsordningAndel } from '../../../typer/overgangsordningAndel';
-import { isNumeric } from '../../../utils/eøsValidators';
-import { lagPersonLabel } from '../../../utils/formatter';
-import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
-import Månedvelger, { DagIMåneden } from '../../Felleskomponenter/Datovelger/Månedvelger';
-import Knapperekke from '../../Felleskomponenter/Knapperekke';
+import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
+import { useOvergangsordningAndel } from '../../../../context/OvergangsordningAndelContext';
+import type { IBehandling } from '../../../../typer/behandling';
+import type { IRestOvergangsordningAndel } from '../../../../typer/overgangsordningAndel';
+import { isNumeric } from '../../../../utils/eøsValidators';
+import { lagPersonLabel } from '../../../../utils/formatter';
+import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
+import Månedvelger, { DagIMåneden } from '../../../Felleskomponenter/Datovelger/Månedvelger';
+import Knapperekke from '../../../Felleskomponenter/Knapperekke';
 
 const KnapperekkeVenstre = styled.div`
     display: flex;

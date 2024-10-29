@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { Heading, Table } from '@navikt/ds-react';
 
 import OvergangsordningAndelRad from './OvergangsordningAndelRad';
-import { OvergangsordningAndelProvider } from '../../../context/OvergangsordningAndelContext';
-import type { IBehandling } from '../../../typer/behandling';
+import { OvergangsordningAndelProvider } from '../../../../context/OvergangsordningAndelContext';
+import type { IBehandling } from '../../../../typer/behandling';
 
 interface IOvergangsordningTabellProps {
     åpenBehandling: IBehandling;
