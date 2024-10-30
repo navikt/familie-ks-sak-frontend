@@ -8,7 +8,7 @@ import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { useOvergangsordningAndel } from '../../../../context/OvergangsordningAndelContext';
-import type { IBehandling } from '../../../../typer/behandling';
+import { BehandlingÅrsak, type IBehandling } from '../../../../typer/behandling';
 import { isNumeric } from '../../../../utils/eøsValidators';
 import { lagPersonLabel } from '../../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
@@ -67,7 +67,8 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
         tilbakestillOgLukkOvergangsordningAndel,
     } = useOvergangsordningAndel();
 
-    const erLesevisning = vurderErLesevisning();
+    const erLesevisning =
+        vurderErLesevisning() || åpenBehandling.årsak !== BehandlingÅrsak.OVERGANGSORDNING_2024;
 
     return (
         <StyledFieldset
