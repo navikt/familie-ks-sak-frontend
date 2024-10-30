@@ -5,7 +5,11 @@ import { addMonths, endOfMonth, startOfMonth, subMonths } from 'date-fns';
 
 import type { Periode, Etikett } from '@navikt/familie-tidslinje';
 
-import type { IPersonMedAndelerTilkjentYtelse, IYtelsePeriode } from '../typer/beregning';
+import {
+    YtelseType,
+    type IPersonMedAndelerTilkjentYtelse,
+    type IYtelsePeriode,
+} from '../typer/beregning';
 import type { IGrunnlagPerson } from '../typer/person';
 import { dagensDato, isoStringTilDate } from '../utils/dato';
 import { sorterPersonTypeOgFødselsdato } from '../utils/formatter';
@@ -26,6 +30,14 @@ export enum NavigeringsRetning {
     VENSTRE = 'VENSTRE',
     HØYRE = 'HØYRE',
 }
+
+const utledStatus = (ytelsePeriode: IYtelsePeriode) => {
+    if (ytelsePeriode.ytelseType === YtelseType.OVERGANGSORDNING && ytelsePeriode.skalUtbetales) {
+        return 'advarsel';
+    }
+
+    return ytelsePeriode.skalUtbetales ? 'suksess' : 'feil';
+};
 
 const [TidslinjeProvider, useTidslinje] = createUseContext(() => {
     const tidslinjeVinduer: ITidslinjeVindu[] = [
@@ -98,7 +110,7 @@ const [TidslinjeProvider, useTidslinje] = createUseContext(() => {
                                   id: `${
                                       personMedAndelerTilkjentYtelse.personIdent
                                   }_${fom.getMonth()}_${fom.getDay()}`,
-                                  status: ytelsePeriode.skalUtbetales ? 'suksess' : 'feil',
+                                  status: utledStatus(ytelsePeriode),
                               };
                               return [...acc, periode];
                           },
