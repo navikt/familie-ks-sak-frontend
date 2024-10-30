@@ -3,7 +3,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Fieldset, HStack, Select, Spacer, TextField, VStack } from '@navikt/ds-react';
+import { Alert, Fieldset, HStack, Select, Spacer, TextField, VStack } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
@@ -64,52 +64,6 @@ const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) =
                             skjema.felter.navn.validerOgSettFelt(event.target.value);
                         }}
                     />
-                    <TextField
-                        {...skjema.felter.adresselinje1.hentNavBaseSkjemaProps(
-                            skjema.visFeilmeldinger
-                        )}
-                        readOnly={erLesevisning}
-                        label={'Adresselinje 1'}
-                        onChange={(event): void => {
-                            skjema.felter.adresselinje1.validerOgSettFelt(event.target.value);
-                        }}
-                    />
-                    <TextField
-                        {...skjema.felter.adresselinje2.hentNavBaseSkjemaProps(
-                            skjema.visFeilmeldinger
-                        )}
-                        readOnly={erLesevisning}
-                        label={'Adresselinje 2 (valgfri)'}
-                        onChange={(event): void => {
-                            skjema.felter.adresselinje2.validerOgSettFelt(event.target.value);
-                        }}
-                    />
-                    <HStack>
-                        <StyledTextField
-                            {...skjema.felter.postnummer.hentNavBaseSkjemaProps(
-                                skjema.visFeilmeldinger
-                            )}
-                            readOnly={erLesevisning}
-                            label={'Postnummer'}
-                            onChange={(event): void => {
-                                skjema.felter.postnummer.validerOgSettFelt(event.target.value);
-                            }}
-                            $width={'10rem'}
-                        />
-                        <Spacer />
-                        <StyledTextField
-                            {...skjema.felter.poststed.hentNavBaseSkjemaProps(
-                                skjema.visFeilmeldinger
-                            )}
-                            readOnly={erLesevisning}
-                            label={'Poststed'}
-                            onChange={(event): void => {
-                                skjema.felter.poststed.validerOgSettFelt(event.target.value);
-                            }}
-                            $width={'19.5rem'}
-                        />
-                    </HStack>
-
                     <FamilieLandvelger
                         id={'land'}
                         value={
@@ -134,6 +88,71 @@ const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) =
                             skjema.felter.land.validerOgSettFelt(land.value);
                         }}
                     />
+                    {skjema.felter.land.verdi && (
+                        <>
+                            <TextField
+                                {...skjema.felter.adresselinje1.hentNavBaseSkjemaProps(
+                                    skjema.visFeilmeldinger
+                                )}
+                                readOnly={erLesevisning}
+                                label={'Adresselinje 1'}
+                                onChange={(event): void => {
+                                    skjema.felter.adresselinje1.validerOgSettFelt(
+                                        event.target.value
+                                    );
+                                }}
+                            />
+                            <TextField
+                                {...skjema.felter.adresselinje2.hentNavBaseSkjemaProps(
+                                    skjema.visFeilmeldinger
+                                )}
+                                readOnly={erLesevisning}
+                                label={'Adresselinje 2 (valgfri)'}
+                                onChange={(event): void => {
+                                    skjema.felter.adresselinje2.validerOgSettFelt(
+                                        event.target.value
+                                    );
+                                }}
+                            />
+                            {skjema.felter.land.verdi !== 'NO' && (
+                                <Alert variant="info">
+                                    Ved utenlandsk adresse skal postnummer og poststed legges i
+                                    adresselinjene.
+                                </Alert>
+                            )}
+                            <HStack>
+                                <StyledTextField
+                                    {...skjema.felter.postnummer.hentNavBaseSkjemaProps(
+                                        skjema.visFeilmeldinger
+                                    )}
+                                    readOnly={erLesevisning}
+                                    disabled={skjema.felter.land.verdi !== 'NO'}
+                                    label={'Postnummer'}
+                                    onChange={(event): void => {
+                                        skjema.felter.postnummer.validerOgSettFelt(
+                                            event.target.value
+                                        );
+                                    }}
+                                    $width={'10rem'}
+                                />
+                                <Spacer />
+                                <StyledTextField
+                                    {...skjema.felter.poststed.hentNavBaseSkjemaProps(
+                                        skjema.visFeilmeldinger
+                                    )}
+                                    readOnly={erLesevisning}
+                                    disabled={skjema.felter.land.verdi !== 'NO'}
+                                    label={'Poststed'}
+                                    onChange={(event): void => {
+                                        skjema.felter.poststed.validerOgSettFelt(
+                                            event.target.value
+                                        );
+                                    }}
+                                    $width={'19.5rem'}
+                                />
+                            </HStack>
+                        </>
+                    )}
                 </VStack>
             </Fieldset>
         </>
