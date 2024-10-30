@@ -10,7 +10,7 @@ import {
     finnUtbetalingsperioderHvorTomErEnBestemtMåned,
     type Utbetalingsperiode,
 } from '../../../typer/utbetalingsperiode';
-import { formaterIdent } from '../../../utils/formatter';
+import { formaterIdenter } from '../../../utils/formatter';
 
 interface Props {
     utbetalingsperioder: Utbetalingsperiode[];
@@ -35,14 +35,12 @@ export function FulltidBarnehageplassAugust2024Alert({ utbetalingsperioder }: Pr
     const identerForBarn = finnUnikeIdenterForPersonTypeIUtbetalingsperioder(
         utbetalingsperioderHvorTomErAugust2024,
         PersonType.BARN
-    )
-        .map(ident => formaterIdent(ident))
-        .join(', ');
+    );
 
     return (
         <StyledAlert variant={'warning'}>
-            Det er perioder som kan føre til utbetaling for barn {identerForBarn}. Kontroller om
-            barnet hører inn under regelverk før lovendring 1. august 24. Bruk «Endret
+            Det er perioder som kan føre til utbetaling for barn {formaterIdenter(identerForBarn)}.
+            Kontroller om barnet hører inn under regelverk før lovendring 1. august 24. Bruk «Endret
             utbetalingsperiode» for å stoppe etterbetalingen hvis barnet hadde fulltidsplass i
             barnehage i august 24.
         </StyledAlert>
