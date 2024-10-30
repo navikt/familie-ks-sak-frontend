@@ -71,7 +71,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
 
     return (
         <StyledFieldset
-            error={hentFrontendFeilmelding(skjema.submitRessurs)}
+            error={skjema.visFeilmeldinger && hentFrontendFeilmelding(skjema.submitRessurs)}
             legend={'Skjema for å endre overgangsordningandeler'}
             hideLegend
         >
