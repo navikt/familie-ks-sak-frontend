@@ -3,13 +3,13 @@ import type { IsoMånedString } from '../utils/dato';
 export interface IRestOvergangsordningAndel {
     id: number;
     personIdent?: string;
-    antallTimer: number | undefined;
+    antallTimer?: number;
     deltBosted: boolean;
     fom?: IsoMånedString;
     tom?: IsoMånedString;
 }
 
-export interface IRestOvergangsordningAndelSkjemaFelt {
+export interface IOvergangsordningAndelSkjema {
     personIdent: string | undefined;
     antallTimer: string | undefined;
     deltBosted: boolean;
