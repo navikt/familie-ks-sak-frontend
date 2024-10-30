@@ -10,11 +10,10 @@ import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from './behandlingContext/BehandlingContext';
 import type { IBehandling } from '../typer/behandling';
 import type {
+    IOvergangsordningAndelSkjema,
     IRestOvergangsordningAndel,
-    IRestOvergangsordningAndelSkjemaFelt,
 } from '../typer/overgangsordningAndel';
 import { dateTilIsoMånedÅrString, validerGyldigDato } from '../utils/dato';
-import { isNumeric } from '../utils/eøsValidators';
 
 interface IProps {
     overgangsordningAndel: IRestOvergangsordningAndel;
@@ -31,7 +30,7 @@ const [OvergangsordningAndelProvider, useOvergangsordningAndel] = createUseConte
                 : null;
 
         const { skjema, kanSendeSkjema, onSubmit, nullstillSkjema } = useSkjema<
-            IRestOvergangsordningAndelSkjemaFelt,
+            IOvergangsordningAndelSkjema,
             IBehandling
         >({
             felter: {
@@ -43,16 +42,9 @@ const [OvergangsordningAndelProvider, useOvergangsordningAndel] = createUseConte
                 antallTimer: useFelt<string | undefined>({
                     verdi: overgangsordningAndel.antallTimer?.toString(),
                     valideringsfunksjon: felt => {
-                        if (felt.verdi === undefined) {
-                            return ok(felt);
-                        }
-                        if (!isNumeric(felt.verdi)) {
-                            return feil(felt, 'Antall timer må være et tall');
-                        }
-                        if (Number(felt.verdi) < 0) {
-                            return feil(felt, 'Antall timer må være 0 eller større');
-                        }
-                        return ok(felt);
+                        return felt.verdi && Number(felt.verdi) < 0
+                            ? feil(felt, 'Antall timer må være 0 eller større')
+                            : ok(felt);
                     },
                 }),
                 deltBosted: useFelt<boolean>({
