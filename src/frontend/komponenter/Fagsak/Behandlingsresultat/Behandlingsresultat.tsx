@@ -267,7 +267,8 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                 <EndretUtbetalingAndelTabell åpenBehandling={åpenBehandling} />
             )}
             {toggles[ToggleNavn.overgangsordningErTilgjengelig] &&
-                åpenBehandling.årsak == BehandlingÅrsak.OVERGANGSORDNING_2024 && (
+                (åpenBehandling.årsak == BehandlingÅrsak.OVERGANGSORDNING_2024 ||
+                    åpenBehandling.overgangsordningAndeler.length > 0) && (
                     <>
                         <OvergangsordningAndelTabell åpenBehandling={åpenBehandling} />
                         {!erLesevisning && (

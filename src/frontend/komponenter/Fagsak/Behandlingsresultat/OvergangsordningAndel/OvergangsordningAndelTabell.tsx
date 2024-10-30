@@ -41,10 +41,7 @@ const OvergangsordningAndelTabell: React.FunctionComponent<IOvergangsordningTabe
                             overgangsordningAndel={overgangsordningAndel}
                             key={overgangsordningAndel.id}
                         >
-                            <OvergangsordningAndelRad
-                                overgangsordningAndel={overgangsordningAndel}
-                                åpenBehandling={åpenBehandling}
-                            />
+                            <OvergangsordningAndelRad åpenBehandling={åpenBehandling} />
                         </OvergangsordningAndelProvider>
                     ))}
                 </Table.Body>

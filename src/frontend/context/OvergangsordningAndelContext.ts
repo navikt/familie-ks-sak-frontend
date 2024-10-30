@@ -1,10 +1,13 @@
 import { useState } from 'react';
 
 import createUseContext from 'constate';
-import { isValid } from 'date-fns';
+import deepEqual from 'deep-equal';
 
+import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
+import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
+import { useBehandling } from './behandlingContext/BehandlingContext';
 import type { IBehandling } from '../typer/behandling';
 import type {
     IRestOvergangsordningAndel,
@@ -19,7 +22,15 @@ interface IProps {
 
 const [OvergangsordningAndelProvider, useOvergangsordningAndel] = createUseContext(
     ({ overgangsordningAndel }: IProps) => {
-        const { skjema, kanSendeSkjema, onSubmit } = useSkjema<
+        const { request } = useHttp();
+        const { åpenBehandling, settÅpenBehandling } = useBehandling();
+
+        const behandlingId =
+            åpenBehandling.status === RessursStatus.SUKSESS
+                ? åpenBehandling.data.behandlingId
+                : null;
+
+        const { skjema, kanSendeSkjema, onSubmit, nullstillSkjema } = useSkjema<
             IRestOvergangsordningAndelSkjemaFelt,
             IBehandling
         >({
@@ -51,35 +62,21 @@ const [OvergangsordningAndelProvider, useOvergangsordningAndel] = createUseConte
                     verdi: overgangsordningAndel.fom
                         ? new Date(overgangsordningAndel.fom)
                         : undefined,
-                    valideringsfunksjon: felt => {
-                        return felt.verdi && isValid(felt.verdi)
-                            ? ok(felt)
-                            : feil(felt, 'Du må velge en gyldig dato');
-                    },
+                    valideringsfunksjon: validerGyldigDato,
                 }),
                 tom: useFelt<Date | undefined>({
                     verdi: overgangsordningAndel.tom
                         ? new Date(overgangsordningAndel.tom)
                         : undefined,
-                    valideringsfunksjon: felt => validerGyldigDato(felt),
+                    valideringsfunksjon: validerGyldigDato,
                 }),
             },
             skjemanavn: 'Endre overgangsandelperiode',
         });
-        const [forrigeOvergangsordningAndel, settForrigeOvergangsordningAndel] =
-            useState<IRestOvergangsordningAndel>();
 
-        if (overgangsordningAndel !== forrigeOvergangsordningAndel) {
-            settForrigeOvergangsordningAndel(overgangsordningAndel);
-        }
-
-        const tilbakestillFelterTilDefault = () => {
-            skjema.felter.personIdent.nullstill();
-            skjema.felter.antallTimer.nullstill();
-            skjema.felter.deltBosted.nullstill();
-            skjema.felter.fom.nullstill();
-            skjema.felter.tom.nullstill();
-        };
+        const [erOvergangsordningAndelÅpen, settErOvergangsordningAndelÅpen] = useState<boolean>(
+            overgangsordningAndel.personIdent === null
+        );
 
         const hentSkjemaData = () => {
             const { personIdent, antallTimer, deltBosted, fom, tom } = skjema.felter;
@@ -93,14 +90,52 @@ const [OvergangsordningAndelProvider, useOvergangsordningAndel] = createUseConte
             };
         };
 
+        const tilbakestillOgLukkOvergangsordningAndel = () => {
+            settErOvergangsordningAndelÅpen(false);
+            nullstillSkjema();
+        };
+
+        const oppdaterOvergangsordningAndel = () => {
+            if (kanSendeSkjema()) {
+                onSubmit<IRestOvergangsordningAndel>(
+                    {
+                        method: 'PUT',
+                        url: `/familie-ks-sak/api/overgangsordningandel/${behandlingId}/${overgangsordningAndel.id}`,
+                        påvirkerSystemLaster: true,
+                        data: hentSkjemaData(),
+                    },
+                    (behandling: Ressurs<IBehandling>) => {
+                        if (behandling.status === RessursStatus.SUKSESS) {
+                            tilbakestillOgLukkOvergangsordningAndel();
+                            settÅpenBehandling(behandling);
+                        }
+                    }
+                );
+            }
+        };
+
+        const slettOvergangsordningAndel = () => {
+            request<undefined, IBehandling>({
+                method: 'DELETE',
+                url: `/familie-ks-sak/api/overgangsordningandel/${behandlingId}/${overgangsordningAndel.id}`,
+                påvirkerSystemLaster: true,
+            }).then((behandling: Ressurs<IBehandling>) => settÅpenBehandling(behandling));
+        };
+
+        const erOvergangsordningAndelForandret = () =>
+            !deepEqual(overgangsordningAndel, hentSkjemaData());
+
         return {
             overgangsordningAndel,
             skjema,
-            kanSendeSkjema,
-            onSubmit,
-            hentSkjemaData,
-            tilbakestillFelterTilDefault,
+            erOvergangsordningAndelÅpen,
+            settErOvergangsordningAndelÅpen,
+            erOvergangsordningAndelForandret,
+            slettOvergangsordningAndel,
+            oppdaterOvergangsordningAndel,
+            tilbakestillOgLukkOvergangsordningAndel,
         };
     }
 );
+
 export { OvergangsordningAndelProvider, useOvergangsordningAndel };
