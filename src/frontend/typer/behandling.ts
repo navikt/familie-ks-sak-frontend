@@ -4,6 +4,7 @@ import type { INøkkelPar } from './common';
 import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
 import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
+import type { IRestOvergangsordningAndel } from './overgangsordningAndel';
 import type { IGrunnlagPerson } from './person';
 import type { IRestRefusjonEøs } from './refusjon-eøs';
 import type { ITilbakekreving } from './simulering';
@@ -57,6 +58,7 @@ export enum BehandlingÅrsak {
     BARNEHAGELISTE = 'BARNEHAGELISTE',
     TEKNISK_ENDRING = 'TEKNISK_ENDRING',
     LOVENDRING_2024 = 'LOVENDRING_2024',
+    OVERGANGSORDNING_2024 = 'OVERGANGSORDNING_2024',
 }
 
 export const behandlingÅrsak: Record<
@@ -73,6 +75,7 @@ export const behandlingÅrsak: Record<
     BARNEHAGELISTE: 'Barnehageliste',
     TEKNISK_ENDRING: 'Teknisk Endring',
     LOVENDRING_2024: 'Lovendring 2024',
+    OVERGANGSORDNING_2024: 'Overgangsordning 2024',
 
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
@@ -210,6 +213,7 @@ export interface IBehandling {
     vedtak?: IVedtakForBehandling;
     utbetalingsperioder: Utbetalingsperiode[];
     endretUtbetalingAndeler: IRestEndretUtbetalingAndel[];
+    overgangsordningAndeler: IRestOvergangsordningAndel[];
     personerMedAndelerTilkjentYtelse: IPersonMedAndelerTilkjentYtelse[];
     årsak: BehandlingÅrsak;
     tilbakekreving?: ITilbakekreving;
