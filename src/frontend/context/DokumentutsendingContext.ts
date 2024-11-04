@@ -23,6 +23,7 @@ export enum DokumentÅrsak {
     KAN_SØKE_EØS = 'KAN_SØKE_EØS',
     TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER = 'TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER',
     TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING = 'TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING',
+    TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER = 'TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER',
 }
 
 export const dokumentÅrsak: Record<DokumentÅrsak, string> = {
@@ -31,6 +32,8 @@ export const dokumentÅrsak: Record<DokumentÅrsak, string> = {
         'Informasjon til forelder omfattet norsk lovgivning - har fått en søknad fra annen forelder',
     TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING:
         'Informasjon til forelder omfattet av norsk lovgivning - varsel om revurdering',
+    TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER:
+        'Informasjon til forelder omfattet av norsk lovgivning - henter ikke registeropplysninger',
 };
 
 const hentBarnMedOpplysningerFraBruker = () => {
@@ -93,6 +96,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                 [
                     DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
                     DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING,
+                    DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER,
                 ].includes(avhengigheter.årsakFelt.verdi),
             nullstillVedAvhengighetEndring: false,
         });
@@ -151,6 +155,11 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                     case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER:
                         return hentBarnSøktForSkjemaData(
                             Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
+                            målform.verdi ?? Målform.NB
+                        );
+                    case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER:
+                        return hentBarnSøktForSkjemaData(
+                            Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER,
                             målform.verdi ?? Målform.NB
                         );
                 }
