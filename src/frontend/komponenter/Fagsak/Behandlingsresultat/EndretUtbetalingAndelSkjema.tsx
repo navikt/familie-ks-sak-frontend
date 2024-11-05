@@ -27,7 +27,9 @@ import type { IBehandling } from '../../../typer/behandling';
 import type {
     IRestEndretUtbetalingAndel,
     IEndretUtbetalingAndelÅrsak,
+    IEndretUtbetalingAndelBegrunnelse,
 } from '../../../typer/utbetalingAndel';
+import { IEndretUtbetalingAndelÅrsak as IEndretUtbetalingAndelÅrsakEnum } from '../../../typer/utbetalingAndel';
 import {
     IEndretUtbetalingAndelFullSats,
     optionTilsats,
@@ -35,6 +37,8 @@ import {
     satsTilOption,
     årsaker,
     årsakTekst,
+    endretUtbetalingAndelBegrunnelser,
+    endretUtbetalingAndelBegrunnelseTekst,
 } from '../../../typer/utbetalingAndel';
 import type { IsoMånedString } from '../../../utils/dato';
 import { lagPersonLabel } from '../../../utils/formatter';
@@ -307,6 +311,35 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                               </Checkbox>
                           )}
                 </Feltmargin>
+
+                {skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsakEnum.ALLEREDE_UTBETALT &&
+                    skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
+                        <Feltmargin>
+                            <Select
+                                {...skjema.felter.endretUtbetalingAndelBegrunnelse.hentNavBaseSkjemaProps(
+                                    skjema.visFeilmeldinger
+                                )}
+                                value={skjema.felter.endretUtbetalingAndelBegrunnelse.verdi}
+                                label={<Label>Endret utbetaling begrunnelse</Label>}
+                                onChange={(event): void => {
+                                    skjema.felter.endretUtbetalingAndelBegrunnelse.validerOgSettFelt(
+                                        event.target.value as IEndretUtbetalingAndelBegrunnelse
+                                    );
+                                }}
+                                readOnly={erLesevisning}
+                            >
+                                <option value={undefined}>Velg begrunnelse</option>
+                                {endretUtbetalingAndelBegrunnelser.map(begrunnelse => (
+                                    <option
+                                        value={begrunnelse.valueOf()}
+                                        key={begrunnelse.valueOf()}
+                                    >
+                                        {endretUtbetalingAndelBegrunnelseTekst[begrunnelse]}
+                                    </option>
+                                ))}
+                            </Select>
+                        </Feltmargin>
+                    )}
 
                 <Feltmargin>
                     <Datovelger
