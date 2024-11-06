@@ -17,6 +17,7 @@ import {
     erIsoStringGyldig,
     validerGyldigDato,
 } from '../utils/dato';
+import type { Begrunnelse } from '../typer/vedtak';
 
 interface IProps {
     endretUtbetalingAndel: IRestEndretUtbetalingAndel;
@@ -82,7 +83,13 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 }),
                 periodeSkalUtbetalesTilSøker: periodeSkalUtbetalesTilSøkerFelt,
                 årsak: årsakFelt,
-                avslagAlleredeUtbetaltBegrunnelse: avslagAlleredeUtbetaltBegrunnelseFelt,
+                avslagBegrunnelser: useFelt<Begrunnelse[]>({
+                    verdi: [],
+                    valideringsfunksjon: erAvslagBegrunnelserGyldig,
+                    avhengigheter: {
+                        erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
+                    },
+                }),
                 søknadstidspunkt: useFelt<Date | undefined>({
                     verdi: undefined,
                     valideringsfunksjon: validerGyldigDato,
