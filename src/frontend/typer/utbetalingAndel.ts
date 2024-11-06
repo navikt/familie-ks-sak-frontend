@@ -11,7 +11,7 @@ export interface IRestEndretUtbetalingAndel {
     søknadstidspunkt?: IsoDatoString;
     avtaletidspunktDeltBosted?: IsoDatoString;
     årsak?: IEndretUtbetalingAndelÅrsak;
-    endretUtbetalingAndelBegrunnelse?: IEndretUtbetalingAndelBegrunnelse;
+    avslagAlleredeUtbetaltBegrunnelse?: IAvslagAlleredeUtbetaltBegrunnelse;
     erTilknyttetAndeler?: boolean;
     erEksplisittAvslagPåSøknad?: boolean;
 }
@@ -34,19 +34,19 @@ export const årsaker: IEndretUtbetalingAndelÅrsak[] = Object.keys(IEndretUtbet
     k => k as IEndretUtbetalingAndelÅrsak
 );
 
-export enum IEndretUtbetalingAndelBegrunnelse {
+export enum IAvslagAlleredeUtbetaltBegrunnelse {
     TEST = 'TEST',
 }
 
-export const endretUtbetalingAndelBegrunnelseTekst: {
-    [key in IEndretUtbetalingAndelBegrunnelse]: string;
+export const avslagAlleredeUtbetaltBegrunnelseTekst: {
+    [key in IAvslagAlleredeUtbetaltBegrunnelse]: string;
 } = {
     TEST: 'Test-tekst',
 };
 
-export const endretUtbetalingAndelBegrunnelser: IEndretUtbetalingAndelBegrunnelse[] = Object.keys(
-    IEndretUtbetalingAndelBegrunnelse
-).map(k => k as IEndretUtbetalingAndelBegrunnelse);
+export const avslagAlleredeUtbetaltBegrunnelser: IAvslagAlleredeUtbetaltBegrunnelse[] = Object.keys(
+    IAvslagAlleredeUtbetaltBegrunnelse
+).map(k => k as IAvslagAlleredeUtbetaltBegrunnelse);
 
 export enum IEndretUtbetalingAndelFullSats {
     FULL_SATS = 'FULL_SATS',

@@ -27,7 +27,7 @@ import type { IBehandling } from '../../../typer/behandling';
 import type {
     IRestEndretUtbetalingAndel,
     IEndretUtbetalingAndelÅrsak,
-    IEndretUtbetalingAndelBegrunnelse,
+    IAvslagAlleredeUtbetaltBegrunnelse,
 } from '../../../typer/utbetalingAndel';
 import { IEndretUtbetalingAndelÅrsak as IEndretUtbetalingAndelÅrsakEnum } from '../../../typer/utbetalingAndel';
 import {
@@ -37,8 +37,8 @@ import {
     satsTilOption,
     årsaker,
     årsakTekst,
-    endretUtbetalingAndelBegrunnelser,
-    endretUtbetalingAndelBegrunnelseTekst,
+    avslagAlleredeUtbetaltBegrunnelser,
+    avslagAlleredeUtbetaltBegrunnelseTekst,
 } from '../../../typer/utbetalingAndel';
 import type { IsoMånedString } from '../../../utils/dato';
 import { lagPersonLabel } from '../../../utils/formatter';
@@ -316,25 +316,25 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
                         <Feltmargin>
                             <Select
-                                {...skjema.felter.endretUtbetalingAndelBegrunnelse.hentNavBaseSkjemaProps(
+                                {...skjema.felter.avslagAlleredeUtbetaltBegrunnelse.hentNavBaseSkjemaProps(
                                     skjema.visFeilmeldinger
                                 )}
-                                value={skjema.felter.endretUtbetalingAndelBegrunnelse.verdi}
+                                value={skjema.felter.avslagAlleredeUtbetaltBegrunnelse.verdi}
                                 label={<Label>Endret utbetaling begrunnelse</Label>}
                                 onChange={(event): void => {
-                                    skjema.felter.endretUtbetalingAndelBegrunnelse.validerOgSettFelt(
-                                        event.target.value as IEndretUtbetalingAndelBegrunnelse
+                                    skjema.felter.avslagAlleredeUtbetaltBegrunnelse.validerOgSettFelt(
+                                        event.target.value as IAvslagAlleredeUtbetaltBegrunnelse
                                     );
                                 }}
                                 readOnly={erLesevisning}
                             >
                                 <option value={undefined}>Velg begrunnelse</option>
-                                {endretUtbetalingAndelBegrunnelser.map(begrunnelse => (
+                                {avslagAlleredeUtbetaltBegrunnelser.map(begrunnelse => (
                                     <option
                                         value={begrunnelse.valueOf()}
                                         key={begrunnelse.valueOf()}
                                     >
-                                        {endretUtbetalingAndelBegrunnelseTekst[begrunnelse]}
+                                        {avslagAlleredeUtbetaltBegrunnelseTekst[begrunnelse]}
                                     </option>
                                 ))}
                             </Select>

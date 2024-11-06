@@ -7,7 +7,7 @@ import type { Avhengigheter } from '@navikt/familie-skjema';
 
 import type { IBehandling } from '../typer/behandling';
 import {
-    IEndretUtbetalingAndelBegrunnelse,
+    IAvslagAlleredeUtbetaltBegrunnelse,
     type IRestEndretUtbetalingAndel,
 } from '../typer/utbetalingAndel';
 import { IEndretUtbetalingAndelÅrsak } from '../typer/utbetalingAndel';
@@ -32,16 +32,16 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                     : feil(felt, 'Du må velge en årsak'),
         });
 
-        const endretUtbetalingAndelBegrunnelseFelt = useFelt<
-            IEndretUtbetalingAndelBegrunnelse | undefined
+        const avslagAlleredeUtbetaltBegrunnelseFelt = useFelt<
+            IAvslagAlleredeUtbetaltBegrunnelse | undefined
         >({
-            verdi: endretUtbetalingAndel.endretUtbetalingAndelBegrunnelse
-                ? endretUtbetalingAndel.endretUtbetalingAndelBegrunnelse
+            verdi: endretUtbetalingAndel.avslagAlleredeUtbetaltBegrunnelse
+                ? endretUtbetalingAndel.avslagAlleredeUtbetaltBegrunnelse
                 : undefined,
             valideringsfunksjon: felt =>
-                felt.verdi && Object.values(IEndretUtbetalingAndelBegrunnelse).includes(felt.verdi)
+                felt.verdi && Object.values(IAvslagAlleredeUtbetaltBegrunnelse).includes(felt.verdi)
                     ? ok(felt)
-                    : feil(felt, 'Du må velge en endretUtbetalingAndelBegrunnelse'),
+                    : feil(felt, 'Du må velge begrunnelse for avslag'),
         });
 
         const periodeSkalUtbetalesTilSøkerFelt = useFelt<boolean | undefined>({
@@ -55,7 +55,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 tom: IsoMånedString | undefined;
                 periodeSkalUtbetalesTilSøker: boolean | undefined;
                 årsak: IEndretUtbetalingAndelÅrsak | undefined;
-                endretUtbetalingAndelBegrunnelse: IEndretUtbetalingAndelBegrunnelse | undefined;
+                avslagAlleredeUtbetaltBegrunnelse: IAvslagAlleredeUtbetaltBegrunnelse | undefined;
                 søknadstidspunkt: Date | undefined;
                 avtaletidspunktDeltBosted: Date | undefined;
                 fullSats: boolean | undefined;
@@ -82,7 +82,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 }),
                 periodeSkalUtbetalesTilSøker: periodeSkalUtbetalesTilSøkerFelt,
                 årsak: årsakFelt,
-                endretUtbetalingAndelBegrunnelse: endretUtbetalingAndelBegrunnelseFelt,
+                avslagAlleredeUtbetaltBegrunnelse: avslagAlleredeUtbetaltBegrunnelseFelt,
                 søknadstidspunkt: useFelt<Date | undefined>({
                     verdi: undefined,
                     valideringsfunksjon: validerGyldigDato,
@@ -177,7 +177,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 fom,
                 tom,
                 årsak,
-                endretUtbetalingAndelBegrunnelse,
+                avslagAlleredeUtbetaltBegrunnelse,
                 begrunnelse,
                 søknadstidspunkt,
                 avtaletidspunktDeltBosted,
@@ -190,8 +190,8 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 fom: fom && fom.verdi,
                 tom: tom && tom.verdi,
                 årsak: årsak && årsak.verdi,
-                endretUtbetalingAndelBegrunnelse:
-                    endretUtbetalingAndelBegrunnelse && endretUtbetalingAndelBegrunnelse.verdi,
+                avslagAlleredeUtbetaltBegrunnelse:
+                    avslagAlleredeUtbetaltBegrunnelse && avslagAlleredeUtbetaltBegrunnelse.verdi,
                 begrunnelse: begrunnelse.verdi,
                 søknadstidspunkt: dateTilIsoDatoStringEllerUndefined(søknadstidspunkt.verdi),
                 avtaletidspunktDeltBosted: dateTilIsoDatoStringEllerUndefined(
