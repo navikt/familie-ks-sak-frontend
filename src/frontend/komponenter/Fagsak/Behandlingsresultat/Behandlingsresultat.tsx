@@ -34,8 +34,6 @@ import type {
 } from '../../../typer/eøsPerioder';
 import { ToggleNavn } from '../../../typer/toggles';
 import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
-import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
-import { periodeOverlapperMedValgtDato } from '../../../utils/dato';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
@@ -127,20 +125,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
 
     const forrigeOnClick = () => {
         navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`);
-    };
-
-    const finnUtbetalingsperiodeForAktivEtikett = (
-        utbetalingsperioder: Utbetalingsperiode[]
-    ): Utbetalingsperiode | undefined => {
-        return aktivEtikett
-            ? utbetalingsperioder.find((utbetalingsperiode: Utbetalingsperiode) =>
-                  periodeOverlapperMedValgtDato(
-                      utbetalingsperiode.periodeFom,
-                      utbetalingsperiode.periodeTom,
-                      aktivEtikett.date
-                  )
-              )
-            : undefined;
     };
 
     const grunnlagPersoner = filterOgSorterGrunnlagPersonerMedAndeler(
@@ -255,9 +239,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             {aktivEtikett && (
                 <Oppsummeringsboks
                     åpenBehandling={åpenBehandling}
-                    utbetalingsperiode={finnUtbetalingsperiodeForAktivEtikett(
-                        åpenBehandling.utbetalingsperioder
-                    )}
                     aktivEtikett={aktivEtikett}
                     kompetanser={kompetanser}
                     utbetaltAnnetLandBeløp={utbetaltAnnetLandBeløp}

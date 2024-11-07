@@ -21,7 +21,11 @@ import type {
 } from '../../../typer/eøsPerioder';
 import { EøsPeriodeStatus, KompetanseResultat } from '../../../typer/eøsPerioder';
 import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
-import { dateTilFormatertString, Datoformat } from '../../../utils/dato';
+import {
+    dateTilFormatertString,
+    Datoformat,
+    periodeOverlapperMedValgtDato,
+} from '../../../utils/dato';
 import {
     formaterBeløp,
     formaterIdent,
@@ -44,7 +48,6 @@ const TotaltUtbetaltRad = styled(HGrid)`
 
 interface IProps {
     åpenBehandling: IBehandling;
-    utbetalingsperiode: Utbetalingsperiode | undefined;
     aktivEtikett: Etikett;
     kompetanser: IRestKompetanse[];
     utbetaltAnnetLandBeløp: IRestUtenlandskPeriodeBeløp[];
@@ -109,7 +112,6 @@ const erAllePerioderUtfyltForBarn = (eøsPeriodeStatus: IEøsPeriodeStatus[]) =>
 
 const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
     åpenBehandling,
-    utbetalingsperiode,
     aktivEtikett,
     kompetanser,
     utbetaltAnnetLandBeløp,
@@ -129,6 +131,24 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
         return navn[0].toUpperCase() + navn.substring(1);
     };
 
+    const finnUtbetalingsperiodeForAktivEtikett = (
+        utbetalingsperioder: Utbetalingsperiode[]
+    ): Utbetalingsperiode | undefined => {
+        return aktivEtikett
+            ? utbetalingsperioder.find((utbetalingsperiode: Utbetalingsperiode) =>
+                  periodeOverlapperMedValgtDato(
+                      utbetalingsperiode.periodeFom,
+                      utbetalingsperiode.periodeTom,
+                      aktivEtikett.date
+                  )
+              )
+            : undefined;
+    };
+
+    const utbetalingsperiode = finnUtbetalingsperiodeForAktivEtikett(
+        åpenBehandling.utbetalingsperioder
+    );
+
     React.useEffect(() => {
         setUtbetalingsBeløpStatusMap(
             finnUtbetalingsBeløpStatusMap(
@@ -138,7 +158,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                 valutakurser
             )
         );
-    }, [utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser]);
+    }, [kompetanser, utbetaltAnnetLandBeløp, valutakurser]);
 
     const erOvergangsordning = åpenBehandling.årsak == BehandlingÅrsak.OVERGANGSORDNING_2024;
 
