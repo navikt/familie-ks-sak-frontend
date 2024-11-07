@@ -2,6 +2,7 @@ import { addYears } from 'date-fns';
 
 import { kjønnType } from '@navikt/familie-typer';
 
+import { YtelseType } from '../../typer/beregning';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
 import { Vedtaksperiodetype } from '../../typer/vedtaksperiode';
@@ -36,6 +37,7 @@ describe('SøknadContext', () => {
                             utbetaltPerMnd: 1054,
                             erPåvirketAvEndring: false,
                             prosent: 80,
+                            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
                         },
                     ],
                     antallBarn: 1,
@@ -51,6 +53,7 @@ describe('SøknadContext', () => {
                             utbetaltPerMnd: 1054,
                             erPåvirketAvEndring: false,
                             prosent: 80,
+                            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
                         },
                     ],
                     antallBarn: 1,
