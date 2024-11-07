@@ -1,5 +1,5 @@
-import * as React from 'react';
 import type { PropsWithChildren } from 'react';
+import * as React from 'react';
 
 import styled from 'styled-components';
 
@@ -10,6 +10,8 @@ import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
 import { useTidslinje } from '../../../context/TidslinjeContext';
+import { BehandlingÅrsak, type IBehandling } from '../../../typer/behandling';
+import { YtelseType } from '../../../typer/beregning';
 import type {
     IEøsPeriodeStatus,
     IRestEøsPeriode,
@@ -35,18 +37,13 @@ const UtbetalingsbeløpStack = styled(VStack)`
     padding: ${ASpacing6} ${ASpacing10} ${ASpacing4} 0;
 `;
 
-const UtbetalingsbeløpRad: React.FC<PropsWithChildren> = ({ children }) => (
-    <HGrid columns="1fr 10rem 9rem 5rem" gap={'4'}>
-        {children}
-    </HGrid>
-);
-
 const TotaltUtbetaltRad = styled(HGrid)`
     border-top: 1px dashed;
     padding-top: ${ASpacing4};
 `;
 
 interface IProps {
+    åpenBehandling: IBehandling;
     utbetalingsperiode: Utbetalingsperiode | undefined;
     aktivEtikett: Etikett;
     kompetanser: IRestKompetanse[];
@@ -111,6 +108,7 @@ const erAllePerioderUtfyltForBarn = (eøsPeriodeStatus: IEøsPeriodeStatus[]) =>
 };
 
 const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
+    åpenBehandling,
     utbetalingsperiode,
     aktivEtikett,
     kompetanser,
@@ -142,6 +140,18 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
         );
     }, [utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser]);
 
+    const erOvergangsordning = åpenBehandling.årsak == BehandlingÅrsak.OVERGANGSORDNING_2024;
+
+    const UtbetalingsbeløpRad: React.FC<PropsWithChildren> = ({ children }) => {
+        const columns = erOvergangsordning ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem';
+
+        return (
+            <HGrid columns={columns} gap={'4'}>
+                {children}
+            </HGrid>
+        );
+    };
+
     return (
         <Box borderColor="border-strong" borderWidth="1" padding="10">
             <HGrid columns="1fr 3rem" align="center">
@@ -165,6 +175,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                             <BodyShort>Person</BodyShort>
                             <BodyShort>Barnehageplass</BodyShort>
                             <BodyShort>Kontantstøtte</BodyShort>
+                            {erOvergangsordning && <BodyShort>Ytelsetype</BodyShort>}
                             <BodyShort>Beløp</BodyShort>
                         </UtbetalingsbeløpRad>
                         {utbetalingsperiode.utbetalingsperiodeDetaljer
@@ -180,7 +191,14 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                                             detalj.erPåvirketAvEndring
                                         )}
                                     </BodyShort>
-                                    <BodyShort>{detalj.prosent + '%'}</BodyShort>
+                                    <BodyShort>{detalj.prosent + '% '}</BodyShort>
+                                    {erOvergangsordning && (
+                                        <BodyShort>
+                                            {detalj.ytelseType == YtelseType.OVERGANGSORDNING
+                                                ? 'Overgangsordning'
+                                                : 'Ordinær'}
+                                        </BodyShort>
+                                    )}
                                     {utbetalingsBeløpStatusMap.get(detalj.person.personIdent) ? (
                                         <BodyShort>
                                             {formaterBeløp(detalj.utbetaltPerMnd)}

@@ -254,6 +254,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             )}
             {aktivEtikett && (
                 <Oppsummeringsboks
+                    åpenBehandling={åpenBehandling}
                     utbetalingsperiode={finnUtbetalingsperiodeForAktivEtikett(
                         åpenBehandling.utbetalingsperioder
                     )}
