@@ -111,19 +111,6 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
             skjemanavn: 'Endre utbetalingsperiode',
         });
 
-        const settDatofelterTilDefaultverdier = () => {
-            skjema.felter.søknadstidspunkt.validerOgSettFelt(
-                endretUtbetalingAndel.søknadstidspunkt
-                    ? new Date(endretUtbetalingAndel.søknadstidspunkt)
-                    : undefined
-            );
-            skjema.felter.avtaletidspunktDeltBosted.validerOgSettFelt(
-                endretUtbetalingAndel.avtaletidspunktDeltBosted
-                    ? new Date(endretUtbetalingAndel.avtaletidspunktDeltBosted)
-                    : undefined
-            );
-        };
-
         const tilbakestillFelterTilDefault = () => {
             skjema.felter.person.validerOgSettFelt(endretUtbetalingAndel.personIdent);
             skjema.felter.fom.validerOgSettFelt(endretUtbetalingAndel.fom);
@@ -142,7 +129,16 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 endretUtbetalingAndel.erEksplisittAvslagPåSøknad
             );
 
-            settDatofelterTilDefaultverdier();
+            skjema.felter.søknadstidspunkt.validerOgSettFelt(
+                endretUtbetalingAndel.søknadstidspunkt
+                    ? new Date(endretUtbetalingAndel.søknadstidspunkt)
+                    : undefined
+            );
+            skjema.felter.avtaletidspunktDeltBosted.validerOgSettFelt(
+                endretUtbetalingAndel.avtaletidspunktDeltBosted
+                    ? new Date(endretUtbetalingAndel.avtaletidspunktDeltBosted)
+                    : undefined
+            );
         };
 
         const [forrigeEndretUtbetalingAndel, settForrigeEndretUtbetalingAndel] =
