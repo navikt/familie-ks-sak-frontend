@@ -22,7 +22,7 @@ interface IProps {
 const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseContext(
     ({ endretUtbetalingAndel }: IProps) => {
         const årsakFelt = useFelt<IEndretUtbetalingAndelÅrsak | undefined>({
-            verdi: endretUtbetalingAndel.årsak ? endretUtbetalingAndel.årsak : undefined,
+            verdi: undefined,
             valideringsfunksjon: felt =>
                 felt.verdi && Object.values(IEndretUtbetalingAndelÅrsak).includes(felt.verdi)
                     ? ok(felt)
@@ -30,7 +30,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
         });
 
         const periodeSkalUtbetalesTilSøkerFelt = useFelt<boolean | undefined>({
-            verdi: endretUtbetalingAndel.prosent !== undefined && endretUtbetalingAndel.prosent > 0,
+            verdi: undefined,
         });
 
         const { skjema, kanSendeSkjema, onSubmit } = useSkjema<
@@ -50,19 +50,19 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
         >({
             felter: {
                 person: useFelt<string | undefined>({
-                    verdi: endretUtbetalingAndel.personIdent,
+                    verdi: undefined,
                     valideringsfunksjon: felt =>
                         felt.verdi ? ok(felt) : feil(felt, 'Du må velge en person'),
                 }),
                 fom: useFelt<IsoMånedString | undefined>({
-                    verdi: endretUtbetalingAndel.fom,
+                    verdi: undefined,
                     valideringsfunksjon: felt =>
                         erIsoStringGyldig(felt.verdi)
                             ? ok(felt)
                             : feil(felt, 'Du må velge f.o.m-dato'),
                 }),
                 tom: useFelt<IsoMånedString | undefined>({
-                    verdi: endretUtbetalingAndel.tom,
+                    verdi: undefined,
                 }),
                 periodeSkalUtbetalesTilSøker: periodeSkalUtbetalesTilSøkerFelt,
                 årsak: årsakFelt,
@@ -81,11 +81,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                     valideringsfunksjon: validerGyldigDato,
                 }),
                 fullSats: useFelt<boolean | undefined>({
-                    verdi:
-                        endretUtbetalingAndel.prosent !== null &&
-                        endretUtbetalingAndel.prosent !== undefined
-                            ? endretUtbetalingAndel.prosent === 100
-                            : undefined,
+                    verdi: undefined,
                     avhengigheter: {
                         årsak: årsakFelt,
                         periodeSkalUtbetalesTilSøker: periodeSkalUtbetalesTilSøkerFelt,
@@ -104,12 +100,12 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                     },
                 }),
                 begrunnelse: useFelt<string | undefined>({
-                    verdi: endretUtbetalingAndel.begrunnelse,
+                    verdi: undefined,
                     valideringsfunksjon: felt =>
                         felt.verdi ? ok(felt) : feil(felt, 'Du må oppgi en begrunnelse.'),
                 }),
                 erEksplisittAvslagPåSøknad: useFelt<boolean | undefined>({
-                    verdi: endretUtbetalingAndel.erEksplisittAvslagPåSøknad,
+                    verdi: undefined,
                 }),
             },
             skjemanavn: 'Endre utbetalingsperiode',
@@ -128,25 +124,35 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
             );
         };
 
+        const tilbakestillFelterTilDefault = () => {
+            skjema.felter.person.validerOgSettFelt(endretUtbetalingAndel.personIdent);
+            skjema.felter.fom.validerOgSettFelt(endretUtbetalingAndel.fom);
+            skjema.felter.tom.validerOgSettFelt(endretUtbetalingAndel.tom);
+            skjema.felter.periodeSkalUtbetalesTilSøker.validerOgSettFelt(
+                endretUtbetalingAndel.prosent !== undefined && endretUtbetalingAndel.prosent > 0
+            );
+            skjema.felter.årsak.validerOgSettFelt(endretUtbetalingAndel.årsak);
+            skjema.felter.fullSats.validerOgSettFelt(
+                endretUtbetalingAndel.prosent !== null &&
+                    endretUtbetalingAndel.prosent !== undefined &&
+                    endretUtbetalingAndel.prosent === 100
+            );
+            skjema.felter.begrunnelse.validerOgSettFelt(endretUtbetalingAndel.begrunnelse);
+            skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
+                endretUtbetalingAndel.erEksplisittAvslagPåSøknad
+            );
+
+            settDatofelterTilDefaultverdier();
+        };
+
         const [forrigeEndretUtbetalingAndel, settForrigeEndretUtbetalingAndel] =
             useState<IRestEndretUtbetalingAndel>();
 
         if (endretUtbetalingAndel !== forrigeEndretUtbetalingAndel) {
             settForrigeEndretUtbetalingAndel(endretUtbetalingAndel);
-            settDatofelterTilDefaultverdier();
+            tilbakestillFelterTilDefault();
         }
 
-        const tilbakestillFelterTilDefault = () => {
-            skjema.felter.person.nullstill();
-            skjema.felter.fom.nullstill();
-            skjema.felter.tom.nullstill();
-            skjema.felter.periodeSkalUtbetalesTilSøker.nullstill();
-            skjema.felter.årsak.nullstill();
-            skjema.felter.fullSats.nullstill();
-            skjema.felter.begrunnelse.nullstill();
-            skjema.felter.erEksplisittAvslagPåSøknad.nullstill();
-            settDatofelterTilDefaultverdier();
-        };
         const hentProsentForEndretUtbetaling = () => {
             return (
                 (skjema.felter.periodeSkalUtbetalesTilSøker.verdi ? 100 : 0) /
