@@ -111,7 +111,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
             skjemanavn: 'Endre utbetalingsperiode',
         });
 
-        const tilbakestillFelterTilDefault = () => {
+        const settFelterTilDefault = () => {
             skjema.felter.person.validerOgSettFelt(endretUtbetalingAndel.personIdent);
             skjema.felter.fom.validerOgSettFelt(endretUtbetalingAndel.fom);
             skjema.felter.tom.validerOgSettFelt(endretUtbetalingAndel.tom);
@@ -146,7 +146,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
 
         if (endretUtbetalingAndel !== forrigeEndretUtbetalingAndel) {
             settForrigeEndretUtbetalingAndel(endretUtbetalingAndel);
-            tilbakestillFelterTilDefault();
+            settFelterTilDefault();
         }
 
         const hentProsentForEndretUtbetaling = () => {
@@ -190,7 +190,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
             kanSendeSkjema,
             onSubmit,
             hentSkjemaData,
-            tilbakestillFelterTilDefault,
+            tilbakestillFelterTilDefault: settFelterTilDefault,
         };
     }
 );
