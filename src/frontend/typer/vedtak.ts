@@ -45,6 +45,8 @@ export const begrunnelseTyper: Record<BegrunnelseType, string> = {
 
 export enum Standardbegrunnelse {
     OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS = 'NasjonalEllerFellesBegrunnelse$OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS',
+    INNVILGET_OVERGANGSORDNING = 'NasjonalEllerFellesBegrunnelse$INNVILGET_OVERGANGSORDNING',
+    INNVILGET_OVERGANGSORDNING_GRADERT_UTBETALING = 'NasjonalEllerFellesBegrunnelse$INNVILGET_OVERGANGSORDNING_GRADERT_UTBETALING',
 }
 
 export interface IRestKorrigertVedtak {
