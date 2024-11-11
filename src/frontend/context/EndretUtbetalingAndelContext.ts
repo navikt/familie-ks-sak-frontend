@@ -190,7 +190,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
             kanSendeSkjema,
             onSubmit,
             hentSkjemaData,
-            tilbakestillFelterTilDefault: settFelterTilDefault,
+            settFelterTilDefault,
         };
     }
 );
