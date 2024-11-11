@@ -36,6 +36,7 @@ const StyledExpansionTitle = styled(ExpansionCard.Title)`
 interface IEkspanderbartBegrunnelsePanelProps extends PropsWithChildren {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
     sisteVedtaksperiodeFom?: string;
+    vedtaksperiodeInneholderOvergangsordningBegrunnelse: boolean;
     åpen: boolean;
     onClick?: () => void;
 }
@@ -50,10 +51,15 @@ const slutterSenereEnnInneværendeMåned = (tom?: string) =>
     );
 
 const finnPresentertTomDato = (
+    vedtaksperiodeInneholderOvergangsordningBegrunnelse: boolean,
     periodeFom?: string,
     periodeTom?: string,
     sisteVedtaksperiodeFom?: string
 ) => {
+    if (vedtaksperiodeInneholderOvergangsordningBegrunnelse) {
+        return periodeTom;
+    }
+
     if (erSammeFom(periodeFom, sisteVedtaksperiodeFom)) {
         return slutterSenereEnnInneværendeMåned(periodeTom) ? '' : periodeTom;
     }
@@ -63,6 +69,7 @@ const finnPresentertTomDato = (
 const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProps> = ({
     vedtaksperiodeMedBegrunnelser,
     sisteVedtaksperiodeFom,
+    vedtaksperiodeInneholderOvergangsordningBegrunnelse,
     åpen,
     onClick,
     children,
@@ -71,7 +78,6 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
         fom: vedtaksperiodeMedBegrunnelser.fom,
         tom: vedtaksperiodeMedBegrunnelser.tom,
     };
-
     const vedtaksperiodeTittel = hentVedtaksperiodeTittel(vedtaksperiodeMedBegrunnelser);
 
     return (
@@ -89,6 +95,7 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
                             {isoDatoPeriodeTilFormatertString({
                                 fom: periode.fom,
                                 tom: finnPresentertTomDato(
+                                    vedtaksperiodeInneholderOvergangsordningBegrunnelse,
                                     periode.fom,
                                     periode.tom,
                                     sisteVedtaksperiodeFom
