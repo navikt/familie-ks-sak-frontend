@@ -31,6 +31,7 @@ interface IProps {
     lesevisning: boolean;
     maxWidth?: number;
     className?: string;
+    behandlingsÅrsakErOvergangsordning: boolean;
 }
 
 const EøsPeriodeSkjema: React.FC<IProps> = ({
@@ -40,6 +41,7 @@ const EøsPeriodeSkjema: React.FC<IProps> = ({
     visFeilmeldinger,
     lesevisning,
     className,
+    behandlingsÅrsakErOvergangsordning,
 }) => {
     const finnÅrTilbakeTil = (): number => {
         return new Date().getFullYear() - new Date(initielFom.verdi).getFullYear();
@@ -59,7 +61,7 @@ const EøsPeriodeSkjema: React.FC<IProps> = ({
                     id={`periode_fom`}
                     label={'F.o.m'}
                     antallÅrTilbake={finnÅrTilbakeTil()}
-                    antallÅrFrem={0}
+                    antallÅrFrem={behandlingsÅrsakErOvergangsordning ? 1 : 0}
                     value={periode.verdi?.fom ? periode.verdi?.fom : undefined}
                     onEndret={årMåned => {
                         if (årMåned === periode.verdi.fom) {
@@ -77,7 +79,7 @@ const EøsPeriodeSkjema: React.FC<IProps> = ({
                     id={`periode_tom`}
                     label={'T.o.m (valgfri)'}
                     antallÅrTilbake={finnÅrTilbakeTil()}
-                    antallÅrFrem={0}
+                    antallÅrFrem={behandlingsÅrsakErOvergangsordning ? 1 : 0}
                     value={periode.verdi.tom ? periode.verdi.tom : undefined}
                     onEndret={årMåned => {
                         if (årMåned === periode.verdi.tom) {

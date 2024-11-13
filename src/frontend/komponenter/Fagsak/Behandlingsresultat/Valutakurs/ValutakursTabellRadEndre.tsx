@@ -62,6 +62,7 @@ interface IProps {
     slettValutakurs: () => void;
     sletterValutakurs: boolean;
     erManuellInputAvKurs: boolean;
+    behandlingsÅrsakErOvergangsordning: boolean;
 }
 
 const ValutakursTabellRadEndre: React.FC<IProps> = ({
@@ -74,6 +75,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
     slettValutakurs,
     sletterValutakurs,
     erManuellInputAvKurs,
+    behandlingsÅrsakErOvergangsordning,
 }) => {
     const { vurderErLesevisning } = useBehandling();
     const lesevisning = vurderErLesevisning(true);
@@ -125,6 +127,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                     visFeilmeldinger={skjema.visFeilmeldinger}
                     lesevisning={lesevisning}
                     maxWidth={32}
+                    behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
                 />
                 <StyledFieldset
                     errorId={valutakursValutaFeilmeldingId(skjema)}

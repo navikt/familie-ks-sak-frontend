@@ -7,7 +7,7 @@ import {
     useUtenlandskPeriodeBeløpSkjema,
     utenlandskPeriodeBeløpFeilmeldingId,
 } from '../../../../context/UtenlandskPeriodeBeløp/UtenlandskPeriodeBeløpSkjemaContext';
-import type { IBehandling } from '../../../../typer/behandling';
+import { BehandlingÅrsak, type IBehandling } from '../../../../typer/behandling';
 import type { OptionType } from '../../../../typer/common';
 import type { IRestUtenlandskPeriodeBeløp } from '../../../../typer/eøsPerioder';
 import { lagPersonLabel } from '../../../../utils/formatter';
@@ -93,6 +93,9 @@ const UtenlandskPeriodeBeløpRad: React.FC<IProps> = ({
                     toggleForm={toggleForm}
                     slettUtenlandskPeriodeBeløp={slettUtenlandskPeriodeBeløp}
                     status={utenlandskPeriodeBeløp.status}
+                    behandlingsÅrsakErOvergangsordning={
+                        åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
+                    }
                 />
             }
         >

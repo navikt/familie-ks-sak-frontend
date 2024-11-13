@@ -7,7 +7,7 @@ import {
     kompetanseFeilmeldingId,
     useKompetansePeriodeSkjema,
 } from '../../../../context/Kompetanse/KompetanseSkjemaContext';
-import type { IBehandling } from '../../../../typer/behandling';
+import { BehandlingÅrsak, type IBehandling } from '../../../../typer/behandling';
 import type { OptionType } from '../../../../typer/common';
 import type { IRestKompetanse } from '../../../../typer/eøsPerioder';
 import { KompetanseResultat } from '../../../../typer/eøsPerioder';
@@ -92,6 +92,9 @@ const KompetanseTabellRad: React.FC<IProps> = ({
                     toggleForm={toggleForm}
                     slettKompetanse={slettKompetanse}
                     status={kompetanse.status}
+                    behandlingsÅrsakErOvergangsordning={
+                        åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
+                    }
                     erAnnenForelderOmfattetAvNorskLovgivning={
                         kompetanse.erAnnenForelderOmfattetAvNorskLovgivning
                     }
