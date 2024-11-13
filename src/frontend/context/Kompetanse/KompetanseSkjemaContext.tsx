@@ -13,7 +13,7 @@ import {
     erSøkersAktivitetGyldig,
     erSøkersAktivitetslandGyldig,
 } from './valideringKompetanse';
-import type { IBehandling } from '../../typer/behandling';
+import { BehandlingÅrsak, type IBehandling } from '../../typer/behandling';
 import type { OptionType } from '../../typer/common';
 import type {
     EøsPeriodeStatus,
@@ -40,6 +40,10 @@ const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => 
     const { åpenBehandling, settÅpenBehandling } = useBehandling();
     const behandlingId =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingsÅrsakErOvergangsordning =
+        åpenBehandling.status === RessursStatus.SUKSESS
+            ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
+            : false;
     const { request } = useHttp();
 
     const initelFom = useFelt<string>({ verdi: kompetanse.fom });
@@ -75,7 +79,8 @@ const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => 
             periode: useFelt<IIsoMånedPeriode>({
                 verdi: nyIsoMånedPeriode(kompetanse.fom, kompetanse.tom),
                 avhengigheter: { initelFom },
-                valideringsfunksjon: erEøsPeriodeGyldig,
+                valideringsfunksjon: (felt, avhengigheter) =>
+                    erEøsPeriodeGyldig(behandlingsÅrsakErOvergangsordning, felt, avhengigheter),
             }),
             søkersAktivitet: søkersAktivitet,
             søkersAktivitetsland: useFelt<string | undefined>({

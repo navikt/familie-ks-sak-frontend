@@ -6,7 +6,7 @@ import type { FeltState } from '@navikt/familie-skjema';
 import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import type { IBehandling } from '../../typer/behandling';
+import { BehandlingÅrsak, type IBehandling } from '../../typer/behandling';
 import type { OptionType } from '../../typer/common';
 import type {
     IRestUtenlandskPeriodeBeløp,
@@ -68,6 +68,10 @@ const useUtenlandskPeriodeBeløpSkjema = ({
     const { åpenBehandling, settÅpenBehandling } = useBehandling();
     const behandlingId =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingsÅrsakErOvergangsordning =
+        åpenBehandling.status === RessursStatus.SUKSESS
+            ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
+            : false;
     const initelFom = useFelt<string>({ verdi: utenlandskPeriodeBeløp.fom });
     const { request } = useHttp();
 
@@ -94,7 +98,8 @@ const useUtenlandskPeriodeBeløpSkjema = ({
             periode: useFelt<IIsoMånedPeriode>({
                 verdi: nyIsoMånedPeriode(utenlandskPeriodeBeløp.fom, utenlandskPeriodeBeløp.tom),
                 avhengigheter: { initelFom },
-                valideringsfunksjon: erEøsPeriodeGyldig,
+                valideringsfunksjon: (felt, avhengigheter) =>
+                    erEøsPeriodeGyldig(behandlingsÅrsakErOvergangsordning, felt, avhengigheter),
             }),
             beløp: useFelt<string | undefined>({
                 verdi: konverterDesimalverdiTilSkjemaVisning(utenlandskPeriodeBeløp.beløp),
