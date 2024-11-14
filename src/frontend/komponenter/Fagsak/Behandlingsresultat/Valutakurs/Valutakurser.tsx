@@ -3,6 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { Alert, Heading, Table } from '@navikt/ds-react';
+import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
 
 import ValutakursTabellRad from './ValutakursTabellRad';
 import { useEøs } from '../../../../context/Eøs/EøsContext';
@@ -32,6 +33,10 @@ const StyledHeaderCell = styled(Table.HeaderCell)`
     }
 `;
 
+const AlertWithBottomMargin = styled(Alert)`
+    margin-bottom: ${ASpacing2};
+`;
+
 interface IProps {
     valutakurser: IRestValutakurs[];
     åpenBehandling: IBehandling;
@@ -46,7 +51,7 @@ const Valutakurser: React.FC<IProps> = ({ valutakurser, åpenBehandling, visFeil
                 Valuta
             </Heading>
             {åpenBehandling.årsak == BehandlingÅrsak.OVERGANGSORDNING_2024 && (
-                <Alert
+                <AlertWithBottomMargin
                     variant={'warning'}
                     fullWidth
                     children={
