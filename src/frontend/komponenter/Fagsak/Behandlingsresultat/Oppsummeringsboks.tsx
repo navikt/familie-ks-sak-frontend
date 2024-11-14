@@ -158,7 +158,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                 valutakurser
             )
         );
-    }, [kompetanser, utbetaltAnnetLandBeløp, valutakurser]);
+    }, [utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser]);
 
     const erOvergangsordning = åpenBehandling.årsak == BehandlingÅrsak.OVERGANGSORDNING_2024;
 

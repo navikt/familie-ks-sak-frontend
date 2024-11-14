@@ -16,6 +16,7 @@ const valgtDatoErSenereEnnNesteMåned = (valgtDato: IsoMånedString) =>
     isAfter(isoStringTilDate(valgtDato), endOfMonth(addMonths(dagensDato, 1)));
 
 const erEøsPeriodeGyldig = (
+    behandlingsÅrsakErOvergangsordning: boolean,
     felt: FeltState<IIsoMånedPeriode>,
     avhengigheter?: Avhengigheter
 ): FeltState<IIsoMånedPeriode> => {
@@ -27,7 +28,7 @@ const erEøsPeriodeGyldig = (
     if (!fom || isEmpty(fom)) {
         return feil(felt, 'Fra og med måned må være utfylt');
     }
-    if (fom && valgtDatoErSenereEnnNesteMåned(fom)) {
+    if (fom && valgtDatoErSenereEnnNesteMåned(fom) && !behandlingsÅrsakErOvergangsordning) {
         return feil(
             felt,
             'Du kan ikke sette fra og med (f.o.m.) til måneden etter neste måned eller senere'
@@ -39,7 +40,7 @@ const erEøsPeriodeGyldig = (
             `Du kan ikke legge inn fra og med måned som er før: ${avhengigheter?.initielFom}`
         );
     }
-    if (tom && valgtDatoErNesteMånedEllerSenere(tom)) {
+    if (tom && valgtDatoErNesteMånedEllerSenere(tom) && !behandlingsÅrsakErOvergangsordning) {
         return feil(felt, 'Du kan ikke sette til og med (t.o.m.) til neste måned eller senere');
     }
 

@@ -8,7 +8,7 @@ import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { RessursStatus, byggTomRessurs } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import type { IBehandling } from '../../typer/behandling';
+import { BehandlingÅrsak, type IBehandling } from '../../typer/behandling';
 import type { OptionType } from '../../typer/common';
 import type { EøsPeriodeStatus, IRestValutakurs, IValutakurs } from '../../typer/eøsPerioder';
 import type { IIsoMånedPeriode } from '../../utils/dato';
@@ -73,6 +73,10 @@ const useValutakursSkjema = ({ barnIValutakurs, valutakurs }: IProps) => {
     const { åpenBehandling, settÅpenBehandling } = useBehandling();
     const behandlingId =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingsÅrsakErOvergangsordning =
+        åpenBehandling.status === RessursStatus.SUKSESS
+            ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
+            : false;
     const initelFom = useFelt<string>({ verdi: valutakurs.fom });
     const { request } = useHttp();
 
@@ -124,7 +128,8 @@ const useValutakursSkjema = ({ barnIValutakurs, valutakurs }: IProps) => {
             periode: useFelt<IIsoMånedPeriode>({
                 verdi: nyIsoMånedPeriode(valutakurs.fom, valutakurs.tom),
                 avhengigheter: { initelFom },
-                valideringsfunksjon: erEøsPeriodeGyldig,
+                valideringsfunksjon: (felt, avhengigheter) =>
+                    erEøsPeriodeGyldig(behandlingsÅrsakErOvergangsordning, felt, avhengigheter),
             }),
             valutakode,
             valutakursdato,
