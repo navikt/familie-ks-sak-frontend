@@ -37,7 +37,7 @@
     "@navikt/ds-react": "^7.5.1",
     "@navikt/familie-backend": "^10.0.14",
     "@navikt/familie-form-elements": "^21.0.0",
-    "@navikt/familie-header": "^14.0.0",
+    "@navikt/familie-header": "^14.1.1",
     "@navikt/familie-ikoner": "^9.0.0",
     "@navikt/familie-logging": "^7.0.0",
     "@navikt/familie-skjema": "^8.2.7",
