@@ -20,7 +20,7 @@
     "prepare": "husky",
     "start:cypress": "tsc -p tsconfig.backend.json && NODE_ENV=production node --loader ts-node/esm --es-module-specifier-resolution=node backend/backend/cypress-server.js",
     "run:cypress": "cypress run",
-    "cypress": "npm-run-all -p start:cypress -r run:cypress",
+    "cypress": "yarn start:cypress & yarn run:cypress",
     "typecheck": "tsc --noEmit -p src/frontend/tsconfig.json"
   },
   "lint-staged": {
