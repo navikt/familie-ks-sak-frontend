@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import deepEqual from 'deep-equal';
 import styled from 'styled-components';
 
-import { AutomaticSystem, People, Settings } from '@navikt/ds-icons';
+import { CogIcon, CogRotationIcon, PersonIcon } from '@navikt/aksel-icons';
 import { BodyShort, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -56,6 +56,21 @@ const FlexDiv = styled.div`
     > div:nth-child(n + 2) {
         padding-left: 0.5rem;
     }
+`;
+
+const StyledCogIcon = styled(CogIcon)`
+    font-size: 1.5rem;
+    min-width: 1.5rem;
+`;
+
+const StyledCogRotationIcon = styled(CogRotationIcon)`
+    font-size: 1.5rem;
+    min-width: 1.5rem;
+`;
+
+const StyledPersonIcon = styled(PersonIcon)`
+    font-size: 1.5rem;
+    min-width: 1.5rem;
 `;
 
 const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårResultat }) => {
@@ -170,7 +185,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
         >
             <Table.DataCell>
                 <VurderingCelle>
-                    <VilkårResultatIkon resultat={vilkårResultat.resultat} width={20} height={20} />
+                    <VilkårResultatIkon resultat={vilkårResultat.resultat} />
                     <BodyShort>{uiResultat[vilkårResultat.resultat]}</BodyShort>
                 </VurderingCelle>
             </Table.DataCell>
@@ -190,7 +205,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                     </FlexDiv>
                 ) : (
                     <FlexDiv>
-                        <Settings width={24} height={24} viewBox={'0 0 24 24'} />
+                        <StyledCogIcon title={'Generell vurdering'} />
                         <div>Generell vurdering</div>
                     </FlexDiv>
                 )}
@@ -198,19 +213,9 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
             <Table.DataCell>
                 <FlexDiv>
                     {vilkårResultat.erAutomatiskVurdert ? (
-                        <AutomaticSystem
-                            width={24}
-                            height={24}
-                            aria-labelledby={'Automatisk Vurdering'}
-                            viewBox={'0 0 24 24'}
-                        />
+                        <StyledCogRotationIcon title={'Automatisk Vurdering'} />
                     ) : (
-                        <People
-                            width={24}
-                            height={24}
-                            aria-labelledby={'ManuellVurdering'}
-                            viewBox={'0 0 24 24'}
-                        />
+                        <StyledPersonIcon title={'Manuell vurdering'} />
                     )}
                     <div>
                         {åpenBehandling.status === RessursStatus.SUKSESS && vilkårResultat.erVurdert

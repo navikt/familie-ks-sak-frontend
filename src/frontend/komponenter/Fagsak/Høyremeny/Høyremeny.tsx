@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { BackFilled, NextFilled } from '@navikt/ds-icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
 import { hentDataFraRessursMedFallback, RessursStatus } from '@navikt/familie-typer';
 
@@ -63,11 +63,10 @@ const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
                     $åpenhøyremeny={åpenHøyremeny ? 1 : 0}
                     title={åpenHøyremeny ? 'Skjul høyremeny' : 'Vis høyremeny'}
                 >
-                    {åpenHøyremeny ? (
-                        <NextFilled aria-label="Skjul høyremeny" />
+                    åpenHøyremeny ? (
+                    <ChevronRightIcon aria-label="Skjul høyremeny" />
                     ) : (
-                        <BackFilled aria-label="Vis høyremeny" />
-                    )}
+                    <ChevronLeftIcon aria-label="Vis høyremeny" />)
                 </ToggleVisningHøyremeny>
                 {åpenHøyremeny && (
                     <>

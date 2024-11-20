@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Refresh } from '@navikt/ds-icons';
+import { ArrowsSquarepathIcon } from '@navikt/aksel-icons';
 import { Alert, BodyShort, Button, Detail, ErrorMessage, ErrorSummary } from '@navikt/ds-react';
 import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -125,15 +125,8 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                             loading={hentOpplysningerRessurs.status === RessursStatus.HENTER}
                             variant="tertiary"
                             size="small"
-                        >
-                            {hentOpplysningerRessurs.status !== RessursStatus.HENTER && (
-                                <Refresh
-                                    style={{ fontSize: '1.5rem' }}
-                                    role="img"
-                                    focusable="false"
-                                />
-                            )}
-                        </Button>
+                            icon={<ArrowsSquarepathIcon fontSize={'1.5rem'} focusable="false" />}
+                        />
                     )}
                 </HentetLabelOgKnappDiv>
                 {hentOpplysningerRessurs.status === RessursStatus.FEILET && (

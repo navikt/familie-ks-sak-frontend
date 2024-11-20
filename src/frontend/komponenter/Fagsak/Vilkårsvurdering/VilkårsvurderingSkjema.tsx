@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Collapse } from 'react-collapse';
 import styled from 'styled-components';
 
-import { ExpandFilled, CollapseFilled } from '@navikt/ds-icons';
+import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { Alert, Button } from '@navikt/ds-react';
 import { ASpacing14, ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
@@ -82,9 +82,9 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
                                 }
                                 icon={
                                     personErEkspandert[personResultat.personIdent] ? (
-                                        <CollapseFilled aria-hidden />
+                                        <ChevronUpIcon aria-hidden />
                                     ) : (
-                                        <ExpandFilled aria-hidden />
+                                        <ChevronDownIcon aria-hidden />
                                     )
                                 }
                                 iconPosition="right"

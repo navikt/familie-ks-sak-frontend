@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { AddCircle, Delete, FileContent } from '@navikt/ds-icons';
+import { FileTextIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, Label, Select, Tag, Textarea, TextField } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
@@ -280,7 +280,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                                                 size={'small'}
                                                 variant={'tertiary'}
                                                 aria-label={'Fjern fritekst'}
-                                                icon={<Delete />}
+                                                icon={<TrashIcon />}
                                             >
                                                 {'Fjern'}
                                             </StyledButton>
@@ -296,7 +296,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                                 id={`legg-til-fritekst`}
                                 size={'small'}
                                 variant={'tertiary'}
-                                icon={<AddCircle />}
+                                icon={<PlusCircleIcon />}
                             >
                                 {'Legg til kulepunkt'}
                             </Button>
@@ -326,7 +326,6 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                     id={'forhandsvis-vedtaksbrev'}
                     variant={'tertiary'}
                     size={'medium'}
-                    icon={<FileContent />}
                     loading={hentetDokument.status === RessursStatus.HENTER}
                     disabled={skjemaErLåst}
                     onClick={() => {
@@ -338,6 +337,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                             });
                         }
                     }}
+                    icon={<FileTextIcon />}
                 >
                     {'Forhåndsvis'}
                 </Button>

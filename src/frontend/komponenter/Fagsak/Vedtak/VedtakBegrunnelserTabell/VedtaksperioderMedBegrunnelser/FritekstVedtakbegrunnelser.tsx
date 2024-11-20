@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { AddCircle, Delete, ExternalLink } from '@navikt/ds-icons';
+import { ExternalLinkIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
 import {
     BodyLong,
     Button,
@@ -126,7 +126,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                             href="https://navno.sharepoint.com/sites/intranett-kommunikasjon/SitePages/Spr%C3%A5k.aspx"
                         >
                             Se retningslinjer for klarspråk.
-                            <ExternalLink />
+                            <ExternalLinkIcon fontSize={'1.3rem'} />
                         </Link>
                     </BodyLong>
                     <Heading level="3" size="xsmall">
@@ -195,8 +195,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                                             id={`fjern_fritekst-${fritekstId}`}
                                             size={'small'}
                                             aria-label={'Fjern fritekst'}
-                                            icon={<Delete />}
-                                            iconPosition={'right'}
+                                            icon={<TrashIcon />}
                                         >
                                             {'Fjern'}
                                         </SletteKnapp>
@@ -211,7 +210,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
                             onClick={leggTilFritekst}
                             id={`legg-til-fritekst`}
                             size={'small'}
-                            icon={<AddCircle />}
+                            icon={<PlusCircleIcon />}
                         >
                             {'Legg til fritekst'}
                         </Button>
@@ -249,7 +248,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
             onClick={leggTilFritekst}
             id={`legg-til-fritekst`}
             size={'small'}
-            icon={<AddCircle />}
+            icon={<PlusCircleIcon />}
         >
             {'Legg til fritekst'}
         </Button>
