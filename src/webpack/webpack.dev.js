@@ -2,11 +2,11 @@ import path from 'path';
 
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import webpack from 'webpack';
-import merge from 'webpack-merge';
+import { mergeWithRules } from 'webpack-merge';
 
 import baseConfig from './webpack.common.js';
 
-export default merge.mergeWithRules({
+export default mergeWithRules({
     module: {
         rules: {
             test: 'match',
