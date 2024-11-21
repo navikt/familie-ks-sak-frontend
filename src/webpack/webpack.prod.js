@@ -3,7 +3,6 @@ import path from 'path';
 import { sentryWebpackPlugin } from '@sentry/webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import CssMinimizerWebpackPlugin from 'css-minimizer-webpack-plugin';
-import ESLintPlugin from 'eslint-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import { mergeWithRules } from 'webpack-merge';
 
@@ -48,9 +47,6 @@ const prodConfig = mergeWithRules({
         maxAssetSize: 800000,
     },
     plugins: [
-        new ESLintPlugin({
-            extensions: [`ts`, `tsx`],
-        }),
         new CompressionPlugin({
             algorithm: 'gzip',
             test: /\.js$|\.css$|\.html$/,

@@ -5,6 +5,7 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TypeScriptTypeChecker from 'fork-ts-checker-webpack-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin';
 
 const publicUrl = '/assets';
 
@@ -38,6 +39,10 @@ const baseConfig = {
                 },
                 mode: 'write-references',
             },
+        }),
+        new ESLintPlugin({
+            extensions: [`ts`, `tsx`],
+            configType: 'flat',
         }),
     ],
     devtool: 'inline-source-map',
