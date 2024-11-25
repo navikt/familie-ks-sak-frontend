@@ -31,14 +31,7 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
                 Standardbegrunnelse.OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS
         ).length > 0;
 
-    const vedtaksperiodeInneholderOvergangsordningBegrunnelse =
-        vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
-            vedtaksBegrunnelser =>
-                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
-                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING ||
-                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
-                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING_GRADERT_UTBETALING
-        ).length > 0;
+    const vedtaksperiodeInneholderOvergangsordningBegrunnelse = false;
 
     const vedtaksperiodeStøtterFritekst =
         vedtaksperiodeMedBegrunnelser.støtterFritekst ||
