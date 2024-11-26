@@ -5,6 +5,7 @@ import { render, screen } from '@testing-library/react';
 import { kjønnType } from '@navikt/familie-typer';
 
 import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAugust2024Alert';
+import { YtelseType } from '../../../typer/beregning';
 import { type IGrunnlagPerson, PersonType } from '../../../typer/person';
 import { Målform } from '../../../typer/søknad';
 import type { Utbetalingsperiode } from '../../../typer/utbetalingsperiode';
@@ -51,6 +52,7 @@ describe('FulltidBarnehageplassAugust2024Alert', () => {
             person: barn1,
             utbetaltPerMnd: 1,
             prosent: 50,
+            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
             erPåvirketAvEndring: false,
         };
 
@@ -58,6 +60,7 @@ describe('FulltidBarnehageplassAugust2024Alert', () => {
             person: barn2,
             utbetaltPerMnd: 1,
             prosent: 50,
+            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
             erPåvirketAvEndring: false,
         };
 
@@ -119,6 +122,7 @@ describe('FulltidBarnehageplassAugust2024Alert', () => {
             person: barn1,
             utbetaltPerMnd: 1,
             prosent: 50,
+            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
             erPåvirketAvEndring: false,
         };
 
@@ -126,6 +130,7 @@ describe('FulltidBarnehageplassAugust2024Alert', () => {
             person: barn2,
             utbetaltPerMnd: 1,
             prosent: 50,
+            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
             erPåvirketAvEndring: false,
         };
 
