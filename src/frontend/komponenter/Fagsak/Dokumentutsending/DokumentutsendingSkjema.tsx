@@ -75,6 +75,7 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
         DokumentÅrsak.KAN_SØKE_EØS,
         DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
         DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING,
+        DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER,
     ];
 
     return (

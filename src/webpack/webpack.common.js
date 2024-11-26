@@ -5,12 +5,13 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TypeScriptTypeChecker from 'fork-ts-checker-webpack-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin';
 
 const publicUrl = '/assets';
 
 const baseConfig = {
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.less'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
         fallback: { crypto: false },
     },
     output: {
@@ -39,6 +40,10 @@ const baseConfig = {
                 mode: 'write-references',
             },
         }),
+        new ESLintPlugin({
+            extensions: [`ts`, `tsx`],
+            configType: 'flat',
+        }),
     ],
     devtool: 'inline-source-map',
     module: {
@@ -65,7 +70,7 @@ const baseConfig = {
                 },
             },
             {
-                test: /\.(less|css)$/,
+                test: /\.(css)$/,
                 use: [
                     { loader: 'style-loader' },
                     {
@@ -77,7 +82,6 @@ const baseConfig = {
                             importLoaders: 2,
                         },
                     },
-                    { loader: 'less-loader' },
                 ],
             },
         ],

@@ -1,3 +1,4 @@
+import type { YtelseType } from './beregning';
 import { ytelsetype } from './beregning';
 import { type IGrunnlagPerson } from './person';
 import type { Begrunnelse, BegrunnelseType } from './vedtak';
@@ -63,6 +64,7 @@ export interface IUtbetalingsperiodeDetalj {
     person: IGrunnlagPerson;
     utbetaltPerMnd: number;
     prosent: number;
+    ytelseType: YtelseType;
     erPåvirketAvEndring: boolean;
 }
 

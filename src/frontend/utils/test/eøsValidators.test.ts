@@ -18,7 +18,7 @@ describe('utils/eøsValidators', () => {
             nyIsoMånedPeriode(undefined, '2010-05')
         );
 
-        const valideringsresultat = erEøsPeriodeGyldig(eøsPeriode);
+        const valideringsresultat = erEøsPeriodeGyldig(false, eøsPeriode);
 
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual('Fra og med måned må være utfylt');
@@ -29,7 +29,7 @@ describe('utils/eøsValidators', () => {
             nyIsoMånedPeriode('2099-12', '2100-05')
         );
 
-        const valideringsresultat = erEøsPeriodeGyldig(eøsPeriode);
+        const valideringsresultat = erEøsPeriodeGyldig(false, eøsPeriode);
 
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual(
@@ -42,7 +42,7 @@ describe('utils/eøsValidators', () => {
             nyIsoMånedPeriode('2010-12', '2100-05')
         );
 
-        const valideringsresultat = erEøsPeriodeGyldig(eøsPeriode);
+        const valideringsresultat = erEøsPeriodeGyldig(false, eøsPeriode);
 
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual(
@@ -55,7 +55,9 @@ describe('utils/eøsValidators', () => {
             nyIsoMånedPeriode('2010-12', '2009-05')
         );
 
-        const valideringsresultat = erEøsPeriodeGyldig(eøsPeriode, { initielFom: '2011-10' });
+        const valideringsresultat = erEøsPeriodeGyldig(false, eøsPeriode, {
+            initielFom: '2011-10',
+        });
 
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
         expect(valideringsresultat.feilmelding).toEqual(
@@ -63,12 +65,24 @@ describe('utils/eøsValidators', () => {
         );
     });
 
+    test('erEøsPeriodeGyldig skal ikke kaste feilmelding hvis tom dato er mer enn 1mnd senere enn dagens dato og årsak er OVERGANGSORDNING_2024', () => {
+        const eøsPeriode: FeltState<IIsoMånedPeriode> = nyFeltState(
+            nyIsoMånedPeriode('2010-12', '2100-05')
+        );
+
+        const valideringsresultat = erEøsPeriodeGyldig(true, eøsPeriode);
+
+        expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
+    });
+
     test('erEøsPeriodeGyldig skal returnere OK dersom alle felter er fylt inn korrekt', () => {
         const eøsPeriode: FeltState<IIsoMånedPeriode> = nyFeltState(
             nyIsoMånedPeriode('2010-12', '2012-05')
         );
 
-        const valideringsresultat = erEøsPeriodeGyldig(eøsPeriode, { initielFom: '2009-10' });
+        const valideringsresultat = erEøsPeriodeGyldig(false, eøsPeriode, {
+            initielFom: '2009-10',
+        });
 
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });

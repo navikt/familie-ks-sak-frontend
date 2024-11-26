@@ -38,6 +38,7 @@ interface IProps {
     sendInnSkjema: () => void;
     toggleForm: (visAlert: boolean) => void;
     slettKompetanse: () => void;
+    behandlingsÅrsakErOvergangsordning: boolean;
     erAnnenForelderOmfattetAvNorskLovgivning?: boolean;
 }
 
@@ -69,6 +70,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
     sendInnSkjema,
     toggleForm,
     slettKompetanse,
+    behandlingsÅrsakErOvergangsordning,
     erAnnenForelderOmfattetAvNorskLovgivning,
 }) => {
     const { vurderErLesevisning } = useBehandling();
@@ -112,6 +114,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
                     initielFom={skjema.felter.initielFom}
                     visFeilmeldinger={skjema.visFeilmeldinger}
                     lesevisning={lesevisning}
+                    behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
                 />
                 {erAnnenForelderOmfattetAvNorskLovgivning && (
                     <StyledAlert variant="info" inline>

@@ -57,10 +57,9 @@ const Månedvelger = ({
         return senesteRelevanteDato;
     };
 
-    const nullstillOgSettFeilmelding = (feilmelding: Feilmelding) => {
+    const settFeilmelding = (feilmelding: Feilmelding) => {
         if (error !== feilmelding) {
             setError(feilmelding);
-            felt.nullstill();
         }
     };
 
@@ -71,10 +70,7 @@ const Månedvelger = ({
     };
 
     const oppdaterFeltMedValgtDato = (dato?: Date) => {
-        if (dato === undefined) felt.nullstill();
-        else {
-            felt.validerOgSettFelt(formatterTilRiktigDagIMåneden(dato));
-        }
+        felt.validerOgSettFelt(dato ? formatterTilRiktigDagIMåneden(dato) : undefined);
     };
 
     const { monthpickerProps, inputProps, selectedMonth } = useMonthpicker({
@@ -84,11 +80,11 @@ const Månedvelger = ({
         toDate: hentToDate(),
         onValidate: val => {
             if (val.isBefore) {
-                nullstillOgSettFeilmelding(Feilmelding.FØR_MIN_DATO);
+                settFeilmelding(Feilmelding.FØR_MIN_DATO);
             } else if (val.isAfter) {
-                nullstillOgSettFeilmelding(Feilmelding.ETTER_MAKS_DATO);
+                settFeilmelding(Feilmelding.ETTER_MAKS_DATO);
             } else if (!val.isValidMonth) {
-                nullstillOgSettFeilmelding(Feilmelding.UGYLDIG_DATO);
+                settFeilmelding(Feilmelding.UGYLDIG_DATO);
             } else {
                 setError(undefined);
             }
@@ -103,7 +99,7 @@ const Månedvelger = ({
     if (forrigeTilhørendeFomVerdi !== tilhørendeFomFelt?.verdi) {
         settforrigeTilhørendeFomVerdi(tilhørendeFomFelt?.verdi);
         if (valgtDatoErFørTilhørendeFom()) {
-            nullstillOgSettFeilmelding(Feilmelding.FØR_MIN_DATO);
+            settFeilmelding(Feilmelding.FØR_MIN_DATO);
         } else {
             setError(undefined);
             oppdaterFeltMedValgtDato(selectedMonth);

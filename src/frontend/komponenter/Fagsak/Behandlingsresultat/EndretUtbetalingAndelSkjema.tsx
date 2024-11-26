@@ -96,7 +96,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
         kanSendeSkjema,
         onSubmit,
         hentSkjemaData,
-        tilbakestillFelterTilDefault,
+        settFelterTilDefault,
     } = useEndretUtbetalingAndel();
 
     const oppdaterEndretUtbetaling = (avbrytEndringAvUtbetalingsperiode: () => void) => {
@@ -394,7 +394,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 variant="tertiary"
                                 size="small"
                                 onClick={() => {
-                                    tilbakestillFelterTilDefault();
+                                    settFelterTilDefault();
                                     lukkSkjema();
                                 }}
                             >
