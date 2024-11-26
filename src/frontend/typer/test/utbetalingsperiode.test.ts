@@ -1,5 +1,6 @@
 import { kjønnType } from '@navikt/familie-typer';
 
+import { YtelseType } from '../beregning';
 import { type IGrunnlagPerson, PersonType } from '../person';
 import { Målform } from '../søknad';
 import {
@@ -43,6 +44,7 @@ describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder',
             person: barn1,
             utbetaltPerMnd: 1,
             prosent: 50,
+            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
             erPåvirketAvEndring: false,
         };
 
@@ -50,6 +52,7 @@ describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder',
             person: barn2,
             utbetaltPerMnd: 1,
             prosent: 50,
+            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
             erPåvirketAvEndring: false,
         };
 
@@ -57,6 +60,7 @@ describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder',
             person: søker,
             utbetaltPerMnd: 1,
             prosent: 50,
+            ytelseType: YtelseType.ORDINÆR_KONTANTSTØTTE,
             erPåvirketAvEndring: false,
         };
 
