@@ -319,7 +319,7 @@ export const behandlingsresultater: Record<
 
     /** For klagebehandlinger: **/
     HENLAGT: 'Henlagt',
-    IKKE_MEDHOLD: 'Ikke medhold',
+    IKKE_MEDHOLD: 'Oversendt til KA',
     IKKE_MEDHOLD_FORMKRAV_AVVIST: 'Ikke medhold formkrav avvist',
     IKKE_SATT: 'Ikke satt',
     MEDHOLD: 'Medhold',
