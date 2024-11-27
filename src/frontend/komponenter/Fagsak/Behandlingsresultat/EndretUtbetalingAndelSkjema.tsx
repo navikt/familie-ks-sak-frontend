@@ -21,6 +21,7 @@ import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { EndretUtbetalingAvslagBegrunnelseMultiselect } from './EndretUtbetalingAvslagBegrunnelseMultiselect';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useEndretUtbetalingAndel } from '../../../context/EndretUtbetalingAndelContext';
 import type { IBehandling } from '../../../typer/behandling';
@@ -312,22 +313,9 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 {skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsakEnum.ALLEREDE_UTBETALT &&
                     skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
                         <Feltmargin>
-                            <Select
-                                {...skjema.felter.avslagBegrunnelser.hentNavBaseSkjemaProps(
-                                    skjema.visFeilmeldinger
-                                )}
-                                value={skjema.felter.avslagBegrunnelser.verdi}
-                                label={<Label>Endret utbetaling begrunnelse</Label>}
-                                onChange={(event): void => {
-                                    skjema.felter.avslagBegrunnelser.validerOgSettFelt(
-                                        event.target.value as string // TODO: Fiks
-                                    );
-                                }}
-                                readOnly={erLesevisning}
-                            >
-                                <option value={undefined}>Velg begrunnelse</option>
-                                {/* TODO: Fiks */}
-                            </Select>
+                            <EndretUtbetalingAvslagBegrunnelseMultiselect
+                                begrunnelse={skjema.felter.avslagBegrunnelse}
+                            />
                         </Feltmargin>
                     )}
 

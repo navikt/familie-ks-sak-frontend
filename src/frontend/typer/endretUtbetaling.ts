@@ -1,10 +1,10 @@
+import type { IEndretUtbetalingAndelÅrsak } from './utbetalingAndel';
 import type { Begrunnelse, BegrunnelseType } from './vedtak';
-import type { VilkårType } from './vilkår';
 
 export interface IRestBegrunnelseTilknyttetEndretUtbetaling {
     id: Begrunnelse;
     navn: string;
-    vilkår?: VilkårType;
+    endringsårsaker: IEndretUtbetalingAndelÅrsak[];
 }
 
 export type EndringsårsakbegrunnelseTekster = {

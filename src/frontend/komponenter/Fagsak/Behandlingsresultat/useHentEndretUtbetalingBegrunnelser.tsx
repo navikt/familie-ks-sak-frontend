@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
-import { useHttp } from '@navikt/familie-http';
 import React from 'react';
+
+import { useHttp } from '@navikt/familie-http';
 import { byggTomRessurs, type Ressurs } from '@navikt/familie-typer';
+
 import type { EndringsårsakbegrunnelseTekster } from '../../../typer/endretUtbetaling';
 
 export function useHentEndretUtbetalingBegrunnelser() {
     const { request } = useHttp();
 
-    const [vedtaksbegrunnelseTekster, settVedtaksbegrunnelseTekster] =
+    const [endretUtbetalingsbegrunnelser, settEndretUtbetalingsbegrunnelser] =
         React.useState<Ressurs<EndringsårsakbegrunnelseTekster>>(byggTomRessurs());
 
     useEffect(() => {
@@ -16,9 +18,9 @@ export function useHentEndretUtbetalingBegrunnelser() {
             url: `/familie-ks-sak/api/endretutbetalingandel/endret-utbetaling-begrunnelser`,
             påvirkerSystemLaster: true,
         }).then((data: Ressurs<EndringsårsakbegrunnelseTekster>) => {
-            settVedtaksbegrunnelseTekster(data);
+            settEndretUtbetalingsbegrunnelser(data);
         });
     }, []);
 
-    return { vedtaksbegrunnelseTekster };
+    return { endretUtbetalingsbegrunnelser };
 }

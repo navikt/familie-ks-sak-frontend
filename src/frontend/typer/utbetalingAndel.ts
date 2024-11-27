@@ -11,7 +11,7 @@ export interface IRestEndretUtbetalingAndel {
     søknadstidspunkt?: IsoDatoString;
     avtaletidspunktDeltBosted?: IsoDatoString;
     årsak?: IEndretUtbetalingAndelÅrsak;
-    avslagBegrunnelse?: string[];
+    avslagBegrunnelse?: string;
     erTilknyttetAndeler?: boolean;
     erEksplisittAvslagPåSøknad?: boolean;
 }

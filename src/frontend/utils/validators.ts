@@ -295,6 +295,18 @@ export const erAvslagBegrunnelserGyldig = (
         : ok(felt);
 };
 
+export const erAvslagBegrunnelseGyldig = (
+    felt: FeltState<Begrunnelse | undefined>,
+    avhengigheter?: Avhengigheter
+): FeltState<Begrunnelse | undefined> => {
+    console.log('Når validerer vi', felt);
+    const erEksplisittAvslagPåSøknad: boolean | undefined =
+        avhengigheter?.erEksplisittAvslagPåSøknad;
+    return erEksplisittAvslagPåSøknad && !felt.verdi && felt.verdi === ''
+        ? feil(felt, 'Du må velge minst en begrunnelse ved avslag')
+        : ok(felt);
+};
+
 export const erPositivtHeltall = (string: string) => {
     const tall = Number(string);
 

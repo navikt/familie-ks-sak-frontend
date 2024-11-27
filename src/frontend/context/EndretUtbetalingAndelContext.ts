@@ -14,7 +14,7 @@ import {
     erIsoStringGyldig,
     validerGyldigDato,
 } from '../utils/dato';
-import { erAvslagBegrunnelserGyldig } from '../utils/validators';
+import { erAvslagBegrunnelseGyldig } from '../utils/validators';
 
 interface IProps {
     endretUtbetalingAndel: IRestEndretUtbetalingAndel;
@@ -45,7 +45,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 tom: IsoMånedString | undefined;
                 periodeSkalUtbetalesTilSøker: boolean | undefined;
                 årsak: IEndretUtbetalingAndelÅrsak | undefined;
-                avslagBegrunnelser: string[];
+                avslagBegrunnelse: string | undefined;
                 søknadstidspunkt: Date | undefined;
                 avtaletidspunktDeltBosted: Date | undefined;
                 fullSats: boolean | undefined;
@@ -72,9 +72,9 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 }),
                 periodeSkalUtbetalesTilSøker: periodeSkalUtbetalesTilSøkerFelt,
                 årsak: årsakFelt,
-                avslagBegrunnelser: useFelt<string[]>({
-                    verdi: endretUtbetalingAndel.avslagBegrunnelse || [],
-                    valideringsfunksjon: erAvslagBegrunnelserGyldig,
+                avslagBegrunnelse: useFelt<string | undefined>({
+                    verdi: endretUtbetalingAndel.avslagBegrunnelse || undefined,
+                    valideringsfunksjon: erAvslagBegrunnelseGyldig,
                     avhengigheter: {
                         erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
                     },
@@ -171,7 +171,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 fom,
                 tom,
                 årsak,
-                avslagBegrunnelser,
+                avslagBegrunnelse: avslagBegrunnelser,
                 begrunnelse,
                 søknadstidspunkt,
                 avtaletidspunktDeltBosted,

@@ -1,10 +1,6 @@
 import React from 'react';
 
-import type { GroupBase } from 'react-select';
-import styled from 'styled-components';
-
-import { Alert, BodyShort, Label } from '@navikt/ds-react';
-import { ASurfaceActionHover } from '@navikt/ds-tokens/dist/tokens';
+import { Alert, BodyShort } from '@navikt/ds-react';
 import type { ActionMeta, FormatOptionLabelMeta } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
@@ -12,28 +8,29 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useHentEndretUtbetalingBegrunnelser } from './useHentEndretUtbetalingBegrunnelser';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import type { Begrunnelse } from '../../../typer/vedtak';
 import type { OptionType } from '../../../typer/common';
+import { IEndretUtbetalingAndelÅrsak } from '../../../typer/utbetalingAndel';
+import { BegrunnelseType, begrunnelseTyper, type Begrunnelse } from '../../../typer/vedtak';
 
 interface IProps {
-    // vilkårType: VilkårType;
-    begrunnelse: Felt<Begrunnelse>;
-    // regelverk?: Regelverk;
+    begrunnelse: Felt<Begrunnelse | undefined>;
 }
 
-const GroupLabel = styled.div`
-    color: black;
-`;
-
-const EndretUtbetalingAvslagBegrunnelseMultiselect: React.FC<IProps> = ({
-    // vilkårType,
-    begrunnelse,
-    // regelverk,
-}) => {
+export const EndretUtbetalingAvslagBegrunnelseMultiselect: React.FC<IProps> = ({ begrunnelse }) => {
     const { vurderErLesevisning } = useBehandling();
-    const { vedtaksbegrunnelseTekster } = useHentEndretUtbetalingBegrunnelser();
+    const { endretUtbetalingsbegrunnelser } = useHentEndretUtbetalingBegrunnelser();
 
-    // const { grupperteAvslagsbegrunnelser } = useAvslagBegrunnelseMultiselect(vilkårType, regelverk);
+    const grupperteAvslagsbegrunnelser =
+        endretUtbetalingsbegrunnelser.status != RessursStatus.SUKSESS
+            ? []
+            : endretUtbetalingsbegrunnelser.data.AVSLAG.filter(begrunnelse =>
+                  begrunnelse.endringsårsaker.includes(
+                      IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT
+                  )
+              ).map(begrunnelse => ({
+                  label: begrunnelse.navn,
+                  value: begrunnelse.id,
+              }));
 
     const valgtBegrunnelse = undefined;
 
@@ -48,18 +45,22 @@ const EndretUtbetalingAvslagBegrunnelseMultiselect: React.FC<IProps> = ({
                 break;
             case 'pop-value':
             case 'remove-value':
-                begrunnelse.validerOgSettFelt('');
+                begrunnelse.validerOgSettFelt(undefined);
                 break;
             case 'clear':
-                begrunnelse.validerOgSettFelt('');
+                begrunnelse.validerOgSettFelt(undefined);
                 break;
             default:
-                throw new Error('Ukjent action ved onChange på vedtakbegrunnelser');
+                throw new Error('Ukjent action ved onChange på endret utbetalingsbegrunnelse');
         }
     };
 
-    if (vedtaksbegrunnelseTekster.status === RessursStatus.FEILET) {
-        return <Alert variant="error">Klarte ikke å hente inn begrunnelser for vilkår.</Alert>;
+    if (endretUtbetalingsbegrunnelser.status === RessursStatus.FEILET) {
+        return (
+            <Alert variant="error">
+                Klarte ikke å hente inn begrunnelser for endret utbetaling.
+            </Alert>
+        );
     }
 
     return (
@@ -67,31 +68,20 @@ const EndretUtbetalingAvslagBegrunnelseMultiselect: React.FC<IProps> = ({
             value={valgtBegrunnelse}
             label={'Velg standardtekst i brev'}
             creatable={false}
-            placeholder={'Velg begrunnelse(r)'}
+            placeholder={'Velg begrunnelse'}
             erLesevisning={vurderErLesevisning()}
-            isMulti={true}
+            isMulti={false}
             onChange={(_, action: ActionMeta<OptionType>) => {
                 onChangeBegrunnelse(action);
             }}
             options={grupperteAvslagsbegrunnelser}
-            formatGroupLabel={(group: GroupBase<OptionType>) => {
-                return (
-                    <GroupLabel>
-                        <Label>{group.label}</Label>
-                        <hr />
-                    </GroupLabel>
-                );
-            }}
             formatOptionLabel={(
                 option: OptionType,
                 formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>
             ) => {
                 if (formatOptionLabelMeta.context == 'value') {
                     // Formatering når alternativet er valgt
-                    const begrunnelseType = finnBegrunnelseType(
-                        vedtaksbegrunnelseTekster,
-                        option.value as Begrunnelse
-                    );
+                    const begrunnelseType = BegrunnelseType.AVSLAG;
                     const begrunnelseTypeLabel =
                         begrunnelseTyper[begrunnelseType as BegrunnelseType];
                     return (
@@ -113,31 +103,7 @@ const EndretUtbetalingAvslagBegrunnelseMultiselect: React.FC<IProps> = ({
                     ...provided,
                     textTransform: 'none',
                 }),
-                multiValue: provided => {
-                    return {
-                        ...provided,
-                        backgroundColor: hentBakgrunnsfarge(BegrunnelseType.AVSLAG),
-                        border: `1px solid ${hentBorderfarge(BegrunnelseType.AVSLAG)}`,
-                        borderRadius: '0.5rem',
-                    };
-                },
-                multiValueLabel: provided => ({
-                    ...provided,
-                    whiteSpace: 'pre-wrap',
-                    textOverflow: 'hidden',
-                    overflow: 'hidden',
-                }),
-                multiValueRemove: provided => ({
-                    ...provided,
-                    ':hover': {
-                        backgroundColor: ASurfaceActionHover,
-                        color: 'white',
-                        borderRadius: '0 .4rem .4rem 0',
-                    },
-                }),
             }}
         />
     );
 };
-
-export default AvslagBegrunnelseMultiselect;
