@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
@@ -7,7 +7,6 @@ import { Heading } from '@navikt/ds-react';
 import BarnehagebarnInfotrygdFilterskjema from './BarnehagebarnInfotrygdFilterskjema';
 import BarnehagebarnInfotrygdList from './BarnehagebarnInfotrygdList';
 import BarnehagebarnInfotrygdListNavigator from './BarnehagebarnInfotrygdListNavigator';
-import { useAmplitude } from '../../../utils/amplitude';
 
 const Container = styled.div`
     padding: 0.5rem;
@@ -17,12 +16,6 @@ const Container = styled.div`
 `;
 
 const BarnehagebarnInfotrygd: React.FunctionComponent = () => {
-    const { loggSidevisning } = useAmplitude();
-
-    useEffect(() => {
-        loggSidevisning('barnehageliste infotrygd');
-    }, []);
-
     return (
         <Container>
             <Heading size={'medium'} level={'2'}>
