@@ -39,6 +39,7 @@ const OppgavelisteNavigator: React.FunctionComponent = () => {
         <StyledDiv>
             {antallSider > 0 && (
                 <>
+                    |
                     <StyledSpan>
                         Viser {(side - 1) * oppgaveSideLimit + 1} -{' '}
                         {side === antallSider
