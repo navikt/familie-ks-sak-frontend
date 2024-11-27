@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { HStack } from '@navikt/ds-react';
+
 import StatusIkon, { Status } from '../../../../ikoner/StatusIkon';
 import { TotrinnskontrollBeslutning } from '../../../../typer/totrinnskontroll';
 
@@ -10,23 +12,19 @@ interface IProps {
 const TotrinnskontrollModalInnhold: React.FunctionComponent<IProps> = ({ beslutning }) => {
     if (beslutning === TotrinnskontrollBeslutning.IKKE_VURDERT) {
         return (
-            <div className={'totrinnsvurdering-modal-innhold'}>
+            <HStack wrap={false} align={'center'} gap="4">
                 <StatusIkon status={Status.FEIL} />
-                <div className={'totrinnsvurdering-modal-tekst'}>
-                    Beslutning er IKKE_VURDERT. Ta kontakt med kontantstøtteteamet.
-                </div>
-            </div>
+                Beslutning er IKKE_VURDERT. Ta kontakt med kontantstøtteteamet.
+            </HStack>
         );
     } else {
         return (
-            <div className={'totrinnsvurdering-modal-innhold'}>
+            <HStack wrap={false} align={'center'} gap="4">
                 <StatusIkon status={Status.OK} />
-                <div className={'totrinnsvurdering-modal-tekst'}>
-                    {beslutning === TotrinnskontrollBeslutning.GODKJENT
-                        ? 'Behandlingen er godkjent, og vedtaket er iverksatt'
-                        : 'Behandlingen er ikke godkjent og er sendt tilbake til saksbehandler'}
-                </div>
-            </div>
+                {beslutning === TotrinnskontrollBeslutning.GODKJENT
+                    ? 'Behandlingen er godkjent, og vedtaket er iverksatt'
+                    : 'Behandlingen er ikke godkjent og er sendt tilbake til saksbehandler'}
+            </HStack>
         );
     }
 };
