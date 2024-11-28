@@ -37,20 +37,27 @@ const OppgavelisteNavigator: React.FunctionComponent = () => {
 
     return (
         <StyledDiv>
-            |
-            <StyledSpan>
-                Viser {(side - 1) * oppgaveSideLimit + 1} -{' '}
-                {side === antallSider ? oppgaver.data.oppgaver.length : side * oppgaveSideLimit} av{' '}
-                {oppgaver.data.oppgaver.length} oppgaver (totalt {oppgaver.data.antallTreffTotalt}{' '}
-                oppgaver)
-            </StyledSpan>
-            |
-            <StyledPagination
-                size="small"
-                page={side}
-                count={antallSider}
-                onPageChange={settSide}
-            />
+            {antallSider > 0 && (
+                <>
+                    |
+                    <StyledSpan>
+                        Viser {(side - 1) * oppgaveSideLimit + 1} -{' '}
+                        {side === antallSider
+                            ? oppgaver.data.oppgaver.length
+                            : side * oppgaveSideLimit}{' '}
+                        av {oppgaver.data.oppgaver.length} oppgaver (totalt{' '}
+                        {oppgaver.data.antallTreffTotalt} oppgaver)
+                    </StyledSpan>
+                    |
+                    <StyledPagination
+                        size="small"
+                        page={side}
+                        count={antallSider}
+                        onPageChange={settSide}
+                    />
+                    |
+                </>
+            )}
         </StyledDiv>
     );
 };
