@@ -21,7 +21,7 @@ import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { EndretUtbetalingAvslagBegrunnelseMultiselect } from './EndretUtbetalingAvslagBegrunnelseMultiselect';
+import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useEndretUtbetalingAndel } from '../../../context/EndretUtbetalingAndelContext';
 import type { IBehandling } from '../../../typer/behandling';
@@ -313,9 +313,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 {skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsakEnum.ALLEREDE_UTBETALT &&
                     skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
                         <Feltmargin>
-                            <EndretUtbetalingAvslagBegrunnelseMultiselect
-                                begrunnelse={skjema.felter.avslagBegrunnelse}
-                            />
+                            <EndretUtbetalingAvslagBegrunnelse />
                         </Feltmargin>
                     )}
 
