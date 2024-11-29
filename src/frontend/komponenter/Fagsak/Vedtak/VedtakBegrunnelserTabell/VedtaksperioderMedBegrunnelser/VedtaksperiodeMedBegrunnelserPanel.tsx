@@ -37,7 +37,9 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
                 (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
                     Standardbegrunnelse.INNVILGET_OVERGANGSORDNING ||
                 (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
-                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING_GRADERT_UTBETALING
+                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING_GRADERT_UTBETALING ||
+                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
+                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING_DELT_BOSTED
         ).length > 0;
 
     const vedtaksperiodeStøtterFritekst =
@@ -61,10 +63,7 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
             />
             {vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.AVSLAG && (
                 <BegrunnelserMultiselect
-                    tillatKunLesevisning={
-                        vedtaksperiodeInneholderFramtidigOpphørBegrunnelse ||
-                        vedtaksperiodeInneholderOvergangsordningBegrunnelse
-                    }
+                    tillatKunLesevisning={vedtaksperiodeInneholderFramtidigOpphørBegrunnelse}
                 />
             )}
             {genererteBrevbegrunnelser.status === RessursStatus.SUKSESS &&
