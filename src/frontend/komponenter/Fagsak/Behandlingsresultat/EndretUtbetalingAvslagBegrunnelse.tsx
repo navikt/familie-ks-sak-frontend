@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Alert, BodyShort, Label } from '@navikt/ds-react';
-import type { FormatOptionLabelMeta, GroupBase, SingleValue } from '@navikt/familie-form-elements';
+import type { FormatOptionLabelMeta, GroupBase } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -96,8 +96,11 @@ export const EndretUtbetalingAvslagBegrunnelse: React.FC = () => {
             isMulti={false}
             options={grupperteBegrunnelser}
             onChange={options => {
-                const verdi = (options as SingleValue<OptionType>)?.value;
-                return skjema.felter.begrunnelser.validerOgSettFelt(verdi || undefined);
+                if (options && 'value' in options) {
+                    skjema.felter.begrunnelser.validerOgSettFelt(options.value);
+                } else {
+                    skjema.felter.begrunnelser.nullstill();
+                }
             }}
             formatGroupLabel={(group: GroupBase<OptionType>) => {
                 return (
