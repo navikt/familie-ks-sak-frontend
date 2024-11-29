@@ -10,8 +10,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from './behandlingContext/BehandlingContext';
 import type { ISelectOptionMedBrevtekst } from '../komponenter/Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
 import { Brevmal } from '../komponenter/Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
-import type { IBehandling } from '../typer/behandling';
-import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
+import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '../typer/behandling';
 import { BehandlingKategori } from '../typer/behandlingstema';
 import type { IManueltBrevRequestPåBehandling } from '../typer/dokument';
 import type { IGrunnlagPerson } from '../typer/person';
@@ -102,7 +101,10 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
     const { åpenBehandling } = useBehandling();
 
     const maksAntallKulepunkter = 20;
-    const makslengdeFritekst = 220;
+    const makslengdeFritekstHvertKulepunkt = 220;
+    const maksLengdeFritekstAvsnitt = 1000;
+
+    const [visFritekstAvsnittTekstboks, settVisFritekstAvsnittTekstboks] = React.useState(false);
 
     const behandlingKategori =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.kategori : undefined;
@@ -121,7 +123,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
             felt.verdi ? ok(felt) : feil(felt, 'Du må velge en brevmal'),
     });
 
-    const fritekster = useFelt<FeltState<IFritekstFelt>[]>({
+    const friteksterKulepunkter = useFelt<FeltState<IFritekstFelt>[]>({
         verdi: [],
         valideringsfunksjon: (felt: FeltState<FeltState<IFritekstFelt>[]>) => {
             return felt.verdi.some(
@@ -136,6 +138,35 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
             return (
                 avhengigheter?.brevmal.valideringsstatus === Valideringsstatus.OK &&
                 ![Brevmal.SVARTIDSBREV].includes(avhengigheter.brevmal.verdi)
+            );
+        },
+        avhengigheter: { brevmal },
+    });
+
+    const fritekstAvsnitt = useFelt<string | undefined>({
+        verdi: undefined,
+        valideringsfunksjon: fritekst => {
+            if (fritekst.verdi === undefined) {
+                return ok(fritekst);
+            }
+
+            if (fritekst.verdi.trim() === '') {
+                return feil(
+                    fritekst,
+                    'Du må skrive tekst i feltet, eller fjerne det om du ikke skal ha fritekst.'
+                );
+            }
+
+            if (fritekst.verdi.length > maksLengdeFritekstAvsnitt) {
+                return feil(fritekst, `Du har nådd maks antall tegn: ${maksLengdeFritekstAvsnitt}`);
+            }
+
+            return ok(fritekst);
+        },
+        skalFeltetVises: (avhengigheter: Avhengigheter) => {
+            return (
+                avhengigheter?.brevmal.valideringsstatus === Valideringsstatus.OK &&
+                [].includes(avhengigheter.brevmal.verdi)
             );
         },
         avhengigheter: { brevmal },
@@ -190,7 +221,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
                 ].includes(avhengigheter?.brevmal.verdi)
             );
         },
-        avhengigheter: { brevmal, fritekster },
+        avhengigheter: { brevmal, fritekster: friteksterKulepunkter },
         nullstillVedAvhengighetEndring: false,
     });
 
@@ -218,7 +249,8 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
             mottakerIdent: string;
             brevmal: Brevmal | '';
             dokumenter: ISelectOptionMedBrevtekst[];
-            fritekster: FeltState<IFritekstFelt>[];
+            friteksterKulepunkter: FeltState<IFritekstFelt>[];
+            fritekstAvsnitt: string | undefined;
             barnBrevetGjelder: IBarnMedOpplysninger[];
             antallUkerSvarfrist: number;
         },
@@ -228,7 +260,8 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
             mottakerIdent,
             brevmal,
             dokumenter,
-            fritekster,
+            friteksterKulepunkter,
+            fritekstAvsnitt,
             barnBrevetGjelder,
             antallUkerSvarfrist,
         },
@@ -280,12 +313,12 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
     const hentMuligeBrevMaler = (): Brevmal[] => hentMuligeBrevmalerImplementering(åpenBehandling);
 
     const leggTilFritekst = (valideringsmelding?: string) => {
-        skjema.felter.fritekster.validerOgSettFelt([
-            ...skjema.felter.fritekster.verdi,
+        skjema.felter.friteksterKulepunkter.validerOgSettFelt([
+            ...skjema.felter.friteksterKulepunkter.verdi,
             lagInitiellFritekst(
                 '',
-                genererIdBasertPåAndreFritekster(fritekster),
-                makslengdeFritekst,
+                genererIdBasertPåAndreFritekster(friteksterKulepunkter),
+                makslengdeFritekstHvertKulepunkt,
                 valideringsmelding
             ),
         ]);
@@ -305,14 +338,14 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
      */
     useEffect(() => {
         if (
-            fritekster.verdi.length === 0 &&
+            friteksterKulepunkter.verdi.length === 0 &&
             erBrevmalMedObligatoriskFritekst(brevmal.verdi as Brevmal)
         ) {
             const valideringsmelding =
                 'Dette kulepunktet er obligatorisk. Du må skrive tekst i feltet.';
             leggTilFritekst(valideringsmelding);
         }
-    }, [brevmal, fritekster]);
+    }, [brevmal, friteksterKulepunkter]);
 
     const hentSkjemaData = (): IManueltBrevRequestPåBehandling => {
         const multiselectVerdier = [
@@ -323,7 +356,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
                     return selectOption.value;
                 }
             }),
-            ...skjema.felter.fritekster.verdi.map(f => f.verdi.tekst),
+            ...skjema.felter.friteksterKulepunkter.verdi.map(f => f.verdi.tekst),
         ];
 
         const barnBrevetGjelder = skjema.felter.barnBrevetGjelder.verdi.filter(barn => barn.merket);
@@ -336,6 +369,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
             barnasFødselsdager: barnBrevetGjelder.map(barn => barn.fødselsdato || ''),
             behandlingKategori,
             antallUkerSvarfrist: skjema.felter.antallUkerSvarfrist.verdi,
+            fritekstAvsnitt: skjema.felter.fritekstAvsnitt.verdi,
         };
     };
 
@@ -350,11 +384,14 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
         personer,
         settNavigerTilOpplysningsplikt,
         leggTilFritekst,
-        makslengdeFritekst,
+        makslengdeFritekstHvertKulepunkt,
         maksAntallKulepunkter,
+        maksLengdeFritekstAvsnitt,
         settVisfeilmeldinger,
         erBrevmalMedObligatoriskFritekst,
         brevmottakere,
+        visFritekstAvsnittTekstboks,
+        settVisFritekstAvsnittTekstboks,
     };
 });
 
