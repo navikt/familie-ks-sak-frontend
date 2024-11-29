@@ -81,6 +81,8 @@ const brevmalKanVelgesForBehandling = (brevmal: Brevmal, åpenBehandling: IBehan
                     åpenBehandling.type
                 )
             );
+        case Brevmal.UTBETALING_ETTER_KA_VEDTAK:
+            return åpenBehandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK;
     }
 };
 
@@ -137,7 +139,9 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
         skalFeltetVises: (avhengigheter: Avhengigheter) => {
             return (
                 avhengigheter?.brevmal.valideringsstatus === Valideringsstatus.OK &&
-                ![Brevmal.SVARTIDSBREV].includes(avhengigheter.brevmal.verdi)
+                ![Brevmal.SVARTIDSBREV, Brevmal.UTBETALING_ETTER_KA_VEDTAK].includes(
+                    avhengigheter.brevmal.verdi
+                )
             );
         },
         avhengigheter: { brevmal },
@@ -166,7 +170,7 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
         skalFeltetVises: (avhengigheter: Avhengigheter) => {
             return (
                 avhengigheter?.brevmal.valideringsstatus === Valideringsstatus.OK &&
-                [].includes(avhengigheter.brevmal.verdi)
+                [Brevmal.UTBETALING_ETTER_KA_VEDTAK].includes(avhengigheter.brevmal.verdi)
             );
         },
         avhengigheter: { brevmal },
