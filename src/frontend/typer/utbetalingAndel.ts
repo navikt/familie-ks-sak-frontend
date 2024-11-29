@@ -1,4 +1,5 @@
 import type { OptionType } from './common';
+import type { Begrunnelse } from './vedtak';
 import type { IsoDatoString, IsoMånedString } from '../utils/dato';
 
 export interface IRestEndretUtbetalingAndel {
@@ -11,9 +12,9 @@ export interface IRestEndretUtbetalingAndel {
     søknadstidspunkt?: IsoDatoString;
     avtaletidspunktDeltBosted?: IsoDatoString;
     årsak?: IEndretUtbetalingAndelÅrsak;
-    avslagBegrunnelse?: string;
     erTilknyttetAndeler?: boolean;
     erEksplisittAvslagPåSøknad?: boolean;
+    begrunnelser: Begrunnelse[];
 }
 
 export enum IEndretUtbetalingAndelÅrsak {

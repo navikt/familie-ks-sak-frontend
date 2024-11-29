@@ -68,7 +68,7 @@ export const EndretUtbetalingAvslagBegrunnelse: React.FC = () => {
         }) as BegrunnelseType;
     };
 
-    function finnBegrunnelseForSelect(begrunnelseVerdi?: string) {
+    function finnBegrunnelseForSelect(begrunnelseVerdi?: Begrunnelse) {
         if (!lastedeTekster) return;
 
         for (const key in lastedeTekster) {
@@ -87,19 +87,18 @@ export const EndretUtbetalingAvslagBegrunnelse: React.FC = () => {
 
     return (
         <FamilieReactSelect
-            {...skjema.felter.avslagBegrunnelse.hentNavInputProps(skjema.visFeilmeldinger)}
-            value={finnBegrunnelseForSelect(skjema.felter.avslagBegrunnelse.verdi)}
+            {...skjema.felter.begrunnelser.hentNavInputProps(skjema.visFeilmeldinger)}
+            value={finnBegrunnelseForSelect(skjema.felter.begrunnelser.verdi)}
             label={'Velg standardtekst i brev'}
             creatable={false}
             placeholder={'Velg begrunnelse'}
             erLesevisning={vurderErLesevisning()}
             isMulti={false}
             options={grupperteBegrunnelser}
-            onChange={options =>
-                skjema.felter.avslagBegrunnelse.validerOgSettFelt(
-                    (options as SingleValue<OptionType>)?.value
-                )
-            }
+            onChange={options => {
+                const verdi = (options as SingleValue<OptionType>)?.value;
+                return skjema.felter.begrunnelser.validerOgSettFelt(verdi || undefined);
+            }}
             formatGroupLabel={(group: GroupBase<OptionType>) => {
                 return (
                     <GroupLabel>
