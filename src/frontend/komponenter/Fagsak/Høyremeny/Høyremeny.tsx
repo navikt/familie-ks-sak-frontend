@@ -63,10 +63,11 @@ const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
                     $åpenhøyremeny={åpenHøyremeny ? 1 : 0}
                     title={åpenHøyremeny ? 'Skjul høyremeny' : 'Vis høyremeny'}
                 >
-                    åpenHøyremeny ? (
-                    <ChevronRightIcon aria-label="Skjul høyremeny" />
+                    {åpenHøyremeny ? (
+                        <ChevronRightIcon aria-label="Skjul høyremeny" />
                     ) : (
-                    <ChevronLeftIcon aria-label="Vis høyremeny" />)
+                        <ChevronLeftIcon aria-label="Vis høyremeny" />
+                    )}
                 </ToggleVisningHøyremeny>
                 {åpenHøyremeny && (
                     <>
