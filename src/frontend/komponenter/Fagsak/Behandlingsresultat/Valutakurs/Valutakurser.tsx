@@ -55,7 +55,7 @@ const Valutakurser: React.FC<IProps> = ({ valutakurser, åpenBehandling, visFeil
                     variant={'warning'}
                     fullWidth
                     children={
-                        'For EØS-perioder med overgangsordning skal valutakursdato være 30.11.2024'
+                        'For EØS-perioder med overgangsordning skal valutakursdato være 29.11.2024'
                     }
                 />
             )}
