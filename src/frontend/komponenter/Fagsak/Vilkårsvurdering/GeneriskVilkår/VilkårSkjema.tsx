@@ -3,7 +3,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Delete } from '@navikt/ds-icons';
+import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, Label, Radio, RadioGroup, Select, Textarea } from '@navikt/ds-react';
 import { ABorderDefault, ABorderWarning, ASurfaceAction } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -253,7 +253,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         disabled={sletterVilkår}
                         size={'medium'}
                         variant={'tertiary'}
-                        icon={<Delete />}
+                        icon={<TrashIcon />}
                     >
                         {'Fjern'}
                     </Button>

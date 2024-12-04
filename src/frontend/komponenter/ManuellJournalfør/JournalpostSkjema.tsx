@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Back } from '@navikt/ds-icons';
+import { ChevronLeftIcon } from '@navikt/aksel-icons';
 import { Alert, Button, ErrorSummary, Heading } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -25,18 +25,6 @@ const Container = styled.div`
 const StyledSectionDiv = styled.div`
     margin-top: 2.5rem;
 `;
-
-const StyledIkonKnappDiv = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-const tilbakeKnappInnhold = (
-    <StyledIkonKnappDiv>
-        <Back />
-        Tilbake
-    </StyledIkonKnappDiv>
-);
 
 export const JournalpostSkjema: React.FC = () => {
     const {
@@ -103,8 +91,9 @@ export const JournalpostSkjema: React.FC = () => {
                     variant={'secondary'}
                     onClick={() => navigate(`/oppgaver`)}
                     disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
+                    icon={erLesevisning() && <ChevronLeftIcon />}
                 >
-                    {erLesevisning() ? tilbakeKnappInnhold : 'Avbryt'}
+                    {erLesevisning() ? 'Tilbake' : 'Avbryt'}
                 </Button>
                 {!erLesevisning() && (
                     <Button

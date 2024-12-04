@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { ExpandFilled } from '@navikt/ds-icons';
+import { ChevronDownIcon } from '@navikt/aksel-icons';
 import { Button, Dropdown } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -36,7 +36,7 @@ const Behandlingsmeny: React.FC<IProps> = ({ minimalFagsak }) => {
             <PosisjonertMenyknapp
                 variant="secondary"
                 size="small"
-                icon={<ExpandFilled />}
+                icon={<ChevronDownIcon />}
                 iconPosition={'right'}
                 forwardedAs={Dropdown.Toggle}
             >
