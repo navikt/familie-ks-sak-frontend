@@ -50,6 +50,11 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
                         toggles[ToggleNavn.overgangsordningErTilgjengelig] ||
                         årsak !== BehandlingÅrsak.OVERGANGSORDNING_2024
                 )
+                .filter(
+                    årsak =>
+                        årsak !== BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
+                        toggles[ToggleNavn.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
+                )
                 .map(årsak => {
                     return (
                         <option

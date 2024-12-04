@@ -59,6 +59,7 @@ export enum BehandlingÅrsak {
     TEKNISK_ENDRING = 'TEKNISK_ENDRING',
     LOVENDRING_2024 = 'LOVENDRING_2024',
     OVERGANGSORDNING_2024 = 'OVERGANGSORDNING_2024',
+    IVERKSETTE_KA_VEDTAK = 'IVERKSETTE_KA_VEDTAK',
 }
 
 export const behandlingÅrsak: Record<
@@ -76,6 +77,7 @@ export const behandlingÅrsak: Record<
     TEKNISK_ENDRING: 'Teknisk Endring',
     LOVENDRING_2024: 'Lovendring 2024',
     OVERGANGSORDNING_2024: 'Overgangsordning 2024',
+    IVERKSETTE_KA_VEDTAK: 'Iverksette KA-vedtak',
 
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
