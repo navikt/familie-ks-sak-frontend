@@ -25,6 +25,7 @@ import {
 import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
+import { IEndretUtbetalingAndelÅrsak } from '../typer/utbetalingAndel';
 import type { Begrunnelse } from '../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../typer/vilkår';
@@ -296,14 +297,18 @@ export const erAvslagBegrunnelserGyldig = (
 };
 
 export const erAvslagBegrunnelseGyldig = (
-    felt: FeltState<Begrunnelse | undefined>,
+    felt: FeltState<Begrunnelse[]>,
     avhengigheter?: Avhengigheter
-): FeltState<Begrunnelse | undefined> => {
-    const erEksplisittAvslagPåSøknad: boolean | undefined =
-        avhengigheter?.erEksplisittAvslagPåSøknad;
-    return erEksplisittAvslagPåSøknad && !felt.verdi && felt.verdi === ''
-        ? feil(felt, 'Du må velge minst en begrunnelse ved avslag')
-        : ok(felt);
+): FeltState<Begrunnelse[]> => {
+    const erEksplisittAvslagPåSøknad = avhengigheter?.erEksplisittAvslagPåSøknad;
+    const årsak = avhengigheter?.årsak;
+    const erAlleredeUtbetalt = årsak === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT;
+
+    if (erAlleredeUtbetalt && erEksplisittAvslagPåSøknad && felt.verdi.length === 0) {
+        return feil(felt, 'Du må velge en begrunnelse ved avslag');
+    }
+
+    return ok(felt);
 };
 
 export const erPositivtHeltall = (string: string) => {

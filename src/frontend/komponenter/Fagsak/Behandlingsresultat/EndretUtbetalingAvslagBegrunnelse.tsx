@@ -25,6 +25,11 @@ export const EndretUtbetalingAvslagBegrunnelse: React.FC = () => {
     const { endretUtbetalingsbegrunnelser } = useHentEndretUtbetalingBegrunnelser();
     const { skjema } = useEndretUtbetalingAndel();
 
+    const prevalgtBegrunnelse =
+        skjema.felter.begrunnelser.verdi.length > 0
+            ? skjema.felter.begrunnelser.verdi[0]
+            : undefined;
+
     const gyldigeBegrunnelseTyper = [BegrunnelseType.AVSLAG];
     const lastedeTekster =
         endretUtbetalingsbegrunnelser.status === RessursStatus.SUKSESS &&
@@ -88,7 +93,7 @@ export const EndretUtbetalingAvslagBegrunnelse: React.FC = () => {
     return (
         <FamilieReactSelect
             {...skjema.felter.begrunnelser.hentNavInputProps(skjema.visFeilmeldinger)}
-            value={finnBegrunnelseForSelect(skjema.felter.begrunnelser.verdi)}
+            value={finnBegrunnelseForSelect(prevalgtBegrunnelse)}
             label={'Velg standardtekst i brev'}
             creatable={false}
             placeholder={'Velg begrunnelse'}
@@ -97,9 +102,13 @@ export const EndretUtbetalingAvslagBegrunnelse: React.FC = () => {
             options={grupperteBegrunnelser}
             onChange={options => {
                 if (options && 'value' in options) {
-                    skjema.felter.begrunnelser.validerOgSettFelt(options.value);
+                    /* 
+                        Vi ønsker kun en begrunnelse her, men modellen tilsier at det skal være en array.
+                        Hardkoder dermed den ene valgte verdien som en array med en begrunnelse.
+                    */
+                    skjema.felter.begrunnelser.validerOgSettFelt([options.value]);
                 } else {
-                    skjema.felter.begrunnelser.nullstill();
+                    skjema.felter.begrunnelser.validerOgSettFelt([]);
                 }
             }}
             formatGroupLabel={(group: GroupBase<OptionType>) => {

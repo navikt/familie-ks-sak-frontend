@@ -25,11 +25,10 @@ import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegru
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useEndretUtbetalingAndel } from '../../../context/EndretUtbetalingAndelContext';
 import type { IBehandling } from '../../../typer/behandling';
-import type {
-    IRestEndretUtbetalingAndel,
+import {
+    type IRestEndretUtbetalingAndel,
     IEndretUtbetalingAndelÅrsak,
 } from '../../../typer/utbetalingAndel';
-import { IEndretUtbetalingAndelÅrsak as IEndretUtbetalingAndelÅrsakEnum } from '../../../typer/utbetalingAndel';
 import {
     IEndretUtbetalingAndelFullSats,
     optionTilsats,
@@ -158,6 +157,15 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
             skjema.felter.tom.nullstill();
         }
     }, [skjema.submitRessurs]);
+
+    useEffect(() => {
+        if (
+            skjema.felter.årsak.verdi !== IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
+            skjema.felter.begrunnelser.verdi.length > 0
+        ) {
+            skjema.felter.begrunnelser.validerOgSettFelt([]);
+        }
+    }, [skjema.felter.årsak.verdi]);
 
     const erLesevisning = vurderErLesevisning();
 
@@ -310,7 +318,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                           )}
                 </Feltmargin>
 
-                {skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsakEnum.ALLEREDE_UTBETALT &&
+                {skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
                     skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
                         <Feltmargin>
                             <EndretUtbetalingAvslagBegrunnelse />
