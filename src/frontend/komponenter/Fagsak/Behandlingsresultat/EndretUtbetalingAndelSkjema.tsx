@@ -161,6 +161,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
     useEffect(() => {
         if (
             skjema.felter.årsak.verdi !== IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
+            skjema.felter.begrunnelser.verdi &&
             skjema.felter.begrunnelser.verdi.length > 0
         ) {
             skjema.felter.begrunnelser.validerOgSettFelt([]);
