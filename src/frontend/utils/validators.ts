@@ -297,14 +297,17 @@ export const erAvslagBegrunnelserGyldig = (
 };
 
 export const erAvslagBegrunnelseGyldig = (
-    felt: FeltState<Begrunnelse[]>,
+    felt: FeltState<Begrunnelse[] | undefined>,
     avhengigheter?: Avhengigheter
-): FeltState<Begrunnelse[]> => {
+): FeltState<Begrunnelse[] | undefined> => {
     const erEksplisittAvslagPåSøknad = avhengigheter?.erEksplisittAvslagPåSøknad;
-    const årsak = avhengigheter?.årsak;
+    const årsak = avhengigheter?.årsak.verdi;
     const erAlleredeUtbetalt = årsak === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT;
 
-    if (erAlleredeUtbetalt && erEksplisittAvslagPåSøknad && felt.verdi.length === 0) {
+    if (erAlleredeUtbetalt && erEksplisittAvslagPåSøknad && !felt.verdi) {
+        return feil(felt, 'Du må velge en begrunnelse ved avslag');
+    }
+    if (erAlleredeUtbetalt && erEksplisittAvslagPåSøknad && felt.verdi && felt.verdi.length === 0) {
         return feil(felt, 'Du må velge en begrunnelse ved avslag');
     }
 

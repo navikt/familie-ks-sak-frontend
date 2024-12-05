@@ -51,7 +51,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 fullSats: boolean | undefined;
                 begrunnelse: string | undefined;
                 erEksplisittAvslagPåSøknad: boolean | undefined;
-                begrunnelser: Begrunnelse[];
+                begrunnelser: Begrunnelse[] | undefined;
             },
             IBehandling
         >({
@@ -116,8 +116,8 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                         felt.verdi ? ok(felt) : feil(felt, 'Du må oppgi en begrunnelse.'),
                 }),
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad,
-                begrunnelser: useFelt<Begrunnelse[]>({
-                    verdi: endretUtbetalingAndel.begrunnelser,
+                begrunnelser: useFelt<Begrunnelse[] | undefined>({
+                    verdi: endretUtbetalingAndel.begrunnelser || [],
                     valideringsfunksjon: erAvslagBegrunnelseGyldig,
                     avhengigheter: {
                         erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
@@ -194,7 +194,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 ),
                 erTilknyttetAndeler: endretUtbetalingAndel.erTilknyttetAndeler,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-                begrunnelser: begrunnelser.verdi,
+                begrunnelser: begrunnelser && begrunnelser.verdi,
             };
         };
 
