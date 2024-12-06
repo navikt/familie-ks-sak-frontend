@@ -141,7 +141,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
             skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
                 endretUtbetalingAndel.erEksplisittAvslagPåSøknad
             );
-
+            skjema.felter.begrunnelser.validerOgSettFelt(endretUtbetalingAndel.begrunnelser);
             skjema.felter.søknadstidspunkt.validerOgSettFelt(
                 endretUtbetalingAndel.søknadstidspunkt
                     ? new Date(endretUtbetalingAndel.søknadstidspunkt)

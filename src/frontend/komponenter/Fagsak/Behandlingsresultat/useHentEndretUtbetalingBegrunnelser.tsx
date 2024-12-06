@@ -15,7 +15,7 @@ export function useHentEndretUtbetalingBegrunnelser() {
     useEffect(() => {
         request<void, EndringsårsakbegrunnelseTekster>({
             method: 'GET',
-            url: `/familie-ks-sak/api/endretutbetalingandel/endret-utbetaling-begrunnelser`,
+            url: `/familie-ks-sak/api/endretutbetalingandel/endret-utbetaling-vedtaksbegrunnelser`,
             påvirkerSystemLaster: true,
         }).then((data: Ressurs<EndringsårsakbegrunnelseTekster>) => {
             settEndretUtbetalingsbegrunnelser(data);

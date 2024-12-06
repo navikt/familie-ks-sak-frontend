@@ -26,7 +26,7 @@ export const EndretUtbetalingAvslagBegrunnelse: React.FC = () => {
     const { skjema } = useEndretUtbetalingAndel();
 
     const prevalgtBegrunnelse =
-        skjema.felter.begrunnelser.verdi.length > 0
+        skjema.felter.begrunnelser.verdi && skjema.felter.begrunnelser.verdi.length > 0
             ? skjema.felter.begrunnelser.verdi[0]
             : undefined;
 
