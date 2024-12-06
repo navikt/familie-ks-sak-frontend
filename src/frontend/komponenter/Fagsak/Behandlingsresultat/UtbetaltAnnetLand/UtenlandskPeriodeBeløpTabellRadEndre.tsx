@@ -72,6 +72,7 @@ interface IProps {
     sendInnSkjema: () => void;
     toggleForm: (visAlert: boolean) => void;
     slettUtenlandskPeriodeBeløp: () => void;
+    behandlingsÅrsakErOvergangsordning: boolean;
 }
 
 const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
@@ -82,6 +83,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
     sendInnSkjema,
     toggleForm,
     slettUtenlandskPeriodeBeløp,
+    behandlingsÅrsakErOvergangsordning,
 }) => {
     const { vurderErLesevisning } = useBehandling();
     const lesevisning = vurderErLesevisning(true);
@@ -139,6 +141,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                     visFeilmeldinger={skjema.visFeilmeldinger}
                     lesevisning={lesevisning}
                     maxWidth={32}
+                    behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
                 />
                 <StyledFieldset
                     errorId={utenlandskPeriodeBeløpUtbetaltFeilmeldingId(skjema)}

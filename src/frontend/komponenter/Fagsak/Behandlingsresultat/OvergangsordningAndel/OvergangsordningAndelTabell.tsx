@@ -31,7 +31,7 @@ const OvergangsordningAndelTabell: React.FunctionComponent<IOvergangsordningTabe
                     <Table.Row>
                         <Table.HeaderCell scope="col">Person</Table.HeaderCell>
                         <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Antall timer</Table.HeaderCell>
+                        <Table.HeaderCell scope="col">Antall timer i barnehage</Table.HeaderCell>
                         <Table.HeaderCell scope="col" />
                     </Table.Row>
                 </Table.Header>

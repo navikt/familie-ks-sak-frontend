@@ -7,7 +7,7 @@ import {
     useValutakursSkjema,
     valutakursFeilmeldingId,
 } from '../../../../context/Valutakurs/ValutakursSkjemaContext';
-import type { IBehandling } from '../../../../typer/behandling';
+import { BehandlingÅrsak, type IBehandling } from '../../../../typer/behandling';
 import type { OptionType } from '../../../../typer/common';
 import type { IRestValutakurs } from '../../../../typer/eøsPerioder';
 import { Datoformat, isoStringTilFormatertString } from '../../../../utils/dato';
@@ -80,6 +80,9 @@ const ValutakursTabellRad: React.FC<IProps> = ({
                     sletterValutakurs={sletterValutakurs}
                     erManuellInputAvKurs={erManuellInputAvKurs}
                     key={`${valutakurs.id}-${erValutakursEkspandert ? 'ekspandert' : 'lukket'}`}
+                    behandlingsÅrsakErOvergangsordning={
+                        åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
+                    }
                 />
             }
         >

@@ -134,7 +134,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
             <Feltmargin>
                 <StyledTextField
                     {...skjema.felter.antallTimer.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                    label={<Label>Antall timer</Label>}
+                    label={<Label>Antall timer i barnehage</Label>}
                     value={skjema.felter.antallTimer.verdi ?? ''}
                     onChange={event => {
                         if (isNumeric(event.target.value)) {

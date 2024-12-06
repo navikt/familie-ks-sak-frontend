@@ -74,8 +74,8 @@ const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) =
                         utenMargin
                         eksluderLand={
                             skjema.felter.mottaker.verdi === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE
-                                ? ['NO']
-                                : undefined
+                                ? ['NO', 'XU']
+                                : ['XU']
                         }
                         feil={
                             skjema.visFeilmeldinger &&

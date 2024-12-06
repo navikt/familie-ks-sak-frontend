@@ -31,6 +31,17 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
                 Standardbegrunnelse.OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS
         ).length > 0;
 
+    const vedtaksperiodeInneholderOvergangsordningBegrunnelse =
+        vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
+            vedtaksBegrunnelser =>
+                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
+                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING ||
+                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
+                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING_GRADERT_UTBETALING ||
+                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
+                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING_DELT_BOSTED
+        ).length > 0;
+
     const vedtaksperiodeStøtterFritekst =
         vedtaksperiodeMedBegrunnelser.støtterFritekst ||
         vedtaksperiodeMedBegrunnelser.fritekster.length > 0;
@@ -39,6 +50,9 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
         <EkspanderbartBegrunnelsePanel
             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
             sisteVedtaksperiodeFom={sisteVedtaksperiodeFom}
+            vedtaksperiodeInneholderOvergangsordningBegrunnelse={
+                vedtaksperiodeInneholderOvergangsordningBegrunnelse
+            }
             åpen={erPanelEkspandert}
             onClick={() => onPanelClose(true)}
         >

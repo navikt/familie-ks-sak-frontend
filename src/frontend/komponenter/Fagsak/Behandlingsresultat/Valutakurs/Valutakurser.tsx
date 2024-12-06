@@ -3,10 +3,11 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { Alert, Heading, Table } from '@navikt/ds-react';
+import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
 
 import ValutakursTabellRad from './ValutakursTabellRad';
 import { useEøs } from '../../../../context/Eøs/EøsContext';
-import type { IBehandling } from '../../../../typer/behandling';
+import { BehandlingÅrsak, type IBehandling } from '../../../../typer/behandling';
 import type { IRestValutakurs } from '../../../../typer/eøsPerioder';
 
 const ValutakurserContainer = styled.div`
@@ -32,6 +33,10 @@ const StyledHeaderCell = styled(Table.HeaderCell)`
     }
 `;
 
+const AlertWithBottomMargin = styled(Alert)`
+    margin-bottom: ${ASpacing2};
+`;
+
 interface IProps {
     valutakurser: IRestValutakurs[];
     åpenBehandling: IBehandling;
@@ -45,6 +50,15 @@ const Valutakurser: React.FC<IProps> = ({ valutakurser, åpenBehandling, visFeil
             <Heading spacing size="medium" level="3">
                 Valuta
             </Heading>
+            {åpenBehandling.årsak == BehandlingÅrsak.OVERGANGSORDNING_2024 && (
+                <AlertWithBottomMargin
+                    variant={'warning'}
+                    fullWidth
+                    children={
+                        'For EØS-perioder med overgangsordning skal valutakursdato være 29.11.2024'
+                    }
+                />
+            )}
             {!erValutakurserGyldige() && (
                 <Alert
                     variant={'warning'}

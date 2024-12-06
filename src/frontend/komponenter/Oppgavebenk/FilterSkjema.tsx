@@ -49,13 +49,12 @@ const FilterSkjema: React.FunctionComponent = () => {
                 );
             case 'select':
                 return (
-                    <div>
+                    <div key={oppgaveFelt.nøkkel}>
                         <Select
                             label={oppgaveFelt.label}
                             onChange={event =>
                                 settVerdiPåOppgaveFelt(oppgaveFelt, event.target.value)
                             }
-                            key={oppgaveFelt.nøkkel}
                             value={oppgaveFelt.filter.selectedValue}
                             error={
                                 oppgaveFelt.valideringsstatus === Valideringsstatus.FEIL
@@ -106,7 +105,7 @@ const FilterSkjema: React.FunctionComponent = () => {
                     <Button
                         variant="primary"
                         onClick={() => {
-                            validerSkjema() && hentOppgaver();
+                            if (validerSkjema()) hentOppgaver();
                         }}
                         loading={oppgaver.status === RessursStatus.HENTER}
                         disabled={oppgaver.status === RessursStatus.HENTER}
