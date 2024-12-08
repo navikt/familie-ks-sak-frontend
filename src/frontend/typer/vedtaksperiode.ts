@@ -1,8 +1,8 @@
 import type { YtelseType } from './beregning';
 import { ytelsetype } from './beregning';
-import type { IGrunnlagPerson } from './person';
+import { type IGrunnlagPerson } from './person';
 import type { Begrunnelse, BegrunnelseType } from './vedtak';
-import type { IsoDatoString } from '../utils/dato';
+import { type IsoDatoString } from '../utils/dato';
 
 export interface IVedtaksperiodeMedBegrunnelser {
     id: number;
@@ -59,15 +59,6 @@ export type Vedtaksperiode =
           vedtaksperiodetype: Vedtaksperiodetype.FORTSATT_INNVILGET;
           utbetalingsperiode: Vedtaksperiode;
       };
-
-export type Utbetalingsperiode = {
-    periodeFom: IsoDatoString;
-    periodeTom?: IsoDatoString;
-    vedtaksperiodetype: Vedtaksperiodetype.UTBETALING;
-    utbetalingsperiodeDetaljer: IUtbetalingsperiodeDetalj[];
-    antallBarn: number;
-    utbetaltPerMnd: number;
-};
 
 export interface IUtbetalingsperiodeDetalj {
     person: IGrunnlagPerson;

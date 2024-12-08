@@ -2,13 +2,36 @@ import { addDays, setDefaultOptions, subDays, subYears } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
 import { dagensDato, dateTilIsoDatoString } from '../dato';
-import { formaterIdent, hentAlder, kunSiffer } from '../formatter';
+import { formaterIdent, formaterIdenter, hentAlder, kunSiffer } from '../formatter';
 
 describe('utils/formatter', () => {
     beforeAll(() => {
         // Setter default locale til norsk bokmål for date-fns
         setDefaultOptions({ locale: nb });
     });
+
+    test('skal formetere en liste av indenter med to innslag', () => {
+        // Arrange
+        const identer = ['12345678901', '12345678902'];
+
+        // Act
+        const formaterteIdenter = formaterIdenter(identer);
+
+        // Assert
+        expect(formaterteIdenter).toBe('123456 78901, 123456 78902');
+    });
+
+    test('skal formetere en liste av indenter med ett innslag', () => {
+        // Arrange
+        const identer = ['12345678901'];
+
+        // Act
+        const formaterteIdenter = formaterIdenter(identer);
+
+        // Assert
+        expect(formaterteIdenter).toBe('123456 78901');
+    });
+
     test('Skal formatere ident', () => {
         expect(formaterIdent('12345678910')).toBe('123456 78910');
     });

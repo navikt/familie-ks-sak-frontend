@@ -20,7 +20,7 @@ import type {
     IRestValutakurs,
 } from '../../../typer/eøsPerioder';
 import { EøsPeriodeStatus, KompetanseResultat } from '../../../typer/eøsPerioder';
-import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
+import type { Utbetalingsperiode } from '../../../typer/utbetalingsperiode';
 import {
     dateTilFormatertString,
     Datoformat,

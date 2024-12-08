@@ -10,8 +10,11 @@ import EndretUtbetalingAndelSkjema from './EndretUtbetalingAndelSkjema';
 import { useEndretUtbetalingAndel } from '../../../context/EndretUtbetalingAndelContext';
 import StatusIkon, { Status } from '../../../ikoner/StatusIkon';
 import type { IBehandling } from '../../../typer/behandling';
-import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
-import { IEndretUtbetalingAndelÅrsak, årsakTekst } from '../../../typer/utbetalingAndel';
+import {
+    IEndretUtbetalingAndelÅrsak,
+    type IRestEndretUtbetalingAndel,
+    årsakTekst,
+} from '../../../typer/utbetalingAndel';
 import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../utils/dato';
 import { lagPersonLabel } from '../../../utils/formatter';
 
@@ -63,6 +66,7 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
             case IEndretUtbetalingAndelÅrsak.ENDRE_MOTTAKER:
             case IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT:
             case IEndretUtbetalingAndelÅrsak.ETTERBETALING_3MND:
+            case IEndretUtbetalingAndelÅrsak.FULLTIDSPLASS_I_BARNEHAGE_AUGUST_2024:
                 return fraProsentTilTekstDefault(prosent);
             default:
                 throw new Error(`Ukjent årsak ${årsak}`);

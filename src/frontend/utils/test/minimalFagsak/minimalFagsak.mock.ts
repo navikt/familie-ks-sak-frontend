@@ -2,7 +2,7 @@ import type { VisningBehandling } from '../../../komponenter/Fagsak/Saksoversikt
 import { BehandlingKategori } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
-import type { Utbetalingsperiode } from '../../../typer/vedtaksperiode';
+import type { Utbetalingsperiode } from '../../../typer/utbetalingsperiode';
 import { mockVisningBehandling } from '../behandling/behandling.mock';
 
 interface IMockMinimalFagsak {
