@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { Delete } from '@navikt/ds-icons';
+import { TrashIcon } from '@navikt/aksel-icons';
 import { Alert, BodyShort, Button, Fieldset, Select, TextField } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
@@ -232,7 +232,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                                 disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                                 size={'small'}
-                                icon={<Delete />}
+                                icon={<TrashIcon />}
                             >
                                 {'Fjern'}
                             </Button>

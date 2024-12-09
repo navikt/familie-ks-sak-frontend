@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import styled from 'styled-components';
 
-import { AddCircle, ExternalLink } from '@navikt/ds-icons';
+import { ExternalLinkIcon, PlusCircleIcon } from '@navikt/aksel-icons';
 import {
     HelpText,
     BodyLong,
@@ -264,7 +264,7 @@ const LeggTilBarn: React.FC<IProps> = ({
                 onClick={() => {
                     settVisModal(true);
                 }}
-                icon={<AddCircle />}
+                icon={<PlusCircleIcon />}
             >
                 {'Legg til barn'}
             </Button>
@@ -339,8 +339,11 @@ const LeggTilBarn: React.FC<IProps> = ({
                                         window.open('/redirect/drek', '_new');
                                     }}
                                 >
-                                    <span>Rekvirer D-nummer i DREK</span>
-                                    <ExternalLink aria-label="Rekvirer D-nummer i DREK" />
+                                    Rekvirer D-nummer i DREK
+                                    <ExternalLinkIcon
+                                        title="Rekvirer D-nummer i DREK"
+                                        fontSize={'1.5rem'}
+                                    />
                                 </Link>
                             </DrekLenkeContainer>
                             {registrerBarnSkjema.felter.erFolkeregistrert.erSynlig && (

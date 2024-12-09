@@ -2,7 +2,13 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { FlowerBladeFall, Globe, Heart, Home, Passport } from '@navikt/ds-icons';
+import {
+    FlowerPetalFallingIcon,
+    GlobeIcon,
+    HeartIcon,
+    HouseIcon,
+    PassportIcon,
+} from '@navikt/aksel-icons';
 import { Alert, Detail, Heading } from '@navikt/ds-react';
 import { AFontWeightRegular, ASpacing4 } from '@navikt/ds-tokens/dist/tokens';
 
@@ -54,10 +60,9 @@ const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({ opplysning
                         <RegisteropplysningerTabell
                             opplysningstype={Registeropplysning.DØDSBOADRESSE}
                             ikon={
-                                <FlowerBladeFall
-                                    style={{ fontSize: '1.5rem' }}
-                                    aria-label="Blomst ikon"
-                                    role="img"
+                                <FlowerPetalFallingIcon
+                                    fontSize={'1.5rem'}
+                                    title="Blomst-ikon"
                                     focusable="false"
                                 />
                             }
@@ -67,49 +72,27 @@ const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({ opplysning
                     <RegisteropplysningerTabell
                         opplysningstype={Registeropplysning.SIVILSTAND}
                         ikon={
-                            <Heart
-                                style={{ fontSize: '1.5rem' }}
-                                aria-label="Hjerte ikon"
-                                role="img"
-                                focusable="false"
-                            />
+                            <HeartIcon fontSize={'1.5rem'} title="Hjerte-ikon" focusable="false" />
                         }
                         historikk={opplysninger.sivilstand}
                     />
                     <RegisteropplysningerTabell
                         opplysningstype={Registeropplysning.OPPHOLD}
                         ikon={
-                            <Passport
-                                style={{ fontSize: '1.5rem' }}
-                                aria-label="Pass ikon"
-                                role="img"
-                                focusable="false"
-                            />
+                            <PassportIcon fontSize={'1.5rem'} title="Pass-ikon" focusable="false" />
                         }
                         historikk={opplysninger.oppholdstillatelse}
                     />
                     <RegisteropplysningerTabell
                         opplysningstype={Registeropplysning.STATSBORGERSKAP}
                         ikon={
-                            <Globe
-                                style={{ fontSize: '1.5rem' }}
-                                aria-label="Globe ikon"
-                                role="img"
-                                focusable="false"
-                            />
+                            <GlobeIcon fontSize={'1.5rem'} title="Globe-ikon" focusable="false" />
                         }
                         historikk={opplysninger.statsborgerskap}
                     />
                     <RegisteropplysningerTabell
                         opplysningstype={Registeropplysning.BOSTEDSADRESSE}
-                        ikon={
-                            <Home
-                                style={{ fontSize: '1.5rem' }}
-                                aria-label="Hjem ikon"
-                                role="img"
-                                focusable="false"
-                            />
-                        }
+                        ikon={<HouseIcon fontSize={'1.5rem'} title="Hjem-ikon" focusable="false" />}
                         historikk={opplysninger.bostedsadresse}
                     />
                 </Container>

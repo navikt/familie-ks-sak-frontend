@@ -72,7 +72,7 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
         >
             <Table.DataCell>
                 <HStack gap="4">
-                    <VilkårResultatIkon resultat={annenVurdering.resultat} width={20} height={20} />
+                    <VilkårResultatIkon resultat={annenVurdering.resultat} />
                     <BodyShort children={uiResultat[annenVurdering.resultat]} />
                 </HStack>
             </Table.DataCell>
