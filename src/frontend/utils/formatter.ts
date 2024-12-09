@@ -55,6 +55,9 @@ export const formaterIdent = (personIdent: string | undefined, ukjentTekst = 'Uk
           : ukjentTekst;
 };
 
+export const formaterIdenter = (personIdenter: string[]) =>
+    personIdenter.map(ident => formaterIdent(ident)).join(', ');
+
 export const lagPersonLabel = (ident: string, personer: IGrunnlagPerson[]): string => {
     const person = personer.find(person => person.personIdent === ident);
     if (person) {
