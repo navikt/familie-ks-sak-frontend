@@ -302,7 +302,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                                                         size={'small'}
                                                         variant={'tertiary'}
                                                         aria-label={'Fjern fritekst'}
-                                                        icon={<Delete />}
+                                                        icon={<TrashIcon />}
                                                     >
                                                         {'Fjern'}
                                                     </StyledButton>
@@ -318,7 +318,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                                     id={`legg-til-fritekst`}
                                     size={'small'}
                                     variant={'tertiary'}
-                                    icon={<AddCircle />}
+                                    icon={<PlusCircleIcon />}
                                 >
                                     {'Legg til kulepunkt'}
                                 </Button>
