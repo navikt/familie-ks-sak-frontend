@@ -11,6 +11,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import EndretUtbetalingAndelTabell from './EndretUtbetalingAndelTabell';
+import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAugust2024Alert';
 import KompetanseSkjema from './Kompetanse/KompetanseSkjema';
 import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
@@ -206,6 +207,9 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             steg={BehandlingSteg.BEHANDLINGSRESULTAT}
             skalViseNesteKnapp={skalViseNesteKnapp}
         >
+            <FulltidBarnehageplassAugust2024Alert
+                utbetalingsperioder={åpenBehandling.utbetalingsperioder}
+            />
             {personerMedUgyldigEtterbetalingsperiode.length > 0 && (
                 <StyledAlert variant={'warning'}>
                     Du har perioder som kan føre til etterbetaling utover 3 måneder for person{' '}

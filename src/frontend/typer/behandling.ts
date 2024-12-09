@@ -16,12 +16,12 @@ import type {
 } from './tilbakekrevingsbehandling';
 import type { ITotrinnskontroll } from './totrinnskontroll';
 import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
+import type { Utbetalingsperiode } from './utbetalingsperiode';
 import type {
     IRestKorrigertEtterbetaling,
     IRestKorrigertVedtak,
     IVedtakForBehandling,
 } from './vedtak';
-import type { Utbetalingsperiode } from './vedtaksperiode';
 import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 import type { IRestBrevmottaker } from '../komponenter/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IsoDatoString } from '../utils/dato';
@@ -59,6 +59,7 @@ export enum BehandlingÅrsak {
     TEKNISK_ENDRING = 'TEKNISK_ENDRING',
     LOVENDRING_2024 = 'LOVENDRING_2024',
     OVERGANGSORDNING_2024 = 'OVERGANGSORDNING_2024',
+    IVERKSETTE_KA_VEDTAK = 'IVERKSETTE_KA_VEDTAK',
 }
 
 export const behandlingÅrsak: Record<
@@ -76,6 +77,7 @@ export const behandlingÅrsak: Record<
     TEKNISK_ENDRING: 'Teknisk Endring',
     LOVENDRING_2024: 'Lovendring 2024',
     OVERGANGSORDNING_2024: 'Overgangsordning 2024',
+    IVERKSETTE_KA_VEDTAK: 'Iverksette KA-vedtak',
 
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
@@ -319,7 +321,7 @@ export const behandlingsresultater: Record<
 
     /** For klagebehandlinger: **/
     HENLAGT: 'Henlagt',
-    IKKE_MEDHOLD: 'Ikke medhold',
+    IKKE_MEDHOLD: 'Oversendt til KA',
     IKKE_MEDHOLD_FORMKRAV_AVVIST: 'Ikke medhold formkrav avvist',
     IKKE_SATT: 'Ikke satt',
     MEDHOLD: 'Medhold',
