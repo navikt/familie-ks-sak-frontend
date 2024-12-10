@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { ExternalLink } from '@navikt/ds-icons';
+import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Link } from '@navikt/ds-react';
 
 import type { VisningBehandling } from './visningBehandling';
@@ -133,7 +133,7 @@ export const lagLenkePåType = (
                     target="_blank"
                 >
                     <span>{behandlingstyper[behandling.type].navn}</span>
-                    <ExternalLink />
+                    <ExternalLinkIcon fontSize={'1.5rem'} />
                 </Link>
             );
         case Saksoversiktstype.KLAGE:
@@ -144,7 +144,7 @@ export const lagLenkePåType = (
                     target="_blank"
                 >
                     <span>{behandlingstyper[Klagebehandlingstype.KLAGE].navn}</span>
-                    <ExternalLink />
+                    <ExternalLinkIcon fontSize={'1.5rem'} />
                 </Link>
             );
     }
@@ -175,7 +175,7 @@ export const lagLenkePåResultat = (
                     target="_blank"
                 >
                     <span>{behandlingsresultater[behandling.resultat]}</span>
-                    <ExternalLink />
+                    <ExternalLinkIcon fontSize={'1.5rem'} />
                 </Link>
             );
         case Saksoversiktstype.KLAGE:
@@ -186,7 +186,7 @@ export const lagLenkePåResultat = (
                     target="_blank"
                 >
                     <span>{behandlingsresultater[behandling.resultat]}</span>
-                    <ExternalLink />
+                    <ExternalLinkIcon fontSize={'1.5rem'} />
                 </Link>
             );
     }
