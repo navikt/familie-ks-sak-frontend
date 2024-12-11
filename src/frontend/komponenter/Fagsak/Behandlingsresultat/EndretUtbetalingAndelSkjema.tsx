@@ -21,11 +21,12 @@ import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useEndretUtbetalingAndel } from '../../../context/EndretUtbetalingAndelContext';
 import type { IBehandling } from '../../../typer/behandling';
-import type {
-    IRestEndretUtbetalingAndel,
+import {
+    type IRestEndretUtbetalingAndel,
     IEndretUtbetalingAndelÅrsak,
 } from '../../../typer/utbetalingAndel';
 import {
@@ -156,6 +157,16 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
             skjema.felter.tom.nullstill();
         }
     }, [skjema.submitRessurs]);
+
+    useEffect(() => {
+        if (
+            skjema.felter.årsak.verdi !== IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
+            skjema.felter.begrunnelser.verdi &&
+            skjema.felter.begrunnelser.verdi.length > 0
+        ) {
+            skjema.felter.begrunnelser.validerOgSettFelt([]);
+        }
+    }, [skjema.felter.årsak.verdi]);
 
     const erLesevisning = vurderErLesevisning();
 
@@ -307,6 +318,13 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                               </Checkbox>
                           )}
                 </Feltmargin>
+
+                {skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
+                    skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
+                        <Feltmargin>
+                            <EndretUtbetalingAvslagBegrunnelse />
+                        </Feltmargin>
+                    )}
 
                 <Feltmargin>
                     <Datovelger
