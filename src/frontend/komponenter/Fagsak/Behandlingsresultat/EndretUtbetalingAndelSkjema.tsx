@@ -161,10 +161,10 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
     useEffect(() => {
         if (
             skjema.felter.årsak.verdi !== IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
-            skjema.felter.begrunnelser.verdi &&
-            skjema.felter.begrunnelser.verdi.length > 0
+            skjema.felter.vedtaksbegrunnelser.verdi &&
+            skjema.felter.vedtaksbegrunnelser.verdi.length > 0
         ) {
-            skjema.felter.begrunnelser.validerOgSettFelt([]);
+            skjema.felter.vedtaksbegrunnelser.validerOgSettFelt([]);
         }
     }, [skjema.felter.årsak.verdi]);
 

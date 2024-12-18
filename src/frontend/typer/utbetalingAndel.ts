@@ -14,7 +14,7 @@ export interface IRestEndretUtbetalingAndel {
     årsak?: IEndretUtbetalingAndelÅrsak;
     erTilknyttetAndeler?: boolean;
     erEksplisittAvslagPåSøknad?: boolean;
-    begrunnelser?: Begrunnelse[];
+    vedtaksbegrunnelser?: Begrunnelse[];
 }
 
 export enum IEndretUtbetalingAndelÅrsak {
