@@ -20,6 +20,7 @@ import {
     dagensDato,
     datoForLovendringAugust24,
     type IIsoDatoPeriode,
+    type IsoDatoString,
     isoStringTilDate,
 } from './dato';
 import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
@@ -136,7 +137,12 @@ export const erPeriodeGyldig = (
                     return feil(felt, 'Du kan ikke legge til periode før barnets fødselsdato');
                 }
                 if (erBarnetsAlderVilkår) {
-                    const førsteLagredeFom = avhengigheter?.førsteLagredeFom;
+                    const førsteLagredeFom: IsoDatoString | undefined =
+                        avhengigheter?.førsteLagredeFom;
+
+                    const førsteFomPåVilkåret: Date = førsteLagredeFom
+                        ? isoStringTilDate(førsteLagredeFom)
+                        : fom;
 
                     const erAdopsjon = utdypendeVilkårsvurdering?.includes(
                         UtdypendeVilkårsvurderingGenerell.ADOPSJON
@@ -163,7 +169,7 @@ export const erPeriodeGyldig = (
                         } else {
                             if (
                                 tom &&
-                                datoDifferanseMerEnnXAntallMåneder(førsteLagredeFom, tom, 7)
+                                datoDifferanseMerEnnXAntallMåneder(førsteFomPåVilkåret, tom, 7)
                             ) {
                                 return feil(
                                     felt,
