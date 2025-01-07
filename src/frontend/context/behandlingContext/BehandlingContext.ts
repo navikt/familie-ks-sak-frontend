@@ -196,8 +196,8 @@ const [BehandlingProvider, useBehandling] = createUseContext(() => {
 
     const søkersMålform: Målform =
         åpenBehandling.status === RessursStatus.SUKSESS
-            ? åpenBehandling.data.personer.find(person => person.type === PersonType.SØKER)
-                  ?.målform ?? Målform.NB
+            ? (åpenBehandling.data.personer.find(person => person.type === PersonType.SØKER)
+                  ?.målform ?? Målform.NB)
             : Målform.NB;
 
     const kanBeslutteVedtak =
