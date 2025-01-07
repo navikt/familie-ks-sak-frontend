@@ -8,7 +8,7 @@ import generator from '../../testverktøy/fnr/fnr-generator';
 import type { IGrunnlagPerson } from '../../typer/person';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
-import { Resultat, VilkårType } from '../../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../dato';
 import { nyIsoDatoPeriode } from '../dato';
 import { erPeriodeGyldig, erResultatGyldig, identValidator } from '../validators';
@@ -206,6 +206,32 @@ describe('utils/validators', () => {
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
+    });
+
+    test('Periode innenfor 7mnd etter lovendring 2024 gir ok for adopsjon', () => {
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2024-10-28', '2025-05-28')
+        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
+            person: lagGrunnlagPerson({ fødselsdato: '2023-05-17' }),
+            erEksplisittAvslagPåSøknad: false,
+            førsteLagredeFom: undefined,
+            utdypendeVilkårsvurdering: [UtdypendeVilkårsvurderingGenerell.ADOPSJON],
+        });
+        expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
+    });
+
+    test('Periode lengre enn 7mnd etter lovendring 2024 gir feil for adopsjon', () => {
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2024-10-28', '2025-06-28')
+        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
+            person: lagGrunnlagPerson({ fødselsdato: '2023-05-17' }),
+            erEksplisittAvslagPåSøknad: false,
+            førsteLagredeFom: undefined,
+            utdypendeVilkårsvurdering: [UtdypendeVilkårsvurderingGenerell.ADOPSJON],
+        });
+        expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
     });
 
     test('Validering av ident', () => {
