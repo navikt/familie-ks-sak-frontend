@@ -8,7 +8,7 @@ import generator from '../../testverktøy/fnr/fnr-generator';
 import type { IGrunnlagPerson } from '../../typer/person';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
-import { Resultat, VilkårType } from '../../typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../dato';
 import { nyIsoDatoPeriode } from '../dato';
 import { erPeriodeGyldig, erResultatGyldig, identValidator } from '../validators';
@@ -38,7 +38,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('400220', undefined)
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -50,7 +50,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2020-06-17', '400220')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -62,7 +62,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode(undefined, undefined)
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -74,7 +74,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode(undefined, '2010-05-17')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: true,
         });
@@ -88,7 +88,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode(undefined, undefined)
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: true,
         });
@@ -99,7 +99,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2010-06-17', '2010-01-17')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: true,
         });
@@ -111,7 +111,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('1999-05-17', '2018-05-17')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -125,7 +125,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2000-05-17', '2021-05-17')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson({ dødsfallDato: '2020-12-12' }),
             erEksplisittAvslagPåSøknad: true,
         });
@@ -139,7 +139,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2020-12-12', '2020-12-12')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -151,7 +151,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2020-12-12', '2020-12-12')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson({ dødsfallDato: '2020-12-12' }),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -162,7 +162,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2001-05-17', '2018-05-17')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -176,7 +176,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2024-08-01', '2024-12-01')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
             person: lagGrunnlagPerson({ fødselsdato: '2023-05-17' }),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -190,7 +190,7 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2001-05-17', '2018-05-18')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.LOVLIG_OPPHOLD, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
@@ -201,22 +201,37 @@ describe('utils/validators', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
             nyIsoDatoPeriode('2001-05-17', '2002-05-17')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, true, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
-    test('Skal validere ok etter gamle regler hvis toggle er av', () => {
+    test('Periode innenfor 7mnd etter lovendring 2024 gir ok for adopsjon', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
-            nyIsoDatoPeriode('2024-05-17', '2025-05-17')
+            nyIsoDatoPeriode('2024-10-28', '2025-05-28')
         );
-        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, false, {
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
             person: lagGrunnlagPerson({ fødselsdato: '2023-05-17' }),
             erEksplisittAvslagPåSøknad: false,
+            førsteLagredeFom: undefined,
+            utdypendeVilkårsvurdering: [UtdypendeVilkårsvurderingGenerell.ADOPSJON],
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
+    });
+
+    test('Periode lengre enn 7mnd etter lovendring 2024 gir feil for adopsjon', () => {
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2024-10-28', '2025-06-28')
+        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
+            person: lagGrunnlagPerson({ fødselsdato: '2023-05-17' }),
+            erEksplisittAvslagPåSøknad: false,
+            førsteLagredeFom: undefined,
+            utdypendeVilkårsvurdering: [UtdypendeVilkårsvurderingGenerell.ADOPSJON],
+        });
+        expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
     });
 
     test('Validering av ident', () => {

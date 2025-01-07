@@ -20,6 +20,7 @@ import {
     dagensDato,
     datoForLovendringAugust24,
     type IIsoDatoPeriode,
+    type IsoDatoString,
     isoStringTilDate,
 } from './dato';
 import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
@@ -81,8 +82,8 @@ const datoDifferanseMerEnn1År = (fom: Date, tom: Date) => {
 };
 
 const datoDifferanseMerEnnXAntallMåneder = (fom: Date, tom: Date, antallMåneder: number) => {
-    const fomDatoPluss1År = addMonths(fom, antallMåneder);
-    return isBefore(fomDatoPluss1År, tom);
+    const fomDatoPlussXAntallMåneder = addMonths(fom, antallMåneder);
+    return isBefore(fomDatoPlussXAntallMåneder, tom);
 };
 
 const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Date) => {
@@ -103,7 +104,6 @@ const valgtDatoErSenereEnnNesteMåned = (valgtDato: Date) =>
 export const erPeriodeGyldig = (
     felt: FeltState<IIsoDatoPeriode>,
     vilkår: VilkårType,
-    erLovendringTogglePå: boolean,
     avhengigheter?: Avhengigheter
 ): FeltState<IIsoDatoPeriode> => {
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
@@ -137,7 +137,12 @@ export const erPeriodeGyldig = (
                     return feil(felt, 'Du kan ikke legge til periode før barnets fødselsdato');
                 }
                 if (erBarnetsAlderVilkår) {
-                    const førsteLagredeFom = avhengigheter?.førsteLagredeFom;
+                    const førsteLagredeFom: IsoDatoString | undefined =
+                        avhengigheter?.førsteLagredeFom;
+
+                    const førsteFomPåVilkåret: Date = førsteLagredeFom
+                        ? isoStringTilDate(førsteLagredeFom)
+                        : fom;
 
                     const erAdopsjon = utdypendeVilkårsvurdering?.includes(
                         UtdypendeVilkårsvurderingGenerell.ADOPSJON
@@ -154,7 +159,7 @@ export const erPeriodeGyldig = (
                             );
                         }
 
-                        if (isBefore(tom, datoForLovendringAugust24) || !erLovendringTogglePå) {
+                        if (isBefore(tom, datoForLovendringAugust24)) {
                             if (tom && datoDifferanseMerEnn1År(fom, tom)) {
                                 return feil(
                                     felt,
@@ -164,7 +169,7 @@ export const erPeriodeGyldig = (
                         } else {
                             if (
                                 tom &&
-                                datoDifferanseMerEnnXAntallMåneder(førsteLagredeFom, tom, 7)
+                                datoDifferanseMerEnnXAntallMåneder(førsteFomPåVilkåret, tom, 7)
                             ) {
                                 return feil(
                                     felt,
@@ -173,7 +178,7 @@ export const erPeriodeGyldig = (
                             }
                         }
                     } else {
-                        if (isBefore(tom, datoForLovendringAugust24) || !erLovendringTogglePå) {
+                        if (isBefore(tom, datoForLovendringAugust24)) {
                             if (!datoErPersonsXÅrsdag(person, fom, 1)) {
                                 return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
                             }
