@@ -1,10 +1,8 @@
 import { useFelt } from '@navikt/familie-skjema';
 
 import { erUtdypendeVilkårsvurderingerGyldig } from './BosattIRiketValidering';
-import { useApp } from '../../../../../../context/AppContext';
 import { PersonType } from '../../../../../../typer/person';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import { ToggleNavn } from '../../../../../../typer/toggles';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
@@ -34,9 +32,6 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
         erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: vilkår.avslagBegrunnelser,
     };
-
-    const { toggles } = useApp();
-    const erLovendringTogglePå = toggles[ToggleNavn.lovendring7MndNyeBehandlinger];
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
         verdi: vilkårSkjema.vurderesEtter,
@@ -71,12 +66,7 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(
-                    felt,
-                    VilkårType.BOSATT_I_RIKET,
-                    erLovendringTogglePå,
-                    avhengigheter
-                ),
+                erPeriodeGyldig(felt, VilkårType.BOSATT_I_RIKET, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,

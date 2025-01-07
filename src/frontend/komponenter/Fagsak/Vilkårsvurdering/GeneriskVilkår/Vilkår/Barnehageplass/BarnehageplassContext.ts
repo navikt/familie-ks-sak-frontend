@@ -6,9 +6,7 @@ import {
     erAntallTimerGyldig,
     erUtdypendeVilkårsvurderingerGyldig,
 } from './BarnehageplassValidering';
-import { useApp } from '../../../../../../context/AppContext';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import { ToggleNavn } from '../../../../../../typer/toggles';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import { UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../../../../../typer/vilkår';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
@@ -45,9 +43,6 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         avslagBegrunnelser: vilkår.avslagBegrunnelser,
     };
 
-    const { toggles } = useApp();
-    const erLovendringTogglePå = toggles[ToggleNavn.lovendring7MndNyeBehandlinger];
-
     const vurderesEtter = useFelt<RegelverkType | undefined>({
         verdi: vilkårSkjema.vurderesEtter,
     });
@@ -78,7 +73,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             søkerHarMeldtFraOmBarnehageplass: søkerHarMeldtFraOmBarnehageplass.verdi,
         },
         valideringsfunksjon: (felt, avhengigheter) =>
-            erPeriodeGyldig(felt, VilkårType.BARNEHAGEPLASS, erLovendringTogglePå, avhengigheter),
+            erPeriodeGyldig(felt, VilkårType.BARNEHAGEPLASS, avhengigheter),
     });
 
     const felter = {
