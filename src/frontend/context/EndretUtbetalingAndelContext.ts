@@ -70,6 +70,10 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 }),
                 tom: useFelt<IsoMånedString | undefined>({
                     verdi: undefined,
+                    valideringsfunksjon: felt =>
+                        erIsoStringGyldig(felt.verdi)
+                            ? ok(felt)
+                            : feil(felt, 'Du må velge t.o.m-dato'),
                 }),
                 periodeSkalUtbetalesTilSøker: periodeSkalUtbetalesTilSøkerFelt,
                 årsak: årsakFelt,
