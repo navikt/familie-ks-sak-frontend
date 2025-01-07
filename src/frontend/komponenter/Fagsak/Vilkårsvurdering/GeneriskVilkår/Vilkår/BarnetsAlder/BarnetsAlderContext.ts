@@ -1,10 +1,8 @@
 import { useFelt } from '@navikt/familie-skjema';
 
 import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BarnetsAlderValidering';
-import { useApp } from '../../../../../../context/AppContext';
 import { useVilkårsvurdering } from '../../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import { ToggleNavn } from '../../../../../../typer/toggles';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import { UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../../../../../typer/vilkår';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
@@ -52,9 +50,6 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
 
     const førsteLagredeFom = alleBarnetsAlderVilkårsResultaterSortert[0].periodeFom;
 
-    const { toggles } = useApp();
-    const erLovendringTogglePå = toggles[ToggleNavn.lovendring7MndNyeBehandlinger];
-
     const vurderesEtter = useFelt<RegelverkType | undefined>({
         verdi: vilkårSkjema.vurderesEtter,
     });
@@ -86,12 +81,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 førsteLagredeFom,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(
-                    felt,
-                    VilkårType.BARNETS_ALDER,
-                    erLovendringTogglePå,
-                    avhengigheter
-                ),
+                erPeriodeGyldig(felt, VilkårType.BARNETS_ALDER, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjema.begrunnelse,
