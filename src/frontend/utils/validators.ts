@@ -82,8 +82,8 @@ const datoDifferanseMerEnn1År = (fom: Date, tom: Date) => {
 };
 
 const datoDifferanseMerEnnXAntallMåneder = (fom: Date, tom: Date, antallMåneder: number) => {
-    const fomDatoPluss1År = addMonths(fom, antallMåneder);
-    return isBefore(fomDatoPluss1År, tom);
+    const fomDatoPlussXAntallMåneder = addMonths(fom, antallMåneder);
+    return isBefore(fomDatoPlussXAntallMåneder, tom);
 };
 
 const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Date) => {
