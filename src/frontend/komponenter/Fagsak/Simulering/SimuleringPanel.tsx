@@ -60,7 +60,7 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
     };
 
     const nestePeriode = fomDatoNestePeriode
-        ? perioder.find(periode => periode.fom === fomDatoNestePeriode) ?? undefined
+        ? (perioder.find(periode => periode.fom === fomDatoNestePeriode) ?? undefined)
         : undefined;
 
     const erFørNestePeriode = (periode: ISimuleringPeriode) =>
