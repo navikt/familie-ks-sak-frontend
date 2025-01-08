@@ -62,8 +62,6 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
 
     const fraProsentTilTekst = (prosent: number, årsak?: IEndretUtbetalingAndelÅrsak): string => {
         switch (årsak) {
-            case IEndretUtbetalingAndelÅrsak.DELT_BOSTED:
-            case IEndretUtbetalingAndelÅrsak.ENDRE_MOTTAKER:
             case IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT:
             case IEndretUtbetalingAndelÅrsak.ETTERBETALING_3MND:
             case IEndretUtbetalingAndelÅrsak.FULLTIDSPLASS_I_BARNEHAGE_AUGUST_2024:

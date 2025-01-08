@@ -29,14 +29,7 @@ import {
     type IRestEndretUtbetalingAndel,
     IEndretUtbetalingAndelÅrsak,
 } from '../../../typer/utbetalingAndel';
-import {
-    IEndretUtbetalingAndelFullSats,
-    optionTilsats,
-    satser,
-    satsTilOption,
-    årsaker,
-    årsakTekst,
-} from '../../../typer/utbetalingAndel';
+import { årsaker, årsakTekst } from '../../../typer/utbetalingAndel';
 import type { IsoMånedString } from '../../../utils/dato';
 import { lagPersonLabel } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
@@ -61,10 +54,6 @@ const StyledFieldset = styled(Fieldset)`
 const StyledPersonvelger = styled(Select)`
     max-width: 20rem;
     z-index: 1000;
-`;
-
-const StyledSatsvelger = styled(Select)`
-    max-width: 10rem;
 `;
 
 const Feltmargin = styled.div`
@@ -335,51 +324,6 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         kanKunVelgeFortid
                     />
                 </Feltmargin>
-
-                {skjema.felter.avtaletidspunktDeltBosted.erSynlig && (
-                    <Feltmargin>
-                        <Datovelger
-                            felt={skjema.felter.avtaletidspunktDeltBosted}
-                            label={'Avtale om delt bosted'}
-                            visFeilmeldinger={skjema.visFeilmeldinger}
-                            readOnly={erLesevisning}
-                        />
-                    </Feltmargin>
-                )}
-                {skjema.felter.fullSats.erSynlig && (
-                    <Feltmargin>
-                        <StyledSatsvelger
-                            {...skjema.felter.fullSats.hentNavBaseSkjemaProps(
-                                skjema.visFeilmeldinger
-                            )}
-                            label={<Label>Sats</Label>}
-                            value={
-                                skjema.felter.fullSats.verdi !== undefined &&
-                                skjema.felter.fullSats.verdi !== null
-                                    ? skjema.felter.fullSats.verdi
-                                        ? IEndretUtbetalingAndelFullSats.FULL_SATS.valueOf()
-                                        : undefined
-                                    : undefined
-                            }
-                            onChange={(event): void => {
-                                skjema.felter.fullSats.validerOgSettFelt(
-                                    optionTilsats(event.target.value)
-                                );
-                            }}
-                        >
-                            <option value={undefined}>Velg sats</option>
-                            {satser.map(sats => (
-                                <option value={sats.valueOf()} key={sats.valueOf()}>
-                                    {
-                                        satsTilOption(
-                                            sats === IEndretUtbetalingAndelFullSats.FULL_SATS
-                                        ).label
-                                    }
-                                </option>
-                            ))}
-                        </StyledSatsvelger>
-                    </Feltmargin>
-                )}
 
                 <Feltmargin>
                     <StyledTextarea
