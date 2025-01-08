@@ -158,6 +158,9 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
     }, [skjema.felter.årsak.verdi]);
 
     const erLesevisning = vurderErLesevisning();
+    const skalViseEksplisittAvslagsfelt =
+        skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT ||
+        !skjema.felter.periodeSkalUtbetalesTilSøker.verdi;
 
     return (
         <>
@@ -293,7 +296,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                   children={'Vurderingen er et avslag'}
                               />
                           )
-                        : !skjema.felter.periodeSkalUtbetalesTilSøker.verdi && (
+                        : skalViseEksplisittAvslagsfelt && (
                               <Checkbox
                                   value={'Vurderingen er et avslag'}
                                   checked={skjema.felter.erEksplisittAvslagPåSøknad.verdi}
