@@ -48,7 +48,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 søknadstidspunkt: Date | undefined;
                 begrunnelse: string | undefined;
                 erEksplisittAvslagPåSøknad: boolean | undefined;
-                begrunnelser: Begrunnelse[] | undefined;
+                vedtaksbegrunnelser: Begrunnelse[] | undefined;
             },
             IBehandling
         >({
@@ -84,7 +84,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                         felt.verdi ? ok(felt) : feil(felt, 'Du må oppgi en begrunnelse.'),
                 }),
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad,
-                begrunnelser: useFelt<Begrunnelse[] | undefined>({
+                vedtaksbegrunnelser: useFelt<Begrunnelse[] | undefined>({
                     verdi: undefined,
                     valideringsfunksjon: erAvslagBegrunnelseGyldig,
                     avhengigheter: {
@@ -108,7 +108,9 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
             skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
                 endretUtbetalingAndel.erEksplisittAvslagPåSøknad
             );
-            skjema.felter.begrunnelser.validerOgSettFelt(endretUtbetalingAndel.begrunnelser);
+            skjema.felter.vedtaksbegrunnelser.validerOgSettFelt(
+                endretUtbetalingAndel.vedtaksbegrunnelser
+            );
             skjema.felter.søknadstidspunkt.validerOgSettFelt(
                 endretUtbetalingAndel.søknadstidspunkt
                     ? new Date(endretUtbetalingAndel.søknadstidspunkt)
@@ -137,7 +139,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 begrunnelse,
                 søknadstidspunkt,
                 erEksplisittAvslagPåSøknad,
-                begrunnelser,
+                vedtaksbegrunnelser,
             } = skjema.felter;
             return {
                 id: endretUtbetalingAndel.id,
@@ -150,7 +152,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
                 søknadstidspunkt: dateTilIsoDatoStringEllerUndefined(søknadstidspunkt.verdi),
                 erTilknyttetAndeler: endretUtbetalingAndel.erTilknyttetAndeler,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
-                begrunnelser: begrunnelser && begrunnelser.verdi,
+                vedtaksbegrunnelser: vedtaksbegrunnelser && vedtaksbegrunnelser.verdi,
             };
         };
 
