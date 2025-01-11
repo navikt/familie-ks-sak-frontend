@@ -158,12 +158,15 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
     }, [skjema.felter.årsak.verdi]);
 
     const erLesevisning = vurderErLesevisning();
+    const skalViseEksplisittAvslagsfelt =
+        skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT ||
+        !skjema.felter.periodeSkalUtbetalesTilSøker.verdi;
 
     return (
         <>
             <StyledFieldset
                 error={hentFrontendFeilmelding(skjema.submitRessurs)}
-                legend={'Skjema for å endre utbetalingsandel'}
+                legend="Skjema for å endre utbetalingsandel"
                 hideLegend
             >
                 <Feltmargin>
@@ -199,7 +202,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     <Feltmargin>
                         <MånedÅrVelger
                             {...skjema.felter.fom.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                            label={'F.o.m'}
+                            label="F.o.m"
                             value={skjema.felter.fom.verdi}
                             antallÅrFrem={finnÅrFremTilStønadTom()}
                             antallÅrTilbake={finnÅrTilbakeTilStønadFra()}
@@ -215,7 +218,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     </Feltmargin>
                     <MånedÅrVelger
                         {...skjema.felter.tom.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                        label={'T.o.m (valgfri)'}
+                        label="T.o.m (valgfri)"
                         value={skjema.felter.tom.verdi}
                         antallÅrFrem={finnÅrFremTilStønadTom()}
                         antallÅrTilbake={finnÅrTilbakeTilStønadFra()}
@@ -269,18 +272,18 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                             }}
                         >
                             <Radio
-                                name={'utbetaling'}
+                                name="utbetaling"
                                 value={true}
-                                id={'ja-perioden-utbetales-til-søker'}
+                                id="ja-perioden-utbetales-til-søker"
                             >
-                                {'Perioden skal utbetales'}
+                                Perioden skal utbetales
                             </Radio>
                             <Radio
-                                name={'utbetaling'}
+                                name="utbetaling"
                                 value={false}
-                                id={'nei-perioden-skal-ikke-utbetales-til-søker'}
+                                id="nei-perioden-skal-ikke-utbetales-til-søker"
                             >
-                                {'Perioden skal ikke utbetales'}
+                                Perioden skal ikke utbetales
                             </Radio>
                         </RadioGroup>
                     )}
@@ -290,12 +293,12 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         ? skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
                               <BodyShort
                                   className={classNames('skjemaelement', 'lese-felt')}
-                                  children={'Vurderingen er et avslag'}
+                                  children="Vurderingen er et avslag"
                               />
                           )
-                        : !skjema.felter.periodeSkalUtbetalesTilSøker.verdi && (
+                        : skalViseEksplisittAvslagsfelt && (
                               <Checkbox
-                                  value={'Vurderingen er et avslag'}
+                                  value="Vurderingen er et avslag"
                                   checked={skjema.felter.erEksplisittAvslagPåSøknad.verdi}
                                   onChange={event =>
                                       skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
@@ -303,7 +306,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                       )
                                   }
                               >
-                                  {'Vurderingen er et avslag'}
+                                  Vurderingen er et avslag
                               </Checkbox>
                           )}
                 </Feltmargin>
@@ -318,7 +321,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 <Feltmargin>
                     <Datovelger
                         felt={skjema.felter.søknadstidspunkt}
-                        label={'Søknadstidspunkt'}
+                        label="Søknadstidspunkt"
                         visFeilmeldinger={skjema.visFeilmeldinger}
                         readOnly={erLesevisning}
                         kanKunVelgeFortid
@@ -329,8 +332,8 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     <StyledTextarea
                         {...skjema.felter.begrunnelse.hentNavInputProps(skjema.visFeilmeldinger)}
                         readOnly={erLesevisning}
-                        placeholder={'Begrunn hvorfor utbetalingsperioden er endret.'}
-                        label={'Begrunnelse'}
+                        placeholder="Begrunn hvorfor utbetalingsperioden er endret."
+                        label="Begrunnelse"
                         value={
                             skjema.felter.begrunnelse.verdi !== null &&
                             skjema.felter.begrunnelse.verdi !== undefined
@@ -346,8 +349,8 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     <Knapperekke>
                         <KnapperekkeVenstre>
                             <StyledFerdigKnapp
-                                size={'small'}
-                                variant={'secondary'}
+                                size="small"
+                                variant="secondary"
                                 onClick={() => oppdaterEndretUtbetaling(lukkSkjema)}
                             >
                                 Bekreft
@@ -366,13 +369,13 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
 
                         {!erLesevisning && (
                             <Button
-                                variant={'tertiary'}
+                                variant="tertiary"
                                 id={`sletteknapp-endret-utbetaling-andel-${endretUtbetalingAndel.id}`}
-                                size={'small'}
+                                size="small"
                                 onClick={slettEndretUtbetaling}
                                 icon={<TrashIcon />}
                             >
-                                {'Fjern periode'}
+                                Fjern periode
                             </Button>
                         )}
                     </Knapperekke>
