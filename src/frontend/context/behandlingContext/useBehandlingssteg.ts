@@ -90,6 +90,7 @@ const useBehandlingssteg = (
         minstEnPeriodeharBegrunnelseEllerFritekst() ||
         behandling?.årsak === BehandlingÅrsak.TEKNISK_ENDRING ||
         behandling?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
+        behandling?.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
         behandling?.årsak === BehandlingÅrsak.DØDSFALL;
 
     const foreslåVedtakNesteOnClick = (
