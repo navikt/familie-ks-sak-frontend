@@ -18,7 +18,6 @@ import OvergangsordningAndelTabell from './OvergangsordningAndel/Overgangsordnin
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import UtbetaltAnnetLand from './UtbetaltAnnetLand/UtbetaltAnnetLand';
 import Valutakurser from './Valutakurs/Valutakurser';
-import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useEøs } from '../../../context/Eøs/EøsContext';
 import { kompetanseFeilmeldingId } from '../../../context/Kompetanse/KompetanseSkjemaContext';
@@ -32,7 +31,6 @@ import type {
     IRestUtenlandskPeriodeBeløp,
     IRestValutakurs,
 } from '../../../typer/eøsPerioder';
-import { ToggleNavn } from '../../../typer/toggles';
 import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
@@ -76,7 +74,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
 }) => {
     const navigate = useNavigate();
     const { fagsakId } = useSakOgBehandlingParams();
-    const { toggles } = useApp();
 
     const [visFeilmeldinger, settVisFeilmeldinger] = React.useState(false);
     const [opprettelseFeilmelding, settOpprettelseFeilmelding] = React.useState('');
@@ -251,26 +248,25 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             {åpenBehandling.endretUtbetalingAndeler.length > 0 && (
                 <EndretUtbetalingAndelTabell åpenBehandling={åpenBehandling} />
             )}
-            {toggles[ToggleNavn.overgangsordningErTilgjengelig] &&
-                (åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 ||
-                    åpenBehandling.overgangsordningAndeler.length > 0) && (
-                    <>
-                        <OvergangsordningAndelTabell åpenBehandling={åpenBehandling} />
-                        {åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 &&
-                            !erLesevisning && (
-                                <OvergangsordningAndel>
-                                    <Button
-                                        variant="primary"
-                                        size="medium"
-                                        onClick={opprettOvergangsordningAndel}
-                                        icon={<StyledPlusIkon />}
-                                    >
-                                        <Label>Legg til periode</Label>
-                                    </Button>
-                                </OvergangsordningAndel>
-                            )}
-                    </>
-                )}
+            {(åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 ||
+                åpenBehandling.overgangsordningAndeler.length > 0) && (
+                <>
+                    <OvergangsordningAndelTabell åpenBehandling={åpenBehandling} />
+                    {åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 &&
+                        !erLesevisning && (
+                            <OvergangsordningAndel>
+                                <Button
+                                    variant="primary"
+                                    size="medium"
+                                    onClick={opprettOvergangsordningAndel}
+                                    icon={<StyledPlusIkon />}
+                                >
+                                    <Label>Legg til periode</Label>
+                                </Button>
+                            </OvergangsordningAndel>
+                        )}
+                </>
+            )}
             {harKompetanser && (
                 <KompetanseSkjema
                     kompetanser={kompetanser}

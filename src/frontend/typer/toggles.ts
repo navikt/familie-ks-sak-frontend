@@ -9,7 +9,6 @@ export enum ToggleNavn {
     kanBehandleKlage = 'familie-ks-sak.klage',
     kanOppretteOgEndreSammensatteKontrollsaker = 'familie-ks-sak.kan-opprette-og-endre-sammensatte-kontrollsaker',
     skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
-    overgangsordningErTilgjengelig = 'familie-ks-sak.overgangsordning',
     kanOppretteRevurderingMedAarsakIverksetteKaVedtak = 'familie-ks-sak.kan-opprette-revurdering-med-aarsak-iverksette-ka-vedtak',
 }
 
