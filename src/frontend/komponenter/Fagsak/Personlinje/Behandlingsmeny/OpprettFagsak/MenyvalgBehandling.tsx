@@ -29,7 +29,7 @@ const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
     return (
         <>
             <EndreBehandlendeEnhet />
-            {åpenBehandling.årsak !== BehandlingÅrsak.SØKNAD && <EndreBehandlingstema />}
+            <EndreBehandlingstema />
             <HenleggBehandling fagsakId={minimalFagsak.id} behandling={åpenBehandling} />
             {!erLesevisning &&
                 (åpenBehandling.årsak === BehandlingÅrsak.NYE_OPPLYSNINGER ||
