@@ -169,11 +169,11 @@ export const erPeriodeGyldig = (
                         } else {
                             if (
                                 tom &&
-                                datoDifferanseMerEnnXAntallMåneder(førsteFomPåVilkåret, tom, 7)
+                                datoDifferanseMerEnnXAntallMåneder(førsteFomPåVilkåret, tom, 6)
                             ) {
                                 return feil(
                                     felt,
-                                    'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 7 måneder'
+                                    'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 6 måneder'
                                 );
                             }
                         }

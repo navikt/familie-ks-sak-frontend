@@ -208,9 +208,9 @@ describe('utils/validators', () => {
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
-    test('Periode innenfor 7mnd etter lovendring 2024 gir ok for adopsjon', () => {
+    test('Periode innenfor 6mnd etter lovendring 2024 gir ok for adopsjon', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
-            nyIsoDatoPeriode('2024-10-28', '2025-05-28')
+            nyIsoDatoPeriode('2024-10-28', '2025-04-28')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
             person: lagGrunnlagPerson({ fødselsdato: '2023-05-17' }),
@@ -221,9 +221,9 @@ describe('utils/validators', () => {
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
     });
 
-    test('Periode lengre enn 7mnd etter lovendring 2024 gir feil for adopsjon', () => {
+    test('Periode lengre enn 6mnd etter lovendring 2024 gir feil for adopsjon', () => {
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
-            nyIsoDatoPeriode('2024-10-28', '2025-06-28')
+            nyIsoDatoPeriode('2024-10-28', '2025-05-28')
         );
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNETS_ALDER, {
             person: lagGrunnlagPerson({ fødselsdato: '2023-05-17' }),
