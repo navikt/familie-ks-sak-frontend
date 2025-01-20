@@ -61,8 +61,8 @@ export const mapIOppgaverTilOppgaveRad = (
             ...oppg,
             ident: oppg.identer,
             behandlingstype: oppg.behandlingstype
-                ? (behandlingstypeFilter[oppg.behandlingstype as BehandlingstypeFilter]?.navn ??
-                  oppg.behandlingstype)
+                ? behandlingstypeFilter[oppg.behandlingstype as BehandlingstypeFilter]?.navn ??
+                  oppg.behandlingstype
                 : 'Ikke satt',
             fristFerdigstillelse: oppg.fristFerdigstillelse,
             oppgavetype: oppg.oppgavetype,

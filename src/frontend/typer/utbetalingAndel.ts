@@ -33,6 +33,12 @@ export const årsaker: IEndretUtbetalingAndelÅrsak[] = Object.keys(IEndretUtbet
     k => k as IEndretUtbetalingAndelÅrsak
 );
 
+export const AVSLAG_ALLEREDE_UTBETALT_SØKER =
+    'NasjonalEllerFellesBegrunnelse$AVSLAG_ENDRINGSPERIODE_ALLEREDE_UTBETALT_SØKER';
+
+export const AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER =
+    'NasjonalEllerFellesBegrunnelse$AVSLAG_ENDRINGSPERIODE_ALLEREDE_UTBETALT_ANNEN_FORELDER';
+
 export enum IEndretUtbetalingAndelFullSats {
     FULL_SATS = 'FULL_SATS',
 }
