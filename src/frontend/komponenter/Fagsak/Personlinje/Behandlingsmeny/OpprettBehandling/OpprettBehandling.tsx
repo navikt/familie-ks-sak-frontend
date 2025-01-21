@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { isBefore, subDays } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import { Button, Fieldset, Dropdown, Modal, Alert } from '@navikt/ds-react';
