@@ -32,6 +32,7 @@ import {
     AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
 } from '../../../typer/utbetalingAndel';
 import { årsaker, årsakTekst } from '../../../typer/utbetalingAndel';
+import type { Begrunnelse } from '../../../typer/vedtak';
 import type { IsoMånedString } from '../../../utils/dato';
 import { lagPersonLabel } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
@@ -131,13 +132,10 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
         );
     };
 
-    function inneholderAlleredeUtbetaltBegrunnelser() {
+    function inneholderAlleredeUtbetaltBegrunnelser(vedtaksbegrunnelser: Begrunnelse[]) {
         return (
-            skjema.felter.vedtaksbegrunnelser.verdi &&
-            (skjema.felter.vedtaksbegrunnelser.verdi.includes(AVSLAG_ALLEREDE_UTBETALT_SØKER) ||
-                skjema.felter.vedtaksbegrunnelser.verdi.includes(
-                    AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER
-                ))
+            vedtaksbegrunnelser.includes(AVSLAG_ALLEREDE_UTBETALT_SØKER) ||
+            vedtaksbegrunnelser.includes(AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER)
         );
     }
 
@@ -164,7 +162,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
             skjema.felter.årsak.verdi !== IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
             skjema.felter.vedtaksbegrunnelser.verdi &&
             skjema.felter.vedtaksbegrunnelser.verdi.length > 0 &&
-            inneholderAlleredeUtbetaltBegrunnelser()
+            inneholderAlleredeUtbetaltBegrunnelser(skjema.felter.vedtaksbegrunnelser.verdi)
         ) {
             skjema.felter.vedtaksbegrunnelser.validerOgSettFelt([]);
         }
