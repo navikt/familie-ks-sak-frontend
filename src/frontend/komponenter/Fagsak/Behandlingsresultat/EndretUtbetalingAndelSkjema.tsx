@@ -28,8 +28,11 @@ import type { IBehandling } from '../../../typer/behandling';
 import {
     type IRestEndretUtbetalingAndel,
     IEndretUtbetalingAndelÅrsak,
+    AVSLAG_ALLEREDE_UTBETALT_SØKER,
+    AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
 } from '../../../typer/utbetalingAndel';
 import { årsaker, årsakTekst } from '../../../typer/utbetalingAndel';
+import type { Begrunnelse } from '../../../typer/vedtak';
 import type { IsoMånedString } from '../../../utils/dato';
 import { lagPersonLabel } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
@@ -129,6 +132,13 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
         );
     };
 
+    function inneholderAlleredeUtbetaltBegrunnelser(vedtaksbegrunnelser: Begrunnelse[]) {
+        return (
+            vedtaksbegrunnelser.includes(AVSLAG_ALLEREDE_UTBETALT_SØKER) ||
+            vedtaksbegrunnelser.includes(AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER)
+        );
+    }
+
     const finnÅrFremTilStønadTom = (): number => {
         return (
             new Date(
@@ -151,7 +161,8 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
         if (
             skjema.felter.årsak.verdi !== IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
             skjema.felter.vedtaksbegrunnelser.verdi &&
-            skjema.felter.vedtaksbegrunnelser.verdi.length > 0
+            skjema.felter.vedtaksbegrunnelser.verdi.length > 0 &&
+            inneholderAlleredeUtbetaltBegrunnelser(skjema.felter.vedtaksbegrunnelser.verdi)
         ) {
             skjema.felter.vedtaksbegrunnelser.validerOgSettFelt([]);
         }
