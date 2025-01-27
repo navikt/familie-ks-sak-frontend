@@ -15,6 +15,7 @@ export enum Brevmal {
     SVARTIDSBREV = 'SVARTIDSBREV',
     FORLENGET_SVARTIDSBREV = 'FORLENGET_SVARTIDSBREV',
     INNHENTE_OPPLYSNINGER_OG_INFORMASJON_OM_AT_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_HAR_SØKT = 'INNHENTE_OPPLYSNINGER_OG_INFORMASJON_OM_AT_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_HAR_SØKT',
+    UTBETALING_ETTER_KA_VEDTAK = 'UTBETALING_ETTER_KA_VEDTAK',
 }
 
 export enum Informasjonsbrev {
@@ -42,6 +43,7 @@ export const brevmaler: Record<Brevmal, string> = {
     VARSEL_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_SØKT:
         'Varsel annen forelder med selvstendig rett søkt',
     FORLENGET_SVARTIDSBREV: 'Forlenget svartidsbrev',
+    UTBETALING_ETTER_KA_VEDTAK: 'Utbetaling etter KA-vedtak',
 };
 
 export const leggTilValuePåOption = (

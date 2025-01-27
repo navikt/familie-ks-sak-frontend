@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { FileContent } from '@navikt/ds-icons';
+import { FileTextIcon } from '@navikt/aksel-icons';
 import { Alert, BodyShort, Button, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -18,13 +18,13 @@ import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import useDokument from '../../../hooks/useDokument';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
-import type { IBehandling } from '../../../typer/behandling';
 import {
     BehandlerRolle,
     BehandlingStatus,
     BehandlingSteg,
     BehandlingÅrsak,
     hentStegNummer,
+    type IBehandling,
 } from '../../../typer/behandling';
 import type { IPersonInfo } from '../../../typer/person';
 import { BrevmottakereAlert } from '../../Felleskomponenter/BrevmottakereAlert';
@@ -117,6 +117,20 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
             </Alert>
         );
     }
+
+    if (åpenBehandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK) {
+        return (
+            <Alert variant="info">
+                Du er i en iverksette KA-vedtak behandling. Det skal ikke sendes vedtaksbrev. Bruk
+                "Send brev" hvis du skal informere bruker om:
+                <ul>
+                    <li>Utbetaling</li>
+                    <li>EØS-kompetanse</li>
+                </ul>
+            </Alert>
+        );
+    }
+
     return (
         <>
             <Vedtaksmeny
@@ -207,7 +221,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                         hentVedtaksbrev();
                     }}
                     loading={hentetDokument.status === RessursStatus.HENTER}
-                    icon={<FileContent aria-hidden />}
+                    icon={<FileTextIcon aria-hidden />}
                 >
                     Vis vedtaksbrev
                 </Button>

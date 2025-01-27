@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { differenceInMilliseconds } from 'date-fns';
 import styled from 'styled-components';
 
-import { Collapse, Expand } from '@navikt/ds-icons';
+import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { Button, Table } from '@navikt/ds-react';
 
 import type { IRestRegisteropplysning } from '../../../../typer/person';
@@ -137,18 +137,12 @@ const RegisteropplysningerTabell: React.FC<IRegisteropplysningerTabellProps> = (
                         variant="tertiary"
                         size="small"
                         onClick={() => settEkspandert(nåverdi => !nåverdi)}
+                        icon={erEkspandert ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                        iconPosition="right"
                     >
-                        {erEkspandert ? (
-                            <>
-                                Skjul
-                                <Collapse />
-                            </>
-                        ) : (
-                            <>
-                                Vis {historikk.length - GRENSE_FOR_EKSPANDERBAR_HISTORIKK} flere
-                                <Expand />
-                            </>
-                        )}
+                        {erEkspandert
+                            ? 'Skjul'
+                            : `Vis ${historikk.length - GRENSE_FOR_EKSPANDERBAR_HISTORIKK} flere`}
                     </Button>
                 </HøyrejustertKnapperad>
             )}

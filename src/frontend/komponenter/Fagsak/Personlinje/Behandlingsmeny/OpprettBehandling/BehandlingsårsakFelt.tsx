@@ -47,8 +47,8 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
                 .filter(årsak => årsak !== BehandlingÅrsak.LOVENDRING_2024)
                 .filter(
                     årsak =>
-                        toggles[ToggleNavn.overgangsordningErTilgjengelig] ||
-                        årsak !== BehandlingÅrsak.OVERGANGSORDNING_2024
+                        årsak !== BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
+                        toggles[ToggleNavn.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
                 )
                 .map(årsak => {
                     return (

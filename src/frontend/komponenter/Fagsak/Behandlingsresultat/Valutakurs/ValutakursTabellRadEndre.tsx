@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { Delete } from '@navikt/ds-icons';
+import { TrashIcon } from '@navikt/aksel-icons';
 import { Alert, Link, Heading, Button, Fieldset, TextField } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
@@ -220,7 +220,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                                 loading={sletterValutakurs}
                                 disabled={sletterValutakurs}
                                 size={'small'}
-                                icon={<Delete />}
+                                icon={<TrashIcon />}
                             >
                                 {'Fjern'}
                             </Button>

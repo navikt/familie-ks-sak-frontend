@@ -2,8 +2,13 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { ArrowUndoIcon, StarsEuIcon, TasklistStartIcon } from '@navikt/aksel-icons';
-import { Calculator, ExpandFilled } from '@navikt/ds-icons';
+import {
+    ArrowUndoIcon,
+    CalculatorIcon,
+    ChevronDownIcon,
+    StarsEuIcon,
+    TasklistStartIcon,
+} from '@navikt/aksel-icons';
 import { Button, Dropdown } from '@navikt/ds-react';
 import { ASpacing10 } from '@navikt/ds-tokens/dist/tokens';
 
@@ -56,7 +61,7 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
                 forwardedAs={Dropdown.Toggle}
                 size="small"
                 variant="secondary"
-                icon={<ExpandFilled />}
+                icon={<ChevronDownIcon />}
                 iconPosition="right"
             >
                 Vedtaksmeny
@@ -82,27 +87,27 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
                     )}
                     {åpenBehandling.kategori === BehandlingKategori.EØS && (
                         <Dropdown.Menu.List.Item onClick={visFeilutbetaltValuta}>
-                            <Calculator />
+                            <CalculatorIcon fontSize={'1.4rem'} />
                             Legg til feilutbetalt valuta
                         </Dropdown.Menu.List.Item>
                     )}
                     {vedtakHarFortsattUtbetaling(åpenBehandling.resultat) && (
                         <Dropdown.Menu.List.Item onClick={visRefusjonEøs}>
-                            <StarsEuIcon />
+                            <StarsEuIcon fontSize={'1.4rem'} />
                             Legg til refusjon EØS
                         </Dropdown.Menu.List.Item>
                     )}
                     {skalViseSammensattKontrollsakMenyvalg &&
                         (erSammensattKontrollsak ? (
                             <Dropdown.Menu.List.Item onClick={slettSammensattKontrollsak}>
-                                <ArrowUndoIcon />
+                                <ArrowUndoIcon fontSize={'1.4rem'} />
                                 Angre sammensatt kontrollsak
                             </Dropdown.Menu.List.Item>
                         ) : (
                             <Dropdown.Menu.List.Item
                                 onClick={() => settErSammensattKontrollsak(true)}
                             >
-                                <TasklistStartIcon />
+                                <TasklistStartIcon fontSize={'1.4rem'} />
                                 Sammensatt kontrollsak
                             </Dropdown.Menu.List.Item>
                         ))}

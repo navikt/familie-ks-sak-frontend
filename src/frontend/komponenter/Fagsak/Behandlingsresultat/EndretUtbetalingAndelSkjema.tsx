@@ -21,21 +21,18 @@ import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useEndretUtbetalingAndel } from '../../../context/EndretUtbetalingAndelContext';
 import type { IBehandling } from '../../../typer/behandling';
-import type {
-    IRestEndretUtbetalingAndel,
-    IEndretUtbetalingAndelÅrsak,
-} from '../../../typer/utbetalingAndel';
 import {
-    IEndretUtbetalingAndelFullSats,
-    optionTilsats,
-    satser,
-    satsTilOption,
-    årsaker,
-    årsakTekst,
+    type IRestEndretUtbetalingAndel,
+    IEndretUtbetalingAndelÅrsak,
+    AVSLAG_ALLEREDE_UTBETALT_SØKER,
+    AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
 } from '../../../typer/utbetalingAndel';
+import { årsaker, årsakTekst } from '../../../typer/utbetalingAndel';
+import type { Begrunnelse } from '../../../typer/vedtak';
 import type { IsoMånedString } from '../../../utils/dato';
 import { lagPersonLabel } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
@@ -60,10 +57,6 @@ const StyledFieldset = styled(Fieldset)`
 const StyledPersonvelger = styled(Select)`
     max-width: 20rem;
     z-index: 1000;
-`;
-
-const StyledSatsvelger = styled(Select)`
-    max-width: 10rem;
 `;
 
 const Feltmargin = styled.div`
@@ -139,6 +132,13 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
         );
     };
 
+    function inneholderAlleredeUtbetaltBegrunnelser(vedtaksbegrunnelser: Begrunnelse[]) {
+        return (
+            vedtaksbegrunnelser.includes(AVSLAG_ALLEREDE_UTBETALT_SØKER) ||
+            vedtaksbegrunnelser.includes(AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER)
+        );
+    }
+
     const finnÅrFremTilStønadTom = (): number => {
         return (
             new Date(
@@ -157,13 +157,27 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
         }
     }, [skjema.submitRessurs]);
 
+    useEffect(() => {
+        if (
+            skjema.felter.årsak.verdi !== IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
+            skjema.felter.vedtaksbegrunnelser.verdi &&
+            skjema.felter.vedtaksbegrunnelser.verdi.length > 0 &&
+            inneholderAlleredeUtbetaltBegrunnelser(skjema.felter.vedtaksbegrunnelser.verdi)
+        ) {
+            skjema.felter.vedtaksbegrunnelser.validerOgSettFelt([]);
+        }
+    }, [skjema.felter.årsak.verdi]);
+
     const erLesevisning = vurderErLesevisning();
+    const skalViseEksplisittAvslagsfelt =
+        skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT ||
+        !skjema.felter.periodeSkalUtbetalesTilSøker.verdi;
 
     return (
         <>
             <StyledFieldset
                 error={hentFrontendFeilmelding(skjema.submitRessurs)}
-                legend={'Skjema for å endre utbetalingsandel'}
+                legend="Skjema for å endre utbetalingsandel"
                 hideLegend
             >
                 <Feltmargin>
@@ -199,7 +213,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     <Feltmargin>
                         <MånedÅrVelger
                             {...skjema.felter.fom.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                            label={'F.o.m'}
+                            label="F.o.m"
                             value={skjema.felter.fom.verdi}
                             antallÅrFrem={finnÅrFremTilStønadTom()}
                             antallÅrTilbake={finnÅrTilbakeTilStønadFra()}
@@ -215,7 +229,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     </Feltmargin>
                     <MånedÅrVelger
                         {...skjema.felter.tom.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                        label={'T.o.m (valgfri)'}
+                        label="T.o.m"
                         value={skjema.felter.tom.verdi}
                         antallÅrFrem={finnÅrFremTilStønadTom()}
                         antallÅrTilbake={finnÅrTilbakeTilStønadFra()}
@@ -269,18 +283,18 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                             }}
                         >
                             <Radio
-                                name={'utbetaling'}
+                                name="utbetaling"
                                 value={true}
-                                id={'ja-perioden-utbetales-til-søker'}
+                                id="ja-perioden-utbetales-til-søker"
                             >
-                                {'Perioden skal utbetales'}
+                                Perioden skal utbetales
                             </Radio>
                             <Radio
-                                name={'utbetaling'}
+                                name="utbetaling"
                                 value={false}
-                                id={'nei-perioden-skal-ikke-utbetales-til-søker'}
+                                id="nei-perioden-skal-ikke-utbetales-til-søker"
                             >
-                                {'Perioden skal ikke utbetales'}
+                                Perioden skal ikke utbetales
                             </Radio>
                         </RadioGroup>
                     )}
@@ -290,12 +304,12 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         ? skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
                               <BodyShort
                                   className={classNames('skjemaelement', 'lese-felt')}
-                                  children={'Vurderingen er et avslag'}
+                                  children="Vurderingen er et avslag"
                               />
                           )
-                        : !skjema.felter.periodeSkalUtbetalesTilSøker.verdi && (
+                        : skalViseEksplisittAvslagsfelt && (
                               <Checkbox
-                                  value={'Vurderingen er et avslag'}
+                                  value="Vurderingen er et avslag"
                                   checked={skjema.felter.erEksplisittAvslagPåSøknad.verdi}
                                   onChange={event =>
                                       skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
@@ -303,72 +317,34 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                       )
                                   }
                               >
-                                  {'Vurderingen er et avslag'}
+                                  Vurderingen er et avslag
                               </Checkbox>
                           )}
                 </Feltmargin>
 
+                {skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
+                    skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
+                        <Feltmargin>
+                            <EndretUtbetalingAvslagBegrunnelse />
+                        </Feltmargin>
+                    )}
+
                 <Feltmargin>
                     <Datovelger
                         felt={skjema.felter.søknadstidspunkt}
-                        label={'Søknadstidspunkt'}
+                        label="Søknadstidspunkt"
                         visFeilmeldinger={skjema.visFeilmeldinger}
                         readOnly={erLesevisning}
                         kanKunVelgeFortid
                     />
                 </Feltmargin>
 
-                {skjema.felter.avtaletidspunktDeltBosted.erSynlig && (
-                    <Feltmargin>
-                        <Datovelger
-                            felt={skjema.felter.avtaletidspunktDeltBosted}
-                            label={'Avtale om delt bosted'}
-                            visFeilmeldinger={skjema.visFeilmeldinger}
-                            readOnly={erLesevisning}
-                        />
-                    </Feltmargin>
-                )}
-                {skjema.felter.fullSats.erSynlig && (
-                    <Feltmargin>
-                        <StyledSatsvelger
-                            {...skjema.felter.fullSats.hentNavBaseSkjemaProps(
-                                skjema.visFeilmeldinger
-                            )}
-                            label={<Label>Sats</Label>}
-                            value={
-                                skjema.felter.fullSats.verdi !== undefined &&
-                                skjema.felter.fullSats.verdi !== null
-                                    ? skjema.felter.fullSats.verdi
-                                        ? IEndretUtbetalingAndelFullSats.FULL_SATS.valueOf()
-                                        : undefined
-                                    : undefined
-                            }
-                            onChange={(event): void => {
-                                skjema.felter.fullSats.validerOgSettFelt(
-                                    optionTilsats(event.target.value)
-                                );
-                            }}
-                        >
-                            <option value={undefined}>Velg sats</option>
-                            {satser.map(sats => (
-                                <option value={sats.valueOf()} key={sats.valueOf()}>
-                                    {
-                                        satsTilOption(
-                                            sats === IEndretUtbetalingAndelFullSats.FULL_SATS
-                                        ).label
-                                    }
-                                </option>
-                            ))}
-                        </StyledSatsvelger>
-                    </Feltmargin>
-                )}
-
                 <Feltmargin>
                     <StyledTextarea
                         {...skjema.felter.begrunnelse.hentNavInputProps(skjema.visFeilmeldinger)}
                         readOnly={erLesevisning}
-                        placeholder={'Begrunn hvorfor utbetalingsperioden er endret.'}
-                        label={'Begrunnelse'}
+                        placeholder="Begrunn hvorfor utbetalingsperioden er endret."
+                        label="Begrunnelse"
                         value={
                             skjema.felter.begrunnelse.verdi !== null &&
                             skjema.felter.begrunnelse.verdi !== undefined
@@ -384,8 +360,8 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     <Knapperekke>
                         <KnapperekkeVenstre>
                             <StyledFerdigKnapp
-                                size={'small'}
-                                variant={'secondary'}
+                                size="small"
+                                variant="secondary"
                                 onClick={() => oppdaterEndretUtbetaling(lukkSkjema)}
                             >
                                 Bekreft
@@ -404,13 +380,13 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
 
                         {!erLesevisning && (
                             <Button
-                                variant={'tertiary'}
+                                variant="tertiary"
                                 id={`sletteknapp-endret-utbetaling-andel-${endretUtbetalingAndel.id}`}
-                                size={'small'}
+                                size="small"
                                 onClick={slettEndretUtbetaling}
                                 icon={<TrashIcon />}
                             >
-                                {'Fjern periode'}
+                                Fjern periode
                             </Button>
                         )}
                     </Knapperekke>

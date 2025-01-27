@@ -1,4 +1,5 @@
 import type { OptionType } from './common';
+import type { Begrunnelse } from './vedtak';
 import type { IsoDatoString, IsoMånedString } from '../utils/dato';
 
 export interface IRestEndretUtbetalingAndel {
@@ -13,25 +14,30 @@ export interface IRestEndretUtbetalingAndel {
     årsak?: IEndretUtbetalingAndelÅrsak;
     erTilknyttetAndeler?: boolean;
     erEksplisittAvslagPåSøknad?: boolean;
+    vedtaksbegrunnelser?: Begrunnelse[];
 }
 
 export enum IEndretUtbetalingAndelÅrsak {
-    DELT_BOSTED = 'DELT_BOSTED',
-    ENDRE_MOTTAKER = 'ENDRE_MOTTAKER',
     ALLEREDE_UTBETALT = 'ALLEREDE_UTBETALT',
     ETTERBETALING_3MND = 'ETTERBETALING_3MND',
+    FULLTIDSPLASS_I_BARNEHAGE_AUGUST_2024 = 'FULLTIDSPLASS_I_BARNEHAGE_AUGUST_2024',
 }
 
 export const årsakTekst: { [key in IEndretUtbetalingAndelÅrsak]: string } = {
-    DELT_BOSTED: 'Delt bosted',
-    ENDRE_MOTTAKER: 'Foreldrene bor sammen, endret mottaker',
     ALLEREDE_UTBETALT: 'Allerede utbetalt',
     ETTERBETALING_3MND: 'Etterbetaling 3 måned',
+    FULLTIDSPLASS_I_BARNEHAGE_AUGUST_2024: 'Fulltidsplass i barnehage august 2024',
 };
 
 export const årsaker: IEndretUtbetalingAndelÅrsak[] = Object.keys(IEndretUtbetalingAndelÅrsak).map(
     k => k as IEndretUtbetalingAndelÅrsak
 );
+
+export const AVSLAG_ALLEREDE_UTBETALT_SØKER =
+    'NasjonalEllerFellesBegrunnelse$AVSLAG_ENDRINGSPERIODE_ALLEREDE_UTBETALT_SØKER';
+
+export const AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER =
+    'NasjonalEllerFellesBegrunnelse$AVSLAG_ENDRINGSPERIODE_ALLEREDE_UTBETALT_ANNEN_FORELDER';
 
 export enum IEndretUtbetalingAndelFullSats {
     FULL_SATS = 'FULL_SATS',

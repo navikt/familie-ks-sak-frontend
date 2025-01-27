@@ -34,6 +34,7 @@ const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
             {!erLesevisning &&
                 (åpenBehandling.årsak === BehandlingÅrsak.NYE_OPPLYSNINGER ||
                     åpenBehandling.årsak === BehandlingÅrsak.KLAGE ||
+                    åpenBehandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
                     åpenBehandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV) && (
                     <LeggTiLBarnPåBehandling behandling={åpenBehandling} />
                 )}

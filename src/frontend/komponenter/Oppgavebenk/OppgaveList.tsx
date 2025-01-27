@@ -118,8 +118,8 @@ const OppgaveList: React.FunctionComponent = () => {
                             <Tooltip content={rad.oppgavetype || 'Ukjent'}>
                                 <Table.DataCell>
                                     {rad.oppgavetype
-                                        ? oppgaveTypeFilter[rad.oppgavetype as OppgavetypeFilter]
-                                              ?.navn ?? rad.oppgavetype
+                                        ? (oppgaveTypeFilter[rad.oppgavetype as OppgavetypeFilter]
+                                              ?.navn ?? rad.oppgavetype)
                                         : 'Ukjent'}
                                 </Table.DataCell>
                             </Tooltip>

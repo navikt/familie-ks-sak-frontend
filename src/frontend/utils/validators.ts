@@ -20,11 +20,13 @@ import {
     dagensDato,
     datoForLovendringAugust24,
     type IIsoDatoPeriode,
+    type IsoDatoString,
     isoStringTilDate,
 } from './dato';
 import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
+import { IEndretUtbetalingAndelÅrsak } from '../typer/utbetalingAndel';
 import type { Begrunnelse } from '../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../typer/vilkår';
@@ -80,8 +82,8 @@ const datoDifferanseMerEnn1År = (fom: Date, tom: Date) => {
 };
 
 const datoDifferanseMerEnnXAntallMåneder = (fom: Date, tom: Date, antallMåneder: number) => {
-    const fomDatoPluss1År = addMonths(fom, antallMåneder);
-    return isBefore(fomDatoPluss1År, tom);
+    const fomDatoPlussXAntallMåneder = addMonths(fom, antallMåneder);
+    return isBefore(fomDatoPlussXAntallMåneder, tom);
 };
 
 const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Date) => {
@@ -102,7 +104,6 @@ const valgtDatoErSenereEnnNesteMåned = (valgtDato: Date) =>
 export const erPeriodeGyldig = (
     felt: FeltState<IIsoDatoPeriode>,
     vilkår: VilkårType,
-    erLovendringTogglePå: boolean,
     avhengigheter?: Avhengigheter
 ): FeltState<IIsoDatoPeriode> => {
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
@@ -136,7 +137,12 @@ export const erPeriodeGyldig = (
                     return feil(felt, 'Du kan ikke legge til periode før barnets fødselsdato');
                 }
                 if (erBarnetsAlderVilkår) {
-                    const førsteLagredeFom = avhengigheter?.førsteLagredeFom;
+                    const førsteLagredeFom: IsoDatoString | undefined =
+                        avhengigheter?.førsteLagredeFom;
+
+                    const førsteFomPåVilkåret: Date = førsteLagredeFom
+                        ? isoStringTilDate(førsteLagredeFom)
+                        : fom;
 
                     const erAdopsjon = utdypendeVilkårsvurdering?.includes(
                         UtdypendeVilkårsvurderingGenerell.ADOPSJON
@@ -153,7 +159,7 @@ export const erPeriodeGyldig = (
                             );
                         }
 
-                        if (isBefore(tom, datoForLovendringAugust24) || !erLovendringTogglePå) {
+                        if (isBefore(tom, datoForLovendringAugust24)) {
                             if (tom && datoDifferanseMerEnn1År(fom, tom)) {
                                 return feil(
                                     felt,
@@ -163,16 +169,16 @@ export const erPeriodeGyldig = (
                         } else {
                             if (
                                 tom &&
-                                datoDifferanseMerEnnXAntallMåneder(førsteLagredeFom, tom, 7)
+                                datoDifferanseMerEnnXAntallMåneder(førsteFomPåVilkåret, tom, 6)
                             ) {
                                 return feil(
                                     felt,
-                                    'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 7 måneder'
+                                    'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 6 måneder'
                                 );
                             }
                         }
                     } else {
-                        if (isBefore(tom, datoForLovendringAugust24) || !erLovendringTogglePå) {
+                        if (isBefore(tom, datoForLovendringAugust24)) {
                             if (!datoErPersonsXÅrsdag(person, fom, 1)) {
                                 return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
                             }
@@ -293,6 +299,24 @@ export const erAvslagBegrunnelserGyldig = (
     return erEksplisittAvslagPåSøknad && !felt.verdi.length
         ? feil(felt, 'Du må velge minst en begrunnelse ved avslag')
         : ok(felt);
+};
+
+export const erAvslagBegrunnelseGyldig = (
+    felt: FeltState<Begrunnelse[] | undefined>,
+    avhengigheter?: Avhengigheter
+): FeltState<Begrunnelse[] | undefined> => {
+    const erEksplisittAvslagPåSøknad = avhengigheter?.erEksplisittAvslagPåSøknad;
+    const årsak = avhengigheter?.årsak.verdi;
+    const erAlleredeUtbetalt = årsak === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT;
+
+    if (erAlleredeUtbetalt && erEksplisittAvslagPåSøknad && !felt.verdi) {
+        return feil(felt, 'Du må velge en begrunnelse ved avslag');
+    }
+    if (erAlleredeUtbetalt && erEksplisittAvslagPåSøknad && felt.verdi && felt.verdi.length === 0) {
+        return feil(felt, 'Du må velge en begrunnelse ved avslag');
+    }
+
+    return ok(felt);
 };
 
 export const erPositivtHeltall = (string: string) => {

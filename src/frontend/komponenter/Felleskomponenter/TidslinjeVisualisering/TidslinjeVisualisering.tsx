@@ -4,7 +4,7 @@ import { endOfMonth } from 'date-fns';
 import { useMatch } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Globe as Eu, Home as NorwegianFlag } from '@navikt/ds-icons';
+import { GlobeIcon as Eu, HouseIcon as NorwegianFlag } from '@navikt/aksel-icons';
 import { BodyShort, Heading } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import { Tidslinje } from '@navikt/familie-tidslinje';

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { ExternalLink } from '@navikt/ds-icons';
+import { ExternalLinkIcon, FileTextIcon } from '@navikt/aksel-icons';
 import {
     Alert,
     BodyLong,
@@ -28,7 +28,6 @@ import { useBehandling } from '../../../context/behandlingContext/BehandlingCont
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import { useSimulering } from '../../../context/SimuleringContext';
 import useDokument from '../../../hooks/useDokument';
-import { DokumentIkon } from '../../../ikoner/DokumentIkon';
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../typer/simulering';
 import type { Målform } from '../../../typer/søknad';
 import { målform } from '../../../typer/søknad';
@@ -320,7 +319,9 @@ const TilbakekrevingSkjema: React.FC<{
                                                                         Se retningslinjer for
                                                                         klarspråk:
                                                                     </span>
-                                                                    <ExternalLink />
+                                                                    <ExternalLinkIcon
+                                                                        fontSize={'1.3rem'}
+                                                                    />
                                                                 </Link>
                                                             </StyledHelpTextContainer>
                                                         </StyledHelpText>
@@ -360,7 +361,7 @@ const TilbakekrevingSkjema: React.FC<{
                                                     hentetDokument.status === RessursStatus.HENTER
                                                 }
                                                 size={'small'}
-                                                icon={<DokumentIkon />}
+                                                icon={<FileTextIcon />}
                                             >
                                                 Forhåndsvis varsel
                                             </Button>

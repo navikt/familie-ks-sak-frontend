@@ -17,7 +17,7 @@ const Environment = () => {
             buildPath: 'frontend_development',
             namespace: 'local',
             proxyUrl: 'https://familie-kontantstotte-sak.intern.dev.nav.no/api',
-            familieTilbakeUrl: 'https://familie-tilbake-frontend.intern.dev.nav.no',
+            familieTilbakeUrl: 'https://tilbakekreving.ansatt.dev.nav.no',
             familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
         };
     } else if (process.env.ENV === 'e2e') {
@@ -25,7 +25,7 @@ const Environment = () => {
             buildPath: 'frontend_production',
             namespace: 'e2e',
             proxyUrl: 'http://familie-ks-sak:8089/api',
-            familieTilbakeUrl: 'http://familie-tilbake-frontend:8000',
+            familieTilbakeUrl: 'http://tilbakekreving:8000',
             familieKlageUrl: '',
         };
     } else if (process.env.ENV === 'preprod') {
@@ -33,7 +33,7 @@ const Environment = () => {
             buildPath: 'frontend_production',
             namespace: 'preprod',
             proxyUrl: 'http://familie-ks-sak/api',
-            familieTilbakeUrl: 'https://familie-tilbake-frontend.intern.dev.nav.no',
+            familieTilbakeUrl: 'https://tilbakekreving.ansatt.dev.nav.no',
             familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
         };
     }

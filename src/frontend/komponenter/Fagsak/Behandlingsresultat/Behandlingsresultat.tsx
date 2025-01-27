@@ -4,21 +4,20 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { Edit } from '@navikt/ds-icons';
+import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons';
 import { Alert, Button, ErrorMessage, ErrorSummary, Label } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import EndretUtbetalingAndelTabell from './EndretUtbetalingAndelTabell';
+import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAugust2024Alert';
 import KompetanseSkjema from './Kompetanse/KompetanseSkjema';
 import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import UtbetaltAnnetLand from './UtbetaltAnnetLand/UtbetaltAnnetLand';
 import Valutakurser from './Valutakurs/Valutakurser';
-import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useEøs } from '../../../context/Eøs/EøsContext';
 import { kompetanseFeilmeldingId } from '../../../context/Kompetanse/KompetanseSkjemaContext';
@@ -32,7 +31,6 @@ import type {
     IRestUtenlandskPeriodeBeløp,
     IRestValutakurs,
 } from '../../../typer/eøsPerioder';
-import { ToggleNavn } from '../../../typer/toggles';
 import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
@@ -51,7 +49,7 @@ const OvergangsordningAndel = styled.div`
     margin-bottom: 1rem;
 `;
 
-const StyledEditIkon = styled(Edit)`
+const StyledEditIkon = styled(PencilIcon)`
     margin-right: 0.5rem;
 `;
 
@@ -76,7 +74,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
 }) => {
     const navigate = useNavigate();
     const { fagsakId } = useSakOgBehandlingParams();
-    const { toggles } = useApp();
 
     const [visFeilmeldinger, settVisFeilmeldinger] = React.useState(false);
     const [opprettelseFeilmelding, settOpprettelseFeilmelding] = React.useState('');
@@ -207,6 +204,9 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             steg={BehandlingSteg.BEHANDLINGSRESULTAT}
             skalViseNesteKnapp={skalViseNesteKnapp}
         >
+            <FulltidBarnehageplassAugust2024Alert
+                utbetalingsperioder={åpenBehandling.utbetalingsperioder}
+            />
             {personerMedUgyldigEtterbetalingsperiode.length > 0 && (
                 <StyledAlert variant={'warning'}>
                     Du har perioder som kan føre til etterbetaling utover 3 måneder for person{' '}
@@ -248,26 +248,25 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             {åpenBehandling.endretUtbetalingAndeler.length > 0 && (
                 <EndretUtbetalingAndelTabell åpenBehandling={åpenBehandling} />
             )}
-            {toggles[ToggleNavn.overgangsordningErTilgjengelig] &&
-                (åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 ||
-                    åpenBehandling.overgangsordningAndeler.length > 0) && (
-                    <>
-                        <OvergangsordningAndelTabell åpenBehandling={åpenBehandling} />
-                        {åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 &&
-                            !erLesevisning && (
-                                <OvergangsordningAndel>
-                                    <Button
-                                        variant="primary"
-                                        size="medium"
-                                        onClick={opprettOvergangsordningAndel}
-                                        icon={<StyledPlusIkon />}
-                                    >
-                                        <Label>Legg til periode</Label>
-                                    </Button>
-                                </OvergangsordningAndel>
-                            )}
-                    </>
-                )}
+            {(åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 ||
+                åpenBehandling.overgangsordningAndeler.length > 0) && (
+                <>
+                    <OvergangsordningAndelTabell åpenBehandling={åpenBehandling} />
+                    {åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 &&
+                        !erLesevisning && (
+                            <OvergangsordningAndel>
+                                <Button
+                                    variant="primary"
+                                    size="medium"
+                                    onClick={opprettOvergangsordningAndel}
+                                    icon={<StyledPlusIkon />}
+                                >
+                                    <Label>Legg til periode</Label>
+                                </Button>
+                            </OvergangsordningAndel>
+                        )}
+                </>
+            )}
             {harKompetanser && (
                 <KompetanseSkjema
                     kompetanser={kompetanser}
