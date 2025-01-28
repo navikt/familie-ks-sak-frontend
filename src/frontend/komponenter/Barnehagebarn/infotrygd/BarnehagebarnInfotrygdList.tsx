@@ -67,8 +67,18 @@ const BarnehagebarnInfotrygdList: React.FunctionComponent = () => {
                                         tilFormat: Datoformat.DATO_TID,
                                     })}
                                 </Table.DataCell>
-                                <Table.DataCell>{barnehagebarn.fom}</Table.DataCell>
-                                <Table.DataCell>{barnehagebarn.tom}</Table.DataCell>
+                                <Table.DataCell>
+                                    {isoStringTilFormatertString({
+                                        isoString: barnehagebarn.fom,
+                                        tilFormat: Datoformat.DATO_FORKORTTET,
+                                    })}
+                                </Table.DataCell>
+                                <Table.DataCell>
+                                    {isoStringTilFormatertString({
+                                        isoString: barnehagebarn.tom,
+                                        tilFormat: Datoformat.DATO_FORKORTTET,
+                                    })}
+                                </Table.DataCell>
                                 <Table.DataCell align="right">
                                     {barnehagebarn.antallTimerIBarnehage}
                                 </Table.DataCell>
