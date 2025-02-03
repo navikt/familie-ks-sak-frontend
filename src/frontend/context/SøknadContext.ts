@@ -2,7 +2,7 @@ import React from 'react';
 
 import createUseContext from 'constate';
 import { isAfter } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Avhengigheter } from '@navikt/familie-skjema';

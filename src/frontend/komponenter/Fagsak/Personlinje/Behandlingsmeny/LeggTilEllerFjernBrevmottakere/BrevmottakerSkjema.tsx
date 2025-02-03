@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
 import { Alert, Fieldset, HStack, Select, Spacer, TextField, VStack } from '@navikt/ds-react';

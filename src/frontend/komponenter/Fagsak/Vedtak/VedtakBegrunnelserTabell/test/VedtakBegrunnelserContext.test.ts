@@ -27,7 +27,8 @@ describe('VedtaksBegrunnelserContext', () => {
                 vedtaksperioder,
                 BehandlingResultat.AVSLÅTT_ENDRET_OG_OPPHØRT,
                 BehandlingStatus.UTREDES,
-                undefined
+                undefined,
+                true
             );
             expect(perioder.length).toBe(3);
             expect(perioder[0].type).toBe(Vedtaksperiodetype.UTBETALING);
@@ -45,7 +46,8 @@ describe('VedtaksBegrunnelserContext', () => {
                     vedtaksperioder,
                     BehandlingResultat.INNVILGET_OG_OPPHØRT,
                     BehandlingStatus.AVSLUTTET,
-                    undefined
+                    undefined,
+                    true
                 );
                 expect(perioder.length).toBe(1);
                 expect(perioder[0].type).toEqual(Vedtaksperiodetype.OPPHØR);
@@ -65,7 +67,8 @@ describe('VedtaksBegrunnelserContext', () => {
                     ],
                     BehandlingResultat.INNVILGET,
                     BehandlingStatus.UTREDES,
-                    undefined
+                    undefined,
+                    false
                 );
                 expect(perioder.length).toBe(1);
             });
@@ -82,7 +85,8 @@ describe('VedtaksBegrunnelserContext', () => {
                     ],
                     BehandlingResultat.INNVILGET,
                     BehandlingStatus.UTREDES,
-                    undefined
+                    undefined,
+                    false
                 );
                 expect(perioder.length).toBe(0);
             });
@@ -96,7 +100,8 @@ describe('VedtaksBegrunnelserContext', () => {
                     vedtaksperioder,
                     BehandlingResultat.OPPHØRT,
                     BehandlingStatus.UTREDES,
-                    undefined
+                    undefined,
+                    true
                 );
                 expect(perioder.length).toBe(1);
                 expect(perioder[0].type).toBe(Vedtaksperiodetype.OPPHØR);
