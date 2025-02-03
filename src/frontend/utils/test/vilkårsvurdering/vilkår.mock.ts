@@ -1,3 +1,4 @@
+import { Lovverk } from '../../../typer/lovverk';
 import type {
     IRestAnnenVurdering,
     IRestPersonResultat,
@@ -69,4 +70,5 @@ export const mockRestPersonResultat = ({
     personIdent,
     vilkårResultater,
     andreVurderinger,
+    lovverk: Lovverk.FØR_LOVENDRING_2025,
 });
