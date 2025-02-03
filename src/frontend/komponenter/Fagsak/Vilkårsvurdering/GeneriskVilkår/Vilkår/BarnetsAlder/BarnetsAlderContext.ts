@@ -2,6 +2,7 @@ import { useFelt } from '@navikt/familie-skjema';
 
 import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BarnetsAlderValidering';
 import { useVilkårsvurdering } from '../../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
+import type { Lovverk } from '../../../../../../typer/lovverk';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import { UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../../../../../typer/vilkår';
@@ -21,7 +22,11 @@ export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = 
     UtdypendeVilkårsvurderingGenerell.ADOPSJON,
 ];
 
-export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useBarnetsAlder = (
+    vilkår: IVilkårResultat,
+    person: IGrunnlagPerson,
+    lovverk: Lovverk | undefined
+) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
         resultat: vilkår.resultat,
@@ -79,6 +84,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
                 utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
                 førsteLagredeFom,
+                lovverk,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
                 erPeriodeGyldig(felt, VilkårType.BARNETS_ALDER, avhengigheter),

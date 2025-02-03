@@ -5,6 +5,7 @@ import { isBefore } from 'date-fns';
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
+import { Lovverk } from '../../../../../../typer/lovverk';
 import { Resultat } from '../../../../../../typer/vilkår';
 import {
     datoForLovendringAugust24,
@@ -15,9 +16,11 @@ import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
-type BarnetsAlderProps = IVilkårSkjemaBaseProps;
+type BarnetsAlderProps = IVilkårSkjemaBaseProps & {
+    lovverk: Lovverk | undefined;
+};
 
-const hentSpørsmålForPeriode = (periode: IIsoDatoPeriode) => {
+const hentSpørsmålForLovverkFør2025 = (periode: IIsoDatoPeriode) => {
     const fraOgMedDato = isoStringTilDateEllerUndefinedHvisUgyldigDato(periode.fom);
     const fraOgMedErFørLovendring =
         fraOgMedDato && isBefore(fraOgMedDato, datoForLovendringAugust24);
@@ -28,16 +31,31 @@ const hentSpørsmålForPeriode = (periode: IIsoDatoPeriode) => {
     }
 };
 
+const hentSpørsmålForLovverk = (lovverk: Lovverk | undefined, periode: IIsoDatoPeriode) => {
+    if (!lovverk) {
+        throw Error('Lovverk skal finnes på barnets alder');
+    }
+    if (lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
+        return 'Er barnet mellom 12 og 20 måneder eller adoptert?';
+    } else {
+        hentSpørsmålForLovverkFør2025(periode);
+    }
+};
+
 export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     vilkårResultat,
     vilkårFraConfig,
     toggleForm,
     person,
+    lovverk,
     lesevisning,
 }: BarnetsAlderProps) => {
-    const { felter } = useBarnetsAlder(vilkårResultat, person);
+    const { felter } = useBarnetsAlder(vilkårResultat, person, lovverk);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
-    const spørsmål = hentSpørsmålForPeriode(vilkårSkjemaContext.skjema.felter.periode.verdi);
+    const spørsmål = hentSpørsmålForLovverk(
+        lovverk,
+        vilkårSkjemaContext.skjema.felter.periode.verdi
+    );
 
     return (
         <VilkårSkjema

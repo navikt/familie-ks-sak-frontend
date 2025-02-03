@@ -134,6 +134,7 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
                                                     key={`${index}_${personResultat.person.fødselsdato}_${vc.key}`}
                                                     generiskVilkårKey={`${index}_${personResultat.person.fødselsdato}_${vc.key}`}
                                                     person={personResultat.person}
+                                                    lovverk={personResultat.lovverk}
                                                     vilkårResultater={vilkårResultater}
                                                     vilkårFraConfig={vc}
                                                 />
