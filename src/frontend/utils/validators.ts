@@ -184,7 +184,10 @@ export const erPeriodeGyldig = (
                                 return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
                             }
 
-                            if (!datoErXAntallMånederEtterFødselsdato(person, tom, 20)) {
+                            if (
+                                !datoErXAntallMånederEtterFødselsdato(person, tom, 20) &&
+                                !datoErPersonsDødsfallsdag(person, tom)
+                            ) {
                                 return feil(
                                     felt,
                                     'T.o.m datoen må være lik datoen barnet fyller 20 måneder'
