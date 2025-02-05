@@ -123,7 +123,7 @@ const hentBarnetsalderVilkårManglerBarnehagePeriodeFeil = (
                   skjemaelementId: vilkårFeilmeldingId(feiledeVilkårResultater[0]),
                   feilmelding:
                       'Det mangler vurdering på vilkåret "barnehageplass". ' +
-                      'Hele eller deler av perioden der barnet er mellom 1 og 2 år er ikke vurdert.',
+                      'Hele eller deler av perioden der "barnets alder"-vilkåret er oppfylt er ikke vurdert.',
               },
           ]
         : [];
