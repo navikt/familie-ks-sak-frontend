@@ -15,7 +15,7 @@ describe('hentFeilIVilkårsvurdering', () => {
         expect(feilIVilkåarsvurdering[0].skjemaelementId.includes('BARNETS_ALDER')).toBe(true);
     });
 
-    test('Skal gi feilmelding dersom en barnehageperiode starter etter siste periode for "mellom 1 og 2 år"-vilkåret', () => {
+    test('Skal gi feilmelding dersom en barnehageperiode starter etter siste periode for "barnets alder"-vilkåret', () => {
         const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
             barnehageperiodeStarterEtter2årEllerSkole as unknown as IPersonResultat[]
         );
