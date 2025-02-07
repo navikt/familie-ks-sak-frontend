@@ -20,6 +20,7 @@ export interface IYtelsePeriode {
 export enum YtelseType {
     ORDINÆR_KONTANTSTØTTE = 'ORDINÆR_KONTANTSTØTTE',
     OVERGANGSORDNING = 'OVERGANGSORDNING',
+    PRAKSISENDRING_2024 = 'PRAKSISENDRING_2024',
 }
 
 export const ytelsetype: Record<YtelseType, IPar> = {
@@ -30,5 +31,9 @@ export const ytelsetype: Record<YtelseType, IPar> = {
     OVERGANGSORDNING: {
         id: YtelseType.OVERGANGSORDNING,
         navn: 'Overgangsordning',
+    },
+    PRAKSISENDRING_2024: {
+        id: YtelseType.PRAKSISENDRING_2024,
+        navn: 'Praksisendring 2024',
     },
 };
