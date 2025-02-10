@@ -38,7 +38,7 @@ const hentSpørsmålForLovverk = (lovverk: Lovverk | undefined, periode: IIsoDat
     if (lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
         return 'Er barnet mellom 12 og 20 måneder eller adoptert?';
     } else {
-        hentSpørsmålForLovverkFør2025(periode);
+        return hentSpørsmålForLovverkFør2025(periode);
     }
 };
 
