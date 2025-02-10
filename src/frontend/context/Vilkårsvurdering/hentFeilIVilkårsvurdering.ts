@@ -98,8 +98,8 @@ const hentBarnehageplassPeriodeStarterForSentFeil = (
         .map(vilkårResultat => ({
             skjemaelementId: vilkårFeilmeldingId(vilkårResultat),
             feilmelding:
-                'Du har lagt til en periode på barnehageplassvilkåret ' +
-                'som starter etter at barnet har fylt 2 år eller startet på skolen. ' +
+                'Du har lagt til en periode på vilkåret "Barnehageplass" ' +
+                'som starter etter at "Barnets alder"-vilkåret er avsluttet. ' +
                 'Du må fjerne denne perioden for å kunne fortsette.',
         }));
 };
@@ -122,8 +122,8 @@ const hentBarnetsalderVilkårManglerBarnehagePeriodeFeil = (
               {
                   skjemaelementId: vilkårFeilmeldingId(feiledeVilkårResultater[0]),
                   feilmelding:
-                      'Det mangler vurdering på vilkåret "barnehageplass". ' +
-                      'Hele eller deler av perioden der barnet er mellom 1 og 2 år er ikke vurdert.',
+                      'Det mangler vurdering på vilkåret "Barnehageplass". ' +
+                      'Hele eller deler av perioden der "Barnets alder"-vilkåret er oppfylt er ikke vurdert.',
               },
           ]
         : [];
