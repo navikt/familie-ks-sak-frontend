@@ -10,8 +10,8 @@ import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
 import { useTidslinje } from '../../../context/TidslinjeContext';
-import { BehandlingÅrsak, type IBehandling } from '../../../typer/behandling';
-import { YtelseType } from '../../../typer/beregning';
+import { type IBehandling } from '../../../typer/behandling';
+import { ytelsetype, YtelseType } from '../../../typer/beregning';
 import type {
     IEøsPeriodeStatus,
     IRestEøsPeriode,
@@ -160,10 +160,16 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
         );
     }, [utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser]);
 
-    const erOvergangsordning = åpenBehandling.årsak == BehandlingÅrsak.OVERGANGSORDNING_2024;
+    const skalViseYtelseType =
+        utbetalingsperiode &&
+        utbetalingsperiode.utbetalingsperiodeDetaljer.some(
+            upd =>
+                upd.ytelseType === YtelseType.OVERGANGSORDNING ||
+                upd.ytelseType === YtelseType.PRAKSISENDRING_2024
+        );
 
     const UtbetalingsbeløpRad: React.FC<PropsWithChildren> = ({ children }) => {
-        const columns = erOvergangsordning ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem';
+        const columns = skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem';
 
         return (
             <HGrid columns={columns} gap={'4'}>
@@ -171,6 +177,10 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
             </HGrid>
         );
     };
+
+    const erAndelForPraksisendring = utbetalingsperiode?.utbetalingsperiodeDetaljer.some(
+        upd => upd.ytelseType === YtelseType.PRAKSISENDRING_2024
+    );
 
     return (
         <Box borderColor="border-strong" borderWidth="1" padding="10">
@@ -195,7 +205,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                             <BodyShort>Person</BodyShort>
                             <BodyShort>Barnehageplass</BodyShort>
                             <BodyShort>Kontantstøtte</BodyShort>
-                            {erOvergangsordning && <BodyShort>Ytelsetype</BodyShort>}
+                            {skalViseYtelseType && <BodyShort>Ytelsetype</BodyShort>}
                             <BodyShort>Beløp</BodyShort>
                         </UtbetalingsbeløpRad>
                         {utbetalingsperiode.utbetalingsperiodeDetaljer
@@ -212,12 +222,8 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                                         )}
                                     </BodyShort>
                                     <BodyShort>{detalj.prosent + '% '}</BodyShort>
-                                    {erOvergangsordning && (
-                                        <BodyShort>
-                                            {detalj.ytelseType == YtelseType.OVERGANGSORDNING
-                                                ? 'Overgangsordning'
-                                                : 'Ordinær'}
-                                        </BodyShort>
+                                    {skalViseYtelseType && (
+                                        <BodyShort>{ytelsetype[detalj.ytelseType].navn}</BodyShort>
                                     )}
                                     {utbetalingsBeløpStatusMap.get(detalj.person.personIdent) ? (
                                         <BodyShort>
@@ -239,6 +245,13 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                                 {formaterBeløp(utbetalingsperiode.utbetaltPerMnd)}
                             </BodyShort>
                         </TotaltUtbetaltRad>
+                        {erAndelForPraksisendring && (
+                            <Alert variant={'info'} size={'small'}>
+                                <BodyShort>
+                                    Utbetaling i tråd med fastsatt praksis ifm lovendring 2024.
+                                </BodyShort>
+                            </Alert>
+                        )}
                     </UtbetalingsbeløpStack>
                 </>
             )}
