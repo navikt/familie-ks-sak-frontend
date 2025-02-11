@@ -89,6 +89,7 @@ export interface IRestPersonResultat {
 export interface IEndreVilkårResultat {
     personIdent: string;
     endretVilkårResultat: IRestVilkårResultat;
+    adopsjonsdato?: string;
 }
 
 export interface IRestNyttVilkår {
