@@ -22,6 +22,7 @@ interface Props {
     muligeUtdypendeVilkårsvurderinger?: UtdypendeVilkårsvurdering[];
     erLesevisning: boolean;
     feilhåndtering: ReactNode;
+    children?: ReactNode;
 }
 
 const utdypendeVilkårsvurderingTekst: Record<UtdypendeVilkårsvurdering, string> = {
@@ -72,6 +73,7 @@ export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
     muligeUtdypendeVilkårsvurderinger,
     erLesevisning,
     feilhåndtering,
+    children,
 }) => {
     const håndterEndring = (action: ActionMeta<OptionType>) => {
         switch (action.action) {
@@ -104,24 +106,29 @@ export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
     }
 
     return (
-        <StyledFamilieReactSelect
-            id="UtdypendeVilkarsvurderingMultiselect"
-            label="Utdypende vilkårsvurdering"
-            value={utdypendeVilkårsvurderinger.verdi.map(mapUtdypendeVilkårsvurderingTilOption)}
-            propSelectStyles={{
-                menu: provided => ({
-                    ...provided,
-                    zIndex: 3,
-                }),
-            }}
-            creatable={false}
-            erLesevisning={erLesevisning}
-            isMulti
-            onChange={(_, action: ActionMeta<OptionType>) => {
-                håndterEndring(action);
-            }}
-            options={muligeUtdypendeVilkårsvurderinger.map(mapUtdypendeVilkårsvurderingTilOption)}
-            feil={feilhåndtering}
-        />
+        <>
+            <StyledFamilieReactSelect
+                id="UtdypendeVilkarsvurderingMultiselect"
+                label="Utdypende vilkårsvurdering"
+                value={utdypendeVilkårsvurderinger.verdi.map(mapUtdypendeVilkårsvurderingTilOption)}
+                propSelectStyles={{
+                    menu: provided => ({
+                        ...provided,
+                        zIndex: 3,
+                    }),
+                }}
+                creatable={false}
+                erLesevisning={erLesevisning}
+                isMulti
+                onChange={(_, action: ActionMeta<OptionType>) => {
+                    håndterEndring(action);
+                }}
+                options={muligeUtdypendeVilkårsvurderinger.map(
+                    mapUtdypendeVilkårsvurderingTilOption
+                )}
+                feil={feilhåndtering}
+            />
+            {children}
+        </>
     );
 };

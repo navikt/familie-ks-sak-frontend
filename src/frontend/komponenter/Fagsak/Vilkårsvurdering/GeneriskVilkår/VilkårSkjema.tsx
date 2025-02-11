@@ -63,6 +63,7 @@ interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjema
     visVurderesEtter?: boolean;
     visSpørsmål?: boolean;
     muligeUtdypendeVilkårsvurderinger?: UtdypendeVilkårsvurdering[];
+    utdypendeVilkårsvurderingChildren?: ReactNode;
     periodeChildren?: ReactNode;
     children?: ReactNode;
     vurderesEtterEndringer?: (vurderesEtter: Regelverk) => void;
@@ -80,6 +81,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     toggleForm,
     children,
     periodeChildren,
+    utdypendeVilkårsvurderingChildren,
     vurderesEtterEndringer,
 }: IVilkårSkjema<T>) => {
     const { åpenBehandling } = useBehandling();
@@ -186,6 +188,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         ? skjema.felter.utdypendeVilkårsvurdering.feilmelding
                         : ''
                 }
+                children={utdypendeVilkårsvurderingChildren}
             />
             {skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT && årsakErSøknad && (
                 <AvslagSkjema
