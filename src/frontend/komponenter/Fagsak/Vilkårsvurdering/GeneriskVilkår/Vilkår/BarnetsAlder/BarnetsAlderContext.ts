@@ -1,4 +1,8 @@
-import { useFelt } from '@navikt/familie-skjema';
+import { useState } from 'react';
+
+import { isValid } from 'date-fns';
+
+import { feil, ok, useFelt } from '@navikt/familie-skjema';
 
 import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BarnetsAlderValidering';
 import { useVilkårsvurdering } from '../../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
@@ -9,7 +13,11 @@ import { UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../../../../
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
-import { type IIsoDatoPeriode } from '../../../../../../utils/dato';
+import type { IsoDatoString } from '../../../../../../utils/dato';
+import {
+    isoStringTilDateEllerUndefinedHvisUgyldigDato,
+    type IIsoDatoPeriode,
+} from '../../../../../../utils/dato';
 import { sorterPåDato } from '../../../../../../utils/formatter';
 import {
     erAvslagBegrunnelserGyldig,
@@ -105,7 +113,46 @@ export const useBarnetsAlder = (
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
         }),
+        adopsjonsdato: useFelt<Date | undefined>({
+            verdi: undefined,
+            valideringsfunksjon: (felt, avhengigheter) => {
+                if (
+                    avhengigheter?.utdypendeVilkårsvurdering.includes(
+                        UtdypendeVilkårsvurderingGenerell.ADOPSJON
+                    )
+                ) {
+                    if (!felt.verdi || !isValid(felt.verdi)) {
+                        return feil(felt, 'Adopsjonsdato må fylles ut når adopsjon er valgt');
+                    } else {
+                        return ok(felt);
+                    }
+                } else {
+                    if (felt.verdi) {
+                        return feil(
+                            felt,
+                            'Adopsjonsdato skal ikke fylles ut når adopsjon ikke er valgt'
+                        );
+                    } else {
+                        return ok(felt);
+                    }
+                }
+            },
+            avhengigheter: { utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi },
+        }),
     };
+
+    const [forrigeAdopsjonsdato, settForrigeAdopsjonsdato] = useState<IsoDatoString | undefined>();
+
+    if (person.adopsjonsdato !== forrigeAdopsjonsdato) {
+        settForrigeAdopsjonsdato(person.adopsjonsdato);
+        if (person.adopsjonsdato == null) {
+            felter.adopsjonsdato.nullstill();
+        } else {
+            felter.adopsjonsdato.validerOgSettFelt(
+                isoStringTilDateEllerUndefinedHvisUgyldigDato(person.adopsjonsdato)
+            );
+        }
+    }
 
     return {
         felter,
