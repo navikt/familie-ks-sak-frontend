@@ -76,7 +76,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
                     <Datovelger
                         felt={felter.adopsjonsdato}
                         label="Adopsjonsdato"
-                        visFeilmeldinger
+                        visFeilmeldinger={vilkårSkjemaContext.skjema.visFeilmeldinger}
                         kanKunVelgeFortid
                         readOnly={lesevisning}
                     />
