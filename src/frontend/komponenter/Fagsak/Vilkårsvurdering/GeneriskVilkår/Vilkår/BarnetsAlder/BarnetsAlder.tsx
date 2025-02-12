@@ -6,7 +6,7 @@ import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
 import { Lovverk } from '../../../../../../typer/lovverk';
-import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
+import { Resultat } from '../../../../../../typer/vilkår';
 import {
     datoForLovendringAugust24,
     type IIsoDatoPeriode,
@@ -70,9 +70,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
             person={person}
             lesevisning={lesevisning}
             utdypendeVilkårsvurderingChildren={
-                felter.utdypendeVilkårsvurdering.verdi.includes(
-                    UtdypendeVilkårsvurderingGenerell.ADOPSJON
-                ) ? (
+                felter.adopsjonsdato.erSynlig ? (
                     <Datovelger
                         felt={felter.adopsjonsdato}
                         label="Adopsjonsdato"
