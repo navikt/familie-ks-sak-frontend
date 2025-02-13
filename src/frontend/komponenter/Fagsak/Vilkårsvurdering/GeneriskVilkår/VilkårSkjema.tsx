@@ -41,7 +41,6 @@ export const FieldsetForVilkårSkjema = styled(Fieldset)<{
             return ASurfaceAction;
         }};
     padding-left: 2rem;
-    margin-left: -3rem;
 `;
 
 const Knapperad = styled.div`
