@@ -120,6 +120,7 @@ export const useBarnetsAlder = (
                 }
             },
             avhengigheter: { utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi },
+            nullstillVedAvhengighetEndring: false,
             skalFeltetVises: (avhengigheter: Avhengigheter) =>
                 avhengigheter?.utdypendeVilkårsvurdering.includes(
                     UtdypendeVilkårsvurderingGenerell.ADOPSJON
@@ -129,7 +130,7 @@ export const useBarnetsAlder = (
 
     const [forrigeAdopsjonsdato, settForrigeAdopsjonsdato] = useState<IsoDatoString | undefined>();
 
-    const settAdopsjonsdatoTilDefault = () => {
+    const settAdopsjonsdatoFraBackend = () => {
         felter.adopsjonsdato.validerOgSettFelt(
             person.adopsjonsdato ? new Date(person.adopsjonsdato) : undefined
         );
@@ -137,17 +138,18 @@ export const useBarnetsAlder = (
 
     if (person.adopsjonsdato !== forrigeAdopsjonsdato) {
         settForrigeAdopsjonsdato(person.adopsjonsdato);
-        settAdopsjonsdatoTilDefault();
+        settAdopsjonsdatoFraBackend();
     }
 
     useEffect(() => {
-        if (
-            felter.utdypendeVilkårsvurdering.verdi.includes(
-                UtdypendeVilkårsvurderingGenerell.ADOPSJON
-            ) &&
-            !felter.adopsjonsdato.verdi
-        ) {
-            settAdopsjonsdatoTilDefault();
+        const utdypendeInneholderAdopsjon = felter.utdypendeVilkårsvurdering.verdi.includes(
+            UtdypendeVilkårsvurderingGenerell.ADOPSJON
+        );
+        if (utdypendeInneholderAdopsjon && !felter.adopsjonsdato.verdi) {
+            settAdopsjonsdatoFraBackend();
+        }
+        if (!utdypendeInneholderAdopsjon && felter.adopsjonsdato.verdi) {
+            felter.adopsjonsdato.nullstill();
         }
     }, [felter.utdypendeVilkårsvurdering.verdi]);
 
