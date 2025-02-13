@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import {
+    CalendarIcon,
     FlowerPetalFallingIcon,
     GlobeIcon,
     HeartIcon,
@@ -27,9 +28,13 @@ const SemiBoldHeading = styled(Heading)`
 
 interface IRegisteropplysningerProps {
     opplysninger: IRestRegisterhistorikk;
+    fødselsdato: string;
 }
 
-const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({ opplysninger }) => {
+const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({
+    opplysninger,
+    fødselsdato,
+}) => {
     const manglerRegisteropplysninger = opplysninger.statsborgerskap.length === 0;
 
     const personErDød = opplysninger.dødsboadresse.length > 0;
@@ -55,6 +60,24 @@ const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({ opplysning
                                 tilFormat: Datoformat.DATO_TID_SEKUNDER,
                             })
                         }
+                    />
+                    <RegisteropplysningerTabell
+                        opplysningstype={Registeropplysning.FØDSELSDATO}
+                        ikon={
+                            <CalendarIcon
+                                fontSize={'1.5rem'}
+                                title="Kalender-ikon"
+                                focusable="false"
+                            />
+                        }
+                        historikk={[
+                            {
+                                verdi: isoStringTilFormatertString({
+                                    isoString: fødselsdato,
+                                    tilFormat: Datoformat.DATO,
+                                }),
+                            },
+                        ]}
                     />
                     {personErDød && (
                         <RegisteropplysningerTabell
