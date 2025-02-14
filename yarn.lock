@@ -1921,13 +1921,13 @@
     "@navikt/familie-typer" "^8.0.2"
     "@navikt/fnrvalidator" "^2.1.5"
 
-"@navikt/familie-http@^7.0.14":
-  version "7.0.14"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/7.0.14/e865fd77e78c408571c5d948c3c4cbe1e4752fd9#e865fd77e78c408571c5d948c3c4cbe1e4752fd9"
-  integrity sha512-aBiHvl47ehs+6EehpGKWH13mvlwJl9nU4iwfNJ+NZwRjf32gmw2o64N0PwvZf/rFqNaDV3c4whMYQ0rIIZzFDw==
+"@navikt/familie-http@^7.0.24":
+  version "7.0.24"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/7.0.24/6fcefd23cce8155558468be68a9d3873eb4ab203#6fcefd23cce8155558468be68a9d3873eb4ab203"
+  integrity sha512-iT/T7wm5bQV8Y3w2OsaN7kxRVHGySEMUlCGcgCMrodgssASYNdt7I7O0he+N4tntplxqx6ruWvzPMu31dxuJxg==
   dependencies:
     "@navikt/familie-typer" "^8.0.2"
-    "@sentry/core" "^8.11.0"
+    "@sentry/core" "^8.50.0"
     constate "^3.3.2"
 
 "@navikt/familie-ikoner@^9.0.0", "@navikt/familie-ikoner@^9.0.3":
@@ -1951,12 +1951,12 @@
   dependencies:
     winston "^3.17.0"
 
-"@navikt/familie-skjema@^8.2.7":
-  version "8.2.7"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.2.7/36529d4bc8f45121ba5a1c7067c8f134dca339aa#36529d4bc8f45121ba5a1c7067c8f134dca339aa"
-  integrity sha512-jMyUwaPDafd0Ih+KXyWblQh/8VB7GOAKPozgG9j426QddL3t3HpmX2A3aTD8JIa9QnN6s8segjpP0tW7wtuJtA==
+"@navikt/familie-skjema@^8.2.22":
+  version "8.2.22"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.2.22/ceb6823cb0538ca7f5190c558703917a6c4aa7c5#ceb6823cb0538ca7f5190c558703917a6c4aa7c5"
+  integrity sha512-K/qUX5M8tTP6O0TFjQUlmOTPUpJ4y04Pl+gcRexFg3410k51O/A9zzmVdvKl0exhRY9qCxPA9zBhW5Kc/Fuldw==
   dependencies:
-    "@navikt/familie-http" "^7.0.14"
+    "@navikt/familie-http" "^7.0.24"
     "@navikt/familie-typer" "^8.0.2"
     "@types/deep-equal" "^1.0.4"
     deep-equal "^2.2.3"
@@ -2438,10 +2438,10 @@
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-9.0.0.tgz#210861bab22a99e037070809b383d02321fea098"
   integrity sha512-oaOOC1rQ5NHuOJ5ciw5NjdvmgG+q3UJS5v+s1d2eFzi/n5OpxULvqce4aG3XDBJ/Hu+fxW+fbVW96JwAKNk2Tg==
 
-"@sentry/core@^8.11.0":
-  version "8.54.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-8.54.0.tgz#a2ebec965cadcb6de89e116689feeef79d5862a6"
-  integrity sha512-03bWf+D1j28unOocY/5FDB6bUHtYlm6m6ollVejhg45ZmK9iPjdtxNWbrLsjT1WRym0Tjzowu+A3p+eebYEv0Q==
+"@sentry/core@^8.50.0":
+  version "8.55.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-8.55.0.tgz#4964920229fcf649237ef13b1533dfc4b9f6b22e"
+  integrity sha512-6g7jpbefjHYs821Z+EBJ8r4Z7LT5h80YSWRJaylGS4nW5W5Z2KXzpdnyFarv37O7QjauzVC2E+PABmpkw5/JGA==
 
 "@sentry/webpack-plugin@^3.1.2":
   version "3.1.2"
