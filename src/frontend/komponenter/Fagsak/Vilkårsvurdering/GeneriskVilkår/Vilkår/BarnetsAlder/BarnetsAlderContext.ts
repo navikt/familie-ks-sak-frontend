@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { isValid } from 'date-fns';
+import { isValid, startOfDay } from 'date-fns';
 
 import { feil, ok, useFelt, type Avhengigheter } from '@navikt/familie-skjema';
 
@@ -78,6 +78,23 @@ export const useBarnetsAlder = (
         valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });
 
+    const adopsjonsdato = useFelt<Date | undefined>({
+        verdi: undefined,
+        valideringsfunksjon: felt => {
+            if (!felt.verdi || !isValid(felt.verdi)) {
+                return feil(felt, 'Adopsjonsdato må fylles ut når adopsjon er valgt');
+            } else {
+                return ok(felt);
+            }
+        },
+        avhengigheter: { utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi },
+        nullstillVedAvhengighetEndring: false,
+        skalFeltetVises: (avhengigheter: Avhengigheter) =>
+            avhengigheter?.utdypendeVilkårsvurdering.includes(
+                UtdypendeVilkårsvurderingGenerell.ADOPSJON
+            ),
+    });
+
     const felter = {
         vurderesEtter,
         resultat,
@@ -90,6 +107,7 @@ export const useBarnetsAlder = (
                 utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
                 førsteLagredeFom,
                 lovverk,
+                adopsjonsdato: adopsjonsdato.verdi,
             },
             valideringsfunksjon: (felt, avhengigheter) =>
                 erPeriodeGyldig(felt, VilkårType.BARNETS_ALDER, avhengigheter),
@@ -110,29 +128,14 @@ export const useBarnetsAlder = (
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
         }),
-        adopsjonsdato: useFelt<Date | undefined>({
-            verdi: undefined,
-            valideringsfunksjon: felt => {
-                if (!felt.verdi || !isValid(felt.verdi)) {
-                    return feil(felt, 'Adopsjonsdato må fylles ut når adopsjon er valgt');
-                } else {
-                    return ok(felt);
-                }
-            },
-            avhengigheter: { utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi },
-            nullstillVedAvhengighetEndring: false,
-            skalFeltetVises: (avhengigheter: Avhengigheter) =>
-                avhengigheter?.utdypendeVilkårsvurdering.includes(
-                    UtdypendeVilkårsvurderingGenerell.ADOPSJON
-                ),
-        }),
+        adopsjonsdato: adopsjonsdato,
     };
 
     const [forrigeAdopsjonsdato, settForrigeAdopsjonsdato] = useState<IsoDatoString | undefined>();
 
     const settAdopsjonsdatoFraBackend = () => {
         felter.adopsjonsdato.validerOgSettFelt(
-            person.adopsjonsdato ? new Date(person.adopsjonsdato) : undefined
+            person.adopsjonsdato ? startOfDay(new Date(person.adopsjonsdato)) : undefined
         );
     };
 

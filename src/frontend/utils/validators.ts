@@ -23,6 +23,7 @@ import {
     type IsoDatoString,
     isoStringTilDate,
 } from './dato';
+import { utledLovverkMedAdopsjonsdato } from './lovverk';
 import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
 import { Lovverk } from '../typer/lovverk';
 import type { IGrunnlagPerson } from '../typer/person';
@@ -122,6 +123,8 @@ export const erPeriodeGyldig = (
     const søkerHarMeldtFraOmBarnehageplass: boolean | undefined =
         avhengigheter?.søkerHarMeldtFraOmBarnehageplass;
 
+    const lovverk: Lovverk = avhengigheter?.lovverk;
+
     if (felt.verdi.fom) {
         const fom = parseISO(felt.verdi.fom);
         const tom = felt.verdi.tom ? parseISO(felt.verdi.tom) : undefined;
@@ -153,6 +156,12 @@ export const erPeriodeGyldig = (
                     }
 
                     if (erAdopsjon) {
+                        const adopsjonsdato: Date | undefined = avhengigheter?.adopsjonsdato;
+                        const lovverkOppdatertMedAdopsjonsdato = utledLovverkMedAdopsjonsdato(
+                            lovverk,
+                            adopsjonsdato
+                        );
+
                         if (tomEtterAugustÅretBarnetFyller6(person, tom)) {
                             return feil(
                                 felt,
@@ -160,26 +169,42 @@ export const erPeriodeGyldig = (
                             );
                         }
 
-                        if (isBefore(tom, datoForLovendringAugust24)) {
-                            if (tom && datoDifferanseMerEnn1År(fom, tom)) {
+                        if (adopsjonsdato && isBefore(fom, adopsjonsdato)) {
+                            return feil(
+                                felt,
+                                'Du kan ikke sette en f.o.m dato som er før adopsjonsdatoen'
+                            );
+                        }
+
+                        if (lovverkOppdatertMedAdopsjonsdato === Lovverk.LOVENDRING_FEBRUAR_2025) {
+                            if (tom && datoDifferanseMerEnnXAntallMåneder(fom, tom, 8)) {
                                 return feil(
                                     felt,
-                                    'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
+                                    'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 8 måneder'
                                 );
                             }
                         } else {
-                            if (
-                                tom &&
-                                datoDifferanseMerEnnXAntallMåneder(førsteFomPåVilkåret, tom, 6)
-                            ) {
-                                return feil(
-                                    felt,
-                                    'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 6 måneder'
-                                );
+                            if (isBefore(tom, datoForLovendringAugust24)) {
+                                if (tom && datoDifferanseMerEnn1År(fom, tom)) {
+                                    return feil(
+                                        felt,
+                                        'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
+                                    );
+                                }
+                            } else {
+                                if (
+                                    tom &&
+                                    datoDifferanseMerEnnXAntallMåneder(førsteFomPåVilkåret, tom, 6)
+                                ) {
+                                    return feil(
+                                        felt,
+                                        'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 6 måneder'
+                                    );
+                                }
                             }
                         }
                     } else {
-                        if (avhengigheter?.lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
+                        if (lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
                             if (!datoErPersonsXÅrsdag(person, fom, 1)) {
                                 return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
                             }
