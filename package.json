@@ -46,7 +46,6 @@
     "@navikt/familie-visittkort": "^15.1.4",
     "@navikt/flagg-ikoner": "^8.0.0",
     "@navikt/fnrvalidator": "^2.1.0",
-    "@navikt/hoykontrast": "^3.1.0",
     "@navikt/land-verktoy": "^8.0.0",
     "@navikt/landvelger": "^8.0.2",
     "@sentry/browser": "^9.0.0",
