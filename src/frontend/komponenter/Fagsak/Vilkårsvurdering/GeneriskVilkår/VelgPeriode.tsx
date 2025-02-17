@@ -17,6 +17,7 @@ interface IProps extends PropsWithChildren {
     erEksplisittAvslagPåSøknad: Felt<boolean>;
     resultat: Felt<Resultat>;
     visFeilmeldinger: boolean;
+    tomErPåkrevd: boolean;
 }
 
 const StyledLegend = styled.legend`
@@ -45,6 +46,7 @@ const VelgPeriode: React.FC<IProps> = ({
     resultat,
     visFeilmeldinger,
     children,
+    tomErPåkrevd,
 }) => {
     const { vurderErLesevisning } = useBehandling();
     const lesevisning = vurderErLesevisning();
@@ -81,7 +83,7 @@ const VelgPeriode: React.FC<IProps> = ({
                     readOnly={lesevisning}
                 />
                 <DatovelgerForGammelSkjemaløsning
-                    label={'T.o.m (valgfri)'}
+                    label={tomErPåkrevd ? 'T.o.m' : 'T.o.m (valgfri)'}
                     value={periode.verdi.tom}
                     readOnly={lesevisning}
                     onDateChange={(dato?: IsoDatoString) => {
