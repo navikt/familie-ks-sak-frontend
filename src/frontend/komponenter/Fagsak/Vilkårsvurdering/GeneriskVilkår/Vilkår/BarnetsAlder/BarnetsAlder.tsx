@@ -53,14 +53,18 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     lovverk,
     lesevisning,
 }: BarnetsAlderProps) => {
-    const { felter } = useBarnetsAlder(vilkårResultat, person, lovverk);
+    const { toggles } = useApp();
+    const { felter } = useBarnetsAlder(
+        vilkårResultat,
+        person,
+        lovverk,
+        toggles[ToggleNavn.stotterAdopsjon]
+    );
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
     const spørsmål = hentSpørsmålForLovverk(
         lovverk,
         vilkårSkjemaContext.skjema.felter.periode.verdi
     );
-
-    const { toggles } = useApp();
 
     return (
         <VilkårSkjema
@@ -74,7 +78,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
             person={person}
             lesevisning={lesevisning}
             utdypendeVilkårsvurderingChildren={
-                felter.adopsjonsdato.erSynlig && toggles[ToggleNavn.stotterAdopsjon] ? (
+                felter.adopsjonsdato.erSynlig ? (
                     <Datovelger
                         felt={felter.adopsjonsdato}
                         label="Adopsjonsdato"

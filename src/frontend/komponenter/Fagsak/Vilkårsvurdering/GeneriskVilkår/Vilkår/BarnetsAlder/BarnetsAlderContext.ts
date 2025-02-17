@@ -30,7 +30,8 @@ export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = 
 export const useBarnetsAlder = (
     vilkår: IVilkårResultat,
     person: IGrunnlagPerson,
-    lovverk: Lovverk | undefined
+    lovverk: Lovverk | undefined,
+    støtterAdopsjon: boolean
 ) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
@@ -124,7 +125,7 @@ export const useBarnetsAlder = (
             skalFeltetVises: (avhengigheter: Avhengigheter) =>
                 avhengigheter?.utdypendeVilkårsvurdering.includes(
                     UtdypendeVilkårsvurderingGenerell.ADOPSJON
-                ),
+                ) && støtterAdopsjon,
         }),
     };
 
