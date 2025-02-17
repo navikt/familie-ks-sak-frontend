@@ -1,4 +1,13 @@
-import { addMonths, addYears, isAfter, isBefore, isSameDay, setMonth, subDays } from 'date-fns';
+import {
+    addMonths,
+    addYears,
+    isAfter,
+    isBefore,
+    isSameDay,
+    isValid,
+    setMonth,
+    subDays,
+} from 'date-fns';
 
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
@@ -49,6 +58,19 @@ export const erBegrunnelseGyldig = (
             felt,
             'Du har gjort ett eller flere valg under "Utdypende vilkårsvurdering" og må derfor fylle inn en begrunnelse'
         );
+    }
+};
+
+export const erAdopsjonsdatoGyldig = (
+    felt: FeltState<Date | undefined>,
+    fødselsdato: Date
+): FeltState<Date | undefined> => {
+    if (!felt.verdi || !isValid(felt.verdi)) {
+        return feil(felt, 'Adopsjonsdato må fylles ut når adopsjon er valgt');
+    } else if (isBefore(felt.verdi, fødselsdato)) {
+        return feil(felt, 'Adopsjonsdato kan ikke være tidligere enn fødselsdato');
+    } else {
+        return ok(felt);
     }
 };
 

@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import { isBefore, isValid, startOfDay } from 'date-fns';
+import { startOfDay } from 'date-fns';
 
-import { feil, ok, useFelt, type Avhengigheter } from '@navikt/familie-skjema';
+import { useFelt, type Avhengigheter } from '@navikt/familie-skjema';
 
-import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BarnetsAlderValidering';
+import {
+    erAdopsjonsdatoGyldig,
+    erBegrunnelseGyldig,
+    erUtdypendeVilkårsvurderingerGyldig,
+} from './BarnetsAlderValidering';
 import { useVilkårsvurdering } from '../../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
@@ -13,7 +17,7 @@ import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
 import type { IsoDatoString } from '../../../../../../utils/dato';
-import { type IIsoDatoPeriode } from '../../../../../../utils/dato';
+import { isoStringTilDate, type IIsoDatoPeriode } from '../../../../../../utils/dato';
 import { sorterPåDato } from '../../../../../../utils/formatter';
 import {
     erAvslagBegrunnelserGyldig,
@@ -79,22 +83,14 @@ export const useBarnetsAlder = (
 
     const adopsjonsdato = useFelt<Date | undefined>({
         verdi: undefined,
-        valideringsfunksjon: felt => {
-            if (!felt.verdi || !isValid(felt.verdi)) {
-                return feil(felt, 'Adopsjonsdato må fylles ut når adopsjon er valgt');
-            } else if (isBefore(felt.verdi, person.fødselsdato)) {
-                return feil(felt, 'Adopsjonsdato kan ikke være tidligere enn fødselsdato');
-            } else {
-                return ok(felt);
-            }
-        },
+        valideringsfunksjon: felt =>
+            erAdopsjonsdatoGyldig(felt, isoStringTilDate(person.fødselsdato)),
         avhengigheter: { utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi },
         nullstillVedAvhengighetEndring: false,
         skalFeltetVises: (avhengigheter: Avhengigheter) =>
             avhengigheter?.utdypendeVilkårsvurdering.includes(
                 UtdypendeVilkårsvurderingGenerell.ADOPSJON
-            ) &&
-            (støtterAdopsjon || true),
+            ) && støtterAdopsjon,
     });
 
     const felter = {
