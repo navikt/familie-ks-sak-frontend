@@ -23,6 +23,7 @@ import {
     type IsoDatoString,
     isoStringTilDate,
 } from './dato';
+import { utledLovverk } from './lovverk';
 import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
 import { Lovverk } from '../typer/lovverk';
 import type { IGrunnlagPerson } from '../typer/person';
@@ -152,6 +153,12 @@ export const erPeriodeGyldig = (
                         return feil(felt, 'Det må registreres en t.o.m dato');
                     }
 
+                    const adopsjonsdato: Date | undefined = avhengigheter?.adopsjonsdato;
+                    const lovverk = utledLovverk(
+                        isoStringTilDate(person.fødselsdato),
+                        adopsjonsdato
+                    );
+
                     if (erAdopsjon) {
                         if (tomEtterAugustÅretBarnetFyller6(person, tom)) {
                             return feil(
@@ -179,7 +186,7 @@ export const erPeriodeGyldig = (
                             }
                         }
                     } else {
-                        if (avhengigheter?.lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
+                        if (lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
                             if (!datoErPersonsXÅrsdag(person, fom, 1)) {
                                 return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
                             }

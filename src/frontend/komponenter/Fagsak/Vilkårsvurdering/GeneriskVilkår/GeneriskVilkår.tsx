@@ -8,7 +8,6 @@ import { ASpacing5, ASpacing8, ASpacing16 } from '@navikt/ds-tokens/dist/tokens'
 
 import VilkårTabell from './VilkårTabell';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import type { Lovverk } from '../../../../typer/lovverk';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IVilkårConfig, IVilkårResultat, VilkårType } from '../../../../typer/vilkår';
 import { Resultat } from '../../../../typer/vilkår';
@@ -16,7 +15,6 @@ import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
 
 interface IProps {
     person: IGrunnlagPerson;
-    lovverk: Lovverk | undefined;
     vilkårResultater: IVilkårResultat[];
     vilkårFraConfig: IVilkårConfig;
     generiskVilkårKey: string;
@@ -35,7 +33,6 @@ const UtførKnapp = styled(Button)`
 
 const GeneriskVilkår: React.FC<IProps> = ({
     person,
-    lovverk,
     vilkårFraConfig,
     vilkårResultater,
     generiskVilkårKey,
@@ -77,7 +74,6 @@ const GeneriskVilkår: React.FC<IProps> = ({
                 </Heading>
                 <VilkårTabell
                     person={person}
-                    lovverk={lovverk}
                     vilkårFraConfig={vilkårFraConfig}
                     vilkårResultater={vilkårResultater}
                     settFokusPåKnapp={settFokusPåLeggTilPeriodeKnapp}

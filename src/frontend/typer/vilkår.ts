@@ -1,5 +1,4 @@
 import type { BehandlingSteg, BehandlingStegStatus } from './behandling';
-import type { Lovverk } from './lovverk';
 import type { IGrunnlagPerson } from './person';
 import { PersonType } from './person';
 import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse, BegrunnelseType } from './vedtak';
@@ -41,7 +40,6 @@ export enum Regelverk {
 // Vilkårsvurdering typer for ui
 export interface IPersonResultat {
     personIdent: string;
-    lovverk: Lovverk | undefined;
     vilkårResultater: IVilkårResultat[];
     andreVurderinger: IAnnenVurdering[];
     person: IGrunnlagPerson;
@@ -80,7 +78,6 @@ export interface IVilkårResultat {
 // Vilkårsvurdering typer for api
 export interface IRestPersonResultat {
     personIdent: string;
-    lovverk: Lovverk | undefined;
     vilkårResultater: IRestVilkårResultat[];
     andreVurderinger: IRestAnnenVurdering[];
 }
