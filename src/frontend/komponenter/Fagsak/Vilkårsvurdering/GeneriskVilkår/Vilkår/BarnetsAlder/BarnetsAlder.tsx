@@ -5,7 +5,9 @@ import { isBefore } from 'date-fns';
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
+import { useApp } from '../../../../../../context/AppContext';
 import { Lovverk } from '../../../../../../typer/lovverk';
+import { ToggleNavn } from '../../../../../../typer/toggles';
 import { Resultat } from '../../../../../../typer/vilkår';
 import {
     datoForLovendringAugust24,
@@ -58,6 +60,8 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
         vilkårSkjemaContext.skjema.felter.periode.verdi
     );
 
+    const { toggles } = useApp();
+
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}
@@ -70,7 +74,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
             person={person}
             lesevisning={lesevisning}
             utdypendeVilkårsvurderingChildren={
-                felter.adopsjonsdato.erSynlig ? (
+                felter.adopsjonsdato.erSynlig && toggles[ToggleNavn.stotterAdopsjon] ? (
                     <Datovelger
                         felt={felter.adopsjonsdato}
                         label="Adopsjonsdato"
