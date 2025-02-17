@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { isValid, startOfDay } from 'date-fns';
+import { isBefore, isValid, startOfDay } from 'date-fns';
 
 import { feil, ok, useFelt, type Avhengigheter } from '@navikt/familie-skjema';
 
@@ -82,6 +82,8 @@ export const useBarnetsAlder = (
         valideringsfunksjon: felt => {
             if (!felt.verdi || !isValid(felt.verdi)) {
                 return feil(felt, 'Adopsjonsdato må fylles ut når adopsjon er valgt');
+            } else if (isBefore(felt.verdi, person.fødselsdato)) {
+                return feil(felt, 'Adopsjonsdato kan ikke være tidligere enn fødselsdato');
             } else {
                 return ok(felt);
             }
