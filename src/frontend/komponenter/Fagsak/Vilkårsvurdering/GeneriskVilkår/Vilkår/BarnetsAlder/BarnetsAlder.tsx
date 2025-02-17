@@ -5,13 +5,16 @@ import { isBefore } from 'date-fns';
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
+import { useApp } from '../../../../../../context/AppContext';
 import { Lovverk } from '../../../../../../typer/lovverk';
+import { ToggleNavn } from '../../../../../../typer/toggles';
 import { Resultat } from '../../../../../../typer/vilkår';
 import {
     datoForLovendringAugust24,
     type IIsoDatoPeriode,
     isoStringTilDateEllerUndefinedHvisUgyldigDato,
 } from '../../../../../../utils/dato';
+import Datovelger from '../../../../../Felleskomponenter/Datovelger/Datovelger';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -50,7 +53,13 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     lovverk,
     lesevisning,
 }: BarnetsAlderProps) => {
-    const { felter } = useBarnetsAlder(vilkårResultat, person, lovverk);
+    const { toggles } = useApp();
+    const { felter } = useBarnetsAlder(
+        vilkårResultat,
+        person,
+        lovverk,
+        toggles[ToggleNavn.stotterAdopsjon]
+    );
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
     const spørsmål = hentSpørsmålForLovverk(
         lovverk,
@@ -68,6 +77,17 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
             toggleForm={toggleForm}
             person={person}
             lesevisning={lesevisning}
+            utdypendeVilkårsvurderingChildren={
+                felter.adopsjonsdato.erSynlig ? (
+                    <Datovelger
+                        felt={felter.adopsjonsdato}
+                        label="Adopsjonsdato"
+                        visFeilmeldinger={vilkårSkjemaContext.skjema.visFeilmeldinger}
+                        kanKunVelgeFortid
+                        readOnly={lesevisning}
+                    />
+                ) : null
+            }
         >
             <RadioGroup
                 readOnly={lesevisning}

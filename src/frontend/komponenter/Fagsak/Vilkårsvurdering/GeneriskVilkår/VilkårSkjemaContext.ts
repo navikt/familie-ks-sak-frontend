@@ -9,7 +9,7 @@ import type { Begrunnelse } from '../../../../typer/vedtak';
 import type { IEndreVilkårResultat, Regelverk } from '../../../../typer/vilkår';
 import type { Resultat, UtdypendeVilkårsvurdering } from '../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../typer/vilkår';
-import type { IIsoDatoPeriode } from '../../../../utils/dato';
+import { dateTilIsoDatoStringEllerUndefined, type IIsoDatoPeriode } from '../../../../utils/dato';
 import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
 
 export interface IVilkårSkjemaContext {
@@ -22,6 +22,7 @@ export interface IVilkårSkjemaContext {
     avslagBegrunnelser: Begrunnelse[];
     antallTimer?: string;
     søkerHarMeldtFraOmBarnehageplass?: boolean;
+    adopsjonsdato?: Date;
 }
 
 export interface VilkårSkjemaContextValue<T extends IVilkårSkjemaContext> {
@@ -56,6 +57,9 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
             settVisfeilmeldinger(false);
             const endreVilkårResultat: IEndreVilkårResultat = {
                 personIdent: person.personIdent,
+                adopsjonsdato: dateTilIsoDatoStringEllerUndefined(
+                    skjema.felter.adopsjonsdato?.verdi
+                ),
                 endretVilkårResultat: {
                     begrunnelse: skjema.felter.begrunnelse.verdi,
                     behandlingId: vilkår.behandlingId,
