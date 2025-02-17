@@ -101,6 +101,7 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
                                     {personResultat.person.registerhistorikk ? (
                                         <Registeropplysninger
                                             opplysninger={personResultat.person.registerhistorikk}
+                                            fødselsdato={personResultat.person.fødselsdato}
                                         />
                                     ) : (
                                         <Alert

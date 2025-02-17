@@ -27,10 +27,10 @@ app.post('/familie-ks-sak/api/oppgave/hent-oppgaver', (_, res) => {
     res.status(200).send(oppgaveMock);
 });
 
-app.get('/familie-ks-sak/api/fagsaker/*/hent-klagebehandlinger', (_, res) => {
+app.get('/familie-ks-sak/api/fagsaker/*splat/hent-klagebehandlinger', (_, res) => {
     res.status(200).send(byggDataRessurs([klagebehandlingFixture()]));
 });
-app.get('/familie-ks-sak/api/fagsaker/*', (_, res) => {
+app.get('/familie-ks-sak/api/fagsaker/*splat', (_, res) => {
     res.status(200).send(fagsakMock);
 });
 app.get('/familie-ks-sak/api/person', (_, res) => {
@@ -39,7 +39,7 @@ app.get('/familie-ks-sak/api/person', (_, res) => {
 app.get('/user/profile', (_, res) => {
     res.status(200).send(profileMock);
 });
-app.get('*', (_: Request, res: Response) => {
+app.get('*splat', (_: Request, res: Response) => {
     res.sendFile('index.html', { root: path.join(process.cwd(), 'frontend_production') });
 });
 
