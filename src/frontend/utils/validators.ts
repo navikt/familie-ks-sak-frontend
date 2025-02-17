@@ -8,7 +8,6 @@ import {
     isSameDay,
     isValid,
     parseISO,
-    setMonth,
     subDays,
 } from 'date-fns';
 
@@ -24,6 +23,7 @@ import {
     isoStringTilDate,
 } from './dato';
 import { utledLovverk } from './lovverk';
+import { validerAdopsjonPåBarnetsAlder } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/Vilkår/BarnetsAlder/BarnetsAlderValidering';
 import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
 import { Lovverk } from '../typer/lovverk';
 import type { IGrunnlagPerson } from '../typer/person';
@@ -52,12 +52,6 @@ export const identValidator = (identFelt: FeltState<string>): FeltState<string> 
     return validerIdent(identFelt);
 };
 
-const tomEtterAugustÅretBarnetFyller6 = (person: IGrunnlagPerson, tom?: Date): boolean => {
-    const datoBarnetFyller6 = addYears(isoStringTilDate(person.fødselsdato), 6);
-    const datoSeptemberÅretBarnetFyller6 = setMonth(datoBarnetFyller6, 8);
-    return tom ? isAfter(tom, datoSeptemberÅretBarnetFyller6) : false;
-};
-
 const datoErPersonsXÅrsdag = (person: IGrunnlagPerson, dato: Date, antallÅr: number) => {
     const personsXÅrsdag = addYears(isoStringTilDate(person.fødselsdato), antallÅr);
     return isSameDay(dato, personsXÅrsdag);
@@ -76,16 +70,6 @@ const datoErPersonsDødsfallsdag = (person: IGrunnlagPerson, dato: Date) => {
     const personsDødsfallsdag = person.dødsfallDato;
 
     return !!personsDødsfallsdag && isSameDay(dato, isoStringTilDate(personsDødsfallsdag));
-};
-
-const datoDifferanseMerEnn1År = (fom: Date, tom: Date) => {
-    const fomDatoPluss1År = addYears(fom, 1);
-    return isBefore(fomDatoPluss1År, tom);
-};
-
-const datoDifferanseMerEnnXAntallMåneder = (fom: Date, tom: Date, antallMåneder: number) => {
-    const fomDatoPlussXAntallMåneder = addMonths(fom, antallMåneder);
-    return isBefore(fomDatoPlussXAntallMåneder, tom);
 };
 
 const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Date) => {
@@ -160,48 +144,17 @@ export const erPeriodeGyldig = (
                     );
 
                     if (erAdopsjon) {
-                        if (tomEtterAugustÅretBarnetFyller6(person, tom)) {
-                            return feil(
-                                felt,
-                                'Du kan ikke sette en t.o.m dato som er etter august året barnet fyller 6 år'
-                            );
-                        }
-
-                        if (adopsjonsdato && isBefore(fom, adopsjonsdato)) {
-                            return feil(felt, 'F.o.m.-datoen kan ikke være før adopsjonsdatoen');
-                        }
-
-                        switch (lovverk) {
-                            case Lovverk.LOVENDRING_FEBRUAR_2025:
-                                if (datoDifferanseMerEnnXAntallMåneder(fom, tom, 8)) {
-                                    return feil(
-                                        felt,
-                                        'Differansen mellom f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 8 måneder'
-                                    );
-                                }
-                                break;
-                            case Lovverk.FØR_LOVENDRING_2025:
-                                if (isBefore(tom, datoForLovendringAugust24)) {
-                                    if (datoDifferanseMerEnn1År(fom, tom)) {
-                                        return feil(
-                                            felt,
-                                            'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
-                                        );
-                                    }
-                                } else {
-                                    if (
-                                        datoDifferanseMerEnnXAntallMåneder(
-                                            førsteFomPåVilkåret,
-                                            tom,
-                                            6
-                                        )
-                                    ) {
-                                        return feil(
-                                            felt,
-                                            'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 6 måneder'
-                                        );
-                                    }
-                                }
+                        const feilMedAdopsjonPåBarnetsAlder = validerAdopsjonPåBarnetsAlder(
+                            felt,
+                            person,
+                            adopsjonsdato,
+                            lovverk,
+                            fom,
+                            tom,
+                            førsteFomPåVilkåret
+                        );
+                        if (feilMedAdopsjonPåBarnetsAlder !== undefined) {
+                            return feilMedAdopsjonPåBarnetsAlder;
                         }
                     } else {
                         if (lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
