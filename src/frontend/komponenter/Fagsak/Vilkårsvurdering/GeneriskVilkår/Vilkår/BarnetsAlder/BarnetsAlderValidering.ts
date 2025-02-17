@@ -83,15 +83,25 @@ const datoErPersonsDødsfallsdag = (person: IGrunnlagPerson, dato: Date) => {
     return !!personsDødsfallsdag && isSameDay(dato, isoStringTilDate(personsDødsfallsdag));
 };
 
-export const validerAdopsjonPåBarnetsAlder = (
-    felt: FeltState<IIsoDatoPeriode>,
-    person: IGrunnlagPerson,
-    adopsjonsdato: Date | undefined,
-    lovverk: Lovverk,
-    fom: Date,
-    tom: Date,
-    førsteFomPåVilkåret: Date
-): FeltState<IIsoDatoPeriode> | undefined => {
+interface ValiderAdopsjonPåBarnetsAlderProps {
+    felt: FeltState<IIsoDatoPeriode>;
+    person: IGrunnlagPerson;
+    adopsjonsdato: Date | undefined;
+    lovverk: Lovverk;
+    fom: Date;
+    tom: Date;
+    førsteFomPåVilkåret: Date;
+}
+
+export const validerAdopsjonPåBarnetsAlder = ({
+    felt,
+    person,
+    adopsjonsdato,
+    lovverk,
+    fom,
+    tom,
+    førsteFomPåVilkåret,
+}: ValiderAdopsjonPåBarnetsAlderProps): FeltState<IIsoDatoPeriode> | undefined => {
     if (tomEtterAugustÅretBarnetFyller6(person, tom)) {
         return feil(
             felt,
@@ -150,8 +160,6 @@ export const validerPeriodePåBarnetsAlder = ({
     tom,
     førsteLagredeFom,
 }: ValiderPeriodePåBarnetsAlderProps): FeltState<IIsoDatoPeriode> | undefined => {
-    const førsteFomPåVilkåret: Date = førsteLagredeFom ? isoStringTilDate(førsteLagredeFom) : fom;
-
     if (!tom) {
         return feil(felt, 'Det må registreres en t.o.m dato');
     }
@@ -159,15 +167,15 @@ export const validerPeriodePåBarnetsAlder = ({
     const lovverk = utledLovverk(isoStringTilDate(person.fødselsdato), adopsjonsdato);
 
     if (erAdopsjon) {
-        const feilMedAdopsjonPåBarnetsAlder = validerAdopsjonPåBarnetsAlder(
+        const feilMedAdopsjonPåBarnetsAlder = validerAdopsjonPåBarnetsAlder({
             felt,
             person,
             adopsjonsdato,
             lovverk,
             fom,
             tom,
-            førsteFomPåVilkåret
-        );
+            førsteFomPåVilkåret: førsteLagredeFom ? isoStringTilDate(førsteLagredeFom) : fom,
+        });
         if (feilMedAdopsjonPåBarnetsAlder !== undefined) {
             return feilMedAdopsjonPåBarnetsAlder;
         }
