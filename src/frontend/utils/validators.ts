@@ -167,23 +167,41 @@ export const erPeriodeGyldig = (
                             );
                         }
 
-                        if (isBefore(tom, datoForLovendringAugust24)) {
-                            if (tom && datoDifferanseMerEnn1År(fom, tom)) {
-                                return feil(
-                                    felt,
-                                    'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
-                                );
-                            }
-                        } else {
-                            if (
-                                tom &&
-                                datoDifferanseMerEnnXAntallMåneder(førsteFomPåVilkåret, tom, 6)
-                            ) {
-                                return feil(
-                                    felt,
-                                    'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 6 måneder'
-                                );
-                            }
+                        if (adopsjonsdato && isBefore(fom, adopsjonsdato)) {
+                            return feil(felt, 'F.o.m.-datoen kan ikke være før adopsjonsdatoen');
+                        }
+
+                        switch (lovverk) {
+                            case Lovverk.LOVENDRING_FEBRUAR_2025:
+                                if (datoDifferanseMerEnnXAntallMåneder(fom, tom, 8)) {
+                                    return feil(
+                                        felt,
+                                        'Differansen mellom f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 8 måneder'
+                                    );
+                                }
+                                break;
+                            case Lovverk.FØR_LOVENDRING_2025:
+                                if (isBefore(tom, datoForLovendringAugust24)) {
+                                    if (datoDifferanseMerEnn1År(fom, tom)) {
+                                        return feil(
+                                            felt,
+                                            'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
+                                        );
+                                    }
+                                } else {
+                                    if (
+                                        datoDifferanseMerEnnXAntallMåneder(
+                                            førsteFomPåVilkåret,
+                                            tom,
+                                            6
+                                        )
+                                    ) {
+                                        return feil(
+                                            felt,
+                                            'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 6 måneder'
+                                        );
+                                    }
+                                }
                         }
                     } else {
                         if (lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
