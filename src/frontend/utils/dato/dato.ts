@@ -23,8 +23,6 @@ export const tidenesEnde = new Date(3000, 1, 1);
 
 export const datoForLovendringAugust24 = startOfDay(new Date(2024, 7, 1));
 
-export const fødselsdatoGrenseLovendringFebruar2025 = startOfDay(new Date(2024, 1, 1));
-
 export enum Datoformat {
     DATO = 'dd.MM.yyyy',
     DATO_FORKORTTET = 'dd.MM.yy',

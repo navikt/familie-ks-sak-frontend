@@ -12,7 +12,6 @@ import {
     type IIsoDatoPeriode,
     isoStringTilDateEllerUndefinedHvisUgyldigDato,
 } from '../../../../../../utils/dato';
-import { utledLovverkMedAdopsjonsdato } from '../../../../../../utils/lovverk';
 import Datovelger from '../../../../../Felleskomponenter/Datovelger/Datovelger';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
@@ -33,17 +32,11 @@ const hentSpørsmålForLovverkFør2025 = (periode: IIsoDatoPeriode) => {
     }
 };
 
-const hentSpørsmålForLovverk = (
-    lovverk: Lovverk | undefined,
-    adopsjonsdato: Date | undefined,
-    periode: IIsoDatoPeriode
-) => {
+const hentSpørsmålForLovverk = (lovverk: Lovverk | undefined, periode: IIsoDatoPeriode) => {
     if (!lovverk) {
         throw Error('Lovverk skal finnes på barnets alder');
     }
-    const lovverkOppdatertMedAdopsjonsdato = utledLovverkMedAdopsjonsdato(lovverk, adopsjonsdato);
-
-    if (lovverkOppdatertMedAdopsjonsdato === Lovverk.LOVENDRING_FEBRUAR_2025) {
+    if (lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
         return 'Er barnet mellom 12 og 20 måneder eller adoptert?';
     } else {
         return hentSpørsmålForLovverkFør2025(periode);
@@ -62,7 +55,6 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
     const spørsmål = hentSpørsmålForLovverk(
         lovverk,
-        felter.adopsjonsdato.verdi,
         vilkårSkjemaContext.skjema.felter.periode.verdi
     );
 
