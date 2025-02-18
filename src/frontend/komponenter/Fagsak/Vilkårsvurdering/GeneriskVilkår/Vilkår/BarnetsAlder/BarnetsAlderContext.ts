@@ -1,4 +1,8 @@
-import { useFelt } from '@navikt/familie-skjema';
+import { useEffect, useState } from 'react';
+
+import { isValid } from 'date-fns';
+
+import { feil, ok, useFelt, type Avhengigheter } from '@navikt/familie-skjema';
 
 import { erBegrunnelseGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BarnetsAlderValidering';
 import { useVilkårsvurdering } from '../../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
@@ -9,6 +13,7 @@ import { UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../../../../
 import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../typer/vilkår';
+import type { IsoDatoString } from '../../../../../../utils/dato';
 import { type IIsoDatoPeriode } from '../../../../../../utils/dato';
 import { sorterPåDato } from '../../../../../../utils/formatter';
 import {
@@ -25,7 +30,8 @@ export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = 
 export const useBarnetsAlder = (
     vilkår: IVilkårResultat,
     person: IGrunnlagPerson,
-    lovverk: Lovverk | undefined
+    lovverk: Lovverk | undefined,
+    støtterAdopsjon: boolean
 ) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
@@ -105,7 +111,48 @@ export const useBarnetsAlder = (
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
         }),
+        adopsjonsdato: useFelt<Date | undefined>({
+            verdi: undefined,
+            valideringsfunksjon: felt => {
+                if (!felt.verdi || !isValid(felt.verdi)) {
+                    return feil(felt, 'Adopsjonsdato må fylles ut når adopsjon er valgt');
+                } else {
+                    return ok(felt);
+                }
+            },
+            avhengigheter: { utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi },
+            nullstillVedAvhengighetEndring: false,
+            skalFeltetVises: (avhengigheter: Avhengigheter) =>
+                avhengigheter?.utdypendeVilkårsvurdering.includes(
+                    UtdypendeVilkårsvurderingGenerell.ADOPSJON
+                ) && støtterAdopsjon,
+        }),
     };
+
+    const [forrigeAdopsjonsdato, settForrigeAdopsjonsdato] = useState<IsoDatoString | undefined>();
+
+    const settAdopsjonsdatoFraBackend = () => {
+        felter.adopsjonsdato.validerOgSettFelt(
+            person.adopsjonsdato ? new Date(person.adopsjonsdato) : undefined
+        );
+    };
+
+    if (person.adopsjonsdato !== forrigeAdopsjonsdato) {
+        settForrigeAdopsjonsdato(person.adopsjonsdato);
+        settAdopsjonsdatoFraBackend();
+    }
+
+    useEffect(() => {
+        const utdypendeInneholderAdopsjon = felter.utdypendeVilkårsvurdering.verdi.includes(
+            UtdypendeVilkårsvurderingGenerell.ADOPSJON
+        );
+        if (utdypendeInneholderAdopsjon && !felter.adopsjonsdato.verdi) {
+            settAdopsjonsdatoFraBackend();
+        }
+        if (!utdypendeInneholderAdopsjon && felter.adopsjonsdato.verdi) {
+            felter.adopsjonsdato.nullstill();
+        }
+    }, [felter.utdypendeVilkårsvurdering.verdi]);
 
     return {
         felter,

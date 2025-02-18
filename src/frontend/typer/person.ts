@@ -40,6 +40,7 @@ export interface IGrunnlagPerson {
     type: PersonType;
     målform: Målform;
     dødsfallDato?: string;
+    adopsjonsdato?: string;
 }
 
 export interface IPersonInfo {

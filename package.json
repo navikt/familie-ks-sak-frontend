@@ -141,7 +141,7 @@
       }
     },
     "setupFilesAfterEnv": [
-      "<rootDir>/src/jest.setup.ts"
+      "<rootDir>/src/frontend/jest.setup.ts"
     ],
     "moduleNameMapper": {
       "\\.(css|svg)$": "<rootDir>/src/mockFile.js"
