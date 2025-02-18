@@ -33,6 +33,7 @@
     "@grafana/faro-web-sdk": "^1.13.1",
     "@navikt/aksel-icons": "7.12.2",
     "@navikt/ds-css": "^7.12.2",
+    "@navikt/ds-icons": "^2.2.0",
     "@navikt/ds-react": "^7.12.2",
     "@navikt/familie-backend": "^10.1.4",
     "@navikt/familie-form-elements": "^21.0.4",
