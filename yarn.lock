@@ -1858,10 +1858,10 @@
   resolved "https://npm.pkg.github.com/download/@navikt/hoykontrast/3.1.0/a57192249058e44959c3004e3551cfd8cde30c56aae5e9789602dce37459ecd2"
   integrity sha512-ZO7kPvFYucgriMoryT8dJ5gBpusAO4dvfop5J8e/TnpKW3qtjj8VVFmFxBVxEWLGDm8AyZXeI6n9FG7i7/etmQ==
 
-"@navikt/land-verktoy@^8.0.0":
-  version "8.0.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/land-verktoy/8.0.1/3da24db97e1262facd4b6c1b029309b2f3db75df#3da24db97e1262facd4b6c1b029309b2f3db75df"
-  integrity sha512-3IoWFcSo9UV1l7TxNS1kx3MLEl1bKFgLLEv7tRTFzQ+Ott+yg1qFbGNLSl9y9PlZz4y4T/Xj5lqCuC0w6pR1ew==
+"@navikt/land-verktoy@^3.2.10":
+  version "3.2.10"
+  resolved "https://npm.pkg.github.com/download/@navikt/land-verktoy/3.2.10/e77121939d18b82cb96a4eca7f208e4a37d714b5#e77121939d18b82cb96a4eca7f208e4a37d714b5"
+  integrity sha512-NsWuQLO0FxpMH6ElOx+SU9szWA2aA1twxmhry6oUttItuY4t4tC7XKzBll0fVuB/+5Rmv8h50adcLjWPUywPZQ==
   dependencies:
     "@piotrgorecki/i18n-currency-name" "^1.3.0"
     country-data-list "^1.2.2"
