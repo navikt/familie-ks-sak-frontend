@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { Table } from '@navikt/ds-react';
 
 import VilkårTabellRad from './VilkårTabellRad';
-import type { Lovverk } from '../../../../typer/lovverk';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
 
@@ -17,7 +16,6 @@ export const vilkårBegrunnelseFeilmeldingId = (vilkårResultat: IVilkårResulta
 
 interface IProps {
     person: IGrunnlagPerson;
-    lovverk: Lovverk | undefined;
     vilkårResultater: IVilkårResultat[];
     vilkårFraConfig: IVilkårConfig;
     settFokusPåKnapp: () => void;
@@ -43,7 +41,6 @@ const TabellHeader = styled(Table.HeaderCell)`
 
 const VilkårTabell: React.FC<IProps> = ({
     person,
-    lovverk,
     vilkårFraConfig,
     vilkårResultater,
     settFokusPåKnapp,
@@ -69,7 +66,6 @@ const VilkårTabell: React.FC<IProps> = ({
                             person={person}
                             vilkårResultat={vilkårResultat}
                             settFokusPåKnapp={settFokusPåKnapp}
-                            lovverk={lovverk}
                         />
                     );
                 })}

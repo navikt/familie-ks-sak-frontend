@@ -12,16 +12,14 @@ import { Resultat } from '../../../../../../typer/vilkår';
 import {
     datoForLovendringAugust24,
     type IIsoDatoPeriode,
+    isoStringTilDate,
     isoStringTilDateEllerUndefinedHvisUgyldigDato,
 } from '../../../../../../utils/dato';
+import { utledLovverk } from '../../../../../../utils/lovverk';
 import Datovelger from '../../../../../Felleskomponenter/Datovelger/Datovelger';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
-
-type BarnetsAlderProps = IVilkårSkjemaBaseProps & {
-    lovverk: Lovverk | undefined;
-};
 
 const hentSpørsmålForLovverkFør2025 = (periode: IIsoDatoPeriode) => {
     const fraOgMedDato = isoStringTilDateEllerUndefinedHvisUgyldigDato(periode.fom);
@@ -45,22 +43,20 @@ const hentSpørsmålForLovverk = (lovverk: Lovverk | undefined, periode: IIsoDat
     }
 };
 
+type BarnetsAlderProps = IVilkårSkjemaBaseProps;
+
 export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     vilkårResultat,
     vilkårFraConfig,
     toggleForm,
     person,
-    lovverk,
     lesevisning,
 }: BarnetsAlderProps) => {
     const { toggles } = useApp();
-    const { felter } = useBarnetsAlder(
-        vilkårResultat,
-        person,
-        lovverk,
-        toggles[ToggleNavn.stotterAdopsjon]
-    );
+    const { felter } = useBarnetsAlder(vilkårResultat, person, toggles[ToggleNavn.stotterAdopsjon]);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+
+    const lovverk = utledLovverk(isoStringTilDate(person.fødselsdato), felter.adopsjonsdato.verdi);
     const spørsmål = hentSpørsmålForLovverk(
         lovverk,
         vilkårSkjemaContext.skjema.felter.periode.verdi

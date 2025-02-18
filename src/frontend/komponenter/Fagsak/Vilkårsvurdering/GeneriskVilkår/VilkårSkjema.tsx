@@ -203,6 +203,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 resultat={skjema.felter.resultat}
                 visFeilmeldinger={skjema.visFeilmeldinger}
                 children={periodeChildren}
+                tomErPåkrevd={vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER}
             />
             <Textarea
                 readOnly={lesevisning}

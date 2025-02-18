@@ -66,7 +66,6 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                 return {
                     person,
                     personIdent: personResultat.personIdent,
-                    lovverk: personResultat.lovverk,
                     vilkårResultater: sorterVilkårsvurderingForPerson(
                         personResultat.vilkårResultater.map(
                             (vilkårResultat: IRestVilkårResultat) => {

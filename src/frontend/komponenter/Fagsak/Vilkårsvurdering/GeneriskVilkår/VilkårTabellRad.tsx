@@ -17,7 +17,6 @@ import { MedlemskapAnnenForelder } from './Vilkår/MedlemskapAnnenForelder/Medle
 import { vilkårFeilmeldingId } from './VilkårTabell';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import VilkårResultatIkon from '../../../../ikoner/VilkårResultatIkon';
-import type { Lovverk } from '../../../../typer/lovverk';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
 import { Resultat, uiResultat, VilkårType } from '../../../../typer/vilkår';
@@ -30,7 +29,6 @@ import { alleRegelverk } from '../../../../utils/vilkår';
 
 interface IProps {
     person: IGrunnlagPerson;
-    lovverk: Lovverk | undefined;
     vilkårFraConfig: IVilkårConfig;
     vilkårResultat: IVilkårResultat;
     settFokusPåKnapp: () => void;
@@ -75,12 +73,7 @@ const StyledPersonIcon = styled(PersonIcon)`
     min-width: 1.5rem;
 `;
 
-const VilkårTabellRad: React.FC<IProps> = ({
-    person,
-    vilkårFraConfig,
-    vilkårResultat,
-    lovverk,
-}) => {
+const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårResultat }) => {
     const { vurderErLesevisning, åpenBehandling, behandlingPåVent } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
@@ -174,7 +167,6 @@ const VilkårTabellRad: React.FC<IProps> = ({
                         vilkårFraConfig={vilkårFraConfig}
                         toggleForm={toggleForm}
                         person={person}
-                        lovverk={lovverk}
                         lesevisning={erLesevisning}
                     />
                 );

@@ -1,6 +1,5 @@
 import {
     addMonths,
-    addYears,
     endOfMonth,
     isAfter,
     isBefore,
@@ -8,8 +7,6 @@ import {
     isSameDay,
     isValid,
     parseISO,
-    setMonth,
-    subDays,
 } from 'date-fns';
 
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
@@ -20,11 +17,10 @@ import {
     dagensDato,
     datoForLovendringAugust24,
     type IIsoDatoPeriode,
-    type IsoDatoString,
     isoStringTilDate,
 } from './dato';
+import { validerPeriodePåBarnetsAlder } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/Vilkår/BarnetsAlder/BarnetsAlderValidering';
 import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
-import { Lovverk } from '../typer/lovverk';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import { IEndretUtbetalingAndelÅrsak } from '../typer/utbetalingAndel';
@@ -49,42 +45,6 @@ export const identValidator = (identFelt: FeltState<string>): FeltState<string> 
     }
 
     return validerIdent(identFelt);
-};
-
-const tomEtterAugustÅretBarnetFyller6 = (person: IGrunnlagPerson, tom?: Date): boolean => {
-    const datoBarnetFyller6 = addYears(isoStringTilDate(person.fødselsdato), 6);
-    const datoSeptemberÅretBarnetFyller6 = setMonth(datoBarnetFyller6, 8);
-    return tom ? isAfter(tom, datoSeptemberÅretBarnetFyller6) : false;
-};
-
-const datoErPersonsXÅrsdag = (person: IGrunnlagPerson, dato: Date, antallÅr: number) => {
-    const personsXÅrsdag = addYears(isoStringTilDate(person.fødselsdato), antallÅr);
-    return isSameDay(dato, personsXÅrsdag);
-};
-
-const datoErXAntallMånederEtterFødselsdato = (
-    person: IGrunnlagPerson,
-    dato: Date,
-    antallMåneder: number
-) => {
-    const personsXÅrsdag = addMonths(isoStringTilDate(person.fødselsdato), antallMåneder);
-    return isSameDay(dato, personsXÅrsdag);
-};
-
-const datoErPersonsDødsfallsdag = (person: IGrunnlagPerson, dato: Date) => {
-    const personsDødsfallsdag = person.dødsfallDato;
-
-    return !!personsDødsfallsdag && isSameDay(dato, isoStringTilDate(personsDødsfallsdag));
-};
-
-const datoDifferanseMerEnn1År = (fom: Date, tom: Date) => {
-    const fomDatoPluss1År = addYears(fom, 1);
-    return isBefore(fomDatoPluss1År, tom);
-};
-
-const datoDifferanseMerEnnXAntallMåneder = (fom: Date, tom: Date, antallMåneder: number) => {
-    const fomDatoPlussXAntallMåneder = addMonths(fom, antallMåneder);
-    return isBefore(fomDatoPlussXAntallMåneder, tom);
 };
 
 const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Date) => {
@@ -138,96 +98,21 @@ export const erPeriodeGyldig = (
                     return feil(felt, 'Du kan ikke legge til periode før barnets fødselsdato');
                 }
                 if (erBarnetsAlderVilkår) {
-                    const førsteLagredeFom: IsoDatoString | undefined =
-                        avhengigheter?.førsteLagredeFom;
+                    const feilPåBarnetsAlder = validerPeriodePåBarnetsAlder({
+                        felt,
+                        person,
+                        adopsjonsdato: avhengigheter?.adopsjonsdato,
+                        erAdopsjon:
+                            utdypendeVilkårsvurdering?.includes(
+                                UtdypendeVilkårsvurderingGenerell.ADOPSJON
+                            ) ?? false,
+                        fom,
+                        tom,
+                        førsteLagredeFom: avhengigheter?.førsteLagredeFom,
+                    });
 
-                    const førsteFomPåVilkåret: Date = førsteLagredeFom
-                        ? isoStringTilDate(førsteLagredeFom)
-                        : fom;
-
-                    const erAdopsjon = utdypendeVilkårsvurdering?.includes(
-                        UtdypendeVilkårsvurderingGenerell.ADOPSJON
-                    );
-                    if (!tom) {
-                        return feil(felt, 'Det må registreres en t.o.m dato');
-                    }
-
-                    if (erAdopsjon) {
-                        if (tomEtterAugustÅretBarnetFyller6(person, tom)) {
-                            return feil(
-                                felt,
-                                'Du kan ikke sette en t.o.m dato som er etter august året barnet fyller 6 år'
-                            );
-                        }
-
-                        if (isBefore(tom, datoForLovendringAugust24)) {
-                            if (tom && datoDifferanseMerEnn1År(fom, tom)) {
-                                return feil(
-                                    felt,
-                                    'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
-                                );
-                            }
-                        } else {
-                            if (
-                                tom &&
-                                datoDifferanseMerEnnXAntallMåneder(førsteFomPåVilkåret, tom, 6)
-                            ) {
-                                return feil(
-                                    felt,
-                                    'Differansen mellom tidligste f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 6 måneder'
-                                );
-                            }
-                        }
-                    } else {
-                        if (avhengigheter?.lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
-                            if (!datoErPersonsXÅrsdag(person, fom, 1)) {
-                                return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
-                            }
-
-                            if (
-                                !datoErXAntallMånederEtterFødselsdato(person, tom, 20) &&
-                                !datoErPersonsDødsfallsdag(person, tom)
-                            ) {
-                                return feil(
-                                    felt,
-                                    'T.o.m datoen må være lik datoen barnet fyller 20 måneder'
-                                );
-                            }
-                        } else {
-                            if (isBefore(tom, datoForLovendringAugust24)) {
-                                if (!datoErPersonsXÅrsdag(person, fom, 1)) {
-                                    return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
-                                }
-                                if (
-                                    tom &&
-                                    !datoErPersonsXÅrsdag(person, tom, 2) &&
-                                    !isSameDay(tom, subDays(datoForLovendringAugust24, 1)) &&
-                                    !datoErPersonsDødsfallsdag(person, tom)
-                                ) {
-                                    return feil(felt, 'T.o.m datoen må være lik barnets 2 års dag');
-                                }
-                            } else {
-                                if (
-                                    !datoErXAntallMånederEtterFødselsdato(person, fom, 13) &&
-                                    !isSameDay(fom, datoForLovendringAugust24)
-                                ) {
-                                    return feil(
-                                        felt,
-                                        'F.o.m datoen må være lik datoen barnet fyller 13 måneder'
-                                    );
-                                }
-                                if (
-                                    tom &&
-                                    !datoErXAntallMånederEtterFødselsdato(person, tom, 19) &&
-                                    !datoErPersonsDødsfallsdag(person, tom)
-                                ) {
-                                    return feil(
-                                        felt,
-                                        'T.o.m datoen må være lik datoen barnet fyller 19 måneder'
-                                    );
-                                }
-                            }
-                        }
+                    if (feilPåBarnetsAlder !== undefined) {
+                        return feilPåBarnetsAlder;
                     }
                 }
             }
