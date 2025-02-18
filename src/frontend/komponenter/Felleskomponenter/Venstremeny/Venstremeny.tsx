@@ -84,6 +84,15 @@ const Venstremeny: React.FunctionComponent = () => {
     const { åpenBehandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } =
         useBehandling();
 
+    const stansNavigeringDersomSidenIkkeErAktiv = (
+        event: React.MouseEvent,
+        sidenErAktiv: boolean
+    ) => {
+        if (!sidenErAktiv) {
+            event.preventDefault();
+        }
+    };
+
     return (
         <HStack justify="start">
             {åpenVenstremeny && (
@@ -96,13 +105,20 @@ const Venstremeny: React.FunctionComponent = () => {
                                 ? side.undersider(åpenBehandling.data)
                                 : [];
 
+                            const sidenErAktiv = erSidenAktiv(side, åpenBehandling.data);
+
                             return (
                                 <VStack key={sideId}>
                                     <MenyLenke
                                         id={sideId}
                                         to={tilPath}
-                                        $erLenkenAktiv={erSidenAktiv(side, åpenBehandling.data)}
-                                        className={({ isActive }) => (isActive ? 'active' : '')}
+                                        $erLenkenAktiv={sidenErAktiv}
+                                        onClick={event =>
+                                            stansNavigeringDersomSidenIkkeErAktiv(
+                                                event,
+                                                sidenErAktiv
+                                            )
+                                        }
                                     >
                                         {`${side.steg ? `${index + 1}. ` : ''}${side.navn}`}
                                     </MenyLenke>
@@ -114,12 +130,12 @@ const Venstremeny: React.FunctionComponent = () => {
                                                 key={`${sideId}_${underside.hash}`}
                                                 id={`${sideId}_${underside.hash}`}
                                                 to={`${tilPath}#${underside.hash}`}
-                                                $erLenkenAktiv={erSidenAktiv(
-                                                    side,
-                                                    åpenBehandling.data
-                                                )}
-                                                className={({ isActive }) =>
-                                                    isActive ? 'active' : ''
+                                                $erLenkenAktiv={sidenErAktiv}
+                                                onClick={event =>
+                                                    stansNavigeringDersomSidenIkkeErAktiv(
+                                                        event,
+                                                        sidenErAktiv
+                                                    )
                                                 }
                                             >
                                                 <HStack align="center" gap="1">
