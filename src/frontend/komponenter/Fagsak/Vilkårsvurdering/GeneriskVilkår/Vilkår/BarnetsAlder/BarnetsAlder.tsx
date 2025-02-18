@@ -43,13 +43,15 @@ const hentSpørsmålForLovverk = (lovverk: Lovverk | undefined, periode: IIsoDat
     }
 };
 
-export const BarnetsAlder: React.FC<IVilkårSkjemaBaseProps> = ({
+type BarnetsAlderProps = IVilkårSkjemaBaseProps;
+
+export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     vilkårResultat,
     vilkårFraConfig,
     toggleForm,
     person,
     lesevisning,
-}: IVilkårSkjemaBaseProps) => {
+}: BarnetsAlderProps) => {
     const { toggles } = useApp();
     const { felter } = useBarnetsAlder(vilkårResultat, person, toggles[ToggleNavn.stotterAdopsjon]);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
