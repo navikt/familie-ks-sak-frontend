@@ -42,7 +42,7 @@ const Environment = () => {
         buildPath: 'frontend_production',
         namespace: 'production',
         proxyUrl: 'http://familie-ks-sak/api',
-        familieTilbakeUrl: 'https://familietilbakekreving.intern.nav.no',
+        familieTilbakeUrl: 'https://tilbakekreving.intern.nav.no',
         familieKlageUrl: 'https://familie-klage.intern.nav.no',
     };
 };
