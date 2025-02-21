@@ -2109,13 +2109,16 @@
     "@navikt/familie-typer" "^8.0.2"
     classnames "^2.5.1"
 
-"@navikt/flagg-ikoner@^3.2.7":
-  version "3.2.7"
-  resolved "https://npm.pkg.github.com/download/@navikt/flagg-ikoner/3.2.7/14809a69ed573ebe9ae05666b25b23a70bd9286c#14809a69ed573ebe9ae05666b25b23a70bd9286c"
-  integrity sha512-ENe/LokFTw1/ihJ+trQeb0ta0b+plj9I4kjIAR7Pd9tyNMtOHd/X+H0S2tQxDznwzyM6nd6uPh09sSQgxB1bLg==
+"@navikt/flagg-ikoner@^9.0.6":
+  version "9.0.6"
+  resolved "https://npm.pkg.github.com/download/@navikt/flagg-ikoner/9.0.6/7bb7758afd751d14b4fe077daf136147f58f9a1a#7bb7758afd751d14b4fe077daf136147f58f9a1a"
+  integrity sha512-ZsG1jL6yqwsh5/HO9lwgTYy6bH5Tm+oZYyEJl5DnvqlfBRZECC22bTprrvqEsJBCiwC+9NbOOrvVHOniZSQEGw==
   dependencies:
+    "@vitejs/plugin-react" "^4.3.4"
     svg-country-flags "^1.2.10"
     uuid "^9.0.0"
+    vite "^6.0.11"
+    vite-tsconfig-paths "^5.1.4"
 
 "@navikt/fnrvalidator@^2.1.5":
   version "2.1.5"
@@ -11203,7 +11206,7 @@ vite@^5.4.14:
   optionalDependencies:
     fsevents "~2.3.3"
 
-vite@^6.0.9:
+vite@^6.0.11, vite@^6.0.9:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/vite/-/vite-6.1.1.tgz#c1f221749298357b9230782a04483e60ad83c8db"
   integrity sha512-4GgM54XrwRfrOp297aIYspIti66k56v16ZnqHvrIM7mG+HjDlAwS7p+Srr7J6fGvEdOJ5JcQ/D9T7HhtdXDTzA==
