@@ -41,5 +41,5 @@ jobs:
     with:
       image: ${{ needs.build.outputs.image }}
       cluster: ${{ inputs.environment }}-gcp
-      resource: build_n_deploy/naiserator/gcp-${{ inputs.environment }}.yaml
+      resource: build_n_deploy/naiserator/app-${{ inputs.environment }}.yaml
     secrets: inherit
