@@ -25,7 +25,7 @@ jobs:
       contents: read
       packages: write
       id-token: write
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/build-yarn-app.yml@main
+    uses: navikt/familie-baks-gha-workflows/.github/workflows/build-yarn-app.yaml@main
     with:
       build-image: true
       push-image: true
@@ -37,7 +37,7 @@ jobs:
     permissions:
       id-token: write
     needs: [ build ]
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yml@main
+    uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main
     with:
       image: ${{ needs.build.outputs.image }}
       cluster: ${{ inputs.environment }}-gcp
