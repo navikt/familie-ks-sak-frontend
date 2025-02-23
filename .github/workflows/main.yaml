@@ -37,7 +37,7 @@ jobs:
     with:
       image: ${{ needs.build.outputs.image }}
       cluster: dev-gcp
-      resource: build_n_deploy/naiserator/gcp-dev.yaml
+      resource: build_n_deploy/naiserator/app-dev.yaml
     secrets: inherit
   deploy-prod:
     name: Deploy prod
@@ -48,5 +48,5 @@ jobs:
     with:
       image: ${{ needs.build.outputs.image }}
       cluster: prod-gcp
-      resource: build_n_deploy/naiserator/prod-dev.yaml
+      resource: build_n_deploy/naiserator/app-prod.yaml
     secrets: inherit
