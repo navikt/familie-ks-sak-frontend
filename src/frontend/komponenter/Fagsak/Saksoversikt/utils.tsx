@@ -2,9 +2,10 @@ import type { ReactNode } from 'react';
 import React from 'react';
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
-import { Link } from '@navikt/ds-react';
+import { HStack, Link, Tooltip } from '@navikt/ds-react';
 
 import type { VisningBehandling } from './visningBehandling';
+import StatusIkon, { Status } from '../../../ikoner/StatusIkon';
 import {
     behandlingsresultater,
     BehandlingStatus,
@@ -15,7 +16,7 @@ import {
 import type { IBehandlingstema } from '../../../typer/behandlingstema';
 import { tilBehandlingstema } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
-import type { IKlagebehandling } from '../../../typer/klage';
+import { type IKlagebehandling, KlageService } from '../../../typer/klage';
 import { Klagebehandlingstype } from '../../../typer/klage';
 import type { ITilbakekrevingsbehandling } from '../../../typer/tilbakekrevingsbehandling';
 import {
@@ -180,14 +181,39 @@ export const lagLenkePåResultat = (
             );
         case Saksoversiktstype.KLAGE:
             return (
-                <Link
-                    href={`/redirect/familie-klage/behandling/${behandling.id}`}
-                    onMouseDown={e => e.preventDefault()}
-                    target="_blank"
-                >
-                    <span>{behandlingsresultater[behandling.resultat]}</span>
-                    <ExternalLinkIcon fontSize={'1.5rem'} />
-                </Link>
+                <HStack gap={'2'}>
+                    <Link
+                        href={`/redirect/familie-klage/behandling/${behandling.id}`}
+                        onMouseDown={event => event.preventDefault()}
+                        target={'_blank'}
+                    >
+                        <span>{KlageService.utledKlagebehandlingResultattekst(behandling)}</span>
+                        <ExternalLinkIcon fontSize={'1.5rem'} />
+                    </Link>
+                    {KlageService.harAnkeEksistertPåKlagebehandling(behandling) && (
+                        <Tooltip
+                            content={
+                                'Det finnes informasjon om anke på denne klagen. ' +
+                                'Gå inn på klagebehandlingens resultatside for å se detaljer.'
+                            }
+                        >
+                            <StatusIkon status={Status.ADVARSEL} />
+                        </Tooltip>
+                    )}
+                    {KlageService.erKlageFeilregistrertAvKA(behandling) && (
+                        <Tooltip
+                            content={
+                                'Klagen er feilregistrert av NAV klageinstans. ' +
+                                'Gå inn på klagebehandlingens resultatside for å se detaljer'
+                            }
+                        >
+                            <StatusIkon
+                                status={Status.ADVARSEL}
+                                title={'Behandling feilregistrert av NAV klageinstans'}
+                            />
+                        </Tooltip>
+                    )}
+                </HStack>
             );
     }
 };
