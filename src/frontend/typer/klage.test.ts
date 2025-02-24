@@ -65,7 +65,7 @@ describe('KlageService', () => {
         });
     });
 
-    describe('UtledKlageBehandlingsresultattekst', () => {
+    describe('UtledKlagebehandlingResultattekst', () => {
         const alleKlageinstansUtfall = Testdata.lagAlleKlageinstansUtfall();
         const alleKlageResultat = Testdata.lagAlleKlageResultat();
 
