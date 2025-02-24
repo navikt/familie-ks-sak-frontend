@@ -5,9 +5,7 @@ import { isBefore } from 'date-fns';
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
-import { useApp } from '../../../../../../context/AppContext';
 import { Lovverk } from '../../../../../../typer/lovverk';
-import { ToggleNavn } from '../../../../../../typer/toggles';
 import { Resultat } from '../../../../../../typer/vilkår';
 import {
     datoForLovendringAugust24,
@@ -52,8 +50,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     person,
     lesevisning,
 }: BarnetsAlderProps) => {
-    const { toggles } = useApp();
-    const { felter } = useBarnetsAlder(vilkårResultat, person, toggles[ToggleNavn.stotterAdopsjon]);
+    const { felter } = useBarnetsAlder(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
 
     const lovverk = utledLovverk(isoStringTilDate(person.fødselsdato), felter.adopsjonsdato.verdi);
