@@ -84,7 +84,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
 
         const barnMedOpplysningerFraBruker = hentBarnMedOpplysningerFraBruker();
 
-        const barnSøktFor = useFelt<IBarnMedOpplysninger[]>({
+        const barnIBrev = useFelt<IBarnMedOpplysninger[]>({
             verdi: barnMedOpplysningerFraBruker,
             valideringsfunksjon: felt => {
                 return felt.verdi.some((barn: IBarnMedOpplysninger) => barn.merket)
@@ -111,21 +111,21 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
             {
                 årsak: DokumentÅrsak | undefined;
                 målform: Målform | undefined;
-                barnSøktFor: IBarnMedOpplysninger[];
+                barnIBrev: IBarnMedOpplysninger[];
             },
             string
         >({
             felter: {
                 årsak: årsak,
                 målform: målform,
-                barnSøktFor: barnSøktFor,
+                barnIBrev: barnIBrev,
             },
             skjemanavn: 'Dokumentutsending',
         });
 
         const nullstillSkjemaUtenomÅrsak = () => {
             skjema.felter.målform.nullstill();
-            skjema.felter.barnSøktFor.nullstill();
+            skjema.felter.barnIBrev.nullstill();
         };
 
         const nullstillSkjema = () => {
@@ -148,17 +148,17 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                             manuelleBrevmottakerePåFagsak,
                         });
                     case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING:
-                        return hentBarnSøktForSkjemaData(
+                        return hentBarnIBrevSkjemaData(
                             Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING,
                             målform.verdi ?? Målform.NB
                         );
                     case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER:
-                        return hentBarnSøktForSkjemaData(
+                        return hentBarnIBrevSkjemaData(
                             Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
                             målform.verdi ?? Målform.NB
                         );
                     case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER:
-                        return hentBarnSøktForSkjemaData(
+                        return hentBarnIBrevSkjemaData(
                             Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER,
                             målform.verdi ?? Målform.NB
                         );
@@ -201,12 +201,12 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
             }
         };
 
-        const hentBarnSøktForSkjemaData = (
+        const hentBarnIBrevSkjemaData = (
             brevmal: Informasjonsbrev,
             målform: Målform
         ): IManueltBrevRequestPåFagsak => {
             if (bruker.status === RessursStatus.SUKSESS) {
-                const barnIBrev = skjema.felter.barnSøktFor.verdi.filter(barn => barn.merket);
+                const barnIBrev = skjema.felter.barnIBrev.verdi.filter(barn => barn.merket);
 
                 return {
                     mottakerIdent: bruker.data.personIdent,

@@ -6,7 +6,7 @@ import { FileTextIcon } from '@navikt/aksel-icons';
 import { Alert, Button, Fieldset, Heading, Label, Select } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import BarnSøktForSkjema from './BarnSøktFor/BarnSøktForSkjema';
+import BarnIBrevSkjema from './BarnIBrev/BarnIBrevSkjema';
 import {
     dokumentÅrsak,
     DokumentÅrsak,
@@ -71,7 +71,7 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
 
     const årsakVerdi = skjema.felter.årsak.verdi;
 
-    const barnSøktForÅrsaker = [
+    const barnIBrevÅrsaker = [
         DokumentÅrsak.KAN_SØKE_EØS,
         DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
         DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING,
@@ -120,9 +120,9 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
                 </Select>
 
                 <FeltMargin>
-                    {årsakVerdi !== undefined && barnSøktForÅrsaker.includes(årsakVerdi) && (
-                        <BarnSøktForSkjema
-                            barnSøktForFelt={skjema.felter.barnSøktFor}
+                    {årsakVerdi !== undefined && barnIBrevÅrsaker.includes(årsakVerdi) && (
+                        <BarnIBrevSkjema
+                            barnIBrevFelt={skjema.felter.barnIBrev}
                             visFeilmeldinger={skjema.visFeilmeldinger}
                             settVisFeilmeldinger={settVisfeilmeldinger}
                         />

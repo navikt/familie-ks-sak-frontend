@@ -12,17 +12,17 @@ import { isoStringTilDate } from '../../../../utils/dato';
 import LeggTilBarn from '../../../Felleskomponenter/LeggTilBarn';
 
 interface IProps {
-    barnSøktForFelt: Felt<IBarnMedOpplysninger[]>;
+    barnIBrevFelt: Felt<IBarnMedOpplysninger[]>;
     visFeilmeldinger: boolean;
     settVisFeilmeldinger: (visFeilmeldinger: boolean) => void;
 }
 
-const BarnSøktForSkjema = (props: IProps) => {
+const BarnIBrevSkjema = (props: IProps) => {
     const { manuelleBrevmottakerePåFagsak } = useFagsakContext();
 
-    const { barnSøktForFelt, visFeilmeldinger, settVisFeilmeldinger } = props;
+    const { barnIBrevFelt, visFeilmeldinger, settVisFeilmeldinger } = props;
 
-    const sorterteBarn = barnSøktForFelt.verdi.sort(
+    const sorterteBarn = barnIBrevFelt.verdi.sort(
         (a: IBarnMedOpplysninger, b: IBarnMedOpplysninger) => {
             if (!a.fødselsdato) {
                 return 1;
@@ -42,8 +42,8 @@ const BarnSøktForSkjema = (props: IProps) => {
     );
 
     const oppdaterBarnMedNyMerketStatus = (barnaSomErMerket: string[]) => {
-        barnSøktForFelt.validerOgSettFelt(
-            barnSøktForFelt.verdi.map((barnMedOpplysninger: IBarnMedOpplysninger) => {
+        barnIBrevFelt.validerOgSettFelt(
+            barnIBrevFelt.verdi.map((barnMedOpplysninger: IBarnMedOpplysninger) => {
                 const ident = barnMedOpplysninger.ident;
                 const merket = ident !== undefined && barnaSomErMerket.includes(ident);
 
@@ -57,9 +57,9 @@ const BarnSøktForSkjema = (props: IProps) => {
 
     return (
         <CheckboxGroup
-            {...barnSøktForFelt.hentNavBaseSkjemaProps(visFeilmeldinger)}
+            {...barnIBrevFelt.hentNavBaseSkjemaProps(visFeilmeldinger)}
             legend={'Hvilke barn er søkt for?'}
-            value={barnSøktForFelt.verdi
+            value={barnIBrevFelt.verdi
                 .filter((barn: IBarnMedOpplysninger) => barn.merket)
                 .map((barn: IBarnMedOpplysninger) => barn.ident)}
             onChange={(barnaSomErMerket: string[]) => {
@@ -76,11 +76,11 @@ const BarnSøktForSkjema = (props: IProps) => {
             ))}
 
             <LeggTilBarn
-                barnaMedOpplysninger={barnSøktForFelt}
+                barnaMedOpplysninger={barnIBrevFelt}
                 manuelleBrevmottakere={manuelleBrevmottakerePåFagsak}
             />
         </CheckboxGroup>
     );
 };
 
-export default BarnSøktForSkjema;
+export default BarnIBrevSkjema;
