@@ -181,7 +181,11 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
             togglePlacement="right"
             onOpenChange={() => toggleForm(true)}
             id={vilkårFeilmeldingId(vilkårResultat)}
-            content={VilkårSkjema()}
+            content={
+                <VilkårSkjema
+                    key={`${vilkårResultat.id}-${ekspandertVilkår ? 'ekspandert' : 'lukket'}`}
+                />
+            }
         >
             <Table.DataCell>
                 <VurderingCelle>
