@@ -15,6 +15,7 @@ interface IProps {
     barnIBrevFelt: Felt<IBarnMedOpplysninger[]>;
     visFeilmeldinger: boolean;
     settVisFeilmeldinger: (visFeilmeldinger: boolean) => void;
+    tittel: string;
 }
 
 const BarnIBrevSkjema = (props: IProps) => {
@@ -58,7 +59,7 @@ const BarnIBrevSkjema = (props: IProps) => {
     return (
         <CheckboxGroup
             {...barnIBrevFelt.hentNavBaseSkjemaProps(visFeilmeldinger)}
-            legend={'Hvilke barn er søkt for?'}
+            legend={props.tittel}
             value={barnIBrevFelt.verdi
                 .filter((barn: IBarnMedOpplysninger) => barn.merket)
                 .map((barn: IBarnMedOpplysninger) => barn.ident)}
