@@ -8,7 +8,7 @@ import {
     KlageÅrsak,
 } from '../typer/klage';
 
-function lagAnkeKlageinstansEventTyper(): KlageinstansEventType[] {
+export function lagAnkeKlageinstansEventTyper(): KlageinstansEventType[] {
     return Object.keys(KlageinstansEventType)
         .filter(
             type =>
@@ -19,7 +19,7 @@ function lagAnkeKlageinstansEventTyper(): KlageinstansEventType[] {
         .map(type => KlageinstansEventType[type as keyof typeof KlageinstansEventType]);
 }
 
-function lagIkkeAnkeKlageinstansEventTyper(): KlageinstansEventType[] {
+export function lagIkkeAnkeKlageinstansEventTyper(): KlageinstansEventType[] {
     return Object.keys(KlageinstansEventType)
         .filter(
             type =>
@@ -30,31 +30,31 @@ function lagIkkeAnkeKlageinstansEventTyper(): KlageinstansEventType[] {
         .map(type => KlageinstansEventType[type as keyof typeof KlageinstansEventType]);
 }
 
-function lagFeilregistrertKlageinstansEventTyper(): KlageinstansEventType[] {
+export function lagFeilregistrertKlageinstansEventTyper(): KlageinstansEventType[] {
     return Object.keys(KlageinstansEventType)
         .filter(type => type === KlageinstansEventType.BEHANDLING_FEILREGISTRERT)
         .map(type => KlageinstansEventType[type as keyof typeof KlageinstansEventType]);
 }
 
-function lagIkkeFeilregistrertKlageinstansEventTyper(): KlageinstansEventType[] {
+export function lagIkkeFeilregistrertKlageinstansEventTyper(): KlageinstansEventType[] {
     return Object.keys(KlageinstansEventType)
         .filter(type => type !== KlageinstansEventType.BEHANDLING_FEILREGISTRERT)
         .map(type => KlageinstansEventType[type as keyof typeof KlageinstansEventType]);
 }
 
-function lagAlleKlageinstansUtfall(): KlageinstansUtfall[] {
+export function lagAlleKlageinstansUtfall(): KlageinstansUtfall[] {
     return Object.keys(KlageinstansUtfall).map(
         utfall => KlageinstansUtfall[utfall as keyof typeof KlageinstansUtfall]
     );
 }
 
-function lagAlleKlageResultat(): KlageResultat[] {
+export function lagAlleKlageResultat(): KlageResultat[] {
     return Object.keys(KlageResultat).map(
         resultat => KlageResultat[resultat as keyof typeof KlageResultat]
     );
 }
 
-function lagKlageinstansResultat(
+export function lagKlageinstansResultat(
     klageinstansResultat: Partial<KlageinstansResultat>
 ): KlageinstansResultat {
     return {
@@ -67,7 +67,7 @@ function lagKlageinstansResultat(
     };
 }
 
-function lagKlagebehandling(klagebehandling: Partial<IKlagebehandling>): IKlagebehandling {
+export function lagKlagebehandling(klagebehandling: Partial<IKlagebehandling>): IKlagebehandling {
     return {
         id: '123',
         fagsakId: '321',
@@ -82,13 +82,4 @@ function lagKlagebehandling(klagebehandling: Partial<IKlagebehandling>): IKlageb
     };
 }
 
-export const KlageTestdata = {
-    lagKlagebehandling,
-    lagKlageinstansResultat,
-    lagAnkeKlageinstansEventTyper,
-    lagIkkeAnkeKlageinstansEventTyper,
-    lagFeilregistrertKlageinstansEventTyper,
-    lagIkkeFeilregistrertKlageinstansEventTyper,
-    lagAlleKlageinstansUtfall,
-    lagAlleKlageResultat,
-};
+export * as KlageTestdata from './KlageTestdata';

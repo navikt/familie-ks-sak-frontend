@@ -83,7 +83,7 @@ export const klageinstansUtfallTilTekst: Record<KlageinstansUtfall, string> = {
     INNSTILLING_AVVIST: 'Innstilling om avist til trygderetten fra KA',
 };
 
-function harAnkeEksistertPåKlagebehandling(behandling: IKlagebehandling) {
+export function harAnkeEksistertPåKlagebehandling(behandling: IKlagebehandling) {
     return behandling.klageinstansResultat.some(
         resultat =>
             resultat.type === KlageinstansEventType.ANKEBEHANDLING_OPPRETTET ||
@@ -92,7 +92,7 @@ function harAnkeEksistertPåKlagebehandling(behandling: IKlagebehandling) {
     );
 }
 
-function erKlageFeilregistrertAvKA(behandling: IKlagebehandling) {
+export function erKlageFeilregistrertAvKA(behandling: IKlagebehandling) {
     return behandling.klageinstansResultat.some(
         resultat => resultat.type == KlageinstansEventType.BEHANDLING_FEILREGISTRERT
     );
@@ -106,7 +106,7 @@ function finnAvsluttetKlagebehandlingUtfall(
     )?.utfall;
 }
 
-function utledKlagebehandlingResultattekst(behandling: IKlagebehandling) {
+export function utledKlagebehandlingResultattekst(behandling: IKlagebehandling) {
     const klageBehandlingAvsluttetUtfall = finnAvsluttetKlagebehandlingUtfall(behandling);
     if (klageBehandlingAvsluttetUtfall) {
         return klageinstansUtfallTilTekst[klageBehandlingAvsluttetUtfall];
@@ -119,9 +119,3 @@ function utledKlagebehandlingResultattekst(behandling: IKlagebehandling) {
     }
     return 'Ikke satt';
 }
-
-export const KlageService = {
-    harAnkeEksistertPåKlagebehandling,
-    utledKlagebehandlingResultattekst,
-    erKlageFeilregistrertAvKA,
-};

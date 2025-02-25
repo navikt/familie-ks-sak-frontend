@@ -1,20 +1,26 @@
 import { behandlingsresultater } from './behandling';
-import { KlageinstansEventType, klageinstansUtfallTilTekst, KlageService } from './klage';
-import { Testdata } from '../testdata/Testdata';
+import {
+    erKlageFeilregistrertAvKA,
+    harAnkeEksistertPåKlagebehandling,
+    KlageinstansEventType,
+    klageinstansUtfallTilTekst,
+    utledKlagebehandlingResultattekst,
+} from './klage';
+import { KlageTestdata } from '../testdata/KlageTestdata';
 
-describe('KlageService', () => {
+describe('Klage', () => {
     describe('HarAnkeEksistertPåKlagebehandling', () => {
-        const ankeTyper = Testdata.lagAnkeKlageinstansEventTyper();
-        const ikkeAnkeTyper = Testdata.lagIkkeAnkeKlageinstansEventTyper();
+        const ankeTyper = KlageTestdata.lagAnkeKlageinstansEventTyper();
+        const ikkeAnkeTyper = KlageTestdata.lagIkkeAnkeKlageinstansEventTyper();
 
         test.each(ankeTyper)('skal returnere true om type er anke', type => {
             // Arrange
-            const klagebehandling = Testdata.lagKlagebehandling({
-                klageinstansResultat: [Testdata.lagKlageinstansResultat({ type })],
+            const klagebehandling = KlageTestdata.lagKlagebehandling({
+                klageinstansResultat: [KlageTestdata.lagKlageinstansResultat({ type })],
             });
 
             // Act
-            const eksistert = KlageService.harAnkeEksistertPåKlagebehandling(klagebehandling);
+            const eksistert = harAnkeEksistertPåKlagebehandling(klagebehandling);
 
             // Expect
             expect(eksistert).toBe(true);
@@ -22,12 +28,12 @@ describe('KlageService', () => {
 
         test.each(ikkeAnkeTyper)('skal returnere false om type ikke er anke', type => {
             // Arrange
-            const klagebehandling = Testdata.lagKlagebehandling({
-                klageinstansResultat: [Testdata.lagKlageinstansResultat({ type })],
+            const klagebehandling = KlageTestdata.lagKlagebehandling({
+                klageinstansResultat: [KlageTestdata.lagKlageinstansResultat({ type })],
             });
 
             // Act
-            const eksistert = KlageService.harAnkeEksistertPåKlagebehandling(klagebehandling);
+            const eksistert = harAnkeEksistertPåKlagebehandling(klagebehandling);
 
             // Expect
             expect(eksistert).toBe(false);
@@ -35,48 +41,51 @@ describe('KlageService', () => {
     });
 
     describe('ErKlageFeilregistrertAvKA', () => {
-        const feilregistrertTyper = Testdata.lagFeilregistrertKlageinstansEventTyper();
-        const ikkeFeilregistrertTyper = Testdata.lagIkkeFeilregistrertKlageinstansEventTyper();
+        const feilregistrertTyper = KlageTestdata.lagFeilregistrertKlageinstansEventTyper();
+        const ikkeFeilregistrertTyper = KlageTestdata.lagIkkeFeilregistrertKlageinstansEventTyper();
 
-        test.each(feilregistrertTyper)('skal returnere true om', type => {
+        test.each(feilregistrertTyper)('skal returnere true om klage er feilregistert', type => {
             // Arrange
-            const klagebehandling = Testdata.lagKlagebehandling({
-                klageinstansResultat: [Testdata.lagKlageinstansResultat({ type })],
+            const klagebehandling = KlageTestdata.lagKlagebehandling({
+                klageinstansResultat: [KlageTestdata.lagKlageinstansResultat({ type })],
             });
 
             // Act
-            const erFeilregistrert = KlageService.erKlageFeilregistrertAvKA(klagebehandling);
+            const erFeilregistrert = erKlageFeilregistrertAvKA(klagebehandling);
 
             // Expect
             expect(erFeilregistrert).toBe(true);
         });
 
-        test.each(ikkeFeilregistrertTyper)('skal returnere true om', type => {
-            // Arrange
-            const klagebehandling = Testdata.lagKlagebehandling({
-                klageinstansResultat: [Testdata.lagKlageinstansResultat({ type })],
-            });
+        test.each(ikkeFeilregistrertTyper)(
+            'skal returnere false om klage ikke er feilregistrert',
+            type => {
+                // Arrange
+                const klagebehandling = KlageTestdata.lagKlagebehandling({
+                    klageinstansResultat: [KlageTestdata.lagKlageinstansResultat({ type })],
+                });
 
-            // Act
-            const erFeilregistrert = KlageService.erKlageFeilregistrertAvKA(klagebehandling);
+                // Act
+                const erFeilregistrert = erKlageFeilregistrertAvKA(klagebehandling);
 
-            // Expect
-            expect(erFeilregistrert).toBe(false);
-        });
+                // Expect
+                expect(erFeilregistrert).toBe(false);
+            }
+        );
     });
 
     describe('UtledKlagebehandlingResultattekst', () => {
-        const alleKlageinstansUtfall = Testdata.lagAlleKlageinstansUtfall();
-        const alleKlageResultat = Testdata.lagAlleKlageResultat();
+        const alleKlageinstansUtfall = KlageTestdata.lagAlleKlageinstansUtfall();
+        const alleKlageResultat = KlageTestdata.lagAlleKlageResultat();
 
         test.each(alleKlageinstansUtfall)('skal utlede forventet tekst fra utfall', utfall => {
             // Arrange
-            const klagebehandling = Testdata.lagKlagebehandling({
-                klageinstansResultat: [Testdata.lagKlageinstansResultat({ utfall })],
+            const klagebehandling = KlageTestdata.lagKlagebehandling({
+                klageinstansResultat: [KlageTestdata.lagKlageinstansResultat({ utfall })],
             });
 
             // Act
-            const tekst = KlageService.utledKlagebehandlingResultattekst(klagebehandling);
+            const tekst = utledKlagebehandlingResultattekst(klagebehandling);
 
             // Expect
             expect(tekst).toBe(klageinstansUtfallTilTekst[utfall]);
@@ -84,9 +93,9 @@ describe('KlageService', () => {
 
         test('skal utlede feilregistrert klagebehandlingtekst', () => {
             // Arrange
-            const klagebehandling = Testdata.lagKlagebehandling({
+            const klagebehandling = KlageTestdata.lagKlagebehandling({
                 klageinstansResultat: [
-                    Testdata.lagKlageinstansResultat({
+                    KlageTestdata.lagKlageinstansResultat({
                         type: KlageinstansEventType.BEHANDLING_FEILREGISTRERT,
                         utfall: undefined,
                     }),
@@ -94,7 +103,7 @@ describe('KlageService', () => {
             });
 
             // Act
-            const tekst = KlageService.utledKlagebehandlingResultattekst(klagebehandling);
+            const tekst = utledKlagebehandlingResultattekst(klagebehandling);
 
             // Expect
             expect(tekst).toBe('Feilregistrert (KA)');
@@ -102,10 +111,10 @@ describe('KlageService', () => {
 
         test.each(alleKlageResultat)('skal utlede tekst for resultat på behandlingen', resultat => {
             // Arrange
-            const klagebehandling = Testdata.lagKlagebehandling({ resultat: resultat });
+            const klagebehandling = KlageTestdata.lagKlagebehandling({ resultat: resultat });
 
             // Act
-            const tekst = KlageService.utledKlagebehandlingResultattekst(klagebehandling);
+            const tekst = utledKlagebehandlingResultattekst(klagebehandling);
 
             // Expect
             expect(tekst).toBe(behandlingsresultater[resultat]);
@@ -113,10 +122,10 @@ describe('KlageService', () => {
 
         test('skal utlede tilbakefallende tekst hvis ingenting annet kan utledes', () => {
             // Arrange
-            const klagebehandling = Testdata.lagKlagebehandling({ resultat: undefined });
+            const klagebehandling = KlageTestdata.lagKlagebehandling({ resultat: undefined });
 
             // Act
-            const tekst = KlageService.utledKlagebehandlingResultattekst(klagebehandling);
+            const tekst = utledKlagebehandlingResultattekst(klagebehandling);
 
             // Expect
             expect(tekst).toBe('Ikke satt');

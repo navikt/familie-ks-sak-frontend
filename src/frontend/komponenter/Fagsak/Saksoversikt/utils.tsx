@@ -16,7 +16,12 @@ import {
 import type { IBehandlingstema } from '../../../typer/behandlingstema';
 import { tilBehandlingstema } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
-import { type IKlagebehandling, KlageService } from '../../../typer/klage';
+import {
+    erKlageFeilregistrertAvKA,
+    harAnkeEksistertPåKlagebehandling,
+    type IKlagebehandling,
+    utledKlagebehandlingResultattekst,
+} from '../../../typer/klage';
 import { Klagebehandlingstype } from '../../../typer/klage';
 import type { ITilbakekrevingsbehandling } from '../../../typer/tilbakekrevingsbehandling';
 import {
@@ -187,10 +192,10 @@ export const lagLenkePåResultat = (
                         onMouseDown={event => event.preventDefault()}
                         target={'_blank'}
                     >
-                        <span>{KlageService.utledKlagebehandlingResultattekst(behandling)}</span>
+                        <span>{utledKlagebehandlingResultattekst(behandling)}</span>
                         <ExternalLinkIcon fontSize={'1.5rem'} />
                     </Link>
-                    {KlageService.harAnkeEksistertPåKlagebehandling(behandling) && (
+                    {harAnkeEksistertPåKlagebehandling(behandling) && (
                         <Tooltip
                             content={
                                 'Det finnes informasjon om anke på denne klagen. ' +
@@ -200,7 +205,7 @@ export const lagLenkePåResultat = (
                             <StatusIkon status={Status.ADVARSEL} />
                         </Tooltip>
                     )}
-                    {KlageService.erKlageFeilregistrertAvKA(behandling) && (
+                    {erKlageFeilregistrertAvKA(behandling) && (
                         <Tooltip
                             content={
                                 'Klagen er feilregistrert av NAV klageinstans. ' +
