@@ -19,7 +19,9 @@ const StyledTextField = styled(TextField)`
     margin-bottom: 1rem;
 `;
 
-type BarnehageplassProps = IVilkårSkjemaBaseProps;
+type BarnehageplassProps = IVilkårSkjemaBaseProps & {
+    toggleForm: (visSkjema: boolean) => void;
+};
 
 export const Barnehageplass: React.FC<BarnehageplassProps> = ({
     vilkårResultat,

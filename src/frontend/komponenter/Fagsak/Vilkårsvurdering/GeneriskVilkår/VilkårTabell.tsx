@@ -4,9 +4,10 @@ import styled from 'styled-components';
 
 import { Table } from '@navikt/ds-react';
 
+import { BarnetsAlder } from './Vilkår/BarnetsAlder/BarnetsAlder';
 import VilkårTabellRad from './VilkårTabellRad';
 import type { IGrunnlagPerson } from '../../../../typer/person';
-import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
+import { VilkårType, type IVilkårConfig, type IVilkårResultat } from '../../../../typer/vilkår';
 
 export const vilkårFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
     `vilkår_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
@@ -59,6 +60,16 @@ const VilkårTabell: React.FC<IProps> = ({
             </Table.Header>
             <Table.Body>
                 {vilkårResultater.map((vilkårResultat: IVilkårResultat, index: number) => {
+                    if (vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER) {
+                        return (
+                            <BarnetsAlder
+                                vilkårResultat={vilkårResultat}
+                                vilkårFraConfig={vilkårFraConfig}
+                                person={person}
+                                lesevisning={false}
+                            />
+                        );
+                    }
                     return (
                         <VilkårTabellRad
                             key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}

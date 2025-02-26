@@ -9,7 +9,9 @@ import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
-type BosattIRiketProps = IVilkårSkjemaBaseProps;
+type BosattIRiketProps = IVilkårSkjemaBaseProps & {
+    toggleForm: (visSkjema: boolean) => void;
+};
 
 export const BorMedSøker: React.FC<BosattIRiketProps> = ({
     vilkårResultat,

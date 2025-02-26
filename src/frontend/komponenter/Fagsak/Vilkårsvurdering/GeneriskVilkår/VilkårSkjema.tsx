@@ -54,7 +54,6 @@ export interface IVilkårSkjemaBaseProps {
     vilkårResultat: IVilkårResultat;
     vilkårFraConfig: IVilkårConfig;
     person: IGrunnlagPerson;
-    toggleForm: (visSkjema: boolean) => void;
 }
 
 interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjemaBaseProps {
@@ -66,6 +65,7 @@ interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjema
     periodeChildren?: ReactNode;
     children?: ReactNode;
     vurderesEtterEndringer?: (vurderesEtter: Regelverk) => void;
+    toggleForm: (visSkjema: boolean) => void;
 }
 
 export const VilkårSkjema = <T extends IVilkårSkjemaContext>({

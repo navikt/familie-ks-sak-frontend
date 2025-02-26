@@ -8,7 +8,6 @@ import { BodyShort, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { Barnehageplass } from './Vilkår/Barnehageplass/Barnehageplass';
-import { BarnetsAlder } from './Vilkår/BarnetsAlder/BarnetsAlder';
 import { BorMedSøker } from './Vilkår/BorMedSøker/BorMedSøker';
 import { BosattIRiket } from './Vilkår/BosattIRiket/BosattIRiket';
 import { LovligOpphold } from './Vilkår/LovligOpphold/LovligOpphold';
@@ -160,16 +159,6 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
                         lesevisning={erLesevisning}
                     />
                 );
-            case VilkårType.BARNETS_ALDER:
-                return (
-                    <BarnetsAlder
-                        vilkårResultat={vilkårResultat}
-                        vilkårFraConfig={vilkårFraConfig}
-                        toggleForm={toggleForm}
-                        person={person}
-                        lesevisning={erLesevisning}
-                    />
-                );
             default:
                 return null;
         }
@@ -181,11 +170,7 @@ const VilkårTabellRad: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårR
             togglePlacement="right"
             onOpenChange={() => toggleForm(true)}
             id={vilkårFeilmeldingId(vilkårResultat)}
-            content={
-                <VilkårSkjema
-                    key={`${vilkårResultat.id}-${ekspandertVilkår ? 'ekspandert' : 'lukket'}`}
-                />
-            }
+            content={VilkårSkjema()}
         >
             <Table.DataCell>
                 <VurderingCelle>

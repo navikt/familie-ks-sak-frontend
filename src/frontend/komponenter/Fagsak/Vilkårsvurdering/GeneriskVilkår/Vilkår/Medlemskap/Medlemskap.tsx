@@ -10,7 +10,9 @@ import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
-type MedlemskapProps = IVilkårSkjemaBaseProps;
+type MedlemskapProps = IVilkårSkjemaBaseProps & {
+    toggleForm: (visSkjema: boolean) => void;
+};
 
 const StyledAlert = styled(Alert)`
     margin-top: 1rem;
