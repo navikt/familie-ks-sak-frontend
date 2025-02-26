@@ -20,7 +20,6 @@ import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import VilkårEkspanderbarRad from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
-import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 const hentSpørsmålForLovverkFør2025 = (periode: IIsoDatoPeriode) => {
     const fraOgMedDato = isoStringTilDateEllerUndefinedHvisUgyldigDato(periode.fom);
@@ -54,19 +53,23 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
-    const { felter } = useBarnetsAlder(vilkårResultat, person);
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
+    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBarnetsAlder(
+        vilkårResultat,
+        person
+    );
 
     const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret: vilkårSkjemaContext.finnesEndringerSomIkkeErLagret,
+        vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
 
-    const lovverk = utledLovverk(isoStringTilDate(person.fødselsdato), felter.adopsjonsdato.verdi);
-    const spørsmål = hentSpørsmålForLovverk(
-        lovverk,
-        vilkårSkjemaContext.skjema.felter.periode.verdi
+    const skjema = vilkårSkjemaContext.skjema;
+
+    const lovverk = utledLovverk(
+        isoStringTilDate(person.fødselsdato),
+        skjema.felter.adopsjonsdato.verdi
     );
+    const spørsmål = hentSpørsmålForLovverk(lovverk, skjema.felter.periode.verdi);
 
     return (
         <VilkårEkspanderbarRad
@@ -85,11 +88,11 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
                 person={person}
                 lesevisning={erLesevisning}
                 utdypendeVilkårsvurderingChildren={
-                    felter.adopsjonsdato.erSynlig ? (
+                    skjema.felter.adopsjonsdato.erSynlig ? (
                         <Datovelger
-                            felt={felter.adopsjonsdato}
+                            felt={skjema.felter.adopsjonsdato}
                             label="Adopsjonsdato"
-                            visFeilmeldinger={vilkårSkjemaContext.skjema.visFeilmeldinger}
+                            visFeilmeldinger={skjema.visFeilmeldinger}
                             kanKunVelgeFortid
                             readOnly={erLesevisning}
                         />
@@ -98,27 +101,17 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
             >
                 <RadioGroup
                     readOnly={erLesevisning}
-                    value={vilkårSkjemaContext.skjema.felter.resultat.verdi}
+                    value={skjema.felter.resultat.verdi}
                     legend={<Label>{spørsmål}</Label>}
-                    error={
-                        vilkårSkjemaContext.skjema.visFeilmeldinger
-                            ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
-                            : ''
-                    }
+                    error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
                 >
                     <Radio
                         name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                         value={Resultat.OPPFYLT}
                         onChange={() => {
-                            vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
-                                Resultat.OPPFYLT
-                            );
-                            vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
-                                false
-                            );
-                            vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt(
-                                []
-                            );
+                            skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
+                            skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
+                            skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
                         }}
                     >
                         Ja
@@ -127,9 +120,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
                         name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                         value={Resultat.IKKE_OPPFYLT}
                         onChange={() =>
-                            vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
-                                Resultat.IKKE_OPPFYLT
-                            )
+                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)
                         }
                     >
                         Nei

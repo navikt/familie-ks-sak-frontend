@@ -24,7 +24,7 @@ import {
     erPeriodeGyldig,
     erResultatGyldig,
 } from '../../../../../../utils/validators';
-import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
 export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = [
     UtdypendeVilkårsvurderingGenerell.ADOPSJON,
@@ -149,7 +149,27 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
         }
     }, [felter.utdypendeVilkårsvurdering.verdi]);
 
+    const {
+        skjema,
+        lagreVilkår,
+        lagrerVilkår,
+        slettVilkår,
+        sletterVilkår,
+        feilmelding,
+        nullstillSkjema,
+        finnesEndringerSomIkkeErLagret,
+    } = useVilkårSkjema(vilkår, felter, person);
+
     return {
-        felter,
+        vilkårSkjemaContext: {
+            skjema,
+            lagreVilkår,
+            lagrerVilkår,
+            slettVilkår,
+            sletterVilkår,
+            feilmelding,
+            nullstillSkjema,
+        },
+        finnesEndringerSomIkkeErLagret,
     };
 };
