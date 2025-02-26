@@ -29,7 +29,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
     lesevisning,
 }: BarnehageplassProps) => {
     const { felter } = useBarnehageplass(vilkårResultat, person);
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
 
     const [harBarnehageplass, settHarBarnehageplass] = useState(
         vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(vilkårSkjemaContext.skjema) ||

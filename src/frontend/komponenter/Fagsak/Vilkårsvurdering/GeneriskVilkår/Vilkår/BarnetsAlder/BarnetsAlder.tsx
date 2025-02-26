@@ -51,7 +51,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     lesevisning,
 }: BarnetsAlderProps) => {
     const { felter } = useBarnetsAlder(vilkårResultat, person);
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
 
     const lovverk = utledLovverk(isoStringTilDate(person.fødselsdato), felter.adopsjonsdato.verdi);
     const spørsmål = hentSpørsmålForLovverk(

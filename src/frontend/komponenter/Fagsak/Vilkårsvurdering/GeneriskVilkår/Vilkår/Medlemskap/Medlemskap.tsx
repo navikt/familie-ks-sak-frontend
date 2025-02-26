@@ -24,7 +24,7 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
     lesevisning,
 }: MedlemskapProps) => {
     const { felter, skalViseDatoVarsel } = useMedlemskap(vilkårResultat, person);
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
     const nullstillAvslagBegrunnelser = () => {
         vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
         vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);

@@ -27,7 +27,7 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
             person
         )
     );
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
     return (
         <VilkårSkjema
             vilkårSkjemaContext={vilkårSkjemaContext}

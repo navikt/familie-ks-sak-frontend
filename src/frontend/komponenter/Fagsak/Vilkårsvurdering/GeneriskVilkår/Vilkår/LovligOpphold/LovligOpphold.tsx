@@ -24,7 +24,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
     lesevisning,
 }: LovligOppholdProps) => {
     const { felter, skalViseDatoVarsel } = useLovligOpphold(vilkårResultat, person);
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
     const nullstillAvslagBegrunnelser = () => {
         vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
         vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);

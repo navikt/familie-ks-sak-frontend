@@ -27,18 +27,18 @@ export interface IVilkårSkjemaContext {
 
 export interface VilkårSkjemaContextValue<T extends IVilkårSkjemaContext> {
     skjema: ISkjema<T, IBehandling>;
-    lagreVilkår: () => void;
+    lagreVilkår: (onSuccess?: () => void) => void;
     lagrerVilkår: boolean;
-    slettVilkår: (personIdent: string, vilkårId: number) => void;
+    slettVilkår: (personIdent: string, vilkårId: number, onSuccess?: () => void) => void;
     sletterVilkår: boolean;
     feilmelding: string;
+    nullstillSkjema: () => void;
 }
 
 export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
     vilkår: IVilkårResultat,
     felter: FieldDictionary<T>,
-    person: IGrunnlagPerson,
-    toggleForm: (visSkjema: boolean) => void
+    person: IGrunnlagPerson
 ) => {
     const vilkårsvurderingApi = useVilkårsvurderingApi();
 
@@ -52,7 +52,7 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
 
     const [feilmelding, settFeilmelding] = useState<string>('');
 
-    const lagreVilkår = () => {
+    const lagreVilkår = (onSuccess?: () => void) => {
         if (kanSendeSkjema()) {
             settVisfeilmeldinger(false);
             const endreVilkårResultat: IEndreVilkårResultat = {
@@ -88,25 +88,16 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
             };
             vilkårsvurderingApi.lagreVilkår(
                 endreVilkårResultat,
-                () => {
-                    toggleForm(false);
-                    nullstillSkjema();
-                },
+                onSuccess,
                 lagreVilkårFeilmelding => settFeilmelding(lagreVilkårFeilmelding)
             );
         }
     };
 
-    const slettVilkår = (personIdent: string, vilkårId: number) => {
+    const slettVilkår = (personIdent: string, vilkårId: number, onSuccess?: () => void) => {
         settVisfeilmeldinger(false);
-        vilkårsvurderingApi.slettVilkår(
-            personIdent,
-            vilkårId,
-            () => {
-                toggleForm(false);
-                nullstillSkjema();
-            },
-            slettVilkårFeilmelding => settFeilmelding(slettVilkårFeilmelding)
+        vilkårsvurderingApi.slettVilkår(personIdent, vilkårId, onSuccess, slettVilkårFeilmelding =>
+            settFeilmelding(slettVilkårFeilmelding)
         );
     };
 
@@ -117,5 +108,6 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
         slettVilkår,
         sletterVilkår: vilkårsvurderingApi.sletterVilkår,
         feilmelding,
+        nullstillSkjema,
     };
 };

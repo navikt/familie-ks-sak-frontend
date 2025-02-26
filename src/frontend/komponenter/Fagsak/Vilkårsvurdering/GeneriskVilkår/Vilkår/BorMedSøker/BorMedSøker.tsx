@@ -19,7 +19,7 @@ export const BorMedSøker: React.FC<BosattIRiketProps> = ({
     lesevisning,
 }: BosattIRiketProps) => {
     const { felter } = useBorMedSøker(vilkårResultat, person);
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
+    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
     const [utdypendeVilkårsvurderinger, setUtdypendeVilkårsvurderinger] = useState<
         UtdypendeVilkårsvurdering[]
     >(bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vilkårResultat.vurderesEtter));

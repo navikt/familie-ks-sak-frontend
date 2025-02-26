@@ -87,8 +87,15 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     const årsakErSøknad =
         åpenBehandling.status !== RessursStatus.SUKSESS ||
         åpenBehandling.data.årsak === BehandlingÅrsak.SØKNAD;
-    const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding } =
-        vilkårSkjemaContext;
+    const {
+        skjema,
+        lagreVilkår,
+        lagrerVilkår,
+        slettVilkår,
+        sletterVilkår,
+        feilmelding,
+        nullstillSkjema,
+    } = vilkårSkjemaContext;
 
     return (
         <FieldsetForVilkårSkjema
@@ -231,7 +238,12 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 <Knapperad>
                     <div>
                         <Button
-                            onClick={lagreVilkår}
+                            onClick={() =>
+                                lagreVilkår(() => {
+                                    toggleForm(false);
+                                    nullstillSkjema();
+                                })
+                            }
                             size="medium"
                             variant="secondary"
                             loading={lagrerVilkår}
@@ -250,7 +262,12 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     </div>
 
                     <Button
-                        onClick={() => slettVilkår(person.personIdent, vilkårResultat.id)}
+                        onClick={() =>
+                            slettVilkår(person.personIdent, vilkårResultat.id, () => {
+                                toggleForm(false);
+                                nullstillSkjema();
+                            })
+                        }
                         id={vilkårFeilmeldingId(vilkårResultat)}
                         loading={sletterVilkår}
                         disabled={sletterVilkår}
