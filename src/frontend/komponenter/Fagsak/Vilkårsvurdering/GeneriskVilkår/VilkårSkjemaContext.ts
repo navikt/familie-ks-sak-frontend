@@ -122,8 +122,9 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
 
     const finnesEndringerSomIkkeErLagret = () => {
         const endretVilkårResultat = mapSkjemaTilIEndreVilkårResultat();
+        const lagretAdopsjonsdato = person.adopsjonsdato ?? undefined;
 
-        const erAdopsjonsdatoEndret = endretVilkårResultat.adopsjonsdato !== person.adopsjonsdato;
+        const erAdopsjonsdatoEndret = endretVilkårResultat.adopsjonsdato !== lagretAdopsjonsdato;
         const erVilkårResultatEndret = vilkårResultatHarEndringerSomIkkeErLagret(
             vilkår,
             endretVilkårResultat.endretVilkårResultat
