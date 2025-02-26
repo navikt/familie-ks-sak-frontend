@@ -25,12 +25,8 @@ export const BorMedSøker: React.FC<BosattIRiketProps> = ({
     const { felter } = useBorMedSøker(vilkårResultat, person);
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
 
-    const vilkårHarEndringerSomIkkeErLagret = () => {
-        return true;
-    };
-
     const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret,
+        vilkårHarEndringerSomIkkeErLagret: vilkårSkjemaContext.finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
 

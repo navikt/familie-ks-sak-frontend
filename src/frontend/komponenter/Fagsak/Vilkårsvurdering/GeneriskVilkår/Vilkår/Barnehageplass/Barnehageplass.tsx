@@ -40,12 +40,8 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
             vilkårOppfyltOgAntallTimerKvalifiserer(vilkårSkjemaContext.skjema)
     );
 
-    const vilkårHarEndringerSomIkkeErLagret = () => {
-        return true;
-    };
-
     const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret,
+        vilkårHarEndringerSomIkkeErLagret: vilkårSkjemaContext.finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
 

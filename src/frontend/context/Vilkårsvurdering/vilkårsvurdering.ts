@@ -50,6 +50,29 @@ export const mapFraRestVilkårsvurderingTilUi = (
     return mapFraRestPersonResultatTilPersonResultat(personResultater, personer);
 };
 
+export const mapFraRestVilkårResultatTilVilkårResultat = (
+    vilkårResultat: IRestVilkårResultat
+): IVilkårResultat => {
+    return {
+        begrunnelse: vilkårResultat.begrunnelse,
+        id: vilkårResultat.id,
+        periode: nyIsoDatoPeriode(vilkårResultat.periodeFom, vilkårResultat.periodeTom),
+        resultat: vilkårResultat.resultat,
+        vilkårType: vilkårResultat.vilkårType,
+        endretAv: vilkårResultat.endretAv,
+        erVurdert: vilkårResultat.erVurdert,
+        erAutomatiskVurdert: vilkårResultat.erAutomatiskVurdert,
+        erEksplisittAvslagPåSøknad: vilkårResultat.erEksplisittAvslagPåSøknad,
+        avslagBegrunnelser: vilkårResultat.avslagBegrunnelser,
+        endretTidspunkt: vilkårResultat.endretTidspunkt,
+        behandlingId: vilkårResultat.behandlingId,
+        vurderesEtter: vilkårResultat.vurderesEtter,
+        utdypendeVilkårsvurderinger: vilkårResultat.utdypendeVilkårsvurderinger,
+        antallTimer: vilkårResultat.antallTimer,
+        søkerHarMeldtFraOmBarnehageplass: vilkårResultat.søkerHarMeldtFraOmBarnehageplass,
+    };
+};
+
 export const mapFraRestPersonResultatTilPersonResultat = (
     personResultater: IRestPersonResultat[],
     personer: IGrunnlagPerson[]
@@ -69,30 +92,7 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                     vilkårResultater: sorterVilkårsvurderingForPerson(
                         personResultat.vilkårResultater.map(
                             (vilkårResultat: IRestVilkårResultat) => {
-                                return {
-                                    begrunnelse: vilkårResultat.begrunnelse,
-                                    id: vilkårResultat.id,
-                                    periode: nyIsoDatoPeriode(
-                                        vilkårResultat.periodeFom,
-                                        vilkårResultat.periodeTom
-                                    ),
-                                    resultat: vilkårResultat.resultat,
-                                    vilkårType: vilkårResultat.vilkårType,
-                                    endretAv: vilkårResultat.endretAv,
-                                    erVurdert: vilkårResultat.erVurdert,
-                                    erAutomatiskVurdert: vilkårResultat.erAutomatiskVurdert,
-                                    erEksplisittAvslagPåSøknad:
-                                        vilkårResultat.erEksplisittAvslagPåSøknad,
-                                    avslagBegrunnelser: vilkårResultat.avslagBegrunnelser,
-                                    endretTidspunkt: vilkårResultat.endretTidspunkt,
-                                    behandlingId: vilkårResultat.behandlingId,
-                                    vurderesEtter: vilkårResultat.vurderesEtter,
-                                    utdypendeVilkårsvurderinger:
-                                        vilkårResultat.utdypendeVilkårsvurderinger,
-                                    antallTimer: vilkårResultat.antallTimer,
-                                    søkerHarMeldtFraOmBarnehageplass:
-                                        vilkårResultat.søkerHarMeldtFraOmBarnehageplass,
-                                };
+                                return mapFraRestVilkårResultatTilVilkårResultat(vilkårResultat);
                             }
                         )
                     ),

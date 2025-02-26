@@ -23,13 +23,10 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
     const erLesevisning = vurderErLesevisning();
 
     const { felter } = useBosattIRiket(vilkårResultat, person);
-
-    const vilkårHarEndringerSomIkkeErLagret = () => {
-        return true;
-    };
+    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
 
     const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret,
+        vilkårHarEndringerSomIkkeErLagret: vilkårSkjemaContext.finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
 
@@ -41,7 +38,7 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
             person
         )
     );
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
+
     return (
         <VilkårEkspanderbarRad
             vilkårResultat={vilkårResultat}
