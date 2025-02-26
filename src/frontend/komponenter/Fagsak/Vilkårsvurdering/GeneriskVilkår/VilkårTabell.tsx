@@ -4,9 +4,15 @@ import styled from 'styled-components';
 
 import { Table } from '@navikt/ds-react';
 
-import VilkårTabellRad from './VilkårTabellRad';
+import { Barnehageplass } from './Vilkår/Barnehageplass/Barnehageplass';
+import { BarnetsAlder } from './Vilkår/BarnetsAlder/BarnetsAlder';
+import { BorMedSøker } from './Vilkår/BorMedSøker/BorMedSøker';
+import { BosattIRiket } from './Vilkår/BosattIRiket/BosattIRiket';
+import { LovligOpphold } from './Vilkår/LovligOpphold/LovligOpphold';
+import { Medlemskap } from './Vilkår/Medlemskap/Medlemskap';
+import { MedlemskapAnnenForelder } from './Vilkår/MedlemskapAnnenForelder/MedlemskapAnnenForelder';
 import type { IGrunnlagPerson } from '../../../../typer/person';
-import type { IVilkårConfig, IVilkårResultat } from '../../../../typer/vilkår';
+import { VilkårType, type IVilkårConfig, type IVilkårResultat } from '../../../../typer/vilkår';
 
 export const vilkårFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
     `vilkår_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
@@ -43,7 +49,7 @@ const VilkårTabell: React.FC<IProps> = ({
     person,
     vilkårFraConfig,
     vilkårResultater,
-    settFokusPåKnapp,
+    // settFokusPåKnapp, TODO: Denne må tas i bruk, ble ikke brukt fra før, men den burde brukes for riktig fokus etter å ha lagt til ny periode (brukes i ba)
 }) => {
     return (
         <Table>
@@ -59,15 +65,71 @@ const VilkårTabell: React.FC<IProps> = ({
             </Table.Header>
             <Table.Body>
                 {vilkårResultater.map((vilkårResultat: IVilkårResultat, index: number) => {
-                    return (
-                        <VilkårTabellRad
-                            key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                            vilkårFraConfig={vilkårFraConfig}
-                            person={person}
-                            vilkårResultat={vilkårResultat}
-                            settFokusPåKnapp={settFokusPåKnapp}
-                        />
-                    );
+                    switch (vilkårResultat.vilkårType) {
+                        case VilkårType.BOSATT_I_RIKET:
+                            return (
+                                <BosattIRiket
+                                    key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                    vilkårResultat={vilkårResultat}
+                                    vilkårFraConfig={vilkårFraConfig}
+                                    person={person}
+                                />
+                            );
+                        case VilkårType.LOVLIG_OPPHOLD:
+                            return (
+                                <LovligOpphold
+                                    key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                    vilkårResultat={vilkårResultat}
+                                    vilkårFraConfig={vilkårFraConfig}
+                                    person={person}
+                                />
+                            );
+                        case VilkårType.MEDLEMSKAP:
+                            return (
+                                <Medlemskap
+                                    key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                    vilkårResultat={vilkårResultat}
+                                    vilkårFraConfig={vilkårFraConfig}
+                                    person={person}
+                                />
+                            );
+                        case VilkårType.BARNEHAGEPLASS:
+                            return (
+                                <Barnehageplass
+                                    key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                    vilkårResultat={vilkårResultat}
+                                    vilkårFraConfig={vilkårFraConfig}
+                                    person={person}
+                                />
+                            );
+                        case VilkårType.MEDLEMSKAP_ANNEN_FORELDER:
+                            return (
+                                <MedlemskapAnnenForelder
+                                    key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                    vilkårResultat={vilkårResultat}
+                                    vilkårFraConfig={vilkårFraConfig}
+                                    person={person}
+                                />
+                            );
+                        case VilkårType.BOR_MED_SØKER:
+                            return (
+                                <BorMedSøker
+                                    key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                    vilkårResultat={vilkårResultat}
+                                    vilkårFraConfig={vilkårFraConfig}
+                                    person={person}
+                                />
+                            );
+                        case VilkårType.BARNETS_ALDER:
+                            return (
+                                <BarnetsAlder
+                                    key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                    vilkårResultat={vilkårResultat}
+                                    vilkårFraConfig={vilkårFraConfig}
+                                    person={person}
+                                />
+                            );
+                    }
                 })}
             </Table.Body>
         </Table>

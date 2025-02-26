@@ -50,11 +50,9 @@ const Knapperad = styled.div`
 `;
 
 export interface IVilkårSkjemaBaseProps {
-    lesevisning: boolean;
     vilkårResultat: IVilkårResultat;
     vilkårFraConfig: IVilkårConfig;
     person: IGrunnlagPerson;
-    toggleForm: (visSkjema: boolean) => void;
 }
 
 interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjemaBaseProps {
@@ -66,6 +64,8 @@ interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjema
     periodeChildren?: ReactNode;
     children?: ReactNode;
     vurderesEtterEndringer?: (vurderesEtter: Regelverk) => void;
+    toggleForm: (visSkjema: boolean) => void;
+    lesevisning: boolean;
 }
 
 export const VilkårSkjema = <T extends IVilkårSkjemaContext>({

@@ -4,7 +4,10 @@ import {
     bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår,
     useBosattIRiket,
 } from './BosattIRiketContext';
+import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { Regelverk, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
+import VilkårEkspanderbarRad from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { useVilkårSkjema } from '../../VilkårSkjemaContext';
@@ -14,11 +17,22 @@ type BosattIRiketProps = IVilkårSkjemaBaseProps;
 export const BosattIRiket: React.FC<BosattIRiketProps> = ({
     vilkårResultat,
     vilkårFraConfig,
-    toggleForm,
     person,
-    lesevisning,
 }: BosattIRiketProps) => {
+    const { vurderErLesevisning } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
+
     const { felter } = useBosattIRiket(vilkårResultat, person);
+
+    const vilkårHarEndringerSomIkkeErLagret = () => {
+        return true;
+    };
+
+    const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
+        vilkårHarEndringerSomIkkeErLagret,
+        lagretVilkårResultat: vilkårResultat,
+    });
+
     const [utdypendeVilkårsvurderinger, setUtdypendeVilkårsvurderinger] = useState<
         UtdypendeVilkårsvurdering[]
     >(
@@ -29,24 +43,30 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
     );
     const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
     return (
-        <VilkårSkjema
-            vilkårSkjemaContext={vilkårSkjemaContext}
-            visVurderesEtter={true}
-            visSpørsmål={true}
-            muligeUtdypendeVilkårsvurderinger={utdypendeVilkårsvurderinger}
+        <VilkårEkspanderbarRad
             vilkårResultat={vilkårResultat}
-            vilkårFraConfig={vilkårFraConfig}
+            ekspandertVilkår={ekspandertVilkår}
             toggleForm={toggleForm}
-            person={person}
-            lesevisning={lesevisning}
-            vurderesEtterEndringer={(vurderesEtter: Regelverk): void => {
-                setUtdypendeVilkårsvurderinger(
-                    bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
-                        vurderesEtter,
-                        person
-                    )
-                );
-            }}
-        />
+        >
+            <VilkårSkjema
+                vilkårSkjemaContext={vilkårSkjemaContext}
+                visVurderesEtter={true}
+                visSpørsmål={true}
+                muligeUtdypendeVilkårsvurderinger={utdypendeVilkårsvurderinger}
+                vilkårResultat={vilkårResultat}
+                vilkårFraConfig={vilkårFraConfig}
+                toggleForm={toggleForm}
+                person={person}
+                lesevisning={erLesevisning}
+                vurderesEtterEndringer={(vurderesEtter: Regelverk): void => {
+                    setUtdypendeVilkårsvurderinger(
+                        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
+                            vurderesEtter,
+                            person
+                        )
+                    );
+                }}
+            />
+        </VilkårEkspanderbarRad>
     );
 };
