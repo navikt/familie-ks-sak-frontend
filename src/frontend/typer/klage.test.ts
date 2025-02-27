@@ -3,6 +3,7 @@ import {
     erKlageFeilregistrertAvKA,
     harAnkeEksistertPåKlagebehandling,
     KlageinstansEventType,
+    KlageinstansUtfall,
     klageinstansUtfallTilTekst,
     utledKlagebehandlingResultattekst,
 } from './klage';
@@ -81,7 +82,10 @@ describe('Klage', () => {
         test.each(alleKlageinstansUtfall)('skal utlede forventet tekst fra utfall', utfall => {
             // Arrange
             const klagebehandling = KlageTestdata.lagKlagebehandling({
-                klageinstansResultat: [KlageTestdata.lagKlageinstansResultat({ utfall })],
+                klageinstansResultat: [
+                    KlageTestdata.lagKlageinstansResultat({ utfall: undefined }),
+                    KlageTestdata.lagKlageinstansResultat({ utfall }),
+                ],
             });
 
             // Act
@@ -96,8 +100,12 @@ describe('Klage', () => {
             const klagebehandling = KlageTestdata.lagKlagebehandling({
                 klageinstansResultat: [
                     KlageTestdata.lagKlageinstansResultat({
-                        type: KlageinstansEventType.BEHANDLING_FEILREGISTRERT,
+                        type: KlageinstansEventType.KLAGEBEHANDLING_AVSLUTTET,
                         utfall: undefined,
+                    }),
+                    KlageTestdata.lagKlageinstansResultat({
+                        type: KlageinstansEventType.BEHANDLING_FEILREGISTRERT,
+                        utfall: KlageinstansUtfall.AVVIST,
                     }),
                 ],
             });
