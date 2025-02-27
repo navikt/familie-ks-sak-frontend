@@ -1,3 +1,4 @@
+import { behandlingsresultater } from './behandling';
 import type { IsoDatoString } from '../utils/dato';
 
 export interface IKlagebehandling {
@@ -29,7 +30,7 @@ export enum KlageResultat {
     HENLAGT = 'HENLAGT',
 }
 
-enum KlageinstansUtfall {
+export enum KlageinstansUtfall {
     TRUKKET = 'TRUKKET',
     RETUR = 'RETUR',
     OPPHEVET = 'OPPHEVET',
@@ -38,19 +39,24 @@ enum KlageinstansUtfall {
     STADFESTELSE = 'STADFESTELSE',
     UGUNST = 'UGUNST',
     AVVIST = 'AVVIST',
+    INNSTILLING_STADFESTELSE = 'INNSTILLING_STADFESTELSE',
+    INNSTILLING_AVVIST = 'INNSTILLING_AVVIST',
 }
 
-enum BehandlingEventType {
+export enum KlageinstansEventType {
     KLAGEBEHANDLING_AVSLUTTET = 'KLAGEBEHANDLING_AVSLUTTET',
     ANKEBEHANDLING_OPPRETTET = 'ANKEBEHANDLING_OPPRETTET',
     ANKEBEHANDLING_AVSLUTTET = 'ANKEBEHANDLING_AVSLUTTET',
+    BEHANDLING_FEILREGISTRERT = 'BEHANDLING_FEILREGISTRERT',
+    ANKE_I_TRYGDERETTENBEHANDLING_OPPRETTET = 'ANKE_I_TRYGDERETTENBEHANDLING_OPPRETTET',
 }
 
-interface KlageinstansResultat {
-    type: BehandlingEventType;
+export interface KlageinstansResultat {
+    type: KlageinstansEventType;
     utfall?: KlageinstansUtfall;
     mottattEllerAvsluttetTidspunkt: IsoDatoString;
     journalpostReferanser: string[];
+    årsakFeilregistrert?: string;
 }
 
 export enum KlageStatus {
@@ -62,4 +68,54 @@ export enum KlageStatus {
 
 export enum Klagebehandlingstype {
     KLAGE = 'KLAGE',
+}
+
+export const klageinstansUtfallTilTekst: Record<KlageinstansUtfall, string> = {
+    TRUKKET: 'Trukket KA',
+    RETUR: 'Retur KA',
+    OPPHEVET: 'Opphevet KA',
+    MEDHOLD: 'Medhold KA',
+    DELVIS_MEDHOLD: 'Delvis medhold KA',
+    STADFESTELSE: 'Stadfestelse KA',
+    UGUNST: 'Ugunst (Ugyldig) KA',
+    AVVIST: 'Avvist KA',
+    INNSTILLING_STADFESTELSE: 'Innstilling om stadfestelse til trygderetten fra KA',
+    INNSTILLING_AVVIST: 'Innstilling om avist til trygderetten fra KA',
+};
+
+export function harAnkeEksistertPåKlagebehandling(behandling: IKlagebehandling) {
+    return behandling.klageinstansResultat.some(
+        resultat =>
+            resultat.type === KlageinstansEventType.ANKEBEHANDLING_OPPRETTET ||
+            resultat.type === KlageinstansEventType.ANKEBEHANDLING_AVSLUTTET ||
+            resultat.type === KlageinstansEventType.ANKE_I_TRYGDERETTENBEHANDLING_OPPRETTET
+    );
+}
+
+export function erKlageFeilregistrertAvKA(behandling: IKlagebehandling) {
+    return behandling.klageinstansResultat.some(
+        resultat => resultat.type == KlageinstansEventType.BEHANDLING_FEILREGISTRERT
+    );
+}
+
+function finnAvsluttetKlagebehandlingUtfall(
+    behandling: IKlagebehandling
+): KlageinstansUtfall | undefined {
+    return behandling.klageinstansResultat.find(
+        resultat => resultat.type === KlageinstansEventType.KLAGEBEHANDLING_AVSLUTTET
+    )?.utfall;
+}
+
+export function utledKlagebehandlingResultattekst(behandling: IKlagebehandling) {
+    const klageBehandlingAvsluttetUtfall = finnAvsluttetKlagebehandlingUtfall(behandling);
+    if (klageBehandlingAvsluttetUtfall) {
+        return klageinstansUtfallTilTekst[klageBehandlingAvsluttetUtfall];
+    }
+    if (erKlageFeilregistrertAvKA(behandling)) {
+        return 'Feilregistrert (KA)';
+    }
+    if (behandling.resultat) {
+        return behandlingsresultater[behandling.resultat];
+    }
+    return 'Ikke satt';
 }
