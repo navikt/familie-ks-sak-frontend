@@ -31,7 +31,7 @@ export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = 
 ];
 
 export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
-    const vilkårSkjema: IVilkårSkjemaContext = {
+    const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
         resultat: vilkår.resultat,
         utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
@@ -39,6 +39,9 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
         begrunnelse: vilkår.begrunnelse,
         erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: vilkår.avslagBegrunnelser,
+        adopsjonsdato: person.adopsjonsdato
+            ? startOfDay(new Date(person.adopsjonsdato))
+            : undefined,
     };
 
     const { personResultater } = useVilkårsvurdering();
@@ -60,20 +63,20 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
     const førsteLagredeFom = alleBarnetsAlderVilkårsResultaterSortert[0].periodeFom;
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
-        verdi: vilkårSkjema.vurderesEtter,
+        verdi: vilkårSkjemaMedLagredeVerdier.vurderesEtter,
     });
 
     const resultat = useFelt<Resultat>({
-        verdi: vilkårSkjema.resultat,
+        verdi: vilkårSkjemaMedLagredeVerdier.resultat,
         valideringsfunksjon: erResultatGyldig,
     });
 
     const erEksplisittAvslagPåSøknad = useFelt<boolean>({
-        verdi: vilkårSkjema.erEksplisittAvslagPåSøknad,
+        verdi: vilkårSkjemaMedLagredeVerdier.erEksplisittAvslagPåSøknad,
     });
 
     const utdypendeVilkårsvurdering = useFelt<UtdypendeVilkårsvurdering[]>({
-        verdi: vilkårSkjema.utdypendeVilkårsvurdering,
+        verdi: vilkårSkjemaMedLagredeVerdier.utdypendeVilkårsvurdering,
         valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });
 
@@ -94,7 +97,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
         resultat,
         utdypendeVilkårsvurdering,
         periode: useFelt<IIsoDatoPeriode>({
-            verdi: vilkårSkjema.periode,
+            verdi: vilkårSkjemaMedLagredeVerdier.periode,
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
@@ -106,7 +109,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 erPeriodeGyldig(felt, VilkårType.BARNETS_ALDER, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
-            verdi: vilkårSkjema.begrunnelse,
+            verdi: vilkårSkjemaMedLagredeVerdier.begrunnelse,
             valideringsfunksjon: erBegrunnelseGyldig,
             avhengigheter: {
                 vurderesEtter: vurderesEtter.verdi,
@@ -115,7 +118,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
         }),
         erEksplisittAvslagPåSøknad,
         avslagBegrunnelser: useFelt<Begrunnelse[]>({
-            verdi: vilkårSkjema.avslagBegrunnelser,
+            verdi: vilkårSkjemaMedLagredeVerdier.avslagBegrunnelser,
             valideringsfunksjon: erAvslagBegrunnelserGyldig,
             avhengigheter: {
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
@@ -127,9 +130,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
     const [forrigeAdopsjonsdato, settForrigeAdopsjonsdato] = useState<IsoDatoString | undefined>();
 
     const settAdopsjonsdatoFraBackend = () => {
-        felter.adopsjonsdato.validerOgSettFelt(
-            person.adopsjonsdato ? startOfDay(new Date(person.adopsjonsdato)) : undefined
-        );
+        felter.adopsjonsdato.validerOgSettFelt(vilkårSkjemaMedLagredeVerdier.adopsjonsdato);
     };
 
     if (person.adopsjonsdato !== forrigeAdopsjonsdato) {
@@ -170,6 +171,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
             feilmelding,
             nullstillSkjema,
         },
-        finnesEndringerSomIkkeErLagret,
+        finnesEndringerSomIkkeErLagret: () =>
+            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
     };
 };

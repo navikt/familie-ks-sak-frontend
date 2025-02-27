@@ -17,7 +17,7 @@ import {
 import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
 export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
-    const vilkårSkjema: IVilkårSkjemaContext = {
+    const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
         vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
         resultat: vilkår.resultat,
         utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
@@ -31,20 +31,20 @@ export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson
         vilkår.resultat === Resultat.IKKE_VURDERT && vilkår.periode.fom !== undefined;
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
-        verdi: vilkårSkjema.vurderesEtter,
+        verdi: vilkårSkjemaMedLagredeVerdier.vurderesEtter,
     });
 
     const resultat = useFelt<Resultat>({
-        verdi: vilkårSkjema.resultat,
+        verdi: vilkårSkjemaMedLagredeVerdier.resultat,
         valideringsfunksjon: erResultatGyldig,
     });
 
     const erEksplisittAvslagPåSøknad = useFelt<boolean>({
-        verdi: vilkårSkjema.erEksplisittAvslagPåSøknad,
+        verdi: vilkårSkjemaMedLagredeVerdier.erEksplisittAvslagPåSøknad,
     });
 
     const utdypendeVilkårsvurdering = useFelt<UtdypendeVilkårsvurdering[]>({
-        verdi: vilkårSkjema.utdypendeVilkårsvurdering,
+        verdi: vilkårSkjemaMedLagredeVerdier.utdypendeVilkårsvurdering,
     });
 
     const felter = {
@@ -52,7 +52,7 @@ export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson
         resultat,
         utdypendeVilkårsvurdering,
         periode: useFelt<IIsoDatoPeriode>({
-            verdi: vilkårSkjema.periode,
+            verdi: vilkårSkjemaMedLagredeVerdier.periode,
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
@@ -61,11 +61,11 @@ export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson
                 erPeriodeGyldig(felt, VilkårType.MEDLEMSKAP, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
-            verdi: vilkårSkjema.begrunnelse,
+            verdi: vilkårSkjemaMedLagredeVerdier.begrunnelse,
         }),
         erEksplisittAvslagPåSøknad,
         avslagBegrunnelser: useFelt<Begrunnelse[]>({
-            verdi: vilkårSkjema.avslagBegrunnelser,
+            verdi: vilkårSkjemaMedLagredeVerdier.avslagBegrunnelser,
             valideringsfunksjon: erAvslagBegrunnelserGyldig,
             avhengigheter: {
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
@@ -94,7 +94,8 @@ export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson
             feilmelding,
             nullstillSkjema,
         },
-        finnesEndringerSomIkkeErLagret,
+        finnesEndringerSomIkkeErLagret: () =>
+            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
         skalViseDatoVarsel,
     };
 };

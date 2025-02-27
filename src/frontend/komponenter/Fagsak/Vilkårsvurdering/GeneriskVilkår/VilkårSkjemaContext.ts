@@ -5,15 +5,10 @@ import deepEqual from 'deep-equal';
 import type { FieldDictionary, ISkjema } from '@navikt/familie-skjema';
 import { useSkjema } from '@navikt/familie-skjema';
 
-import { mapFraRestVilkårResultatTilVilkårResultat } from '../../../../context/Vilkårsvurdering/vilkårsvurdering';
 import type { IBehandling } from '../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../typer/person';
 import type { Begrunnelse } from '../../../../typer/vedtak';
-import type {
-    IEndreVilkårResultat,
-    IRestVilkårResultat,
-    Regelverk,
-} from '../../../../typer/vilkår';
+import type { IEndreVilkårResultat, Regelverk } from '../../../../typer/vilkår';
 import type { Resultat, UtdypendeVilkårsvurdering } from '../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../typer/vilkår';
 import { dateTilIsoDatoStringEllerUndefined, type IIsoDatoPeriode } from '../../../../utils/dato';
@@ -59,34 +54,48 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
 
     const [feilmelding, settFeilmelding] = useState<string>('');
 
+    const mapSkjemaTilVilkårSkjemaContext = (): IVilkårSkjemaContext => {
+        return {
+            vurderesEtter: skjema.felter.vurderesEtter.verdi,
+            resultat: skjema.felter.resultat.verdi,
+            utdypendeVilkårsvurdering: skjema.felter.utdypendeVilkårsvurdering.verdi,
+            periode: skjema.felter.periode.verdi,
+            begrunnelse: skjema.felter.begrunnelse.verdi,
+            erEksplisittAvslagPåSøknad: skjema.felter.erEksplisittAvslagPåSøknad.verdi,
+            avslagBegrunnelser: skjema.felter.avslagBegrunnelser.verdi,
+            antallTimer: skjema.felter.antallTimer?.verdi,
+            søkerHarMeldtFraOmBarnehageplass: skjema.felter.søkerHarMeldtFraOmBarnehageplass?.verdi,
+            adopsjonsdato: skjema.felter.adopsjonsdato?.verdi,
+        };
+    };
+
     const mapSkjemaTilIEndreVilkårResultat = (): IEndreVilkårResultat => {
+        const skjemaContext = mapSkjemaTilVilkårSkjemaContext();
         return {
             personIdent: person.personIdent,
-            adopsjonsdato: dateTilIsoDatoStringEllerUndefined(skjema.felter.adopsjonsdato?.verdi),
+            adopsjonsdato: dateTilIsoDatoStringEllerUndefined(skjemaContext.adopsjonsdato),
             endretVilkårResultat: {
-                begrunnelse: skjema.felter.begrunnelse.verdi,
+                begrunnelse: skjemaContext.begrunnelse,
                 behandlingId: vilkår.behandlingId,
                 endretAv: vilkår.endretAv,
                 endretTidspunkt: vilkår.endretTidspunkt,
                 erAutomatiskVurdert: vilkår.erAutomatiskVurdert,
                 erVurdert: vilkår.erVurdert,
                 id: vilkår.id,
-                periodeFom: skjema.felter.periode.verdi.fom,
-                periodeTom: skjema.felter.periode.verdi.tom,
-                resultat: skjema.felter.resultat.verdi,
-                erEksplisittAvslagPåSøknad: skjema.felter.erEksplisittAvslagPåSøknad.verdi,
-                avslagBegrunnelser: skjema.felter.avslagBegrunnelser.verdi,
+                periodeFom: skjemaContext.periode.fom,
+                periodeTom: skjemaContext.periode.tom,
+                resultat: skjemaContext.resultat,
+                erEksplisittAvslagPåSøknad: skjemaContext.erEksplisittAvslagPåSøknad,
+                avslagBegrunnelser: skjemaContext.avslagBegrunnelser,
                 vilkårType: vilkår.vilkårType,
-                vurderesEtter: skjema.felter.vurderesEtter.verdi,
-                utdypendeVilkårsvurderinger: skjema.felter.utdypendeVilkårsvurdering.verdi,
-                antallTimer: skjema.felter.antallTimer
-                    ? skjema.felter.antallTimer.verdi !== ''
-                        ? Number(skjema.felter.antallTimer.verdi)
-                        : undefined
-                    : undefined,
-                søkerHarMeldtFraOmBarnehageplass: skjema.felter.søkerHarMeldtFraOmBarnehageplass
-                    ? skjema.felter.søkerHarMeldtFraOmBarnehageplass.verdi
-                    : undefined,
+                vurderesEtter: skjemaContext.vurderesEtter,
+                utdypendeVilkårsvurderinger: skjemaContext.utdypendeVilkårsvurdering,
+                antallTimer:
+                    skjemaContext.antallTimer && skjemaContext.antallTimer !== ''
+                        ? Number(skjemaContext.antallTimer)
+                        : undefined,
+                søkerHarMeldtFraOmBarnehageplass:
+                    skjemaContext.søkerHarMeldtFraOmBarnehageplass ?? undefined,
             },
         };
     };
@@ -110,27 +119,21 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
         );
     };
 
-    const vilkårResultatHarEndringerSomIkkeErLagret = (
-        lagretVilkårResultat: IVilkårResultat,
-        endretRestVilkårResultat: IRestVilkårResultat
-    ): boolean => {
-        const endretVilkårResultat =
-            mapFraRestVilkårResultatTilVilkårResultat(endretRestVilkårResultat);
+    const finnesEndringerSomIkkeErLagret = (
+        vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext
+    ) => {
+        const endretVilkår: IVilkårSkjemaContext = mapSkjemaTilVilkårSkjemaContext();
 
-        return !deepEqual(lagretVilkårResultat, endretVilkårResultat);
-    };
+        // Sjekker på likhet uten felter som er undefined for å ikke få true hvis det ene objektet har felt=undefined og den andre mangler feltet
+        const lagretVilkårUtenUndefined = Object.fromEntries(
+            Object.entries(vilkårSkjemaMedLagredeVerdier).filter(([_, v]) => v !== undefined)
+        ) as IVilkårSkjemaContext;
 
-    const finnesEndringerSomIkkeErLagret = () => {
-        const endretVilkårResultat = mapSkjemaTilIEndreVilkårResultat();
-        const lagretAdopsjonsdato = person.adopsjonsdato ?? undefined;
+        const endretVilkårUtenUndefined = Object.fromEntries(
+            Object.entries(endretVilkår).filter(([_, v]) => v !== undefined)
+        ) as IVilkårSkjemaContext;
 
-        const erAdopsjonsdatoEndret = endretVilkårResultat.adopsjonsdato !== lagretAdopsjonsdato;
-        const erVilkårResultatEndret = vilkårResultatHarEndringerSomIkkeErLagret(
-            vilkår,
-            endretVilkårResultat.endretVilkårResultat
-        );
-
-        return erAdopsjonsdatoEndret || erVilkårResultatEndret;
+        return !deepEqual(lagretVilkårUtenUndefined, endretVilkårUtenUndefined);
     };
 
     return {
