@@ -253,7 +253,10 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         </Button>
                         <Button
                             style={{ marginLeft: '1rem' }}
-                            onClick={() => toggleForm(false)}
+                            onClick={() => {
+                                toggleForm(false);
+                                nullstillSkjema();
+                            }}
                             size="medium"
                             variant="tertiary"
                         >
