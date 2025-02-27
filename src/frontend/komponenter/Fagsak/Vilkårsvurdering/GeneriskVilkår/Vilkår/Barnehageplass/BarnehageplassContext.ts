@@ -19,7 +19,7 @@ import {
     erPeriodeGyldig,
     erResultatGyldig,
 } from '../../../../../../utils/validators';
-import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
 export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = [
     UtdypendeVilkårsvurderingGenerell.SOMMERFERIE,
@@ -114,7 +114,27 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         }
     }, [periode.verdi.tom]);
 
+    const {
+        skjema,
+        lagreVilkår,
+        lagrerVilkår,
+        slettVilkår,
+        sletterVilkår,
+        feilmelding,
+        nullstillSkjema,
+        finnesEndringerSomIkkeErLagret,
+    } = useVilkårSkjema(vilkår, felter, person);
+
     return {
-        felter,
+        vilkårSkjemaContext: {
+            skjema,
+            lagreVilkår,
+            lagrerVilkår,
+            slettVilkår,
+            sletterVilkår,
+            feilmelding,
+            nullstillSkjema,
+        },
+        finnesEndringerSomIkkeErLagret,
     };
 };

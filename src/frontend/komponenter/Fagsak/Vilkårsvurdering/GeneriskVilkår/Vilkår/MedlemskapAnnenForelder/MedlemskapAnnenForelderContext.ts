@@ -11,7 +11,7 @@ import type {
 } from '../../../../../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import { erAvslagBegrunnelserGyldig, erResultatGyldig } from '../../../../../../utils/validators';
-import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
 export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
@@ -68,7 +68,27 @@ export const useMedlemskapAnnenForelder = (vilkår: IVilkårResultat, person: IG
         }),
     };
 
+    const {
+        skjema,
+        lagreVilkår,
+        lagrerVilkår,
+        slettVilkår,
+        sletterVilkår,
+        feilmelding,
+        nullstillSkjema,
+        finnesEndringerSomIkkeErLagret,
+    } = useVilkårSkjema(vilkår, felter, person);
+
     return {
-        felter,
+        vilkårSkjemaContext: {
+            skjema,
+            lagreVilkår,
+            lagrerVilkår,
+            slettVilkår,
+            sletterVilkår,
+            feilmelding,
+            nullstillSkjema,
+        },
+        finnesEndringerSomIkkeErLagret,
     };
 };

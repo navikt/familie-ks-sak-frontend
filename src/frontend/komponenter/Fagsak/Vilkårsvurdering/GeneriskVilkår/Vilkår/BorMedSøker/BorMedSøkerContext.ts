@@ -19,7 +19,7 @@ import {
     erResultatGyldig,
     erBegrunnelseGyldig,
 } from '../../../../../../utils/validators';
-import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
 export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjema: IVilkårSkjemaContext = {
@@ -86,8 +86,28 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
         }),
     };
 
+    const {
+        skjema,
+        lagreVilkår,
+        lagrerVilkår,
+        slettVilkår,
+        sletterVilkår,
+        feilmelding,
+        nullstillSkjema,
+        finnesEndringerSomIkkeErLagret,
+    } = useVilkårSkjema(vilkår, felter, person);
+
     return {
-        felter,
+        vilkårSkjemaContext: {
+            skjema,
+            lagreVilkår,
+            lagrerVilkår,
+            slettVilkår,
+            sletterVilkår,
+            feilmelding,
+            nullstillSkjema,
+        },
+        finnesEndringerSomIkkeErLagret,
     };
 };
 

@@ -11,7 +11,6 @@ import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import VilkårEkspanderbarRad from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
-import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 type LovligOppholdProps = IVilkårSkjemaBaseProps;
 
@@ -27,17 +26,19 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
-    const { felter, skalViseDatoVarsel } = useLovligOpphold(vilkårResultat, person);
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
+    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } =
+        useLovligOpphold(vilkårResultat, person);
+
+    const skjema = vilkårSkjemaContext.skjema;
 
     const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret: vilkårSkjemaContext.finnesEndringerSomIkkeErLagret,
+        vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
 
     const nullstillAvslagBegrunnelser = () => {
-        vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
-        vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
+        skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
+        skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
     };
     return (
         <VilkårEkspanderbarRad
@@ -72,21 +73,15 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                                 : ''}
                         </Label>
                     }
-                    value={felter.resultat.verdi}
-                    error={
-                        vilkårSkjemaContext.skjema.visFeilmeldinger
-                            ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
-                            : ''
-                    }
+                    value={skjema.felter.resultat.verdi}
+                    error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
                     readOnly={erLesevisning}
                 >
                     <Radio
                         name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                         value={Resultat.OPPFYLT}
                         onChange={() => {
-                            vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
-                                Resultat.OPPFYLT
-                            );
+                            skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
                             nullstillAvslagBegrunnelser();
                         }}
                     >
@@ -96,9 +91,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                         name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                         value={Resultat.IKKE_OPPFYLT}
                         onChange={() => {
-                            vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
-                                Resultat.IKKE_OPPFYLT
-                            );
+                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
                         }}
                     >
                         Nei
@@ -107,9 +100,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                         name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                         value={Resultat.IKKE_AKTUELT}
                         onChange={() => {
-                            vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(
-                                Resultat.IKKE_AKTUELT
-                            );
+                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_AKTUELT);
                             nullstillAvslagBegrunnelser();
                         }}
                     >

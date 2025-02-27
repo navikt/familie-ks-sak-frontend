@@ -16,7 +16,6 @@ import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import VilkårEkspanderbarRad from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
-import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 const StyledTextField = styled(TextField)`
     margin-bottom: 1rem;
@@ -32,35 +31,39 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
-    const { felter } = useBarnehageplass(vilkårResultat, person);
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
+    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBarnehageplass(
+        vilkårResultat,
+        person
+    );
+
+    const skjema = vilkårSkjemaContext.skjema;
 
     const [harBarnehageplass, settHarBarnehageplass] = useState(
-        vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(vilkårSkjemaContext.skjema) ||
-            vilkårOppfyltOgAntallTimerKvalifiserer(vilkårSkjemaContext.skjema)
+        vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(skjema) ||
+            vilkårOppfyltOgAntallTimerKvalifiserer(skjema)
     );
 
     const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret: vilkårSkjemaContext.finnesEndringerSomIkkeErLagret,
+        vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
 
     const oppdaterResultat = (barnehageplass: boolean, antallTimer: string) => {
         if (!barnehageplass) {
             if (
-                vilkårSkjemaContext.skjema.felter.utdypendeVilkårsvurdering.verdi.find(
+                skjema.felter.utdypendeVilkårsvurdering.verdi.find(
                     utdypende => utdypende === UtdypendeVilkårsvurderingGenerell.SOMMERFERIE
                 )
             ) {
-                vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
+                skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
             } else {
-                vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
+                skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
             }
         } else {
             if (antallTimerKvalifiserer(Number(antallTimer))) {
-                vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
+                skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
             } else {
-                vilkårSkjemaContext.skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
+                skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
             }
         }
     };
@@ -71,12 +74,12 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
 
     const onBarnehageplassOppdatert = (barnehageplass: boolean) => {
         settHarBarnehageplass(barnehageplass);
-        oppdaterResultat(barnehageplass, vilkårSkjemaContext.skjema.felter.antallTimer.verdi);
+        oppdaterResultat(barnehageplass, skjema.felter.antallTimer.verdi);
     };
 
     useEffect(() => {
-        oppdaterResultat(harBarnehageplass, vilkårSkjemaContext.skjema.felter.antallTimer.verdi);
-    }, [vilkårSkjemaContext.skjema.felter.utdypendeVilkårsvurdering]);
+        oppdaterResultat(harBarnehageplass, skjema.felter.antallTimer.verdi);
+    }, [skjema.felter.utdypendeVilkårsvurdering]);
 
     return (
         <VilkårEkspanderbarRad
@@ -97,17 +100,19 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                 person={person}
                 lesevisning={erLesevisning}
                 periodeChildren={
-                    felter.periode.verdi.tom && (
+                    skjema.felter.periode.verdi.tom && (
                         <>
-                            {felter.søkerHarMeldtFraOmBarnehageplass.verdi && (
+                            {skjema.felter.søkerHarMeldtFraOmBarnehageplass.verdi && (
                                 <BodyShort as={'em'} size="small">
                                     Merk at tom-dato skal være dagen før barnehagestart
                                 </BodyShort>
                             )}
                             <Checkbox
-                                defaultChecked={felter.søkerHarMeldtFraOmBarnehageplass.verdi}
+                                defaultChecked={
+                                    skjema.felter.søkerHarMeldtFraOmBarnehageplass.verdi
+                                }
                                 onChange={event => {
-                                    felter.søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(
+                                    skjema.felter.søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(
                                         event.target.checked
                                     );
                                 }}
@@ -121,15 +126,11 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                 <RadioGroup
                     legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål() : ''}
                     value={
-                        vilkårSkjemaContext.skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT
+                        skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT
                             ? harBarnehageplass
                             : undefined
                     }
-                    error={
-                        vilkårSkjemaContext.skjema.visFeilmeldinger
-                            ? vilkårSkjemaContext.skjema.felter.resultat.feilmelding
-                            : ''
-                    }
+                    error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
                     readOnly={erLesevisning}
                 >
                     <Radio
@@ -145,7 +146,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                         name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
                         value={false}
                         onChange={() => {
-                            vilkårSkjemaContext.skjema.felter.antallTimer.validerOgSettFelt('');
+                            skjema.felter.antallTimer.validerOgSettFelt('');
                             onBarnehageplassOppdatert(false);
                         }}
                     >
@@ -157,18 +158,12 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                         label={'Antall timer'}
                         type={'number'}
                         readOnly={erLesevisning}
-                        value={vilkårSkjemaContext.skjema.felter.antallTimer.verdi}
+                        value={skjema.felter.antallTimer.verdi}
                         onChange={event => {
-                            vilkårSkjemaContext.skjema.felter.antallTimer.validerOgSettFelt(
-                                event.target.value
-                            );
+                            skjema.felter.antallTimer.validerOgSettFelt(event.target.value);
                             onAntallTimerOppdatert(event.target.value);
                         }}
-                        error={
-                            vilkårSkjemaContext.skjema.visFeilmeldinger
-                                ? vilkårSkjemaContext.skjema.felter.antallTimer.feilmelding
-                                : ''
-                        }
+                        error={skjema.visFeilmeldinger ? skjema.felter.antallTimer.feilmelding : ''}
                     />
                 )}
             </VilkårSkjema>

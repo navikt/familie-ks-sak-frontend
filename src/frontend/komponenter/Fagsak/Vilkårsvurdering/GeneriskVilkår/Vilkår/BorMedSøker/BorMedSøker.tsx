@@ -10,7 +10,6 @@ import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import VilkårEkspanderbarRad from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
-import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
@@ -22,11 +21,13 @@ export const BorMedSøker: React.FC<BosattIRiketProps> = ({
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
-    const { felter } = useBorMedSøker(vilkårResultat, person);
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person);
+    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBorMedSøker(
+        vilkårResultat,
+        person
+    );
 
     const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret: vilkårSkjemaContext.finnesEndringerSomIkkeErLagret,
+        vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
 
