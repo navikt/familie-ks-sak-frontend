@@ -157,7 +157,6 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
         slettVilkår,
         sletterVilkår,
         feilmelding,
-        nullstillSkjema,
         finnesEndringerSomIkkeErLagret,
     } = useVilkårSkjema(vilkår, felter, person);
 
@@ -169,7 +168,16 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
             slettVilkår,
             sletterVilkår,
             feilmelding,
-            nullstillSkjema,
+            nullstillSkjema: () => {
+                felter.avslagBegrunnelser.nullstill();
+                felter.begrunnelse.nullstill();
+                felter.periode.nullstill();
+                felter.erEksplisittAvslagPåSøknad.nullstill();
+                felter.resultat.nullstill();
+                felter.utdypendeVilkårsvurdering.nullstill();
+                felter.vurderesEtter.nullstill();
+                settAdopsjonsdatoFraBackend();
+            },
         },
         finnesEndringerSomIkkeErLagret: () =>
             finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
