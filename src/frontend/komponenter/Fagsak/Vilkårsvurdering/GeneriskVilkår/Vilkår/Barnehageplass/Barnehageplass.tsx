@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 
 import { BodyShort, Checkbox, Radio, RadioGroup, TextField } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
-import {
-    antallTimerKvalifiserer,
-    vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie,
-    vilkårOppfyltOgAntallTimerKvalifiserer,
-} from './BarnehageplassUtils';
+import { antallTimerKvalifiserer } from './BarnehageplassUtils';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../typer/vilkår';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
@@ -31,17 +27,14 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBarnehageplass(
-        vilkårResultat,
-        person
-    );
+    const {
+        vilkårSkjemaContext,
+        finnesEndringerSomIkkeErLagret,
+        harBarnehageplass,
+        settHarBarnehageplass,
+    } = useBarnehageplass(vilkårResultat, person);
 
     const skjema = vilkårSkjemaContext.skjema;
-
-    const [harBarnehageplass, settHarBarnehageplass] = useState(
-        vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(skjema) ||
-            vilkårOppfyltOgAntallTimerKvalifiserer(skjema)
-    );
 
     const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,

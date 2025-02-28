@@ -1,7 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useFelt } from '@navikt/familie-skjema';
 
+import {
+    vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie,
+    vilkårOppfyltOgAntallTimerKvalifiserer,
+} from './BarnehageplassUtils';
 import {
     erAntallTimerGyldig,
     erUtdypendeVilkårsvurderingerGyldig,
@@ -125,6 +129,18 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         finnesEndringerSomIkkeErLagret,
     } = useVilkårSkjema(vilkår, felter, person);
 
+    const initiellHarBarnehageplass =
+        vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(
+            vilkårSkjemaMedLagredeVerdier.resultat,
+            vilkårSkjemaMedLagredeVerdier.utdypendeVilkårsvurdering
+        ) ||
+        vilkårOppfyltOgAntallTimerKvalifiserer(
+            vilkårSkjemaMedLagredeVerdier.resultat,
+            vilkårSkjemaMedLagredeVerdier.antallTimer
+        );
+
+    const [harBarnehageplass, settHarBarnehageplass] = useState(initiellHarBarnehageplass);
+
     return {
         vilkårSkjemaContext: {
             skjema,
@@ -133,9 +149,14 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
             slettVilkår,
             sletterVilkår,
             feilmelding,
-            nullstillSkjema,
+            nullstillSkjema: () => {
+                nullstillSkjema();
+                settHarBarnehageplass(initiellHarBarnehageplass);
+            },
         },
         finnesEndringerSomIkkeErLagret: () =>
             finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        harBarnehageplass,
+        settHarBarnehageplass,
     };
 };
