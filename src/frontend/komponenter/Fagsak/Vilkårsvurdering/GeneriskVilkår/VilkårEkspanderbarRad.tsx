@@ -20,7 +20,7 @@ import { alleRegelverk } from '../../../../utils/vilkår';
 
 interface IProps {
     toggleForm: (visAlert: boolean) => void;
-    vilkårResultat: IVilkårResultat;
+    lagretVilkårResultat: IVilkårResultat;
     erVilkårEkspandert: boolean;
     children: ReactElement;
 }
@@ -67,40 +67,42 @@ const StyledPersonIcon = styled(PersonIcon)`
 const VilkårEkspanderbarRad: React.FC<IProps> = ({
     toggleForm,
     children,
-    vilkårResultat,
+    lagretVilkårResultat,
     erVilkårEkspandert,
 }) => {
     const { åpenBehandling } = useBehandling();
 
-    const periodeErTom = !vilkårResultat.periode.fom && !vilkårResultat.periode.tom;
+    const periodeErTom = !lagretVilkårResultat.periode.fom && !lagretVilkårResultat.periode.tom;
 
     return (
         <Table.ExpandableRow
             open={erVilkårEkspandert}
             togglePlacement="right"
             onOpenChange={() => toggleForm(true)}
-            id={vilkårFeilmeldingId(vilkårResultat)}
+            id={vilkårFeilmeldingId(lagretVilkårResultat)}
             content={children}
         >
             <Table.DataCell>
                 <VurderingCelle>
-                    <VilkårResultatIkon resultat={vilkårResultat.resultat} />
-                    <BodyShort>{uiResultat[vilkårResultat.resultat]}</BodyShort>
+                    <VilkårResultatIkon resultat={lagretVilkårResultat.resultat} />
+                    <BodyShort>{uiResultat[lagretVilkårResultat.resultat]}</BodyShort>
                 </VurderingCelle>
             </Table.DataCell>
             <Table.DataCell>
                 <BodyShort>
-                    {periodeErTom ? '-' : isoDatoPeriodeTilFormatertString(vilkårResultat.periode)}
+                    {periodeErTom
+                        ? '-'
+                        : isoDatoPeriodeTilFormatertString(lagretVilkårResultat.periode)}
                 </BodyShort>
             </Table.DataCell>
             <Table.DataCell>
-                <BeskrivelseCelle children={vilkårResultat.begrunnelse} />
+                <BeskrivelseCelle children={lagretVilkårResultat.begrunnelse} />
             </Table.DataCell>
             <Table.DataCell>
-                {vilkårResultat.vurderesEtter ? (
+                {lagretVilkårResultat.vurderesEtter ? (
                     <FlexDiv>
-                        {alleRegelverk[vilkårResultat.vurderesEtter].symbol}
-                        <div>{alleRegelverk[vilkårResultat.vurderesEtter].tekst}</div>
+                        {alleRegelverk[lagretVilkårResultat.vurderesEtter].symbol}
+                        <div>{alleRegelverk[lagretVilkårResultat.vurderesEtter].tekst}</div>
                     </FlexDiv>
                 ) : (
                     <FlexDiv>
@@ -111,17 +113,18 @@ const VilkårEkspanderbarRad: React.FC<IProps> = ({
             </Table.DataCell>
             <Table.DataCell>
                 <FlexDiv>
-                    {vilkårResultat.erAutomatiskVurdert ? (
+                    {lagretVilkårResultat.erAutomatiskVurdert ? (
                         <StyledCogRotationIcon title={'Automatisk Vurdering'} />
                     ) : (
                         <StyledPersonIcon title={'Manuell vurdering'} />
                     )}
                     <div>
-                        {åpenBehandling.status === RessursStatus.SUKSESS && vilkårResultat.erVurdert
-                            ? vilkårResultat.behandlingId === åpenBehandling.data.behandlingId
+                        {åpenBehandling.status === RessursStatus.SUKSESS &&
+                        lagretVilkårResultat.erVurdert
+                            ? lagretVilkårResultat.behandlingId === åpenBehandling.data.behandlingId
                                 ? 'Vurdert i denne behandlingen'
                                 : `Vurdert ${isoStringTilFormatertString({
-                                      isoString: vilkårResultat.endretTidspunkt,
+                                      isoString: lagretVilkårResultat.endretTidspunkt,
                                       tilFormat: Datoformat.DATO_FORKORTTET,
                                   })}`
                             : ''}

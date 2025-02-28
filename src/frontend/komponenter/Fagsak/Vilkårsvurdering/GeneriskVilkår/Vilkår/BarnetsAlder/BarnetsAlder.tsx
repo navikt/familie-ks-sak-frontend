@@ -46,7 +46,7 @@ const hentSpørsmålForLovverk = (lovverk: Lovverk | undefined, periode: IIsoDat
 type BarnetsAlderProps = IVilkårSkjemaBaseProps;
 
 export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
-    vilkårResultat,
+    lagretVilkårResultat,
     vilkårFraConfig,
     person,
 }: BarnetsAlderProps) => {
@@ -54,13 +54,13 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     const erLesevisning = vurderErLesevisning();
 
     const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBarnetsAlder(
-        vilkårResultat,
+        lagretVilkårResultat,
         person
     );
 
     const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
-        lagretVilkårResultat: vilkårResultat,
+        lagretVilkårResultat,
     });
 
     const skjema = vilkårSkjemaContext.skjema;
@@ -73,7 +73,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
 
     return (
         <VilkårEkspanderbarRad
-            vilkårResultat={vilkårResultat}
+            lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
         >
@@ -82,7 +82,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
                 visVurderesEtter={false}
                 visSpørsmål={false}
                 muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
-                vilkårResultat={vilkårResultat}
+                lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
                 toggleForm={toggleForm}
                 person={person}
@@ -106,7 +106,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
                     error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
                 >
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.OPPFYLT}
                         onChange={() => {
                             skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
@@ -117,7 +117,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
                         Ja
                     </Radio>
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.IKKE_OPPFYLT}
                         onChange={() =>
                             skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)

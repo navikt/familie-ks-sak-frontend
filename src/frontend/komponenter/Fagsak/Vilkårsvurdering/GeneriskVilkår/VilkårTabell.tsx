@@ -70,7 +70,7 @@ const VilkårTabell: React.FC<IProps> = ({
                             return (
                                 <BosattIRiket
                                     key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                                    vilkårResultat={vilkårResultat}
+                                    lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
                                 />
@@ -79,7 +79,7 @@ const VilkårTabell: React.FC<IProps> = ({
                             return (
                                 <LovligOpphold
                                     key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                                    vilkårResultat={vilkårResultat}
+                                    lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
                                 />
@@ -88,7 +88,7 @@ const VilkårTabell: React.FC<IProps> = ({
                             return (
                                 <Medlemskap
                                     key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                                    vilkårResultat={vilkårResultat}
+                                    lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
                                 />
@@ -97,7 +97,7 @@ const VilkårTabell: React.FC<IProps> = ({
                             return (
                                 <Barnehageplass
                                     key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                                    vilkårResultat={vilkårResultat}
+                                    lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
                                 />
@@ -106,7 +106,7 @@ const VilkårTabell: React.FC<IProps> = ({
                             return (
                                 <MedlemskapAnnenForelder
                                     key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                                    vilkårResultat={vilkårResultat}
+                                    lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
                                 />
@@ -115,7 +115,7 @@ const VilkårTabell: React.FC<IProps> = ({
                             return (
                                 <BorMedSøker
                                     key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                                    vilkårResultat={vilkårResultat}
+                                    lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
                                 />
@@ -124,7 +124,7 @@ const VilkårTabell: React.FC<IProps> = ({
                             return (
                                 <BarnetsAlder
                                     key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
-                                    vilkårResultat={vilkårResultat}
+                                    lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
                                 />

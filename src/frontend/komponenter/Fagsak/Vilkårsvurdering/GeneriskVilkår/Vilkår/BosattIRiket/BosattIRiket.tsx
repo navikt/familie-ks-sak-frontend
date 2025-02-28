@@ -14,7 +14,7 @@ import { VilkårSkjema } from '../../VilkårSkjema';
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
 export const BosattIRiket: React.FC<BosattIRiketProps> = ({
-    vilkårResultat,
+    lagretVilkårResultat,
     vilkårFraConfig,
     person,
 }: BosattIRiketProps) => {
@@ -26,16 +26,16 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
         finnesEndringerSomIkkeErLagret,
         muligeUtdypendeVilkårsvurderinger,
         settMuligeUtdypendeVilkårsvurderinger,
-    } = useBosattIRiket(vilkårResultat, person);
+    } = useBosattIRiket(lagretVilkårResultat, person);
 
     const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
-        lagretVilkårResultat: vilkårResultat,
+        lagretVilkårResultat,
     });
 
     return (
         <VilkårEkspanderbarRad
-            vilkårResultat={vilkårResultat}
+            lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
         >
@@ -44,7 +44,7 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
                 visVurderesEtter={true}
                 visSpørsmål={true}
                 muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
-                vilkårResultat={vilkårResultat}
+                lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
                 toggleForm={toggleForm}
                 person={person}

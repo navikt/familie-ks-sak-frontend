@@ -20,7 +20,7 @@ const StyledTextField = styled(TextField)`
 type BarnehageplassProps = IVilkårSkjemaBaseProps;
 
 export const Barnehageplass: React.FC<BarnehageplassProps> = ({
-    vilkårResultat,
+    lagretVilkårResultat,
     vilkårFraConfig,
     person,
 }: BarnehageplassProps) => {
@@ -32,13 +32,13 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
         finnesEndringerSomIkkeErLagret,
         harBarnehageplass,
         settHarBarnehageplass,
-    } = useBarnehageplass(vilkårResultat, person);
+    } = useBarnehageplass(lagretVilkårResultat, person);
 
     const skjema = vilkårSkjemaContext.skjema;
 
     const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
-        lagretVilkårResultat: vilkårResultat,
+        lagretVilkårResultat,
     });
 
     const oppdaterResultat = (barnehageplass: boolean, antallTimer: string) => {
@@ -76,7 +76,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
 
     return (
         <VilkårEkspanderbarRad
-            vilkårResultat={vilkårResultat}
+            lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
         >
@@ -87,7 +87,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                 muligeUtdypendeVilkårsvurderinger={
                     harBarnehageplass ? [] : muligeUtdypendeVilkårsvurderinger
                 }
-                vilkårResultat={vilkårResultat}
+                lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
                 toggleForm={toggleForm}
                 person={person}
@@ -127,7 +127,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                     readOnly={erLesevisning}
                 >
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={true}
                         onChange={() => {
                             onBarnehageplassOppdatert(true);
@@ -136,7 +136,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                         Ja
                     </Radio>
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={false}
                         onChange={() => {
                             skjema.felter.antallTimer.validerOgSettFelt('');

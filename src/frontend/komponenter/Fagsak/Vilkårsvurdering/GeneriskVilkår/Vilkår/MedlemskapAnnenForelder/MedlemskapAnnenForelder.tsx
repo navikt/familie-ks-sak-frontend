@@ -19,7 +19,7 @@ const StyledAlert = styled(Alert)`
 `;
 
 export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = ({
-    vilkårResultat,
+    lagretVilkårResultat,
     vilkårFraConfig,
     person,
 }: MedlemskapAnnenForelderProps) => {
@@ -27,7 +27,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
     const erLesevisning = vurderErLesevisning();
 
     const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useMedlemskapAnnenForelder(
-        vilkårResultat,
+        lagretVilkårResultat,
         person
     );
 
@@ -35,7 +35,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
 
     const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
-        lagretVilkårResultat: vilkårResultat,
+        lagretVilkårResultat,
     });
 
     const nullstillAvslagBegrunnelser = () => {
@@ -45,7 +45,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
 
     return (
         <VilkårEkspanderbarRad
-            vilkårResultat={vilkårResultat}
+            lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
         >
@@ -53,7 +53,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                 vilkårSkjemaContext={vilkårSkjemaContext}
                 visVurderesEtter={true}
                 visSpørsmål={false}
-                vilkårResultat={vilkårResultat}
+                lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
                 toggleForm={toggleForm}
                 person={person}
@@ -84,7 +84,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                     readOnly={erLesevisning}
                 >
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.OPPFYLT}
                         onChange={() => {
                             skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
@@ -94,7 +94,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                         Ja
                     </Radio>
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.IKKE_OPPFYLT}
                         onChange={() => {
                             skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
@@ -103,7 +103,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                         Nei
                     </Radio>
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.IKKE_AKTUELT}
                         onChange={() => {
                             skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_AKTUELT);

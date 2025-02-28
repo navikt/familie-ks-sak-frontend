@@ -34,17 +34,17 @@ export interface IBarnehageplassVilkårSkjemaContext extends IVilkårSkjemaConte
     søkerHarMeldtFraOmBarnehageplass: boolean;
 }
 
-export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useBarnehageplass = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IBarnehageplassVilkårSkjemaContext = {
-        vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
-        resultat: vilkår.resultat,
-        antallTimer: vilkår.antallTimer ? vilkår.antallTimer.toString() : '',
-        utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
-        periode: vilkår.periode,
-        søkerHarMeldtFraOmBarnehageplass: vilkår.søkerHarMeldtFraOmBarnehageplass ?? false,
-        begrunnelse: vilkår.begrunnelse,
-        erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
-        avslagBegrunnelser: vilkår.avslagBegrunnelser,
+        vurderesEtter: lagretVilkår.vurderesEtter ? lagretVilkår.vurderesEtter : undefined,
+        resultat: lagretVilkår.resultat,
+        antallTimer: lagretVilkår.antallTimer ? lagretVilkår.antallTimer.toString() : '',
+        utdypendeVilkårsvurdering: lagretVilkår.utdypendeVilkårsvurderinger,
+        periode: lagretVilkår.periode,
+        søkerHarMeldtFraOmBarnehageplass: lagretVilkår.søkerHarMeldtFraOmBarnehageplass ?? false,
+        begrunnelse: lagretVilkår.begrunnelse,
+        erEksplisittAvslagPåSøknad: lagretVilkår.erEksplisittAvslagPåSøknad ?? false,
+        avslagBegrunnelser: lagretVilkår.avslagBegrunnelser,
     };
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
@@ -127,7 +127,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         feilmelding,
         nullstillSkjema,
         finnesEndringerSomIkkeErLagret,
-    } = useVilkårSkjema(vilkår, felter, person);
+    } = useVilkårSkjema(lagretVilkår, felter, person);
 
     const initiellHarBarnehageplass =
         vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(

@@ -16,19 +16,19 @@ import {
 } from '../../../../../../utils/validators';
 import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
-export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useMedlemskap = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
-        vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
-        resultat: vilkår.resultat,
-        utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
-        periode: vilkår.periode,
-        begrunnelse: vilkår.begrunnelse,
-        erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
-        avslagBegrunnelser: vilkår.avslagBegrunnelser,
+        vurderesEtter: lagretVilkår.vurderesEtter ? lagretVilkår.vurderesEtter : undefined,
+        resultat: lagretVilkår.resultat,
+        utdypendeVilkårsvurdering: lagretVilkår.utdypendeVilkårsvurderinger,
+        periode: lagretVilkår.periode,
+        begrunnelse: lagretVilkår.begrunnelse,
+        erEksplisittAvslagPåSøknad: lagretVilkår.erEksplisittAvslagPåSøknad ?? false,
+        avslagBegrunnelser: lagretVilkår.avslagBegrunnelser,
     };
 
     const skalViseDatoVarsel =
-        vilkår.resultat === Resultat.IKKE_VURDERT && vilkår.periode.fom !== undefined;
+        lagretVilkår.resultat === Resultat.IKKE_VURDERT && lagretVilkår.periode.fom !== undefined;
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
         verdi: vilkårSkjemaMedLagredeVerdier.vurderesEtter,
@@ -82,7 +82,7 @@ export const useMedlemskap = (vilkår: IVilkårResultat, person: IGrunnlagPerson
         feilmelding,
         nullstillSkjema,
         finnesEndringerSomIkkeErLagret,
-    } = useVilkårSkjema(vilkår, felter, person);
+    } = useVilkårSkjema(lagretVilkår, felter, person);
 
     return {
         vilkårSkjemaContext: {

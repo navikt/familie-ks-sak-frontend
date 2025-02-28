@@ -23,15 +23,15 @@ import {
 } from '../../../../../../utils/validators';
 import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
-export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useBorMedSøker = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
-        vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
-        resultat: vilkår.resultat,
-        utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
-        periode: vilkår.periode,
-        begrunnelse: vilkår.begrunnelse,
-        erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
-        avslagBegrunnelser: vilkår.avslagBegrunnelser,
+        vurderesEtter: lagretVilkår.vurderesEtter ? lagretVilkår.vurderesEtter : undefined,
+        resultat: lagretVilkår.resultat,
+        utdypendeVilkårsvurdering: lagretVilkår.utdypendeVilkårsvurderinger,
+        periode: lagretVilkår.periode,
+        begrunnelse: lagretVilkår.begrunnelse,
+        erEksplisittAvslagPåSøknad: lagretVilkår.erEksplisittAvslagPåSøknad ?? false,
+        avslagBegrunnelser: lagretVilkår.avslagBegrunnelser,
     };
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
@@ -75,7 +75,7 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 vurderesEtter: vurderesEtter.verdi,
                 utdypendeVilkårsvurderinger: utdypendeVilkårsvurdering.verdi,
                 personType: person.type,
-                vilkårType: vilkår.vilkårType,
+                vilkårType: lagretVilkår.vilkårType,
             },
         }),
         erEksplisittAvslagPåSøknad,
@@ -106,7 +106,7 @@ export const useBorMedSøker = (vilkår: IVilkårResultat, person: IGrunnlagPers
         feilmelding,
         nullstillSkjema,
         finnesEndringerSomIkkeErLagret,
-    } = useVilkårSkjema(vilkår, felter, person);
+    } = useVilkårSkjema(lagretVilkår, felter, person);
 
     return {
         vilkårSkjemaContext: {

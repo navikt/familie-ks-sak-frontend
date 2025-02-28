@@ -30,15 +30,15 @@ export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = 
     UtdypendeVilkårsvurderingGenerell.ADOPSJON,
 ];
 
-export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+export const useBarnetsAlder = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
-        vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
-        resultat: vilkår.resultat,
-        utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
-        periode: vilkår.periode,
-        begrunnelse: vilkår.begrunnelse,
-        erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
-        avslagBegrunnelser: vilkår.avslagBegrunnelser,
+        vurderesEtter: lagretVilkår.vurderesEtter ? lagretVilkår.vurderesEtter : undefined,
+        resultat: lagretVilkår.resultat,
+        utdypendeVilkårsvurdering: lagretVilkår.utdypendeVilkårsvurderinger,
+        periode: lagretVilkår.periode,
+        begrunnelse: lagretVilkår.begrunnelse,
+        erEksplisittAvslagPåSøknad: lagretVilkår.erEksplisittAvslagPåSøknad ?? false,
+        avslagBegrunnelser: lagretVilkår.avslagBegrunnelser,
         adopsjonsdato: person.adopsjonsdato
             ? startOfDay(new Date(person.adopsjonsdato))
             : undefined,
@@ -158,7 +158,7 @@ export const useBarnetsAlder = (vilkår: IVilkårResultat, person: IGrunnlagPers
         sletterVilkår,
         feilmelding,
         finnesEndringerSomIkkeErLagret,
-    } = useVilkårSkjema(vilkår, felter, person);
+    } = useVilkårSkjema(lagretVilkår, felter, person);
 
     return {
         vilkårSkjemaContext: {

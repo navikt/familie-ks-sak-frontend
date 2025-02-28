@@ -19,7 +19,7 @@ const StyledAlert = styled(Alert)`
 `;
 
 export const LovligOpphold: React.FC<LovligOppholdProps> = ({
-    vilkårResultat,
+    lagretVilkårResultat,
     vilkårFraConfig,
     person,
 }: LovligOppholdProps) => {
@@ -27,13 +27,13 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
     const erLesevisning = vurderErLesevisning();
 
     const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } =
-        useLovligOpphold(vilkårResultat, person);
+        useLovligOpphold(lagretVilkårResultat, person);
 
     const skjema = vilkårSkjemaContext.skjema;
 
     const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
-        lagretVilkårResultat: vilkårResultat,
+        lagretVilkårResultat,
     });
 
     const nullstillAvslagBegrunnelser = () => {
@@ -42,7 +42,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
     };
     return (
         <VilkårEkspanderbarRad
-            vilkårResultat={vilkårResultat}
+            lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
         >
@@ -50,7 +50,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                 vilkårSkjemaContext={vilkårSkjemaContext}
                 visVurderesEtter={true}
                 visSpørsmål={false}
-                vilkårResultat={vilkårResultat}
+                lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
                 toggleForm={toggleForm}
                 person={person}
@@ -78,7 +78,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                     readOnly={erLesevisning}
                 >
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.OPPFYLT}
                         onChange={() => {
                             skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
@@ -88,7 +88,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                         Ja
                     </Radio>
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.IKKE_OPPFYLT}
                         onChange={() => {
                             skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
@@ -97,7 +97,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                         Nei
                     </Radio>
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.IKKE_AKTUELT}
                         onChange={() => {
                             skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_AKTUELT);
