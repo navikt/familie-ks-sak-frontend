@@ -22,7 +22,8 @@
     "start:cypress": "tsc -p tsconfig.backend.json && NODE_ENV=production node --loader ts-node/esm --es-module-specifier-resolution=node backend/backend/cypress-server.js",
     "run:cypress": "cypress run",
     "cypress": "yarn start:cypress & yarn run:cypress",
-    "typecheck": "tsc --noEmit -p src/frontend/tsconfig.json"
+    "typecheck": "tsc --noEmit -p src/frontend/tsconfig.json",
+    "validate": "yarn typecheck && yarn lint && yarn prettier"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,css}": [

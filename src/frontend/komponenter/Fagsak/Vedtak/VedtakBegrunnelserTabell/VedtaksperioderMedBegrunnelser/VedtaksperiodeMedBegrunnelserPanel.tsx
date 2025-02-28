@@ -28,7 +28,9 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
         vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
             vedtaksBegrunnelser =>
                 (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
-                Standardbegrunnelse.OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS
+                    Standardbegrunnelse.OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS ||
+                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
+                    Standardbegrunnelse.REDUKSJON_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS
         ).length > 0;
 
     const vedtaksperiodeInneholderOvergangsordningBegrunnelse =
