@@ -31,7 +31,7 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
         lagretVilkårResultat: vilkårResultat,
     });
 
-    const [utdypendeVilkårsvurderinger, setUtdypendeVilkårsvurderinger] = useState<
+    const [muligeUtdypendeVilkårsvurderinger, settMuligeUtdypendeVilkårsvurderinger] = useState<
         UtdypendeVilkårsvurdering[]
     >(
         bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
@@ -50,14 +50,14 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
                 vilkårSkjemaContext={vilkårSkjemaContext}
                 visVurderesEtter={true}
                 visSpørsmål={true}
-                muligeUtdypendeVilkårsvurderinger={utdypendeVilkårsvurderinger}
+                muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
                 vilkårResultat={vilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
                 toggleForm={toggleForm}
                 person={person}
                 lesevisning={erLesevisning}
-                vurderesEtterEndringer={(vurderesEtter: Regelverk): void => {
-                    setUtdypendeVilkårsvurderinger(
+                oppdaterMuligeUtdypendeVilkårsvurderinger={(vurderesEtter: Regelverk): void => {
+                    settMuligeUtdypendeVilkårsvurderinger(
                         bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
                             vurderesEtter,
                             person
