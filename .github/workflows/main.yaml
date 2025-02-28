@@ -2,52 +2,52 @@
 name: Main
 on:
   workflow_dispatch:
-#  push:
-#    branches:
-#      - 'main'
-#    paths-ignore:
-#      - '**.md'
-#      - '**.MD'
-#      - '.github/*.yml'
-#      - '.husky/**'
-#      - '.gitignore'
-#      - '.prettierignore'
-#      - '.prettierrc'
-#      - 'CODEOWNERS'
-#      - 'LICENSE'
-#      - eslint.config.mjs
+  push:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '**.md'
+      - '**.MD'
+      - '.github/*.yaml'
+      - '.gitignore'
+      - '.prettierignore'
+      - '.prettierrc'
+      - 'CODEOWNERS'
+      - 'LICENSE'
+      - 'eslint.config.mjs'
 
 jobs:
   build:
     name: Build
+    if: github.ref == 'refs/heads/main' # Only deploy to prod from main branch
     permissions:
       contents: read
-      packages: write
       id-token: write
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/build-yarn-app.yml@main
+    uses: navikt/familie-baks-gha-workflows/.github/workflows/build-yarn-app.yaml@main
     with:
       build-image: true
       push-image: true
+      skip-cypress: false
     secrets: inherit
   deploy-dev:
     name: Deploy dev
     permissions:
       id-token: write
     needs: [ build ]
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yml@main
+    uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main
     with:
       image: ${{ needs.build.outputs.image }}
       cluster: dev-gcp
-      resource: build_n_deploy/naiserator/gcp-dev.yaml
+      resource: .nais/app-dev.yaml
     secrets: inherit
   deploy-prod:
     name: Deploy prod
     permissions:
       id-token: write
     needs: [ build, deploy-dev ]
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yml@main
+    uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main
     with:
       image: ${{ needs.build.outputs.image }}
       cluster: prod-gcp
-      resource: build_n_deploy/naiserator/prod-dev.yaml
+      resource: .nais/app-prod.yaml
     secrets: inherit
