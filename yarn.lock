@@ -2041,12 +2041,12 @@
     "@navikt/familie-typer" "^8.0.2"
     "@navikt/fnrvalidator" "^2.1.5"
 
-"@navikt/familie-http@^7.0.25":
-  version "7.0.24"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/7.0.24/6fcefd23cce8155558468be68a9d3873eb4ab203#6fcefd23cce8155558468be68a9d3873eb4ab203"
-  integrity sha512-iT/T7wm5bQV8Y3w2OsaN7kxRVHGySEMUlCGcgCMrodgssASYNdt7I7O0he+N4tntplxqx6ruWvzPMu31dxuJxg==
+"@navikt/familie-http@^7.0.24":
+  version "7.0.26"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/7.0.26/613f6fb6af3f298af1af9d26fe569f501af974b6#613f6fb6af3f298af1af9d26fe569f501af974b6"
+  integrity sha512-dhHFu1++xpqRJgOUx05GLmpfA8rEIJ088oRvTqw6TgO6fVyVRgnUjvTKbqmNFUN5e9kwujCKPqHKGkhpQzPuKQ==
   dependencies:
-    "@navikt/familie-typer" "^8.0.2"
+    "@navikt/familie-typer" "^8.0.3"
     "@sentry/core" "^8.50.0"
     constate "^3.3.2"
 
