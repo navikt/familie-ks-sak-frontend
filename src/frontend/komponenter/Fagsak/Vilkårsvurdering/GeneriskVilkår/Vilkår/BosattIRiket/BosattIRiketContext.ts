@@ -26,7 +26,7 @@ import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjem
 
 export const useBosattIRiket = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
-        vurderesEtter: lagretVilkår.vurderesEtter ? lagretVilkår.vurderesEtter : undefined,
+        vurderesEtter: lagretVilkår.vurderesEtter ?? undefined,
         resultat: lagretVilkår.resultat,
         utdypendeVilkårsvurdering: lagretVilkår.utdypendeVilkårsvurderinger,
         periode: lagretVilkår.periode,

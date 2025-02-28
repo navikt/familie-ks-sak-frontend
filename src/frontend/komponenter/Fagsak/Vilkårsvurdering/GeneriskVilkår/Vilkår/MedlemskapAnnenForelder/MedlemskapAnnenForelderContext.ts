@@ -18,7 +18,7 @@ export const useMedlemskapAnnenForelder = (
     person: IGrunnlagPerson
 ) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
-        vurderesEtter: lagretVilkår.vurderesEtter ? lagretVilkår.vurderesEtter : undefined,
+        vurderesEtter: lagretVilkår.vurderesEtter ?? undefined,
         resultat: lagretVilkår.resultat,
         utdypendeVilkårsvurdering: lagretVilkår.utdypendeVilkårsvurderinger,
         periode: lagretVilkår.periode,

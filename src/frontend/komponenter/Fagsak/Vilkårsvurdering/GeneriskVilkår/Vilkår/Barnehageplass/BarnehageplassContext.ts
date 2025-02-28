@@ -36,7 +36,7 @@ export interface IBarnehageplassVilkårSkjemaContext extends IVilkårSkjemaConte
 
 export const useBarnehageplass = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IBarnehageplassVilkårSkjemaContext = {
-        vurderesEtter: lagretVilkår.vurderesEtter ? lagretVilkår.vurderesEtter : undefined,
+        vurderesEtter: lagretVilkår.vurderesEtter ?? undefined,
         resultat: lagretVilkår.resultat,
         antallTimer: lagretVilkår.antallTimer ? lagretVilkår.antallTimer.toString() : '',
         utdypendeVilkårsvurdering: lagretVilkår.utdypendeVilkårsvurderinger,
