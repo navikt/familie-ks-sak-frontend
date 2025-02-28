@@ -49,6 +49,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
+    settFokusPåLeggTilPeriodeKnapp,
 }: BarnetsAlderProps) => {
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
@@ -87,6 +88,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
                 toggleForm={toggleForm}
                 person={person}
                 lesevisning={erLesevisning}
+                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                 utdypendeVilkårsvurderingChildren={
                     skjema.felter.adopsjonsdato.erSynlig ? (
                         <Datovelger

@@ -24,7 +24,7 @@ interface IProps {
     person: IGrunnlagPerson;
     vilkårResultater: IVilkårResultat[];
     vilkårFraConfig: IVilkårConfig;
-    settFokusPåKnapp: () => void;
+    settFokusPåLeggTilPeriodeKnapp: () => void;
 }
 
 const TabellHeader = styled(Table.HeaderCell)`
@@ -49,7 +49,7 @@ const VilkårTabell: React.FC<IProps> = ({
     person,
     vilkårFraConfig,
     vilkårResultater,
-    // settFokusPåKnapp, TODO: Denne må tas i bruk, ble ikke brukt fra før, men den burde brukes for riktig fokus etter å ha lagt til ny periode (brukes i ba)
+    settFokusPåLeggTilPeriodeKnapp,
 }) => {
     return (
         <Table>
@@ -73,6 +73,7 @@ const VilkårTabell: React.FC<IProps> = ({
                                     lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
+                                    settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                                 />
                             );
                         case VilkårType.LOVLIG_OPPHOLD:
@@ -82,6 +83,7 @@ const VilkårTabell: React.FC<IProps> = ({
                                     lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
+                                    settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                                 />
                             );
                         case VilkårType.MEDLEMSKAP:
@@ -91,6 +93,7 @@ const VilkårTabell: React.FC<IProps> = ({
                                     lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
+                                    settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                                 />
                             );
                         case VilkårType.BARNEHAGEPLASS:
@@ -100,6 +103,7 @@ const VilkårTabell: React.FC<IProps> = ({
                                     lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
+                                    settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                                 />
                             );
                         case VilkårType.MEDLEMSKAP_ANNEN_FORELDER:
@@ -109,6 +113,7 @@ const VilkårTabell: React.FC<IProps> = ({
                                     lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
+                                    settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                                 />
                             );
                         case VilkårType.BOR_MED_SØKER:
@@ -118,6 +123,7 @@ const VilkårTabell: React.FC<IProps> = ({
                                     lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
+                                    settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                                 />
                             );
                         case VilkårType.BARNETS_ALDER:
@@ -127,6 +133,7 @@ const VilkårTabell: React.FC<IProps> = ({
                                     lagretVilkårResultat={vilkårResultat}
                                     vilkårFraConfig={vilkårFraConfig}
                                     person={person}
+                                    settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                                 />
                             );
                     }

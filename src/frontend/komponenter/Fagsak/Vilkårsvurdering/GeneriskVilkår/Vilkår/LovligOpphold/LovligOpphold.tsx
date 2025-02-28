@@ -22,6 +22,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
+    settFokusPåLeggTilPeriodeKnapp,
 }: LovligOppholdProps) => {
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
@@ -55,6 +56,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                 toggleForm={toggleForm}
                 person={person}
                 lesevisning={erLesevisning}
+                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                 periodeChildren={
                     skalViseDatoVarsel && (
                         <StyledAlert inline variant={'warning'} size={'small'}>

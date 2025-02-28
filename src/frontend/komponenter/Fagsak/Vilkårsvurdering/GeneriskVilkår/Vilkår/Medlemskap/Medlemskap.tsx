@@ -22,6 +22,7 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
+    settFokusPåLeggTilPeriodeKnapp,
 }: MedlemskapProps) => {
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
@@ -55,6 +56,7 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
                 toggleForm={toggleForm}
                 person={person}
                 lesevisning={erLesevisning}
+                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                 periodeChildren={
                     skalViseDatoVarsel && (
                         <StyledAlert inline variant={'warning'} size={'small'}>

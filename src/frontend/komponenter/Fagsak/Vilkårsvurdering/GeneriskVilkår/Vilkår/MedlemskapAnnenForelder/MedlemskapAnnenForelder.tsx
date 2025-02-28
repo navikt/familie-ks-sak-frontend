@@ -22,6 +22,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
+    settFokusPåLeggTilPeriodeKnapp,
 }: MedlemskapAnnenForelderProps) => {
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
@@ -58,6 +59,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                 toggleForm={toggleForm}
                 person={person}
                 lesevisning={erLesevisning}
+                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
             >
                 <br />
 

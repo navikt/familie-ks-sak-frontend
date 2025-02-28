@@ -53,6 +53,7 @@ export interface IVilkårSkjemaBaseProps {
     lagretVilkårResultat: IVilkårResultat;
     vilkårFraConfig: IVilkårConfig;
     person: IGrunnlagPerson;
+    settFokusPåLeggTilPeriodeKnapp: () => void;
 }
 
 interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjemaBaseProps {
@@ -82,6 +83,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     periodeChildren,
     utdypendeVilkårsvurderingChildren,
     oppdaterMuligeUtdypendeVilkårsvurderinger,
+    settFokusPåLeggTilPeriodeKnapp,
 }: IVilkårSkjema<T>) => {
     const { åpenBehandling } = useBehandling();
     const årsakErSøknad =
@@ -240,12 +242,13 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 <Knapperad>
                     <div>
                         <Button
-                            onClick={() =>
+                            onClick={() => {
                                 lagreVilkår(() => {
                                     toggleForm(false);
                                     nullstillSkjema();
-                                })
-                            }
+                                });
+                                settFokusPåLeggTilPeriodeKnapp();
+                            }}
                             size="medium"
                             variant="secondary"
                             loading={lagrerVilkår}

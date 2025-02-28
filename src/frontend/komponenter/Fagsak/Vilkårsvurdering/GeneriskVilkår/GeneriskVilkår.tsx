@@ -76,7 +76,7 @@ const GeneriskVilkår: React.FC<IProps> = ({
                     person={person}
                     vilkårFraConfig={vilkårFraConfig}
                     vilkårResultater={vilkårResultater}
-                    settFokusPåKnapp={settFokusPåLeggTilPeriodeKnapp}
+                    settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                 />
                 {skalViseLeggTilKnapp() && (
                     <UtførKnapp

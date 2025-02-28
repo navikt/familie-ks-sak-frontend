@@ -17,6 +17,7 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
+    settFokusPåLeggTilPeriodeKnapp,
 }: BosattIRiketProps) => {
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
@@ -49,6 +50,7 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
                 toggleForm={toggleForm}
                 person={person}
                 lesevisning={erLesevisning}
+                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                 oppdaterMuligeUtdypendeVilkårsvurderinger={(vurderesEtter: Regelverk): void => {
                     settMuligeUtdypendeVilkårsvurderinger(
                         bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(

@@ -23,6 +23,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
+    settFokusPåLeggTilPeriodeKnapp,
 }: BarnehageplassProps) => {
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
@@ -92,6 +93,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                 toggleForm={toggleForm}
                 person={person}
                 lesevisning={erLesevisning}
+                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                 periodeChildren={
                     skjema.felter.periode.verdi.tom && (
                         <>
