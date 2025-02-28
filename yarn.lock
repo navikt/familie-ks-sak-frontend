@@ -2041,7 +2041,7 @@
     "@navikt/familie-typer" "^8.0.2"
     "@navikt/fnrvalidator" "^2.1.5"
 
-"@navikt/familie-http@^7.0.24":
+"@navikt/familie-http@^7.0.26":
   version "7.0.26"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-http/7.0.26/613f6fb6af3f298af1af9d26fe569f501af974b6#613f6fb6af3f298af1af9d26fe569f501af974b6"
   integrity sha512-dhHFu1++xpqRJgOUx05GLmpfA8rEIJ088oRvTqw6TgO6fVyVRgnUjvTKbqmNFUN5e9kwujCKPqHKGkhpQzPuKQ==
