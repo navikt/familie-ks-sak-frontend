@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
     bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår,
     useBosattIRiket,
 } from './BosattIRiketContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
-import type { Regelverk, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import type { Regelverk } from '../../../../../../typer/vilkår';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import VilkårEkspanderbarRad from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
@@ -21,24 +21,17 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBosattIRiket(
-        vilkårResultat,
-        person
-    );
+    const {
+        vilkårSkjemaContext,
+        finnesEndringerSomIkkeErLagret,
+        muligeUtdypendeVilkårsvurderinger,
+        settMuligeUtdypendeVilkårsvurderinger,
+    } = useBosattIRiket(vilkårResultat, person);
 
     const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
-
-    const [muligeUtdypendeVilkårsvurderinger, settMuligeUtdypendeVilkårsvurderinger] = useState<
-        UtdypendeVilkårsvurdering[]
-    >(
-        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
-            vilkårResultat.vurderesEtter,
-            person
-        )
-    );
 
     return (
         <VilkårEkspanderbarRad

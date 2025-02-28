@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
     bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår,
     useBorMedSøker,
 } from './BorMedSøkerContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
-import type { Regelverk, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import type { Regelverk } from '../../../../../../typer/vilkår';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import VilkårEkspanderbarRad from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
@@ -21,19 +21,17 @@ export const BorMedSøker: React.FC<BosattIRiketProps> = ({
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBorMedSøker(
-        vilkårResultat,
-        person
-    );
+    const {
+        vilkårSkjemaContext,
+        finnesEndringerSomIkkeErLagret,
+        muligeUtdypendeVilkårsvurderinger,
+        settMuligeUtdypendeVilkårsvurderinger,
+    } = useBorMedSøker(vilkårResultat, person);
 
     const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
-
-    const [muligeUtdypendeVilkårsvurderinger, settMuligeUtdypendeVilkårsvurderinger] = useState<
-        UtdypendeVilkårsvurdering[]
-    >(bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vilkårResultat.vurderesEtter));
 
     return (
         <VilkårEkspanderbarRad

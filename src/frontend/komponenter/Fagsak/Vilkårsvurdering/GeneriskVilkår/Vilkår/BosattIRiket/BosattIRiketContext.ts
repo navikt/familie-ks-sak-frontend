@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useFelt } from '@navikt/familie-skjema';
 
 import { erUtdypendeVilkårsvurderingerGyldig } from './BosattIRiketValidering';
@@ -88,6 +90,16 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
         }),
     };
 
+    const initielleMuligeUtdypendeVilkårsvurderinger =
+        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
+            vilkårSkjemaMedLagredeVerdier.vurderesEtter,
+            person
+        );
+
+    const [muligeUtdypendeVilkårsvurderinger, settMuligeUtdypendeVilkårsvurderinger] = useState<
+        UtdypendeVilkårsvurdering[]
+    >(initielleMuligeUtdypendeVilkårsvurderinger);
+
     const {
         skjema,
         lagreVilkår,
@@ -107,10 +119,15 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
             slettVilkår,
             sletterVilkår,
             feilmelding,
-            nullstillSkjema,
+            nullstillSkjema: () => {
+                nullstillSkjema();
+                settMuligeUtdypendeVilkårsvurderinger(initielleMuligeUtdypendeVilkårsvurderinger);
+            },
         },
         finnesEndringerSomIkkeErLagret: () =>
             finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        muligeUtdypendeVilkårsvurderinger,
+        settMuligeUtdypendeVilkårsvurderinger,
     };
 };
 
