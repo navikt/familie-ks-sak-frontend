@@ -33,7 +33,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
 
     const skjema = vilkårSkjemaContext.skjema;
 
-    const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
+    const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
@@ -46,7 +46,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
     return (
         <VilkårEkspanderbarRad
             vilkårResultat={vilkårResultat}
-            ekspandertVilkår={ekspandertVilkår}
+            erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
         >
             <VilkårSkjema

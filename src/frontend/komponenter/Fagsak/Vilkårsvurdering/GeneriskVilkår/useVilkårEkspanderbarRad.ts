@@ -18,22 +18,22 @@ export const useVilkårEkspanderbarRad = ({
     const hentInitiellEkspandering = () =>
         erLesevisning || lagretVilkårResultat.resultat === Resultat.IKKE_VURDERT;
 
-    const [ekspandertVilkår, settEkspandertVilkår] = useState(hentInitiellEkspandering());
+    const [erVilkårEkspandert, settErVilkårEkspandert] = useState(hentInitiellEkspandering());
 
     useEffect(() => {
-        settEkspandertVilkår(hentInitiellEkspandering());
+        settErVilkårEkspandert(hentInitiellEkspandering());
     }, [behandlingPåVent]);
 
     const toggleForm = (visAlert: boolean) => {
-        if (ekspandertVilkår && visAlert && vilkårHarEndringerSomIkkeErLagret()) {
+        if (erVilkårEkspandert && visAlert && vilkårHarEndringerSomIkkeErLagret()) {
             alert('Vurderingen har endringer som ikke er lagret!');
         } else {
-            settEkspandertVilkår(!ekspandertVilkår);
+            settErVilkårEkspandert(!erVilkårEkspandert);
         }
     };
 
     return {
-        ekspandertVilkår,
+        erVilkårEkspandert,
         toggleForm,
     };
 };

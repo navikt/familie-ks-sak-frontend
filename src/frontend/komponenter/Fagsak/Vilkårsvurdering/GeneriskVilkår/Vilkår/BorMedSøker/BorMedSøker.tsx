@@ -28,7 +28,7 @@ export const BorMedSøker: React.FC<BosattIRiketProps> = ({
         settMuligeUtdypendeVilkårsvurderinger,
     } = useBorMedSøker(vilkårResultat, person);
 
-    const { toggleForm, ekspandertVilkår } = useVilkårEkspanderbarRad({
+    const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
         lagretVilkårResultat: vilkårResultat,
     });
@@ -36,7 +36,7 @@ export const BorMedSøker: React.FC<BosattIRiketProps> = ({
     return (
         <VilkårEkspanderbarRad
             vilkårResultat={vilkårResultat}
-            ekspandertVilkår={ekspandertVilkår}
+            erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
         >
             <VilkårSkjema

@@ -21,7 +21,7 @@ import { alleRegelverk } from '../../../../utils/vilkår';
 interface IProps {
     toggleForm: (visAlert: boolean) => void;
     vilkårResultat: IVilkårResultat;
-    ekspandertVilkår: boolean;
+    erVilkårEkspandert: boolean;
     children: ReactElement;
 }
 
@@ -68,7 +68,7 @@ const VilkårEkspanderbarRad: React.FC<IProps> = ({
     toggleForm,
     children,
     vilkårResultat,
-    ekspandertVilkår,
+    erVilkårEkspandert,
 }) => {
     const { åpenBehandling } = useBehandling();
 
@@ -76,7 +76,7 @@ const VilkårEkspanderbarRad: React.FC<IProps> = ({
 
     return (
         <Table.ExpandableRow
-            open={ekspandertVilkår}
+            open={erVilkårEkspandert}
             togglePlacement="right"
             onOpenChange={() => toggleForm(true)}
             id={vilkårFeilmeldingId(vilkårResultat)}
