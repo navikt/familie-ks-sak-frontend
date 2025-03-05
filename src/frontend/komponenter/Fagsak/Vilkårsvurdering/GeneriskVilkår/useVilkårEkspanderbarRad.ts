@@ -15,13 +15,13 @@ export const useVilkårEkspanderbarRad = ({
     const { vurderErLesevisning, behandlingPåVent } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
-    const hentInitiellEkspandering = () =>
+    const initiellEkspandering =
         erLesevisning || lagretVilkårResultat.resultat === Resultat.IKKE_VURDERT;
 
-    const [erVilkårEkspandert, settErVilkårEkspandert] = useState(hentInitiellEkspandering());
+    const [erVilkårEkspandert, settErVilkårEkspandert] = useState(initiellEkspandering);
 
     useEffect(() => {
-        settErVilkårEkspandert(hentInitiellEkspandering());
+        settErVilkårEkspandert(initiellEkspandering);
     }, [behandlingPåVent]);
 
     const toggleForm = (visAlert: boolean) => {
