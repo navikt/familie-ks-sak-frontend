@@ -246,8 +246,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                                 lagreVilkår(() => {
                                     toggleForm(false);
                                     nullstillSkjema();
+                                    settFokusPåLeggTilPeriodeKnapp();
                                 });
-                                settFokusPåLeggTilPeriodeKnapp();
                             }}
                             size="medium"
                             variant="secondary"

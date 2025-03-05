@@ -50,7 +50,7 @@ export const mapFraRestVilkårsvurderingTilUi = (
     return mapFraRestPersonResultatTilPersonResultat(personResultater, personer);
 };
 
-export const mapFraRestVilkårResultatTilVilkårResultat = (
+const mapFraRestVilkårResultatTilVilkårResultat = (
     vilkårResultat: IRestVilkårResultat
 ): IVilkårResultat => {
     return {
