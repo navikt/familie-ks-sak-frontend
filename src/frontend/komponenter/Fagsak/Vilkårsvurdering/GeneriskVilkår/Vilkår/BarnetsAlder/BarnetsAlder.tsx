@@ -17,7 +17,7 @@ import {
 import { utledLovverk } from '../../../../../../utils/lovverk';
 import Datovelger from '../../../../../Felleskomponenter/Datovelger/Datovelger';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
-import VilkårEkspanderbarRad from '../../VilkårEkspanderbarRad';
+import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 

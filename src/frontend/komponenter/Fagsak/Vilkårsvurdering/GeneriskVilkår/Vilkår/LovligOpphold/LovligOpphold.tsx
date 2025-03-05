@@ -8,7 +8,7 @@ import { useLovligOpphold } from './LovligOppholdContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { Resultat } from '../../../../../../typer/vilkår';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
-import VilkårEkspanderbarRad from '../../VilkårEkspanderbarRad';
+import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 

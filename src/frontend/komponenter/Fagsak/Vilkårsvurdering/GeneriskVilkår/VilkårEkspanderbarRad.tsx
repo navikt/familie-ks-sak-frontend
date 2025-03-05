@@ -64,7 +64,7 @@ const StyledPersonIcon = styled(PersonIcon)`
     min-width: 1.5rem;
 `;
 
-const VilkårEkspanderbarRad: React.FC<IProps> = ({
+export const VilkårEkspanderbarRad: React.FC<IProps> = ({
     toggleForm,
     children,
     lagretVilkårResultat,
@@ -134,5 +134,3 @@ const VilkårEkspanderbarRad: React.FC<IProps> = ({
         </Table.ExpandableRow>
     );
 };
-
-export default VilkårEkspanderbarRad;

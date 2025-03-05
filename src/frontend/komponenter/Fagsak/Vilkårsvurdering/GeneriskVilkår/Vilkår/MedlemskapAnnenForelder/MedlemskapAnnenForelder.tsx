@@ -8,7 +8,7 @@ import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { Regelverk, Resultat } from '../../../../../../typer/vilkår';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
-import VilkårEkspanderbarRad from '../../VilkårEkspanderbarRad';
+import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 
