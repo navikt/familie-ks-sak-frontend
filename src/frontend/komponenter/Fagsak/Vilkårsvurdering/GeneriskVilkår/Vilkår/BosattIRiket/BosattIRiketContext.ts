@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useFelt } from '@navikt/familie-skjema';
 
 import { erUtdypendeVilkårsvurderingerGyldig } from './BosattIRiketValidering';
@@ -20,34 +22,34 @@ import {
     erResultatGyldig,
     erBegrunnelseGyldig,
 } from '../../../../../../utils/validators';
-import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
-export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
-    const vilkårSkjema: IVilkårSkjemaContext = {
-        vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
-        resultat: vilkår.resultat,
-        utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
-        periode: vilkår.periode,
-        begrunnelse: vilkår.begrunnelse,
-        erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
-        avslagBegrunnelser: vilkår.avslagBegrunnelser,
+export const useBosattIRiket = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+    const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
+        vurderesEtter: lagretVilkår.vurderesEtter ?? undefined,
+        resultat: lagretVilkår.resultat,
+        utdypendeVilkårsvurdering: lagretVilkår.utdypendeVilkårsvurderinger,
+        periode: lagretVilkår.periode,
+        begrunnelse: lagretVilkår.begrunnelse,
+        erEksplisittAvslagPåSøknad: lagretVilkår.erEksplisittAvslagPåSøknad ?? false,
+        avslagBegrunnelser: lagretVilkår.avslagBegrunnelser,
     };
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
-        verdi: vilkårSkjema.vurderesEtter,
+        verdi: vilkårSkjemaMedLagredeVerdier.vurderesEtter,
     });
 
     const resultat = useFelt<Resultat>({
-        verdi: vilkårSkjema.resultat,
+        verdi: vilkårSkjemaMedLagredeVerdier.resultat,
         valideringsfunksjon: erResultatGyldig,
     });
 
     const erEksplisittAvslagPåSøknad = useFelt<boolean>({
-        verdi: vilkårSkjema.erEksplisittAvslagPåSøknad,
+        verdi: vilkårSkjemaMedLagredeVerdier.erEksplisittAvslagPåSøknad,
     });
 
     const utdypendeVilkårsvurdering = useFelt<UtdypendeVilkårsvurdering[]>({
-        verdi: vilkårSkjema.utdypendeVilkårsvurdering,
+        verdi: vilkårSkjemaMedLagredeVerdier.utdypendeVilkårsvurdering,
         avhengigheter: {
             vurderesEtter: vurderesEtter.verdi,
             person: person,
@@ -60,7 +62,7 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
         resultat,
         utdypendeVilkårsvurdering,
         periode: useFelt<IIsoDatoPeriode>({
-            verdi: vilkårSkjema.periode,
+            verdi: vilkårSkjemaMedLagredeVerdier.periode,
             avhengigheter: {
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
@@ -69,18 +71,18 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
                 erPeriodeGyldig(felt, VilkårType.BOSATT_I_RIKET, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
-            verdi: vilkårSkjema.begrunnelse,
+            verdi: vilkårSkjemaMedLagredeVerdier.begrunnelse,
             valideringsfunksjon: erBegrunnelseGyldig,
             avhengigheter: {
                 vurderesEtter: vurderesEtter.verdi,
                 utdypendeVilkårsvurderinger: utdypendeVilkårsvurdering.verdi,
                 personType: person.type,
-                vilkårType: vilkår.vilkårType,
+                vilkårType: lagretVilkår.vilkårType,
             },
         }),
         erEksplisittAvslagPåSøknad,
         avslagBegrunnelser: useFelt<Begrunnelse[]>({
-            verdi: vilkårSkjema.avslagBegrunnelser,
+            verdi: vilkårSkjemaMedLagredeVerdier.avslagBegrunnelser,
             valideringsfunksjon: erAvslagBegrunnelserGyldig,
             avhengigheter: {
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
@@ -88,8 +90,44 @@ export const useBosattIRiket = (vilkår: IVilkårResultat, person: IGrunnlagPers
         }),
     };
 
+    const initielleMuligeUtdypendeVilkårsvurderinger =
+        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
+            vilkårSkjemaMedLagredeVerdier.vurderesEtter,
+            person
+        );
+
+    const [muligeUtdypendeVilkårsvurderinger, settMuligeUtdypendeVilkårsvurderinger] = useState<
+        UtdypendeVilkårsvurdering[]
+    >(initielleMuligeUtdypendeVilkårsvurderinger);
+
+    const {
+        skjema,
+        lagreVilkår,
+        lagrerVilkår,
+        slettVilkår,
+        sletterVilkår,
+        feilmelding,
+        nullstillSkjema,
+        finnesEndringerSomIkkeErLagret,
+    } = useVilkårSkjema(lagretVilkår, felter, person);
+
     return {
-        felter,
+        vilkårSkjemaContext: {
+            skjema,
+            lagreVilkår,
+            lagrerVilkår,
+            slettVilkår,
+            sletterVilkår,
+            feilmelding,
+            nullstillSkjema: () => {
+                nullstillSkjema();
+                settMuligeUtdypendeVilkårsvurderinger(initielleMuligeUtdypendeVilkårsvurderinger);
+            },
+        },
+        finnesEndringerSomIkkeErLagret: () =>
+            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        muligeUtdypendeVilkårsvurderinger,
+        settMuligeUtdypendeVilkårsvurderinger,
     };
 };
 

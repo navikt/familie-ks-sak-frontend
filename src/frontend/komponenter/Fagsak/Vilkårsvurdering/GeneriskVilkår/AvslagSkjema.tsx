@@ -13,7 +13,7 @@ import type { IVilkårResultat } from '../../../../typer/vilkår';
 import { VedtaksbegrunnelseTeksterProvider } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
 
 interface IProps {
-    vilkår: IVilkårResultat;
+    lagretVilkår: IVilkårResultat;
     erEksplisittAvslagPåSøknad: Felt<boolean>;
     avslagBegrunnelser: Felt<Begrunnelse[]>;
     visFeilmeldinger: boolean;
@@ -32,7 +32,7 @@ const StyledFieldset = styled(Fieldset)`
 
 const AvslagSkjema: React.FC<IProps> = ({
     erEksplisittAvslagPåSøknad,
-    vilkår,
+    lagretVilkår,
     avslagBegrunnelser,
     visFeilmeldinger,
 }) => {
@@ -66,9 +66,9 @@ const AvslagSkjema: React.FC<IProps> = ({
             {erEksplisittAvslagPåSøknad.verdi && (
                 <VedtaksbegrunnelseTeksterProvider>
                     <AvslagBegrunnelseMultiselect
-                        vilkårType={vilkår.vilkårType}
+                        vilkårType={lagretVilkår.vilkårType}
                         begrunnelser={avslagBegrunnelser}
-                        regelverk={vilkår.vurderesEtter}
+                        regelverk={lagretVilkår.vurderesEtter}
                     />
                 </VedtaksbegrunnelseTeksterProvider>
             )}

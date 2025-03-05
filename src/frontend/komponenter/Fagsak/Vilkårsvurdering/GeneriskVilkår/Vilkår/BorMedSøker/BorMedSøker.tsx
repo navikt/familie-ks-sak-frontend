@@ -1,44 +1,62 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
     bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår,
     useBorMedSøker,
 } from './BorMedSøkerContext';
-import type { Regelverk, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
+import type { Regelverk } from '../../../../../../typer/vilkår';
+import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
+import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
-import { useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
 export const BorMedSøker: React.FC<BosattIRiketProps> = ({
-    vilkårResultat,
+    lagretVilkårResultat,
     vilkårFraConfig,
-    toggleForm,
     person,
-    lesevisning,
+    settFokusPåLeggTilPeriodeKnapp,
 }: BosattIRiketProps) => {
-    const { felter } = useBorMedSøker(vilkårResultat, person);
-    const vilkårSkjemaContext = useVilkårSkjema(vilkårResultat, felter, person, toggleForm);
-    const [utdypendeVilkårsvurderinger, setUtdypendeVilkårsvurderinger] = useState<
-        UtdypendeVilkårsvurdering[]
-    >(bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vilkårResultat.vurderesEtter));
+    const { vurderErLesevisning } = useBehandling();
+    const erLesevisning = vurderErLesevisning();
+
+    const {
+        vilkårSkjemaContext,
+        finnesEndringerSomIkkeErLagret,
+        muligeUtdypendeVilkårsvurderinger,
+        settMuligeUtdypendeVilkårsvurderinger,
+    } = useBorMedSøker(lagretVilkårResultat, person);
+
+    const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
+        vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
+        lagretVilkårResultat: lagretVilkårResultat,
+    });
+
     return (
-        <VilkårSkjema
-            vilkårSkjemaContext={vilkårSkjemaContext}
-            visVurderesEtter={true}
-            visSpørsmål={true}
-            muligeUtdypendeVilkårsvurderinger={utdypendeVilkårsvurderinger}
-            vilkårResultat={vilkårResultat}
-            vilkårFraConfig={vilkårFraConfig}
+        <VilkårEkspanderbarRad
+            lagretVilkårResultat={lagretVilkårResultat}
+            erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
-            person={person}
-            lesevisning={lesevisning}
-            vurderesEtterEndringer={(vurderesEtter: Regelverk): void => {
-                setUtdypendeVilkårsvurderinger(
-                    bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vurderesEtter)
-                );
-            }}
-        />
+        >
+            <VilkårSkjema
+                vilkårSkjemaContext={vilkårSkjemaContext}
+                visVurderesEtter={true}
+                visSpørsmål={true}
+                muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
+                lagretVilkårResultat={lagretVilkårResultat}
+                vilkårFraConfig={vilkårFraConfig}
+                toggleForm={toggleForm}
+                person={person}
+                lesevisning={erLesevisning}
+                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
+                oppdaterMuligeUtdypendeVilkårsvurderinger={(vurderesEtter: Regelverk): void => {
+                    settMuligeUtdypendeVilkårsvurderinger(
+                        bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vurderesEtter)
+                    );
+                }}
+            />
+        </VilkårEkspanderbarRad>
     );
 };

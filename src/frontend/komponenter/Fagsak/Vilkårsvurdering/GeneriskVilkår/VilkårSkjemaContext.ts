@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import deepEqual from 'deep-equal';
+
 import type { FieldDictionary, ISkjema } from '@navikt/familie-skjema';
 import { useSkjema } from '@navikt/familie-skjema';
 
@@ -27,18 +29,18 @@ export interface IVilkårSkjemaContext {
 
 export interface VilkårSkjemaContextValue<T extends IVilkårSkjemaContext> {
     skjema: ISkjema<T, IBehandling>;
-    lagreVilkår: () => void;
+    lagreVilkår: (onSuccess?: () => void) => void;
     lagrerVilkår: boolean;
-    slettVilkår: (personIdent: string, vilkårId: number) => void;
+    slettVilkår: (personIdent: string, vilkårId: number, onSuccess?: () => void) => void;
     sletterVilkår: boolean;
     feilmelding: string;
+    nullstillSkjema: () => void;
 }
 
 export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
     vilkår: IVilkårResultat,
     felter: FieldDictionary<T>,
-    person: IGrunnlagPerson,
-    toggleForm: (visSkjema: boolean) => void
+    person: IGrunnlagPerson
 ) => {
     const vilkårsvurderingApi = useVilkårsvurderingApi();
 
@@ -52,62 +54,86 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
 
     const [feilmelding, settFeilmelding] = useState<string>('');
 
-    const lagreVilkår = () => {
+    const mapSkjemaTilVilkårSkjemaContext = (): IVilkårSkjemaContext => {
+        return {
+            vurderesEtter: skjema.felter.vurderesEtter.verdi,
+            resultat: skjema.felter.resultat.verdi,
+            utdypendeVilkårsvurdering: skjema.felter.utdypendeVilkårsvurdering.verdi,
+            periode: skjema.felter.periode.verdi,
+            begrunnelse: skjema.felter.begrunnelse.verdi,
+            erEksplisittAvslagPåSøknad: skjema.felter.erEksplisittAvslagPåSøknad.verdi,
+            avslagBegrunnelser: skjema.felter.avslagBegrunnelser.verdi,
+            antallTimer: skjema.felter.antallTimer?.verdi,
+            søkerHarMeldtFraOmBarnehageplass: skjema.felter.søkerHarMeldtFraOmBarnehageplass?.verdi,
+            adopsjonsdato: skjema.felter.adopsjonsdato?.verdi,
+        };
+    };
+
+    const mapSkjemaTilIEndreVilkårResultat = (): IEndreVilkårResultat => {
+        const skjemaContext = mapSkjemaTilVilkårSkjemaContext();
+        return {
+            personIdent: person.personIdent,
+            adopsjonsdato: dateTilIsoDatoStringEllerUndefined(skjemaContext.adopsjonsdato),
+            endretVilkårResultat: {
+                begrunnelse: skjemaContext.begrunnelse,
+                behandlingId: vilkår.behandlingId,
+                endretAv: vilkår.endretAv,
+                endretTidspunkt: vilkår.endretTidspunkt,
+                erAutomatiskVurdert: vilkår.erAutomatiskVurdert,
+                erVurdert: vilkår.erVurdert,
+                id: vilkår.id,
+                periodeFom: skjemaContext.periode.fom,
+                periodeTom: skjemaContext.periode.tom,
+                resultat: skjemaContext.resultat,
+                erEksplisittAvslagPåSøknad: skjemaContext.erEksplisittAvslagPåSøknad,
+                avslagBegrunnelser: skjemaContext.avslagBegrunnelser,
+                vilkårType: vilkår.vilkårType,
+                vurderesEtter: skjemaContext.vurderesEtter,
+                utdypendeVilkårsvurderinger: skjemaContext.utdypendeVilkårsvurdering,
+                antallTimer:
+                    skjemaContext.antallTimer && skjemaContext.antallTimer !== ''
+                        ? Number(skjemaContext.antallTimer)
+                        : undefined,
+                søkerHarMeldtFraOmBarnehageplass:
+                    skjemaContext.søkerHarMeldtFraOmBarnehageplass ?? undefined,
+            },
+        };
+    };
+
+    const lagreVilkår = (onSuccess?: () => void) => {
         if (kanSendeSkjema()) {
             settVisfeilmeldinger(false);
-            const endreVilkårResultat: IEndreVilkårResultat = {
-                personIdent: person.personIdent,
-                adopsjonsdato: dateTilIsoDatoStringEllerUndefined(
-                    skjema.felter.adopsjonsdato?.verdi
-                ),
-                endretVilkårResultat: {
-                    begrunnelse: skjema.felter.begrunnelse.verdi,
-                    behandlingId: vilkår.behandlingId,
-                    endretAv: vilkår.endretAv,
-                    endretTidspunkt: vilkår.endretTidspunkt,
-                    erAutomatiskVurdert: vilkår.erAutomatiskVurdert,
-                    erVurdert: vilkår.erVurdert,
-                    id: vilkår.id,
-                    periodeFom: skjema.felter.periode.verdi.fom,
-                    periodeTom: skjema.felter.periode.verdi.tom,
-                    resultat: skjema.felter.resultat.verdi,
-                    erEksplisittAvslagPåSøknad: skjema.felter.erEksplisittAvslagPåSøknad.verdi,
-                    avslagBegrunnelser: skjema.felter.avslagBegrunnelser.verdi,
-                    vilkårType: vilkår.vilkårType,
-                    vurderesEtter: skjema.felter.vurderesEtter.verdi,
-                    utdypendeVilkårsvurderinger: skjema.felter.utdypendeVilkårsvurdering.verdi,
-                    antallTimer: skjema.felter.antallTimer
-                        ? skjema.felter.antallTimer.verdi !== ''
-                            ? Number(skjema.felter.antallTimer.verdi)
-                            : undefined
-                        : undefined,
-                    søkerHarMeldtFraOmBarnehageplass: skjema.felter.søkerHarMeldtFraOmBarnehageplass
-                        ? skjema.felter.søkerHarMeldtFraOmBarnehageplass.verdi
-                        : undefined,
-                },
-            };
+            const endreVilkårResultat: IEndreVilkårResultat = mapSkjemaTilIEndreVilkårResultat();
             vilkårsvurderingApi.lagreVilkår(
                 endreVilkårResultat,
-                () => {
-                    toggleForm(false);
-                    nullstillSkjema();
-                },
+                onSuccess,
                 lagreVilkårFeilmelding => settFeilmelding(lagreVilkårFeilmelding)
             );
         }
     };
 
-    const slettVilkår = (personIdent: string, vilkårId: number) => {
+    const slettVilkår = (personIdent: string, vilkårId: number, onSuccess?: () => void) => {
         settVisfeilmeldinger(false);
-        vilkårsvurderingApi.slettVilkår(
-            personIdent,
-            vilkårId,
-            () => {
-                toggleForm(false);
-                nullstillSkjema();
-            },
-            slettVilkårFeilmelding => settFeilmelding(slettVilkårFeilmelding)
+        vilkårsvurderingApi.slettVilkår(personIdent, vilkårId, onSuccess, slettVilkårFeilmelding =>
+            settFeilmelding(slettVilkårFeilmelding)
         );
+    };
+
+    const finnesEndringerSomIkkeErLagret = (
+        vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext
+    ) => {
+        const endretVilkår: IVilkårSkjemaContext = mapSkjemaTilVilkårSkjemaContext();
+
+        // Sjekker på likhet uten felter som er undefined for å ikke få true hvis det ene objektet har felt=undefined og den andre mangler feltet
+        const lagretVilkårUtenUndefined = Object.fromEntries(
+            Object.entries(vilkårSkjemaMedLagredeVerdier).filter(([_, v]) => v !== undefined)
+        ) as IVilkårSkjemaContext;
+
+        const endretVilkårUtenUndefined = Object.fromEntries(
+            Object.entries(endretVilkår).filter(([_, v]) => v !== undefined)
+        ) as IVilkårSkjemaContext;
+
+        return !deepEqual(lagretVilkårUtenUndefined, endretVilkårUtenUndefined);
     };
 
     return {
@@ -117,5 +143,7 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
         slettVilkår,
         sletterVilkår: vilkårsvurderingApi.sletterVilkår,
         feilmelding,
+        nullstillSkjema,
+        finnesEndringerSomIkkeErLagret,
     };
 };

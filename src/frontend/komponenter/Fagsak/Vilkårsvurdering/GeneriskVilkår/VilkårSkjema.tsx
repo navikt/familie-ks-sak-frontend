@@ -50,11 +50,10 @@ const Knapperad = styled.div`
 `;
 
 export interface IVilkårSkjemaBaseProps {
-    lesevisning: boolean;
-    vilkårResultat: IVilkårResultat;
+    lagretVilkårResultat: IVilkårResultat;
     vilkårFraConfig: IVilkårConfig;
     person: IGrunnlagPerson;
-    toggleForm: (visSkjema: boolean) => void;
+    settFokusPåLeggTilPeriodeKnapp: () => void;
 }
 
 interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjemaBaseProps {
@@ -65,7 +64,9 @@ interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjema
     utdypendeVilkårsvurderingChildren?: ReactNode;
     periodeChildren?: ReactNode;
     children?: ReactNode;
-    vurderesEtterEndringer?: (vurderesEtter: Regelverk) => void;
+    oppdaterMuligeUtdypendeVilkårsvurderinger?: (vurderesEtter: Regelverk) => void;
+    toggleForm: (visSkjema: boolean) => void;
+    lesevisning: boolean;
 }
 
 export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
@@ -74,21 +75,29 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     visSpørsmål,
     muligeUtdypendeVilkårsvurderinger,
     lesevisning,
-    vilkårResultat,
+    lagretVilkårResultat,
     vilkårFraConfig,
     person,
     toggleForm,
     children,
     periodeChildren,
     utdypendeVilkårsvurderingChildren,
-    vurderesEtterEndringer,
+    oppdaterMuligeUtdypendeVilkårsvurderinger,
+    settFokusPåLeggTilPeriodeKnapp,
 }: IVilkårSkjema<T>) => {
     const { åpenBehandling } = useBehandling();
     const årsakErSøknad =
         åpenBehandling.status !== RessursStatus.SUKSESS ||
         åpenBehandling.data.årsak === BehandlingÅrsak.SØKNAD;
-    const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding } =
-        vilkårSkjemaContext;
+    const {
+        skjema,
+        lagreVilkår,
+        lagrerVilkår,
+        slettVilkår,
+        sletterVilkår,
+        feilmelding,
+        nullstillSkjema,
+    } = vilkårSkjemaContext;
 
     return (
         <FieldsetForVilkårSkjema
@@ -108,13 +117,15 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         skjema.felter.vurderesEtter.validerOgSettFelt(
                             event.target.value as Regelverk
                         );
-                        if (vurderesEtterEndringer) {
-                            vurderesEtterEndringer(event.target.value as Regelverk);
+                        if (oppdaterMuligeUtdypendeVilkårsvurderinger) {
+                            oppdaterMuligeUtdypendeVilkårsvurderinger(
+                                event.target.value as Regelverk
+                            );
                         }
 
                         if (
                             (event.target.value as Regelverk) === Regelverk.NASJONALE_REGLER &&
-                            VilkårType.MEDLEMSKAP === vilkårResultat.vilkårType
+                            VilkårType.MEDLEMSKAP === lagretVilkårResultat.vilkårType
                         ) {
                             skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_VURDERT);
                         }
@@ -152,7 +163,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
                 >
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.OPPFYLT}
                         onChange={() => {
                             skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
@@ -167,7 +178,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         Ja
                     </Radio>
                     <Radio
-                        name={`${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.IKKE_OPPFYLT}
                         onChange={() =>
                             skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)
@@ -191,7 +202,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
             />
             {skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT && årsakErSøknad && (
                 <AvslagSkjema
-                    vilkår={vilkårResultat}
+                    lagretVilkår={lagretVilkårResultat}
                     erEksplisittAvslagPåSøknad={skjema.felter.erEksplisittAvslagPåSøknad}
                     avslagBegrunnelser={skjema.felter.avslagBegrunnelser}
                     visFeilmeldinger={skjema.visFeilmeldinger}
@@ -203,17 +214,17 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 resultat={skjema.felter.resultat}
                 visFeilmeldinger={skjema.visFeilmeldinger}
                 children={periodeChildren}
-                tomErPåkrevd={vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER}
+                tomErPåkrevd={lagretVilkårResultat.vilkårType === VilkårType.BARNETS_ALDER}
             />
             <Textarea
                 readOnly={lesevisning}
-                id={vilkårBegrunnelseFeilmeldingId(vilkårResultat)}
+                id={vilkårBegrunnelseFeilmeldingId(lagretVilkårResultat)}
                 label={`Begrunnelse ${
                     erBegrunnelsePåkrevd(
                         skjema.felter.vurderesEtter.verdi,
                         skjema.felter.utdypendeVilkårsvurdering.verdi,
                         person.type,
-                        vilkårResultat.vilkårType,
+                        lagretVilkårResultat.vilkårType,
                         skjema.felter.søkerHarMeldtFraOmBarnehageplass?.verdi
                     )
                         ? ''
@@ -231,7 +242,13 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 <Knapperad>
                     <div>
                         <Button
-                            onClick={lagreVilkår}
+                            onClick={() => {
+                                lagreVilkår(() => {
+                                    toggleForm(false);
+                                    nullstillSkjema();
+                                    settFokusPåLeggTilPeriodeKnapp();
+                                });
+                            }}
                             size="medium"
                             variant="secondary"
                             loading={lagrerVilkår}
@@ -241,7 +258,10 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         </Button>
                         <Button
                             style={{ marginLeft: '1rem' }}
-                            onClick={() => toggleForm(false)}
+                            onClick={() => {
+                                toggleForm(false);
+                                nullstillSkjema();
+                            }}
                             size="medium"
                             variant="tertiary"
                         >
@@ -250,8 +270,13 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     </div>
 
                     <Button
-                        onClick={() => slettVilkår(person.personIdent, vilkårResultat.id)}
-                        id={vilkårFeilmeldingId(vilkårResultat)}
+                        onClick={() =>
+                            slettVilkår(person.personIdent, lagretVilkårResultat.id, () => {
+                                toggleForm(false);
+                                nullstillSkjema();
+                            })
+                        }
+                        id={vilkårFeilmeldingId(lagretVilkårResultat)}
                         loading={sletterVilkår}
                         disabled={sletterVilkår}
                         size={'medium'}

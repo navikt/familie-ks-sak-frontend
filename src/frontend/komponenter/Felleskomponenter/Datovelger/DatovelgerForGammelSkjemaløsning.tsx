@@ -36,7 +36,7 @@ const DatovelgerForGammelSkjemaløsning = ({
         return isValid(isoString) ? isoString : undefined;
     };
 
-    const { datepickerProps, inputProps, selectedDay } = useDatepicker({
+    const { datepickerProps, inputProps, selectedDay, setSelected } = useDatepicker({
         defaultSelected: formatterDefaultSelected(),
         fromDate: minDatoAvgrensning ? minDatoAvgrensning : tidligsteRelevanteDato,
         toDate: kanKunVelgeFortid ? dagensDato : senesteRelevanteDato,
@@ -51,6 +51,16 @@ const DatovelgerForGammelSkjemaløsning = ({
             })
         );
     }, [inputProps.value]);
+
+    const [forrigeValue, settForrigeValue] = React.useState<string | undefined>();
+
+    // Oppdaterer verdien til datovelgeren hvis value har endret seg uten at det er datovelgeren som har trigget endringen
+    if (value != forrigeValue) {
+        settForrigeValue(value);
+        if (value != inputProps.value) {
+            setSelected(formatterDefaultSelected());
+        }
+    }
 
     return (
         <DatePicker dropdownCaption {...datepickerProps}>

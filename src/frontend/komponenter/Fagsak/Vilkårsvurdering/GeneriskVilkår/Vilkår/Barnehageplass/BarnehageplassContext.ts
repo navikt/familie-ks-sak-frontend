@@ -1,7 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useFelt } from '@navikt/familie-skjema';
 
+import {
+    vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie,
+    vilkårOppfyltOgAntallTimerKvalifiserer,
+} from './BarnehageplassUtils';
 import {
     erAntallTimerGyldig,
     erUtdypendeVilkårsvurderingerGyldig,
@@ -19,7 +23,7 @@ import {
     erPeriodeGyldig,
     erResultatGyldig,
 } from '../../../../../../utils/validators';
-import type { IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
 export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = [
     UtdypendeVilkårsvurderingGenerell.SOMMERFERIE,
@@ -30,43 +34,43 @@ export interface IBarnehageplassVilkårSkjemaContext extends IVilkårSkjemaConte
     søkerHarMeldtFraOmBarnehageplass: boolean;
 }
 
-export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPerson) => {
-    const vilkårSkjema: IBarnehageplassVilkårSkjemaContext = {
-        vurderesEtter: vilkår.vurderesEtter ? vilkår.vurderesEtter : undefined,
-        resultat: vilkår.resultat,
-        antallTimer: vilkår.antallTimer ? vilkår.antallTimer.toString() : '',
-        utdypendeVilkårsvurdering: vilkår.utdypendeVilkårsvurderinger,
-        periode: vilkår.periode,
-        søkerHarMeldtFraOmBarnehageplass: vilkår.søkerHarMeldtFraOmBarnehageplass ?? false,
-        begrunnelse: vilkår.begrunnelse,
-        erEksplisittAvslagPåSøknad: vilkår.erEksplisittAvslagPåSøknad ?? false,
-        avslagBegrunnelser: vilkår.avslagBegrunnelser,
+export const useBarnehageplass = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
+    const vilkårSkjemaMedLagredeVerdier: IBarnehageplassVilkårSkjemaContext = {
+        vurderesEtter: lagretVilkår.vurderesEtter ?? undefined,
+        resultat: lagretVilkår.resultat,
+        antallTimer: lagretVilkår.antallTimer ? lagretVilkår.antallTimer.toString() : '',
+        utdypendeVilkårsvurdering: lagretVilkår.utdypendeVilkårsvurderinger,
+        periode: lagretVilkår.periode,
+        søkerHarMeldtFraOmBarnehageplass: lagretVilkår.søkerHarMeldtFraOmBarnehageplass ?? false,
+        begrunnelse: lagretVilkår.begrunnelse,
+        erEksplisittAvslagPåSøknad: lagretVilkår.erEksplisittAvslagPåSøknad ?? false,
+        avslagBegrunnelser: lagretVilkår.avslagBegrunnelser,
     };
 
     const vurderesEtter = useFelt<RegelverkType | undefined>({
-        verdi: vilkårSkjema.vurderesEtter,
+        verdi: vilkårSkjemaMedLagredeVerdier.vurderesEtter,
     });
 
     const resultat = useFelt<Resultat>({
-        verdi: vilkårSkjema.resultat,
+        verdi: vilkårSkjemaMedLagredeVerdier.resultat,
         valideringsfunksjon: erResultatGyldig,
     });
 
     const erEksplisittAvslagPåSøknad = useFelt<boolean>({
-        verdi: vilkårSkjema.erEksplisittAvslagPåSøknad,
+        verdi: vilkårSkjemaMedLagredeVerdier.erEksplisittAvslagPåSøknad,
     });
 
     const utdypendeVilkårsvurdering = useFelt<UtdypendeVilkårsvurdering[]>({
-        verdi: vilkårSkjema.utdypendeVilkårsvurdering,
+        verdi: vilkårSkjemaMedLagredeVerdier.utdypendeVilkårsvurdering,
         valideringsfunksjon: erUtdypendeVilkårsvurderingerGyldig,
     });
 
     const søkerHarMeldtFraOmBarnehageplass = useFelt<boolean>({
-        verdi: vilkårSkjema.søkerHarMeldtFraOmBarnehageplass,
+        verdi: vilkårSkjemaMedLagredeVerdier.søkerHarMeldtFraOmBarnehageplass,
     });
 
     const periode = useFelt<IIsoDatoPeriode>({
-        verdi: vilkårSkjema.periode,
+        verdi: vilkårSkjemaMedLagredeVerdier.periode,
         avhengigheter: {
             person,
             erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
@@ -80,7 +84,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         vurderesEtter,
         resultat,
         antallTimer: useFelt<string>({
-            verdi: vilkårSkjema.antallTimer,
+            verdi: vilkårSkjemaMedLagredeVerdier.antallTimer,
             avhengigheter: {
                 resultat: resultat.verdi,
                 utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi,
@@ -91,7 +95,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         periode,
         søkerHarMeldtFraOmBarnehageplass,
         begrunnelse: useFelt<string>({
-            verdi: vilkårSkjema.begrunnelse,
+            verdi: vilkårSkjemaMedLagredeVerdier.begrunnelse,
             valideringsfunksjon: erBegrunnelseGyldig,
             avhengigheter: {
                 søkerHarMeldtFraOmBarnehageplass: søkerHarMeldtFraOmBarnehageplass.verdi,
@@ -100,7 +104,7 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         }),
         erEksplisittAvslagPåSøknad,
         avslagBegrunnelser: useFelt<Begrunnelse[]>({
-            verdi: vilkårSkjema.avslagBegrunnelser,
+            verdi: vilkårSkjemaMedLagredeVerdier.avslagBegrunnelser,
             valideringsfunksjon: erAvslagBegrunnelserGyldig,
             avhengigheter: {
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
@@ -114,7 +118,45 @@ export const useBarnehageplass = (vilkår: IVilkårResultat, person: IGrunnlagPe
         }
     }, [periode.verdi.tom]);
 
+    const {
+        skjema,
+        lagreVilkår,
+        lagrerVilkår,
+        slettVilkår,
+        sletterVilkår,
+        feilmelding,
+        nullstillSkjema,
+        finnesEndringerSomIkkeErLagret,
+    } = useVilkårSkjema(lagretVilkår, felter, person);
+
+    const initiellHarBarnehageplass =
+        vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(
+            vilkårSkjemaMedLagredeVerdier.resultat,
+            vilkårSkjemaMedLagredeVerdier.utdypendeVilkårsvurdering
+        ) ||
+        vilkårOppfyltOgAntallTimerKvalifiserer(
+            vilkårSkjemaMedLagredeVerdier.resultat,
+            vilkårSkjemaMedLagredeVerdier.antallTimer
+        );
+
+    const [harBarnehageplass, settHarBarnehageplass] = useState(initiellHarBarnehageplass);
+
     return {
-        felter,
+        vilkårSkjemaContext: {
+            skjema,
+            lagreVilkår,
+            lagrerVilkår,
+            slettVilkår,
+            sletterVilkår,
+            feilmelding,
+            nullstillSkjema: () => {
+                nullstillSkjema();
+                settHarBarnehageplass(initiellHarBarnehageplass);
+            },
+        },
+        finnesEndringerSomIkkeErLagret: () =>
+            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        harBarnehageplass,
+        settHarBarnehageplass,
     };
 };
