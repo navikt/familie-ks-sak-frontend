@@ -96,7 +96,6 @@
     "@types/react-router": "^5.1.20",
     "@types/styled-components": "^5.1.26",
     "@types/uuid": "^10.0.0",
-    "@types/webpack-env": "^1.18.1",
     "@types/webpack-hot-middleware": "^2.25.9",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "compression-webpack-plugin": "^11.1.0",
