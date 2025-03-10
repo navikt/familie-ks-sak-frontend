@@ -6,9 +6,9 @@ import styled from 'styled-components';
 import { FunnelIcon, FileResetIcon } from '@navikt/aksel-icons';
 import {
     Button,
+    Checkbox,
     Fieldset,
     HStack,
-    Switch,
     TextField,
     UNSAFE_Combobox,
     VStack,
@@ -24,7 +24,7 @@ const StyledFieldset = styled(Fieldset)`
     margin: 0 1rem 2rem 0;
 `;
 
-const StyledSwitch = styled(Switch)`
+const StyledSwitch = styled(Checkbox)`
     align-self: end;
 `;
 
