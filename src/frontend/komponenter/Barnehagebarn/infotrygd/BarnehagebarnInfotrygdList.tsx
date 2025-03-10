@@ -5,16 +5,18 @@ import styled from 'styled-components';
 import { Alert, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBarnehagebarnInfotrygd } from '../../../context/BarnehagebarnInfotrygdContext';
+import type { IBarnehagebarnInfotrygd } from '../../../typer/barnehagebarn';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
+import type { IBarnehagebarnListProps } from '../BarnehagebarnList';
 
 const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-const BarnehagebarnInfotrygdList: React.FunctionComponent = () => {
-    const { barnehagebarnResponse, data, barnehagebarnRequestParams, updateSortByAscDesc } =
-        useBarnehagebarnInfotrygd();
+const BarnehagebarnInfotrygdList: React.FC<IBarnehagebarnListProps<IBarnehagebarnInfotrygd>> = (
+    props: IBarnehagebarnListProps<IBarnehagebarnInfotrygd>
+) => {
+    const { barnehagebarnRequestParams, barnehagebarnResponse, data, updateSortByAscDesc } = props;
 
     return (
         <>

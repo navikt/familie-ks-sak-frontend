@@ -2,42 +2,48 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Select } from '@navikt/ds-react';
+import { HStack, Select } from '@navikt/ds-react';
 import { Pagination } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
+import type {
+    IBarnehagebarn,
+    IBarnehagebarnInfotrygd,
+    IBarnehagebarnRequestParams,
+    IBarnehagebarnResponse,
+} from '../../typer/barnehagebarn';
 
-const NavigasjonsContainer = styled.div`
+const StyledHStack = styled(HStack)`
     margin-bottom: 1rem;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    min-height: 2rem;
 `;
 
 const StyledSelect = styled(Select)`
     margin-right: auto;
 `;
 
-const FlexDiv = styled.div`
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-`;
-const BarnehagebarnListNavigator: React.FunctionComponent = () => {
-    const { barnehagebarnResponse, updateOffset, updateLimit, barnehagebarnRequestParams } =
-        useBarnehagebarn();
+interface IBarnehagebarnListNavigatorProps<T> {
+    barnehagebarnRequestParams: IBarnehagebarnRequestParams;
+    barnehagebarnResponse: Ressurs<IBarnehagebarnResponse<T>>;
+    data: readonly T[];
+    updateOffset: (offset: number) => void;
+    updateLimit: (limit: number) => void;
+    updateSortByAscDesc: (fieldName: string) => void;
+}
+
+const BarnehagebarnListNavigator = <T = IBarnehagebarn | IBarnehagebarnInfotrygd,>(
+    props: IBarnehagebarnListNavigatorProps<T>
+) => {
+    const { barnehagebarnResponse, updateOffset, updateLimit, barnehagebarnRequestParams } = props;
 
     return (
-        <NavigasjonsContainer>
+        <StyledHStack>
             {barnehagebarnResponse.status === RessursStatus.SUKSESS &&
                 barnehagebarnResponse.data.content.length >= 0 && (
                     <>
                         <StyledSelect
                             hideLabel
                             label="Antall per side"
-                            size="small"
+                            size="medium"
                             aria-labelledby={'Antall per side'}
                             value={barnehagebarnRequestParams.limit}
                             onChange={event => updateLimit(+event.target.value)}
@@ -52,7 +58,7 @@ const BarnehagebarnListNavigator: React.FunctionComponent = () => {
                             <option value="200">Vis 200 per side</option>
                         </StyledSelect>
                         {barnehagebarnResponse.data.totalElements > 0 ? (
-                            <FlexDiv>
+                            <HStack gap="2" align="center">
                                 |
                                 <span>
                                     <b>
@@ -65,13 +71,13 @@ const BarnehagebarnListNavigator: React.FunctionComponent = () => {
                                     av {barnehagebarnResponse.data.totalElements} totalt)
                                 </span>
                                 |
-                            </FlexDiv>
+                            </HStack>
                         ) : (
                             <div>Ingen resultater</div>
                         )}
                         {barnehagebarnResponse?.data?.totalPages > 0 && (
                             <Pagination
-                                size="small"
+                                size="medium"
                                 page={barnehagebarnResponse.data.number + 1}
                                 count={barnehagebarnResponse.data.totalPages}
                                 onPageChange={(side: number) => updateOffset(side - 1)}
@@ -81,7 +87,8 @@ const BarnehagebarnListNavigator: React.FunctionComponent = () => {
                         )}
                     </>
                 )}
-        </NavigasjonsContainer>
+        </StyledHStack>
     );
 };
+
 export default BarnehagebarnListNavigator;
