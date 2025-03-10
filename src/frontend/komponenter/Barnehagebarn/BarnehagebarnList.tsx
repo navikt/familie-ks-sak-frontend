@@ -80,7 +80,7 @@ const BarnehagebarnList: React.FunctionComponent = () => {
                                         tilFormat: Datoformat.DATO_FORKORTTET,
                                     })}
                                 </Table.DataCell>
-                                <Table.DataCell align="right">
+                                <Table.DataCell align="center">
                                     {barnehagebarn.antallTimerIBarnehage}
                                 </Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.endringstype}</Table.DataCell>
