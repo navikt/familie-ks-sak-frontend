@@ -67,17 +67,3 @@ export interface IBarnehagebarnResponse<T> {
 }
 
 export type IBarnehagekommune = string;
-
-// export interface IBarnehagebarnInfotrygdResponse {
-//     content: IBarnehagebarnInfotrygd[];
-//     pageable: IPageable;
-//     sort: ISort;
-//     last: boolean;
-//     totalElements: number;
-//     totalPages: number;
-//     number: number;
-//     size: number;
-//     first: boolean;
-//     numberOfElements: number;
-//     empty: boolean;
-// }
