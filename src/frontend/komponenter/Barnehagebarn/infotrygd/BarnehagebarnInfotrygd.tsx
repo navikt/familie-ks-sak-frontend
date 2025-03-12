@@ -4,9 +4,11 @@ import styled from 'styled-components';
 
 import { Heading } from '@navikt/ds-react';
 
-import BarnehagebarnInfotrygdFilterskjema from './BarnehagebarnInfotrygdFilterskjema';
 import BarnehagebarnInfotrygdList from './BarnehagebarnInfotrygdList';
-import BarnehagebarnInfotrygdListNavigator from './BarnehagebarnInfotrygdListNavigator';
+import type { IBarnehagebarnInfotrygd } from '../../../typer/barnehagebarn';
+import BarnehagebarnFilterskjema from '../BarnehagebarnFilterskjema';
+import BarnehagebarnListNavigator from '../BarnehagebarnListNavigator';
+import { useBarnehagebarn } from '../useBarnehagebarn';
 
 const Container = styled.div`
     padding: 0.5rem;
@@ -15,15 +17,19 @@ const Container = styled.div`
     height: calc(100vh - 116px - 1.1rem);
 `;
 
+const BARNEHAGELISTE_URL = '/familie-ks-sak/api/barnehagebarn/barnehagebarnInfotrygdliste';
+
 const BarnehagebarnInfotrygd: React.FunctionComponent = () => {
+    const barnehagebarnInfotrygdContext =
+        useBarnehagebarn<IBarnehagebarnInfotrygd>(BARNEHAGELISTE_URL);
     return (
         <Container>
             <Heading size={'medium'} level={'2'}>
                 Barnehageliste Infotrygd
             </Heading>
-            <BarnehagebarnInfotrygdFilterskjema />
-            <BarnehagebarnInfotrygdListNavigator />
-            <BarnehagebarnInfotrygdList />
+            <BarnehagebarnFilterskjema {...barnehagebarnInfotrygdContext} />
+            <BarnehagebarnListNavigator {...barnehagebarnInfotrygdContext} />
+            <BarnehagebarnInfotrygdList {...barnehagebarnInfotrygdContext} />
         </Container>
     );
 };

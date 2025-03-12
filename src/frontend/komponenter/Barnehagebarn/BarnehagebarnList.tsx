@@ -3,18 +3,30 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Alert, Link, Table } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useBarnehagebarn } from '../../context/BarnehagebarnContext';
+import type {
+    IBarnehagebarn,
+    IBarnehagebarnRequestParams,
+    IBarnehagebarnResponse,
+} from '../../typer/barnehagebarn';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 
 const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-const BarnehagebarnList: React.FunctionComponent = () => {
-    const { barnehagebarnResponse, data, barnehagebarnRequestParams, updateSortByAscDesc } =
-        useBarnehagebarn();
+export interface IBarnehagebarnListProps<T> {
+    barnehagebarnRequestParams: IBarnehagebarnRequestParams;
+    barnehagebarnResponse: Ressurs<IBarnehagebarnResponse<T>>;
+    data: readonly T[];
+    updateSortByAscDesc: (fieldName: string) => void;
+}
+
+const BarnehagebarnList: React.FC<IBarnehagebarnListProps<IBarnehagebarn>> = (
+    props: IBarnehagebarnListProps<IBarnehagebarn>
+) => {
+    const { barnehagebarnRequestParams, barnehagebarnResponse, data, updateSortByAscDesc } = props;
 
     return (
         <>

@@ -3,8 +3,8 @@ import React from 'react';
 import { TeddyBearIcon } from '@navikt/aksel-icons';
 import { Tabs } from '@navikt/ds-react';
 
-import { BarnehagebarnComp } from '../../context/BarnehagebarnContext';
-import { BarnehagebarnInfotrygdComp } from '../../context/BarnehagebarnInfotrygdContext';
+import Barnehagebarn from './Barnehagebarn';
+import BarnehagebarnInfotrygd from './infotrygd/BarnehagebarnInfotrygd';
 const BarnehagebarnTabComp: React.FunctionComponent = () => {
     return (
         <Tabs defaultValue="barnehageliste-ks-sak">
@@ -21,10 +21,10 @@ const BarnehagebarnTabComp: React.FunctionComponent = () => {
                 />
             </Tabs.List>
             <Tabs.Panel value="barnehageliste-ks-sak">
-                <BarnehagebarnComp />
+                <Barnehagebarn />
             </Tabs.Panel>
             <Tabs.Panel value="barnehageliste-infotrygd">
-                <BarnehagebarnInfotrygdComp />
+                <BarnehagebarnInfotrygd />
             </Tabs.Panel>
         </Tabs>
     );
