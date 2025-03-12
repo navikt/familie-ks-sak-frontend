@@ -1,8 +1,13 @@
 import type { ISaksbehandler } from '@navikt/familie-typer';
 
-import type { BehandlingKategori } from './behandlingstema';
+import {
+    type BehandlingKategori,
+    type IBehandlingstema,
+    kodeTilBehandlingKategoriMap,
+    tilBehandlingstema,
+} from './behandlingstema';
 import type { IPar } from './common';
-import type { INavnOgIdent } from './manuell-journalføring';
+import type { INavnOgIdent, TilknyttetBehandling } from './manuell-journalføring';
 
 export interface IFinnOppgaveRequest {
     behandlingstype?: string;
@@ -101,6 +106,7 @@ export enum BehandlingstypeFilter {
     ae0161 = 'ae0161',
     ae0118 = 'ae0118',
     ae0120 = 'ae0120',
+    ae0058 = 'ae0058',
 }
 
 export const behandlingstypeFilter: Record<BehandlingstypeFilter, IPar> = {
@@ -109,6 +115,7 @@ export const behandlingstypeFilter: Record<BehandlingstypeFilter, IPar> = {
     ae0120: { id: 'ae0120', navn: 'EØS' },
     ae0106: { id: 'ae0106', navn: 'Utland' },
     ae0161: { id: 'ae0161', navn: 'Tilbakekreving' },
+    ae0058: { id: 'ae0058', navn: 'Klage' },
 };
 
 export enum OppgavetypeFilter {
@@ -168,10 +175,29 @@ export enum PrioritetFilter {
 
 export interface IRestLukkOppgaveOgKnyttJournalpost {
     journalpostId: string;
-    tilknyttedeBehandlingIder: number[];
+    tilknyttedeBehandlinger: TilknyttetBehandling[];
+    tilknyttedeBehandlingIder: string[];
     opprettOgKnyttTilNyBehandling: boolean;
     bruker?: INavnOgIdent;
     datoMottatt?: string;
     navIdent: string;
     kategori: BehandlingKategori | null;
+    fagsakId?: number;
 }
+
+export function erOppgaveJournalførKlage(oppgave: IOppgave): boolean {
+    return (
+        oppgave.oppgavetype === OppgavetypeFilter.JFR &&
+        oppgave.behandlingstype === BehandlingstypeFilter.ae0058
+    );
+}
+
+export const finnBehandlingstemaFraOppgave = (oppgave: IOppgave): IBehandlingstema | undefined => {
+    if (erOppgaveJournalførKlage(oppgave)) {
+        return undefined;
+    }
+    const { behandlingstype } = oppgave;
+    return behandlingstype in kodeTilBehandlingKategoriMap
+        ? tilBehandlingstema(kodeTilBehandlingKategoriMap[behandlingstype])
+        : undefined;
+};

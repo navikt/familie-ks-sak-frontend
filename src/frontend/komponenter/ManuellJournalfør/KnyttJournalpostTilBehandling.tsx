@@ -6,14 +6,11 @@ import { Alert, Checkbox, Heading, Table } from '@navikt/ds-react';
 import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
 import { KnyttTilNyBehandling } from './KnyttTilNyBehandling';
+import { useApp } from '../../context/AppContext';
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
-import type { BehandlingÅrsak } from '../../typer/behandling';
-import {
-    behandlingsstatuser,
-    BehandlingStatus,
-    behandlingstyper,
-    behandlingÅrsak,
-} from '../../typer/behandling';
+import { behandlingsstatuser, BehandlingStatus, behandlingstyper } from '../../typer/behandling';
+import { finnVisningstekstForJournalføringsbehandlingsårsak } from '../../typer/journalføringsbehandling';
+import { ToggleNavn } from '../../typer/toggles';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../utils/fagsak';
 import type { VisningBehandling } from '../Fagsak/Saksoversikt/visningBehandling';
@@ -31,24 +28,35 @@ const StyledAlert = styled(Alert)`
 `;
 
 export const KnyttJournalpostTilBehandling: React.FC = () => {
+    const { toggles } = useApp();
+
     const {
         skjema,
         minimalFagsak,
-        hentSorterteBehandlinger,
+        hentSorterteJournalføringsbehandlinger,
         kanKnytteJournalpostTilBehandling,
         erLesevisning,
     } = useManuellJournalfør();
+
     const åpenBehandling: VisningBehandling | undefined = minimalFagsak
         ? hentAktivBehandlingPåMinimalFagsak(minimalFagsak)
         : undefined;
 
     const visGenerellSakInfoStripe =
         !erLesevisning() &&
-        skjema.felter.tilknyttedeBehandlingIder.verdi.length === 0 &&
+        skjema.felter.tilknyttedeBehandlinger.verdi.length === 0 &&
         !skjema.felter.knyttTilNyBehandling.verdi;
+
+    const sorterteJournalføringsbehandlinger = hentSorterteJournalføringsbehandlinger();
+
+    const skalViseKnyttTilNyBehandling =
+        toggles[ToggleNavn.kanBehandleKlage] || // Skal alltid vises når klage er implementert
+        !åpenBehandling ||
+        åpenBehandling.status === BehandlingStatus.AVSLUTTET;
+
     return (
         <KnyttDiv>
-            {!!minimalFagsak?.behandlinger.length && (
+            {sorterteJournalføringsbehandlinger.length > 0 && (
                 <>
                     <Heading size={'small'} level={'2'}>
                         Knytt til tidligere behandling(er)
@@ -64,44 +72,50 @@ export const KnyttJournalpostTilBehandling: React.FC = () => {
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
-                            {hentSorterteBehandlinger().map((behandling: VisningBehandling) => {
-                                const behandlingId: number | undefined =
-                                    typeof behandling.behandlingId == 'number'
-                                        ? behandling.behandlingId
-                                        : undefined;
-
-                                return behandlingId !== undefined ? (
+                            {sorterteJournalføringsbehandlinger.map(behandling => {
+                                return (
                                     <Table.Row
-                                        key={behandlingId}
-                                        aria-selected={skjema.felter.tilknyttedeBehandlingIder.verdi.includes(
-                                            behandlingId
+                                        key={behandling.id}
+                                        aria-selected={skjema.felter.tilknyttedeBehandlinger.verdi.some(
+                                            it => it.behandlingId === behandling.id
                                         )}
                                     >
                                         <Table.DataCell>
                                             <Checkbox
-                                                id={behandlingId.toString()}
-                                                value={behandlingId.toString()}
-                                                checked={skjema.felter.tilknyttedeBehandlingIder.verdi.includes(
-                                                    behandlingId
+                                                id={behandling.id}
+                                                value={behandling.id}
+                                                checked={skjema.felter.tilknyttedeBehandlinger.verdi.some(
+                                                    it => it.behandlingId === behandling.id
                                                 )}
                                                 onChange={() => {
-                                                    skjema.felter.tilknyttedeBehandlingIder.validerOgSettFelt(
+                                                    skjema.felter.tilknyttedeBehandlinger.validerOgSettFelt(
                                                         [
-                                                            ...skjema.felter.tilknyttedeBehandlingIder.verdi.filter(
-                                                                it => it !== behandlingId
+                                                            ...skjema.felter.tilknyttedeBehandlinger.verdi.filter(
+                                                                it =>
+                                                                    it.behandlingId !==
+                                                                    behandling.id
                                                             ),
-                                                            ...(skjema.felter.tilknyttedeBehandlingIder.verdi.includes(
-                                                                behandlingId
+                                                            ...(skjema.felter.tilknyttedeBehandlinger.verdi.some(
+                                                                it =>
+                                                                    it.behandlingId ===
+                                                                    behandling.id
                                                             )
                                                                 ? []
-                                                                : [behandlingId]),
+                                                                : [
+                                                                      {
+                                                                          behandlingstype:
+                                                                              behandling.type,
+                                                                          behandlingId:
+                                                                              behandling.id,
+                                                                      },
+                                                                  ]),
                                                         ]
                                                     );
                                                 }}
                                                 readOnly={!kanKnytteJournalpostTilBehandling()}
-                                                hideLabel
+                                                hideLabel={true}
                                             >
-                                                {behandlingId.toString()}
+                                                {behandling.id}
                                             </Checkbox>
                                         </Table.DataCell>
                                         <Table.DataCell>
@@ -111,7 +125,9 @@ export const KnyttJournalpostTilBehandling: React.FC = () => {
                                             })}
                                         </Table.DataCell>
                                         <Table.DataCell>
-                                            {behandlingÅrsak[behandling.årsak as BehandlingÅrsak]}
+                                            {finnVisningstekstForJournalføringsbehandlingsårsak(
+                                                behandling.årsak
+                                            )}
                                         </Table.DataCell>
                                         <Table.DataCell>
                                             {behandlingstyper[behandling.type].navn}
@@ -120,19 +136,17 @@ export const KnyttJournalpostTilBehandling: React.FC = () => {
                                             {behandlingsstatuser[behandling.status]}
                                         </Table.DataCell>
                                     </Table.Row>
-                                ) : null;
+                                );
                             })}
                         </Table.Body>
                     </Table>
                 </>
             )}
-            {(!åpenBehandling || åpenBehandling.status === BehandlingStatus.AVSLUTTET) && (
-                <KnyttTilNyBehandling />
-            )}
+            {skalViseKnyttTilNyBehandling && <KnyttTilNyBehandling />}
             {visGenerellSakInfoStripe && (
                 <StyledAlert variant="info">
                     <GenerellSakInfoStripeTittel>
-                        {hentSorterteBehandlinger().length > 0
+                        {sorterteJournalføringsbehandlinger.length > 0
                             ? `Du velger å journalføre uten å knytte til behandling(er).`
                             : `Du velger å journalføre uten å knytte til ny behandling.`}
                     </GenerellSakInfoStripeTittel>
