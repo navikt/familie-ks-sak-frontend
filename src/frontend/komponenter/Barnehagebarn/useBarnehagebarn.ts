@@ -23,7 +23,7 @@ import type {
 const defaultBarnehagebarnRequestParams: IBarnehagebarnRequestParams = {
     ident: '',
     kommuneNavn: '',
-    kunLøpendeFagsak: false,
+    kunLøpendeAndel: false,
     limit: 20,
     offset: 0,
     sortBy: 'kommuneNavn',
@@ -144,7 +144,7 @@ export const useBarnehagebarn = <T = IBarnehagebarn | IBarnehagebarnInfotrygd>(
                 offset: 0,
                 ident: oppdatertBarnehagebarnFilter.ident,
                 kommuneNavn: oppdatertBarnehagebarnFilter.kommuneNavn,
-                kunLøpendeFagsak: oppdatertBarnehagebarnFilter.kunLøpendeFagsak,
+                kunLøpendeAndel: oppdatertBarnehagebarnFilter.kunLøpendeAndel,
             });
         }
     };
@@ -153,7 +153,7 @@ export const useBarnehagebarn = <T = IBarnehagebarn | IBarnehagebarnInfotrygd>(
         const barnehagebarnFilter: IBarnehagebarnFilter = {
             ident: barnehagebarnRequestParams.ident,
             kommuneNavn: barnehagebarnRequestParams.kommuneNavn,
-            kunLøpendeFagsak: barnehagebarnRequestParams.kunLøpendeFagsak,
+            kunLøpendeAndel: barnehagebarnRequestParams.kunLøpendeAndel,
         };
         return JSON.stringify(barnehagebarnFilter) !== JSON.stringify(oppdatertBarnehagebarnFilter);
     };

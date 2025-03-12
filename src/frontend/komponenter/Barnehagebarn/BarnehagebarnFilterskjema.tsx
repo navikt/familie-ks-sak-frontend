@@ -96,12 +96,12 @@ const BarnehagebarnFilterskjema: React.FunctionComponent<IBarnehagebarnFilterSkj
                             )}
                         />
                         <StyledSwitch
-                            id="kun-loepende-fagsak"
-                            title="Vis kun løpende fagsaker"
+                            id="kun-loepende-andel"
+                            title="Vis kun løpende andeler"
                             size="medium"
-                            {...register('kunLøpendeFagsak')}
+                            {...register('kunLøpendeAndel')}
                         >
-                            Kun løpende fagsaker
+                            Kun løpende utbetalinger
                         </StyledSwitch>
                     </HStack>
                     <HStack gap="4">
