@@ -25,7 +25,7 @@ const StyledFieldset = styled(Fieldset)`
     margin: 0 1rem 2rem 0;
 `;
 
-const StyledSwitch = styled(Checkbox)`
+const StyledCheckbox = styled(Checkbox)`
     align-self: end;
 `;
 
@@ -97,14 +97,14 @@ const BarnehagebarnFilterskjema: React.FunctionComponent<IBarnehagebarnFilterSkj
                             )}
                         />
                         <HStack gap="4" align="center">
-                            <StyledSwitch
+                            <StyledCheckbox
                                 id="kun-loepende-andel"
                                 title="Vis kun løpende andeler"
                                 size="medium"
                                 {...register('kunLøpendeAndel')}
                             >
                                 Kun løpende utbetalinger
-                            </StyledSwitch>
+                            </StyledCheckbox>
                             <HelpText title="Løpende utbetaling">
                                 Viser kun saker hvor barn har en løpende utbetaling
                             </HelpText>
