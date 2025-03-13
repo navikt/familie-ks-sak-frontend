@@ -8,6 +8,7 @@ import {
     Button,
     Checkbox,
     Fieldset,
+    HelpText,
     HStack,
     TextField,
     UNSAFE_Combobox,
@@ -24,7 +25,7 @@ const StyledFieldset = styled(Fieldset)`
     margin: 0 1rem 2rem 0;
 `;
 
-const StyledSwitch = styled(Checkbox)`
+const StyledCheckbox = styled(Checkbox)`
     align-self: end;
 `;
 
@@ -62,7 +63,7 @@ const BarnehagebarnFilterskjema: React.FunctionComponent<IBarnehagebarnFilterSkj
                 hideLegend
             >
                 <VStack gap="4">
-                    <HStack gap="4" align="center">
+                    <HStack gap="4" align="end">
                         <TextField
                             label="Barns ident"
                             title="Filtrer på barns ident"
@@ -95,14 +96,19 @@ const BarnehagebarnFilterskjema: React.FunctionComponent<IBarnehagebarnFilterSkj
                                 />
                             )}
                         />
-                        <StyledSwitch
-                            id="kun-loepende-fagsak"
-                            title="Vis kun løpende fagsaker"
-                            size="medium"
-                            {...register('kunLøpendeFagsak')}
-                        >
-                            Kun løpende fagsaker
-                        </StyledSwitch>
+                        <HStack gap="4" align="center">
+                            <StyledCheckbox
+                                id="kun-loepende-andel"
+                                title="Vis kun løpende andeler"
+                                size="medium"
+                                {...register('kunLøpendeAndel')}
+                            >
+                                Kun løpende utbetalinger
+                            </StyledCheckbox>
+                            <HelpText title="Løpende utbetaling">
+                                Viser kun saker hvor barn har en løpende utbetaling
+                            </HelpText>
+                        </HStack>
                     </HStack>
                     <HStack gap="4">
                         <Button

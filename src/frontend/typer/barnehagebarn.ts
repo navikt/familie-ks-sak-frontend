@@ -1,7 +1,7 @@
 export interface IBarnehagebarnRequestParams extends IBarnehagebarnFilter {
     ident?: string;
     kommuneNavn?: string;
-    kunLøpendeFagsak: boolean;
+    kunLøpendeAndel: boolean;
     limit?: number;
     offset?: number;
     sortBy: string;
@@ -11,7 +11,7 @@ export interface IBarnehagebarnRequestParams extends IBarnehagebarnFilter {
 export interface IBarnehagebarnFilter {
     ident?: string;
     kommuneNavn?: string;
-    kunLøpendeFagsak: boolean;
+    kunLøpendeAndel: boolean;
 }
 
 export interface IBarnehagebarn {
