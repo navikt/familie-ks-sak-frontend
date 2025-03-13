@@ -8,6 +8,7 @@ import {
     Button,
     Checkbox,
     Fieldset,
+    HelpText,
     HStack,
     TextField,
     UNSAFE_Combobox,
@@ -62,7 +63,7 @@ const BarnehagebarnFilterskjema: React.FunctionComponent<IBarnehagebarnFilterSkj
                 hideLegend
             >
                 <VStack gap="4">
-                    <HStack gap="4" align="center">
+                    <HStack gap="4" align="end">
                         <TextField
                             label="Barns ident"
                             title="Filtrer på barns ident"
@@ -95,14 +96,19 @@ const BarnehagebarnFilterskjema: React.FunctionComponent<IBarnehagebarnFilterSkj
                                 />
                             )}
                         />
-                        <StyledSwitch
-                            id="kun-loepende-andel"
-                            title="Vis kun løpende andeler"
-                            size="medium"
-                            {...register('kunLøpendeAndel')}
-                        >
-                            Kun løpende utbetalinger
-                        </StyledSwitch>
+                        <HStack gap="4" align="center">
+                            <StyledSwitch
+                                id="kun-loepende-andel"
+                                title="Vis kun løpende andeler"
+                                size="medium"
+                                {...register('kunLøpendeAndel')}
+                            >
+                                Kun løpende utbetalinger
+                            </StyledSwitch>
+                            <HelpText title="Løpende utbetaling">
+                                Viser kun saker hvor barn har en løpende utbetaling
+                            </HelpText>
+                        </HStack>
                     </HStack>
                     <HStack gap="4">
                         <Button
