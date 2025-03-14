@@ -22,6 +22,8 @@ const BARNEHAGELISTE_URL = '/familie-ks-sak/api/barnehagebarn/barnehagebarnliste
 const Barnehagebarn: React.FunctionComponent = () => {
     const barnehagebarnContext = useBarnehagebarn<IBarnehagebarn>(BARNEHAGELISTE_URL);
 
+    //    console.log(barnehagebarnContext.data.map((barnehagebarn, i) => barnehagebarn.avvik));
+
     return (
         <Container>
             <Heading size={'medium'} level={'2'}>
