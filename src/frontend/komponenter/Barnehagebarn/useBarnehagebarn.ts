@@ -14,7 +14,6 @@ import {
 import type {
     IBarnehagebarn,
     IBarnehagebarnFilter,
-    IBarnehagebarnInfotrygd,
     IBarnehagebarnRequestParams,
     IBarnehagebarnResponse,
     IBarnehagekommune,
@@ -43,7 +42,7 @@ export interface IBarnehagebarnContext<T> {
 
 const BARNEHAGEKOMMUNER_URL = '/familie-ks-sak/api/barnehagebarn/barnehagekommuner';
 
-export const useBarnehagebarn = <T = IBarnehagebarn | IBarnehagebarnInfotrygd>(
+export const useBarnehagebarn = <T = IBarnehagebarn>(
     barnehagebarn_url: string
 ): IBarnehagebarnContext<T> => {
     const { request } = useHttp();

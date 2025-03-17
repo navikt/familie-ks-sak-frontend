@@ -27,18 +27,6 @@ export interface IBarnehagebarn {
     endretTid: string;
 }
 
-export interface IBarnehagebarnInfotrygd {
-    ident: string;
-    fom: string;
-    tom?: string;
-    antallTimerIBarnehage?: number;
-    endringstype: string;
-    kommuneNavn: string;
-    kommuneNr: string;
-    harFagsak?: boolean;
-    endretTid: string;
-}
-
 interface ISort {
     empty: boolean;
     sorted: boolean;

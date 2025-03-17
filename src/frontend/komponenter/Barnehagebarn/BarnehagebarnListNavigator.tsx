@@ -8,7 +8,6 @@ import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type {
     IBarnehagebarn,
-    IBarnehagebarnInfotrygd,
     IBarnehagebarnRequestParams,
     IBarnehagebarnResponse,
 } from '../../typer/barnehagebarn';
@@ -30,7 +29,7 @@ interface IBarnehagebarnListNavigatorProps<T> {
     updateSortByAscDesc: (fieldName: string) => void;
 }
 
-const BarnehagebarnListNavigator = <T = IBarnehagebarn | IBarnehagebarnInfotrygd,>(
+const BarnehagebarnListNavigator = <T = IBarnehagebarn,>(
     props: IBarnehagebarnListNavigatorProps<T>
 ) => {
     const { barnehagebarnResponse, updateOffset, updateLimit, barnehagebarnRequestParams } = props;
