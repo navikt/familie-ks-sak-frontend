@@ -4,7 +4,6 @@ import type { Behandlingstype, BehandlingÅrsak } from './behandling';
 import type { BehandlingKategori } from './behandlingstema';
 import type { IMinimalFagsak } from './fagsak';
 import type { Journalføringsbehandlingstype } from './journalføringsbehandling';
-import type { IKlagebehandling } from './klage';
 import type { IOppgave } from './oppgave';
 import type { IPersonInfo } from './person';
 
@@ -13,7 +12,6 @@ export interface IDataForManuellJournalføring {
     oppgave: IOppgave;
     person?: IPersonInfo;
     minimalFagsak?: IMinimalFagsak;
-    klagebehandlinger: IKlagebehandling[];
 }
 
 interface IRestJournalpostDokument {

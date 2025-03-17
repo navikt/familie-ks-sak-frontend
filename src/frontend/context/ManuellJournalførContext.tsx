@@ -29,7 +29,7 @@ import {
     opprettJournalføringsbehandlingFraKontantstøttebehandling,
     opprettJournalføringsbehandlingFraKlagebehandling,
 } from '../typer/journalføringsbehandling';
-import type { IKlagebehandling, Klagebehandlingstype } from '../typer/klage';
+import type { Klagebehandlingstype } from '../typer/klage';
 import type {
     IDataForManuellJournalføring,
     IRestJournalføring,
@@ -75,9 +75,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
 
     const [minimalFagsak, settMinimalFagsak] = useState<IMinimalFagsak | undefined>(undefined);
     const [erKlage, settErKlage] = useState<boolean>(false);
-    const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[] | undefined>(
-        undefined
-    );
+
     const [dataForManuellJournalføring, settDataForManuellJournalføring] =
         React.useState(byggTomRessurs<IDataForManuellJournalføring>());
 
@@ -211,7 +209,6 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             if (dataForManuellJournalføring.data.minimalFagsak) {
                 settMinimalFagsak(dataForManuellJournalføring.data.minimalFagsak);
             }
-            settKlagebehandlinger(dataForManuellJournalføring.data.klagebehandlinger);
             settErKlage(erOppgaveJournalførKlage(dataForManuellJournalføring.data.oppgave));
         }
     }, [dataForManuellJournalføring]);
@@ -327,8 +324,8 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     };
 
     const hentSorterteJournalføringsbehandlinger = (): Journalføringsbehandling[] => {
-        const journalføringsbehandlingerKlage = (klagebehandlinger ?? []).map(klagebehandling =>
-            opprettJournalføringsbehandlingFraKlagebehandling(klagebehandling)
+        const journalføringsbehandlingerKlage = (minimalFagsak?.klagebehandlinger ?? []).map(
+            klagebehandling => opprettJournalføringsbehandlingFraKlagebehandling(klagebehandling)
         );
 
         const journalføringsbehandlingerKontantstøtte = (minimalFagsak?.behandlinger ?? []).map(
