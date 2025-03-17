@@ -1,6 +1,7 @@
 import type { BehandlingÅrsak } from './behandling';
 import type { BehandlingKategori } from './behandlingstema';
 import type { INøkkelPar } from './common';
+import type { IKlagebehandling } from './klage';
 import type { ITilbakekrevingsbehandling } from './tilbakekrevingsbehandling';
 import type { Utbetalingsperiode } from './utbetalingsperiode';
 import type { VisningBehandling } from '../komponenter/Fagsak/Saksoversikt/visningBehandling';
@@ -26,6 +27,7 @@ interface IBaseFagsak {
 export interface IMinimalFagsak extends IBaseFagsak {
     behandlinger: VisningBehandling[];
     tilbakekrevingsbehandlinger: ITilbakekrevingsbehandling[];
+    klagebehandlinger: IKlagebehandling[];
     gjeldendeUtbetalingsperioder: Utbetalingsperiode[];
 }
 
