@@ -37,5 +37,6 @@ export const mockMinimalFagsak = ({
     underBehandling,
     gjeldendeUtbetalingsperioder,
     tilbakekrevingsbehandlinger: [],
+    klagebehandlinger: [],
     løpendeKategori,
 });
