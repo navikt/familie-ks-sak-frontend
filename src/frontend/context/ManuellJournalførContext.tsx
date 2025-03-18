@@ -205,11 +205,11 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     };
 
     const endreBruker = async (personId: string) => {
-        const hentetPerson = await request<void, IPersonInfo>({
-            method: 'GET',
+        const hentetPerson = await request<{ ident: string }, IPersonInfo>({
+            method: 'POST',
             url: '/familie-ks-sak/api/person',
-            headers: {
-                personIdent: personId,
+            data: {
+                ident: personId,
             },
         });
 
