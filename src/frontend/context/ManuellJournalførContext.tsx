@@ -13,6 +13,7 @@ import {
     byggFeiletRessurs,
     byggHenterRessurs,
     byggTomRessurs,
+    hentDataFraRessurs,
     Journalstatus,
     RessursStatus,
 } from '@navikt/familie-typer';
@@ -29,7 +30,7 @@ import {
     opprettJournalføringsbehandlingFraKontantstøttebehandling,
     opprettJournalføringsbehandlingFraKlagebehandling,
 } from '../typer/journalføringsbehandling';
-import type { Klagebehandlingstype } from '../typer/klage';
+import type { IKlagebehandling, Klagebehandlingstype } from '../typer/klage';
 import type {
     IDataForManuellJournalføring,
     IRestJournalføring,
@@ -75,6 +76,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
 
     const [minimalFagsak, settMinimalFagsak] = useState<IMinimalFagsak | undefined>(undefined);
     const [erKlage, settErKlage] = useState<boolean>(false);
+    const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[] | undefined>();
 
     const [dataForManuellJournalføring, settDataForManuellJournalføring] =
         React.useState(byggTomRessurs<IDataForManuellJournalføring>());
@@ -85,6 +87,10 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             nullstillDokument();
         }
     }, [oppgaveId]);
+
+    React.useEffect(() => {
+        hentKlagebehandlingerPåFagsak();
+    }, [minimalFagsak]);
 
     const knyttTilNyBehandling = useFelt<boolean>({
         verdi: false,
@@ -285,6 +291,20 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             });
     };
 
+    const hentKlagebehandlingerPåFagsak = () => {
+        const fagsakId = minimalFagsak?.id;
+
+        if (fagsakId) {
+            request<void, IKlagebehandling[]>({
+                method: 'GET',
+                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/hent-klagebehandlinger`,
+                påvirkerSystemLaster: true,
+            }).then(klagebehandlingerRessurs =>
+                settKlagebehandlinger(hentDataFraRessurs(klagebehandlingerRessurs) ?? [])
+            );
+        }
+    };
+
     const hentOgVisDokument = async (
         journalpostId: string | undefined,
         dokumentInfoId: string | undefined
@@ -324,8 +344,8 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     };
 
     const hentSorterteJournalføringsbehandlinger = (): Journalføringsbehandling[] => {
-        const journalføringsbehandlingerKlage = (minimalFagsak?.klagebehandlinger ?? []).map(
-            klagebehandling => opprettJournalføringsbehandlingFraKlagebehandling(klagebehandling)
+        const journalføringsbehandlingerKlage = (klagebehandlinger ?? []).map(klagebehandling =>
+            opprettJournalføringsbehandlingFraKlagebehandling(klagebehandling)
         );
 
         const journalføringsbehandlingerKontantstøtte = (minimalFagsak?.behandlinger ?? []).map(
