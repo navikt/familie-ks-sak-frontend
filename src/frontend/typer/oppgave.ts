@@ -185,17 +185,7 @@ export interface IRestLukkOppgaveOgKnyttJournalpost {
     fagsakId?: number;
 }
 
-export function erOppgaveJournalførKlage(oppgave: IOppgave): boolean {
-    return (
-        oppgave.oppgavetype === OppgavetypeFilter.JFR &&
-        oppgave.behandlingstype === BehandlingstypeFilter.ae0058
-    );
-}
-
 export const finnBehandlingstemaFraOppgave = (oppgave: IOppgave): IBehandlingstema | undefined => {
-    if (erOppgaveJournalførKlage(oppgave)) {
-        return undefined;
-    }
     const { behandlingstype } = oppgave;
     return behandlingstype in kodeTilBehandlingKategoriMap
         ? tilBehandlingstema(kodeTilBehandlingKategoriMap[behandlingstype])

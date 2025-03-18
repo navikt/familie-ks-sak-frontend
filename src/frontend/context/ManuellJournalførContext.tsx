@@ -30,7 +30,7 @@ import {
     opprettJournalføringsbehandlingFraKontantstøttebehandling,
     opprettJournalføringsbehandlingFraKlagebehandling,
 } from '../typer/journalføringsbehandling';
-import type { IKlagebehandling, Klagebehandlingstype } from '../typer/klage';
+import { Klagebehandlingstype, type IKlagebehandling } from '../typer/klage';
 import type {
     IDataForManuellJournalføring,
     IRestJournalføring,
@@ -38,7 +38,6 @@ import type {
 } from '../typer/manuell-journalføring';
 import { JournalpostKanal } from '../typer/manuell-journalføring';
 import {
-    erOppgaveJournalførKlage,
     finnBehandlingstemaFraOppgave,
     type IRestLukkOppgaveOgKnyttJournalpost,
 } from '../typer/oppgave';
@@ -75,7 +74,6 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     const { hentForhåndsvisning, nullstillDokument, hentetDokument } = useDokument();
 
     const [minimalFagsak, settMinimalFagsak] = useState<IMinimalFagsak | undefined>(undefined);
-    const [erKlage, settErKlage] = useState<boolean>(false);
     const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[] | undefined>();
 
     const [dataForManuellJournalføring, settDataForManuellJournalføring] =
@@ -143,9 +141,13 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             }),
             behandlingstema: useFelt<IBehandlingstema | undefined>({
                 verdi: undefined,
-                avhengigheter: { knyttTilNyBehandling: knyttTilNyBehandling.verdi },
+                avhengigheter: {
+                    knyttTilNyBehandling: knyttTilNyBehandling.verdi,
+                    behandlingstype: behandlingstype.verdi,
+                },
                 skalFeltetVises: (avhengigheter: Avhengigheter) =>
-                    avhengigheter.knyttTilNyBehandling && !erKlage,
+                    avhengigheter.knyttTilNyBehandling &&
+                    behandlingstype.verdi !== Klagebehandlingstype.KLAGE,
                 valideringsfunksjon: (felt: FeltState<IBehandlingstema | undefined>) =>
                     felt.verdi ? ok(felt) : feil(felt, 'Behandlingstema må settes.'),
             }),
@@ -215,7 +217,6 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             if (dataForManuellJournalføring.data.minimalFagsak) {
                 settMinimalFagsak(dataForManuellJournalføring.data.minimalFagsak);
             }
-            settErKlage(erOppgaveJournalførKlage(dataForManuellJournalføring.data.oppgave));
         }
     }, [dataForManuellJournalføring]);
 
