@@ -80,11 +80,11 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
 
     const hentBruker = (personIdent: string): void => {
         settBruker(byggHenterRessurs());
-        request<void, IPersonInfo>({
-            method: 'GET',
+        request<{ ident: string }, IPersonInfo>({
+            method: 'POST',
             url: '/familie-ks-sak/api/person',
-            headers: {
-                personIdent,
+            data: {
+                ident: personIdent,
             },
             påvirkerSystemLaster: true,
         }).then((hentetPerson: Ressurs<IPersonInfo>) => {
