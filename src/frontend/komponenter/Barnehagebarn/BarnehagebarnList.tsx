@@ -56,6 +56,9 @@ const BarnehagebarnList: React.FC<IBarnehagebarnListProps<IBarnehagebarn>> = (
                         <Table.ColumnHeader sortable sortKey={'antallTimerIBarnehage'}>
                             Ant. timer i barnehage
                         </Table.ColumnHeader>
+                        <Table.ColumnHeader sortable sortKey={'endringstype'}>
+                            Endringstype
+                        </Table.ColumnHeader>
                         <Table.ColumnHeader sortable sortKey={'avvik'}>
                             Avvik
                         </Table.ColumnHeader>
@@ -95,8 +98,13 @@ const BarnehagebarnList: React.FC<IBarnehagebarnListProps<IBarnehagebarn>> = (
                                 <Table.DataCell align="center">
                                     {barnehagebarn.antallTimerIBarnehage}
                                 </Table.DataCell>
+                                <Table.DataCell>{barnehagebarn.endringstype}</Table.DataCell>
                                 <Table.DataCell>
-                                    {barnehagebarn.avvik ? 'Ja' : 'Nei'}
+                                    {barnehagebarn.avvik === true
+                                        ? 'Ja'
+                                        : barnehagebarn.avvik === false
+                                          ? 'Nei'
+                                          : '-'}
                                 </Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.kommuneNavn}</Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.kommuneNr}</Table.DataCell>

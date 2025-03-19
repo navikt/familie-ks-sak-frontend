@@ -19,7 +19,8 @@ export interface IBarnehagebarn {
     fom: string;
     tom?: string;
     antallTimerIBarnehage?: number;
-    avvik: boolean;
+    endringstype: string;
+    avvik?: boolean;
     kommuneNavn: string;
     kommuneNr: string;
     fagsakId?: number;
