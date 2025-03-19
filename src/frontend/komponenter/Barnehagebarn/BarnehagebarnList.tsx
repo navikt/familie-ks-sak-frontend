@@ -28,6 +28,15 @@ const BarnehagebarnList: React.FC<IBarnehagebarnListProps<IBarnehagebarn>> = (
 ) => {
     const { barnehagebarnRequestParams, barnehagebarnResponse, data, updateSortByAscDesc } = props;
 
+    function visAvvikstekst(avvik?: boolean) {
+        if (avvik === true) {
+            return 'Ja';
+        } else if (avvik === false) {
+            return 'Nei';
+        }
+        return '-';
+    }
+
     return (
         <>
             <Table
@@ -100,11 +109,7 @@ const BarnehagebarnList: React.FC<IBarnehagebarnListProps<IBarnehagebarn>> = (
                                 </Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.endringstype}</Table.DataCell>
                                 <Table.DataCell>
-                                    {barnehagebarn.avvik === true
-                                        ? 'Ja'
-                                        : barnehagebarn.avvik === false
-                                          ? 'Nei'
-                                          : '-'}
+                                    {visAvvikstekst(barnehagebarn.avvik)}
                                 </Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.kommuneNavn}</Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.kommuneNr}</Table.DataCell>
