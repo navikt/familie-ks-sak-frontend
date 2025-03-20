@@ -460,11 +460,11 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             const nyBehandlingsårsak = skjema.felter.behandlingsårsak.verdi;
             const { verdi: behandlingstema } = skjema.felter.behandlingstema;
 
-            const knyttJournalpostTilFagsak =
+            const knyttJournalpostTilBehandling =
                 skjema.felter.tilknyttedeBehandlinger.verdi.length > 0 ||
                 skjema.felter.knyttTilNyBehandling.verdi;
 
-            if (!knyttJournalpostTilFagsak) {
+            if (!knyttJournalpostTilBehandling) {
                 onSubmit<void>(
                     {
                         method: 'GET',
