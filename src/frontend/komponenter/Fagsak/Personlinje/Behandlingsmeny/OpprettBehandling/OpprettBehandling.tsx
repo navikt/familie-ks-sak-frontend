@@ -100,11 +100,11 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                                 />
                             )}
 
-                            {opprettBehandlingSkjema.felter.kravMottattDato.erSynlig && (
+                            {opprettBehandlingSkjema.felter.klageMottattDato.erSynlig && (
                                 <Datovelger
-                                    felt={opprettBehandlingSkjema.felter.kravMottattDato}
+                                    felt={opprettBehandlingSkjema.felter.klageMottattDato}
                                     visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                                    label={'Krav mottatt'}
+                                    label={'Klage mottatt'}
                                     kanKunVelgeFortid
                                 />
                             )}
