@@ -3,6 +3,7 @@ import type { IJournalpost } from '@navikt/familie-typer';
 import type { Behandlingstype, BehandlingÅrsak } from './behandling';
 import type { BehandlingKategori } from './behandlingstema';
 import type { IMinimalFagsak } from './fagsak';
+import type { Journalføringsbehandlingstype } from './journalføringsbehandling';
 import type { IOppgave } from './oppgave';
 import type { IPersonInfo } from './person';
 
@@ -29,12 +30,14 @@ export interface IRestJournalføring {
     kategori: BehandlingKategori | null;
     knyttTilFagsak: boolean;
     opprettOgKnyttTilNyBehandling: boolean;
-    tilknyttedeBehandlingIder: number[];
+    tilknyttedeBehandlinger: TilknyttetBehandling[];
+    tilknyttedeBehandlingIder: string[];
     dokumenter?: IRestJournalpostDokument[];
     navIdent: string;
     nyBehandlingstype: Behandlingstype;
     nyBehandlingsårsak: BehandlingÅrsak;
     journalførendeEnhet: string;
+    fagsakId?: number;
 }
 
 interface ILogiskVedlegg {
@@ -89,3 +92,8 @@ export enum JournalpostKanal {
     NAV_NO = 'NAV_NO',
     SCAN_IM = 'SCAN_IM',
 }
+
+export type TilknyttetBehandling = {
+    behandlingstype: Journalføringsbehandlingstype;
+    behandlingId: string;
+};

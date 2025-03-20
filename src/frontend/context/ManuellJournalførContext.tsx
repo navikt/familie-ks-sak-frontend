@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { AxiosError } from 'axios';
 import createUseContext from 'constate';
@@ -13,6 +13,7 @@ import {
     byggFeiletRessurs,
     byggHenterRessurs,
     byggTomRessurs,
+    hentDataFraRessurs,
     Journalstatus,
     RessursStatus,
 } from '@navikt/familie-typer';
@@ -23,20 +24,29 @@ import useDokument from '../hooks/useDokument';
 import type { VisningBehandling } from '../komponenter/Fagsak/Saksoversikt/visningBehandling';
 import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
 import type { IBehandlingstema } from '../typer/behandlingstema';
-import { utredBehandlingstemaFraOppgave } from '../typer/behandlingstema';
 import type { IMinimalFagsak } from '../typer/fagsak';
-import type { Klagebehandlingstype } from '../typer/klage';
+import {
+    type Journalføringsbehandling,
+    opprettJournalføringsbehandlingFraKontantstøttebehandling,
+    opprettJournalføringsbehandlingFraKlagebehandling,
+} from '../typer/journalføringsbehandling';
+import { Klagebehandlingstype, type IKlagebehandling } from '../typer/klage';
 import type {
     IDataForManuellJournalføring,
     IRestJournalføring,
+    TilknyttetBehandling,
 } from '../typer/manuell-journalføring';
 import { JournalpostKanal } from '../typer/manuell-journalføring';
-import type { IRestLukkOppgaveOgKnyttJournalpost } from '../typer/oppgave';
+import {
+    finnBehandlingstemaFraOppgave,
+    type IRestLukkOppgaveOgKnyttJournalpost,
+} from '../typer/oppgave';
 import { OppgavetypeFilter } from '../typer/oppgave';
 import type { IPersonInfo } from '../typer/person';
 import { Adressebeskyttelsegradering } from '../typer/person';
 import type { ISamhandlerInfo } from '../typer/samhandler';
 import type { Tilbakekrevingsbehandlingstype } from '../typer/tilbakekrevingsbehandling';
+import { ToggleNavn } from '../typer/toggles';
 import { isoStringTilDate } from '../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../utils/fagsak';
 
@@ -50,12 +60,12 @@ interface ManuellJournalføringSkjemaFelter {
     avsenderNavn: string;
     avsenderIdent: string;
     knyttTilNyBehandling: boolean;
-    tilknyttedeBehandlingIder: number[];
+    tilknyttedeBehandlinger: TilknyttetBehandling[];
     samhandler: ISamhandlerInfo | null;
 }
 
 const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() => {
-    const { innloggetSaksbehandler } = useApp();
+    const { innloggetSaksbehandler, toggles } = useApp();
     const { hentFagsakForPerson } = useFagsakContext();
     const navigate = useNavigate();
     const { request } = useHttp();
@@ -64,15 +74,21 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     const { hentForhåndsvisning, nullstillDokument, hentetDokument } = useDokument();
 
     const [minimalFagsak, settMinimalFagsak] = useState<IMinimalFagsak | undefined>(undefined);
-    const [dataForManuellJournalføring, settDataForManuellJournalføring] =
-        React.useState(byggTomRessurs<IDataForManuellJournalføring>());
+    const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[] | undefined>();
 
-    React.useEffect(() => {
+    const [dataForManuellJournalføring, settDataForManuellJournalføring] =
+        useState(byggTomRessurs<IDataForManuellJournalføring>());
+
+    useEffect(() => {
         if (oppgaveId) {
             hentDataForManuellJournalføring(oppgaveId);
             nullstillDokument();
         }
     }, [oppgaveId]);
+
+    useEffect(() => {
+        hentKlagebehandlingerPåFagsak();
+    }, [minimalFagsak]);
 
     const knyttTilNyBehandling = useFelt<boolean>({
         verdi: false,
@@ -109,7 +125,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
         },
     });
 
-    const [valgtDokumentId, settValgtDokumentId] = React.useState<string | undefined>(undefined);
+    const [valgtDokumentId, settValgtDokumentId] = useState<string | undefined>(undefined);
     const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<
         ManuellJournalføringSkjemaFelter,
         string
@@ -125,9 +141,13 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             }),
             behandlingstema: useFelt<IBehandlingstema | undefined>({
                 verdi: undefined,
-                avhengigheter: { knyttTilNyBehandling: knyttTilNyBehandling.verdi },
+                avhengigheter: {
+                    knyttTilNyBehandling: knyttTilNyBehandling.verdi,
+                    behandlingstype: behandlingstype.verdi,
+                },
                 skalFeltetVises: (avhengigheter: Avhengigheter) =>
-                    avhengigheter.knyttTilNyBehandling,
+                    avhengigheter.knyttTilNyBehandling &&
+                    behandlingstype.verdi !== Klagebehandlingstype.KLAGE,
                 valideringsfunksjon: (felt: FeltState<IBehandlingstema | undefined>) =>
                     felt.verdi ? ok(felt) : feil(felt, 'Behandlingstema må settes.'),
             }),
@@ -160,7 +180,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             knyttTilNyBehandling,
             behandlingstype,
             behandlingsårsak,
-            tilknyttedeBehandlingIder: useFelt<number[]>({
+            tilknyttedeBehandlinger: useFelt<TilknyttetBehandling[]>({
                 verdi: [],
             }),
             samhandler: useFelt<ISamhandlerInfo | null>({
@@ -181,7 +201,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             );
 
             skjema.felter.behandlingstema.validerOgSettFelt(
-                utredBehandlingstemaFraOppgave(dataForManuellJournalføring.data.oppgave)
+                finnBehandlingstemaFraOppgave(dataForManuellJournalføring.data.oppgave)
             );
 
             skjema.felter.avsenderNavn.validerOgSettFelt(
@@ -272,6 +292,20 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             });
     };
 
+    const hentKlagebehandlingerPåFagsak = () => {
+        const fagsakId = minimalFagsak?.id;
+
+        if (fagsakId) {
+            request<void, IKlagebehandling[]>({
+                method: 'GET',
+                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/hent-klagebehandlinger`,
+                påvirkerSystemLaster: true,
+            }).then(klagebehandlingerRessurs =>
+                settKlagebehandlinger(hentDataFraRessurs(klagebehandlingerRessurs) ?? [])
+            );
+        }
+    };
+
     const hentOgVisDokument = async (
         journalpostId: string | undefined,
         dokumentInfoId: string | undefined
@@ -310,15 +344,27 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
         return aktivBehandling;
     };
 
-    const hentSorterteBehandlinger = () => {
-        return minimalFagsak?.behandlinger.length
-            ? minimalFagsak.behandlinger.sort((a, b) =>
-                  differenceInMilliseconds(
-                      isoStringTilDate(b.opprettetTidspunkt),
-                      isoStringTilDate(a.opprettetTidspunkt)
-                  )
-              )
-            : [];
+    const hentSorterteJournalføringsbehandlinger = (): Journalføringsbehandling[] => {
+        const journalføringsbehandlingerKlage = (klagebehandlinger ?? []).map(klagebehandling =>
+            opprettJournalføringsbehandlingFraKlagebehandling(klagebehandling)
+        );
+
+        const journalføringsbehandlingerKontantstøtte = (minimalFagsak?.behandlinger ?? []).map(
+            kontantstøttebehandling =>
+                opprettJournalføringsbehandlingFraKontantstøttebehandling(kontantstøttebehandling)
+        );
+
+        const journalføringsbehandlinger = [
+            ...(toggles[ToggleNavn.kanBehandleKlage] ? journalføringsbehandlingerKlage : []),
+            ...journalføringsbehandlingerKontantstøtte,
+        ];
+
+        return journalføringsbehandlinger.sort((behandling1, behandling2) =>
+            differenceInMilliseconds(
+                isoStringTilDate(behandling2.opprettetTidspunkt),
+                isoStringTilDate(behandling1.opprettetTidspunkt)
+            )
+        );
     };
 
     const journalfør = () => {
@@ -375,9 +421,12 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
                             };
                         }),
                         knyttTilFagsak:
-                            skjema.felter.tilknyttedeBehandlingIder.verdi.length > 0 ||
+                            skjema.felter.tilknyttedeBehandlinger.verdi.length > 0 ||
                             skjema.felter.knyttTilNyBehandling.verdi,
-                        tilknyttedeBehandlingIder: skjema.felter.tilknyttedeBehandlingIder.verdi,
+                        tilknyttedeBehandlinger: skjema.felter.tilknyttedeBehandlinger.verdi,
+                        tilknyttedeBehandlingIder: skjema.felter.tilknyttedeBehandlinger.verdi.map(
+                            tilknyttetBehandling => tilknyttetBehandling.behandlingId
+                        ),
                         opprettOgKnyttTilNyBehandling: skjema.felter.knyttTilNyBehandling.verdi,
 
                         // TODO her bør vi forbedre APIET slik at disse verdiene ikke er påkrevd. Blir kun brukt om opprettOgKnyttTilNyBehandling=true
@@ -391,6 +440,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
 
                         navIdent: innloggetSaksbehandler?.navIdent ?? '',
                         journalførendeEnhet: innloggetSaksbehandler?.enhet ?? '9999',
+                        fagsakId: minimalFagsak?.id,
                     },
                 },
                 (fagsakId: Ressurs<string>) => {
@@ -410,11 +460,11 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
             const nyBehandlingsårsak = skjema.felter.behandlingsårsak.verdi;
             const { verdi: behandlingstema } = skjema.felter.behandlingstema;
 
-            const knyttJournalpostTilFagsak =
-                skjema.felter.tilknyttedeBehandlingIder.verdi.length > 0 ||
+            const knyttJournalpostTilBehandling =
+                skjema.felter.tilknyttedeBehandlinger.verdi.length > 0 ||
                 skjema.felter.knyttTilNyBehandling.verdi;
 
-            if (!knyttJournalpostTilFagsak) {
+            if (!knyttJournalpostTilBehandling) {
                 onSubmit<void>(
                     {
                         method: 'GET',
@@ -435,8 +485,11 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
                             journalpostId:
                                 dataForManuellJournalføring.data.journalpost.journalpostId,
                             opprettOgKnyttTilNyBehandling: skjema.felter.knyttTilNyBehandling.verdi,
+                            tilknyttedeBehandlinger: skjema.felter.tilknyttedeBehandlinger.verdi,
                             tilknyttedeBehandlingIder:
-                                skjema.felter.tilknyttedeBehandlingIder.verdi,
+                                skjema.felter.tilknyttedeBehandlinger.verdi.map(
+                                    tilknyttetBehandling => tilknyttetBehandling.behandlingId
+                                ),
                             kategori: behandlingstema?.kategori ?? null,
                             bruker: {
                                 navn: skjema.felter.bruker.verdi?.navn ?? '',
@@ -454,6 +507,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
                                       ? BehandlingÅrsak.SØKNAD
                                       : nyBehandlingsårsak,
                             navIdent: innloggetSaksbehandler?.navIdent ?? '',
+                            fagsakId: minimalFagsak?.id,
                         },
                     },
                     (fagsakId: Ressurs<string>) => {
@@ -528,7 +582,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
         minimalFagsak,
         hentAktivBehandlingForJournalføring,
         hentFeilTilOppsummering,
-        hentSorterteBehandlinger,
+        hentSorterteJournalføringsbehandlinger,
         journalfør,
         knyttTilNyBehandling,
         nullstillSkjema,
