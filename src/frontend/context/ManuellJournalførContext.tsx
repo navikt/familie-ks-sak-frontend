@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { AxiosError } from 'axios';
 import createUseContext from 'constate';
@@ -77,16 +77,16 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[] | undefined>();
 
     const [dataForManuellJournalføring, settDataForManuellJournalføring] =
-        React.useState(byggTomRessurs<IDataForManuellJournalføring>());
+        useState(byggTomRessurs<IDataForManuellJournalføring>());
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (oppgaveId) {
             hentDataForManuellJournalføring(oppgaveId);
             nullstillDokument();
         }
     }, [oppgaveId]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         hentKlagebehandlingerPåFagsak();
     }, [minimalFagsak]);
 
@@ -125,7 +125,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
         },
     });
 
-    const [valgtDokumentId, settValgtDokumentId] = React.useState<string | undefined>(undefined);
+    const [valgtDokumentId, settValgtDokumentId] = useState<string | undefined>(undefined);
     const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<
         ManuellJournalføringSkjemaFelter,
         string
