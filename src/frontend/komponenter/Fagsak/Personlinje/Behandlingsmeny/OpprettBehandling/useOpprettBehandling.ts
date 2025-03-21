@@ -27,7 +27,7 @@ interface IOpprettBehandlingSkjemaFelter {
     behandlingsårsak: BehandlingÅrsak | '';
     behandlingstema: IBehandlingstema | undefined;
     søknadMottattDato: Date | undefined;
-    kravMottattDato: Date | undefined;
+    klageMottattDato: Date | undefined;
 }
 
 const useOpprettBehandling = ({
@@ -101,7 +101,7 @@ const useOpprettBehandling = ({
         },
     });
 
-    const kravMottattDato = useFelt<Date | undefined>({
+    const klageMottattDato = useFelt<Date | undefined>({
         verdi: undefined,
         valideringsfunksjon: validerGyldigDato,
 
@@ -119,7 +119,7 @@ const useOpprettBehandling = ({
             behandlingsårsak,
             behandlingstema,
             søknadMottattDato,
-            kravMottattDato: kravMottattDato,
+            klageMottattDato,
         },
         skjemanavn: 'Opprett behandling modal',
     });
@@ -133,11 +133,11 @@ const useOpprettBehandling = ({
     }, [behandlingstype.verdi]);
 
     const opprettKlagebehandling = () => {
-        onSubmit<{ kravMottattDato: IsoDatoString }>(
+        onSubmit<{ klageMottattDato: IsoDatoString }>(
             {
                 method: 'POST',
                 url: `/familie-ks-sak/api/fagsaker/${fagsakId}/opprett-klagebehandling`,
-                data: { kravMottattDato: dateTilIsoDatoString(kravMottattDato.verdi) },
+                data: { klageMottattDato: dateTilIsoDatoString(klageMottattDato.verdi) },
             },
             response => {
                 if (response.status === RessursStatus.SUKSESS) {
