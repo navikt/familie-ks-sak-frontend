@@ -74,7 +74,8 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     const { hentForhåndsvisning, nullstillDokument, hentetDokument } = useDokument();
 
     const [minimalFagsak, settMinimalFagsak] = useState<IMinimalFagsak | undefined>(undefined);
-    const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[] | undefined>();
+    const [klagebehandlinger, settKlagebehandlinger] =
+        useState<Ressurs<IKlagebehandling[]>>(byggTomRessurs());
 
     const [dataForManuellJournalføring, settDataForManuellJournalføring] =
         useState(byggTomRessurs<IDataForManuellJournalføring>());
@@ -300,9 +301,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
                 method: 'GET',
                 url: `/familie-ks-sak/api/fagsaker/${fagsakId}/hent-klagebehandlinger`,
                 påvirkerSystemLaster: true,
-            }).then(klagebehandlingerRessurs =>
-                settKlagebehandlinger(hentDataFraRessurs(klagebehandlingerRessurs) ?? [])
-            );
+            }).then(klagebehandlingerRessurs => settKlagebehandlinger(klagebehandlingerRessurs));
         }
     };
 
@@ -345,8 +344,8 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     };
 
     const hentSorterteJournalføringsbehandlinger = (): Journalføringsbehandling[] => {
-        const journalføringsbehandlingerKlage = (klagebehandlinger ?? []).map(klagebehandling =>
-            opprettJournalføringsbehandlingFraKlagebehandling(klagebehandling)
+        const journalføringsbehandlingerKlage = (hentDataFraRessurs(klagebehandlinger) ?? []).map(
+            klagebehandling => opprettJournalføringsbehandlingFraKlagebehandling(klagebehandling)
         );
 
         const journalføringsbehandlingerKontantstøtte = (minimalFagsak?.behandlinger ?? []).map(
@@ -594,6 +593,7 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
         tilbakestillAvsender,
         lukkOppgaveOgKnyttJournalpostTilBehandling,
         kanKnytteJournalpostTilBehandling,
+        klageStatus: klagebehandlinger.status,
     };
 });
 
