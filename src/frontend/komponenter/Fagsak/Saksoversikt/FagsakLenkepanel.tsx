@@ -8,6 +8,7 @@ import {
     AFontSizeXlarge,
     ASpacing8,
     ASpacing16,
+    ASpacing4,
 } from '@navikt/ds-tokens/dist/tokens';
 
 import type { VisningBehandling } from './visningBehandling';
@@ -63,13 +64,13 @@ export const SaksoversiktPanelBredde = `calc(10 * ${ASpacing16})`;
 
 const FagsakPanelMedAktivBehandling = styled(LinkPanel)`
     width: ${SaksoversiktPanelBredde};
-    margin-top: ${ASpacing8};
+    margin-top: ${ASpacing4};
     padding: ${ASpacing8};
 `;
 
 const FagsakPanel = styled(Box)`
     width: ${SaksoversiktPanelBredde};
-    margin-top: ${ASpacing8};
+    margin-top: ${ASpacing4};
 `;
 
 const genererHoverTekst = (behandling: VisningBehandling) => {

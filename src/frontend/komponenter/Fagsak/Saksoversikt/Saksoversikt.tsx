@@ -35,10 +35,6 @@ const SaksoversiktWrapper = styled.div`
     margin: 4rem;
 `;
 
-const StyledHeading = styled(Heading)`
-    margin-top: 3.75rem;
-`;
-
 const SaksoversiktHeading = styled(Heading)`
     margin-bottom: 1rem;
 `;
@@ -148,16 +144,18 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
     return (
         <SaksoversiktWrapper>
             <SaksoversiktHeading size={'large'} level={'1'} children={'Saksoversikt'} />
-            <FagsakLenkepanel minimalFagsak={minimalFagsak} />
-            {minimalFagsak.status === FagsakStatus.LØPENDE && (
-                <>
-                    <StyledHeading size={'medium'} level={'2'} spacing>
-                        Løpende månedlig utbetaling
-                    </StyledHeading>
-                    {løpendeMånedligUtbetaling()}
-                </>
-            )}
-            <Behandlinger minimalFagsak={minimalFagsak} />
+            <VStack gap="14">
+                <FagsakLenkepanel minimalFagsak={minimalFagsak} />
+                {minimalFagsak.status === FagsakStatus.LØPENDE && (
+                    <div>
+                        <Heading size={'medium'} level={'2'} spacing>
+                            Løpende månedlig utbetaling
+                        </Heading>
+                        {løpendeMånedligUtbetaling()}
+                    </div>
+                )}
+                <Behandlinger minimalFagsak={minimalFagsak} />
+            </VStack>
         </SaksoversiktWrapper>
     );
 };

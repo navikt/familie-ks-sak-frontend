@@ -31,7 +31,8 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const [bruker, settBruker] = React.useState<Ressurs<IPersonInfo>>(byggTomRessurs());
     const [internstatistikk, settInternstatistikk] =
         React.useState<Ressurs<IInternstatistikk>>(byggTomRessurs());
-    const [klagebehandlinger, settKlagebehandlinger] = useState<IKlagebehandling[]>([]);
+    const [klagebehandlinger, settKlagebehandlinger] =
+        useState<Ressurs<IKlagebehandling[]>>(byggTomRessurs());
     const [manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak] = useState<
         SkjemaBrevmottaker[]
     >([]);
@@ -140,9 +141,7 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
                 method: 'GET',
                 url: `/familie-ks-sak/api/fagsaker/${fagsakId}/hent-klagebehandlinger`,
                 påvirkerSystemLaster: true,
-            }).then(klagebehandlingerRessurs =>
-                settKlagebehandlinger(hentDataFraRessurs(klagebehandlingerRessurs) ?? [])
-            );
+            }).then(klagebehandlingerRessurs => settKlagebehandlinger(klagebehandlingerRessurs));
         }
     };
 
@@ -164,7 +163,8 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         minimalFagsak,
         settMinimalFagsak,
         hentBruker,
-        klagebehandlinger,
+        klagebehandlinger: hentDataFraRessurs(klagebehandlinger) ?? [],
+        klageStatus: klagebehandlinger.status,
         oppdaterKlagebehandlingerPåFagsak,
         manuelleBrevmottakerePåFagsak,
         settManuelleBrevmottakerePåFagsak,
