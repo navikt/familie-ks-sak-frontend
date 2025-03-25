@@ -10,7 +10,7 @@ import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import EndretUtbetalingAndelTabell from './EndretUtbetalingAndelTabell';
+import EndretUtbetalingAndelTabell from './endretUtbetaling/EndretUtbetalingAndelTabell';
 import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAugust2024Alert';
 import KompetanseSkjema from './Kompetanse/KompetanseSkjema';
 import { Oppsummeringsboks } from './Oppsummeringsboks';

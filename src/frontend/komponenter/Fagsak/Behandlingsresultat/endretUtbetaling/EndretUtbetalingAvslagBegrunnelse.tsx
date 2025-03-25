@@ -5,25 +5,30 @@ import styled from 'styled-components';
 import { Alert, BodyShort, Label } from '@navikt/ds-react';
 import type { FormatOptionLabelMeta, GroupBase } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useHentEndretUtbetalingBegrunnelser } from './useHentEndretUtbetalingBegrunnelser';
-import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { useEndretUtbetalingAndel } from '../../../context/EndretUtbetalingAndelContext';
-import type { OptionType } from '../../../typer/common';
-import type { IRestBegrunnelseTilknyttetEndretUtbetaling } from '../../../typer/endretUtbetaling';
-import { IEndretUtbetalingAndelÅrsak } from '../../../typer/utbetalingAndel';
-import { BegrunnelseType } from '../../../typer/vedtak';
-import { begrunnelseTyper, type Begrunnelse } from '../../../typer/vedtak';
+import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
+import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
+import type { IBehandling } from '../../../../typer/behandling';
+import type { OptionType } from '../../../../typer/common';
+import type { IRestBegrunnelseTilknyttetEndretUtbetaling } from '../../../../typer/endretUtbetaling';
+import { IEndretUtbetalingAndelÅrsak } from '../../../../typer/utbetalingAndel';
+import { BegrunnelseType } from '../../../../typer/vedtak';
+import { begrunnelseTyper, type Begrunnelse } from '../../../../typer/vedtak';
+import { useHentEndretUtbetalingBegrunnelser } from '../useHentEndretUtbetalingBegrunnelser';
 
 const GroupLabel = styled.div`
     color: black;
 `;
 
-export const EndretUtbetalingAvslagBegrunnelse: React.FC = () => {
+interface IProps {
+    skjema: ISkjema<IEndretUtbetalingAndelSkjema, IBehandling>;
+}
+
+export const EndretUtbetalingAvslagBegrunnelse: React.FC<IProps> = ({ skjema }) => {
     const { vurderErLesevisning } = useBehandling();
     const { endretUtbetalingsbegrunnelser } = useHentEndretUtbetalingBegrunnelser();
-    const { skjema } = useEndretUtbetalingAndel();
 
     const prevalgtBegrunnelse =
         skjema.felter.vedtaksbegrunnelser.verdi &&
