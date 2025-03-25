@@ -78,69 +78,67 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
     };
 
     return (
-        <>
-            <Table.ExpandableRow
-                togglePlacement={'right'}
-                open={erSkjemaEkspandert}
-                onOpenChange={() => toggleForm()}
-                content={
-                    <EndretUtbetalingAndelSkjema
-                        skjema={skjema}
-                        åpenBehandling={åpenBehandling}
-                        lukkSkjema={() => {
-                            settErSkjemaEkspandert(false);
-                        }}
-                        key={erSkjemaEkspandert ? 'åpen' : 'lukket'}
-                        slettEndretUtbetaling={slettEndretUtbetaling}
-                        oppdaterEndretUtbetaling={oppdaterEndretUtbetaling}
-                        settFelterTilLagredeVerdier={settFelterTilLagredeVerdier}
+        <Table.ExpandableRow
+            togglePlacement={'right'}
+            open={erSkjemaEkspandert}
+            onOpenChange={() => toggleForm()}
+            content={
+                <EndretUtbetalingAndelSkjema
+                    skjema={skjema}
+                    åpenBehandling={åpenBehandling}
+                    lukkSkjema={() => {
+                        settErSkjemaEkspandert(false);
+                    }}
+                    key={erSkjemaEkspandert ? 'åpen' : 'lukket'}
+                    slettEndretUtbetaling={slettEndretUtbetaling}
+                    oppdaterEndretUtbetaling={oppdaterEndretUtbetaling}
+                    settFelterTilLagredeVerdier={settFelterTilLagredeVerdier}
+                />
+            }
+        >
+            <Table.DataCell>
+                <PersonCelle>
+                    <StatusIkon
+                        status={
+                            lagretEndretUtbetalingAndel.erTilknyttetAndeler
+                                ? Status.OK
+                                : Status.ADVARSEL
+                        }
                     />
-                }
-            >
-                <Table.DataCell>
-                    <PersonCelle>
-                        <StatusIkon
-                            status={
-                                lagretEndretUtbetalingAndel.erTilknyttetAndeler
-                                    ? Status.OK
-                                    : Status.ADVARSEL
-                            }
-                        />
-                        {lagretEndretUtbetalingAndel.personIdent
-                            ? lagPersonLabel(
-                                  lagretEndretUtbetalingAndel.personIdent,
-                                  åpenBehandling.personer
-                              )
-                            : 'Ikke satt'}
-                    </PersonCelle>
-                </Table.DataCell>
-                <Table.DataCell>
-                    {lagretEndretUtbetalingAndel.fom
-                        ? isoMånedPeriodeTilFormatertString({
-                              periode: {
-                                  fom: lagretEndretUtbetalingAndel.fom,
-                                  tom: lagretEndretUtbetalingAndel.tom,
-                              },
-                              tilFormat: Datoformat.MÅNED_ÅR,
-                          })
-                        : ''}
-                </Table.DataCell>
-                <Table.DataCell>
-                    {lagretEndretUtbetalingAndel.årsak
-                        ? årsakTekst[lagretEndretUtbetalingAndel.årsak]
-                        : ''}
-                </Table.DataCell>
-                <Table.DataCell>
-                    {typeof lagretEndretUtbetalingAndel.prosent === 'number' &&
-                    lagretEndretUtbetalingAndel.årsak
-                        ? fraProsentTilTekst(
-                              lagretEndretUtbetalingAndel.prosent,
-                              lagretEndretUtbetalingAndel.årsak
+                    {lagretEndretUtbetalingAndel.personIdent
+                        ? lagPersonLabel(
+                              lagretEndretUtbetalingAndel.personIdent,
+                              åpenBehandling.personer
                           )
-                        : ''}
-                </Table.DataCell>
-            </Table.ExpandableRow>
-        </>
+                        : 'Ikke satt'}
+                </PersonCelle>
+            </Table.DataCell>
+            <Table.DataCell>
+                {lagretEndretUtbetalingAndel.fom
+                    ? isoMånedPeriodeTilFormatertString({
+                          periode: {
+                              fom: lagretEndretUtbetalingAndel.fom,
+                              tom: lagretEndretUtbetalingAndel.tom,
+                          },
+                          tilFormat: Datoformat.MÅNED_ÅR,
+                      })
+                    : ''}
+            </Table.DataCell>
+            <Table.DataCell>
+                {lagretEndretUtbetalingAndel.årsak
+                    ? årsakTekst[lagretEndretUtbetalingAndel.årsak]
+                    : ''}
+            </Table.DataCell>
+            <Table.DataCell>
+                {typeof lagretEndretUtbetalingAndel.prosent === 'number' &&
+                lagretEndretUtbetalingAndel.årsak
+                    ? fraProsentTilTekst(
+                          lagretEndretUtbetalingAndel.prosent,
+                          lagretEndretUtbetalingAndel.årsak
+                      )
+                    : ''}
+            </Table.DataCell>
+        </Table.ExpandableRow>
     );
 };
 
