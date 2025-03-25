@@ -6,16 +6,16 @@ import styled from 'styled-components';
 import { Table } from '@navikt/ds-react';
 
 import EndretUtbetalingAndelSkjema from './EndretUtbetalingAndelSkjema';
-import { useEndretUtbetalingAndel } from '../../../context/useEndretUtbetalingAndel';
-import StatusIkon, { Status } from '../../../ikoner/StatusIkon';
-import type { IBehandling } from '../../../typer/behandling';
+import { useEndretUtbetalingAndel } from './useEndretUtbetalingAndel';
+import StatusIkon, { Status } from '../../../../ikoner/StatusIkon';
+import type { IBehandling } from '../../../../typer/behandling';
 import {
     IEndretUtbetalingAndelÅrsak,
     type IRestEndretUtbetalingAndel,
     årsakTekst,
-} from '../../../typer/utbetalingAndel';
-import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../utils/dato';
-import { lagPersonLabel } from '../../../utils/formatter';
+} from '../../../../typer/utbetalingAndel';
+import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../utils/dato';
+import { lagPersonLabel } from '../../../../utils/formatter';
 
 interface IEndretUtbetalingAndelRadProps {
     endretUtbetalingAndel: IRestEndretUtbetalingAndel;

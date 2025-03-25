@@ -6,18 +6,18 @@ import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
 
-import type { IBehandling } from '../typer/behandling';
-import { type IRestEndretUtbetalingAndel } from '../typer/utbetalingAndel';
-import { IEndretUtbetalingAndelÅrsak } from '../typer/utbetalingAndel';
-import type { Begrunnelse } from '../typer/vedtak';
-import type { IsoMånedString } from '../utils/dato';
+import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
+import type { IBehandling } from '../../../../typer/behandling';
+import { type IRestEndretUtbetalingAndel } from '../../../../typer/utbetalingAndel';
+import { IEndretUtbetalingAndelÅrsak } from '../../../../typer/utbetalingAndel';
+import type { Begrunnelse } from '../../../../typer/vedtak';
+import type { IsoMånedString } from '../../../../utils/dato';
 import {
     dateTilIsoDatoStringEllerUndefined,
     erIsoStringGyldig,
     validerGyldigDato,
-} from '../utils/dato';
-import { erAvslagBegrunnelseGyldig } from '../utils/validators';
-import { useBehandling } from './behandlingContext/BehandlingContext';
+} from '../../../../utils/dato';
+import { erAvslagBegrunnelseGyldig } from '../../../../utils/validators';
 
 export interface IEndretUtbetalingAndelSkjema {
     person: string | undefined;

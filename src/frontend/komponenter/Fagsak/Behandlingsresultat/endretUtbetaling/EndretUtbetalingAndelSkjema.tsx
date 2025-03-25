@@ -20,22 +20,22 @@ import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 import type { ISkjema } from '@navikt/familie-skjema';
 
 import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
-import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { type IEndretUtbetalingAndelSkjema } from '../../../context/useEndretUtbetalingAndel';
-import type { IBehandling } from '../../../typer/behandling';
+import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
+import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
+import type { IBehandling } from '../../../../typer/behandling';
 import {
     IEndretUtbetalingAndelÅrsak,
     AVSLAG_ALLEREDE_UTBETALT_SØKER,
     AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
-} from '../../../typer/utbetalingAndel';
-import { årsaker, årsakTekst } from '../../../typer/utbetalingAndel';
-import type { Begrunnelse } from '../../../typer/vedtak';
-import type { IsoMånedString } from '../../../utils/dato';
-import { lagPersonLabel } from '../../../utils/formatter';
-import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
-import Datovelger from '../../Felleskomponenter/Datovelger/Datovelger';
-import Knapperekke from '../../Felleskomponenter/Knapperekke';
-import MånedÅrVelger from '../../Felleskomponenter/MånedÅrInput/MånedÅrVelger';
+} from '../../../../typer/utbetalingAndel';
+import { årsaker, årsakTekst } from '../../../../typer/utbetalingAndel';
+import type { Begrunnelse } from '../../../../typer/vedtak';
+import type { IsoMånedString } from '../../../../utils/dato';
+import { lagPersonLabel } from '../../../../utils/formatter';
+import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
+import Datovelger from '../../../Felleskomponenter/Datovelger/Datovelger';
+import Knapperekke from '../../../Felleskomponenter/Knapperekke';
+import MånedÅrVelger from '../../../Felleskomponenter/MånedÅrInput/MånedÅrVelger';
 
 const KnapperekkeVenstre = styled.div`
     display: flex;
