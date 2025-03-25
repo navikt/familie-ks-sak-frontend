@@ -32,7 +32,7 @@ export interface IEndretUtbetalingAndelSkjema {
 }
 
 export const useEndretUtbetalingAndel = (
-    endretUtbetalingAndel: IRestEndretUtbetalingAndel,
+    lagretEndretUtbetalingAndel: IRestEndretUtbetalingAndel,
     åpenBehandling: IBehandling
 ) => {
     const { request } = useHttp();
@@ -51,7 +51,7 @@ export const useEndretUtbetalingAndel = (
     });
 
     const erEksplisittAvslagPåSøknad = useFelt<boolean | undefined>({
-        verdi: endretUtbetalingAndel.erEksplisittAvslagPåSøknad,
+        verdi: lagretEndretUtbetalingAndel.erEksplisittAvslagPåSøknad,
     });
 
     const { skjema, kanSendeSkjema, onSubmit } = useSkjema<
@@ -98,24 +98,25 @@ export const useEndretUtbetalingAndel = (
         skjemanavn: 'Endre utbetalingsperiode',
     });
 
-    const settFelterTilDefault = () => {
-        skjema.felter.person.validerOgSettFelt(endretUtbetalingAndel.personIdent);
-        skjema.felter.fom.validerOgSettFelt(endretUtbetalingAndel.fom);
-        skjema.felter.tom.validerOgSettFelt(endretUtbetalingAndel.tom);
+    const settFelterTilLagredeVerdier = () => {
+        skjema.felter.person.validerOgSettFelt(lagretEndretUtbetalingAndel.personIdent);
+        skjema.felter.fom.validerOgSettFelt(lagretEndretUtbetalingAndel.fom);
+        skjema.felter.tom.validerOgSettFelt(lagretEndretUtbetalingAndel.tom);
         skjema.felter.periodeSkalUtbetalesTilSøker.validerOgSettFelt(
-            endretUtbetalingAndel.prosent !== undefined && endretUtbetalingAndel.prosent > 0
+            lagretEndretUtbetalingAndel.prosent !== undefined &&
+                lagretEndretUtbetalingAndel.prosent > 0
         );
-        skjema.felter.årsak.validerOgSettFelt(endretUtbetalingAndel.årsak);
-        skjema.felter.begrunnelse.validerOgSettFelt(endretUtbetalingAndel.begrunnelse);
+        skjema.felter.årsak.validerOgSettFelt(lagretEndretUtbetalingAndel.årsak);
+        skjema.felter.begrunnelse.validerOgSettFelt(lagretEndretUtbetalingAndel.begrunnelse);
         skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
-            endretUtbetalingAndel.erEksplisittAvslagPåSøknad
+            lagretEndretUtbetalingAndel.erEksplisittAvslagPåSøknad
         );
         skjema.felter.vedtaksbegrunnelser.validerOgSettFelt(
-            endretUtbetalingAndel.vedtaksbegrunnelser
+            lagretEndretUtbetalingAndel.vedtaksbegrunnelser
         );
         skjema.felter.søknadstidspunkt.validerOgSettFelt(
-            endretUtbetalingAndel.søknadstidspunkt
-                ? new Date(endretUtbetalingAndel.søknadstidspunkt)
+            lagretEndretUtbetalingAndel.søknadstidspunkt
+                ? new Date(lagretEndretUtbetalingAndel.søknadstidspunkt)
                 : undefined
         );
     };
@@ -123,9 +124,9 @@ export const useEndretUtbetalingAndel = (
     const [forrigeEndretUtbetalingAndel, settForrigeEndretUtbetalingAndel] =
         useState<IRestEndretUtbetalingAndel>();
 
-    if (endretUtbetalingAndel !== forrigeEndretUtbetalingAndel) {
-        settForrigeEndretUtbetalingAndel(endretUtbetalingAndel);
-        settFelterTilDefault();
+    if (lagretEndretUtbetalingAndel !== forrigeEndretUtbetalingAndel) {
+        settForrigeEndretUtbetalingAndel(lagretEndretUtbetalingAndel);
+        settFelterTilLagredeVerdier();
     }
 
     const hentProsentForEndretUtbetaling = () => {
@@ -144,7 +145,7 @@ export const useEndretUtbetalingAndel = (
             vedtaksbegrunnelser,
         } = skjema.felter;
         return {
-            id: endretUtbetalingAndel.id,
+            id: lagretEndretUtbetalingAndel.id,
             personIdent: person && person.verdi,
             prosent: hentProsentForEndretUtbetaling(),
             fom: fom && fom.verdi,
@@ -152,7 +153,7 @@ export const useEndretUtbetalingAndel = (
             årsak: årsak && årsak.verdi,
             begrunnelse: begrunnelse.verdi,
             søknadstidspunkt: dateTilIsoDatoStringEllerUndefined(søknadstidspunkt.verdi),
-            erTilknyttetAndeler: endretUtbetalingAndel.erTilknyttetAndeler,
+            erTilknyttetAndeler: lagretEndretUtbetalingAndel.erTilknyttetAndeler,
             erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             vedtaksbegrunnelser: vedtaksbegrunnelser && vedtaksbegrunnelser.verdi,
         };
@@ -161,10 +162,10 @@ export const useEndretUtbetalingAndel = (
     const skjemaHarEndringerSomIkkeErLagret = () =>
         !deepEqual(
             {
-                ...endretUtbetalingAndel,
+                ...lagretEndretUtbetalingAndel,
                 prosent:
-                    typeof endretUtbetalingAndel.prosent === 'number'
-                        ? endretUtbetalingAndel.prosent
+                    typeof lagretEndretUtbetalingAndel.prosent === 'number'
+                        ? lagretEndretUtbetalingAndel.prosent
                         : 0,
             },
             hentSkjemaData()
@@ -175,7 +176,7 @@ export const useEndretUtbetalingAndel = (
             onSubmit<IRestEndretUtbetalingAndel>(
                 {
                     method: 'PUT',
-                    url: `/familie-ks-sak/api/endretutbetalingandel/${åpenBehandling.behandlingId}/${endretUtbetalingAndel.id}`,
+                    url: `/familie-ks-sak/api/endretutbetalingandel/${åpenBehandling.behandlingId}/${lagretEndretUtbetalingAndel.id}`,
                     påvirkerSystemLaster: true,
                     data: hentSkjemaData(),
                 },
@@ -192,15 +193,15 @@ export const useEndretUtbetalingAndel = (
     const slettEndretUtbetaling = () => {
         request<undefined, IBehandling>({
             method: 'DELETE',
-            url: `/familie-ks-sak/api/endretutbetalingandel/${åpenBehandling.behandlingId}/${endretUtbetalingAndel.id}`,
+            url: `/familie-ks-sak/api/endretutbetalingandel/${åpenBehandling.behandlingId}/${lagretEndretUtbetalingAndel.id}`,
             påvirkerSystemLaster: true,
         }).then((behandling: Ressurs<IBehandling>) => settÅpenBehandling(behandling));
     };
 
     return {
-        endretUtbetalingAndel,
+        lagretEndretUtbetalingAndel,
         skjema,
-        settFelterTilDefault,
+        settFelterTilLagredeVerdier,
         skjemaHarEndringerSomIkkeErLagret,
         oppdaterEndretUtbetaling,
         slettEndretUtbetaling,

@@ -18,7 +18,7 @@ import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../util
 import { lagPersonLabel } from '../../../../utils/formatter';
 
 interface IEndretUtbetalingAndelRadProps {
-    endretUtbetalingAndel: IRestEndretUtbetalingAndel;
+    lagretEndretUtbetalingAndel: IRestEndretUtbetalingAndel;
     åpenBehandling: IBehandling;
 }
 
@@ -30,11 +30,11 @@ const PersonCelle = styled.div`
 `;
 
 const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRadProps> = ({
-    endretUtbetalingAndel,
+    lagretEndretUtbetalingAndel,
     åpenBehandling,
 }) => {
     const [erSkjemaEkspandert, settErSkjemaEkspandert] = useState<boolean>(
-        endretUtbetalingAndel.personIdent === null
+        lagretEndretUtbetalingAndel.personIdent === null
     );
 
     const {
@@ -42,8 +42,8 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
         skjema,
         oppdaterEndretUtbetaling,
         slettEndretUtbetaling,
-        settFelterTilDefault,
-    } = useEndretUtbetalingAndel(endretUtbetalingAndel, åpenBehandling);
+        settFelterTilLagredeVerdier,
+    } = useEndretUtbetalingAndel(lagretEndretUtbetalingAndel, åpenBehandling);
 
     const toggleForm = () => {
         if (skjemaHarEndringerSomIkkeErLagret() && erSkjemaEkspandert) {
@@ -93,7 +93,7 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
                         key={erSkjemaEkspandert ? 'åpen' : 'lukket'}
                         slettEndretUtbetaling={slettEndretUtbetaling}
                         oppdaterEndretUtbetaling={oppdaterEndretUtbetaling}
-                        settFelterTilDefault={settFelterTilDefault}
+                        settFelterTilLagredeVerdier={settFelterTilLagredeVerdier}
                     />
                 }
             >
@@ -101,39 +101,41 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
                     <PersonCelle>
                         <StatusIkon
                             status={
-                                endretUtbetalingAndel.erTilknyttetAndeler
+                                lagretEndretUtbetalingAndel.erTilknyttetAndeler
                                     ? Status.OK
                                     : Status.ADVARSEL
                             }
                         />
-                        {endretUtbetalingAndel.personIdent
+                        {lagretEndretUtbetalingAndel.personIdent
                             ? lagPersonLabel(
-                                  endretUtbetalingAndel.personIdent,
+                                  lagretEndretUtbetalingAndel.personIdent,
                                   åpenBehandling.personer
                               )
                             : 'Ikke satt'}
                     </PersonCelle>
                 </Table.DataCell>
                 <Table.DataCell>
-                    {endretUtbetalingAndel.fom
+                    {lagretEndretUtbetalingAndel.fom
                         ? isoMånedPeriodeTilFormatertString({
                               periode: {
-                                  fom: endretUtbetalingAndel.fom,
-                                  tom: endretUtbetalingAndel.tom,
+                                  fom: lagretEndretUtbetalingAndel.fom,
+                                  tom: lagretEndretUtbetalingAndel.tom,
                               },
                               tilFormat: Datoformat.MÅNED_ÅR,
                           })
                         : ''}
                 </Table.DataCell>
                 <Table.DataCell>
-                    {endretUtbetalingAndel.årsak ? årsakTekst[endretUtbetalingAndel.årsak] : ''}
+                    {lagretEndretUtbetalingAndel.årsak
+                        ? årsakTekst[lagretEndretUtbetalingAndel.årsak]
+                        : ''}
                 </Table.DataCell>
                 <Table.DataCell>
-                    {typeof endretUtbetalingAndel.prosent === 'number' &&
-                    endretUtbetalingAndel.årsak
+                    {typeof lagretEndretUtbetalingAndel.prosent === 'number' &&
+                    lagretEndretUtbetalingAndel.årsak
                         ? fraProsentTilTekst(
-                              endretUtbetalingAndel.prosent,
-                              endretUtbetalingAndel.årsak
+                              lagretEndretUtbetalingAndel.prosent,
+                              lagretEndretUtbetalingAndel.årsak
                           )
                         : ''}
                 </Table.DataCell>
