@@ -20,6 +20,18 @@ import {
 import { erAvslagBegrunnelseGyldig } from '../utils/validators';
 import { useBehandling } from './behandlingContext/BehandlingContext';
 
+export interface IEndretUtbetalingAndelSkjema {
+    person: string | undefined;
+    fom: IsoMånedString | undefined;
+    tom: IsoMånedString | undefined;
+    periodeSkalUtbetalesTilSøker: boolean | undefined;
+    årsak: IEndretUtbetalingAndelÅrsak | undefined;
+    søknadstidspunkt: Date | undefined;
+    begrunnelse: string | undefined;
+    erEksplisittAvslagPåSøknad: boolean | undefined;
+    vedtaksbegrunnelser: Begrunnelse[] | undefined;
+}
+
 interface IProps {
     endretUtbetalingAndel: IRestEndretUtbetalingAndel;
     åpenBehandling: IBehandling;
@@ -47,17 +59,7 @@ const [EndretUtbetalingAndelProvider, useEndretUtbetalingAndel] = createUseConte
         });
 
         const { skjema, kanSendeSkjema, onSubmit } = useSkjema<
-            {
-                person: string | undefined;
-                fom: IsoMånedString | undefined;
-                tom: IsoMånedString | undefined;
-                periodeSkalUtbetalesTilSøker: boolean | undefined;
-                årsak: IEndretUtbetalingAndelÅrsak | undefined;
-                søknadstidspunkt: Date | undefined;
-                begrunnelse: string | undefined;
-                erEksplisittAvslagPåSøknad: boolean | undefined;
-                vedtaksbegrunnelser: Begrunnelse[] | undefined;
-            },
+            IEndretUtbetalingAndelSkjema,
             IBehandling
         >({
             felter: {

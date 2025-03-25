@@ -17,10 +17,11 @@ import {
     Textarea,
 } from '@navikt/ds-react';
 import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
+import type { ISkjema } from '@navikt/familie-skjema';
 
 import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { useEndretUtbetalingAndel } from '../../../context/EndretUtbetalingAndelContext';
+import { type IEndretUtbetalingAndelSkjema } from '../../../context/EndretUtbetalingAndelContext';
 import type { IBehandling } from '../../../typer/behandling';
 import {
     IEndretUtbetalingAndelÅrsak,
@@ -70,21 +71,21 @@ const StyledTextarea = styled(Textarea)`
 interface IEndretUtbetalingAndelSkjemaProps {
     åpenBehandling: IBehandling;
     lukkSkjema: () => void;
+    skjema: ISkjema<IEndretUtbetalingAndelSkjema, IBehandling>;
+    settFelterTilDefault: () => void;
+    oppdaterEndretUtbetaling: (avbrytEndringAvUtbetalingsperiode: () => void) => void;
+    slettEndretUtbetaling: () => void;
 }
 
 const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAndelSkjemaProps> = ({
     åpenBehandling,
     lukkSkjema,
+    skjema,
+    settFelterTilDefault,
+    oppdaterEndretUtbetaling,
+    slettEndretUtbetaling,
 }) => {
     const { vurderErLesevisning } = useBehandling();
-
-    const {
-        endretUtbetalingAndel,
-        skjema,
-        oppdaterEndretUtbetaling,
-        slettEndretUtbetaling,
-        settFelterTilDefault,
-    } = useEndretUtbetalingAndel();
 
     const finnÅrTilbakeTilStønadFra = (): number => {
         return (
@@ -348,7 +349,6 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         {!erLesevisning && (
                             <Button
                                 variant="tertiary"
-                                id={`sletteknapp-endret-utbetaling-andel-${endretUtbetalingAndel.id}`}
                                 size="small"
                                 onClick={slettEndretUtbetaling}
                                 icon={<TrashIcon />}
