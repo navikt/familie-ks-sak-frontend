@@ -73,7 +73,7 @@ interface IEndretUtbetalingAndelSkjemaProps {
     lukkSkjema: () => void;
     skjema: ISkjema<IEndretUtbetalingAndelSkjema, IBehandling>;
     settFelterTilLagredeVerdier: () => void;
-    oppdaterEndretUtbetaling: (avbrytEndringAvUtbetalingsperiode: () => void) => void;
+    oppdaterEndretUtbetaling: (onSuccess: () => void) => void;
     slettEndretUtbetaling: () => void;
 }
 

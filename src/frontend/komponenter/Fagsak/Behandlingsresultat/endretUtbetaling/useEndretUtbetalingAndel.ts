@@ -171,7 +171,7 @@ export const useEndretUtbetalingAndel = (
             hentSkjemaData()
         );
 
-    const oppdaterEndretUtbetaling = (avbrytEndringAvUtbetalingsperiode: () => void) => {
+    const oppdaterEndretUtbetaling = (onSuccess: () => void) => {
         if (kanSendeSkjema()) {
             onSubmit<IRestEndretUtbetalingAndel>(
                 {
@@ -182,7 +182,7 @@ export const useEndretUtbetalingAndel = (
                 },
                 (behandling: Ressurs<IBehandling>) => {
                     if (behandling.status === RessursStatus.SUKSESS) {
-                        avbrytEndringAvUtbetalingsperiode();
+                        onSuccess();
                         settÅpenBehandling(behandling);
                     }
                 }
