@@ -177,9 +177,9 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
     if (journalposterRessurs.status === RessursStatus.SUKSESS) {
         const journalposterMedOverstyrtDato = journalposterRessurs.data?.map(
             tilgangsstyrtJournalpost => {
-                const { harTilgang, journalpost } = tilgangsstyrtJournalpost;
+                const { journalpostTilgang, journalpost } = tilgangsstyrtJournalpost;
                 return {
-                    harTilgang,
+                    journalpostTilgang,
                     journalpost: settRiktigDatoMottatForJournalpost(journalpost),
                 };
             }
