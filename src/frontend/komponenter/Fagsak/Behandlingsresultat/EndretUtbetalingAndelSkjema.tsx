@@ -21,7 +21,7 @@ import type { ISkjema } from '@navikt/familie-skjema';
 
 import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { type IEndretUtbetalingAndelSkjema } from '../../../context/EndretUtbetalingAndelContext';
+import { type IEndretUtbetalingAndelSkjema } from '../../../context/useEndretUtbetalingAndel';
 import type { IBehandling } from '../../../typer/behandling';
 import {
     IEndretUtbetalingAndelÅrsak,

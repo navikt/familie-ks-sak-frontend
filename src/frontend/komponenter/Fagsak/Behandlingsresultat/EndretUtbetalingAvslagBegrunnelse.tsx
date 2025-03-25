@@ -10,7 +10,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useHentEndretUtbetalingBegrunnelser } from './useHentEndretUtbetalingBegrunnelser';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { type IEndretUtbetalingAndelSkjema } from '../../../context/EndretUtbetalingAndelContext';
+import { type IEndretUtbetalingAndelSkjema } from '../../../context/useEndretUtbetalingAndel';
 import type { IBehandling } from '../../../typer/behandling';
 import type { OptionType } from '../../../typer/common';
 import type { IRestBegrunnelseTilknyttetEndretUtbetaling } from '../../../typer/endretUtbetaling';
