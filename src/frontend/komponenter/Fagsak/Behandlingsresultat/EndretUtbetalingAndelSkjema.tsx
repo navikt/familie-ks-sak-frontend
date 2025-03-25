@@ -17,16 +17,12 @@ import {
     Textarea,
 } from '@navikt/ds-react';
 import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
-import { useHttp } from '@navikt/familie-http';
-import type { Ressurs } from '@navikt/familie-typer';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useEndretUtbetalingAndel } from '../../../context/EndretUtbetalingAndelContext';
 import type { IBehandling } from '../../../typer/behandling';
 import {
-    type IRestEndretUtbetalingAndel,
     IEndretUtbetalingAndelÅrsak,
     AVSLAG_ALLEREDE_UTBETALT_SØKER,
     AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
@@ -80,44 +76,15 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
     åpenBehandling,
     lukkSkjema,
 }) => {
-    const { request } = useHttp();
-    const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
+    const { vurderErLesevisning } = useBehandling();
 
     const {
         endretUtbetalingAndel,
         skjema,
-        kanSendeSkjema,
-        onSubmit,
-        hentSkjemaData,
+        oppdaterEndretUtbetaling,
+        slettEndretUtbetaling,
         settFelterTilDefault,
     } = useEndretUtbetalingAndel();
-
-    const oppdaterEndretUtbetaling = (avbrytEndringAvUtbetalingsperiode: () => void) => {
-        if (kanSendeSkjema()) {
-            onSubmit<IRestEndretUtbetalingAndel>(
-                {
-                    method: 'PUT',
-                    url: `/familie-ks-sak/api/endretutbetalingandel/${åpenBehandling.behandlingId}/${endretUtbetalingAndel.id}`,
-                    påvirkerSystemLaster: true,
-                    data: hentSkjemaData(),
-                },
-                (behandling: Ressurs<IBehandling>) => {
-                    if (behandling.status === RessursStatus.SUKSESS) {
-                        avbrytEndringAvUtbetalingsperiode();
-                        settÅpenBehandling(behandling);
-                    }
-                }
-            );
-        }
-    };
-
-    const slettEndretUtbetaling = () => {
-        request<undefined, IBehandling>({
-            method: 'DELETE',
-            url: `/familie-ks-sak/api/endretutbetalingandel/${åpenBehandling.behandlingId}/${endretUtbetalingAndel.id}`,
-            påvirkerSystemLaster: true,
-        }).then((behandling: Ressurs<IBehandling>) => settÅpenBehandling(behandling));
-    };
 
     const finnÅrTilbakeTilStønadFra = (): number => {
         return (
