@@ -293,7 +293,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                 {skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
                     skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
                         <Feltmargin>
-                            <EndretUtbetalingAvslagBegrunnelse />
+                            <EndretUtbetalingAvslagBegrunnelse skjema={skjema} />
                         </Feltmargin>
                     )}
 
