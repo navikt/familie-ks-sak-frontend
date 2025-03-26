@@ -184,6 +184,7 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         klageStatus: klagebehandlinger.status,
         oppdaterKlagebehandlingerPåFagsak,
         tilbakekrevingsbehandlinger: hentDataFraRessurs(tilbakekrevingsbehandlinger) ?? [],
+        tilbakekrevingStatus: tilbakekrevingsbehandlinger.status,
         manuelleBrevmottakerePåFagsak,
         settManuelleBrevmottakerePåFagsak,
     };
