@@ -36,6 +36,5 @@ export const mockMinimalFagsak = ({
     status,
     underBehandling,
     gjeldendeUtbetalingsperioder,
-    tilbakekrevingsbehandlinger: [],
     løpendeKategori,
 });
