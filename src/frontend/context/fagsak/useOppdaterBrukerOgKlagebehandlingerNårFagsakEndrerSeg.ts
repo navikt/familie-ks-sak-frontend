@@ -20,7 +20,7 @@ interface Props {
     settManuelleBrevmottakerePåFagsak: (manuelleBrevmottakere: SkjemaBrevmottaker[]) => void;
 }
 
-export const useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg = ({
+export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
     minimalFagsak,
     settBruker,
     oppdaterBrukerHvisFagsakEndres,

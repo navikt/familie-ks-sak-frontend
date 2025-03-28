@@ -15,7 +15,7 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
+import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import { useTilbakekrevingApi } from '../../api/useTilbakekrevingApi';
 import type { SkjemaBrevmottaker } from '../../komponenter/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IInternstatistikk, IMinimalFagsak } from '../../typer/fagsak';
@@ -161,7 +161,7 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         );
     };
 
-    useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg({
+    useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg({
         minimalFagsak,
         settBruker,
         oppdaterBrukerHvisFagsakEndres,
