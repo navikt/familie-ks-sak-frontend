@@ -15,11 +15,13 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
+import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
+import { useTilbakekrevingApi } from '../../api/useTilbakekrevingApi';
 import type { SkjemaBrevmottaker } from '../../komponenter/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IInternstatistikk, IMinimalFagsak } from '../../typer/fagsak';
 import type { IKlagebehandling } from '../../typer/klage';
 import type { IPersonInfo } from '../../typer/person';
+import type { ITilbakekrevingsbehandling } from '../../typer/tilbakekrevingsbehandling';
 import { sjekkTilgangTilPerson } from '../../utils/commons';
 import { obfuskerFagsak, obfuskerPersonInfo } from '../../utils/obfuskerData';
 import { useApp } from '../AppContext';
@@ -31,14 +33,20 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const [bruker, settBruker] = React.useState<Ressurs<IPersonInfo>>(byggTomRessurs());
     const [internstatistikk, settInternstatistikk] =
         React.useState<Ressurs<IInternstatistikk>>(byggTomRessurs());
+
     const [klagebehandlinger, settKlagebehandlinger] =
         useState<Ressurs<IKlagebehandling[]>>(byggTomRessurs());
+
+    const [tilbakekrevingsbehandlinger, settTilbakekrevingsbehandlinger] =
+        useState<Ressurs<ITilbakekrevingsbehandling[]>>(byggTomRessurs());
+
     const [manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak] = useState<
         SkjemaBrevmottaker[]
     >([]);
 
     const { request } = useHttp();
     const { skalObfuskereData } = useApp();
+    const { hentTilbakekrevingsbehandlinger } = useTilbakekrevingApi();
 
     const hentMinimalFagsak = (fagsakId: string | number, påvirkerSystemLaster = true): void => {
         if (påvirkerSystemLaster) {
@@ -145,12 +153,21 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         }
     };
 
-    useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg({
+    const oppdaterTilbakekrevingsbehandlingerPåFagsak = () => {
+        const fagsakId = hentDataFraRessurs(minimalFagsak)?.id;
+
+        hentTilbakekrevingsbehandlinger(fagsakId).then(tilbakekrevingsbehandlingerRessurs =>
+            settTilbakekrevingsbehandlinger(tilbakekrevingsbehandlingerRessurs)
+        );
+    };
+
+    useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg({
         minimalFagsak,
         settBruker,
         oppdaterBrukerHvisFagsakEndres,
         bruker,
         oppdaterKlagebehandlingerPåFagsak,
+        oppdaterTilbakekrevingsbehandlingerPåFagsak,
         settManuelleBrevmottakerePåFagsak,
     });
 
@@ -166,6 +183,8 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         klagebehandlinger: hentDataFraRessurs(klagebehandlinger) ?? [],
         klageStatus: klagebehandlinger.status,
         oppdaterKlagebehandlingerPåFagsak,
+        tilbakekrevingsbehandlinger: hentDataFraRessurs(tilbakekrevingsbehandlinger) ?? [],
+        tilbakekrevingStatus: tilbakekrevingsbehandlinger.status,
         manuelleBrevmottakerePåFagsak,
         settManuelleBrevmottakerePåFagsak,
     };

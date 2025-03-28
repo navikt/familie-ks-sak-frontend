@@ -16,15 +16,17 @@ interface Props {
     ) => void;
     bruker: Ressurs<IPersonInfo>;
     oppdaterKlagebehandlingerPåFagsak: () => void;
+    oppdaterTilbakekrevingsbehandlingerPåFagsak: () => void;
     settManuelleBrevmottakerePåFagsak: (manuelleBrevmottakere: SkjemaBrevmottaker[]) => void;
 }
 
-export const useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg = ({
+export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
     minimalFagsak,
     settBruker,
     oppdaterBrukerHvisFagsakEndres,
     bruker,
     oppdaterKlagebehandlingerPåFagsak,
+    oppdaterTilbakekrevingsbehandlingerPåFagsak,
     settManuelleBrevmottakerePåFagsak,
 }: Props) =>
     useEffect(() => {
@@ -40,5 +42,6 @@ export const useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg = ({
             );
         }
         oppdaterKlagebehandlingerPåFagsak();
+        oppdaterTilbakekrevingsbehandlingerPåFagsak();
         settManuelleBrevmottakerePåFagsak([]);
     }, [minimalFagsak]);
