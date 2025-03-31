@@ -27,4 +27,5 @@ export interface IManueltBrevRequestPåFagsak {
     behandlingKategori?: undefined;
     antallUkerSvarfrist?: undefined;
     manuelleBrevmottakere: SkjemaBrevmottaker[];
+    fritekstAvsnitt?: string;
 }

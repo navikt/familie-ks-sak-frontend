@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import createUseContext from 'constate';
 import deepEqual from 'deep-equal';
 
-import type { FeltState } from '@navikt/familie-skjema';
+import { type FeltState, Valideringsstatus } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -25,6 +25,7 @@ export enum DokumentÅrsak {
     TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING = 'TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING',
     TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER = 'TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER',
     KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV = 'KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV',
+    INNHENTE_OPPLYSNINGER_KLAGE = 'INNHENTE_OPPLYSNINGER_KLAGE',
 }
 
 export const dokumentÅrsak: Record<DokumentÅrsak, string> = {
@@ -36,6 +37,7 @@ export const dokumentÅrsak: Record<DokumentÅrsak, string> = {
     TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER:
         'Informasjon til forelder omfattet av norsk lovgivning - henter ikke registeropplysninger',
     KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV: 'Kan ha rett til pengestøtte fra Nav',
+    INNHENTE_OPPLYSNINGER_KLAGE: 'Innhente opplysninger klage',
 };
 
 const hentBarnMedOpplysningerFraBruker = () => {
@@ -104,6 +106,19 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
             nullstillVedAvhengighetEndring: false,
         });
 
+        const fritekstAvsnitt = useFelt({
+            verdi: '',
+            valideringsfunksjon: (felt: FeltState<string>) => {
+                return felt.valideringsstatus === Valideringsstatus.FEIL || felt.verdi.length === 0
+                    ? feil(felt, 'Fritekst avsnitt mangler.')
+                    : ok(felt);
+            },
+            avhengigheter: { årsakFelt: årsak },
+            skalFeltetVises: avhengigheter => {
+                return avhengigheter.årsakFelt.verdi === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE;
+            },
+        });
+
         const {
             skjema,
             kanSendeSkjema,
@@ -115,6 +130,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                 årsak: DokumentÅrsak | undefined;
                 målform: Målform | undefined;
                 barnIBrev: IBarnMedOpplysninger[];
+                fritekstAvsnitt: string;
             },
             string
         >({
@@ -122,6 +138,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                 årsak: årsak,
                 målform: målform,
                 barnIBrev: barnIBrev,
+                fritekstAvsnitt: fritekstAvsnitt,
             },
             skjemanavn: 'Dokumentutsending',
         });
@@ -129,6 +146,7 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
         const nullstillSkjemaUtenomÅrsak = () => {
             skjema.felter.målform.nullstill();
             skjema.felter.barnIBrev.nullstill();
+            skjema.felter.fritekstAvsnitt.nullstill();
         };
 
         const nullstillSkjema = () => {
@@ -170,6 +188,8 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                             Informasjonsbrev.INFORMASJONSBREV_KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV,
                             målform.verdi ?? Målform.NB
                         );
+                    case DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE:
+                        return hentInnhenteOpplysningerKlageSkjemaData(målform.verdi ?? Målform.NB);
                 }
             } else {
                 throw Error('Bruker ikke hentet inn og vi kan ikke sende inn skjema');
@@ -232,6 +252,25 @@ export const [DokumentutsendingProvider, useDokumentutsending] = createUseContex
                     mottakerNavn: bruker.data.navn,
                     brevmal: brevmal,
                     manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
+                };
+            } else {
+                throw Error('Bruker ikke hentet inn og vi kan ikke sende inn skjema');
+            }
+        };
+
+        const hentInnhenteOpplysningerKlageSkjemaData = (
+            målform: Målform
+        ): IManueltBrevRequestPåFagsak => {
+            if (bruker.status === RessursStatus.SUKSESS) {
+                return {
+                    mottakerIdent: bruker.data.personIdent,
+                    mottakerNavn: bruker.data.navn,
+                    mottakerMålform: målform,
+                    multiselectVerdier: [],
+                    barnIBrev: [],
+                    brevmal: Informasjonsbrev.INFORMASJONSBREV_INNHENTE_OPPLYSNINGER_KLAGE,
+                    manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
+                    fritekstAvsnitt: fritekstAvsnitt.verdi,
                 };
             } else {
                 throw Error('Bruker ikke hentet inn og vi kan ikke sende inn skjema');
