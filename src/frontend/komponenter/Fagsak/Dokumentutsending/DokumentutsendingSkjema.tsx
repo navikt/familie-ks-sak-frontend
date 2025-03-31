@@ -3,10 +3,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { FileTextIcon } from '@navikt/aksel-icons';
-import { Alert, Button, Fieldset, Heading, Label, Select } from '@navikt/ds-react';
+import { Alert, Box, Button, Fieldset, Heading, Label, Select } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnIBrevSkjema from './BarnIBrev/BarnIBrevSkjema';
+import { useApp } from '../../../context/AppContext';
 import {
     dokumentÅrsak,
     DokumentÅrsak,
@@ -14,7 +15,9 @@ import {
 } from '../../../context/DokumentutsendingContext';
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import type { IPersonInfo } from '../../../typer/person';
+import { ToggleNavn } from '../../../typer/toggles';
 import { BrevmottakereAlert } from '../../Felleskomponenter/BrevmottakereAlert';
+import FritekstAvsnitt from '../../Felleskomponenter/FritekstAvsnitt';
 import MålformVelger from '../../Felleskomponenter/MålformVelger';
 
 interface Props {
@@ -59,6 +62,7 @@ enum BarnIBrevÅrsak {
 }
 
 const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
+    const { toggles } = useApp();
     const {
         hentForhåndsvisningPåFagsak,
         hentetDokument,
@@ -97,6 +101,8 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
 
     const barnIBrevÅrsak = finnBarnIBrevÅrsak(årsakVerdi);
 
+    const skalViseFritekstAvsnitt = årsakVerdi === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE;
+
     return (
         <Container>
             <Heading size={'large'} level={'1'} children={'Send informasjonsbrev'} />
@@ -125,18 +131,31 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
                     size={'medium'}
                 >
                     <option value="">Velg</option>
-                    {Object.values(DokumentÅrsak).map(årsak => {
-                        return (
-                            <option
-                                key={årsak}
-                                aria-selected={skjema.felter.årsak.verdi === årsak}
-                                value={årsak}
-                            >
-                                {dokumentÅrsak[årsak]}
-                            </option>
-                        );
-                    })}
+                    {Object.values(DokumentÅrsak)
+                        .filter(årsak => {
+                            if (årsak === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE) {
+                                return toggles[ToggleNavn.innhenteOpplysningerKlageBrev];
+                            }
+                            return true;
+                        })
+                        .map(årsak => {
+                            return (
+                                <option
+                                    key={årsak}
+                                    aria-selected={skjema.felter.årsak.verdi === årsak}
+                                    value={årsak}
+                                >
+                                    {dokumentÅrsak[årsak]}
+                                </option>
+                            );
+                        })}
                 </Select>
+
+                {skalViseFritekstAvsnitt && (
+                    <Box paddingBlock={'space-4 0'}>
+                        <FritekstAvsnitt />
+                    </Box>
+                )}
 
                 <FeltMargin>
                     {barnIBrevÅrsak != undefined && (
