@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import createUseContext from 'constate';
 import deepEqual from 'deep-equal';
 
-import { type FeltState, Valideringsstatus } from '@navikt/familie-skjema';
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
+import type { FeltState } from '@navikt/familie-skjema';
+import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useFagsakContext } from './fagsak/FagsakContext';
