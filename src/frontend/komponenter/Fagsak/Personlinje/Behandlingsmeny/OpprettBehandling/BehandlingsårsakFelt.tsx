@@ -4,8 +4,11 @@ import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { useApp } from '../../../../../context/AppContext';
-import { behandlingÅrsak, BehandlingÅrsak } from '../../../../../typer/behandling';
-import { ToggleNavn } from '../../../../../typer/toggles';
+import {
+    behandlingÅrsak,
+    BehandlingÅrsak,
+    behandlingÅrsakerSomIkkeSkalSettesManuelt,
+} from '../../../../../typer/behandling';
 
 interface BehandlingÅrsakSelect extends HTMLSelectElement {
     value: BehandlingÅrsak | '';
@@ -24,18 +27,6 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
 }) => {
     const { toggles } = useApp();
 
-    const behandlingÅrsakerSomIkkeSkalSettesManuelt = [
-        BehandlingÅrsak.KLAGE,
-        BehandlingÅrsak.LOVENDRING_2024,
-        BehandlingÅrsak.SATSENDRING,
-        toggles[ToggleNavn.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
-            ? null
-            : BehandlingÅrsak.IVERKSETTE_KA_VEDTAK,
-        toggles[ToggleNavn.kanManueltKorrigereMedVedtaksbrev]
-            ? null
-            : BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
-    ].filter(behandlingsårsak => behandlingsårsak != null);
-
     return (
         <Select
             {...behandlingsårsak.hentNavBaseSkjemaProps(visFeilmeldinger)}
@@ -52,8 +43,8 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
             {Object.values(BehandlingÅrsak)
                 .filter(
                     behandlingsårsak =>
-                        !behandlingÅrsakerSomIkkeSkalSettesManuelt.find(
-                            årsak => årsak == behandlingsårsak
+                        !behandlingÅrsakerSomIkkeSkalSettesManuelt(toggles).includes(
+                            behandlingsårsak
                         )
                 )
                 .map(årsak => {
