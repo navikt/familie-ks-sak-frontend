@@ -24,6 +24,18 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
 }) => {
     const { toggles } = useApp();
 
+    const behandlingÅrsakerSomIkkeSkalSettesManuelt = [
+        BehandlingÅrsak.KLAGE,
+        BehandlingÅrsak.LOVENDRING_2024,
+        BehandlingÅrsak.SATSENDRING,
+        toggles[ToggleNavn.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
+            ? null
+            : BehandlingÅrsak.IVERKSETTE_KA_VEDTAK,
+        toggles[ToggleNavn.kanManueltKorrigereMedVedtaksbrev]
+            ? null
+            : BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
+    ].filter(behandlingsårsak => behandlingsårsak != null);
+
     return (
         <Select
             {...behandlingsårsak.hentNavBaseSkjemaProps(visFeilmeldinger)}
@@ -39,16 +51,10 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
             </option>
             {Object.values(BehandlingÅrsak)
                 .filter(
-                    årsak =>
-                        årsak !== BehandlingÅrsak.SATSENDRING &&
-                        (årsak !== BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
-                            toggles[ToggleNavn.kanManueltKorrigereMedVedtaksbrev])
-                )
-                .filter(årsak => årsak !== BehandlingÅrsak.LOVENDRING_2024)
-                .filter(
-                    årsak =>
-                        årsak !== BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
-                        toggles[ToggleNavn.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
+                    behandlingsårsak =>
+                        !behandlingÅrsakerSomIkkeSkalSettesManuelt.find(
+                            årsak => årsak == behandlingsårsak
+                        )
                 )
                 .map(årsak => {
                     return (
