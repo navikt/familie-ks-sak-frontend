@@ -4,8 +4,11 @@ import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { useApp } from '../../../../../context/AppContext';
-import { behandlingÅrsak, BehandlingÅrsak } from '../../../../../typer/behandling';
-import { ToggleNavn } from '../../../../../typer/toggles';
+import {
+    behandlingÅrsak,
+    BehandlingÅrsak,
+    behandlingÅrsakerSomIkkeSkalSettesManuelt,
+} from '../../../../../typer/behandling';
 
 interface BehandlingÅrsakSelect extends HTMLSelectElement {
     value: BehandlingÅrsak | '';
@@ -39,16 +42,10 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
             </option>
             {Object.values(BehandlingÅrsak)
                 .filter(
-                    årsak =>
-                        årsak !== BehandlingÅrsak.SATSENDRING &&
-                        (årsak !== BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
-                            toggles[ToggleNavn.kanManueltKorrigereMedVedtaksbrev])
-                )
-                .filter(årsak => årsak !== BehandlingÅrsak.LOVENDRING_2024)
-                .filter(
-                    årsak =>
-                        årsak !== BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
-                        toggles[ToggleNavn.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
+                    behandlingsårsak =>
+                        !behandlingÅrsakerSomIkkeSkalSettesManuelt(toggles).includes(
+                            behandlingsårsak
+                        )
                 )
                 .map(årsak => {
                     return (
