@@ -13,9 +13,6 @@ import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
 import { useTidslinje } from '../../context/TidslinjeContext';
-import TidslinjeEtikett from '../../sider/Fagsak/Behandlingsresultat/TidslinjeEtikett';
-import TidslinjeNavigering from '../../sider/Fagsak/Behandlingsresultat/TidslinjeNavigering';
-import Vinduvelger from '../../sider/Fagsak/Behandlingsresultat/VinduVelger';
 import { PersonType } from '../../typer/person';
 import type {
     IRestTidslinjePeriode,
@@ -28,6 +25,9 @@ import { Regelverk, Resultat, vilkårConfig } from '../../typer/vilkår';
 import type { IVilkårConfig } from '../../typer/vilkår';
 import { isoStringTilDate } from '../../utils/dato';
 import { formaterIdent } from '../../utils/formatter';
+import TidslinjeEtikett from '../Fagsak/Behandlingsresultat/TidslinjeEtikett';
+import TidslinjeNavigering from '../Fagsak/Behandlingsresultat/TidslinjeNavigering';
+import Vinduvelger from '../Fagsak/Behandlingsresultat/VinduVelger';
 
 const Container = styled.div`
     padding: 2rem;

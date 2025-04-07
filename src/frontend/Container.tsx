@@ -12,12 +12,12 @@ import { HeaderMedSøk } from './komponenter/HeaderMedSøk/HeaderMedSøk';
 import AppInfoModal from './komponenter/Modal/AppInfoModal';
 import UgyldigSesjon from './komponenter/Modal/SesjonUtløpt';
 import SystemetLaster from './komponenter/SystemetLaster/SystemetLaster';
-import TidslinjeVisualisering from './komponenter/TidslinjeVisualisering/TidslinjeVisualisering';
 import Toasts from './komponenter/Toast/Toasts';
 import BarnehagebarnTabComp from './sider/Barnehagebarn/BarnehagebarnTabComp';
 import FagsakContainer from './sider/Fagsak/FagsakContainer';
 import Internstatistikk from './sider/Internstatistikk';
 import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';
+import TidslinjeVisualisering from './sider/Tidslinjer/TidslinjeVisualisering';
 
 const Main = styled.main<{ $systemetLaster: boolean }>`
     position: fixed;
