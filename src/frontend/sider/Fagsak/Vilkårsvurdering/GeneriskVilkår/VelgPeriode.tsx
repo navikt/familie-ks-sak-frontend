@@ -7,10 +7,10 @@ import { Fieldset, HelpText, Label } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
+import DatovelgerForGammelSkjemaløsning from '../../../../Felleskomponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 import { Resultat } from '../../../../typer/vilkår';
 import type { IIsoDatoPeriode, IsoDatoString } from '../../../../utils/dato';
 import { nyIsoDatoPeriode } from '../../../../utils/dato';
-import DatovelgerForGammelSkjemaløsning from '../../../Felleskomponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 
 interface IProps extends PropsWithChildren {
     periode: Felt<IIsoDatoPeriode>;

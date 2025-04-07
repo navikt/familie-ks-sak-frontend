@@ -7,11 +7,11 @@ import { Button } from '@navikt/ds-react';
 import { hentDataFraRessursMedFallback, RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
+import Hendelsesoversikt from '../../../Felleskomponenter/Hendelsesoversikt/Hendelsesoversikt';
+import type { Hendelse } from '../../../Felleskomponenter/Hendelsesoversikt/typer';
 import type { ILogg } from '../../../typer/logg';
 import type { IPersonInfo } from '../../../typer/person';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
-import Hendelsesoversikt from '../../Felleskomponenter/Hendelsesoversikt/Hendelsesoversikt';
-import type { Hendelse } from '../../Felleskomponenter/Hendelsesoversikt/typer';
 import Behandlingskort from '../Behandlingskort/Behandlingskort';
 
 interface Props {

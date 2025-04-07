@@ -14,13 +14,13 @@ import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderi
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useVilkårsvurdering } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
+import Skjemasteg from '../../../Felleskomponenter/Skjemasteg/Skjemasteg';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingSteg, BehandlingÅrsak } from '../../../typer/behandling';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { erProd } from '../../../utils/miljø';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
-import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
 
 const UregistrerteBarnListe = styled.ol`
     margin: ${ASpacing2} 0;

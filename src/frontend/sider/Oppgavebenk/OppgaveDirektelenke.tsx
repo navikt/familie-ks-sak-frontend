@@ -7,10 +7,10 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useApp } from '../../context/AppContext';
 import { useFagsakContext } from '../../context/fagsak/FagsakContext';
+import { AlertType, ToastTyper } from '../../Felleskomponenter/Toast/typer';
 import type { IOppgave } from '../../typer/oppgave';
 import { oppgaveTypeFilter, OppgavetypeFilter } from '../../typer/oppgave';
 import { hentFnrFraOppgaveIdenter } from '../../utils/oppgave';
-import { AlertType, ToastTyper } from '../Felleskomponenter/Toast/typer';
 
 interface IOppgaveDirektelenke {
     oppgave: IOppgave;

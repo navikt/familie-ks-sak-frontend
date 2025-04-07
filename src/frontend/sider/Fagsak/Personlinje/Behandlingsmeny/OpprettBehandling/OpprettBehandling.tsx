@@ -10,11 +10,11 @@ import { RessursStatus } from '@navikt/familie-typer';
 import BehandlingstypeFelt from './BehandlingstypeFelt';
 import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
 import useOpprettBehandling from './useOpprettBehandling';
+import { BehandlingstemaSelect } from '../../../../../Felleskomponenter/BehandlingstemaSelect';
+import Datovelger from '../../../../../Felleskomponenter/Datovelger/Datovelger';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { dagensDato } from '../../../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
-import Datovelger from '../../../../Felleskomponenter/Datovelger/Datovelger';
 
 const StyledFieldset = styled(Fieldset)`
     && > div:not(:last-child):not(:empty) {

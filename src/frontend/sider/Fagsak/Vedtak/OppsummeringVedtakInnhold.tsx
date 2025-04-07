@@ -16,6 +16,8 @@ import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/Vedtakspe
 import Vedtaksmeny from './Vedtaksmeny';
 import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
+import { BrevmottakereAlert } from '../../../Felleskomponenter/BrevmottakereAlert';
+import PdfVisningModal from '../../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 import useDokument from '../../../hooks/useDokument';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import {
@@ -27,8 +29,6 @@ import {
     type IBehandling,
 } from '../../../typer/behandling';
 import type { IPersonInfo } from '../../../typer/person';
-import { BrevmottakereAlert } from '../../Felleskomponenter/BrevmottakereAlert';
-import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 
 interface IOppsummeringVedtakInnholdProps {
     åpenBehandling: IBehandling;

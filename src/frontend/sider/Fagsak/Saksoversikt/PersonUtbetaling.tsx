@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { BodyShort, HStack } from '@navikt/ds-react';
 import { ASpacing2, ASpacing4, ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
+import PersonInformasjon from '../../../Felleskomponenter/PersonInformasjon/PersonInformasjon';
 import type { IUtbetalingsperiodeDetalj } from '../../../typer/vedtaksperiode';
 import { formaterBeløp } from '../../../utils/formatter';
-import PersonInformasjon from '../../Felleskomponenter/PersonInformasjon/PersonInformasjon';
 
 const Ytelser = styled.section`
     margin: ${ASpacing2} 0 ${ASpacing4} ${ASpacing8};

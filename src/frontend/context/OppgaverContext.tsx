@@ -22,8 +22,8 @@ import {
     sorterEtterNøkkel,
     Sorteringsnøkkel,
 } from './OppgaverContextUtils';
+import { AlertType, ToastTyper } from '../Felleskomponenter/Toast/typer';
 import useFagsakApi from '../sider/Fagsak/useFagsakApi';
-import { AlertType, ToastTyper } from '../sider/Felleskomponenter/Toast/typer';
 import Oppgavebenk from '../sider/Oppgavebenk/Oppgavebenk';
 import type { IOppgaveFelt, IOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
 import { initialOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';

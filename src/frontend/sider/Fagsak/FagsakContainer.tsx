@@ -15,9 +15,9 @@ import Personlinje from './Personlinje/Personlinje';
 import Saksoversikt from './Saksoversikt/Saksoversikt';
 import { DokumentutsendingProvider } from '../../context/DokumentutsendingContext';
 import { useFagsakContext } from '../../context/fagsak/FagsakContext';
+import Venstremeny from '../../Felleskomponenter/Venstremeny/Venstremeny';
 import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
-import Venstremeny from '../Felleskomponenter/Venstremeny/Venstremeny';
 
 const Innhold = styled.div`
     height: calc(100vh - 6rem);

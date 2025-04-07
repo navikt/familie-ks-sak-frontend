@@ -22,11 +22,11 @@ import {
     hentSortState,
     Sorteringsrekkefølge,
 } from './journalpostUtils';
+import PdfVisningModal from '../../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 import useDokument from '../../../hooks/useDokument';
 import type { ITilgangsstyrtJournalpost } from '../../../typer/journalpost';
 import type { IPersonInfo } from '../../../typer/person';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
-import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 
 const Container = styled.div`
     padding: 2rem;

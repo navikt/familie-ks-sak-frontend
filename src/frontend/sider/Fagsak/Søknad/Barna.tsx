@@ -10,12 +10,12 @@ import BarnMedOpplysninger from './BarnMedOpplysninger';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import { useSøknad } from '../../../context/SøknadContext';
+import LeggTilBarn from '../../../Felleskomponenter/LeggTilBarn';
 import RødError from '../../../ikoner/RødError';
 import type { IForelderBarnRelasjonMaskert } from '../../../typer/person';
 import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../typer/søknad';
 import { isoStringTilDate } from '../../../utils/dato';
-import LeggTilBarn from '../../Felleskomponenter/LeggTilBarn';
 
 const BarnMedDiskresjonskode = styled.div`
     display: flex;

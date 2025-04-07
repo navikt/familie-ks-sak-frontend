@@ -13,9 +13,9 @@ import { Dokumenter } from './Dokument/Dokumenter';
 import Journalpost from './Journalpost';
 import { KnyttJournalpostTilBehandling } from './KnyttJournalpostTilBehandling';
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
+import Knapperekke from '../../Felleskomponenter/Knapperekke';
 import { oppgaveTypeFilter } from '../../typer/oppgave';
 import type { OppgavetypeFilter } from '../../typer/oppgave';
-import Knapperekke from '../Felleskomponenter/Knapperekke';
 
 const Container = styled.div`
     padding: 2rem;

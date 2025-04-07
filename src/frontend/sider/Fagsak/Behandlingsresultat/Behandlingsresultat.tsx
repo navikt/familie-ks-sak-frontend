@@ -24,6 +24,7 @@ import { kompetanseFeilmeldingId } from '../../../context/Kompetanse/KompetanseS
 import { useTidslinje } from '../../../context/TidslinjeContext';
 import { utenlandskPeriodeBeløpFeilmeldingId } from '../../../context/UtenlandskPeriodeBeløp/UtenlandskPeriodeBeløpSkjemaContext';
 import { valutakursFeilmeldingId } from '../../../context/Valutakurs/ValutakursSkjemaContext';
+import Skjemasteg from '../../../Felleskomponenter/Skjemasteg/Skjemasteg';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../typer/behandling';
 import type {
@@ -34,7 +35,6 @@ import type {
 import type { IRestEndretUtbetalingAndel } from '../../../typer/utbetalingAndel';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
-import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
 
 const EndretUtbetalingAndel = styled.div`
     display: flex;

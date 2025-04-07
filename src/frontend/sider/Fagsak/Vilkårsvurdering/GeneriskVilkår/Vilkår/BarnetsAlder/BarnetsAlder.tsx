@@ -6,6 +6,7 @@ import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
+import Datovelger from '../../../../../../Felleskomponenter/Datovelger/Datovelger';
 import { Lovverk } from '../../../../../../typer/lovverk';
 import { Resultat } from '../../../../../../typer/vilkår';
 import {
@@ -15,7 +16,6 @@ import {
     isoStringTilDateEllerUndefinedHvisUgyldigDato,
 } from '../../../../../../utils/dato';
 import { utledLovverk } from '../../../../../../utils/lovverk';
-import Datovelger from '../../../../../Felleskomponenter/Datovelger/Datovelger';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';

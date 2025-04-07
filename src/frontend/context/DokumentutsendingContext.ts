@@ -8,9 +8,9 @@ import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useFagsakContext } from './fagsak/FagsakContext';
+import { Informasjonsbrev } from '../Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
 import useDokument from '../hooks/useDokument';
 import { hentEnkeltInformasjonsbrevRequest } from '../sider/Fagsak/Dokumentutsending/Informasjonsbrev/enkeltInformasjonsbrevUtils';
-import { Informasjonsbrev } from '../sider/Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IManueltBrevRequestPåFagsak } from '../typer/dokument';
 import type { IForelderBarnRelasjon } from '../typer/person';
 import { ForelderBarnRelasjonRolle } from '../typer/person';

@@ -8,8 +8,8 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandling } from './behandlingContext/BehandlingContext';
-import type { ISelectOptionMedBrevtekst } from '../sider/Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
-import { Brevmal } from '../sider/Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
+import type { ISelectOptionMedBrevtekst } from '../Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
+import { Brevmal } from '../Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
 import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '../typer/behandling';
 import { BehandlingKategori } from '../typer/behandlingstema';
 import type { IManueltBrevRequestPåBehandling } from '../typer/dokument';

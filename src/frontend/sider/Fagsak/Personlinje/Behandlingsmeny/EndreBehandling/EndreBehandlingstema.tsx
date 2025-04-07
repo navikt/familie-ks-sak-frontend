@@ -5,8 +5,8 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlingstema from './useEndreBehandlingstema';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { BehandlingstemaSelect } from '../../../../../Felleskomponenter/BehandlingstemaSelect';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import { BehandlingstemaSelect } from '../../../../Felleskomponenter/BehandlingstemaSelect';
 
 const EndreBehandlingstema: React.FC = () => {
     const [visModal, settVisModal] = useState(false);

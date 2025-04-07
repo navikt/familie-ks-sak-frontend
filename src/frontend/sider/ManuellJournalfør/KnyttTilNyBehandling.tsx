@@ -6,9 +6,9 @@ import { Checkbox, Fieldset, Heading } from '@navikt/ds-react';
 import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
 import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
+import { BehandlingstemaSelect } from '../../Felleskomponenter/BehandlingstemaSelect';
 import BehandlingstypeFelt from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingstypeFelt';
 import { BehandlingårsakFelt } from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingsårsakFelt';
-import { BehandlingstemaSelect } from '../Felleskomponenter/BehandlingstemaSelect';
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: ${ASpacing8};

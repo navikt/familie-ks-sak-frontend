@@ -27,13 +27,13 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import { useSimulering } from '../../../context/SimuleringContext';
+import type { BrevmottakereAlertBehandlingProps } from '../../../Felleskomponenter/BrevmottakereAlert';
+import { BrevmottakereAlert } from '../../../Felleskomponenter/BrevmottakereAlert';
+import PdfVisningModal from '../../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 import useDokument from '../../../hooks/useDokument';
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../typer/simulering';
 import type { Målform } from '../../../typer/søknad';
 import { målform } from '../../../typer/søknad';
-import type { BrevmottakereAlertBehandlingProps } from '../../Felleskomponenter/BrevmottakereAlert';
-import { BrevmottakereAlert } from '../../Felleskomponenter/BrevmottakereAlert';
-import PdfVisningModal from '../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 
 const ForhåndsvisVarselKnappContainer = styled.div`
     display: flex;

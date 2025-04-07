@@ -12,10 +12,10 @@ import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useVilkårsvurdering } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
+import PersonInformasjon from '../../../Felleskomponenter/PersonInformasjon/PersonInformasjon';
 import { PersonType } from '../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../typer/vilkår';
 import { vilkårConfig, Resultat, annenVurderingConfig } from '../../../typer/vilkår';
-import PersonInformasjon from '../../Felleskomponenter/PersonInformasjon/PersonInformasjon';
 
 const PersonLinje = styled.div`
     display: flex;

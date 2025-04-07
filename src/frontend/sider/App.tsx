@@ -7,8 +7,8 @@ import type { ISaksbehandler } from '@navikt/familie-typer';
 import Container from './Container';
 import { hentInnloggetBruker } from '../api/saksbehandler';
 import { AppProvider } from '../context/AppContext';
+import ErrorBoundary from '../Felleskomponenter/ErrorBoundary/ErrorBoundary';
 import { initGrafanaFaro } from '../utils/grafanaFaro';
-import ErrorBoundary from './Felleskomponenter/ErrorBoundary/ErrorBoundary';
 
 const App: React.FC = () => {
     const [autentisertSaksbehandler, settInnloggetSaksbehandler] = React.useState<

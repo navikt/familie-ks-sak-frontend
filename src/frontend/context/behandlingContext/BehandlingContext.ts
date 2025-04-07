@@ -9,8 +9,7 @@ import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/famil
 import useBehandlingApi from './useBehandlingApi';
 import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './util';
-import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
-import type { ISide, ITrinn, SideId } from '../../sider/Felleskomponenter/Venstremeny/sider';
+import type { ISide, ITrinn, SideId } from '../../Felleskomponenter/Venstremeny/sider';
 import {
     erViPåUdefinertFagsakSide,
     erViPåUlovligSteg,
@@ -18,7 +17,8 @@ import {
     hentTrinnForBehandling,
     KontrollertStatus,
     sider,
-} from '../../sider/Felleskomponenter/Venstremeny/sider';
+} from '../../Felleskomponenter/Venstremeny/sider';
+import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import type { BehandlingSteg, IBehandling } from '../../typer/behandling';
 import { BehandlerRolle, BehandlingStatus, BehandlingÅrsak } from '../../typer/behandling';
 import { harTilgangTilEnhet } from '../../typer/enhet';

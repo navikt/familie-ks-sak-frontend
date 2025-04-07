@@ -8,6 +8,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
+import Skjemasteg from '../../../Felleskomponenter/Skjemasteg/Skjemasteg';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../typer/behandling';
 import {
@@ -18,7 +19,6 @@ import {
 } from '../../../typer/behandling';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
-import Skjemasteg from '../../Felleskomponenter/Skjemasteg/Skjemasteg';
 
 interface IVedtakProps {
     åpenBehandling: IBehandling;

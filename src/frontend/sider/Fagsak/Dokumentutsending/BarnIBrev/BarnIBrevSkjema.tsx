@@ -7,9 +7,9 @@ import type { Felt } from '@navikt/familie-skjema';
 
 import BarnCheckbox from './BarnCheckbox';
 import { useFagsakContext } from '../../../../context/fagsak/FagsakContext';
+import LeggTilBarn from '../../../../Felleskomponenter/LeggTilBarn';
 import type { IBarnMedOpplysninger } from '../../../../typer/søknad';
 import { isoStringTilDate } from '../../../../utils/dato';
-import LeggTilBarn from '../../../Felleskomponenter/LeggTilBarn';
 
 interface IProps {
     barnIBrevFelt: Felt<IBarnMedOpplysninger[]>;

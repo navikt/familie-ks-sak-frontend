@@ -8,12 +8,12 @@ import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { useOvergangsordningAndel } from '../../../../context/OvergangsordningAndelContext';
+import Månedvelger, { DagIMåneden } from '../../../../Felleskomponenter/Datovelger/Månedvelger';
+import Knapperekke from '../../../../Felleskomponenter/Knapperekke';
 import { BehandlingÅrsak, type IBehandling } from '../../../../typer/behandling';
 import { isNumeric } from '../../../../utils/eøsValidators';
 import { lagPersonLabel } from '../../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
-import Månedvelger, { DagIMåneden } from '../../../Felleskomponenter/Datovelger/Månedvelger';
-import Knapperekke from '../../../Felleskomponenter/Knapperekke';
 
 const KnapperekkeVenstre = styled.div`
     display: flex;
