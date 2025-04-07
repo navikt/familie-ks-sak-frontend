@@ -10,7 +10,7 @@ import useBehandlingApi from './useBehandlingApi';
 import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './util';
 import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
-import type { ISide, ITrinn, SideId } from '../../komponenter/Felleskomponenter/Venstremeny/sider';
+import type { ISide, ITrinn, SideId } from '../../sider/Felleskomponenter/Venstremeny/sider';
 import {
     erViPåUdefinertFagsakSide,
     erViPåUlovligSteg,
@@ -18,7 +18,7 @@ import {
     hentTrinnForBehandling,
     KontrollertStatus,
     sider,
-} from '../../komponenter/Felleskomponenter/Venstremeny/sider';
+} from '../../sider/Felleskomponenter/Venstremeny/sider';
 import type { BehandlingSteg, IBehandling } from '../../typer/behandling';
 import { BehandlerRolle, BehandlingStatus, BehandlingÅrsak } from '../../typer/behandling';
 import { harTilgangTilEnhet } from '../../typer/enhet';

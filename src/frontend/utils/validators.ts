@@ -19,8 +19,8 @@ import {
     type IIsoDatoPeriode,
     isoStringTilDate,
 } from './dato';
-import { validerPeriodePåBarnetsAlder } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/Vilkår/BarnetsAlder/BarnetsAlderValidering';
-import { erBegrunnelsePåkrevd } from '../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
+import { validerPeriodePåBarnetsAlder } from '../sider/Fagsak/Vilkårsvurdering/GeneriskVilkår/Vilkår/BarnetsAlder/BarnetsAlderValidering';
+import { erBegrunnelsePåkrevd } from '../sider/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
 import type { IGrunnlagPerson } from '../typer/person';
 import { PersonType } from '../typer/person';
 import { IEndretUtbetalingAndelÅrsak } from '../typer/utbetalingAndel';
