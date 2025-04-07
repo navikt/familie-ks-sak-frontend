@@ -1,10 +1,7 @@
 import type { BehandlingKategori } from './behandlingstema';
 import type { Målform } from './søknad';
-import type { SkjemaBrevmottaker } from '../komponenter/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
-import type {
-    Brevmal,
-    Informasjonsbrev,
-} from '../komponenter/Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
+import type { Brevmal, Informasjonsbrev } from '../komponenter/Hendelsesoversikt/BrevModul/typer';
+import type { SkjemaBrevmottaker } from '../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 
 export interface IManueltBrevRequestPåBehandling {
     mottakerIdent: string;
@@ -27,4 +24,5 @@ export interface IManueltBrevRequestPåFagsak {
     behandlingKategori?: undefined;
     antallUkerSvarfrist?: undefined;
     manuelleBrevmottakere: SkjemaBrevmottaker[];
+    fritekstAvsnitt?: string;
 }

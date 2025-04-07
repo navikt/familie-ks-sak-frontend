@@ -1,0 +1,57 @@
+import {
+    type BehandlingStatus,
+    type Behandlingstype,
+    type BehandlingÅrsak,
+    behandlingÅrsak,
+} from './behandling';
+import { Klagebehandlingstype, type KlageStatus, type KlageÅrsak } from './klage';
+import { type IKlagebehandling } from './klage';
+import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
+import type { IsoDatoString } from '../utils/dato';
+
+export type Journalføringsbehandlingstype = Behandlingstype | Klagebehandlingstype;
+
+export type Journalføringsbehandlingsstatus = BehandlingStatus | KlageStatus;
+
+export type Journalføringsbehandlingsårsak = BehandlingÅrsak | KlageÅrsak;
+
+export type Journalføringsbehandling = {
+    id: string;
+    opprettetTidspunkt: IsoDatoString;
+    årsak?: Journalføringsbehandlingsårsak;
+    type: Journalføringsbehandlingstype;
+    status: Journalføringsbehandlingsstatus;
+};
+
+export function finnVisningstekstForJournalføringsbehandlingsårsak(
+    journalføringsbehandlingsårsak?: Journalføringsbehandlingsårsak
+) {
+    if (!journalføringsbehandlingsårsak) {
+        return '-';
+    }
+    return behandlingÅrsak[journalføringsbehandlingsårsak];
+}
+
+export function opprettJournalføringsbehandlingFraKlagebehandling(
+    klagebehandling: IKlagebehandling
+): Journalføringsbehandling {
+    return {
+        id: klagebehandling.id,
+        opprettetTidspunkt: klagebehandling.opprettet,
+        type: Klagebehandlingstype.KLAGE,
+        årsak: klagebehandling.årsak,
+        status: klagebehandling.status,
+    };
+}
+
+export function opprettJournalføringsbehandlingFraKontantstøttebehandling(
+    kontantstøttebehandling: VisningBehandling
+): Journalføringsbehandling {
+    return {
+        id: kontantstøttebehandling.behandlingId.toString(),
+        opprettetTidspunkt: kontantstøttebehandling.opprettetTidspunkt,
+        årsak: kontantstøttebehandling.årsak,
+        type: kontantstøttebehandling.type,
+        status: kontantstøttebehandling.status,
+    };
+}

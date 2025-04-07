@@ -1,4 +1,4 @@
-export interface IBarnehagebarnRequestParams extends IBarnehagebarnFilter {
+export interface BarnehagebarnRequestParams extends BarnehagebarnFilter {
     ident?: string;
     kommuneNavn?: string;
     kunLøpendeAndel: boolean;
@@ -8,35 +8,23 @@ export interface IBarnehagebarnRequestParams extends IBarnehagebarnFilter {
     sortAsc: boolean;
 }
 
-export interface IBarnehagebarnFilter {
+export interface BarnehagebarnFilter {
     ident?: string;
     kommuneNavn?: string;
     kunLøpendeAndel: boolean;
 }
 
-export interface IBarnehagebarn {
+export interface Barnehagebarn {
     ident: string;
     fom: string;
     tom?: string;
-    antallTimerIBarnehage?: number;
+    antallTimerBarnehage?: number;
     endringstype: string;
     avvik?: boolean;
     kommuneNavn: string;
     kommuneNr: string;
     fagsakId?: number;
     fagsakstatus?: string;
-    endretTid: string;
-}
-
-export interface IBarnehagebarnInfotrygd {
-    ident: string;
-    fom: string;
-    tom?: string;
-    antallTimerIBarnehage?: number;
-    endringstype: string;
-    kommuneNavn: string;
-    kommuneNr: string;
-    harFagsak?: boolean;
     endretTid: string;
 }
 
@@ -53,7 +41,7 @@ interface IPageable {
     paged: boolean;
     unpaged: false;
 }
-export interface IBarnehagebarnResponse<T> {
+export interface BarnehagebarnResponse<T> {
     content: T[];
     pageable: IPageable;
     sort: ISort;
@@ -67,4 +55,4 @@ export interface IBarnehagebarnResponse<T> {
     empty: boolean;
 }
 
-export type IBarnehagekommune = string;
+export type Barnehagekommune = string;

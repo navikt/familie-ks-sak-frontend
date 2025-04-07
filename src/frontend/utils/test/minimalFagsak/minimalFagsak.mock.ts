@@ -1,4 +1,4 @@
-import type { VisningBehandling } from '../../../komponenter/Fagsak/Saksoversikt/visningBehandling';
+import type { VisningBehandling } from '../../../sider/Fagsak/Saksoversikt/visningBehandling';
 import { BehandlingKategori } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
@@ -36,6 +36,5 @@ export const mockMinimalFagsak = ({
     status,
     underBehandling,
     gjeldendeUtbetalingsperioder,
-    tilbakekrevingsbehandlinger: [],
     løpendeKategori,
 });

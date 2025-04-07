@@ -2,7 +2,7 @@ import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 
-import { Brevmal } from '../../komponenter/Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
+import { Brevmal } from '../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IBehandling } from '../../typer/behandling';
 import { Behandlingstype, BehandlingÅrsak } from '../../typer/behandling';
 import { Målform } from '../../typer/søknad';
