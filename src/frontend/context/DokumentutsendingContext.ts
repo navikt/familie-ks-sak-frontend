@@ -9,8 +9,8 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useFagsakContext } from './fagsak/FagsakContext';
 import useDokument from '../hooks/useDokument';
-import { hentEnkeltInformasjonsbrevRequest } from '../komponenter/Fagsak/Dokumentutsending/Informasjonsbrev/enkeltInformasjonsbrevUtils';
-import { Informasjonsbrev } from '../komponenter/Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
+import { Informasjonsbrev } from '../komponenter/Hendelsesoversikt/BrevModul/typer';
+import { hentEnkeltInformasjonsbrevRequest } from '../sider/Fagsak/Dokumentutsending/Informasjonsbrev/enkeltInformasjonsbrevUtils';
 import type { IManueltBrevRequestPåFagsak } from '../typer/dokument';
 import type { IForelderBarnRelasjon } from '../typer/person';
 import { ForelderBarnRelasjonRolle } from '../typer/person';

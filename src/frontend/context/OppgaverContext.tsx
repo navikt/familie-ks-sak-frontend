@@ -22,11 +22,10 @@ import {
     sorterEtterNøkkel,
     Sorteringsnøkkel,
 } from './OppgaverContextUtils';
-import useFagsakApi from '../komponenter/Fagsak/useFagsakApi';
-import { AlertType, ToastTyper } from '../komponenter/Felleskomponenter/Toast/typer';
-import Oppgavebenk from '../komponenter/Oppgavebenk/Oppgavebenk';
-import type { IOppgaveFelt, IOppgaveFelter } from '../komponenter/Oppgavebenk/oppgavefelter';
-import { initialOppgaveFelter } from '../komponenter/Oppgavebenk/oppgavefelter';
+import { AlertType, ToastTyper } from '../komponenter/Toast/typer';
+import useFagsakApi from '../sider/Fagsak/useFagsakApi';
+import type { IOppgaveFelt, IOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
+import { initialOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
 import type { IMinimalFagsak } from '../typer/fagsak';
 import type { IFinnOppgaveRequest, IHentOppgaveDto, IOppgave } from '../typer/oppgave';
 import {
@@ -420,12 +419,5 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
         sorterteOppgaverader,
     };
 });
-const Oppgaver: React.FC = () => {
-    return (
-        <OppgaverProvider>
-            <Oppgavebenk />
-        </OppgaverProvider>
-    );
-};
 
-export { Oppgaver, useOppgaver };
+export { OppgaverProvider, useOppgaver };

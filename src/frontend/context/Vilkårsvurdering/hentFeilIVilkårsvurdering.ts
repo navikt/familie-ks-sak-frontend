@@ -2,8 +2,8 @@ import { addDays, isAfter, isSameDay } from 'date-fns';
 
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
-import { annenVurderingFeilmeldingId } from '../../komponenter/Fagsak/Vilkårsvurdering/GeneriskAnnenVurdering/AnnenVurderingTabell';
-import { vilkårFeilmeldingId } from '../../komponenter/Fagsak/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
+import { annenVurderingFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskAnnenVurdering/AnnenVurderingTabell';
+import { vilkårFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
 import type { IPersonResultat, IVilkårResultat, IAnnenVurdering } from '../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig, VilkårType } from '../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../utils/dato';

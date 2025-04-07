@@ -21,7 +21,7 @@ import {
 import { useApp } from './AppContext';
 import { useFagsakContext } from './fagsak/FagsakContext';
 import useDokument from '../hooks/useDokument';
-import type { VisningBehandling } from '../komponenter/Fagsak/Saksoversikt/visningBehandling';
+import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
 import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
 import type { IBehandlingstema } from '../typer/behandlingstema';
 import type { IMinimalFagsak } from '../typer/fagsak';
@@ -64,7 +64,7 @@ interface ManuellJournalføringSkjemaFelter {
     samhandler: ISamhandlerInfo | null;
 }
 
-const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() => {
+const [ManuellJournalføringProvider, useManuellJournalføringContext] = createUseContext(() => {
     const { innloggetSaksbehandler, toggles } = useApp();
     const { hentFagsakForPerson } = useFagsakContext();
     const navigate = useNavigate();
@@ -597,4 +597,4 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     };
 });
 
-export { ManuellJournalførProvider, useManuellJournalfør };
+export { ManuellJournalføringProvider, useManuellJournalføringContext };

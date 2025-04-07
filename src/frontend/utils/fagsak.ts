@@ -1,4 +1,4 @@
-import type { VisningBehandling } from '../komponenter/Fagsak/Saksoversikt/visningBehandling';
+import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
 import type { IMinimalFagsak } from '../typer/fagsak';
 import { fagsakStatus } from '../typer/fagsak';
 

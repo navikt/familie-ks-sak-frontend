@@ -17,8 +17,8 @@ import {
 
 import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import { useTilbakekrevingApi } from '../../api/useTilbakekrevingApi';
-import type { SkjemaBrevmottaker } from '../../komponenter/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
-import type { IInternstatistikk, IMinimalFagsak } from '../../typer/fagsak';
+import type { SkjemaBrevmottaker } from '../../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import type { IMinimalFagsak } from '../../typer/fagsak';
 import type { IKlagebehandling } from '../../typer/klage';
 import type { IPersonInfo } from '../../typer/person';
 import type { ITilbakekrevingsbehandling } from '../../typer/tilbakekrevingsbehandling';
@@ -31,8 +31,6 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         React.useState<Ressurs<IMinimalFagsak>>(byggTomRessurs());
 
     const [bruker, settBruker] = React.useState<Ressurs<IPersonInfo>>(byggTomRessurs());
-    const [internstatistikk, settInternstatistikk] =
-        React.useState<Ressurs<IInternstatistikk>>(byggTomRessurs());
 
     const [klagebehandlinger, settKlagebehandlinger] =
         useState<Ressurs<IKlagebehandling[]>>(byggTomRessurs());
@@ -115,20 +113,6 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         });
     };
 
-    const hentInternstatistikk = (): void => {
-        settInternstatistikk(byggHenterRessurs());
-        request<void, IInternstatistikk>({
-            method: 'GET',
-            url: `/familie-ks-sak/api/internstatistikk`,
-        })
-            .then((hentetInternstatistikk: Ressurs<IInternstatistikk>) => {
-                settInternstatistikk(hentetInternstatistikk);
-            })
-            .catch(() => {
-                settInternstatistikk(byggFeiletRessurs('Feil ved lasting av internstatistikk'));
-            });
-    };
-
     const hentFagsakForPerson = async (personId: string) => {
         return request<{ ident: string }, IMinimalFagsak>({
             method: 'POST',
@@ -174,9 +158,7 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     return {
         bruker,
         hentFagsakForPerson,
-        hentInternstatistikk,
         hentMinimalFagsak,
-        internstatistikk,
         minimalFagsak,
         settMinimalFagsak,
         hentBruker,
