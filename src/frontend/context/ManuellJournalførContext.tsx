@@ -64,7 +64,7 @@ interface ManuellJournalføringSkjemaFelter {
     samhandler: ISamhandlerInfo | null;
 }
 
-const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() => {
+const [ManuellJournalføringProvider, useManuellJournalføringContext] = createUseContext(() => {
     const { innloggetSaksbehandler, toggles } = useApp();
     const { hentFagsakForPerson } = useFagsakContext();
     const navigate = useNavigate();
@@ -597,4 +597,4 @@ const [ManuellJournalførProvider, useManuellJournalfør] = createUseContext(() 
     };
 });
 
-export { ManuellJournalførProvider, useManuellJournalfør };
+export { ManuellJournalføringProvider, useManuellJournalføringContext };

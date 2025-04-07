@@ -8,8 +8,8 @@ import { Journalstatus, RessursStatus } from '@navikt/familie-typer';
 import { DokumentPanel } from './Dokument/DokumentPanel';
 import { JournalpostSkjema } from './JournalpostSkjema';
 import {
-    ManuellJournalførProvider,
-    useManuellJournalfør,
+    ManuellJournalføringProvider,
+    useManuellJournalføringContext,
 } from '../../context/ManuellJournalførContext';
 import { fagsakHeaderHøydeRem } from '../../typer/styling';
 import Personlinje from '../Fagsak/Personlinje/Personlinje';
@@ -24,8 +24,8 @@ const ToKolonnerDiv = styled.div<{ $viserAlert?: boolean }>`
     );
 `;
 
-const ManuellJournalførContent: React.FC = () => {
-    const { dataForManuellJournalføring, minimalFagsak } = useManuellJournalfør();
+const ManuellJournalføringContent: React.FC = () => {
+    const { dataForManuellJournalføring, minimalFagsak } = useManuellJournalføringContext();
 
     switch (dataForManuellJournalføring.status) {
         case RessursStatus.SUKSESS:
@@ -75,12 +75,12 @@ const ManuellJournalførContent: React.FC = () => {
     }
 };
 
-const ManuellJournalfør: React.FC = () => {
+const ManuellJournalføring: React.FC = () => {
     return (
-        <ManuellJournalførProvider>
-            <ManuellJournalførContent />
-        </ManuellJournalførProvider>
+        <ManuellJournalføringProvider>
+            <ManuellJournalføringContent />
+        </ManuellJournalføringProvider>
     );
 };
 
-export default ManuellJournalfør;
+export default ManuellJournalføring;

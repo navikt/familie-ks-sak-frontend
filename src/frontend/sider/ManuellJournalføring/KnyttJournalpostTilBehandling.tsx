@@ -7,7 +7,7 @@ import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
 import { KnyttTilNyBehandling } from './KnyttTilNyBehandling';
 import { useApp } from '../../context/AppContext';
-import { useManuellJournalfør } from '../../context/ManuellJournalførContext';
+import { useManuellJournalføringContext } from '../../context/ManuellJournalførContext';
 import { behandlingsstatuser, BehandlingStatus, behandlingstyper } from '../../typer/behandling';
 import { finnVisningstekstForJournalføringsbehandlingsårsak } from '../../typer/journalføringsbehandling';
 import { ToggleNavn } from '../../typer/toggles';
@@ -38,7 +38,7 @@ export const KnyttJournalpostTilBehandling: React.FC = () => {
         kanKnytteJournalpostTilBehandling,
         erLesevisning,
         klageStatus,
-    } = useManuellJournalfør();
+    } = useManuellJournalføringContext();
 
     const åpenBehandling: VisningBehandling | undefined = minimalFagsak
         ? hentAktivBehandlingPåMinimalFagsak(minimalFagsak)

@@ -17,7 +17,7 @@ import Toasts from './komponenter/Toast/Toasts';
 import BarnehagebarnTabComp from './sider/Barnehagebarn/BarnehagebarnTabComp';
 import FagsakContainer from './sider/Fagsak/FagsakContainer';
 import Internstatistikk from './sider/Internstatistikk';
-import ManuellJournalfør from './sider/ManuellJournalfør/ManuellJournalfør';
+import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';
 
 const Main = styled.main<{ $systemetLaster: boolean }>`
     position: fixed;
@@ -59,7 +59,7 @@ const Container: React.FC = () => {
                                         />
                                         <Route
                                             path="/oppgaver/journalfor/:oppgaveId"
-                                            element={<ManuellJournalfør />}
+                                            element={<ManuellJournalføring />}
                                         />
                                         <Route
                                             path="/tidslinjer/:behandlingId"
