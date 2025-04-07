@@ -1,7 +1,7 @@
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import type { Informasjonsbrev } from '../../../../Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
+import type { Informasjonsbrev } from '../../../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IManueltBrevRequestPåFagsak } from '../../../../typer/dokument';
 import type { IPersonInfo } from '../../../../typer/person';
 import type { Målform } from '../../../../typer/søknad';

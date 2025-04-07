@@ -14,8 +14,8 @@ import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderi
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useVilkårsvurdering } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
-import Skjemasteg from '../../../Felleskomponenter/Skjemasteg/Skjemasteg';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
+import Skjemasteg from '../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingSteg, BehandlingÅrsak } from '../../../typer/behandling';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';

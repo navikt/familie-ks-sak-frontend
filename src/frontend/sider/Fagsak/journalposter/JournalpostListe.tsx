@@ -22,8 +22,8 @@ import {
     hentSortState,
     Sorteringsrekkefølge,
 } from './journalpostUtils';
-import PdfVisningModal from '../../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 import useDokument from '../../../hooks/useDokument';
+import PdfVisningModal from '../../../komponenter/PdfVisningModal/PdfVisningModal';
 import type { ITilgangsstyrtJournalpost } from '../../../typer/journalpost';
 import type { IPersonInfo } from '../../../typer/person';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';

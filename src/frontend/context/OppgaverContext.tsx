@@ -22,7 +22,7 @@ import {
     sorterEtterNøkkel,
     Sorteringsnøkkel,
 } from './OppgaverContextUtils';
-import { AlertType, ToastTyper } from '../Felleskomponenter/Toast/typer';
+import { AlertType, ToastTyper } from '../komponenter/Toast/typer';
 import useFagsakApi from '../sider/Fagsak/useFagsakApi';
 import Oppgavebenk from '../sider/Oppgavebenk/Oppgavebenk';
 import type { IOppgaveFelt, IOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';

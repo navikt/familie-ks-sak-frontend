@@ -17,8 +17,8 @@ import { SimuleringProvider } from '../../context/SimuleringContext';
 import { SøknadProvider } from '../../context/SøknadContext';
 import { TidslinjeProvider } from '../../context/TidslinjeContext';
 import { VilkårsvurderingProvider } from '../../context/Vilkårsvurdering/VilkårsvurderingContext';
-import type { SideId } from '../../Felleskomponenter/Venstremeny/sider';
-import { sider } from '../../Felleskomponenter/Venstremeny/sider';
+import type { SideId } from '../../komponenter/Venstremeny/sider';
+import { sider } from '../../komponenter/Venstremeny/sider';
 import type { IPersonInfo } from '../../typer/person';
 import { hentSideHref } from '../../utils/miljø';
 

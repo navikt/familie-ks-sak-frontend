@@ -8,8 +8,8 @@ import { RessursStatus } from '@navikt/familie-typer';
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import Skjemasteg from '../../../Felleskomponenter/Skjemasteg/Skjemasteg';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
+import Skjemasteg from '../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../typer/behandling';
 import {
     BehandlingStatus,

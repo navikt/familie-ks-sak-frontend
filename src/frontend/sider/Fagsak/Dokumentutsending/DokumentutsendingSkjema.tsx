@@ -14,9 +14,9 @@ import {
     useDokumentutsending,
 } from '../../../context/DokumentutsendingContext';
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
-import { BrevmottakereAlert } from '../../../Felleskomponenter/BrevmottakereAlert';
-import FritekstAvsnitt from '../../../Felleskomponenter/FritekstAvsnitt';
-import MålformVelger from '../../../Felleskomponenter/MålformVelger';
+import { BrevmottakereAlert } from '../../../komponenter/BrevmottakereAlert';
+import FritekstAvsnitt from '../../../komponenter/FritekstAvsnitt';
+import MålformVelger from '../../../komponenter/MålformVelger';
 import type { IPersonInfo } from '../../../typer/person';
 import { ToggleNavn } from '../../../typer/toggles';
 

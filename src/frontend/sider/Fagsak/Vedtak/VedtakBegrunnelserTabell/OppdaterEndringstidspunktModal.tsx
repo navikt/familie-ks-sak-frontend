@@ -6,7 +6,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useOppdaterEndringstidspunktSkjema } from './useOppdaterEndringstidspunktSkjema';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import Datovelger from '../../../../Felleskomponenter/Datovelger/Datovelger';
+import Datovelger from '../../../../komponenter/Datovelger/Datovelger';
 import type { IBehandling } from '../../../../typer/behandling';
 import type { IRestOverstyrtEndringstidspunkt } from '../../../../typer/vedtaksperiode';
 import { dateTilIsoDatoString } from '../../../../utils/dato';

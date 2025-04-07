@@ -24,8 +24,8 @@ import { kompetanseFeilmeldingId } from '../../../context/Kompetanse/KompetanseS
 import { useTidslinje } from '../../../context/TidslinjeContext';
 import { utenlandskPeriodeBeløpFeilmeldingId } from '../../../context/UtenlandskPeriodeBeløp/UtenlandskPeriodeBeløpSkjemaContext';
 import { valutakursFeilmeldingId } from '../../../context/Valutakurs/ValutakursSkjemaContext';
-import Skjemasteg from '../../../Felleskomponenter/Skjemasteg/Skjemasteg';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
+import Skjemasteg from '../../../komponenter/Skjemasteg/Skjemasteg';
 import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../typer/behandling';
 import type {
     IRestKompetanse,

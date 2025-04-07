@@ -11,7 +11,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import type { Currency } from '@navikt/land-verktoy';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
-import Datovelger from '../../../../Felleskomponenter/Datovelger/Datovelger';
+import Datovelger from '../../../../komponenter/Datovelger/Datovelger';
 import type { IBehandling } from '../../../../typer/behandling';
 import type { OptionType } from '../../../../typer/common';
 import { EøsPeriodeStatus } from '../../../../typer/eøsPerioder';

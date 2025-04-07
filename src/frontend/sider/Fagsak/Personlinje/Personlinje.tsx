@@ -6,7 +6,7 @@ import Visittkort from '@navikt/familie-visittkort';
 
 import Behandlingsmeny from './Behandlingsmeny/Behandlingsmeny';
 import { useApp } from '../../../context/AppContext';
-import DødsfallTag from '../../../Felleskomponenter/DødsfallTag';
+import DødsfallTag from '../../../komponenter/DødsfallTag';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import type { IPersonInfo } from '../../../typer/person';
 import { formaterIdent, hentAlder } from '../../../utils/formatter';

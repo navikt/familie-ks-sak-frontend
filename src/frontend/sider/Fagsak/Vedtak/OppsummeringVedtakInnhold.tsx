@@ -16,10 +16,10 @@ import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/Vedtakspe
 import Vedtaksmeny from './Vedtaksmeny';
 import { useApp } from '../../../context/AppContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { BrevmottakereAlert } from '../../../Felleskomponenter/BrevmottakereAlert';
-import PdfVisningModal from '../../../Felleskomponenter/PdfVisningModal/PdfVisningModal';
 import useDokument from '../../../hooks/useDokument';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
+import { BrevmottakereAlert } from '../../../komponenter/BrevmottakereAlert';
+import PdfVisningModal from '../../../komponenter/PdfVisningModal/PdfVisningModal';
 import {
     BehandlerRolle,
     BehandlingStatus,

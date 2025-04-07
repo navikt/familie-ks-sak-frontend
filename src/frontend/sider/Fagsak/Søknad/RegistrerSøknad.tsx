@@ -9,8 +9,8 @@ import Annet from './Annet';
 import Barna from './Barna';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { useSøknad } from '../../../context/SøknadContext';
-import MålformVelger from '../../../Felleskomponenter/MålformVelger';
-import Skjemasteg from '../../../Felleskomponenter/Skjemasteg/Skjemasteg';
+import MålformVelger from '../../../komponenter/MålformVelger';
+import Skjemasteg from '../../../komponenter/Skjemasteg/Skjemasteg';
 import { BehandlingSteg } from '../../../typer/behandling';
 
 const FjernVilkårAdvarsel = styled(BodyShort)`

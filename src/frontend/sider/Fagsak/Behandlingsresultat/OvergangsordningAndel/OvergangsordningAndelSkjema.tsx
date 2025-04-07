@@ -8,8 +8,8 @@ import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import { useOvergangsordningAndel } from '../../../../context/OvergangsordningAndelContext';
-import Månedvelger, { DagIMåneden } from '../../../../Felleskomponenter/Datovelger/Månedvelger';
-import Knapperekke from '../../../../Felleskomponenter/Knapperekke';
+import Månedvelger, { DagIMåneden } from '../../../../komponenter/Datovelger/Månedvelger';
+import Knapperekke from '../../../../komponenter/Knapperekke';
 import { BehandlingÅrsak, type IBehandling } from '../../../../typer/behandling';
 import { isNumeric } from '../../../../utils/eøsValidators';
 import { lagPersonLabel } from '../../../../utils/formatter';

@@ -7,7 +7,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
-import { Brevmal } from '../../../../../Felleskomponenter/Hendelsesoversikt/BrevModul/typer';
+import { Brevmal } from '../../../../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { HenleggÅrsak, IBehandling } from '../../../../../typer/behandling';
 import type { IManueltBrevRequestPåBehandling } from '../../../../../typer/dokument';
 
