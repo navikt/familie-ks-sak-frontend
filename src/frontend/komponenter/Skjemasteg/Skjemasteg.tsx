@@ -16,11 +16,11 @@ import {
 import { hentDataFraRessurs } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../context/behandlingContext/BehandlingContext';
+import type { ISide } from '../../sider/Fagsak/Behandling/sider/sider';
+import { sider } from '../../sider/Fagsak/Behandling/sider/sider';
 import { BehandlingSteg, settPåVentÅrsaker } from '../../typer/behandling';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 import { behandlingErEtterSteg } from '../../utils/steg';
-import type { ISide } from '../Venstremeny/sider';
-import { sider } from '../Venstremeny/sider';
 
 interface IProps extends PropsWithChildren {
     className?: string;

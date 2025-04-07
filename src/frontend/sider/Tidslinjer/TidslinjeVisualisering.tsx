@@ -25,9 +25,9 @@ import { Regelverk, Resultat, vilkårConfig } from '../../typer/vilkår';
 import type { IVilkårConfig } from '../../typer/vilkår';
 import { isoStringTilDate } from '../../utils/dato';
 import { formaterIdent } from '../../utils/formatter';
-import TidslinjeEtikett from '../Fagsak/Behandling/Behandlingsresultat/TidslinjeEtikett';
-import TidslinjeNavigering from '../Fagsak/Behandling/Behandlingsresultat/TidslinjeNavigering';
-import Vinduvelger from '../Fagsak/Behandling/Behandlingsresultat/VinduVelger';
+import TidslinjeEtikett from '../Fagsak/Behandling/sider/Behandlingsresultat/TidslinjeEtikett';
+import TidslinjeNavigering from '../Fagsak/Behandling/sider/Behandlingsresultat/TidslinjeNavigering';
+import Vinduvelger from '../Fagsak/Behandling/sider/Behandlingsresultat/VinduVelger';
 
 const Container = styled.div`
     padding: 2rem;

@@ -11,7 +11,7 @@ import type { ILeggTilFjernBrevmottakerSkjemaFelter } from './useBrevmottakerSkj
 import { Mottaker, mottakerVisningsnavn } from './useBrevmottakerSkjema';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import { FamilieLandvelger } from '../../../Behandling/Behandlingsresultat/EøsPeriode/FamilieLandvelger';
+import { FamilieLandvelger } from '../../../Behandling/sider/Behandlingsresultat/EøsPeriode/FamilieLandvelger';
 
 const StyledTextField = styled(TextField)<{ $width: string }>`
     width: ${props => props.$width};

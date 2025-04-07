@@ -27,7 +27,7 @@ import {
 } from '@navikt/familie-typer';
 
 import { useBehandling } from '../context/behandlingContext/BehandlingContext';
-import LeggTilUregistrertBarn from '../sider/Fagsak/Behandling/Søknad/LeggTilUregistrertBarn';
+import LeggTilUregistrertBarn from '../sider/Fagsak/Behandling/sider/RegistrerSøknad/LeggTilUregistrertBarn';
 import type {
     IRestBrevmottaker,
     SkjemaBrevmottaker,

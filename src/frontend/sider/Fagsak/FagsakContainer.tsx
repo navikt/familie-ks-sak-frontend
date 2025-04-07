@@ -17,7 +17,7 @@ import { DokumentutsendingProvider } from '../../context/DokumentutsendingContex
 import { useFagsakContext } from '../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
-import Venstremeny from '../../komponenter/Venstremeny/Venstremeny';
+import Venstremeny from './Behandling/Venstremeny/Venstremeny';
 
 const Innhold = styled.div`
     height: calc(100vh - 6rem);

@@ -19,12 +19,12 @@ import TotrinnskontrollModalInnhold from './TotrinnskontrollModalInnhold';
 import Totrinnskontrollskjema from './Totrinnskontrollskjema';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
+import type { ITrinn } from '../../../sider/Fagsak/Behandling/sider/sider';
+import { KontrollertStatus } from '../../../sider/Fagsak/Behandling/sider/sider';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingStatus } from '../../../typer/behandling';
 import type { ITotrinnskontrollData } from '../../../typer/totrinnskontroll';
 import { TotrinnskontrollBeslutning } from '../../../typer/totrinnskontroll';
-import type { ITrinn } from '../../Venstremeny/sider';
-import { KontrollertStatus } from '../../Venstremeny/sider';
 
 interface IProps {
     åpenBehandling: IBehandling;

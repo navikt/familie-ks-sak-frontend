@@ -8,7 +8,7 @@ import { MagnifyingGlassIcon } from '@navikt/aksel-icons';
 import { Alert, Button } from '@navikt/ds-react';
 
 import BrevmottakerListe from './Hendelsesoversikt/BrevModul/BrevmottakerListe';
-import { sider } from './Venstremeny/sider';
+import { sider } from '../sider/Fagsak/Behandling/sider/sider';
 import { LeggTilBrevmottakerModalBehandling } from '../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/LeggTilBrevmottakerModalBehandling';
 import { LeggTilBrevmottakerModalFagsak } from '../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/LeggTilBrevmottakerModalFagsak';
 import type {

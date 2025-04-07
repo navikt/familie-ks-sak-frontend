@@ -21,11 +21,11 @@ import { useBehandling } from '../../../context/behandlingContext/BehandlingCont
 import ØyeGrå from '../../../ikoner/ØyeGrå';
 import ØyeGrønn from '../../../ikoner/ØyeGrønn';
 import ØyeRød from '../../../ikoner/ØyeRød';
+import { KontrollertStatus } from '../../../sider/Fagsak/Behandling/sider/sider';
 import type { IBehandling } from '../../../typer/behandling';
 import { TotrinnskontrollBeslutning } from '../../../typer/totrinnskontroll';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
-import { KontrollertStatus } from '../../Venstremeny/sider';
 
 interface IProps {
     innsendtVedtak: Ressurs<IBehandling>;

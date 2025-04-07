@@ -6,13 +6,13 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
 import { hentDataFraRessursMedFallback, RessursStatus } from '@navikt/familie-typer';
 
+import Behandlingskort from './Behandlingskort';
 import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
 import Hendelsesoversikt from '../../../../komponenter/Hendelsesoversikt/Hendelsesoversikt';
 import type { Hendelse } from '../../../../komponenter/Hendelsesoversikt/typer';
 import type { ILogg } from '../../../../typer/logg';
 import type { IPersonInfo } from '../../../../typer/person';
 import { Datoformat, isoStringTilFormatertString } from '../../../../utils/dato';
-import Behandlingskort from '../Behandlingskort/Behandlingskort';
 
 interface Props {
     bruker: IPersonInfo;

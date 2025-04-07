@@ -5,20 +5,20 @@ import { Route, Routes, useLocation } from 'react-router';
 import { Alert } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import Behandlingsresultat from './Behandlingsresultat/Behandlingsresultat';
-import Simulering from './Simulering/Simulering';
-import RegistrerSøknad from './Søknad/RegistrerSøknad';
-import OppsummeringVedtak from './Vedtak/OppsummeringVedtak';
-import { SammensattKontrollsakProvider } from './Vedtak/SammensattKontrollsak/useSammensattKontrollsakContext';
-import Vilkårsvurdering from './Vilkårsvurdering/Vilkårsvurdering';
+import Behandlingsresultat from './sider/Behandlingsresultat/Behandlingsresultat';
+import RegistrerSøknad from './sider/RegistrerSøknad/RegistrerSøknad';
+import type { SideId } from './sider/sider';
+import { sider } from './sider/sider';
+import Simulering from './sider/Simulering/Simulering';
+import OppsummeringVedtak from './sider/Vedtak/OppsummeringVedtak';
+import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/useSammensattKontrollsakContext';
+import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { EøsProvider } from '../../../context/Eøs/EøsContext';
 import { SimuleringProvider } from '../../../context/SimuleringContext';
 import { SøknadProvider } from '../../../context/SøknadContext';
 import { TidslinjeProvider } from '../../../context/TidslinjeContext';
 import { VilkårsvurderingProvider } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
-import type { SideId } from '../../../komponenter/Venstremeny/sider';
-import { sider } from '../../../komponenter/Venstremeny/sider';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
 
