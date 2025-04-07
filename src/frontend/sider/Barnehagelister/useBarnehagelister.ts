@@ -12,14 +12,14 @@ import {
 } from '@navikt/familie-typer';
 
 import type {
-    IBarnehagebarn,
-    IBarnehagebarnFilter,
-    IBarnehagebarnRequestParams,
-    IBarnehagebarnResponse,
-    IBarnehagekommune,
+    Barnehagebarn,
+    BarnehagebarnFilter,
+    BarnehagebarnRequestParams,
+    BarnehagebarnResponse,
+    Barnehagekommune,
 } from '../../typer/barnehagebarn';
 
-const defaultBarnehagebarnRequestParams: IBarnehagebarnRequestParams = {
+const defaultBarnehagebarnRequestParams: BarnehagebarnRequestParams = {
     ident: '',
     kommuneNavn: '',
     kunLøpendeAndel: false,
@@ -29,32 +29,32 @@ const defaultBarnehagebarnRequestParams: IBarnehagebarnRequestParams = {
     sortAsc: false,
 };
 
-export interface IBarnehagebarnContext<T> {
-    barnehagebarnRequestParams: IBarnehagebarnRequestParams;
-    barnehagebarnResponse: Ressurs<IBarnehagebarnResponse<T>>;
+export interface BarnehagebarnContext<T> {
+    barnehagebarnRequestParams: BarnehagebarnRequestParams;
+    barnehagebarnResponse: Ressurs<BarnehagebarnResponse<T>>;
     data: readonly T[];
     updateOffset: (offset: number) => void;
     updateLimit: (limit: number) => void;
     updateSortByAscDesc: (fieldName: string) => void;
-    oppdaterFiltrering: (filter: IBarnehagebarnFilter) => void;
-    barnehageKommuner: () => IBarnehagekommune[];
+    oppdaterFiltrering: (filter: BarnehagebarnFilter) => void;
+    barnehageKommuner: () => Barnehagekommune[];
 }
 
 const BARNEHAGEKOMMUNER_URL = '/familie-ks-sak/api/barnehagebarn/barnehagekommuner';
 
-export const useBarnehagebarn = <T = IBarnehagebarn>(
+export const useBarnehagelister = <T = Barnehagebarn>(
     barnehagebarn_url: string
-): IBarnehagebarnContext<T> => {
+): BarnehagebarnContext<T> => {
     const { request } = useHttp();
 
     const [barnehagebarnRequestParams, settBarnehagebarnRequestParams] =
-        useState<IBarnehagebarnRequestParams>({ ...defaultBarnehagebarnRequestParams });
+        useState<BarnehagebarnRequestParams>({ ...defaultBarnehagebarnRequestParams });
 
     const [barnehagebarnResponse, settBarnehagebarnResponse] =
-        useState<Ressurs<IBarnehagebarnResponse<T>>>(byggTomRessurs<IBarnehagebarnResponse<T>>());
+        useState<Ressurs<BarnehagebarnResponse<T>>>(byggTomRessurs<BarnehagebarnResponse<T>>());
 
     const [barnehagekommunerRessurs, settBarnehagekommunerRessurs] =
-        useState<Ressurs<IBarnehagekommune[]>>(byggTomRessurs<IBarnehagekommune[]>());
+        useState<Ressurs<Barnehagekommune[]>>(byggTomRessurs<Barnehagekommune[]>());
 
     const data: ReadonlyArray<T> = useMemo(() => {
         return barnehagebarnResponse.status === RessursStatus.SUKSESS &&
@@ -65,12 +65,12 @@ export const useBarnehagebarn = <T = IBarnehagebarn>(
 
     const hentBarnehagebarnResponseRessurs = () => {
         settBarnehagebarnResponse(byggHenterRessurs());
-        request<IBarnehagebarnRequestParams, IBarnehagebarnResponse<T>>({
+        request<BarnehagebarnRequestParams, BarnehagebarnResponse<T>>({
             data: barnehagebarnRequestParams,
             method: 'POST',
             url: `${barnehagebarn_url}`,
         })
-            .then((barnehagebarnResponseRessurs: Ressurs<IBarnehagebarnResponse<T>>) => {
+            .then((barnehagebarnResponseRessurs: Ressurs<BarnehagebarnResponse<T>>) => {
                 settBarnehagebarnResponse(barnehagebarnResponseRessurs);
             })
             .catch((_error: AxiosError) => {
@@ -80,11 +80,11 @@ export const useBarnehagebarn = <T = IBarnehagebarn>(
 
     const hentAlleKommuner = () => {
         settBarnehagekommunerRessurs(byggHenterRessurs());
-        request<void, IBarnehagekommune[]>({
+        request<void, Barnehagekommune[]>({
             method: 'GET',
             url: BARNEHAGEKOMMUNER_URL,
         })
-            .then((barnehageKommuner: Ressurs<IBarnehagekommune[]>) => {
+            .then((barnehageKommuner: Ressurs<Barnehagekommune[]>) => {
                 settBarnehagekommunerRessurs(barnehageKommuner);
             })
             .catch((_error: AxiosError) => {
@@ -98,7 +98,7 @@ export const useBarnehagebarn = <T = IBarnehagebarn>(
         hentAlleKommuner();
     }
 
-    const barnehageKommuner = (): IBarnehagekommune[] => {
+    const barnehageKommuner = (): Barnehagekommune[] => {
         if (barnehagekommunerRessurs.status == RessursStatus.SUKSESS) {
             return barnehagekommunerRessurs.data;
         }
@@ -136,7 +136,7 @@ export const useBarnehagebarn = <T = IBarnehagebarn>(
     };
 
     // Filter values
-    const oppdaterFiltrering = (oppdatertBarnehagebarnFilter: IBarnehagebarnFilter) => {
+    const oppdaterFiltrering = (oppdatertBarnehagebarnFilter: BarnehagebarnFilter) => {
         if (erBarnehagebarnFilterOppdatert(oppdatertBarnehagebarnFilter)) {
             settBarnehagebarnRequestParams({
                 ...barnehagebarnRequestParams,
@@ -148,8 +148,8 @@ export const useBarnehagebarn = <T = IBarnehagebarn>(
         }
     };
 
-    const erBarnehagebarnFilterOppdatert = (oppdatertBarnehagebarnFilter: IBarnehagebarnFilter) => {
-        const barnehagebarnFilter: IBarnehagebarnFilter = {
+    const erBarnehagebarnFilterOppdatert = (oppdatertBarnehagebarnFilter: BarnehagebarnFilter) => {
+        const barnehagebarnFilter: BarnehagebarnFilter = {
             ident: barnehagebarnRequestParams.ident,
             kommuneNavn: barnehagebarnRequestParams.kommuneNavn,
             kunLøpendeAndel: barnehagebarnRequestParams.kunLøpendeAndel,

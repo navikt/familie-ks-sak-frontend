@@ -3,8 +3,8 @@ import React from 'react';
 import { TeddyBearIcon } from '@navikt/aksel-icons';
 import { Tabs } from '@navikt/ds-react';
 
-import Barnehagebarn from './Barnehagebarn';
-const BarnehagebarnTabComp: React.FunctionComponent = () => {
+import BarnehagelisterInnhold from './BarnehagelisterInnhold';
+const Barnehagelister: React.FunctionComponent = () => {
     return (
         <Tabs defaultValue="barnehageliste-ks-sak">
             <Tabs.List>
@@ -15,10 +15,10 @@ const BarnehagebarnTabComp: React.FunctionComponent = () => {
                 />
             </Tabs.List>
             <Tabs.Panel value="barnehageliste-ks-sak">
-                <Barnehagebarn />
+                <BarnehagelisterInnhold />
             </Tabs.Panel>
         </Tabs>
     );
 };
 
-export default BarnehagebarnTabComp;
+export default Barnehagelister;

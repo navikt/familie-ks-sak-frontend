@@ -29,13 +29,13 @@ export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = 
     UtdypendeVilkårsvurderingGenerell.SOMMERFERIE,
 ];
 
-export interface IBarnehageplassVilkårSkjemaContext extends IVilkårSkjemaContext {
+export interface BarnehageplassVilkårSkjemaContext extends IVilkårSkjemaContext {
     antallTimer: string;
     søkerHarMeldtFraOmBarnehageplass: boolean;
 }
 
 export const useBarnehageplass = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
-    const vilkårSkjemaMedLagredeVerdier: IBarnehageplassVilkårSkjemaContext = {
+    const vilkårSkjemaMedLagredeVerdier: BarnehageplassVilkårSkjemaContext = {
         vurderesEtter: lagretVilkår.vurderesEtter ?? undefined,
         resultat: lagretVilkår.resultat,
         antallTimer: lagretVilkår.antallTimer ? lagretVilkår.antallTimer.toString() : '',

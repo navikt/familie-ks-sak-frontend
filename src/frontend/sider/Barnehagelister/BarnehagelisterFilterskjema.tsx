@@ -16,9 +16,9 @@ import {
 } from '@navikt/ds-react';
 
 import type {
-    IBarnehagebarnFilter,
-    IBarnehagebarnRequestParams,
-    IBarnehagekommune,
+    BarnehagebarnFilter,
+    BarnehagebarnRequestParams,
+    Barnehagekommune,
 } from '../../typer/barnehagebarn';
 
 const StyledFieldset = styled(Fieldset)`
@@ -29,21 +29,21 @@ const StyledCheckbox = styled(Checkbox)`
     align-self: end;
 `;
 
-interface IBarnehagebarnFilterSkjemaProps {
-    oppdaterFiltrering: (filter: IBarnehagebarnFilter) => void;
-    barnehageKommuner: () => IBarnehagekommune[];
-    barnehagebarnRequestParams: IBarnehagebarnRequestParams;
+interface BarnehagebarnFilterSkjemaProps {
+    oppdaterFiltrering: (filter: BarnehagebarnFilter) => void;
+    barnehageKommuner: () => Barnehagekommune[];
+    barnehagebarnRequestParams: BarnehagebarnRequestParams;
 }
 
-const BarnehagebarnFilterskjema: React.FunctionComponent<IBarnehagebarnFilterSkjemaProps> = (
-    props: IBarnehagebarnFilterSkjemaProps
+const BarnehagelisterFilterskjema: React.FunctionComponent<BarnehagebarnFilterSkjemaProps> = (
+    props: BarnehagebarnFilterSkjemaProps
 ) => {
     const { oppdaterFiltrering, barnehageKommuner } = props;
 
     const { register, handleSubmit, reset, control, watch, setValue } =
-        useForm<IBarnehagebarnFilter>();
+        useForm<BarnehagebarnFilter>();
 
-    const onSubmit: SubmitHandler<IBarnehagebarnFilter> = barnehagebarnFilter => {
+    const onSubmit: SubmitHandler<BarnehagebarnFilter> = barnehagebarnFilter => {
         oppdaterFiltrering(barnehagebarnFilter);
     };
 
@@ -57,7 +57,7 @@ const BarnehagebarnFilterskjema: React.FunctionComponent<IBarnehagebarnFilterSkj
         <form onSubmit={handleSubmit(onSubmit)}>
             <StyledFieldset
                 size="small"
-                aria-label="Barnehagebarn filterskjema"
+                aria-label="BarnehagelisterInnhold filterskjema"
                 legend="Filterskjema"
                 description="Filtrer barnehagebarn resultater"
                 hideLegend
@@ -136,4 +136,4 @@ const BarnehagebarnFilterskjema: React.FunctionComponent<IBarnehagebarnFilterSkj
     );
 };
 
-export default BarnehagebarnFilterskjema;
+export default BarnehagelisterFilterskjema;

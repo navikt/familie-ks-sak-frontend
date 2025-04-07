@@ -7,9 +7,9 @@ import { Pagination } from '@navikt/ds-react';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type {
-    IBarnehagebarn,
-    IBarnehagebarnRequestParams,
-    IBarnehagebarnResponse,
+    Barnehagebarn,
+    BarnehagebarnRequestParams,
+    BarnehagebarnResponse,
 } from '../../typer/barnehagebarn';
 
 const StyledHStack = styled(HStack)`
@@ -20,17 +20,17 @@ const StyledSelect = styled(Select)`
     margin-right: auto;
 `;
 
-interface IBarnehagebarnListNavigatorProps<T> {
-    barnehagebarnRequestParams: IBarnehagebarnRequestParams;
-    barnehagebarnResponse: Ressurs<IBarnehagebarnResponse<T>>;
+interface BarnehagebarnTabellNavigatorProps<T> {
+    barnehagebarnRequestParams: BarnehagebarnRequestParams;
+    barnehagebarnResponse: Ressurs<BarnehagebarnResponse<T>>;
     data: readonly T[];
     updateOffset: (offset: number) => void;
     updateLimit: (limit: number) => void;
     updateSortByAscDesc: (fieldName: string) => void;
 }
 
-const BarnehagebarnListNavigator = <T = IBarnehagebarn,>(
-    props: IBarnehagebarnListNavigatorProps<T>
+const BarnehagebarnTabellNavigator = <T = Barnehagebarn,>(
+    props: BarnehagebarnTabellNavigatorProps<T>
 ) => {
     const { barnehagebarnResponse, updateOffset, updateLimit, barnehagebarnRequestParams } = props;
 
@@ -90,4 +90,4 @@ const BarnehagebarnListNavigator = <T = IBarnehagebarn,>(
     );
 };
 
-export default BarnehagebarnListNavigator;
+export default BarnehagebarnTabellNavigator;

@@ -6,9 +6,9 @@ import { Alert, Link, Table } from '@navikt/ds-react';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type {
-    IBarnehagebarn,
-    IBarnehagebarnRequestParams,
-    IBarnehagebarnResponse,
+    Barnehagebarn,
+    BarnehagebarnRequestParams,
+    BarnehagebarnResponse,
 } from '../../typer/barnehagebarn';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 
@@ -16,15 +16,15 @@ const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-export interface IBarnehagebarnListProps<T> {
-    barnehagebarnRequestParams: IBarnehagebarnRequestParams;
-    barnehagebarnResponse: Ressurs<IBarnehagebarnResponse<T>>;
+export interface BarnehagebarnTabellProps<T> {
+    barnehagebarnRequestParams: BarnehagebarnRequestParams;
+    barnehagebarnResponse: Ressurs<BarnehagebarnResponse<T>>;
     data: readonly T[];
     updateSortByAscDesc: (fieldName: string) => void;
 }
 
-const BarnehagebarnList: React.FC<IBarnehagebarnListProps<IBarnehagebarn>> = (
-    props: IBarnehagebarnListProps<IBarnehagebarn>
+const BarnehagebarnTabell: React.FC<BarnehagebarnTabellProps<Barnehagebarn>> = (
+    props: BarnehagebarnTabellProps<Barnehagebarn>
 ) => {
     const { barnehagebarnRequestParams, barnehagebarnResponse, data, updateSortByAscDesc } = props;
 
@@ -53,7 +53,7 @@ const BarnehagebarnList: React.FC<IBarnehagebarnListProps<IBarnehagebarn>> = (
                         <Table.ColumnHeader sortable sortKey={'tom'}>
                             Til og med
                         </Table.ColumnHeader>
-                        <Table.ColumnHeader sortable sortKey={'antallTimerIBarnehage'}>
+                        <Table.ColumnHeader sortable sortKey={'antallTimerBarnehage'}>
                             Ant. timer i barnehage
                         </Table.ColumnHeader>
                         <Table.ColumnHeader sortable sortKey={'endringstype'}>
@@ -93,7 +93,7 @@ const BarnehagebarnList: React.FC<IBarnehagebarnListProps<IBarnehagebarn>> = (
                                     })}
                                 </Table.DataCell>
                                 <Table.DataCell align="center">
-                                    {barnehagebarn.antallTimerIBarnehage}
+                                    {barnehagebarn.antallTimerBarnehage}
                                 </Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.endringstype}</Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.kommuneNavn}</Table.DataCell>
@@ -138,4 +138,4 @@ const BarnehagebarnList: React.FC<IBarnehagebarnListProps<IBarnehagebarn>> = (
         </>
     );
 };
-export default BarnehagebarnList;
+export default BarnehagebarnTabell;

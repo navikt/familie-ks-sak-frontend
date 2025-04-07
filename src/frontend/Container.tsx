@@ -13,7 +13,7 @@ import AppInfoModal from './komponenter/Modal/AppInfoModal';
 import UgyldigSesjon from './komponenter/Modal/SesjonUtløpt';
 import SystemetLaster from './komponenter/SystemetLaster/SystemetLaster';
 import Toasts from './komponenter/Toast/Toasts';
-import BarnehagebarnTabComp from './sider/Barnehagebarn/BarnehagebarnTabComp';
+import Barnehagelister from './sider/Barnehagelister/Barnehagelister';
 import FagsakContainer from './sider/Fagsak/FagsakContainer';
 import Internstatistikk from './sider/Internstatistikk/Internstatistikk';
 import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';
@@ -75,7 +75,7 @@ const Container: React.FC = () => {
                                         />
                                         <Route
                                             path="/barnehagelister"
-                                            element={<BarnehagebarnTabComp />}
+                                            element={<Barnehagelister />}
                                         />
                                         <Route path="/oppgaver" element={<Oppgaver />} />
                                         <Route path="/" element={<Navigate to="/oppgaver" />} />
