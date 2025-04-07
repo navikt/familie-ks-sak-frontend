@@ -15,7 +15,7 @@ import SystemetLaster from './komponenter/SystemetLaster/SystemetLaster';
 import Toasts from './komponenter/Toast/Toasts';
 import BarnehagebarnTabComp from './sider/Barnehagebarn/BarnehagebarnTabComp';
 import FagsakContainer from './sider/Fagsak/FagsakContainer';
-import Internstatistikk from './sider/Internstatistikk';
+import Internstatistikk from './sider/Internstatistikk/Internstatistikk';
 import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';
 import TidslinjeVisualisering from './sider/Tidslinjer/TidslinjeVisualisering';
 
