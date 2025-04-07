@@ -27,11 +27,11 @@ import {
 } from '@navikt/familie-typer';
 
 import { useBehandling } from '../context/behandlingContext/BehandlingContext';
+import LeggTilUregistrertBarn from '../sider/Fagsak/Behandling/Søknad/LeggTilUregistrertBarn';
 import type {
     IRestBrevmottaker,
     SkjemaBrevmottaker,
 } from '../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
-import LeggTilUregistrertBarn from '../sider/Fagsak/Søknad/LeggTilUregistrertBarn';
 import type { IPersonInfo, IRestTilgang } from '../typer/person';
 import { adressebeskyttelsestyper } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';

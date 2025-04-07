@@ -7,9 +7,9 @@ import { Alert } from '@navikt/ds-react';
 import { ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import BehandlingContainer from './BehandlingContainer';
+import BehandlingContainer from './Behandling/BehandlingContainer';
+import Høyremeny from './Behandling/Høyremeny/Høyremeny';
 import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
-import Høyremeny from './Høyremeny/Høyremeny';
 import JournalpostListe from './journalposter/JournalpostListe';
 import Personlinje from './Personlinje/Personlinje';
 import Saksoversikt from './Saksoversikt/Saksoversikt';
