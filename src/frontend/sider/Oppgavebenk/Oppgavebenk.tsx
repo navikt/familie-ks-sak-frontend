@@ -6,6 +6,7 @@ import { VStack } from '@navikt/ds-react';
 
 import OppgaveHeader from './OppgaveHeader';
 import OppgaveList from './OppgaveList';
+import { OppgaverProvider } from '../../context/OppgaverContext';
 
 const Container = styled.article`
     padding: 0.5rem;
@@ -18,7 +19,7 @@ const Container = styled.article`
     }
 `;
 
-const Oppgavebenk: React.FunctionComponent = () => {
+const OppgavebenkInnhold: React.FunctionComponent = () => {
     return (
         <Container>
             <VStack gap="4">
@@ -29,4 +30,10 @@ const Oppgavebenk: React.FunctionComponent = () => {
     );
 };
 
-export default Oppgavebenk;
+export const Oppgavebenk: React.FC = () => {
+    return (
+        <OppgaverProvider>
+            <OppgavebenkInnhold />
+        </OppgaverProvider>
+    );
+};

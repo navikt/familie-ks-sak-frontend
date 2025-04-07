@@ -24,7 +24,6 @@ import {
 } from './OppgaverContextUtils';
 import { AlertType, ToastTyper } from '../komponenter/Toast/typer';
 import useFagsakApi from '../sider/Fagsak/useFagsakApi';
-import Oppgavebenk from '../sider/Oppgavebenk/Oppgavebenk';
 import type { IOppgaveFelt, IOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
 import { initialOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
 import type { IMinimalFagsak } from '../typer/fagsak';
@@ -420,12 +419,5 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
         sorterteOppgaverader,
     };
 });
-const Oppgaver: React.FC = () => {
-    return (
-        <OppgaverProvider>
-            <Oppgavebenk />
-        </OppgaverProvider>
-    );
-};
 
-export { Oppgaver, useOppgaver };
+export { OppgaverProvider, useOppgaver };
