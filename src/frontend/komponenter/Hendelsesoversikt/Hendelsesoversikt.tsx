@@ -11,7 +11,6 @@ import Totrinnskontroll from './Totrinnskontroll/Totrinnskontroll';
 import type { Hendelse } from './typer';
 import { TabValg } from './typer';
 import { useApp } from '../../context/AppContext';
-import { BrevModulProvider } from '../../context/BrevModulContext';
 import { BehandlerRolle, BehandlingStatus } from '../../typer/behandling';
 import type { IBehandling } from '../../typer/behandling';
 import type { IPersonInfo } from '../../typer/person';
@@ -41,30 +40,25 @@ const Hendelsesoversikt = ({
 
     return (
         <div className={classNames('hendelsesoversikt', className)}>
-            <BrevModulProvider>
-                <Tabs
-                    value={aktivTab}
-                    onChange={tab => settAktivTab(tab as TabValg)}
-                    iconPosition="top"
-                >
-                    <Header skalViseTotrinnskontroll={skalViseTotrinnskontroll} />
+            <Tabs
+                value={aktivTab}
+                onChange={tab => settAktivTab(tab as TabValg)}
+                iconPosition="top"
+            >
+                <Header skalViseTotrinnskontroll={skalViseTotrinnskontroll} />
 
-                    {aktivTab === TabValg.Totrinnskontroll && (
-                        <Tabs.Panel value={TabValg.Totrinnskontroll}>
-                            <Totrinnskontroll åpenBehandling={åpenBehandling} />
-                        </Tabs.Panel>
-                    )}
-                    {aktivTab === TabValg.Historikk && hendelser.length > 0 && (
-                        <Historikk hendelser={hendelser} />
-                    )}
-                    {aktivTab === TabValg.Meldinger && (
-                        <Brev
-                            onIModalClick={() => settAktivTab(TabValg.Historikk)}
-                            bruker={bruker}
-                        />
-                    )}
-                </Tabs>
-            </BrevModulProvider>
+                {aktivTab === TabValg.Totrinnskontroll && (
+                    <Tabs.Panel value={TabValg.Totrinnskontroll}>
+                        <Totrinnskontroll åpenBehandling={åpenBehandling} />
+                    </Tabs.Panel>
+                )}
+                {aktivTab === TabValg.Historikk && hendelser.length > 0 && (
+                    <Historikk hendelser={hendelser} />
+                )}
+                {aktivTab === TabValg.Meldinger && (
+                    <Brev onIModalClick={() => settAktivTab(TabValg.Historikk)} bruker={bruker} />
+                )}
+            </Tabs>
         </div>
     );
 };

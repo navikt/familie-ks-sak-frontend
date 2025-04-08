@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 
-import createUseContext from 'constate';
-
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -99,7 +97,7 @@ export const mottakersMålformImplementering = (
         }
     })?.målform ?? Målform.NB;
 
-const [BrevModulProvider, useBrevModul] = createUseContext(() => {
+export const useBrevModul = () => {
     const { åpenBehandling } = useBehandling();
 
     const maksAntallKulepunkter = 20;
@@ -397,6 +395,4 @@ const [BrevModulProvider, useBrevModul] = createUseContext(() => {
         visFritekstAvsnittTekstboks,
         settVisFritekstAvsnittTekstboks,
     };
-});
-
-export { BrevModulProvider, useBrevModul };
+};
