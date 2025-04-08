@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons';
 import { Alert, Button, ErrorMessage, ErrorSummary, Label } from '@navikt/ds-react';
-import { useHttp } from '@navikt/familie-http';
-import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import EndretUtbetalingAndelTabell from './endretUtbetaling/EndretUtbetalingAndelTabell';
@@ -75,15 +73,14 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
     const navigate = useNavigate();
     const { fagsakId } = useSakOgBehandlingParams();
 
-    const [personerMedUgyldigEtterbetalingsperiode, settPersonerMedUgyldigEtterbetalingsperiode] =
-        useState<string[]>([]);
-
     const {
         opprettEndretUtbetaling,
         opprettOvergangsordningAndel,
         opprettelseFeilmelding,
         visFeilmeldinger,
         settVisFeilmeldinger,
+        hentPersonerMedUgyldigEtterbetalingsperiode,
+        personerMedUgyldigEtterbetalingsperiode,
     } = useBehandlingsresultat(åpenBehandling);
 
     const {
@@ -91,19 +88,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         filterOgSorterAndelPersonerIGrunnlag,
         filterOgSorterGrunnlagPersonerMedAndeler,
     } = useTidslinje();
-
-    const { request } = useHttp();
-
-    const hentPersonerMedUgyldigEtterbetalingsperiode = () => {
-        request<void, string[]>({
-            method: 'GET',
-            url: `/familie-ks-sak/api/behandlinger/${åpenBehandling.behandlingId}/personer-med-ugyldig-etterbetalingsperiode`,
-        }).then((erGyldigEtterbetalingsperiode: Ressurs<string[]>) => {
-            if (erGyldigEtterbetalingsperiode.status === RessursStatus.SUKSESS) {
-                settPersonerMedUgyldigEtterbetalingsperiode(erGyldigEtterbetalingsperiode.data);
-            }
-        });
-    };
 
     const { vurderErLesevisning, behandlingresultatNesteOnClick, behandlingsstegSubmitressurs } =
         useBehandling();
