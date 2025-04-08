@@ -103,7 +103,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         valutakurser,
         erValutakurserGyldige,
         hentValutakurserMedFeil,
-    } = useEøs();
+    } = useEøs(åpenBehandling);
 
     useEffect(() => {
         hentPersonerMedUgyldigEtterbetalingsperiode();
