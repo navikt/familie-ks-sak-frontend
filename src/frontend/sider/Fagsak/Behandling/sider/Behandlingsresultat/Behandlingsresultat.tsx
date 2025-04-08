@@ -16,6 +16,7 @@ import KompetanseSkjema from './Kompetanse/KompetanseSkjema';
 import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
+import { useBehandlingsresultat } from './useBehandlingsresultat';
 import UtbetaltAnnetLand from './UtbetaltAnnetLand/UtbetaltAnnetLand';
 import Valutakurser from './Valutakurs/Valutakurser';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
@@ -32,7 +33,6 @@ import type {
     IRestUtenlandskPeriodeBeløp,
     IRestValutakurs,
 } from '../../../../../typer/eøsPerioder';
-import type { IRestEndretUtbetalingAndel } from '../../../../../typer/utbetalingAndel';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 
@@ -75,10 +75,16 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
     const navigate = useNavigate();
     const { fagsakId } = useSakOgBehandlingParams();
 
-    const [visFeilmeldinger, settVisFeilmeldinger] = React.useState(false);
-    const [opprettelseFeilmelding, settOpprettelseFeilmelding] = React.useState('');
     const [personerMedUgyldigEtterbetalingsperiode, settPersonerMedUgyldigEtterbetalingsperiode] =
         useState<string[]>([]);
+
+    const {
+        opprettEndretUtbetaling,
+        opprettOvergangsordningAndel,
+        opprettelseFeilmelding,
+        visFeilmeldinger,
+        settVisFeilmeldinger,
+    } = useBehandlingsresultat(åpenBehandling);
 
     const {
         aktivEtikett,
@@ -99,12 +105,9 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         });
     };
 
-    const {
-        vurderErLesevisning,
-        behandlingresultatNesteOnClick,
-        behandlingsstegSubmitressurs,
-        settÅpenBehandling,
-    } = useBehandling();
+    const { vurderErLesevisning, behandlingresultatNesteOnClick, behandlingsstegSubmitressurs } =
+        useBehandling();
+
     const erLesevisning = vurderErLesevisning();
     const {
         erEøsInformasjonGyldig,
@@ -131,46 +134,6 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         grunnlagPersoner,
         åpenBehandling.personerMedAndelerTilkjentYtelse
     );
-
-    const opprettEndretUtbetaling = () => {
-        request<IRestEndretUtbetalingAndel, IBehandling>({
-            method: 'POST',
-            url: `/familie-ks-sak/api/endretutbetalingandel/${åpenBehandling.behandlingId}`,
-            påvirkerSystemLaster: true,
-            data: {},
-        }).then((response: Ressurs<IBehandling>) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                settVisFeilmeldinger(false);
-                settÅpenBehandling(response);
-            } else if (
-                response.status === RessursStatus.FUNKSJONELL_FEIL ||
-                response.status === RessursStatus.FEILET
-            ) {
-                settVisFeilmeldinger(true);
-                settOpprettelseFeilmelding(response.frontendFeilmelding);
-            }
-        });
-    };
-
-    const opprettOvergangsordningAndel = () => {
-        request<IRestEndretUtbetalingAndel, IBehandling>({
-            method: 'POST',
-            url: `/familie-ks-sak/api/overgangsordningandel/${åpenBehandling.behandlingId}`,
-            påvirkerSystemLaster: true,
-            data: {},
-        }).then((response: Ressurs<IBehandling>) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                settVisFeilmeldinger(false);
-                settÅpenBehandling(response);
-            } else if (
-                response.status === RessursStatus.FUNKSJONELL_FEIL ||
-                response.status === RessursStatus.FEILET
-            ) {
-                settVisFeilmeldinger(true);
-                settOpprettelseFeilmelding(response.frontendFeilmelding);
-            }
-        });
-    };
 
     const harKompetanser = åpenBehandling.kompetanser?.length > 0;
     const harUtenlandskeBeløper = åpenBehandling.utenlandskePeriodebeløp?.length > 0;
@@ -226,7 +189,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                     <Button
                         variant="tertiary"
                         size="small"
-                        onClick={() => opprettEndretUtbetaling()}
+                        onClick={opprettEndretUtbetaling}
                         icon={<StyledEditIkon />}
                     >
                         <Label>Endre utbetalingsperiode</Label>
