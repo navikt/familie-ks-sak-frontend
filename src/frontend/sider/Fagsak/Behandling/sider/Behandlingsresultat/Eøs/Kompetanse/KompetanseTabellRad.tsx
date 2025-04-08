@@ -7,7 +7,7 @@ import KompetanseTabellRadEndre from './KompetanseTabellRadEndre';
 import {
     kompetanseFeilmeldingId,
     useKompetansePeriodeSkjema,
-} from '../../../../../../../context/Kompetanse/KompetanseSkjemaContext';
+} from '../../../../../../../context/Kompetanse/useKompetansePeriodeSkjema';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import { KompetanseResultat, type IRestKompetanse } from '../../../../../../../typer/eøsPerioder';
 import { lagPersonLabel } from '../../../../../../../utils/formatter';
