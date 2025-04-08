@@ -12,7 +12,7 @@ import type { OptionType } from '../../../../../../../typer/common';
 import type { IRestValutakurs } from '../../../../../../../typer/eøsPerioder';
 import { Datoformat, isoStringTilFormatertString } from '../../../../../../../utils/dato';
 import { lagPersonLabel } from '../../../../../../../utils/formatter';
-import { StatusBarnCelleOgPeriodeCelle } from '../EøsPeriode/fellesKomponenter';
+import { StatusBarnCelleOgPeriodeCelle } from '../EøsKomponenter/EøsSkjemaKomponenter';
 
 interface IProps {
     valutakurs: IRestValutakurs;
