@@ -9,7 +9,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 import {
     konverterDesimalverdiTilSkjemaVisning,
     konverterSkjemaverdiTilDesimal,
-} from '../../sider/Fagsak/Behandling/sider/Behandlingsresultat/Eøs/EøsContext';
+} from '../../sider/Fagsak/Behandling/sider/Behandlingsresultat/Eøs/useEøs';
 import { BehandlingÅrsak, type IBehandling } from '../../typer/behandling';
 import type { OptionType } from '../../typer/common';
 import type {

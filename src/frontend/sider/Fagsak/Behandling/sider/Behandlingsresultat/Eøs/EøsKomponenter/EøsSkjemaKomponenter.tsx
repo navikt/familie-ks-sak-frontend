@@ -19,7 +19,7 @@ import {
     type IIsoMånedPeriode,
 } from '../../../../../../../utils/dato';
 import { lagPersonLabel } from '../../../../../../../utils/formatter';
-import { mapEøsPeriodeStatusTilStatus } from '../EøsContext';
+import { mapEøsPeriodeStatusTilStatus } from '../useEøs';
 
 interface IEøsPeriodeSkjemaContainerProps {
     $lesevisning: boolean;

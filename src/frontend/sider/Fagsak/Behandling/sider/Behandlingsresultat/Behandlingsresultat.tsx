@@ -9,8 +9,8 @@ import { Alert, Button, ErrorMessage, ErrorSummary, Label } from '@navikt/ds-rea
 import { RessursStatus } from '@navikt/familie-typer';
 
 import EndretUtbetalingAndelTabell from './endretUtbetaling/EndretUtbetalingAndelTabell';
-import { useEøs } from './Eøs/EøsContext';
 import KompetanseSkjema from './Eøs/Kompetanse/KompetanseSkjema';
+import { useEøs } from './Eøs/useEøs';
 import UtbetaltAnnetLand from './Eøs/UtbetaltAnnetLand/UtbetaltAnnetLand';
 import Valutakurser from './Eøs/Valutakurs/Valutakurser';
 import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAugust2024Alert';
