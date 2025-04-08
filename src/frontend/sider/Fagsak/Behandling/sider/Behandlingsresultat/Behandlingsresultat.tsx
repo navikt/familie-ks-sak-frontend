@@ -9,6 +9,7 @@ import { Alert, Button, ErrorMessage, ErrorSummary, Label } from '@navikt/ds-rea
 import { RessursStatus } from '@navikt/familie-typer';
 
 import EndretUtbetalingAndelTabell from './endretUtbetaling/EndretUtbetalingAndelTabell';
+import { useEøs } from './Eøs/EøsContext';
 import KompetanseSkjema from './Eøs/Kompetanse/KompetanseSkjema';
 import UtbetaltAnnetLand from './Eøs/UtbetaltAnnetLand/UtbetaltAnnetLand';
 import Valutakurser from './Eøs/Valutakurs/Valutakurser';
@@ -18,7 +19,6 @@ import OvergangsordningAndelTabell from './OvergangsordningAndel/Overgangsordnin
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import { useBehandlingsresultat } from './useBehandlingsresultat';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
-import { useEøs } from '../../../../../context/Eøs/EøsContext';
 import { kompetanseFeilmeldingId } from '../../../../../context/Kompetanse/KompetanseSkjemaContext';
 import { useTidslinje } from '../../../../../context/TidslinjeContext';
 import { utenlandskPeriodeBeløpFeilmeldingId } from '../../../../../context/UtenlandskPeriodeBeløp/UtenlandskPeriodeBeløpSkjemaContext';
