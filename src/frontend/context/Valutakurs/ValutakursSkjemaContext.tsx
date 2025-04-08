@@ -11,7 +11,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 import {
     konverterDesimalverdiTilSkjemaVisning,
     konverterSkjemaverdiTilDesimal,
-} from '../../sider/Fagsak/Behandling/sider/Behandlingsresultat/Eøs/useEøs';
+} from '../../sider/Fagsak/Behandling/sider/Behandlingsresultat/Eøs/utils';
 import { BehandlingÅrsak, type IBehandling } from '../../typer/behandling';
 import type { OptionType } from '../../typer/common';
 import type { EøsPeriodeStatus, IRestValutakurs, IValutakurs } from '../../typer/eøsPerioder';

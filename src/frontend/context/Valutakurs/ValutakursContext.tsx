@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { sorterEøsPerioder } from '../../sider/Fagsak/Behandling/sider/Behandlingsresultat/Eøs/useEøs';
+import { sorterEøsPerioder } from '../../sider/Fagsak/Behandling/sider/Behandlingsresultat/Eøs/utils';
 import type { IBehandling } from '../../typer/behandling';
 import type { IRestValutakurs } from '../../typer/eøsPerioder';
 import { EøsPeriodeStatus } from '../../typer/eøsPerioder';
