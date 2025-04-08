@@ -3,31 +3,38 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, Link, Heading, Button, Fieldset, TextField } from '@navikt/ds-react';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import { Alert, BodyShort, Button, Fieldset, Select, TextField } from '@navikt/ds-react';
+import { FamilieReactSelect, type OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Currency } from '@navikt/land-verktoy';
 
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
-import Datovelger from '../../../../../../komponenter/Datovelger/Datovelger';
-import type { IBehandling } from '../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../typer/common';
-import { EøsPeriodeStatus } from '../../../../../../typer/eøsPerioder';
-import type { IValutakurs } from '../../../../../../typer/eøsPerioder';
+import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import type { IBehandling } from '../../../../../../../typer/behandling';
+import {
+    EøsPeriodeStatus,
+    UtenlandskPeriodeBeløpIntervall,
+    utenlandskPeriodeBeløpIntervaller,
+    type IUtenlandskPeriodeBeløp,
+} from '../../../../../../../typer/eøsPerioder';
 import EøsPeriodeSkjema from '../EøsPeriode/EøsPeriodeSkjema';
 import { StyledFamilieValutavelger } from '../EøsPeriode/FamilieLandvelger';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsPeriode/fellesKomponenter';
 
-const ValutakursRad = styled.div`
+const UtbetaltBeløpRad = styled.div`
     width: 32rem;
     display: flex;
+    justify-content: space-between;
     gap: 1rem;
 `;
 
-const StyledTextField = styled(TextField)`
-    width: 8rem;
+const UtbetaltBeløpInfo = styled(Alert)`
+    margin-bottom: var(--navds-spacing-6);
+`;
+
+const UtbetaltBeløpText = styled(BodyShort)`
+    font-weight: bold;
 `;
 
 const StyledEøsPeriodeSkjema = styled(EøsPeriodeSkjema)`
@@ -38,55 +45,55 @@ const StyledFieldset = styled(Fieldset)`
     margin-top: 1.5rem;
 `;
 
-const StyledISKAlert = styled(Alert)`
-    margin-top: 2rem;
+const StyledTextField = styled(TextField)`
+    width: 9rem;
 `;
 
-const valutakursPeriodeFeilmeldingId = (valutakurs: ISkjema<IValutakurs, IBehandling>): string =>
-    `valutakurs-periode_${valutakurs.felter.barnIdenter.verdi.map(barn => `${barn.value}`)}_${
-        valutakurs.felter.initielFom.verdi
-    }`;
+const utenlandskPeriodeBeløpPeriodeFeilmeldingId = (
+    utenlandskPeriodeBeløp: ISkjema<IUtenlandskPeriodeBeløp, IBehandling>
+): string =>
+    `utd_beløp-periode_${utenlandskPeriodeBeløp.felter.barnIdenter.verdi.map(
+        barn => `${barn.value}`
+    )}_${utenlandskPeriodeBeløp.felter.initielFom.verdi}`;
 
-const valutakursValutaFeilmeldingId = (valutakurs: ISkjema<IValutakurs, IBehandling>): string =>
-    `valutakurs-valuta_${valutakurs.felter.barnIdenter.verdi.map(barn => `${barn.value}`)}_${
-        valutakurs.felter.initielFom.verdi
-    }`;
+const utenlandskPeriodeBeløpUtbetaltFeilmeldingId = (
+    utenlandskPeriodeBeløp: ISkjema<IUtenlandskPeriodeBeløp, IBehandling>
+): string =>
+    `utd_beløp-utbetalt_${utenlandskPeriodeBeløp.felter.barnIdenter.verdi.map(
+        barn => `${barn.value}`
+    )}_${utenlandskPeriodeBeløp.felter.initielFom.verdi}`;
 
 interface IProps {
-    skjema: ISkjema<IValutakurs, IBehandling>;
+    skjema: ISkjema<IUtenlandskPeriodeBeløp, IBehandling>;
     tilgjengeligeBarn: OptionType[];
     status: EøsPeriodeStatus;
     valideringErOk: () => boolean;
     sendInnSkjema: () => void;
     toggleForm: (visAlert: boolean) => void;
-    slettValutakurs: () => void;
-    sletterValutakurs: boolean;
-    erManuellInputAvKurs: boolean;
+    slettUtenlandskPeriodeBeløp: () => void;
     behandlingsÅrsakErOvergangsordning: boolean;
 }
 
-const ValutakursTabellRadEndre: React.FC<IProps> = ({
+const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
     skjema,
     tilgjengeligeBarn,
     status,
-    sendInnSkjema,
     valideringErOk,
+    sendInnSkjema,
     toggleForm,
-    slettValutakurs,
-    sletterValutakurs,
-    erManuellInputAvKurs,
+    slettUtenlandskPeriodeBeløp,
     behandlingsÅrsakErOvergangsordning,
 }) => {
     const { vurderErLesevisning } = useBehandling();
     const lesevisning = vurderErLesevisning(true);
 
-    const visKursGruppeFeilmelding = (): React.ReactNode => {
-        if (skjema.felter.valutakode?.valideringsstatus === Valideringsstatus.FEIL) {
+    const visUtbetaltBeløpGruppeFeilmelding = (): React.ReactNode => {
+        if (skjema.felter.beløp?.valideringsstatus === Valideringsstatus.FEIL) {
+            return skjema.felter.beløp.feilmelding;
+        } else if (skjema.felter.valutakode?.valideringsstatus === Valideringsstatus.FEIL) {
             return skjema.felter.valutakode.feilmelding;
-        } else if (skjema.felter.valutakursdato?.valideringsstatus === Valideringsstatus.FEIL) {
-            return skjema.felter.valutakursdato.feilmelding;
-        } else if (skjema.felter.kurs?.valideringsstatus === Valideringsstatus.FEIL) {
-            return skjema.felter.kurs.feilmelding;
+        } else if (skjema.felter.intervall?.valideringsstatus === Valideringsstatus.FEIL) {
+            return skjema.felter.intervall.feilmelding;
         }
     };
 
@@ -105,10 +112,16 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
     return (
         <Fieldset
             error={skjema.visFeilmeldinger && visSubmitFeilmelding()}
-            legend={'Endre valutakurs'}
+            legend={'Endre utenlandsk periodebeløp'}
             hideLegend
         >
             <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
+                <UtbetaltBeløpInfo variant="info" inline>
+                    <UtbetaltBeløpText size="small">
+                        Dersom det er ulike beløp per barn utbetalt i det andre landet, må barna
+                        registreres separat
+                    </UtbetaltBeløpText>
+                </UtbetaltBeløpInfo>
                 <FamilieReactSelect
                     {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}
                     erLesevisning={lesevisning}
@@ -122,7 +135,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                 />
                 <StyledEøsPeriodeSkjema
                     periode={skjema.felter.periode}
-                    periodeFeilmeldingId={valutakursPeriodeFeilmeldingId(skjema)}
+                    periodeFeilmeldingId={utenlandskPeriodeBeløpPeriodeFeilmeldingId(skjema)}
                     initielFom={skjema.felter.initielFom}
                     visFeilmeldinger={skjema.visFeilmeldinger}
                     lesevisning={lesevisning}
@@ -130,26 +143,27 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                     behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
                 />
                 <StyledFieldset
-                    errorId={valutakursValutaFeilmeldingId(skjema)}
-                    error={skjema.visFeilmeldinger && visKursGruppeFeilmelding()}
-                    legend={'Registrer valutakursdato'}
+                    errorId={utenlandskPeriodeBeløpUtbetaltFeilmeldingId(skjema)}
+                    error={skjema.visFeilmeldinger && visUtbetaltBeløpGruppeFeilmelding()}
+                    legend={'Utbetalt i det andre landet'}
+                    size={'medium'}
                 >
-                    <ValutakursRad>
-                        <Datovelger
-                            felt={skjema.felter.valutakursdato}
-                            label={'Valutakursdato'}
-                            visFeilmeldinger={false}
+                    <UtbetaltBeløpRad>
+                        <StyledTextField
+                            label={'Beløp per barn'}
                             readOnly={lesevisning}
-                            disableWeekends
-                            kanKunVelgeFortid
+                            value={skjema.felter.beløp?.verdi}
+                            onChange={event =>
+                                skjema.felter.beløp?.validerOgSettFelt(event.target.value)
+                            }
+                            size={'medium'}
                         />
                         <StyledFamilieValutavelger
-                            erLesevisning={true}
+                            erLesevisning={lesevisning}
                             id={'valuta'}
                             label={'Valuta'}
                             kunEøs
                             medFlag
-                            size="small"
                             value={skjema.felter.valutakode?.verdi}
                             onChange={(value: Currency) => {
                                 if (value) {
@@ -161,31 +175,28 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                             utenMargin
                             kanNullstilles
                         />
-                        <StyledTextField
-                            label={'Valutakurs'}
-                            readOnly={lesevisning || !erManuellInputAvKurs}
-                            value={skjema.felter.kurs?.verdi}
+                        <Select
+                            label={'Intervall'}
+                            readOnly={lesevisning}
+                            value={skjema.felter.intervall?.verdi || undefined}
                             onChange={event =>
-                                skjema.felter.kurs?.validerOgSettFelt(event.target.value)
+                                skjema.felter.intervall?.validerOgSettFelt(
+                                    event.target.value as UtenlandskPeriodeBeløpIntervall
+                                )
                             }
-                        />
-                    </ValutakursRad>
-                    {erManuellInputAvKurs && (
-                        <StyledISKAlert variant="warning" size="small" inline>
-                            <Heading size="small">
-                                Manuell innhenting av valutakurs for Islandske kroner (ISK)
-                            </Heading>
-                            Systemet har ikke valutakurser for valutakursdatoer før 1. februar 2018.
-                            Disse må hentes fra{' '}
-                            <Link
-                                href="https://navno.sharepoint.com/:x:/r/sites/fag-og-ytelser-familie-barnetrygd/Delte%20dokumenter/E%C3%98S/Valutakalkulator%202022.xlsm?d=w200955f53e1d4323ae72f9d1b15f617c&csf=1&web=1&e=w3OE5N"
-                                target="_blank"
-                            >
-                                Valutakalkulator
-                            </Link>
-                            .
-                        </StyledISKAlert>
-                    )}
+                        >
+                            <option key={'-'} value={''}>
+                                Velg
+                            </option>
+                            {Object.values(UtenlandskPeriodeBeløpIntervall).map(intervall => {
+                                return (
+                                    <option key={intervall} value={intervall}>
+                                        {utenlandskPeriodeBeløpIntervaller[intervall]}
+                                    </option>
+                                );
+                            })}
+                        </Select>
+                    </UtbetaltBeløpRad>
                 </StyledFieldset>
 
                 {!lesevisning && (
@@ -213,12 +224,12 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                         {skjema.felter.status?.verdi !== EøsPeriodeStatus.IKKE_UTFYLT && (
                             <Button
                                 variant={'tertiary'}
-                                onClick={() => slettValutakurs()}
-                                id={`slett_valutakurs_${skjema.felter.barnIdenter.verdi.map(
+                                onClick={() => slettUtenlandskPeriodeBeløp()}
+                                id={`slett_utd_beløp_${skjema.felter.barnIdenter.verdi.map(
                                     barn => `${barn}-`
                                 )}_${skjema.felter.initielFom.verdi}`}
-                                loading={sletterValutakurs}
-                                disabled={sletterValutakurs}
+                                loading={skjema.submitRessurs.status === RessursStatus.HENTER}
+                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                                 size={'small'}
                                 icon={<TrashIcon />}
                             >
@@ -232,4 +243,4 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
     );
 };
 
-export default ValutakursTabellRadEndre;
+export default UtenlandskPeriodeBeløpTabellRadEndre;

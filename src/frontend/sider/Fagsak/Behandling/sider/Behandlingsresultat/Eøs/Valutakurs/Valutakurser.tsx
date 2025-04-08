@@ -6,8 +6,8 @@ import { Alert, Heading, Table } from '@navikt/ds-react';
 import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
 
 import ValutakursTabellRad from './ValutakursTabellRad';
-import { BehandlingÅrsak, type IBehandling } from '../../../../../../typer/behandling';
-import type { IRestValutakurs } from '../../../../../../typer/eøsPerioder';
+import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
+import type { IRestValutakurs } from '../../../../../../../typer/eøsPerioder';
 
 const ValutakurserContainer = styled.div`
     margin-top: 5rem;

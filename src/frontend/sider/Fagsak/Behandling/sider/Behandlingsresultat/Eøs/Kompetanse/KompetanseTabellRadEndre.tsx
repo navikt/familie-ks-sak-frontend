@@ -4,15 +4,14 @@ import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Alert, Button, Fieldset, Select } from '@navikt/ds-react';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import { FamilieReactSelect, type OptionType } from '@navikt/familie-form-elements';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Country } from '@navikt/land-verktoy';
 
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
-import type { IBehandling } from '../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../typer/common';
+import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import type { IBehandling } from '../../../../../../../typer/behandling';
 import {
     AnnenForelderAktivitet,
     EøsPeriodeStatus,
@@ -20,8 +19,9 @@ import {
     KompetanseResultat,
     kompetanseResultater,
     SøkersAktivitet,
-} from '../../../../../../typer/eøsPerioder';
-import type { IKompetanse, KompetanseAktivitet } from '../../../../../../typer/eøsPerioder';
+    type IKompetanse,
+    type KompetanseAktivitet,
+} from '../../../../../../../typer/eøsPerioder';
 import EøsPeriodeSkjema from '../EøsPeriode/EøsPeriodeSkjema';
 import { FamilieLandvelger } from '../EøsPeriode/FamilieLandvelger';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsPeriode/fellesKomponenter';

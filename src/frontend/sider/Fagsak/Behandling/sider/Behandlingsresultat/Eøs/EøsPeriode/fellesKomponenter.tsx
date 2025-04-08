@@ -10,13 +10,16 @@ import {
     ASurfaceAction,
 } from '@navikt/ds-tokens/dist/tokens';
 
-import { mapEøsPeriodeStatusTilStatus } from '../../../../../../context/Eøs/EøsContext';
-import StatusIkon from '../../../../../../ikoner/StatusIkon';
-import { EøsPeriodeStatus } from '../../../../../../typer/eøsPerioder';
-import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import type { IIsoMånedPeriode } from '../../../../../../utils/dato';
-import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../../../utils/dato';
-import { lagPersonLabel } from '../../../../../../utils/formatter';
+import { mapEøsPeriodeStatusTilStatus } from '../../../../../../../context/Eøs/EøsContext';
+import StatusIkon from '../../../../../../../ikoner/StatusIkon';
+import { EøsPeriodeStatus } from '../../../../../../../typer/eøsPerioder';
+import type { IGrunnlagPerson } from '../../../../../../../typer/person';
+import {
+    Datoformat,
+    isoMånedPeriodeTilFormatertString,
+    type IIsoMånedPeriode,
+} from '../../../../../../../utils/dato';
+import { lagPersonLabel } from '../../../../../../../utils/formatter';
 
 interface IEøsPeriodeSkjemaContainerProps {
     $lesevisning: boolean;

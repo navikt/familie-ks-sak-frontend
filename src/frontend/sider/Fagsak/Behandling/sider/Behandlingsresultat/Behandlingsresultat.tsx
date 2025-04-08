@@ -9,14 +9,14 @@ import { Alert, Button, ErrorMessage, ErrorSummary, Label } from '@navikt/ds-rea
 import { RessursStatus } from '@navikt/familie-typer';
 
 import EndretUtbetalingAndelTabell from './endretUtbetaling/EndretUtbetalingAndelTabell';
+import KompetanseSkjema from './Eøs/Kompetanse/KompetanseSkjema';
+import UtbetaltAnnetLand from './Eøs/UtbetaltAnnetLand/UtbetaltAnnetLand';
+import Valutakurser from './Eøs/Valutakurs/Valutakurser';
 import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAugust2024Alert';
-import KompetanseSkjema from './Kompetanse/KompetanseSkjema';
 import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import { useBehandlingsresultat } from './useBehandlingsresultat';
-import UtbetaltAnnetLand from './UtbetaltAnnetLand/UtbetaltAnnetLand';
-import Valutakurser from './Valutakurs/Valutakurser';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useEøs } from '../../../../../context/Eøs/EøsContext';
 import { kompetanseFeilmeldingId } from '../../../../../context/Kompetanse/KompetanseSkjemaContext';

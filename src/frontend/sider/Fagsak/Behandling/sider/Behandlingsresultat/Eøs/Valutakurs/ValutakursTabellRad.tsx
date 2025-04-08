@@ -6,12 +6,12 @@ import ValutakursTabellRadEndre from './ValutakursTabellRadEndre';
 import {
     useValutakursSkjema,
     valutakursFeilmeldingId,
-} from '../../../../../../context/Valutakurs/ValutakursSkjemaContext';
-import { BehandlingÅrsak, type IBehandling } from '../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../typer/common';
-import type { IRestValutakurs } from '../../../../../../typer/eøsPerioder';
-import { Datoformat, isoStringTilFormatertString } from '../../../../../../utils/dato';
-import { lagPersonLabel } from '../../../../../../utils/formatter';
+} from '../../../../../../../context/Valutakurs/ValutakursSkjemaContext';
+import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
+import type { OptionType } from '../../../../../../../typer/common';
+import type { IRestValutakurs } from '../../../../../../../typer/eøsPerioder';
+import { Datoformat, isoStringTilFormatertString } from '../../../../../../../utils/dato';
+import { lagPersonLabel } from '../../../../../../../utils/formatter';
 import { StatusBarnCelleOgPeriodeCelle } from '../EøsPeriode/fellesKomponenter';
 
 interface IProps {

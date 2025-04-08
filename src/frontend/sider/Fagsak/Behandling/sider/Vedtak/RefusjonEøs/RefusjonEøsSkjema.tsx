@@ -13,7 +13,7 @@ import Månedvelger, { DagIMåneden } from '../../../../../../komponenter/Datove
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type { IRefusjonEøsSkjemaFelter } from '../../../../../../typer/refusjon-eøs';
 import { randomUUID } from '../../../../../../utils/commons';
-import { FamilieLandvelger } from '../../Behandlingsresultat/EøsPeriode/FamilieLandvelger';
+import { FamilieLandvelger } from '../../Behandlingsresultat/Eøs/EøsPeriode/FamilieLandvelger';
 
 interface IRefusjonEøsSkjemaProps {
     skjema: ISkjema<IRefusjonEøsSkjemaFelter, IBehandling>;

@@ -1,17 +1,16 @@
 import React from 'react';
 
 import { BodyShort, Table } from '@navikt/ds-react';
+import type { OptionType } from '@navikt/familie-form-elements';
 
 import KompetanseTabellRadEndre from './KompetanseTabellRadEndre';
 import {
     kompetanseFeilmeldingId,
     useKompetansePeriodeSkjema,
-} from '../../../../../../context/Kompetanse/KompetanseSkjemaContext';
-import { BehandlingÅrsak, type IBehandling } from '../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../typer/common';
-import type { IRestKompetanse } from '../../../../../../typer/eøsPerioder';
-import { KompetanseResultat } from '../../../../../../typer/eøsPerioder';
-import { lagPersonLabel } from '../../../../../../utils/formatter';
+} from '../../../../../../../context/Kompetanse/KompetanseSkjemaContext';
+import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
+import { KompetanseResultat, type IRestKompetanse } from '../../../../../../../typer/eøsPerioder';
+import { lagPersonLabel } from '../../../../../../../utils/formatter';
 import { StatusBarnCelleOgPeriodeCelle } from '../EøsPeriode/fellesKomponenter';
 
 interface IProps {
