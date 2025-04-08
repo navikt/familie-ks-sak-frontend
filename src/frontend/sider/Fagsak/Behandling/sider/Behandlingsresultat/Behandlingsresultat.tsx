@@ -14,6 +14,7 @@ import { kompetanseFeilmeldingId } from './Eøs/Kompetanse/useKompetansePeriodeS
 import { useEøs } from './Eøs/useEøs';
 import { utenlandskPeriodeBeløpFeilmeldingId } from './Eøs/UtbetaltAnnetLand/useUtenlandskPeriodeBeløpSkjema';
 import UtbetaltAnnetLand from './Eøs/UtbetaltAnnetLand/UtbetaltAnnetLand';
+import { valutakursFeilmeldingId } from './Eøs/Valutakurs/useValutakursSkjema';
 import Valutakurser from './Eøs/Valutakurs/Valutakurser';
 import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAugust2024Alert';
 import { Oppsummeringsboks } from './Oppsummeringsboks';
@@ -22,7 +23,6 @@ import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import { useBehandlingsresultat } from './useBehandlingsresultat';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useTidslinje } from '../../../../../context/TidslinjeContext';
-import { valutakursFeilmeldingId } from '../../../../../context/Valutakurs/ValutakursSkjemaContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';

@@ -8,20 +8,21 @@ import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { RessursStatus, byggTomRessurs } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import {
-    konverterDesimalverdiTilSkjemaVisning,
-    konverterSkjemaverdiTilDesimal,
-} from '../../sider/Fagsak/Behandling/sider/Behandlingsresultat/Eøs/utils';
-import { BehandlingÅrsak, type IBehandling } from '../../typer/behandling';
-import type { OptionType } from '../../typer/common';
-import type { EøsPeriodeStatus, IRestValutakurs, IValutakurs } from '../../typer/eøsPerioder';
-import type { IIsoMånedPeriode } from '../../utils/dato';
+import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
+import type { OptionType } from '../../../../../../../typer/common';
+import type {
+    EøsPeriodeStatus,
+    IRestValutakurs,
+    IValutakurs,
+} from '../../../../../../../typer/eøsPerioder';
 import {
     dateTilIsoDatoString,
     dateTilIsoDatoStringEllerUndefined,
     nyIsoMånedPeriode,
     validerGyldigDato,
-} from '../../utils/dato';
+    type IIsoMånedPeriode,
+} from '../../../../../../../utils/dato';
 import {
     erBarnGyldig,
     erEøsPeriodeGyldig,
@@ -29,8 +30,8 @@ import {
     isEmpty,
     isNumeric,
     tellAntallDesimaler,
-} from '../../utils/eøsValidators';
-import { useBehandling } from '../behandlingContext/BehandlingContext';
+} from '../../../../../../../utils/eøsValidators';
+import { konverterDesimalverdiTilSkjemaVisning, konverterSkjemaverdiTilDesimal } from '../utils';
 
 const erValutakursGyldig = (
     felt: FeltState<string | undefined>,

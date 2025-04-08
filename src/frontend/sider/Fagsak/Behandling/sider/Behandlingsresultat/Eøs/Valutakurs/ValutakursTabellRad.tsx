@@ -2,11 +2,8 @@ import * as React from 'react';
 
 import { Table } from '@navikt/ds-react';
 
+import { useValutakursSkjema, valutakursFeilmeldingId } from './useValutakursSkjema';
 import ValutakursTabellRadEndre from './ValutakursTabellRadEndre';
-import {
-    useValutakursSkjema,
-    valutakursFeilmeldingId,
-} from '../../../../../../../context/Valutakurs/ValutakursSkjemaContext';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import type { IRestValutakurs } from '../../../../../../../typer/eøsPerioder';
