@@ -273,9 +273,6 @@ export const useBrevModul = () => {
         skjemanavn: 'brevmodul',
     });
 
-    const [navigerTilOpplysningsplikt, settNavigerTilOpplysningsplikt] =
-        React.useState<boolean>(false);
-
     const nullstillBarnBrevetGjelder = () => {
         const barn = personer
             .filter(person => person.type === PersonType.BARN)
@@ -384,10 +381,8 @@ export const useBrevModul = () => {
         hentSkjemaData,
         kanSendeSkjema,
         mottakersMålform,
-        navigerTilOpplysningsplikt,
         onSubmit,
         personer,
-        settNavigerTilOpplysningsplikt,
         leggTilFritekst,
         makslengdeFritekstHvertKulepunkt,
         maksAntallKulepunkter,
