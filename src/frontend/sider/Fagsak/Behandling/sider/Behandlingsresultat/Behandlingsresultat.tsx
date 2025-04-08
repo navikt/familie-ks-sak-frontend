@@ -12,6 +12,7 @@ import EndretUtbetalingAndelTabell from './endretUtbetaling/EndretUtbetalingAnde
 import KompetanseSkjema from './Eøs/Kompetanse/KompetanseSkjema';
 import { kompetanseFeilmeldingId } from './Eøs/Kompetanse/useKompetansePeriodeSkjema';
 import { useEøs } from './Eøs/useEøs';
+import { utenlandskPeriodeBeløpFeilmeldingId } from './Eøs/UtbetaltAnnetLand/useUtenlandskPeriodeBeløpSkjema';
 import UtbetaltAnnetLand from './Eøs/UtbetaltAnnetLand/UtbetaltAnnetLand';
 import Valutakurser from './Eøs/Valutakurs/Valutakurser';
 import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAugust2024Alert';
@@ -21,7 +22,6 @@ import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import { useBehandlingsresultat } from './useBehandlingsresultat';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useTidslinje } from '../../../../../context/TidslinjeContext';
-import { utenlandskPeriodeBeløpFeilmeldingId } from '../../../../../context/UtenlandskPeriodeBeløp/UtenlandskPeriodeBeløpSkjemaContext';
 import { valutakursFeilmeldingId } from '../../../../../context/Valutakurs/ValutakursSkjemaContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';

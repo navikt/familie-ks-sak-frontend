@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 
-import { sorterEøsPerioder } from '../../sider/Fagsak/Behandling/sider/Behandlingsresultat/Eøs/utils';
-import type { IBehandling } from '../../typer/behandling';
-import { EøsPeriodeStatus } from '../../typer/eøsPerioder';
-import type { IRestUtenlandskPeriodeBeløp } from '../../typer/eøsPerioder';
+import type { IBehandling } from '../../../../../../../typer/behandling';
+import {
+    EøsPeriodeStatus,
+    type IRestUtenlandskPeriodeBeløp,
+} from '../../../../../../../typer/eøsPerioder';
+import { sorterEøsPerioder } from '../utils';
 
 interface IProps {
     åpenBehandling: IBehandling;
