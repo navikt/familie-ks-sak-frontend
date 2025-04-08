@@ -1,4 +1,4 @@
-import { useKompetanse } from '../../../../../../context/Kompetanse/useKompetanse';
+import { useKompetanse } from './Kompetanse/useKompetanse';
 import { useUtenlandskPeriodeBeløp } from '../../../../../../context/UtenlandskPeriodeBeløp/UtenlandskPeriodeBeløpContext';
 import { useValutakurs } from '../../../../../../context/Valutakurs/ValutakursContext';
 import type { IBehandling } from '../../../../../../typer/behandling';

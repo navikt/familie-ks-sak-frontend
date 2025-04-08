@@ -2,9 +2,13 @@ import type { Felt } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 
-import { AnnenForelderAktivitet, SøkersAktivitet } from '../../typer/eøsPerioder';
-import type { KompetanseResultat, KompetanseAktivitet } from '../../typer/eøsPerioder';
-import { isEmpty } from '../../utils/eøsValidators';
+import type { KompetanseResultat } from '../../../../../../../typer/eøsPerioder';
+import {
+    AnnenForelderAktivitet,
+    SøkersAktivitet,
+    type KompetanseAktivitet,
+} from '../../../../../../../typer/eøsPerioder';
+import { isEmpty } from '../../../../../../../utils/eøsValidators';
 
 const ikkeUtfyltFelt = 'Feltet er påkrevd, men mangler input';
 
