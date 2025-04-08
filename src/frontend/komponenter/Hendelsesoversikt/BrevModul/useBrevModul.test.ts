@@ -2,18 +2,15 @@ import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 
-import { Brevmal } from '../../komponenter/Hendelsesoversikt/BrevModul/typer';
-import type { IBehandling } from '../../typer/behandling';
-import { Behandlingstype, BehandlingÅrsak } from '../../typer/behandling';
-import { Målform } from '../../typer/søknad';
-import { mockBehandling } from '../../utils/test/behandling/behandling.mock';
-import { mockBarn, mockSøker } from '../../utils/test/person/person.mock';
-import {
-    hentMuligeBrevmalerImplementering,
-    mottakersMålformImplementering,
-} from '../BrevModulContext';
+import { Brevmal } from './typer';
+import { hentMuligeBrevmalerImplementering, mottakersMålformImplementering } from './useBrevModul';
+import type { IBehandling } from '../../../typer/behandling';
+import { Behandlingstype, BehandlingÅrsak } from '../../../typer/behandling';
+import { Målform } from '../../../typer/søknad';
+import { mockBehandling } from '../../../utils/test/behandling/behandling.mock';
+import { mockBarn, mockSøker } from '../../../utils/test/person/person.mock';
 
-describe('BrevmodulContext', () => {
+describe('useBrevModul', () => {
     describe('hentMuligeBrevmalerImplementering', () => {
         const lagBehandlignRessursSuksess = (behandling: IBehandling): Ressurs<IBehandling> => ({
             status: RessursStatus.SUKSESS,
