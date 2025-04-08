@@ -76,7 +76,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
     const {
         opprettEndretUtbetaling,
         opprettOvergangsordningAndel,
-        opprettelseFeilmelding,
+        opprettEndretUtbetalingFeilmelding,
         visFeilmeldinger,
         settVisFeilmeldinger,
         hentPersonerMedUgyldigEtterbetalingsperiode,
@@ -178,8 +178,8 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                     >
                         <Label>Endre utbetalingsperiode</Label>
                     </Button>
-                    {visFeilmeldinger && opprettelseFeilmelding !== '' && (
-                        <ErrorMessage>{opprettelseFeilmelding}</ErrorMessage>
+                    {visFeilmeldinger && opprettEndretUtbetalingFeilmelding !== '' && (
+                        <ErrorMessage>{opprettEndretUtbetalingFeilmelding}</ErrorMessage>
                     )}
                 </EndretUtbetalingAndel>
             )}
