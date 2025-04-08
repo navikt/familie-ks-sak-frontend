@@ -28,15 +28,6 @@ const BarnehagebarnTabell: React.FC<BarnehagebarnTabellProps<Barnehagebarn>> = (
 ) => {
     const { barnehagebarnRequestParams, barnehagebarnResponse, data, updateSortByAscDesc } = props;
 
-    function visAvvikstekst(avvik?: boolean) {
-        if (avvik === true) {
-            return 'Ja';
-        } else if (avvik === false) {
-            return 'Nei';
-        }
-        return '-';
-    }
-
     return (
         <>
             <Table
@@ -67,9 +58,6 @@ const BarnehagebarnTabell: React.FC<BarnehagebarnTabellProps<Barnehagebarn>> = (
                         </Table.ColumnHeader>
                         <Table.ColumnHeader sortable sortKey={'endringstype'}>
                             Endringstype
-                        </Table.ColumnHeader>
-                        <Table.ColumnHeader sortable sortKey={'avvik'}>
-                            Avvik
                         </Table.ColumnHeader>
                         <Table.ColumnHeader sortable sortKey={'kommuneNavn'}>
                             Kommunenavn
@@ -108,9 +96,6 @@ const BarnehagebarnTabell: React.FC<BarnehagebarnTabellProps<Barnehagebarn>> = (
                                     {barnehagebarn.antallTimerBarnehage}
                                 </Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.endringstype}</Table.DataCell>
-                                <Table.DataCell>
-                                    {visAvvikstekst(barnehagebarn.avvik)}
-                                </Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.kommuneNavn}</Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.kommuneNr}</Table.DataCell>
                                 <Table.DataCell>
