@@ -16,8 +16,8 @@ import {
 } from '@navikt/ds-tokens/dist/tokens';
 import { hentDataFraRessurs } from '@navikt/familie-typer';
 
+import Informasjonsbolk from './Informasjonsbolk';
 import { useFagsakContext } from '../../../../context/fagsak/FagsakContext';
-import Informasjonsbolk from '../../../../komponenter/Informasjonsbolk/Informasjonsbolk';
 import type { IBehandling } from '../../../../typer/behandling';
 import {
     BehandlingResultat,
