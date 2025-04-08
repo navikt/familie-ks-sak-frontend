@@ -19,9 +19,9 @@ import {
 } from '@navikt/familie-typer';
 
 import { useApp } from './AppContext';
-import { useFagsakContext } from './fagsak/FagsakContext';
 import useDokument from '../hooks/useDokument';
 import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
+import useFagsakApi from '../sider/Fagsak/useFagsakApi';
 import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
 import type { IBehandlingstema } from '../typer/behandlingstema';
 import type { IMinimalFagsak } from '../typer/fagsak';
@@ -66,7 +66,7 @@ interface ManuellJournalføringSkjemaFelter {
 
 const [ManuellJournalføringProvider, useManuellJournalføringContext] = createUseContext(() => {
     const { innloggetSaksbehandler, toggles } = useApp();
-    const { hentFagsakForPerson } = useFagsakContext();
+    const { hentFagsakForPerson } = useFagsakApi();
     const navigate = useNavigate();
     const { request } = useHttp();
     const { oppgaveId } = useParams<{ oppgaveId: string }>();

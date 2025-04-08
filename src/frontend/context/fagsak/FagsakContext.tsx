@@ -18,6 +18,7 @@ import {
 import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import { useTilbakekrevingApi } from '../../api/useTilbakekrevingApi';
 import type { SkjemaBrevmottaker } from '../../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import useFagsakApi from '../../sider/Fagsak/useFagsakApi';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import type { IKlagebehandling } from '../../typer/klage';
 import type { IPersonInfo } from '../../typer/person';
@@ -45,6 +46,7 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
     const { request } = useHttp();
     const { skalObfuskereData } = useApp();
     const { hentTilbakekrevingsbehandlinger } = useTilbakekrevingApi();
+    const { hentFagsakForPerson } = useFagsakApi();
 
     const hentMinimalFagsak = (fagsakId: string | number, påvirkerSystemLaster = true): void => {
         if (påvirkerSystemLaster) {
@@ -113,18 +115,6 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         });
     };
 
-    const hentFagsakForPerson = async (personId: string) => {
-        return request<{ ident: string }, IMinimalFagsak>({
-            method: 'POST',
-            url: `/familie-ks-sak/api/fagsaker/hent-fagsak-paa-person`,
-            data: {
-                ident: personId,
-            },
-        }).then((fagsak: Ressurs<IMinimalFagsak>) => {
-            return fagsak;
-        });
-    };
-
     const oppdaterKlagebehandlingerPåFagsak = () => {
         const fagsakId = hentDataFraRessurs(minimalFagsak)?.id;
 
@@ -157,7 +147,6 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
 
     return {
         bruker,
-        hentFagsakForPerson,
         hentMinimalFagsak,
         minimalFagsak,
         settMinimalFagsak,

@@ -190,14 +190,7 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
         settOppgaveFelter(initialOppgaveFelter(innloggetSaksbehandler));
     };
 
-    const { opprettEllerHentFagsak } = useFagsakApi(
-        _ => {
-            'Feilmelding';
-        },
-        _ => {
-            'Feilmelding';
-        }
-    );
+    const { opprettEllerHentFagsak } = useFagsakApi();
 
     const fordelOppgave = (oppgave: IOppgave, saksbehandler: string) => {
         request<void, string>({

@@ -10,10 +10,7 @@ import { useFagsakContext } from '../../context/fagsak/FagsakContext';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../utils/fagsak';
 
-const useFagsakApi = (
-    settVisFeilmeldinger: (visFeilmeldinger: boolean) => void,
-    settFeilmelding: (feilmelding: string) => void
-) => {
+const useFagsakApi = () => {
     const { settMinimalFagsak } = useFagsakContext();
     const { request } = useHttp();
 
@@ -42,21 +39,31 @@ const useFagsakApi = (
                     response.status === RessursStatus.FUNKSJONELL_FEIL ||
                     response.status === RessursStatus.IKKE_TILGANG
                 ) {
-                    settVisFeilmeldinger(true);
-                    settFeilmelding(response.frontendFeilmelding);
+                    // TODO: Legg på samme toast som i ba-sak-frontend
                 } else {
-                    settVisFeilmeldinger(true);
-                    settFeilmelding('Opprettelse av fagsak feilet');
+                    // TODO: Legg på samme toast som i ba-sak-frontend
                 }
             })
             .catch(() => {
-                settVisFeilmeldinger(true);
-                settFeilmelding('Opprettelse av fagsak feilet');
+                // TODO: Feilhåndter
             });
+    };
+
+    const hentFagsakForPerson = async (personId: string) => {
+        return request<{ ident: string }, IMinimalFagsak>({
+            method: 'POST',
+            url: `/familie-ks-sak/api/fagsaker/hent-fagsak-paa-person`,
+            data: {
+                ident: personId,
+            },
+        }).then((fagsak: Ressurs<IMinimalFagsak>) => {
+            return fagsak;
+        });
     };
 
     return {
         opprettEllerHentFagsak,
+        hentFagsakForPerson,
     };
 };
 
