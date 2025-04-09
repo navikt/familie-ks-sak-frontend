@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { createContext, useContext, useState, type PropsWithChildren } from 'react';
 
 import type { AxiosError } from 'axios';
-import createUseContext from 'constate';
 import deepEqual from 'deep-equal';
 
 import { useHttp } from '@navikt/familie-http';
@@ -27,7 +26,24 @@ import { sjekkTilgangTilPerson } from '../../utils/commons';
 import { obfuskerFagsak, obfuskerPersonInfo } from '../../utils/obfuskerData';
 import { useApp } from '../AppContext';
 
-const [FagsakProvider, useFagsakContext] = createUseContext(() => {
+interface IFagsakContext {
+    bruker: Ressurs<IPersonInfo>;
+    hentMinimalFagsak: (fagsakId: string | number, påvirkerSystemLaster?: boolean) => void;
+    minimalFagsak: Ressurs<IMinimalFagsak>;
+    settMinimalFagsak: (fagsak: Ressurs<IMinimalFagsak>) => void;
+    hentBruker: (personIdent: string) => void;
+    klagebehandlinger: IKlagebehandling[];
+    klageStatus: RessursStatus;
+    oppdaterKlagebehandlingerPåFagsak: () => void;
+    tilbakekrevingsbehandlinger: ITilbakekrevingsbehandling[];
+    tilbakekrevingStatus: RessursStatus;
+    manuelleBrevmottakerePåFagsak: SkjemaBrevmottaker[];
+    settManuelleBrevmottakerePåFagsak: (brevmottakere: SkjemaBrevmottaker[]) => void;
+}
+
+const FagsakContext = createContext<IFagsakContext | undefined>(undefined);
+
+export const FagsakProvider = (props: PropsWithChildren) => {
     const [minimalFagsak, settMinimalFagsak] =
         React.useState<Ressurs<IMinimalFagsak>>(byggTomRessurs());
 
@@ -145,20 +161,34 @@ const [FagsakProvider, useFagsakContext] = createUseContext(() => {
         settManuelleBrevmottakerePåFagsak,
     });
 
-    return {
-        bruker,
-        hentMinimalFagsak,
-        minimalFagsak,
-        settMinimalFagsak,
-        hentBruker,
-        klagebehandlinger: hentDataFraRessurs(klagebehandlinger) ?? [],
-        klageStatus: klagebehandlinger.status,
-        oppdaterKlagebehandlingerPåFagsak,
-        tilbakekrevingsbehandlinger: hentDataFraRessurs(tilbakekrevingsbehandlinger) ?? [],
-        tilbakekrevingStatus: tilbakekrevingsbehandlinger.status,
-        manuelleBrevmottakerePåFagsak,
-        settManuelleBrevmottakerePåFagsak,
-    };
-});
+    return (
+        <FagsakContext.Provider
+            value={{
+                bruker,
+                hentMinimalFagsak,
+                minimalFagsak,
+                settMinimalFagsak,
+                hentBruker,
+                klagebehandlinger: hentDataFraRessurs(klagebehandlinger) ?? [],
+                klageStatus: klagebehandlinger.status,
+                oppdaterKlagebehandlingerPåFagsak,
+                tilbakekrevingsbehandlinger: hentDataFraRessurs(tilbakekrevingsbehandlinger) ?? [],
+                tilbakekrevingStatus: tilbakekrevingsbehandlinger.status,
+                manuelleBrevmottakerePåFagsak,
+                settManuelleBrevmottakerePåFagsak,
+            }}
+        >
+            {props.children}
+        </FagsakContext.Provider>
+    );
+};
 
-export { FagsakProvider, useFagsakContext };
+export const useFagsakContext = () => {
+    const context = useContext(FagsakContext);
+
+    if (context === undefined) {
+        throw new Error('useFagsakContext må brukes innenfor en FagsakProvider');
+    }
+
+    return context;
+};
