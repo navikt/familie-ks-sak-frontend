@@ -10,18 +10,18 @@ import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Currency } from '@navikt/land-verktoy';
 
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
-import type { IBehandling } from '../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../typer/common';
+import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import type { IBehandling } from '../../../../../../../typer/behandling';
+import type { OptionType } from '../../../../../../../typer/common';
 import {
-    utenlandskPeriodeBeløpIntervaller,
     EøsPeriodeStatus,
     UtenlandskPeriodeBeløpIntervall,
-} from '../../../../../../typer/eøsPerioder';
-import type { IUtenlandskPeriodeBeløp } from '../../../../../../typer/eøsPerioder';
-import EøsPeriodeSkjema from '../EøsPeriode/EøsPeriodeSkjema';
-import { StyledFamilieValutavelger } from '../EøsPeriode/FamilieLandvelger';
-import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsPeriode/fellesKomponenter';
+    utenlandskPeriodeBeløpIntervaller,
+    type IUtenlandskPeriodeBeløp,
+} from '../../../../../../../typer/eøsPerioder';
+import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
+import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
+import { StyledFamilieValutavelger } from '../EøsKomponenter/FamilieLandvelger';
 
 const UtbetaltBeløpRad = styled.div`
     width: 32rem;

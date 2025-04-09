@@ -6,22 +6,23 @@ import type { FeltState } from '@navikt/familie-skjema';
 import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { BehandlingÅrsak, type IBehandling } from '../../typer/behandling';
-import type { OptionType } from '../../typer/common';
+import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
+import type { OptionType } from '../../../../../../../typer/common';
 import type {
+    EøsPeriodeStatus,
     IRestUtenlandskPeriodeBeløp,
     IUtenlandskPeriodeBeløp,
-    EøsPeriodeStatus,
     UtenlandskPeriodeBeløpIntervall,
-} from '../../typer/eøsPerioder';
-import type { IIsoMånedPeriode } from '../../utils/dato';
-import { nyIsoMånedPeriode } from '../../utils/dato';
-import { erBarnGyldig, erEøsPeriodeGyldig, isEmpty, isNumeric } from '../../utils/eøsValidators';
-import { useBehandling } from '../behandlingContext/BehandlingContext';
+} from '../../../../../../../typer/eøsPerioder';
+import { nyIsoMånedPeriode, type IIsoMånedPeriode } from '../../../../../../../utils/dato';
 import {
-    konverterDesimalverdiTilSkjemaVisning,
-    konverterSkjemaverdiTilDesimal,
-} from '../Eøs/EøsContext';
+    erBarnGyldig,
+    erEøsPeriodeGyldig,
+    isEmpty,
+    isNumeric,
+} from '../../../../../../../utils/eøsValidators';
+import { konverterDesimalverdiTilSkjemaVisning, konverterSkjemaverdiTilDesimal } from '../utils';
 
 const erBeløpGyldig = (felt: FeltState<string | undefined>): FeltState<string | undefined> => {
     if (!felt.verdi || isEmpty(felt.verdi) || typeof felt.verdi != 'string') {

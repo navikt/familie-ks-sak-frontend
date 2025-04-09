@@ -10,9 +10,9 @@ import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Country } from '@navikt/land-verktoy';
 
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
-import type { IBehandling } from '../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../typer/common';
+import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import type { IBehandling } from '../../../../../../../typer/behandling';
+import type { OptionType } from '../../../../../../../typer/common';
 import {
     AnnenForelderAktivitet,
     EøsPeriodeStatus,
@@ -20,11 +20,12 @@ import {
     KompetanseResultat,
     kompetanseResultater,
     SøkersAktivitet,
-} from '../../../../../../typer/eøsPerioder';
-import type { IKompetanse, KompetanseAktivitet } from '../../../../../../typer/eøsPerioder';
-import EøsPeriodeSkjema from '../EøsPeriode/EøsPeriodeSkjema';
-import { FamilieLandvelger } from '../EøsPeriode/FamilieLandvelger';
-import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsPeriode/fellesKomponenter';
+    type IKompetanse,
+    type KompetanseAktivitet,
+} from '../../../../../../../typer/eøsPerioder';
+import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
+import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
+import { FamilieLandvelger } from '../EøsKomponenter/FamilieLandvelger';
 
 const kompetansePeriodeFeilmeldingId = (kompetanse: ISkjema<IKompetanse, IBehandling>): string =>
     `kompetanse-periode_${kompetanse.felter.barnIdenter.verdi.map(barn => `${barn}-`)}_${

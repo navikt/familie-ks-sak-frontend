@@ -6,9 +6,8 @@ import { Alert, Heading, Table } from '@navikt/ds-react';
 import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
 
 import ValutakursTabellRad from './ValutakursTabellRad';
-import { useEøs } from '../../../../../../context/Eøs/EøsContext';
-import { BehandlingÅrsak, type IBehandling } from '../../../../../../typer/behandling';
-import type { IRestValutakurs } from '../../../../../../typer/eøsPerioder';
+import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
+import type { IRestValutakurs } from '../../../../../../../typer/eøsPerioder';
 
 const ValutakurserContainer = styled.div`
     margin-top: 5rem;
@@ -39,12 +38,17 @@ const AlertWithBottomMargin = styled(Alert)`
 
 interface IProps {
     valutakurser: IRestValutakurs[];
+    erValutakurserGyldige: () => boolean;
     åpenBehandling: IBehandling;
     visFeilmeldinger: boolean;
 }
 
-const Valutakurser: React.FC<IProps> = ({ valutakurser, åpenBehandling, visFeilmeldinger }) => {
-    const { erValutakurserGyldige } = useEøs();
+const Valutakurser: React.FC<IProps> = ({
+    valutakurser,
+    erValutakurserGyldige,
+    åpenBehandling,
+    visFeilmeldinger,
+}) => {
     return (
         <ValutakurserContainer>
             <Heading spacing size="medium" level="3">

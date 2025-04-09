@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import type { IBehandling } from '../../typer/behandling';
-import type { IRestValutakurs } from '../../typer/eøsPerioder';
-import { EøsPeriodeStatus } from '../../typer/eøsPerioder';
-import { sorterEøsPerioder } from '../Eøs/EøsContext';
+import type { IBehandling } from '../../../../../../../typer/behandling';
+import { EøsPeriodeStatus, type IRestValutakurs } from '../../../../../../../typer/eøsPerioder';
+import { sorterEøsPerioder } from '../utils';
 
 interface IProps {
     åpenBehandling: IBehandling;

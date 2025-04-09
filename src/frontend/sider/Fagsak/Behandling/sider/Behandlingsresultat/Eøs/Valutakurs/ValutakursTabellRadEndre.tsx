@@ -10,15 +10,14 @@ import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Currency } from '@navikt/land-verktoy';
 
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
-import Datovelger from '../../../../../../komponenter/Datovelger/Datovelger';
-import type { IBehandling } from '../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../typer/common';
-import { EøsPeriodeStatus } from '../../../../../../typer/eøsPerioder';
-import type { IValutakurs } from '../../../../../../typer/eøsPerioder';
-import EøsPeriodeSkjema from '../EøsPeriode/EøsPeriodeSkjema';
-import { StyledFamilieValutavelger } from '../EøsPeriode/FamilieLandvelger';
-import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsPeriode/fellesKomponenter';
+import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import Datovelger from '../../../../../../../komponenter/Datovelger/Datovelger';
+import type { IBehandling } from '../../../../../../../typer/behandling';
+import type { OptionType } from '../../../../../../../typer/common';
+import { EøsPeriodeStatus, type IValutakurs } from '../../../../../../../typer/eøsPerioder';
+import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
+import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
+import { StyledFamilieValutavelger } from '../EøsKomponenter/FamilieLandvelger';
 
 const ValutakursRad = styled.div`
     width: 32rem;
