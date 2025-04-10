@@ -48,12 +48,12 @@ const [SøknadProvider, useSøknad] = createUseContext(
         const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
         const { fagsakId } = useSakOgBehandlingParams();
         const navigate = useNavigate();
-        const { bruker, minimalFagsak } = useFagsakContext();
+        const { bruker, minimalFagsakRessurs } = useFagsakContext();
         const [visBekreftModal, settVisBekreftModal] = React.useState<boolean>(false);
 
         const barnMedLøpendeUtbetaling =
-            minimalFagsak.status === RessursStatus.SUKSESS
-                ? hentBarnMedLøpendeUtbetaling(minimalFagsak.data)
+            minimalFagsakRessurs.status === RessursStatus.SUKSESS
+                ? hentBarnMedLøpendeUtbetaling(minimalFagsakRessurs.data)
                 : new Set();
 
         const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<

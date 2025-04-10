@@ -11,7 +11,7 @@ import type { IMinimalFagsak } from '../../typer/fagsak';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../utils/fagsak';
 
 const useFagsakApi = () => {
-    const { settMinimalFagsak } = useFagsakContext();
+    const { settMinimalFagsakRessurs } = useFagsakContext();
     const { request } = useHttp();
 
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ const useFagsakApi = () => {
         })
             .then((response: Ressurs<IMinimalFagsak>) => {
                 if (response.status === RessursStatus.SUKSESS) {
-                    settMinimalFagsak(response);
+                    settMinimalFagsakRessurs(response);
 
                     const aktivBehandling: VisningBehandling | undefined =
                         hentAktivBehandlingPåMinimalFagsak(response.data);

@@ -29,8 +29,8 @@ import { useApp } from '../AppContext';
 interface IFagsakContext {
     bruker: Ressurs<IPersonInfo>;
     hentMinimalFagsak: (fagsakId: string | number, påvirkerSystemLaster?: boolean) => void;
-    minimalFagsak: Ressurs<IMinimalFagsak>;
-    settMinimalFagsak: (fagsak: Ressurs<IMinimalFagsak>) => void;
+    minimalFagsakRessurs: Ressurs<IMinimalFagsak>;
+    settMinimalFagsakRessurs: (fagsak: Ressurs<IMinimalFagsak>) => void;
     hentBruker: (personIdent: string) => void;
     klagebehandlinger: IKlagebehandling[];
     klageStatus: RessursStatus;
@@ -44,7 +44,7 @@ interface IFagsakContext {
 const FagsakContext = createContext<IFagsakContext | undefined>(undefined);
 
 export const FagsakProvider = (props: PropsWithChildren) => {
-    const [minimalFagsak, settMinimalFagsak] =
+    const [minimalFagsakRessurs, settMinimalFagsakRessurs] =
         React.useState<Ressurs<IMinimalFagsak>>(byggTomRessurs());
 
     const [bruker, settBruker] = React.useState<Ressurs<IPersonInfo>>(byggTomRessurs());
@@ -66,7 +66,7 @@ export const FagsakProvider = (props: PropsWithChildren) => {
 
     const hentMinimalFagsak = (fagsakId: string | number, påvirkerSystemLaster = true): void => {
         if (påvirkerSystemLaster) {
-            settMinimalFagsak(byggHenterRessurs());
+            settMinimalFagsakRessurs(byggHenterRessurs());
         }
 
         request<void, IMinimalFagsak>({
@@ -75,15 +75,15 @@ export const FagsakProvider = (props: PropsWithChildren) => {
             påvirkerSystemLaster,
         })
             .then((hentetFagsak: Ressurs<IMinimalFagsak>) => {
-                if (påvirkerSystemLaster || !deepEqual(hentetFagsak, minimalFagsak)) {
+                if (påvirkerSystemLaster || !deepEqual(hentetFagsak, minimalFagsakRessurs)) {
                     if (skalObfuskereData()) {
                         obfuskerFagsak(hentetFagsak);
                     }
-                    settMinimalFagsak(hentetFagsak);
+                    settMinimalFagsakRessurs(hentetFagsak);
                 }
             })
             .catch((_error: AxiosError) => {
-                settMinimalFagsak(byggFeiletRessurs('Ukjent ved innhenting av fagsak'));
+                settMinimalFagsakRessurs(byggFeiletRessurs('Ukjent ved innhenting av fagsak'));
             });
     };
 
@@ -132,7 +132,7 @@ export const FagsakProvider = (props: PropsWithChildren) => {
     };
 
     const oppdaterKlagebehandlingerPåFagsak = () => {
-        const fagsakId = hentDataFraRessurs(minimalFagsak)?.id;
+        const fagsakId = hentDataFraRessurs(minimalFagsakRessurs)?.id;
 
         if (fagsakId) {
             request<void, IKlagebehandling[]>({
@@ -144,7 +144,7 @@ export const FagsakProvider = (props: PropsWithChildren) => {
     };
 
     const oppdaterTilbakekrevingsbehandlingerPåFagsak = () => {
-        const fagsakId = hentDataFraRessurs(minimalFagsak)?.id;
+        const fagsakId = hentDataFraRessurs(minimalFagsakRessurs)?.id;
 
         hentTilbakekrevingsbehandlinger(fagsakId).then(tilbakekrevingsbehandlingerRessurs =>
             settTilbakekrevingsbehandlinger(tilbakekrevingsbehandlingerRessurs)
@@ -152,7 +152,7 @@ export const FagsakProvider = (props: PropsWithChildren) => {
     };
 
     useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg({
-        minimalFagsak,
+        minimalFagsakRessurs,
         settBruker,
         oppdaterBrukerHvisFagsakEndres,
         bruker,
@@ -166,8 +166,8 @@ export const FagsakProvider = (props: PropsWithChildren) => {
             value={{
                 bruker,
                 hentMinimalFagsak,
-                minimalFagsak,
-                settMinimalFagsak,
+                minimalFagsakRessurs,
+                settMinimalFagsakRessurs,
                 hentBruker,
                 klagebehandlinger: hentDataFraRessurs(klagebehandlinger) ?? [],
                 klageStatus: klagebehandlinger.status,
