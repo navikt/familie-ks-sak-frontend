@@ -12,6 +12,7 @@ import type { IDokumentInfo, Ressurs } from '@navikt/familie-typer';
 import {
     byggFeiletRessurs,
     byggHenterRessurs,
+    byggSuksessRessurs,
     byggTomRessurs,
     hentDataFraRessurs,
     Journalstatus,
@@ -24,7 +25,6 @@ import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBeha
 import useFagsakApi from '../sider/Fagsak/useFagsakApi';
 import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
 import type { IBehandlingstema } from '../typer/behandlingstema';
-import type { IMinimalFagsak } from '../typer/fagsak';
 import {
     type Journalføringsbehandling,
     opprettJournalføringsbehandlingFraKontantstøttebehandling,
@@ -49,6 +49,7 @@ import type { Tilbakekrevingsbehandlingstype } from '../typer/tilbakekrevingsbeh
 import { ToggleNavn } from '../typer/toggles';
 import { isoStringTilDate } from '../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../utils/fagsak';
+import { useFagsakContext } from './fagsak/FagsakContext';
 
 interface ManuellJournalføringSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
@@ -73,7 +74,8 @@ const [ManuellJournalføringProvider, useManuellJournalføringContext] = createU
 
     const { hentForhåndsvisning, nullstillDokument, hentetDokument } = useDokument();
 
-    const [minimalFagsak, settMinimalFagsak] = useState<IMinimalFagsak | undefined>(undefined);
+    //const [minimalFagsak, settMinimalFagsak] = useState<IMinimalFagsak | undefined>(undefined);
+    const { minimalFagsak, settMinimalFagsakRessurs } = useFagsakContext();
     const [klagebehandlinger, settKlagebehandlinger] =
         useState<Ressurs<IKlagebehandling[]>>(byggTomRessurs());
 
@@ -216,7 +218,9 @@ const [ManuellJournalføringProvider, useManuellJournalføringContext] = createU
             skjema.felter.bruker.validerOgSettFelt(dataForManuellJournalføring.data.person);
 
             if (dataForManuellJournalføring.data.minimalFagsak) {
-                settMinimalFagsak(dataForManuellJournalføring.data.minimalFagsak);
+                settMinimalFagsakRessurs(
+                    byggSuksessRessurs(dataForManuellJournalføring.data.minimalFagsak)
+                );
             }
         }
     }, [dataForManuellJournalføring]);
@@ -257,9 +261,9 @@ const [ManuellJournalføringProvider, useManuellJournalføringContext] = createU
         const restFagsak = await hentFagsakForPerson(hentetPerson.data.personIdent);
         skjema.felter.bruker.validerOgSettFelt(hentetPerson.data);
         if (restFagsak.status === RessursStatus.SUKSESS && restFagsak.data) {
-            settMinimalFagsak(restFagsak.data);
+            settMinimalFagsakRessurs(byggSuksessRessurs(restFagsak.data));
         } else {
-            settMinimalFagsak(undefined);
+            settMinimalFagsakRessurs(byggTomRessurs());
         }
         return '';
     };
