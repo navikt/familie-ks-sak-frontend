@@ -23,7 +23,7 @@ import {
     Sorteringsnøkkel,
 } from './OppgaverContextUtils';
 import { AlertType, ToastTyper } from '../komponenter/Toast/typer';
-import useFagsakApi from '../sider/Fagsak/useFagsakApi';
+import { useopprettEllerHentFagsak } from '../sider/Fagsak/useOpprettEllerHentFagsak';
 import type { IOppgaveFelt, IOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
 import { initialOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
 import type { IMinimalFagsak } from '../typer/fagsak';
@@ -190,8 +190,6 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
         settOppgaveFelter(initialOppgaveFelter(innloggetSaksbehandler));
     };
 
-    const { opprettEllerHentFagsak } = useFagsakApi();
-
     const fordelOppgave = (oppgave: IOppgave, saksbehandler: string) => {
         request<void, string>({
             method: 'POST',
@@ -212,7 +210,7 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
                             // tilbakekreving
                             gåTilTilbakekreving(oppgave);
                         } else if (oppgave.aktoerId) {
-                            opprettEllerHentFagsak({
+                            useopprettEllerHentFagsak({
                                 personIdent: null,
                                 aktørId: oppgave.aktoerId,
                             });
