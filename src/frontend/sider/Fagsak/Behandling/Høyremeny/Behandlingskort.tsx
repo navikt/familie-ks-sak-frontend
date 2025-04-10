@@ -14,7 +14,6 @@ import {
     ATextDanger,
     ATextDefault,
 } from '@navikt/ds-tokens/dist/tokens';
-import { hentDataFraRessurs } from '@navikt/familie-typer';
 
 import Informasjonsbolk from './Informasjonsbolk';
 import { useFagsakContext } from '../../../../context/fagsak/FagsakContext';
@@ -96,7 +95,7 @@ const StyledHr = styled.hr`
 `;
 
 const Behandlingskort: React.FC<IBehandlingskortProps> = ({ åpenBehandling }) => {
-    const minimalFagsak = hentDataFraRessurs(useFagsakContext().minimalFagsakRessurs);
+    const { minimalFagsak } = useFagsakContext();
     const behandlinger = minimalFagsak?.behandlinger ?? [];
 
     const antallBehandlinger = behandlinger.length;
