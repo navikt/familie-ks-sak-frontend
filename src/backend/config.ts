@@ -51,9 +51,9 @@ const env = Environment();
 export const sessionConfig: ISessionKonfigurasjon = {
     cookieSecret: [`${process.env.COOKIE_KEY1}`, `${process.env.COOKIE_KEY2}`],
     navn: 'familie-ks-sak-v1',
-    redisFullUrl: process.env.REDIS_URI_SESSIONS,
-    redisBrukernavn: process.env.REDIS_USERNAME_SESSIONS,
-    redisPassord: process.env.REDIS_PASSWORD_SESSIONS,
+    redisFullUrl: process.env.VALKEY_URI_SESSIONS,
+    redisBrukernavn: process.env.VALKEY_USERNAME_SESSIONS,
+    redisPassord: process.env.VALKEY_PASSWORD_SESSIONS,
     secureCookie: !(
         process.env.ENV === 'local' ||
         process.env.ENV === 'lokalt-mot-preprod' ||
