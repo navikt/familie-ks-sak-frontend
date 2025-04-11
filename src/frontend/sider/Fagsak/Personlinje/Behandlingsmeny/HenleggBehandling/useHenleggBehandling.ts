@@ -16,7 +16,7 @@ const useHenleggBehandling = (lukkModal: () => void) => {
     const [begrunnelse, settBegrunnelse] = useState('');
     const [årsak, settÅrsak] = useState('');
     const { settÅpenBehandling } = useBehandling();
-    const { minimalFagsak } = useFagsakContext();
+    const { minimalFagsakRessurs } = useFagsakContext();
 
     const { onSubmit, skjema, nullstillSkjema } = useSkjema<
         {
@@ -59,8 +59,8 @@ const useHenleggBehandling = (lukkModal: () => void) => {
 
     const hentSkjemaData = (): IManueltBrevRequestPåBehandling => ({
         mottakerIdent:
-            minimalFagsak.status === RessursStatus.SUKSESS
-                ? minimalFagsak.data.søkerFødselsnummer
+            minimalFagsakRessurs.status === RessursStatus.SUKSESS
+                ? minimalFagsakRessurs.data.søkerFødselsnummer
                 : '',
         multiselectVerdier: [],
         brevmal: Brevmal.HENLEGGE_TRUKKET_SØKNAD,
