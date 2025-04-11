@@ -3,7 +3,7 @@ import React from 'react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { IDokumentInfo, ILogiskVedlegg } from '@navikt/familie-typer';
 
-import { useManuellJournalføringContext } from '../../../context/ManuellJournalførContext';
+import { useManuellJournalførContext } from '../../../context/ManuellJournalførContext';
 import type { OptionType } from '../../../typer/common';
 import { BrevkodeMap, DokumentTittel } from '../../../typer/manuell-journalføring';
 import { journalpostTittelList } from '../Journalpost';
@@ -26,7 +26,7 @@ interface IProps {
 }
 
 export const EndreDokumentInfoPanel: React.FC<IProps> = ({ dokument, visFeilmeldinger }) => {
-    const { skjema, erLesevisning } = useManuellJournalføringContext();
+    const { skjema, erLesevisning } = useManuellJournalførContext();
 
     const dokumentFraSkjema: IDokumentInfo | undefined = skjema.felter.dokumenter.verdi.find(
         findDokument => findDokument.dokumentInfoId === dokument.dokumentInfoId

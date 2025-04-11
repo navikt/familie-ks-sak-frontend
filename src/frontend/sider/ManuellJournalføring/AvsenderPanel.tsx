@@ -7,7 +7,7 @@ import { BodyShort, Checkbox, ExpansionCard, TextField } from '@navikt/ds-react'
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
 import { DeltagerInfo } from './DeltagerInfo';
-import { useManuellJournalføringContext } from '../../context/ManuellJournalførContext';
+import { useManuellJournalførContext } from '../../context/ManuellJournalførContext';
 import { EmailIkon } from '../../ikoner/EmailIkon';
 import { formaterIdent } from '../../utils/formatter';
 
@@ -25,7 +25,7 @@ const StyledExpansionCard = styled(ExpansionCard)`
 
 export const AvsenderPanel: React.FC = () => {
     const { skjema, erLesevisning, settAvsenderLikBruker, tilbakestillAvsender } =
-        useManuellJournalføringContext();
+        useManuellJournalførContext();
     const [åpen, settÅpen] = useState(false);
     const [brukerErAvsender, settBrukerErAvsender] = useState(false);
 

@@ -6,7 +6,7 @@ import { BodyShort, ExpansionCard, Heading } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useManuellJournalføringContext } from '../../context/ManuellJournalførContext';
+import { useManuellJournalførContext } from '../../context/ManuellJournalførContext';
 import { JournalpostTittel } from '../../typer/manuell-journalføring';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 
@@ -23,7 +23,7 @@ const JournalpostMetadataDiv = styled.div`
 `;
 
 const EndreJournalpost: React.FC = () => {
-    const { skjema, erLesevisning } = useManuellJournalføringContext();
+    const { skjema, erLesevisning } = useManuellJournalførContext();
 
     return (
         <FamilieReactSelect
@@ -55,7 +55,7 @@ const EndreJournalpost: React.FC = () => {
 };
 
 const Journalpost: React.FC = () => {
-    const { dataForManuellJournalføring, skjema } = useManuellJournalføringContext();
+    const { dataForManuellJournalføring, skjema } = useManuellJournalførContext();
     const datoMottatt =
         dataForManuellJournalføring.status === RessursStatus.SUKSESS
             ? dataForManuellJournalføring.data.journalpost.datoMottatt

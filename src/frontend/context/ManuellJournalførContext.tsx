@@ -1,12 +1,23 @@
-import { useEffect, useState } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+    type PropsWithChildren,
+} from 'react';
 
 import type { AxiosError } from 'axios';
-import createUseContext from 'constate';
 import { differenceInMilliseconds } from 'date-fns';
 import { useNavigate, useParams } from 'react-router';
 
 import { useHttp } from '@navikt/familie-http';
-import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import type {
+    Avhengigheter,
+    FeiloppsummeringFeil,
+    Felt,
+    FeltState,
+    ISkjema,
+} from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { IDokumentInfo, Ressurs } from '@navikt/familie-typer';
 import {
@@ -64,7 +75,32 @@ interface ManuellJournalføringSkjemaFelter {
     samhandler: ISamhandlerInfo | null;
 }
 
-const [ManuellJournalføringProvider, useManuellJournalføringContext] = createUseContext(() => {
+interface IManuellJournalførContext {
+    dataForManuellJournalføring: Ressurs<IDataForManuellJournalføring>;
+    hentetDokument: Ressurs<string>;
+    endreBruker: (personIdent: string) => Promise<string>;
+    erLesevisning: () => boolean;
+    minimalFagsak: IMinimalFagsak | undefined;
+    hentAktivBehandlingForJournalføring: () => VisningBehandling | undefined;
+    hentFeilTilOppsummering: () => FeiloppsummeringFeil[];
+    hentSorterteJournalføringsbehandlinger: () => Journalføringsbehandling[];
+    journalfør: () => void;
+    knyttTilNyBehandling: Felt<boolean>;
+    nullstillSkjema: () => void;
+    skjema: ISkjema<ManuellJournalføringSkjemaFelter, string>;
+    tilbakestillData: () => void;
+    valgtDokumentId: string | undefined;
+    velgOgHentDokumentData: (dokumentInfoId: string) => void;
+    settAvsenderLikBruker: () => void;
+    tilbakestillAvsender: () => void;
+    lukkOppgaveOgKnyttJournalpostTilBehandling: () => void;
+    kanKnytteJournalpostTilBehandling: () => boolean;
+    klageStatus: RessursStatus;
+}
+
+const ManuellJournalførContext = createContext<IManuellJournalførContext | undefined>(undefined);
+
+export const ManuellJournalførProvider = (props: PropsWithChildren) => {
     const { innloggetSaksbehandler, toggles } = useApp();
     const { hentFagsakForPerson } = useFagsakContext();
     const navigate = useNavigate();
@@ -573,28 +609,44 @@ const [ManuellJournalføringProvider, useManuellJournalføringContext] = createU
         }
     };
 
-    return {
-        dataForManuellJournalføring,
-        hentetDokument,
-        endreBruker,
-        erLesevisning,
-        minimalFagsak,
-        hentAktivBehandlingForJournalføring,
-        hentFeilTilOppsummering,
-        hentSorterteJournalføringsbehandlinger,
-        journalfør,
-        knyttTilNyBehandling,
-        nullstillSkjema,
-        skjema,
-        tilbakestillData,
-        valgtDokumentId,
-        velgOgHentDokumentData,
-        settAvsenderLikBruker,
-        tilbakestillAvsender,
-        lukkOppgaveOgKnyttJournalpostTilBehandling,
-        kanKnytteJournalpostTilBehandling,
-        klageStatus: klagebehandlinger.status,
-    };
-});
+    return (
+        <ManuellJournalførContext.Provider
+            value={{
+                dataForManuellJournalføring,
+                hentetDokument,
+                endreBruker,
+                erLesevisning,
+                minimalFagsak,
+                hentAktivBehandlingForJournalføring,
+                hentFeilTilOppsummering,
+                hentSorterteJournalføringsbehandlinger,
+                journalfør,
+                knyttTilNyBehandling,
+                nullstillSkjema,
+                skjema,
+                tilbakestillData,
+                valgtDokumentId,
+                velgOgHentDokumentData,
+                settAvsenderLikBruker,
+                tilbakestillAvsender,
+                lukkOppgaveOgKnyttJournalpostTilBehandling,
+                kanKnytteJournalpostTilBehandling,
+                klageStatus: klagebehandlinger.status,
+            }}
+        >
+            {props.children}
+        </ManuellJournalførContext.Provider>
+    );
+};
 
-export { ManuellJournalføringProvider, useManuellJournalføringContext };
+export const useManuellJournalførContext = () => {
+    const context = useContext(ManuellJournalførContext);
+
+    if (context === undefined) {
+        throw new Error(
+            'useManuellJournalførContext må brukes innenfor en ManuellJournalførProvider'
+        );
+    }
+
+    return context;
+};
