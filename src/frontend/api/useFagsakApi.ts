@@ -1,8 +1,8 @@
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import type { IOpprettEllerHentFagsakData } from '../../api/fagsak';
-import type { IMinimalFagsak } from '../../typer/fagsak';
+import type { IOpprettEllerHentFagsakData } from './fagsak';
+import type { IMinimalFagsak } from '../typer/fagsak';
 
 const useFagsakApi = () => {
     const { request } = useHttp();

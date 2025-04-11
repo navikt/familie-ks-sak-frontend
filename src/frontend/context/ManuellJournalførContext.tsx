@@ -19,9 +19,9 @@ import {
 } from '@navikt/familie-typer';
 
 import { useApp } from './AppContext';
+import useFagsakApi from '../api/useFagsakApi';
 import useDokument from '../hooks/useDokument';
 import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
-import useFagsakApi from '../sider/Fagsak/useFagsakApi';
 import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
 import type { IBehandlingstema } from '../typer/behandlingstema';
 import type { IMinimalFagsak } from '../typer/fagsak';

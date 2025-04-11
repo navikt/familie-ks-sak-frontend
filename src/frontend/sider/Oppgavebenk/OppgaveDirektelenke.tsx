@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router';
 import { Button, Loader } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import useFagsakApi from '../../api/useFagsakApi';
 import { useApp } from '../../context/AppContext';
 import { AlertType, ToastTyper } from '../../komponenter/Toast/typer';
 import type { IOppgave } from '../../typer/oppgave';
 import { oppgaveTypeFilter, OppgavetypeFilter } from '../../typer/oppgave';
 import { hentFnrFraOppgaveIdenter } from '../../utils/oppgave';
-import useFagsakApi from '../Fagsak/useFagsakApi';
 
 interface IOppgaveDirektelenke {
     oppgave: IOppgave;

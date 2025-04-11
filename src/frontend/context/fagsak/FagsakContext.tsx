@@ -15,9 +15,9 @@ import {
 } from '@navikt/familie-typer';
 
 import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
+import useFagsakApi from '../../api/useFagsakApi';
 import { useTilbakekrevingApi } from '../../api/useTilbakekrevingApi';
 import type { SkjemaBrevmottaker } from '../../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
-import useFagsakApi from '../../sider/Fagsak/useFagsakApi';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import type { IKlagebehandling } from '../../typer/klage';
 import type { IPersonInfo } from '../../typer/person';
