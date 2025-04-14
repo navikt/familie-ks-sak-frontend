@@ -7,12 +7,12 @@ import { Journalstatus, RessursStatus } from '@navikt/familie-typer';
 
 import { DokumentPanel } from './Dokument/DokumentPanel';
 import { JournalpostSkjema } from './JournalpostSkjema';
+import { fagsakHeaderHøydeRem } from '../../typer/styling';
+import Personlinje from '../Fagsak/Personlinje/Personlinje';
 import {
     ManuellJournalførProvider,
     useManuellJournalførContext,
-} from '../../context/ManuellJournalførContext';
-import { fagsakHeaderHøydeRem } from '../../typer/styling';
-import Personlinje from '../Fagsak/Personlinje/Personlinje';
+} from '../ManuellJournalfør/ManuellJournalførContext';
 
 const ToKolonnerDiv = styled.div<{ $viserAlert?: boolean }>`
     display: grid;

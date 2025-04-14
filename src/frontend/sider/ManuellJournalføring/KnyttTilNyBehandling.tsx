@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { Checkbox, Fieldset, Heading } from '@navikt/ds-react';
 import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
-import { useManuellJournalførContext } from '../../context/ManuellJournalførContext';
 import { BehandlingstemaSelect } from '../../komponenter/BehandlingstemaSelect';
 import BehandlingstypeFelt from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingstypeFelt';
 import { BehandlingårsakFelt } from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingsårsakFelt';
+import { useManuellJournalførContext } from '../ManuellJournalfør/ManuellJournalførContext';
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: ${ASpacing8};

@@ -29,37 +29,36 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { useApp } from './AppContext';
-import { useFagsakContext } from './fagsak/FagsakContext';
-import useDokument from '../hooks/useDokument';
-import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
-import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
-import type { IBehandlingstema } from '../typer/behandlingstema';
-import type { IMinimalFagsak } from '../typer/fagsak';
+import { useApp } from '../../context/AppContext';
+import { useFagsakContext } from '../../context/fagsak/FagsakContext';
+import useDokument from '../../hooks/useDokument';
+import { Behandlingstype, BehandlingÅrsak } from '../../typer/behandling';
+import type { IBehandlingstema } from '../../typer/behandlingstema';
+import type { IMinimalFagsak } from '../../typer/fagsak';
 import {
-    type Journalføringsbehandling,
-    opprettJournalføringsbehandlingFraKontantstøttebehandling,
     opprettJournalføringsbehandlingFraKlagebehandling,
-} from '../typer/journalføringsbehandling';
-import { Klagebehandlingstype, type IKlagebehandling } from '../typer/klage';
-import type {
-    IDataForManuellJournalføring,
-    IRestJournalføring,
-    TilknyttetBehandling,
-} from '../typer/manuell-journalføring';
-import { JournalpostKanal } from '../typer/manuell-journalføring';
+    opprettJournalføringsbehandlingFraKontantstøttebehandling,
+    type Journalføringsbehandling,
+} from '../../typer/journalføringsbehandling';
+import { Klagebehandlingstype, type IKlagebehandling } from '../../typer/klage';
+import {
+    JournalpostKanal,
+    type IDataForManuellJournalføring,
+    type IRestJournalføring,
+    type TilknyttetBehandling,
+} from '../../typer/manuell-journalføring';
 import {
     finnBehandlingstemaFraOppgave,
+    OppgavetypeFilter,
     type IRestLukkOppgaveOgKnyttJournalpost,
-} from '../typer/oppgave';
-import { OppgavetypeFilter } from '../typer/oppgave';
-import type { IPersonInfo } from '../typer/person';
-import { Adressebeskyttelsegradering } from '../typer/person';
-import type { ISamhandlerInfo } from '../typer/samhandler';
-import type { Tilbakekrevingsbehandlingstype } from '../typer/tilbakekrevingsbehandling';
-import { ToggleNavn } from '../typer/toggles';
-import { isoStringTilDate } from '../utils/dato';
-import { hentAktivBehandlingPåMinimalFagsak } from '../utils/fagsak';
+} from '../../typer/oppgave';
+import { Adressebeskyttelsegradering, type IPersonInfo } from '../../typer/person';
+import type { ISamhandlerInfo } from '../../typer/samhandler';
+import type { Tilbakekrevingsbehandlingstype } from '../../typer/tilbakekrevingsbehandling';
+import { ToggleNavn } from '../../typer/toggles';
+import { isoStringTilDate } from '../../utils/dato';
+import { hentAktivBehandlingPåMinimalFagsak } from '../../utils/fagsak';
+import type { VisningBehandling } from '../Fagsak/Saksoversikt/visningBehandling';
 
 interface ManuellJournalføringSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';

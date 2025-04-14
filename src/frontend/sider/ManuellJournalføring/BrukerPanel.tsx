@@ -6,10 +6,10 @@ import { Button, ExpansionCard, TextField } from '@navikt/ds-react';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
 
 import { DeltagerInfo } from './DeltagerInfo';
-import { useManuellJournalførContext } from '../../context/ManuellJournalførContext';
 import { KontoSirkel } from '../../ikoner/KontoSirkel';
 import { formaterIdent } from '../../utils/formatter';
 import { identValidator } from '../../utils/validators';
+import { useManuellJournalførContext } from '../ManuellJournalfør/ManuellJournalførContext';
 
 const FlexDiv = styled.div`
     display: flex;

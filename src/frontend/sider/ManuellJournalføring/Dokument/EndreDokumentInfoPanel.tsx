@@ -3,9 +3,9 @@ import React from 'react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { IDokumentInfo, ILogiskVedlegg } from '@navikt/familie-typer';
 
-import { useManuellJournalførContext } from '../../../context/ManuellJournalførContext';
 import type { OptionType } from '../../../typer/common';
 import { BrevkodeMap, DokumentTittel } from '../../../typer/manuell-journalføring';
+import { useManuellJournalførContext } from '../../ManuellJournalfør/ManuellJournalførContext';
 import { journalpostTittelList } from '../Journalpost';
 
 const dokumentTittelList = Object.keys(DokumentTittel).map((_, index) => {

@@ -7,7 +7,6 @@ import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
 import { KnyttTilNyBehandling } from './KnyttTilNyBehandling';
 import { useApp } from '../../context/AppContext';
-import { useManuellJournalførContext } from '../../context/ManuellJournalførContext';
 import { behandlingsstatuser, BehandlingStatus, behandlingstyper } from '../../typer/behandling';
 import { finnVisningstekstForJournalføringsbehandlingsårsak } from '../../typer/journalføringsbehandling';
 import { ToggleNavn } from '../../typer/toggles';
@@ -15,6 +14,7 @@ import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../utils/fagsak';
 import { ressursHarFeilet } from '../../utils/ressursUtils';
 import type { VisningBehandling } from '../Fagsak/Saksoversikt/visningBehandling';
+import { useManuellJournalførContext } from '../ManuellJournalfør/ManuellJournalførContext';
 
 const KnyttDiv = styled.div`
     margin-top: 20px;

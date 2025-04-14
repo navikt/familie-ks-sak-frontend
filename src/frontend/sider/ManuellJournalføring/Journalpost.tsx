@@ -6,9 +6,9 @@ import { BodyShort, ExpansionCard, Heading } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useManuellJournalførContext } from '../../context/ManuellJournalførContext';
 import { JournalpostTittel } from '../../typer/manuell-journalføring';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
+import { useManuellJournalførContext } from '../ManuellJournalfør/ManuellJournalførContext';
 
 export const journalpostTittelList = Object.keys(JournalpostTittel).map((_, index) => {
     return {
