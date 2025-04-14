@@ -74,7 +74,7 @@ interface ManuellJournalføringSkjemaFelter {
     samhandler: ISamhandlerInfo | null;
 }
 
-interface IManuellJournalføringContext {
+interface ManuellJournalføringContextValue {
     dataForManuellJournalføring: Ressurs<IDataForManuellJournalføring>;
     hentetDokument: Ressurs<string>;
     endreBruker: (personIdent: string) => Promise<string>;
@@ -97,7 +97,7 @@ interface IManuellJournalføringContext {
     klageStatus: RessursStatus;
 }
 
-const ManuellJournalføringContext = createContext<IManuellJournalføringContext | undefined>(
+const ManuellJournalføringContext = createContext<ManuellJournalføringContextValue | undefined>(
     undefined
 );
 
