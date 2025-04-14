@@ -6,10 +6,10 @@ import { Button, ExpansionCard, TextField } from '@navikt/ds-react';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
 
 import { DeltagerInfo } from './DeltagerInfo';
+import { useManuellJournalføringContext } from './ManuellJournalførContext';
 import { KontoSirkel } from '../../ikoner/KontoSirkel';
 import { formaterIdent } from '../../utils/formatter';
 import { identValidator } from '../../utils/validators';
-import { useManuellJournalførContext } from '../ManuellJournalfør/ManuellJournalførContext';
 
 const FlexDiv = styled.div`
     display: flex;
@@ -35,7 +35,7 @@ const StyledExpansionContent = styled(ExpansionCard.Content)`
 `;
 
 export const BrukerPanel: React.FC = () => {
-    const { skjema, endreBruker, erLesevisning } = useManuellJournalførContext();
+    const { skjema, endreBruker, erLesevisning } = useManuellJournalføringContext();
     const [åpen, settÅpen] = useState(false);
     const [feilMelding, settFeilMelding] = useState<string | undefined>('');
     const [spinner, settSpinner] = useState(false);

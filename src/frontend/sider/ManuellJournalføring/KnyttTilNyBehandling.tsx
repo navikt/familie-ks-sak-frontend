@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { Checkbox, Fieldset, Heading } from '@navikt/ds-react';
 import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
+import { useManuellJournalføringContext } from './ManuellJournalførContext';
 import { BehandlingstemaSelect } from '../../komponenter/BehandlingstemaSelect';
 import BehandlingstypeFelt from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingstypeFelt';
 import { BehandlingårsakFelt } from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingsårsakFelt';
-import { useManuellJournalførContext } from '../ManuellJournalfør/ManuellJournalførContext';
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: ${ASpacing8};
@@ -21,7 +21,7 @@ const StyledFieldset = styled(Fieldset)`
  */
 export const KnyttTilNyBehandling: React.FC = () => {
     const { skjema, minimalFagsak, kanKnytteJournalpostTilBehandling } =
-        useManuellJournalførContext();
+        useManuellJournalføringContext();
     const { knyttTilNyBehandling, behandlingstype, behandlingstema } = skjema.felter;
     return (
         <StyledFieldset legend="Knytt til ny behandling" hideLegend>

@@ -12,10 +12,10 @@ import { BrukerPanel } from './BrukerPanel';
 import { Dokumenter } from './Dokument/Dokumenter';
 import Journalpost from './Journalpost';
 import { KnyttJournalpostTilBehandling } from './KnyttJournalpostTilBehandling';
+import { useManuellJournalføringContext } from './ManuellJournalførContext';
 import Knapperekke from '../../komponenter/Knapperekke';
 import { oppgaveTypeFilter } from '../../typer/oppgave';
 import type { OppgavetypeFilter } from '../../typer/oppgave';
-import { useManuellJournalførContext } from '../ManuellJournalfør/ManuellJournalførContext';
 
 const Container = styled.div`
     padding: 2rem;
@@ -35,7 +35,7 @@ export const JournalpostSkjema: React.FC = () => {
         erLesevisning,
         lukkOppgaveOgKnyttJournalpostTilBehandling,
         kanKnytteJournalpostTilBehandling,
-    } = useManuellJournalførContext();
+    } = useManuellJournalføringContext();
 
     const navigate = useNavigate();
 
