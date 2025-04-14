@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Checkbox, Fieldset, Heading } from '@navikt/ds-react';
 import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
-import { useManuellJournalføringContext } from './ManuellJournalførContext';
+import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 import { BehandlingstemaSelect } from '../../komponenter/BehandlingstemaSelect';
 import BehandlingstypeFelt from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingstypeFelt';
 import { BehandlingårsakFelt } from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingsårsakFelt';

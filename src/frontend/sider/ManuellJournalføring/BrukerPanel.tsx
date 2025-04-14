@@ -6,7 +6,7 @@ import { Button, ExpansionCard, TextField } from '@navikt/ds-react';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
 
 import { DeltagerInfo } from './DeltagerInfo';
-import { useManuellJournalføringContext } from './ManuellJournalførContext';
+import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 import { KontoSirkel } from '../../ikoner/KontoSirkel';
 import { formaterIdent } from '../../utils/formatter';
 import { identValidator } from '../../utils/validators';
