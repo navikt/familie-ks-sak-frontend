@@ -18,7 +18,7 @@ export interface Barnehagebarn {
     ident: string;
     fom: string;
     tom?: string;
-    antallTimerBarnehage?: number;
+    antallTimerIBarnehage?: number;
     endringstype: string;
     kommuneNavn: string;
     kommuneNr: string;

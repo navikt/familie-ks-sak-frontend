@@ -23,7 +23,7 @@ import {
     Sorteringsnøkkel,
 } from './OppgaverContextUtils';
 import { AlertType, ToastTyper } from '../komponenter/Toast/typer';
-import useFagsakApi from '../sider/Fagsak/useFagsakApi';
+import { useOpprettEllerHentFagsak } from '../sider/Fagsak/useOpprettEllerHentFagsak';
 import type { IOppgaveFelt, IOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
 import { initialOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
 import type { IMinimalFagsak } from '../typer/fagsak';
@@ -52,6 +52,7 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
     const navigate = useNavigate();
     const { innloggetSaksbehandler, settToast } = useApp();
     const { request } = useHttp();
+    const { opprettEllerHentFagsak } = useOpprettEllerHentFagsak();
 
     const [hentOppgaverVedSidelast, settHentOppgaverVedSidelast] = useState(true);
     const [side, settSide] = useState<number>(1);
@@ -189,15 +190,6 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
         tilbakestillOppgaveFeltILocalStorage();
         settOppgaveFelter(initialOppgaveFelter(innloggetSaksbehandler));
     };
-
-    const { opprettEllerHentFagsak } = useFagsakApi(
-        _ => {
-            'Feilmelding';
-        },
-        _ => {
-            'Feilmelding';
-        }
-    );
 
     const fordelOppgave = (oppgave: IOppgave, saksbehandler: string) => {
         request<void, string>({
