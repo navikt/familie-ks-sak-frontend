@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import constate from 'constate';
 import { isAfter } from 'date-fns';
 
-import { useHttp } from '@navikt/familie-http';
+import { useHttp, type FamilieRequestConfig } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
-import type { Avhengigheter } from '@navikt/familie-skjema';
+import type { Avhengigheter, FeiloppsummeringFeil, ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
@@ -15,11 +14,34 @@ import type { ISimuleringDTO, ISimuleringPeriode, ITilbakekreving } from '../typ
 import { Tilbakekrevingsvalg } from '../typer/simulering';
 import { isoStringTilDateMedFallback, tidenesMorgen } from '../utils/dato';
 
-interface IProps {
+interface IProps extends React.PropsWithChildren {
     åpenBehandling: IBehandling;
 }
 
-const [SimuleringProvider, useSimulering] = constate(({ åpenBehandling }: IProps) => {
+interface ITilbakekrevingsskjema {
+    tilbakekrevingsvalg: Tilbakekrevingsvalg | undefined;
+    fritekstVarsel: string;
+    begrunnelse: string;
+}
+
+interface ISimuleringContext {
+    simuleringsresultat: Ressurs<ISimuleringDTO>;
+    tilbakekrevingSkjema: ISkjema<ITilbakekrevingsskjema, IBehandling>;
+    onSubmit: <SkjemaData>(
+        requestConfig: FamilieRequestConfig<SkjemaData>,
+        onSuccess: (ressurs: Ressurs<IBehandling>) => void,
+        onError?: (ressurs: Ressurs<IBehandling>) => void
+    ) => void;
+    hentFeilTilOppsummering: () => FeiloppsummeringFeil[];
+    erFeilutbetaling: boolean | undefined;
+    hentSkjemadata: () => ITilbakekreving | undefined;
+    maksLengdeTekst: number;
+    harÅpenTilbakekrevingRessurs: Ressurs<boolean>;
+}
+
+const SimuleringContext = createContext<ISimuleringContext | undefined>(undefined);
+
+export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
     const { request } = useHttp();
     const { fagsakId } = useSakOgBehandlingParams();
     const vedtak = åpenBehandling.vedtak;
@@ -140,14 +162,7 @@ const [SimuleringProvider, useSimulering] = constate(({ åpenBehandling }: IProp
         skjema: tilbakekrevingSkjema,
         hentFeilTilOppsummering,
         onSubmit,
-    } = useSkjema<
-        {
-            tilbakekrevingsvalg: Tilbakekrevingsvalg | undefined;
-            fritekstVarsel: string;
-            begrunnelse: string;
-        },
-        IBehandling
-    >({
+    } = useSkjema<ITilbakekrevingsskjema, IBehandling>({
         felter: { tilbakekrevingsvalg, fritekstVarsel, begrunnelse },
         skjemanavn: 'Opprett tilbakekreving',
     });
@@ -191,16 +206,30 @@ const [SimuleringProvider, useSimulering] = constate(({ åpenBehandling }: IProp
         return periode;
     }
 
-    return {
-        simuleringsresultat,
-        tilbakekrevingSkjema,
-        onSubmit,
-        hentFeilTilOppsummering,
-        erFeilutbetaling,
-        hentSkjemadata,
-        maksLengdeTekst,
-        harÅpenTilbakekrevingRessurs,
-    };
-});
+    return (
+        <SimuleringContext.Provider
+            value={{
+                simuleringsresultat,
+                tilbakekrevingSkjema,
+                onSubmit,
+                hentFeilTilOppsummering,
+                erFeilutbetaling,
+                hentSkjemadata,
+                maksLengdeTekst,
+                harÅpenTilbakekrevingRessurs,
+            }}
+        >
+            {children}
+        </SimuleringContext.Provider>
+    );
+};
 
-export { SimuleringProvider, useSimulering };
+export const useSimuleringContext = () => {
+    const context = useContext(SimuleringContext);
+
+    if (context === undefined) {
+        throw new Error('useSimuleringContext må brukes innenfor en SimuleringProvider');
+    }
+
+    return context;
+};

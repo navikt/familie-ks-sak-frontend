@@ -26,7 +26,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
-import { useSimulering } from '../../../../../context/SimuleringContext';
+import { useSimuleringContext } from '../../../../../context/SimuleringContext';
 import useDokument from '../../../../../hooks/useDokument';
 import type { BrevmottakereAlertBehandlingProps } from '../../../../../komponenter/BrevmottakereAlert';
 import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAlert';
@@ -80,7 +80,8 @@ const TilbakekrevingSkjema: React.FC<{
     harÅpenTilbakekrevingRessurs: Ressurs<boolean>;
 }> = ({ søkerMålform, harÅpenTilbakekrevingRessurs }) => {
     const { vurderErLesevisning, åpenBehandling } = useBehandling();
-    const { tilbakekrevingSkjema, hentFeilTilOppsummering, maksLengdeTekst } = useSimulering();
+    const { tilbakekrevingSkjema, hentFeilTilOppsummering, maksLengdeTekst } =
+        useSimuleringContext();
     const { fritekstVarsel, begrunnelse, tilbakekrevingsvalg } = tilbakekrevingSkjema.felter;
     const { hentForhåndsvisning, visDokumentModal, hentetDokument, settVisDokumentModal } =
         useDokument();
