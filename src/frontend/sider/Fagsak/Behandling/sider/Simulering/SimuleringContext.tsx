@@ -8,11 +8,15 @@ import type { Avhengigheter, FeiloppsummeringFeil, ISkjema } from '@navikt/famil
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import useSakOgBehandlingParams from '../hooks/useSakOgBehandlingParams';
-import type { IBehandling } from '../typer/behandling';
-import type { ISimuleringDTO, ISimuleringPeriode, ITilbakekreving } from '../typer/simulering';
-import { Tilbakekrevingsvalg } from '../typer/simulering';
-import { isoStringTilDateMedFallback, tidenesMorgen } from '../utils/dato';
+import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
+import type { IBehandling } from '../../../../../typer/behandling';
+import {
+    Tilbakekrevingsvalg,
+    type ISimuleringDTO,
+    type ISimuleringPeriode,
+    type ITilbakekreving,
+} from '../../../../../typer/simulering';
+import { isoStringTilDateMedFallback, tidenesMorgen } from '../../../../../utils/dato';
 
 interface IProps extends React.PropsWithChildren {
     åpenBehandling: IBehandling;
