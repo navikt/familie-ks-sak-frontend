@@ -2,12 +2,12 @@ import { addYears } from 'date-fns';
 
 import { kjønnType } from '@navikt/familie-typer';
 
-import { hentBarnMedLøpendeUtbetaling } from '../../sider/Fagsak/Behandling/sider/RegistrerSøknad/SøknadContext';
 import { YtelseType } from '../../typer/beregning';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
 import { Vedtaksperiodetype } from '../../typer/vedtaksperiode';
 import { dagensDato, dateTilIsoDatoString } from '../../utils/dato';
+import { hentBarnMedLøpendeUtbetaling } from '../../utils/fagsak';
 import { mockMinimalFagsak } from '../../utils/test/minimalFagsak/minimalFagsak.mock';
 
 describe('SøknadContext', () => {

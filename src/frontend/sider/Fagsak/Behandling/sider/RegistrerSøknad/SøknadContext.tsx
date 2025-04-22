@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from 'react';
 
-import { isAfter } from 'date-fns';
 import { useNavigate } from 'react-router';
 
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
@@ -12,7 +11,6 @@ import { useBehandling } from '../../../../../context/behandlingContext/Behandli
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../../typer/behandling';
-import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../../../typer/person';
 import type {
     IBarnMedOpplysninger,
@@ -20,26 +18,7 @@ import type {
     IRestRegistrerSøknad,
     Målform,
 } from '../../../../../typer/søknad';
-import { dagensDato, isoStringTilDateMedFallback, tidenesEnde } from '../../../../../utils/dato';
-
-export const hentBarnMedLøpendeUtbetaling = (minimalFagsak: IMinimalFagsak): Set<string> =>
-    minimalFagsak.gjeldendeUtbetalingsperioder
-        .filter(utbetalingsperiode =>
-            isAfter(
-                isoStringTilDateMedFallback({
-                    isoString: utbetalingsperiode.periodeTom,
-                    fallbackDate: tidenesEnde,
-                }),
-                dagensDato
-            )
-        )
-        .reduce((acc, utbetalingsperiode) => {
-            utbetalingsperiode.utbetalingsperiodeDetaljer.map(utbetalingsperiodeDetalj =>
-                acc.add(utbetalingsperiodeDetalj.person.personIdent)
-            );
-
-            return acc;
-        }, new Set<string>());
+import { hentBarnMedLøpendeUtbetaling } from '../../../../../utils/fagsak';
 
 interface Props extends React.PropsWithChildren {
     åpenBehandling: IBehandling;
