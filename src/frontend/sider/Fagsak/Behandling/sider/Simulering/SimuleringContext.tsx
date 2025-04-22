@@ -28,7 +28,7 @@ interface ITilbakekrevingsskjema {
     begrunnelse: string;
 }
 
-interface ISimuleringContext {
+interface SimuleringContextValue {
     simuleringsresultat: Ressurs<ISimuleringDTO>;
     tilbakekrevingSkjema: ISkjema<ITilbakekrevingsskjema, IBehandling>;
     onSubmit: <SkjemaData>(
@@ -43,7 +43,7 @@ interface ISimuleringContext {
     harÅpenTilbakekrevingRessurs: Ressurs<boolean>;
 }
 
-const SimuleringContext = createContext<ISimuleringContext | undefined>(undefined);
+const SimuleringContext = createContext<SimuleringContextValue | undefined>(undefined);
 
 export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
     const { request } = useHttp();
