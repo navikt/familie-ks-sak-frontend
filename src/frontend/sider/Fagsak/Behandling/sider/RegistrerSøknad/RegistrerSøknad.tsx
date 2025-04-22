@@ -7,7 +7,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import Annet from './Annet';
 import Barna from './Barna';
-import { useSøknad } from './SøknadContext';
+import { useSøknadContext } from './SøknadContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import MålformVelger from '../../../../../komponenter/MålformVelger';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
@@ -33,7 +33,7 @@ const RegistrerSøknad: React.FC = () => {
         skjema,
         søknadErLastetFraBackend,
         visBekreftModal,
-    } = useSøknad();
+    } = useSøknadContext();
 
     return (
         <StyledSkjemasteg

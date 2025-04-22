@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { BodyShort, Button, Checkbox } from '@navikt/ds-react';
 
-import { useSøknad } from './SøknadContext';
+import { useSøknadContext } from './SøknadContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import Slett from '../../../../../ikoner/Slett';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
@@ -43,7 +43,7 @@ const FjernBarnKnapp = styled(Button)`
 `;
 
 const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
-    const { skjema, barnMedLøpendeUtbetaling } = useSøknad();
+    const { skjema, barnMedLøpendeUtbetaling } = useSøknadContext();
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
     const barnetHarLøpendeUtbetaling = barnMedLøpendeUtbetaling.has(barn.ident);

@@ -7,7 +7,7 @@ import { Alert, CheckboxGroup, Heading, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnMedOpplysninger from './BarnMedOpplysninger';
-import { useSøknad } from './SøknadContext';
+import { useSøknadContext } from './SøknadContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import RødError from '../../../../../ikoner/RødError';
@@ -43,7 +43,7 @@ const Barna: React.FunctionComponent = () => {
     const { vurderErLesevisning, åpenBehandling } = useBehandling();
     const lesevisning = vurderErLesevisning();
     const { bruker } = useFagsakContext();
-    const { skjema } = useSøknad();
+    const { skjema } = useSøknadContext();
     const brevmottakere =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere : [];
 
