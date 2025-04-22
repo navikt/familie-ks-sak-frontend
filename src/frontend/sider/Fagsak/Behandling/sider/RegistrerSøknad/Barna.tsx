@@ -7,9 +7,9 @@ import { Alert, CheckboxGroup, Heading, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnMedOpplysninger from './BarnMedOpplysninger';
+import { useSøknad } from './SøknadContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
-import { useSøknad } from '../../../../../context/SøknadContext';
 import RødError from '../../../../../ikoner/RødError';
 import LeggTilBarn from '../../../../../komponenter/LeggTilBarn';
 import type { IForelderBarnRelasjonMaskert } from '../../../../../typer/person';

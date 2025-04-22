@@ -7,8 +7,8 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import Annet from './Annet';
 import Barna from './Barna';
+import { useSøknad } from './SøknadContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
-import { useSøknad } from '../../../../../context/SøknadContext';
 import MålformVelger from '../../../../../komponenter/MålformVelger';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { BehandlingSteg } from '../../../../../typer/behandling';

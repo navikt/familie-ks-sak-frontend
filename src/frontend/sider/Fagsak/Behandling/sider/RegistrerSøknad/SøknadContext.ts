@@ -9,20 +9,19 @@ import type { Avhengigheter } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useBehandling } from './behandlingContext/BehandlingContext';
-import { useFagsakContext } from './fagsak/FagsakContext';
-import useSakOgBehandlingParams from '../hooks/useSakOgBehandlingParams';
-import type { IBehandling } from '../typer/behandling';
-import type { IMinimalFagsak } from '../typer/fagsak';
-import type { IForelderBarnRelasjon } from '../typer/person';
-import { ForelderBarnRelasjonRolle } from '../typer/person';
+import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
+import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
+import type { IBehandling } from '../../../../../typer/behandling';
+import type { IMinimalFagsak } from '../../../../../typer/fagsak';
+import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../../../typer/person';
 import type {
     IBarnMedOpplysninger,
     IBarnMedOpplysningerBackend,
     IRestRegistrerSøknad,
     Målform,
-} from '../typer/søknad';
-import { dagensDato, isoStringTilDateMedFallback, tidenesEnde } from '../utils/dato';
+} from '../../../../../typer/søknad';
+import { dagensDato, isoStringTilDateMedFallback, tidenesEnde } from '../../../../../utils/dato';
 
 export const hentBarnMedLøpendeUtbetaling = (minimalFagsak: IMinimalFagsak) =>
     minimalFagsak.gjeldendeUtbetalingsperioder
