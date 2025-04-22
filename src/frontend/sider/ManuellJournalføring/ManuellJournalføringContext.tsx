@@ -1,12 +1,23 @@
-import { useEffect, useState } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+    type PropsWithChildren,
+} from 'react';
 
 import type { AxiosError } from 'axios';
-import createUseContext from 'constate';
 import { differenceInMilliseconds } from 'date-fns';
 import { useNavigate, useParams } from 'react-router';
 
 import { useHttp } from '@navikt/familie-http';
-import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import type {
+    Avhengigheter,
+    FeiloppsummeringFeil,
+    Felt,
+    FeltState,
+    ISkjema,
+} from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { IDokumentInfo, Ressurs } from '@navikt/familie-typer';
 import {
@@ -18,37 +29,36 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { useApp } from './AppContext';
-import useFagsakApi from '../api/useFagsakApi';
-import useDokument from '../hooks/useDokument';
-import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
-import { Behandlingstype, BehandlingÅrsak } from '../typer/behandling';
-import type { IBehandlingstema } from '../typer/behandlingstema';
-import type { IMinimalFagsak } from '../typer/fagsak';
+import useFagsakApi from '../../api/useFagsakApi';
+import { useApp } from '../../context/AppContext';
+import useDokument from '../../hooks/useDokument';
+import { Behandlingstype, BehandlingÅrsak } from '../../typer/behandling';
+import type { IBehandlingstema } from '../../typer/behandlingstema';
+import type { IMinimalFagsak } from '../../typer/fagsak';
 import {
-    type Journalføringsbehandling,
-    opprettJournalføringsbehandlingFraKontantstøttebehandling,
     opprettJournalføringsbehandlingFraKlagebehandling,
-} from '../typer/journalføringsbehandling';
-import { Klagebehandlingstype, type IKlagebehandling } from '../typer/klage';
-import type {
-    IDataForManuellJournalføring,
-    IRestJournalføring,
-    TilknyttetBehandling,
-} from '../typer/manuell-journalføring';
-import { JournalpostKanal } from '../typer/manuell-journalføring';
+    opprettJournalføringsbehandlingFraKontantstøttebehandling,
+    type Journalføringsbehandling,
+} from '../../typer/journalføringsbehandling';
+import { Klagebehandlingstype, type IKlagebehandling } from '../../typer/klage';
+import {
+    JournalpostKanal,
+    type IDataForManuellJournalføring,
+    type IRestJournalføring,
+    type TilknyttetBehandling,
+} from '../../typer/manuell-journalføring';
 import {
     finnBehandlingstemaFraOppgave,
+    OppgavetypeFilter,
     type IRestLukkOppgaveOgKnyttJournalpost,
-} from '../typer/oppgave';
-import { OppgavetypeFilter } from '../typer/oppgave';
-import type { IPersonInfo } from '../typer/person';
-import { Adressebeskyttelsegradering } from '../typer/person';
-import type { ISamhandlerInfo } from '../typer/samhandler';
-import type { Tilbakekrevingsbehandlingstype } from '../typer/tilbakekrevingsbehandling';
-import { ToggleNavn } from '../typer/toggles';
-import { isoStringTilDate } from '../utils/dato';
-import { hentAktivBehandlingPåMinimalFagsak } from '../utils/fagsak';
+} from '../../typer/oppgave';
+import { Adressebeskyttelsegradering, type IPersonInfo } from '../../typer/person';
+import type { ISamhandlerInfo } from '../../typer/samhandler';
+import type { Tilbakekrevingsbehandlingstype } from '../../typer/tilbakekrevingsbehandling';
+import { ToggleNavn } from '../../typer/toggles';
+import { isoStringTilDate } from '../../utils/dato';
+import { hentAktivBehandlingPåMinimalFagsak } from '../../utils/fagsak';
+import type { VisningBehandling } from '../Fagsak/Saksoversikt/visningBehandling';
 
 interface ManuellJournalføringSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
@@ -64,7 +74,34 @@ interface ManuellJournalføringSkjemaFelter {
     samhandler: ISamhandlerInfo | null;
 }
 
-const [ManuellJournalføringProvider, useManuellJournalføringContext] = createUseContext(() => {
+interface ManuellJournalføringContextValue {
+    dataForManuellJournalføring: Ressurs<IDataForManuellJournalføring>;
+    hentetDokument: Ressurs<string>;
+    endreBruker: (personIdent: string) => Promise<string>;
+    erLesevisning: () => boolean;
+    minimalFagsak: IMinimalFagsak | undefined;
+    hentAktivBehandlingForJournalføring: () => VisningBehandling | undefined;
+    hentFeilTilOppsummering: () => FeiloppsummeringFeil[];
+    hentSorterteJournalføringsbehandlinger: () => Journalføringsbehandling[];
+    journalfør: () => void;
+    knyttTilNyBehandling: Felt<boolean>;
+    nullstillSkjema: () => void;
+    skjema: ISkjema<ManuellJournalføringSkjemaFelter, string>;
+    tilbakestillData: () => void;
+    valgtDokumentId: string | undefined;
+    velgOgHentDokumentData: (dokumentInfoId: string) => void;
+    settAvsenderLikBruker: () => void;
+    tilbakestillAvsender: () => void;
+    lukkOppgaveOgKnyttJournalpostTilBehandling: () => void;
+    kanKnytteJournalpostTilBehandling: () => boolean;
+    klageStatus: RessursStatus;
+}
+
+const ManuellJournalføringContext = createContext<ManuellJournalføringContextValue | undefined>(
+    undefined
+);
+
+export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
     const { innloggetSaksbehandler, toggles } = useApp();
     const { hentFagsakForPerson } = useFagsakApi();
     const navigate = useNavigate();
@@ -573,28 +610,44 @@ const [ManuellJournalføringProvider, useManuellJournalføringContext] = createU
         }
     };
 
-    return {
-        dataForManuellJournalføring,
-        hentetDokument,
-        endreBruker,
-        erLesevisning,
-        minimalFagsak,
-        hentAktivBehandlingForJournalføring,
-        hentFeilTilOppsummering,
-        hentSorterteJournalføringsbehandlinger,
-        journalfør,
-        knyttTilNyBehandling,
-        nullstillSkjema,
-        skjema,
-        tilbakestillData,
-        valgtDokumentId,
-        velgOgHentDokumentData,
-        settAvsenderLikBruker,
-        tilbakestillAvsender,
-        lukkOppgaveOgKnyttJournalpostTilBehandling,
-        kanKnytteJournalpostTilBehandling,
-        klageStatus: klagebehandlinger.status,
-    };
-});
+    return (
+        <ManuellJournalføringContext.Provider
+            value={{
+                dataForManuellJournalføring,
+                hentetDokument,
+                endreBruker,
+                erLesevisning,
+                minimalFagsak,
+                hentAktivBehandlingForJournalføring,
+                hentFeilTilOppsummering,
+                hentSorterteJournalføringsbehandlinger,
+                journalfør,
+                knyttTilNyBehandling,
+                nullstillSkjema,
+                skjema,
+                tilbakestillData,
+                valgtDokumentId,
+                velgOgHentDokumentData,
+                settAvsenderLikBruker,
+                tilbakestillAvsender,
+                lukkOppgaveOgKnyttJournalpostTilBehandling,
+                kanKnytteJournalpostTilBehandling,
+                klageStatus: klagebehandlinger.status,
+            }}
+        >
+            {props.children}
+        </ManuellJournalføringContext.Provider>
+    );
+};
 
-export { ManuellJournalføringProvider, useManuellJournalføringContext };
+export const useManuellJournalføringContext = () => {
+    const context = useContext(ManuellJournalføringContext);
+
+    if (context === undefined) {
+        throw new Error(
+            'useManuellJournalførContext må brukes innenfor en ManuellJournalførProvider'
+        );
+    }
+
+    return context;
+};
