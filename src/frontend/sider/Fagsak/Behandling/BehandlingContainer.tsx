@@ -13,11 +13,11 @@ import Simulering from './sider/Simulering/Simulering';
 import OppsummeringVedtak from './sider/Vedtak/OppsummeringVedtak';
 import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/useSammensattKontrollsakContext';
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
+import { VilkårsvurderingProvider } from './sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { SimuleringProvider } from '../../../context/SimuleringContext';
 import { SøknadProvider } from '../../../context/SøknadContext';
 import { TidslinjeProvider } from '../../../context/TidslinjeContext';
-import { VilkårsvurderingProvider } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
 

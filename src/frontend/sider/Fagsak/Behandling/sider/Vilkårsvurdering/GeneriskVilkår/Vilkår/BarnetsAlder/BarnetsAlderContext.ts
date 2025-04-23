@@ -9,7 +9,6 @@ import {
     erBegrunnelseGyldig,
     erUtdypendeVilkårsvurderingerGyldig,
 } from './BarnetsAlderValidering';
-import { useVilkårsvurderingContext } from '../../../../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import type { IGrunnlagPerson } from '../../../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../../../typer/vedtak';
 import {
@@ -27,6 +26,7 @@ import {
     erPeriodeGyldig,
     erResultatGyldig,
 } from '../../../../../../../../utils/validators';
+import { useVilkårsvurderingContext } from '../../../VilkårsvurderingContext';
 import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
 export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = [

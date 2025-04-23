@@ -2,10 +2,10 @@ import React from 'react';
 
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
-import { hentFeilIVilkårsvurdering } from './hentFeilIVilkårsvurdering';
-import { mapFraRestVilkårsvurderingTilUi } from './vilkårsvurdering';
-import type { IBehandling } from '../../typer/behandling';
-import type { IPersonResultat, IRestPersonResultat } from '../../typer/vilkår';
+import { hentFeilIVilkårsvurdering } from '../../../../../context/Vilkårsvurdering/hentFeilIVilkårsvurdering';
+import { mapFraRestVilkårsvurderingTilUi } from '../../../../../context/Vilkårsvurdering/vilkårsvurdering';
+import type { IBehandling } from '../../../../../typer/behandling';
+import type { IPersonResultat, IRestPersonResultat } from '../../../../../typer/vilkår';
 
 interface IProps extends React.PropsWithChildren {
     åpenBehandling: IBehandling;
