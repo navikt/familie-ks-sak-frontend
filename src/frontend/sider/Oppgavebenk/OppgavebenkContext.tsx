@@ -22,13 +22,13 @@ import {
 import type { Ressurs } from '@navikt/familie-typer';
 
 import { initialOppgaveFelter, type IOppgaveFelt, type IOppgaveFelter } from './oppgavefelter';
-import { useApp } from '../../context/AppContext';
 import {
     mapIOppgaverTilOppgaveRad,
     sorterEtterNøkkel,
     Sorteringsnøkkel,
     type IOppgaveRad,
-} from '../../context/OppgaverContextUtils';
+} from './OppgaverContextUtils';
+import { useApp } from '../../context/AppContext';
 import { AlertType, ToastTyper } from '../../komponenter/Toast/typer';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import {
