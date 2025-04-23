@@ -21,7 +21,6 @@ import {
 } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { Oppgavebenk } from './Oppgavebenk';
 import { initialOppgaveFelter, type IOppgaveFelt, type IOppgaveFelter } from './oppgavefelter';
 import { useApp } from '../../context/AppContext';
 import {
@@ -451,12 +450,4 @@ export const useOppgaverContext = () => {
         throw new Error('useOppgaverContext må brukes innenfor en OppgaverProvider');
     }
     return context;
-};
-
-export const Oppgaver: React.FC = () => {
-    return (
-        <OppgaverProvider>
-            <Oppgavebenk />
-        </OppgaverProvider>
-    );
 };
