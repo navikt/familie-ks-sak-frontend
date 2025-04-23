@@ -16,7 +16,7 @@ import Barnehagelister from './sider/Barnehagelister/Barnehagelister';
 import FagsakContainer from './sider/Fagsak/FagsakContainer';
 import Internstatistikk from './sider/Internstatistikk/Internstatistikk';
 import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';
-import { Oppgaver } from './sider/Oppgavebenk/Oppgavebenk';
+import { Oppgavebenk } from './sider/Oppgavebenk/Oppgavebenk';
 import TidslinjeVisualisering from './sider/Tidslinjer/TidslinjeVisualisering';
 
 const Main = styled.main<{ $systemetLaster: boolean }>`
@@ -77,7 +77,7 @@ const Container: React.FC = () => {
                                             path="/barnehagelister"
                                             element={<Barnehagelister />}
                                         />
-                                        <Route path="/oppgaver" element={<Oppgaver />} />
+                                        <Route path="/oppgaver" element={<Oppgavebenk />} />
                                         <Route path="/" element={<Navigate to="/oppgaver" />} />
                                     </Routes>
                                 </BehandlingProvider>
