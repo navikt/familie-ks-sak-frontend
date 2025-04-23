@@ -1,7 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+    type PropsWithChildren,
+} from 'react';
 
 import type { AxiosError } from 'axios';
-import createUseContext from 'constate';
 import { useNavigate } from 'react-router';
 
 import type { SortState } from '@navikt/ds-react';
@@ -24,6 +30,7 @@ import {
 } from './OppgaverContextUtils';
 import { AlertType, ToastTyper } from '../komponenter/Toast/typer';
 import { useOpprettEllerHentFagsak } from '../sider/Fagsak/useOpprettEllerHentFagsak';
+import { Oppgavebenk } from '../sider/Oppgavebenk/Oppgavebenk';
 import type { IOppgaveFelt, IOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
 import { initialOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
 import type { IMinimalFagsak } from '../typer/fagsak';
@@ -48,7 +55,26 @@ export const oppgaveSideLimit = 15;
 
 const maksAntallOppgaver = 150;
 
-const [OppgaverProvider, useOppgaver] = createUseContext(() => {
+interface OppgaverContextValue {
+    oppgaverader: IOppgaveRad[];
+    fordelOppgave: (oppgave: IOppgave, saksbehandler: string) => void;
+    hentOppgaver: () => void;
+    oppgaveFelter: IOppgaveFelter;
+    oppgaver: Ressurs<IHentOppgaveDto>;
+    side: number;
+    settSide: (side: number) => void;
+    settVerdiPåOppgaveFelt: (oppgaveFelt: IOppgaveFelt, nyVerdi: string) => void;
+    tilbakestillFordelingPåOppgave: (oppgave: IOppgave) => void;
+    tilbakestillOppgaveFelter: () => void;
+    validerSkjema: () => boolean;
+    sortering: SortState | undefined;
+    settOgLagreSortering: (sorteringsnøkkel: Sorteringsnøkkel) => void;
+    sorterteOppgaverader: IOppgaveRad[];
+}
+
+const OppgaverContext = createContext<OppgaverContextValue | undefined>(undefined);
+
+export const OppgaverProvider = (props: PropsWithChildren) => {
     const navigate = useNavigate();
     const { innloggetSaksbehandler, settToast } = useApp();
     const { request } = useHttp();
@@ -394,22 +420,42 @@ const [OppgaverProvider, useOppgaver] = createUseContext(() => {
         }
     };
 
-    return {
-        oppgaverader,
-        fordelOppgave,
-        hentOppgaver,
-        oppgaveFelter,
-        oppgaver,
-        side,
-        settSide,
-        settVerdiPåOppgaveFelt,
-        tilbakestillFordelingPåOppgave,
-        tilbakestillOppgaveFelter,
-        validerSkjema,
-        sortering,
-        settOgLagreSortering,
-        sorterteOppgaverader,
-    };
-});
+    return (
+        <OppgaverContext.Provider
+            value={{
+                oppgaverader,
+                fordelOppgave,
+                hentOppgaver,
+                oppgaveFelter,
+                oppgaver,
+                side,
+                settSide,
+                settVerdiPåOppgaveFelt,
+                tilbakestillFordelingPåOppgave,
+                tilbakestillOppgaveFelter,
+                validerSkjema,
+                sortering,
+                settOgLagreSortering,
+                sorterteOppgaverader,
+            }}
+        >
+            {props.children}
+        </OppgaverContext.Provider>
+    );
+};
 
-export { OppgaverProvider, useOppgaver };
+export const useOppgaverContext = () => {
+    const context = useContext(OppgaverContext);
+    if (context === undefined) {
+        throw new Error('useOppgaverContext må brukes innenfor en OppgaverProvider');
+    }
+    return context;
+};
+
+export const Oppgaver: React.FC = () => {
+    return (
+        <OppgaverProvider>
+            <Oppgavebenk />
+        </OppgaverProvider>
+    );
+};
