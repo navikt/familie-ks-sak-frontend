@@ -21,34 +21,35 @@ import {
 } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useApp } from './AppContext';
-import type { IOppgaveRad } from './OppgaverContextUtils';
+import { Oppgavebenk } from './Oppgavebenk';
+import { initialOppgaveFelter, type IOppgaveFelt, type IOppgaveFelter } from './oppgavefelter';
+import { useApp } from '../../context/AppContext';
 import {
     mapIOppgaverTilOppgaveRad,
     sorterEtterNøkkel,
     Sorteringsnøkkel,
-} from './OppgaverContextUtils';
-import { AlertType, ToastTyper } from '../komponenter/Toast/typer';
-import { useOpprettEllerHentFagsak } from '../sider/Fagsak/useOpprettEllerHentFagsak';
-import { Oppgavebenk } from '../sider/Oppgavebenk/Oppgavebenk';
-import type { IOppgaveFelt, IOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
-import { initialOppgaveFelter } from '../sider/Oppgavebenk/oppgavefelter';
-import type { IMinimalFagsak } from '../typer/fagsak';
-import type { IFinnOppgaveRequest, IHentOppgaveDto, IOppgave } from '../typer/oppgave';
+    type IOppgaveRad,
+} from '../../context/OppgaverContextUtils';
+import { AlertType, ToastTyper } from '../../komponenter/Toast/typer';
+import type { IMinimalFagsak } from '../../typer/fagsak';
 import {
     BehandlingstypeFilter,
     EnhetFilter,
     OppgavetypeFilter,
     SaksbehandlerFilter,
-} from '../typer/oppgave';
-import { erIsoStringGyldig } from '../utils/dato';
-import { hentFnrFraOppgaveIdenter } from '../utils/oppgave';
-import { hentFrontendFeilmelding } from '../utils/ressursUtils';
+    type IFinnOppgaveRequest,
+    type IHentOppgaveDto,
+    type IOppgave,
+} from '../../typer/oppgave';
+import { erIsoStringGyldig } from '../../utils/dato';
+import { hentFnrFraOppgaveIdenter } from '../../utils/oppgave';
+import { hentFrontendFeilmelding } from '../../utils/ressursUtils';
 import {
     hentNesteSorteringsrekkefølge,
     hentSortState,
     Sorteringsrekkefølge,
-} from '../utils/tabell';
+} from '../../utils/tabell';
+import { useOpprettEllerHentFagsak } from '../Fagsak/useOpprettEllerHentFagsak';
 
 const OPPGAVEBENK_SORTERINGSNØKKEL = 'OPPGAVEBENK_SORTERINGSNØKKEL';
 export const oppgaveSideLimit = 15;

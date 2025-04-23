@@ -6,7 +6,7 @@ import { VStack } from '@navikt/ds-react';
 
 import OppgaveHeader from './OppgaveHeader';
 import OppgaveList from './OppgaveList';
-import { OppgaverProvider } from '../../context/OppgaverContext';
+import { OppgaverProvider } from './OppgaverContext';
 
 const Container = styled.article`
     padding: 0.5rem;
