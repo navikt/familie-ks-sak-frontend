@@ -2,8 +2,8 @@ import React from 'react';
 
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
+import { mapFraRestVilkårsvurderingTilUi } from './utils';
 import { hentFeilIVilkårsvurdering } from '../../../../../context/Vilkårsvurdering/hentFeilIVilkårsvurdering';
-import { mapFraRestVilkårsvurderingTilUi } from '../../../../../context/Vilkårsvurdering/vilkårsvurdering';
 import type { IBehandling } from '../../../../../typer/behandling';
 import type { IPersonResultat, IRestPersonResultat } from '../../../../../typer/vilkår';
 
