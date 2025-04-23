@@ -9,7 +9,7 @@ import { oppgaveSideLimit, useOppgavebenkContext } from './OppgavebenkContext';
 import OppgaveDirektelenke from './OppgaveDirektelenke';
 import OppgavelisteNavigator from './OppgavelisteNavigator';
 import OppgavelisteSaksbehandler from './OppgavelisteSaksbehandler';
-import { intDatoTilNorskDato, Sorteringsnøkkel } from './OppgaverContextUtils';
+import { intDatoTilNorskDato, Sorteringsnøkkel } from './utils';
 import type { OppgavetypeFilter } from '../../typer/oppgave';
 import { oppgaveTypeFilter, PrioritetFilter } from '../../typer/oppgave';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';

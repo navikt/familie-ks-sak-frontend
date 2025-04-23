@@ -27,7 +27,7 @@ import {
     sorterEtterNøkkel,
     Sorteringsnøkkel,
     type IOppgaveRad,
-} from './OppgaverContextUtils';
+} from './utils';
 import { useApp } from '../../context/AppContext';
 import { AlertType, ToastTyper } from '../../komponenter/Toast/typer';
 import type { IMinimalFagsak } from '../../typer/fagsak';
