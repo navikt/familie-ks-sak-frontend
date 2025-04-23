@@ -6,7 +6,7 @@ import { Pagination } from '@navikt/ds-react';
 import { AGray800 } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { oppgaveSideLimit, useOppgaverContext } from './OppgaverContext';
+import { oppgaveSideLimit, useOppgavebenkContext } from './OppgaverContext';
 import type { IOppgave } from '../../typer/oppgave';
 
 const StyledDiv = styled.div`
@@ -28,7 +28,7 @@ const beregnAntallSider = (oppgaver: IOppgave[]): number =>
     Math.ceil(oppgaver.length / oppgaveSideLimit);
 
 const OppgavelisteNavigator: React.FunctionComponent = () => {
-    const { oppgaver, side, settSide } = useOppgaverContext();
+    const { oppgaver, side, settSide } = useOppgavebenkContext();
 
     if (oppgaver.status !== RessursStatus.SUKSESS) {
         return null;

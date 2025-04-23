@@ -8,7 +8,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import OppgaveDirektelenke from './OppgaveDirektelenke';
 import OppgavelisteNavigator from './OppgavelisteNavigator';
 import OppgavelisteSaksbehandler from './OppgavelisteSaksbehandler';
-import { oppgaveSideLimit, useOppgaverContext } from './OppgaverContext';
+import { oppgaveSideLimit, useOppgavebenkContext } from './OppgaverContext';
 import { intDatoTilNorskDato, Sorteringsnøkkel } from '../../context/OppgaverContextUtils';
 import type { OppgavetypeFilter } from '../../typer/oppgave';
 import { oppgaveTypeFilter, PrioritetFilter } from '../../typer/oppgave';
@@ -43,7 +43,7 @@ const StyledColumnHeader = styled(Table.ColumnHeader)`
 
 const OppgaveList: React.FunctionComponent = () => {
     const { oppgaver, sorterteOppgaverader, sortering, settOgLagreSortering, side } =
-        useOppgaverContext();
+        useOppgavebenkContext();
 
     const oppgaverPåDenneSiden = sorterteOppgaverader.slice(
         (side - 1) * oppgaveSideLimit,
