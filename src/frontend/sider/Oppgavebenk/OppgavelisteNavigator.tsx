@@ -6,7 +6,7 @@ import { Pagination } from '@navikt/ds-react';
 import { AGray800 } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { oppgaveSideLimit, useOppgavebenkContext } from './OppgaverContext';
+import { oppgaveSideLimit, useOppgavebenkContext } from './OppgavebenkContext';
 import type { IOppgave } from '../../typer/oppgave';
 
 const StyledDiv = styled.div`
