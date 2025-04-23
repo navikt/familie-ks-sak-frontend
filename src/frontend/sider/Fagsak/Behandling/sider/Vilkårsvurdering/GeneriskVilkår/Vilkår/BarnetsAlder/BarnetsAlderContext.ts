@@ -9,7 +9,7 @@ import {
     erBegrunnelseGyldig,
     erUtdypendeVilkårsvurderingerGyldig,
 } from './BarnetsAlderValidering';
-import { useVilkårsvurdering } from '../../../../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
+import { useVilkårsvurderingContext } from '../../../../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import type { IGrunnlagPerson } from '../../../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../../../typer/vedtak';
 import {
@@ -47,7 +47,7 @@ export const useBarnetsAlder = (lagretVilkår: IVilkårResultat, person: IGrunnl
             : undefined,
     };
 
-    const { personResultater } = useVilkårsvurdering();
+    const { personResultater } = useVilkårsvurderingContext();
 
     const alleBarnetsAlderVilkårsResultaterSortert =
         personResultater
