@@ -7,11 +7,11 @@ import { Alert } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
+import { useSimuleringContext } from './SimuleringContext';
 import SimuleringPanel from './SimuleringPanel';
 import SimuleringTabell from './SimuleringTabell';
 import TilbakekrevingSkjema from './TilbakekrevingSkjema';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
-import { useSimulering } from '../../../../../context/SimuleringContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../../../typer/behandling';
@@ -37,7 +37,7 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
         tilbakekrevingSkjema,
         harÅpenTilbakekrevingRessurs,
         erFeilutbetaling,
-    } = useSimulering();
+    } = useSimuleringContext();
     const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
 
     const nesteOnClick = () => {
