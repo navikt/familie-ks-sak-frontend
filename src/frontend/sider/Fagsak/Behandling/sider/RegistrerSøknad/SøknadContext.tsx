@@ -34,10 +34,8 @@ interface SøknadContextValue {
     barnMedLøpendeUtbetaling: Set<string>;
     hentFeilTilOppsummering: () => FeiloppsummeringFeil[];
     nesteAction: (bekreftEndringerViaFrontend: boolean) => void;
-    settVisBekreftModal: (vis: boolean) => void;
     skjema: ISkjema<SøknadSkjema, IBehandling>;
     søknadErLastetFraBackend: boolean;
-    visBekreftModal: boolean;
 }
 
 const SøknadContext = createContext<SøknadContextValue | undefined>(undefined);
@@ -47,7 +45,6 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
     const { bruker, minimalFagsakRessurs } = useFagsakContext();
-    const [visBekreftModal, settVisBekreftModal] = React.useState<boolean>(false);
 
     const barnMedLøpendeUtbetaling =
         minimalFagsakRessurs.status === RessursStatus.SUKSESS
@@ -170,11 +167,6 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
                                 `/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`
                             );
                         }
-                    },
-                    (errorResponse: Ressurs<IBehandling>) => {
-                        if (errorResponse.status === RessursStatus.FUNKSJONELL_FEIL) {
-                            settVisBekreftModal(true);
-                        }
                     }
                 );
             }
@@ -187,10 +179,8 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
                 barnMedLøpendeUtbetaling,
                 hentFeilTilOppsummering,
                 nesteAction,
-                settVisBekreftModal,
                 skjema,
                 søknadErLastetFraBackend,
-                visBekreftModal,
             }}
         >
             {children}

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import { Alert, BodyShort, Button, ErrorSummary, Modal } from '@navikt/ds-react';
+import { Alert, ErrorSummary } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import Annet from './Annet';
@@ -13,11 +13,6 @@ import MålformVelger from '../../../../../komponenter/MålformVelger';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { BehandlingSteg } from '../../../../../typer/behandling';
 
-const FjernVilkårAdvarsel = styled(BodyShort)`
-    white-space: pre-wrap;
-    padding-bottom: 3.5rem;
-`;
-
 const StyledSkjemasteg = styled(Skjemasteg)`
     max-width: 40rem;
 `;
@@ -26,14 +21,8 @@ const RegistrerSøknad: React.FC = () => {
     const { vurderErLesevisning } = useBehandling();
     const erLesevisning = vurderErLesevisning();
 
-    const {
-        hentFeilTilOppsummering,
-        nesteAction,
-        settVisBekreftModal,
-        skjema,
-        søknadErLastetFraBackend,
-        visBekreftModal,
-    } = useSøknadContext();
+    const { hentFeilTilOppsummering, nesteAction, skjema, søknadErLastetFraBackend } =
+        useSøknadContext();
 
     return (
         <StyledSkjemasteg
@@ -84,50 +73,6 @@ const RegistrerSøknad: React.FC = () => {
                         </ErrorSummary.Item>
                     ))}
                 </ErrorSummary>
-            )}
-
-            {visBekreftModal && (
-                <Modal
-                    open
-                    onClose={() => settVisBekreftModal(false)}
-                    header={{
-                        heading: 'Er du sikker på at du vil gå videre?',
-                        size: 'small',
-                        closeButton: false,
-                    }}
-                    width={'35rem'}
-                >
-                    <Modal.Body>
-                        <FjernVilkårAdvarsel>
-                            {skjema.submitRessurs.status === RessursStatus.FEILET ||
-                                (skjema.submitRessurs.status === RessursStatus.FUNKSJONELL_FEIL &&
-                                    skjema.submitRessurs.frontendFeilmelding)}
-                        </FjernVilkårAdvarsel>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            key={'ja'}
-                            variant={'primary'}
-                            size={'small'}
-                            onClick={() => {
-                                settVisBekreftModal(false);
-                                nesteAction(true);
-                            }}
-                            children={'Ja'}
-                            loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                            disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
-                        />
-                        <Button
-                            variant={'secondary'}
-                            key={'nei'}
-                            size={'small'}
-                            onClick={() => {
-                                settVisBekreftModal(false);
-                            }}
-                            children={'Nei'}
-                        />
-                    </Modal.Footer>
-                </Modal>
             )}
         </StyledSkjemasteg>
     );
