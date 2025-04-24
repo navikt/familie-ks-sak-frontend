@@ -11,9 +11,9 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderingITestmiljøKnapp';
+import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
-import { useVilkårsvurdering } from '../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../../../typer/behandling';
@@ -45,7 +45,7 @@ interface IProps {
 const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling }) => {
     const { fagsakId } = useSakOgBehandlingParams();
 
-    const { vilkårsvurdering, feiloppsummeringFeil } = useVilkårsvurdering();
+    const { vilkårsvurdering, feiloppsummeringFeil } = useVilkårsvurderingContext();
     const {
         vurderErLesevisning,
         oppdaterRegisteropplysninger,
