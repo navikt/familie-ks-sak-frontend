@@ -1,22 +1,22 @@
 import { differenceInMilliseconds } from 'date-fns';
 
-import type { IGrunnlagPerson } from '../../typer/person';
-import { PersonTypeVisningsRangering } from '../../typer/person';
+import type { IGrunnlagPerson } from '../../../../../typer/person';
+import { PersonTypeVisningsRangering } from '../../../../../typer/person';
 import type {
     IPersonResultat,
     IRestAnnenVurdering,
     IRestPersonResultat,
     IRestVilkårResultat,
     IVilkårResultat,
-} from '../../typer/vilkår';
-import { Resultat } from '../../typer/vilkår';
-import type { IIsoDatoPeriode } from '../../utils/dato';
+} from '../../../../../typer/vilkår';
+import { Resultat } from '../../../../../typer/vilkår';
+import type { IIsoDatoPeriode } from '../../../../../utils/dato';
 import {
     isoStringTilDate,
     isoStringTilDateMedFallback,
     nyIsoDatoPeriode,
     tidenesEnde,
-} from '../../utils/dato';
+} from '../../../../../utils/dato';
 
 const periodeDiff = (periodeA: IIsoDatoPeriode, periodeB: IIsoDatoPeriode) => {
     if (!periodeA.fom && !periodeA.tom) {

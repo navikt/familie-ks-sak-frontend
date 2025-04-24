@@ -1,4 +1,4 @@
-import { mapFraRestPersonResultatTilPersonResultat } from '../../../../context/Vilkårsvurdering/vilkårsvurdering';
+import { mapFraRestPersonResultatTilPersonResultat } from './Vilkårsvurdering/utils';
 import {
     BehandlingSteg,
     BehandlingÅrsak,
