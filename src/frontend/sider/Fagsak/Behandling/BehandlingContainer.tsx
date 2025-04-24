@@ -7,6 +7,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import Behandlingsresultat from './sider/Behandlingsresultat/Behandlingsresultat';
 import RegistrerSøknad from './sider/RegistrerSøknad/RegistrerSøknad';
+import { SøknadProvider } from './sider/RegistrerSøknad/SøknadContext';
 import type { SideId } from './sider/sider';
 import { sider } from './sider/sider';
 import Simulering from './sider/Simulering/Simulering';
@@ -16,7 +17,6 @@ import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontroll
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from './sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { SøknadProvider } from '../../../context/SøknadContext';
 import { TidslinjeProvider } from '../../../context/TidslinjeContext';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
