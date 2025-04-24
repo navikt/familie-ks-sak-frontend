@@ -15,7 +15,7 @@ import {
 } from '@navikt/ds-tokens/dist/tokens';
 import { hentDataFraRessurs } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../context/behandlingContext/BehandlingContext';
 import type { ISide } from '../../sider/Fagsak/Behandling/sider/sider';
 import { sider } from '../../sider/Fagsak/Behandling/sider/sider';
 import { BehandlingSteg, settPåVentÅrsaker } from '../../typer/behandling';
@@ -83,7 +83,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
         vurderErLesevisning,
         erBehandleneEnhetMidlertidig,
         erBehandlingAvsluttet,
-    } = useBehandling();
+    } = useBehandlingContext();
     const erBehandlingSattPåVent = hentDataFraRessurs(åpenBehandling)?.behandlingPåVent;
 
     useEffect(() => {

@@ -8,7 +8,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import MenyvalgFagsak from './MenyvalgFagsak';
 import MenyvalgBehandling from './OpprettFagsak/MenyvalgBehandling';
-import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingStatus } from '../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
 
@@ -25,7 +25,7 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
 `;
 
 const Behandlingsmeny: React.FC<IProps> = ({ minimalFagsak }) => {
-    const { åpenBehandling } = useBehandling();
+    const { åpenBehandling } = useBehandlingContext();
 
     const skalViseMenyvalgForBehandling =
         åpenBehandling.status === RessursStatus.SUKSESS &&

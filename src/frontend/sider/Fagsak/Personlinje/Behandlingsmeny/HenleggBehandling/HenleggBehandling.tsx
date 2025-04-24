@@ -17,7 +17,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import useHenleggBehandling from './useHenleggBehandling';
 import { useApp } from '../../../../../context/AppContext';
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import useDokument from '../../../../../hooks/useDokument';
 import StatusIkon, { Status } from '../../../../../ikoner/StatusIkon';
 import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisningModal';
@@ -55,7 +55,7 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
         hentetDokument,
         settVisDokumentModal,
     } = useDokument();
-    const { åpenBehandling, vurderErLesevisning } = useBehandling();
+    const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const { toggles } = useApp();
 
     const behandlingId =

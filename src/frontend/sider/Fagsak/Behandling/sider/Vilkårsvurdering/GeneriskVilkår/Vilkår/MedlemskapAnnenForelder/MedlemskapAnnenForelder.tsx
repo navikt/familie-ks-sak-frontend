@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
-import { useBehandling } from '../../../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../../../context/behandlingContext/BehandlingContext';
 import { Regelverk, Resultat } from '../../../../../../../../typer/vilkår';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
@@ -24,7 +24,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: MedlemskapAnnenForelderProps) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useMedlemskapAnnenForelder(

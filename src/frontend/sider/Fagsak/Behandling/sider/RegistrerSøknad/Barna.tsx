@@ -8,7 +8,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnMedOpplysninger from './BarnMedOpplysninger';
 import { useSøknadContext } from './SøknadContext';
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import RødError from '../../../../../ikoner/RødError';
 import LeggTilBarn from '../../../../../komponenter/LeggTilBarn';
@@ -40,7 +40,7 @@ const IngenBarnRegistrertInfo = styled(Alert)`
 `;
 
 const Barna: React.FunctionComponent = () => {
-    const { vurderErLesevisning, åpenBehandling } = useBehandling();
+    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
     const { bruker } = useFagsakContext();
     const { skjema } = useSøknadContext();

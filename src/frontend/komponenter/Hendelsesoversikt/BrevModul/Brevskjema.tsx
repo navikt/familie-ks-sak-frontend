@@ -15,7 +15,7 @@ import BrevmottakerListe from './BrevmottakerListe';
 import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
 import { useBrevModul } from './useBrevModul';
-import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../context/behandlingContext/BehandlingContext';
 import useDokument from '../../../hooks/useDokument';
 import type { IBehandling } from '../../../typer/behandling';
 import type { IManueltBrevRequestPåBehandling } from '../../../typer/dokument';
@@ -72,7 +72,8 @@ const FritekstWrapper = styled.div`
 `;
 
 const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
-    const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } = useBehandling();
+    const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } =
+        useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
     const { hentForhåndsvisning, hentetDokument } = useDokument();
 

@@ -13,7 +13,7 @@ import {
     erSøkersAktivitetGyldig,
     erSøkersAktivitetslandGyldig,
 } from './valideringKompetanse';
-import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import type {
@@ -36,7 +36,7 @@ interface IProps {
 
 const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => {
     const [erKompetanseEkspandert, settErKompetanseEkspandert] = React.useState<boolean>(false);
-    const { åpenBehandling, settÅpenBehandling } = useBehandling();
+    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
     const behandlingId =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
     const behandlingsÅrsakErOvergangsordning =

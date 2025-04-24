@@ -13,7 +13,7 @@ import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/famili
 import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderingITestmiljøKnapp';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../../../typer/behandling';
@@ -51,7 +51,7 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
         oppdaterRegisteropplysninger,
         vilkårsvurderingNesteOnClick,
         behandlingsstegSubmitressurs,
-    } = useBehandling();
+    } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const registeropplysningerHentetTidpsunkt =

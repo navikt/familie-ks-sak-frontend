@@ -6,7 +6,7 @@ import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, Checkbox, Fieldset, Label, Select, TextField } from '@navikt/ds-react';
 import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { useOvergangsordningAndel } from '../../../../../../context/OvergangsordningAndelContext';
 import Månedvelger, { DagIMåneden } from '../../../../../../komponenter/Datovelger/Månedvelger';
 import Knapperekke from '../../../../../../komponenter/Knapperekke';
@@ -57,7 +57,7 @@ interface IOvergangsordningAndelSkjemaProps {
 }
 
 const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndelSkjemaProps) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
 
     const {
         overgangsordningAndel,

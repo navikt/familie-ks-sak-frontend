@@ -11,7 +11,7 @@ import type { Felt } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { OptionType } from '../../../../../../typer/common';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import { BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
@@ -39,7 +39,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
     begrunnelser,
     regelverk,
 }) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
 
     const { grupperteAvslagsbegrunnelser } = useAvslagBegrunnelseMultiselect(vilkårType, regelverk);

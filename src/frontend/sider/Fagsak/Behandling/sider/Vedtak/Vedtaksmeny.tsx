@@ -16,7 +16,7 @@ import KorrigerEtterbetaling from './KorrigerEtterbetaling/KorrigerEtterbetaling
 import KorrigerVedtak from './KorrigerVedtakModal/KorrigerVedtak';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
 import EndreEndringstidspunkt from './VedtakBegrunnelserTabell/EndreEndringstidspunkt';
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingKategori } from '../../../../../typer/behandlingstema';
 import { vedtakHarFortsattUtbetaling } from '../../../../../utils/vedtakUtils';
@@ -44,7 +44,7 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
     visFeilutbetaltValuta,
     visRefusjonEøs,
 }) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
 
     const {
         skalViseSammensattKontrollsakMenyvalg,

@@ -6,7 +6,7 @@ import type { FeltState } from '@navikt/familie-skjema';
 import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import type {
@@ -66,7 +66,7 @@ const useUtenlandskPeriodeBeløpSkjema = ({
 }: IProps) => {
     const [erUtenlandskPeriodeBeløpEkspandert, settErUtenlandskPeriodeBeløpEkspandert] =
         React.useState<boolean>(false);
-    const { åpenBehandling, settÅpenBehandling } = useBehandling();
+    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
     const behandlingId =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
     const behandlingsÅrsakErOvergangsordning =

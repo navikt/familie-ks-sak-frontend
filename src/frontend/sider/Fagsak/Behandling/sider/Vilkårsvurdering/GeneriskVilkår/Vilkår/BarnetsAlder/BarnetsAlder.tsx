@@ -5,7 +5,7 @@ import { isBefore } from 'date-fns';
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
-import { useBehandling } from '../../../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../../../context/behandlingContext/BehandlingContext';
 import Datovelger from '../../../../../../../../komponenter/Datovelger/Datovelger';
 import { Lovverk } from '../../../../../../../../typer/lovverk';
 import { Resultat } from '../../../../../../../../typer/vilkår';
@@ -51,7 +51,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: BarnetsAlderProps) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBarnetsAlder(

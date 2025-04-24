@@ -6,7 +6,7 @@ import { BodyShort, Checkbox, Radio, RadioGroup, TextField } from '@navikt/ds-re
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import { antallTimerKvalifiserer } from './BarnehageplassUtils';
-import { useBehandling } from '../../../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../../../context/behandlingContext/BehandlingContext';
 import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../../../typer/vilkår';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
@@ -25,7 +25,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: BarnehageplassProps) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const {

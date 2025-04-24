@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { Resultat, type IVilkårResultat } from '../../../../../../typer/vilkår';
 
 interface IProps {
@@ -12,7 +12,7 @@ export const useVilkårEkspanderbarRad = ({
     vilkårHarEndringerSomIkkeErLagret,
     lagretVilkårResultat,
 }: IProps) => {
-    const { vurderErLesevisning, behandlingPåVent } = useBehandling();
+    const { vurderErLesevisning, behandlingPåVent } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const initiellEkspandering =

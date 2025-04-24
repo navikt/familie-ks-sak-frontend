@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Tabs } from '@navikt/ds-react';
 
-import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../context/behandlingContext/BehandlingContext';
 import IkonDokumenter from '../ikoner/IkonDokumenter';
 import IkonHistorikk from '../ikoner/IkonHistorikk';
 import IkonMeldinger from '../ikoner/IkonMeldinger';
@@ -23,7 +23,7 @@ const FullBreddeTabListe = styled(Tabs.List)`
 `;
 
 const Header = ({ skalViseTotrinnskontroll }: IProps) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
 
     return (
         <FullBreddeTabListe>

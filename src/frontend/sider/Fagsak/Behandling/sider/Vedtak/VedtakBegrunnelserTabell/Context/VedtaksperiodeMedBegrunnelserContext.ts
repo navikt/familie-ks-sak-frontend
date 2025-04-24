@@ -15,7 +15,7 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import { Behandlingstype } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
@@ -40,7 +40,7 @@ interface IProps {
 const [VedtaksperiodeMedBegrunnelserProvider, useVedtaksperiodeMedBegrunnelser] = constate(
     ({ åpenBehandling, vedtaksperiodeMedBegrunnelser }: IProps) => {
         const { request } = useHttp();
-        const { settÅpenBehandling } = useBehandling();
+        const { settÅpenBehandling } = useBehandlingContext();
         const [erPanelEkspandert, settErPanelEkspandert] = useState(
             åpenBehandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING &&
                 vedtaksperiodeMedBegrunnelser.begrunnelser.length === 0 &&

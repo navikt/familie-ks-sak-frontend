@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import {
     BehandlingStatus,
@@ -22,7 +22,7 @@ interface IProps {
 }
 
 const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
 
     const erLesevisning = vurderErLesevisning();
 

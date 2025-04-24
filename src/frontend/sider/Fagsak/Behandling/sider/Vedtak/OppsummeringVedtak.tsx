@@ -7,7 +7,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../../../typer/behandling';
@@ -34,7 +34,7 @@ const StyledSkjemaSteg = styled(Skjemasteg)`
 const OppsummeringVedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehandling, bruker }) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } =
-        useBehandling();
+        useBehandlingContext();
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
     const navigate = useNavigate();

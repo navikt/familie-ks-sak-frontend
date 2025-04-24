@@ -43,7 +43,9 @@ const useBehandlingApi = (
         }
     }, [behandlingId]);
 
-    const opprettBehandling = (data: IOpprettBehandlingData) => {
+    const opprettBehandling = (
+        data: IOpprettBehandlingData
+    ): Promise<void | Ressurs<IBehandling>> => {
         return request<IOpprettBehandlingData, IBehandling>({
             data,
             method: 'POST',

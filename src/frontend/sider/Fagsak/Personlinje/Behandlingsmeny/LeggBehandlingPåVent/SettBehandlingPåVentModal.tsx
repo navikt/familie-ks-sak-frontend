@@ -8,7 +8,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { hentAlleÅrsaker } from './settPåVentUtils';
 import { useSettPåVentSkjema } from './useSettPåVentSkjema';
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import Datovelger from '../../../../../komponenter/Datovelger/Datovelger';
 import type { IBehandling, IBehandlingPåVent } from '../../../../../typer/behandling';
 import { settPåVentÅrsaker } from '../../../../../typer/behandling';
@@ -31,7 +31,7 @@ interface IProps {
 export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behandling }) => {
     const årsaker = hentAlleÅrsaker();
     const { skjema, kanSendeSkjema, onSubmit } = useSettPåVentSkjema(behandling.behandlingPåVent);
-    const { settÅpenBehandling } = useBehandling();
+    const { settÅpenBehandling } = useBehandlingContext();
 
     const { årsak, frist } = skjema.felter;
 

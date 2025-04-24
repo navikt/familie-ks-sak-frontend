@@ -7,7 +7,7 @@ import { Button } from '@navikt/ds-react';
 import { hentDataFraRessursMedFallback, RessursStatus } from '@navikt/familie-typer';
 
 import Behandlingskort from './Behandlingskort';
-import { useBehandling } from '../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../context/behandlingContext/BehandlingContext';
 import Hendelsesoversikt from '../../../../komponenter/Hendelsesoversikt/Hendelsesoversikt';
 import type { Hendelse } from '../../../../komponenter/Hendelsesoversikt/typer';
 import type { ILogg } from '../../../../typer/logg';
@@ -40,7 +40,8 @@ const HøyremenyContainer = styled.div`
 `;
 
 const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
-    const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } = useBehandling();
+    const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } =
+        useBehandlingContext();
 
     React.useEffect(() => {
         if (åpenBehandling && åpenBehandling.status === RessursStatus.SUKSESS) {

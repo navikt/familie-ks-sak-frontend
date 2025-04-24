@@ -9,7 +9,7 @@ import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../typer/common';
 import type { IRestBegrunnelseTilknyttetEndretUtbetaling } from '../../../../../../typer/endretUtbetaling';
@@ -27,7 +27,7 @@ interface IProps {
 }
 
 export const EndretUtbetalingAvslagBegrunnelse: React.FC<IProps> = ({ skjema }) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const { endretUtbetalingsbegrunnelser } = useHentEndretUtbetalingBegrunnelser();
 
     const prevalgtBegrunnelse =

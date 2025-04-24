@@ -11,7 +11,7 @@ import { useSimuleringContext } from './SimuleringContext';
 import SimuleringPanel from './SimuleringPanel';
 import SimuleringTabell from './SimuleringTabell';
 import TilbakekrevingSkjema from './TilbakekrevingSkjema';
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../../../typer/behandling';
@@ -38,7 +38,7 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
         harÅpenTilbakekrevingRessurs,
         erFeilutbetaling,
     } = useSimuleringContext();
-    const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
+    const { vurderErLesevisning, settÅpenBehandling } = useBehandlingContext();
 
     const nesteOnClick = () => {
         if (vurderErLesevisning() || åpenBehandling?.resultat == BehandlingResultat.AVSLÅTT) {

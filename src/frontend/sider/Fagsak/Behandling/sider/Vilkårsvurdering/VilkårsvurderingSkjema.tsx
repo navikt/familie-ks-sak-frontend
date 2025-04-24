@@ -11,7 +11,7 @@ import GeneriskAnnenVurdering from './GeneriskAnnenVurdering/GeneriskAnnenVurder
 import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import PersonInformasjon from '../../../../../komponenter/PersonInformasjon/PersonInformasjon';
 import { PersonType } from '../../../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../../../typer/vilkår';
@@ -34,7 +34,7 @@ const IndentertInnhold = styled.div`
 
 const VilkårsvurderingSkjema: React.FunctionComponent = () => {
     const { vilkårsvurdering } = useVilkårsvurderingContext();
-    const { vurderErLesevisning, behandlingPåVent } = useBehandling();
+    const { vurderErLesevisning, behandlingPåVent } = useBehandlingContext();
 
     const personHarIkkevurdertVilkår = (personResultat: IPersonResultat) =>
         personResultat.vilkårResultater.some(

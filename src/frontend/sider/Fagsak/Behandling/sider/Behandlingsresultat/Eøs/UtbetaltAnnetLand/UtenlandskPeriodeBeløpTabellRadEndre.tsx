@@ -10,7 +10,7 @@ import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Currency } from '@navikt/land-verktoy';
 
-import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import {
@@ -85,7 +85,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
     slettUtenlandskPeriodeBeløp,
     behandlingsÅrsakErOvergangsordning,
 }) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning(true);
 
     const visUtbetaltBeløpGruppeFeilmelding = (): React.ReactNode => {

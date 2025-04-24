@@ -7,7 +7,7 @@ import { BodyShort, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { vilkårFeilmeldingId } from './VilkårTabell';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import { uiResultat } from '../../../../../../typer/vilkår';
@@ -70,7 +70,7 @@ export const VilkårEkspanderbarRad: React.FC<IProps> = ({
     lagretVilkårResultat,
     erVilkårEkspandert,
 }) => {
-    const { åpenBehandling } = useBehandling();
+    const { åpenBehandling } = useBehandlingContext();
 
     const periodeErTom = !lagretVilkårResultat.periode.fom && !lagretVilkårResultat.periode.tom;
 

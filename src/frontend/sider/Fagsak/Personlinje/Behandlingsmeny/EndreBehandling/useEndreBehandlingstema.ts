@@ -6,7 +6,7 @@ import type { FeltState } from '@navikt/familie-skjema';
 import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import type {
     IBehandlingstema,
@@ -16,7 +16,7 @@ import { tilBehandlingstema } from '../../../../../typer/behandlingstema';
 
 const useEndreBehandling = (lukkModal: () => void) => {
     const { request } = useHttp();
-    const { åpenBehandling, settÅpenBehandling } = useBehandling();
+    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
 
     const [ressurs, settRessurs] = useState(byggTomRessurs());
 
