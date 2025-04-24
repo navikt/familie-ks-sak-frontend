@@ -10,8 +10,8 @@ import { ASpacing14, ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 import GeneriskAnnenVurdering from './GeneriskAnnenVurdering/GeneriskAnnenVurdering';
 import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
+import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
-import { useVilkårsvurdering } from '../../../../../context/Vilkårsvurdering/VilkårsvurderingContext';
 import PersonInformasjon from '../../../../../komponenter/PersonInformasjon/PersonInformasjon';
 import { PersonType } from '../../../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../../../typer/vilkår';
@@ -33,7 +33,7 @@ const IndentertInnhold = styled.div`
 `;
 
 const VilkårsvurderingSkjema: React.FunctionComponent = () => {
-    const { vilkårsvurdering } = useVilkårsvurdering();
+    const { vilkårsvurdering } = useVilkårsvurderingContext();
     const { vurderErLesevisning, behandlingPåVent } = useBehandling();
 
     const personHarIkkevurdertVilkår = (personResultat: IPersonResultat) =>
