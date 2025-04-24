@@ -6,8 +6,8 @@ import { Alert, BodyShort, Checkbox, Heading, Table, VStack } from '@navikt/ds-r
 import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
 import { KnyttTilNyBehandling } from './KnyttTilNyBehandling';
+import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 import { useApp } from '../../context/AppContext';
-import { useManuellJournalføringContext } from '../../context/ManuellJournalførContext';
 import { behandlingsstatuser, BehandlingStatus, behandlingstyper } from '../../typer/behandling';
 import { finnVisningstekstForJournalføringsbehandlingsårsak } from '../../typer/journalføringsbehandling';
 import { ToggleNavn } from '../../typer/toggles';
@@ -161,10 +161,6 @@ export const KnyttJournalpostTilBehandling: React.FC = () => {
                             ? `Du velger å journalføre uten å knytte til behandling(er).`
                             : `Du velger å journalføre uten å knytte til ny behandling.`}
                     </GenerellSakInfoStripeTittel>
-                    <div>
-                        {`Journalposten knyttes kun til person (tilsvarende "Knytt til generell
-                            sak" i Gosys)`}
-                    </div>
                 </StyledAlert>
             )}
         </KnyttDiv>

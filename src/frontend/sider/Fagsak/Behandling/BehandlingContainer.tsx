@@ -10,12 +10,11 @@ import RegistrerSøknad from './sider/RegistrerSøknad/RegistrerSøknad';
 import type { SideId } from './sider/sider';
 import { sider } from './sider/sider';
 import Simulering from './sider/Simulering/Simulering';
+import { SimuleringProvider } from './sider/Simulering/SimuleringContext';
 import OppsummeringVedtak from './sider/Vedtak/OppsummeringVedtak';
 import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/useSammensattKontrollsakContext';
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { EøsProvider } from '../../../context/Eøs/EøsContext';
-import { SimuleringProvider } from '../../../context/SimuleringContext';
 import { SøknadProvider } from '../../../context/SøknadContext';
 import { TidslinjeProvider } from '../../../context/TidslinjeContext';
 import { VilkårsvurderingProvider } from '../../../context/Vilkårsvurdering/VilkårsvurderingContext';
@@ -63,9 +62,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker }) => {
                         path="/tilkjent-ytelse"
                         element={
                             <TidslinjeProvider>
-                                <EøsProvider åpenBehandling={åpenBehandling.data}>
-                                    <Behandlingsresultat åpenBehandling={åpenBehandling.data} />
-                                </EøsProvider>
+                                <Behandlingsresultat åpenBehandling={åpenBehandling.data} />
                             </TidslinjeProvider>
                         }
                     />

@@ -3,10 +3,10 @@ import React from 'react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { IDokumentInfo, ILogiskVedlegg } from '@navikt/familie-typer';
 
-import { useManuellJournalføringContext } from '../../../context/ManuellJournalførContext';
 import type { OptionType } from '../../../typer/common';
 import { BrevkodeMap, DokumentTittel } from '../../../typer/manuell-journalføring';
 import { journalpostTittelList } from '../Journalpost';
+import { useManuellJournalføringContext } from '../ManuellJournalføringContext';
 
 const dokumentTittelList = Object.keys(DokumentTittel).map((_, index) => {
     return {

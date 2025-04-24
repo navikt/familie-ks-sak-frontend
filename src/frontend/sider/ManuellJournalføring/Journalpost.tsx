@@ -6,7 +6,7 @@ import { BodyShort, ExpansionCard, Heading } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useManuellJournalføringContext } from '../../context/ManuellJournalførContext';
+import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 import { JournalpostTittel } from '../../typer/manuell-journalføring';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 

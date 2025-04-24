@@ -8,7 +8,7 @@ import type { IMinimalFagsak } from '../../typer/fagsak';
 import type { IPersonInfo } from '../../typer/person';
 
 interface Props {
-    minimalFagsak: Ressurs<IMinimalFagsak>;
+    minimalFagsakRessurs: Ressurs<IMinimalFagsak>;
     settBruker: (ressurs: Ressurs<IPersonInfo>) => void;
     oppdaterBrukerHvisFagsakEndres: (
         bruker: Ressurs<IPersonInfo>,
@@ -21,7 +21,7 @@ interface Props {
 }
 
 export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
-    minimalFagsak,
+    minimalFagsakRessurs,
     settBruker,
     oppdaterBrukerHvisFagsakEndres,
     bruker,
@@ -31,17 +31,17 @@ export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
 }: Props) =>
     useEffect(() => {
         if (
-            minimalFagsak.status !== RessursStatus.SUKSESS &&
-            minimalFagsak.status !== RessursStatus.HENTER
+            minimalFagsakRessurs.status !== RessursStatus.SUKSESS &&
+            minimalFagsakRessurs.status !== RessursStatus.HENTER
         ) {
             settBruker(byggTomRessurs());
         } else {
             oppdaterBrukerHvisFagsakEndres(
                 bruker,
-                hentDataFraRessurs(minimalFagsak)?.søkerFødselsnummer
+                hentDataFraRessurs(minimalFagsakRessurs)?.søkerFødselsnummer
             );
         }
         oppdaterKlagebehandlingerPåFagsak();
         oppdaterTilbakekrevingsbehandlingerPåFagsak();
         settManuelleBrevmottakerePåFagsak([]);
-    }, [minimalFagsak]);
+    }, [minimalFagsakRessurs]);

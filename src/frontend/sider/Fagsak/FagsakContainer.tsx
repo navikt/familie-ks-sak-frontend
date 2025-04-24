@@ -53,28 +53,31 @@ const FagsakContainer: React.FunctionComponent = () => {
 
     const skalHaHøyremeny = !erPåSaksoversikt && !erPåDokumentutsending;
 
-    const { bruker, minimalFagsak, hentMinimalFagsak } = useFagsakContext();
+    const { bruker, minimalFagsakRessurs, hentMinimalFagsak } = useFagsakContext();
 
     useEffect(() => {
         if (fagsakId !== undefined) {
-            if (minimalFagsak.status !== RessursStatus.SUKSESS) {
+            if (minimalFagsakRessurs.status !== RessursStatus.SUKSESS) {
                 hentMinimalFagsak(fagsakId);
             } else if (
-                minimalFagsak.status === RessursStatus.SUKSESS &&
-                minimalFagsak.data.id !== parseInt(fagsakId, 10)
+                minimalFagsakRessurs.status === RessursStatus.SUKSESS &&
+                minimalFagsakRessurs.data.id !== parseInt(fagsakId, 10)
             ) {
                 hentMinimalFagsak(fagsakId);
             }
         }
     }, [fagsakId]);
 
-    switch (minimalFagsak.status) {
+    switch (minimalFagsakRessurs.status) {
         case RessursStatus.SUKSESS:
             switch (bruker.status) {
                 case RessursStatus.SUKSESS:
                     return (
                         <>
-                            <Personlinje bruker={bruker.data} minimalFagsak={minimalFagsak.data} />
+                            <Personlinje
+                                bruker={bruker.data}
+                                minimalFagsak={minimalFagsakRessurs.data}
+                            />
 
                             <Innhold>
                                 {skalHaVenstremeny && (
@@ -87,7 +90,9 @@ const FagsakContainer: React.FunctionComponent = () => {
                                         <Route
                                             path="/saksoversikt"
                                             element={
-                                                <Saksoversikt minimalFagsak={minimalFagsak.data} />
+                                                <Saksoversikt
+                                                    minimalFagsak={minimalFagsakRessurs.data}
+                                                />
                                             }
                                         />
 
@@ -95,7 +100,7 @@ const FagsakContainer: React.FunctionComponent = () => {
                                             path="/dokumentutsending"
                                             element={
                                                 <DokumentutsendingProvider
-                                                    fagsakId={minimalFagsak.data.id}
+                                                    fagsakId={minimalFagsakRessurs.data.id}
                                                 >
                                                     <Dokumentutsending bruker={bruker.data} />
                                                 </DokumentutsendingProvider>
@@ -137,14 +142,14 @@ const FagsakContainer: React.FunctionComponent = () => {
         case RessursStatus.IKKE_TILGANG:
             return (
                 <Alert
-                    children={minimalFagsak.frontendFeilmelding}
+                    children={minimalFagsakRessurs.frontendFeilmelding}
                     variant="error"
                     contentMaxWidth={false}
                 />
             );
         case RessursStatus.FEILET:
         case RessursStatus.FUNKSJONELL_FEIL:
-            return <Alert children={minimalFagsak.frontendFeilmelding} variant="error" />;
+            return <Alert children={minimalFagsakRessurs.frontendFeilmelding} variant="error" />;
         default:
             return <div />;
     }

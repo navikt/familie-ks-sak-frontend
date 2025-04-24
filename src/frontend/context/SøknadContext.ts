@@ -48,12 +48,11 @@ const [SøknadProvider, useSøknad] = createUseContext(
         const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
         const { fagsakId } = useSakOgBehandlingParams();
         const navigate = useNavigate();
-        const { bruker, minimalFagsak } = useFagsakContext();
-        const [visBekreftModal, settVisBekreftModal] = React.useState<boolean>(false);
+        const { bruker, minimalFagsakRessurs } = useFagsakContext();
 
         const barnMedLøpendeUtbetaling =
-            minimalFagsak.status === RessursStatus.SUKSESS
-                ? hentBarnMedLøpendeUtbetaling(minimalFagsak.data)
+            minimalFagsakRessurs.status === RessursStatus.SUKSESS
+                ? hentBarnMedLøpendeUtbetaling(minimalFagsakRessurs.data)
                 : new Set();
 
         const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<
@@ -181,11 +180,6 @@ const [SøknadProvider, useSøknad] = createUseContext(
                                     `/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`
                                 );
                             }
-                        },
-                        (errorResponse: Ressurs<IBehandling>) => {
-                            if (errorResponse.status === RessursStatus.FUNKSJONELL_FEIL) {
-                                settVisBekreftModal(true);
-                            }
                         }
                     );
                 }
@@ -196,10 +190,8 @@ const [SøknadProvider, useSøknad] = createUseContext(
             barnMedLøpendeUtbetaling,
             hentFeilTilOppsummering,
             nesteAction,
-            settVisBekreftModal,
             skjema,
             søknadErLastetFraBackend,
-            visBekreftModal,
         };
     }
 );

@@ -10,7 +10,7 @@ import { JournalpostSkjema } from './JournalpostSkjema';
 import {
     ManuellJournalføringProvider,
     useManuellJournalføringContext,
-} from '../../context/ManuellJournalførContext';
+} from './ManuellJournalføringContext';
 import { fagsakHeaderHøydeRem } from '../../typer/styling';
 import Personlinje from '../Fagsak/Personlinje/Personlinje';
 

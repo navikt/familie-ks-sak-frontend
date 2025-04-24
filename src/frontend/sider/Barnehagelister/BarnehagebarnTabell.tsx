@@ -62,7 +62,7 @@ const BarnehagebarnTabell: React.FC<BarnehagebarnTabellProps<Barnehagebarn>> = (
                         <Table.ColumnHeader sortable sortKey={'tom'}>
                             Til og med
                         </Table.ColumnHeader>
-                        <Table.ColumnHeader sortable sortKey={'antallTimerBarnehage'}>
+                        <Table.ColumnHeader sortable sortKey={'antallTimerIBarnehage'}>
                             Ant. timer i barnehage
                         </Table.ColumnHeader>
                         <Table.ColumnHeader sortable sortKey={'endringstype'}>
@@ -105,7 +105,7 @@ const BarnehagebarnTabell: React.FC<BarnehagebarnTabellProps<Barnehagebarn>> = (
                                     })}
                                 </Table.DataCell>
                                 <Table.DataCell align="center">
-                                    {barnehagebarn.antallTimerBarnehage}
+                                    {barnehagebarn.antallTimerIBarnehage}
                                 </Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.endringstype}</Table.DataCell>
                                 <Table.DataCell>
