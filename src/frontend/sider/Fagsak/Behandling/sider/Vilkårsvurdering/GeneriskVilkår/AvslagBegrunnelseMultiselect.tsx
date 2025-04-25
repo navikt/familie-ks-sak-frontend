@@ -11,6 +11,7 @@ import type { Felt } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
+import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { OptionType } from '../../../../../../typer/common';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import { BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
@@ -21,7 +22,6 @@ import {
     hentBakgrunnsfarge,
     hentBorderfarge,
 } from '../../../../../../utils/vedtakUtils';
-import { useBehandlingContext } from '../../Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 import { useVedtaksbegrunnelseTekster } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
 
 interface IProps {

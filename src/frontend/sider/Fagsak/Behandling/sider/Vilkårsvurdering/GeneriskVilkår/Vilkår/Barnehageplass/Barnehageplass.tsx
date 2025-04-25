@@ -6,8 +6,8 @@ import { BodyShort, Checkbox, Radio, RadioGroup, TextField } from '@navikt/ds-re
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import { antallTimerKvalifiserer } from './BarnehageplassUtils';
+import { useBehandlingContext } from '../../../../../../../../context/behandlingContext/BehandlingContext';
 import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../../Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';

@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import { Fieldset, HelpText, Label } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
+import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import DatovelgerForGammelSkjemaløsning from '../../../../../../komponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 import { Resultat } from '../../../../../../typer/vilkår';
 import type { IIsoDatoPeriode, IsoDatoString } from '../../../../../../utils/dato';
 import { nyIsoDatoPeriode } from '../../../../../../utils/dato';
-import { useBehandlingContext } from '../../Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 interface IProps extends PropsWithChildren {
     periode: Felt<IIsoDatoPeriode>;

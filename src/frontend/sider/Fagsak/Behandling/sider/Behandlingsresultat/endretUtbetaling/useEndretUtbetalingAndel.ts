@@ -6,6 +6,7 @@ import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
 
+import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import { type IRestEndretUtbetalingAndel } from '../../../../../../typer/utbetalingAndel';
 import { IEndretUtbetalingAndelÅrsak } from '../../../../../../typer/utbetalingAndel';
@@ -17,7 +18,6 @@ import {
     validerGyldigDato,
 } from '../../../../../../utils/dato';
 import { erAvslagBegrunnelseGyldig } from '../../../../../../utils/validators';
-import { useBehandlingContext } from '../../Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 export interface IEndretUtbetalingAndelSkjema {
     person: string | undefined;

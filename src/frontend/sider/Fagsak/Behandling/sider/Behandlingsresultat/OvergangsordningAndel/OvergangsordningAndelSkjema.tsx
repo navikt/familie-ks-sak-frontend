@@ -6,6 +6,7 @@ import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, Checkbox, Fieldset, Label, Select, TextField } from '@navikt/ds-react';
 import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 
+import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { useOvergangsordningAndel } from '../../../../../../context/OvergangsordningAndelContext';
 import Månedvelger, { DagIMåneden } from '../../../../../../komponenter/Datovelger/Månedvelger';
 import Knapperekke from '../../../../../../komponenter/Knapperekke';
@@ -13,7 +14,6 @@ import { BehandlingÅrsak, type IBehandling } from '../../../../../../typer/beha
 import { isNumeric } from '../../../../../../utils/eøsValidators';
 import { lagPersonLabel } from '../../../../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../../../../utils/ressursUtils';
-import { useBehandlingContext } from '../../Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 const KnapperekkeVenstre = styled.div`
     display: flex;

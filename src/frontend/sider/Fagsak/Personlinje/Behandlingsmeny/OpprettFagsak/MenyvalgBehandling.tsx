@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import {
     BehandlingStatus,
@@ -7,7 +8,6 @@ import {
     BehandlingÅrsak,
 } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
-import { useBehandlingContext } from '../../../Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 import EndreBehandlendeEnhet from '../EndreBehandlendeEnhet/EndreBehandlendeEnhet';
 import EndreBehandlingstema from '../EndreBehandling/EndreBehandlingstema';
 import HenleggBehandling from '../HenleggBehandling/HenleggBehandling';

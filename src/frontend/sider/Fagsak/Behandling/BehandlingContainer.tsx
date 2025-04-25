@@ -16,10 +16,10 @@ import OppsummeringVedtak from './sider/Vedtak/OppsummeringVedtak';
 import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/useSammensattKontrollsakContext';
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from './sider/Vilkårsvurdering/VilkårsvurderingContext';
+import { useBehandlingContext } from '../../../context/behandlingContext/BehandlingContext';
 import { TidslinjeProvider } from '../../../context/TidslinjeContext';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
-import { useBehandlingContext } from './sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 interface Props {
     bruker: IPersonInfo;
