@@ -12,8 +12,8 @@ import type { SideId } from './sider/sider';
 import { sider } from './sider/sider';
 import Simulering from './sider/Simulering/Simulering';
 import { SimuleringProvider } from './sider/Simulering/SimuleringContext';
-import OppsummeringVedtak from './sider/Vedtak/OppsummeringVedtak';
 import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/useSammensattKontrollsakContext';
+import Vedtak from './sider/Vedtak/Vedtak';
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from './sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { TidslinjeProvider } from '../../../context/TidslinjeContext';
@@ -78,10 +78,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker }) => {
                         path="/vedtak"
                         element={
                             <SammensattKontrollsakProvider behandling={åpenBehandling.data}>
-                                <OppsummeringVedtak
-                                    åpenBehandling={åpenBehandling.data}
-                                    bruker={bruker}
-                                />
+                                <Vedtak åpenBehandling={åpenBehandling.data} bruker={bruker} />
                             </SammensattKontrollsakProvider>
                         }
                     />
