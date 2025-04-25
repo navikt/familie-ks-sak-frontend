@@ -13,7 +13,6 @@ import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurder
 import VelgPeriode from './VelgPeriode';
 import type { IVilkårSkjemaContext, VilkårSkjemaContextValue } from './VilkårSkjemaContext';
 import { vilkårBegrunnelseFeilmeldingId, vilkårFeilmeldingId } from './VilkårTabell';
-import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak } from '../../../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import { PersonType } from '../../../../../../typer/person';
@@ -24,6 +23,7 @@ import type {
 } from '../../../../../../typer/vilkår';
 import { Regelverk, Resultat, VilkårType } from '../../../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../../../utils/vilkår';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 export const FieldsetForVilkårSkjema = styled(Fieldset)<{
     $lesevisning: boolean;

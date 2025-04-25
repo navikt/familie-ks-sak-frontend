@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Tabs } from '@navikt/ds-react';
 
-import { useBehandlingContext } from '../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import IkonDokumenter from '../ikoner/IkonDokumenter';
 import IkonHistorikk from '../ikoner/IkonHistorikk';
 import IkonMeldinger from '../ikoner/IkonMeldinger';

@@ -7,7 +7,7 @@ import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useBehandlingContext } from './behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IBehandling } from '../typer/behandling';
 import type {
     IOvergangsordningAndelSkjema,

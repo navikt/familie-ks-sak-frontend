@@ -4,8 +4,8 @@ import {
     bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår,
     useBosattIRiket,
 } from './BosattIRiketContext';
-import { useBehandlingContext } from '../../../../../../../../context/behandlingContext/BehandlingContext';
 import type { Regelverk } from '../../../../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';

@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useMedlemskap } from './MedlemskapContext';
-import { useBehandlingContext } from '../../../../../../../../context/behandlingContext/BehandlingContext';
 import { Regelverk, Resultat } from '../../../../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';

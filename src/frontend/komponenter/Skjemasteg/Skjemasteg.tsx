@@ -15,7 +15,7 @@ import {
 } from '@navikt/ds-tokens/dist/tokens';
 import { hentDataFraRessurs } from '@navikt/familie-typer';
 
-import { useBehandlingContext } from '../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { ISide } from '../../sider/Fagsak/Behandling/sider/sider';
 import { sider } from '../../sider/Fagsak/Behandling/sider/sider';
 import { BehandlingSteg, settPåVentÅrsaker } from '../../typer/behandling';

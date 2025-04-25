@@ -11,11 +11,11 @@ import GeneriskAnnenVurdering from './GeneriskAnnenVurdering/GeneriskAnnenVurder
 import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import PersonInformasjon from '../../../../../komponenter/PersonInformasjon/PersonInformasjon';
 import { PersonType } from '../../../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../../../typer/vilkår';
 import { vilkårConfig, Resultat, annenVurderingConfig } from '../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 const PersonLinje = styled.div`
     display: flex;

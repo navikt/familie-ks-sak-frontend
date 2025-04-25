@@ -4,9 +4,9 @@ import { Button, Fieldset, Dropdown, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlingstema from './useEndreBehandlingstema';
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingstemaSelect } from '../../../../../komponenter/BehandlingstemaSelect';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
+import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 const EndreBehandlingstema: React.FC = () => {
     const [visModal, settVisModal] = useState(false);

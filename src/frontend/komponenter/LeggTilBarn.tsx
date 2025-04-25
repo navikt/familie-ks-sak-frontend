@@ -26,7 +26,7 @@ import {
     Adressebeskyttelsegradering,
 } from '@navikt/familie-typer';
 
-import { useBehandlingContext } from '../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../sider/Fagsak/Behandling/context/BehandlingContext';
 import LeggTilUregistrertBarn from '../sider/Fagsak/Behandling/sider/RegistrerSøknad/LeggTilUregistrertBarn';
 import type {
     IRestBrevmottaker,

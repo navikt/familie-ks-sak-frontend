@@ -4,8 +4,8 @@ import {
     bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår,
     useBorMedSøker,
 } from './BorMedSøkerContext';
-import { useBehandlingContext } from '../../../../../../../../context/behandlingContext/BehandlingContext';
 import type { Regelverk } from '../../../../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';

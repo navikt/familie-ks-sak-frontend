@@ -6,7 +6,6 @@ import type { FeltState } from '@navikt/familie-skjema';
 import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useBehandlingContext } from '../../../../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import type {
@@ -22,6 +21,7 @@ import {
     isEmpty,
     isNumeric,
 } from '../../../../../../../utils/eøsValidators';
+import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import { konverterDesimalverdiTilSkjemaVisning, konverterSkjemaverdiTilDesimal } from '../utils';
 
 const erBeløpGyldig = (felt: FeltState<string | undefined>): FeltState<string | undefined> => {

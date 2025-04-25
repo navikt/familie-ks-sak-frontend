@@ -8,10 +8,10 @@ import { RessursStatus } from '@navikt/familie-typer';
 import Annet from './Annet';
 import Barna from './Barna';
 import { useSøknadContext } from './SøknadContext';
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import MålformVelger from '../../../../../komponenter/MålformVelger';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { BehandlingSteg } from '../../../../../typer/behandling';
+import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 const StyledSkjemasteg = styled(Skjemasteg)`
     max-width: 40rem;

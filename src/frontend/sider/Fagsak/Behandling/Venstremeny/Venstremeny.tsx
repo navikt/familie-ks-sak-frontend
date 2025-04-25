@@ -21,8 +21,8 @@ import {
 } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBehandlingContext } from '../../../../context/behandlingContext/BehandlingContext';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
+import { useBehandlingContext } from '../../Behandling/context/BehandlingContext';
 import type { IUnderside } from '../sider/sider';
 import { erSidenAktiv } from '../sider/sider';
 

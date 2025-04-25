@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { Resultat, type IVilkårResultat } from '../../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps {
     vilkårHarEndringerSomIkkeErLagret: () => boolean;
