@@ -1,5 +1,5 @@
-import { BehandlingStatus, BehandlingSteg } from '../../../typer/behandling';
-import { saksbehandlerHarKunLesevisning } from '../util';
+import { saksbehandlerHarKunLesevisning } from './utils';
+import { BehandlingStatus, BehandlingSteg } from '../../../../typer/behandling';
 
 describe('BehandlingContext', () => {
     describe('erBehandlingILesevisning', () => {
