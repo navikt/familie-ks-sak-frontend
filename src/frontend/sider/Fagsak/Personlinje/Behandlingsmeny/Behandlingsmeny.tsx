@@ -8,9 +8,9 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import MenyvalgFagsak from './MenyvalgFagsak';
 import MenyvalgBehandling from './OpprettFagsak/MenyvalgBehandling';
-import { useBehandlingContext } from '../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingStatus } from '../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
+import { useBehandlingContext } from '../../Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;

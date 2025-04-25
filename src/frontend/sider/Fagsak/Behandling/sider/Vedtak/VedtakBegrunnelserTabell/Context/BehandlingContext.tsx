@@ -5,11 +5,27 @@ import { useLocation, useNavigate } from 'react-router';
 import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
 import { byggTomRessurs, hentDataFraRessurs } from '@navikt/familie-typer';
 
-import useBehandlingApi from './useBehandlingApi';
-import useBehandlingssteg from './useBehandlingssteg';
-import { saksbehandlerHarKunLesevisning } from './util';
-import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
-import type { ISide, ITrinn, SideId } from '../../sider/Fagsak/Behandling/sider/sider';
+import { useApp } from '../../../../../../../context/AppContext';
+import useBehandlingApi from '../../../../../../../context/behandlingContext/useBehandlingApi';
+import useBehandlingssteg from '../../../../../../../context/behandlingContext/useBehandlingssteg';
+import { saksbehandlerHarKunLesevisning } from '../../../../../../../context/behandlingContext/util';
+import { useFagsakContext } from '../../../../../../../context/fagsak/FagsakContext';
+import useSakOgBehandlingParams from '../../../../../../../hooks/useSakOgBehandlingParams';
+import {
+    BehandlerRolle,
+    BehandlingStatus,
+    BehandlingÅrsak,
+    type BehandlingSteg,
+    type IBehandling,
+    type IBehandlingPåVent,
+    type IOpprettBehandlingData,
+} from '../../../../../../../typer/behandling';
+import { harTilgangTilEnhet } from '../../../../../../../typer/enhet';
+import type { ILogg } from '../../../../../../../typer/logg';
+import { PersonType } from '../../../../../../../typer/person';
+import { Målform } from '../../../../../../../typer/søknad';
+import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '../../../../../../../utils/behandling';
+import { hentSideHref } from '../../../../../../../utils/miljø';
 import {
     erViPåUdefinertFagsakSide,
     erViPåUlovligSteg,
@@ -17,22 +33,10 @@ import {
     hentTrinnForBehandling,
     KontrollertStatus,
     sider,
-} from '../../sider/Fagsak/Behandling/sider/sider';
-import type {
-    BehandlingSteg,
-    IBehandling,
-    IBehandlingPåVent,
-    IOpprettBehandlingData,
-} from '../../typer/behandling';
-import { BehandlerRolle, BehandlingStatus, BehandlingÅrsak } from '../../typer/behandling';
-import { harTilgangTilEnhet } from '../../typer/enhet';
-import type { ILogg } from '../../typer/logg';
-import { PersonType } from '../../typer/person';
-import { Målform } from '../../typer/søknad';
-import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '../../utils/behandling';
-import { hentSideHref } from '../../utils/miljø';
-import { useApp } from '../AppContext';
-import { useFagsakContext } from '../fagsak/FagsakContext';
+    type ISide,
+    type ITrinn,
+    type SideId,
+} from '../../../sider';
 
 interface BehandlingContextValue {
     vurderErLesevisning: (

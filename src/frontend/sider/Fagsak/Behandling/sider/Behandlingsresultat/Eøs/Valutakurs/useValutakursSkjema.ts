@@ -8,7 +8,6 @@ import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { RessursStatus, byggTomRessurs } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useBehandlingContext } from '../../../../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import type {
@@ -31,6 +30,7 @@ import {
     isNumeric,
     tellAntallDesimaler,
 } from '../../../../../../../utils/eøsValidators';
+import { useBehandlingContext } from '../../../Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 import { konverterDesimalverdiTilSkjemaVisning, konverterSkjemaverdiTilDesimal } from '../utils';
 
 const erValutakursGyldig = (

@@ -13,7 +13,6 @@ import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/famili
 import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderingITestmiljøKnapp';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../../../typer/behandling';
@@ -21,6 +20,7 @@ import { BehandlingSteg, BehandlingÅrsak } from '../../../../../typer/behandlin
 import { Datoformat, isoStringTilFormatertString } from '../../../../../utils/dato';
 import { erProd } from '../../../../../utils/miljø';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
+import { useBehandlingContext } from '../../../Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 const UregistrerteBarnListe = styled.ol`
     margin: ${ASpacing2} 0;

@@ -25,7 +25,6 @@ import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
 import { useSimuleringContext } from './SimuleringContext';
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import useDokument from '../../../../../hooks/useDokument';
 import type { BrevmottakereAlertBehandlingProps } from '../../../../../komponenter/BrevmottakereAlert';
@@ -34,6 +33,7 @@ import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisni
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../../../typer/simulering';
 import type { Målform } from '../../../../../typer/søknad';
 import { målform } from '../../../../../typer/søknad';
+import { useBehandlingContext } from '../../../Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 const ForhåndsvisVarselKnappContainer = styled.div`
     display: flex;

@@ -8,12 +8,12 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
 import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
-import { useBehandlingContext } from '../../../../../../context/behandlingContext/BehandlingContext';
 import ManuellVurdering from '../../../../../../ikoner/ManuellVurdering';
 import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { IAnnenVurderingConfig, IAnnenVurdering } from '../../../../../../typer/vilkår';
 import { Resultat, uiResultat } from '../../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 interface IProps {
     person: IGrunnlagPerson;

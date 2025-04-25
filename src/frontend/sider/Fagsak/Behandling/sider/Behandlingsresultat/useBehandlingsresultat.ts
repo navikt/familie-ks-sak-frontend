@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { useHttp } from '@navikt/familie-http';
 import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
 
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import type { IRestEndretUtbetalingAndel } from '../../../../../typer/utbetalingAndel';
+import { useBehandlingContext } from '../../../Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 export const useBehandlingContextsresultat = (åpenBehandling: IBehandling) => {
     const { request } = useHttp();

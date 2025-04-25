@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import { BodyShort, Checkbox, Label, TextField } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import Datovelger from '../../../../../komponenter/Datovelger/Datovelger';
 import type { IRegistrerBarnSkjema } from '../../../../../komponenter/LeggTilBarn';
 import type { IPersonInfo } from '../../../../../typer/person';
+import { useBehandlingContext } from '../../../Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 interface IProps {
     registrerBarnSkjema: ISkjema<IRegistrerBarnSkjema, IPersonInfo>;

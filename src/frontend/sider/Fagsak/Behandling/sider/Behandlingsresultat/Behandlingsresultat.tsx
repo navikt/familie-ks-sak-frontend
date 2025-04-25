@@ -21,7 +21,6 @@ import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import { useBehandlingContextsresultat } from './useBehandlingsresultat';
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useTidslinje } from '../../../../../context/TidslinjeContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
@@ -33,6 +32,7 @@ import type {
 } from '../../../../../typer/eøsPerioder';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
+import { useBehandlingContext } from '../../../Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 const EndretUtbetalingAndel = styled.div`
     display: flex;

@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router';
 import styled from 'styled-components';
 
 import { useApp } from './context/AppContext';
-import { BehandlingProvider } from './context/behandlingContext/BehandlingContext';
 import { FagsakProvider } from './context/fagsak/FagsakContext';
 import { TidslinjeProvider } from './context/TidslinjeContext';
 import { HeaderMedSøk } from './komponenter/HeaderMedSøk/HeaderMedSøk';
@@ -13,6 +12,7 @@ import UgyldigSesjon from './komponenter/Modal/SesjonUtløpt';
 import SystemetLaster from './komponenter/SystemetLaster/SystemetLaster';
 import Toasts from './komponenter/Toast/Toasts';
 import Barnehagelister from './sider/Barnehagelister/Barnehagelister';
+import { BehandlingProvider } from './sider/Fagsak/Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 import FagsakContainer from './sider/Fagsak/FagsakContainer';
 import Internstatistikk from './sider/Internstatistikk/Internstatistikk';
 import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';

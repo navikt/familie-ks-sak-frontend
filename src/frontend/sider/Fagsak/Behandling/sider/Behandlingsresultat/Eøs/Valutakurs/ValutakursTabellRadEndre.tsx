@@ -10,11 +10,11 @@ import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Currency } from '@navikt/land-verktoy';
 
-import { useBehandlingContext } from '../../../../../../../context/behandlingContext/BehandlingContext';
 import Datovelger from '../../../../../../../komponenter/Datovelger/Datovelger';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import { EøsPeriodeStatus, type IValutakurs } from '../../../../../../../typer/eøsPerioder';
+import { useBehandlingContext } from '../../../Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
 import { StyledFamilieValutavelger } from '../EøsKomponenter/FamilieLandvelger';

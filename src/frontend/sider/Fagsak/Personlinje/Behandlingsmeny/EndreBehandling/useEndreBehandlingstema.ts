@@ -6,13 +6,13 @@ import type { FeltState } from '@navikt/familie-skjema';
 import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import type {
     IBehandlingstema,
     IRestEndreBehandlingstema,
 } from '../../../../../typer/behandlingstema';
 import { tilBehandlingstema } from '../../../../../typer/behandlingstema';
+import { useBehandlingContext } from '../../../Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 const useEndreBehandling = (lukkModal: () => void) => {
     const { request } = useHttp();

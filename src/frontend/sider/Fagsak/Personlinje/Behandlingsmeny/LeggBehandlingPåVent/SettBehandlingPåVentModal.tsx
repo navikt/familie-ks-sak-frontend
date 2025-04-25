@@ -8,12 +8,12 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { hentAlleÅrsaker } from './settPåVentUtils';
 import { useSettPåVentSkjema } from './useSettPåVentSkjema';
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import Datovelger from '../../../../../komponenter/Datovelger/Datovelger';
 import type { IBehandling, IBehandlingPåVent } from '../../../../../typer/behandling';
 import { settPåVentÅrsaker } from '../../../../../typer/behandling';
 import { dateTilIsoDatoString } from '../../../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
+import { useBehandlingContext } from '../../../Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 const Feltmargin = styled.div`
     margin-bottom: 2rem;

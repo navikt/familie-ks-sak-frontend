@@ -7,7 +7,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import type { ISelectOptionMedBrevtekst } from './typer';
 import { Brevmal } from './typer';
-import { useBehandlingContext } from '../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '../../../typer/behandling';
 import { BehandlingKategori } from '../../../typer/behandlingstema';
 import type { IManueltBrevRequestPåBehandling } from '../../../typer/dokument';

@@ -7,7 +7,6 @@ import type { Avhengigheter, FeiloppsummeringFeil, ISkjema } from '@navikt/famil
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useBehandlingContext } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../../typer/behandling';
@@ -19,6 +18,7 @@ import type {
     Målform,
 } from '../../../../../typer/søknad';
 import { hentBarnMedLøpendeUtbetaling } from '../../../../../utils/fagsak';
+import { useBehandlingContext } from '../../../Behandling/sider/Vedtak/VedtakBegrunnelserTabell/Context/BehandlingContext';
 
 interface Props extends React.PropsWithChildren {
     åpenBehandling: IBehandling;
