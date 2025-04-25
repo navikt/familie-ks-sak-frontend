@@ -11,11 +11,14 @@ import {
 } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
-import type { IBehandling } from '../../typer/behandling';
-import { BehandlingResultat, BehandlingÅrsak } from '../../typer/behandling';
-import { defaultFunksjonellFeil } from '../../typer/feilmeldinger';
-import { useApp } from '../AppContext';
+import { useApp } from '../../../../context/AppContext';
+import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
+import {
+    BehandlingResultat,
+    BehandlingÅrsak,
+    type IBehandling,
+} from '../../../../typer/behandling';
+import { defaultFunksjonellFeil } from '../../../../typer/feilmeldinger';
 
 const useBehandlingssteg = (
     oppdaterBehandling: (behandling: Ressurs<IBehandling>) => void,

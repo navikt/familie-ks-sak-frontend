@@ -12,12 +12,15 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
-import type { IBehandling, IOpprettBehandlingData } from '../../typer/behandling';
-import { BehandlingÅrsak } from '../../typer/behandling';
-import type { ILogg } from '../../typer/logg';
-import { obfuskerBehandling, obfuskerLogg } from '../../utils/obfuskerData';
-import { useApp } from '../AppContext';
+import { useApp } from '../../../../context/AppContext';
+import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
+import {
+    BehandlingÅrsak,
+    type IBehandling,
+    type IOpprettBehandlingData,
+} from '../../../../typer/behandling';
+import type { ILogg } from '../../../../typer/logg';
+import { obfuskerBehandling, obfuskerLogg } from '../../../../utils/obfuskerData';
 
 const useBehandlingApi = (
     behandling: Ressurs<IBehandling>,
