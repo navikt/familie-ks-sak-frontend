@@ -12,7 +12,7 @@ import RefusjonEøs from './RefusjonEøs/RefusjonEøs';
 import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrollsak';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
 import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
-import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
+import Vedtaksperioder from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
 import Vedtaksmeny from './Vedtaksmeny';
 import { useApp } from '../../../../../context/AppContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
@@ -179,9 +179,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                         ) : (
                             <>
                                 <VedtaksbegrunnelseTeksterProvider>
-                                    <VedtaksperioderMedBegrunnelser
-                                        åpenBehandling={åpenBehandling}
-                                    />
+                                    <Vedtaksperioder åpenBehandling={åpenBehandling} />
                                 </VedtaksbegrunnelseTeksterProvider>
                                 {visFeilutbetaltValuta && (
                                     <FeilutbetaltValuta

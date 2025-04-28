@@ -30,13 +30,11 @@ const StyledHelpText = styled(HelpText)`
     }
 `;
 
-interface IVedtakBegrunnelserTabell {
+interface VedtaksperioderProps {
     åpenBehandling: IBehandling;
 }
 
-const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
-    åpenBehandling,
-}) => {
+const Vedtaksperioder: React.FC<VedtaksperioderProps> = ({ åpenBehandling }) => {
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
     const { toggles } = useApp();
 
@@ -62,7 +60,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
 
     return sorterteVedtaksperioderSomSkalvises.length > 0 ? (
         <>
-            <VedtaksperiodeListe
+            <GrupperteVedtaksperioder
                 sorterteVedtaksperioderMedBegrunnelser={sorterteAndreVedtaksperioder}
                 overskrift={'Begrunnelser i vedtaksbrev'}
                 hjelpetekst={
@@ -71,7 +69,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
                 åpenBehandling={åpenBehandling}
             />
 
-            <VedtaksperiodeListe
+            <GrupperteVedtaksperioder
                 sorterteVedtaksperioderMedBegrunnelser={sorterteAvslagsperioder}
                 overskrift={'Begrunnelser for avslag i vedtaksbrev'}
                 hjelpetekst={
@@ -85,7 +83,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
     );
 };
 
-const VedtaksperiodeListe: React.FC<{
+const GrupperteVedtaksperioder: React.FC<{
     sorterteVedtaksperioderMedBegrunnelser: IVedtaksperiodeMedBegrunnelser[];
     overskrift: string;
     hjelpetekst: string;
@@ -123,4 +121,4 @@ const VedtaksperiodeListe: React.FC<{
     );
 };
 
-export default VedtaksperioderMedBegrunnelser;
+export default Vedtaksperioder;
