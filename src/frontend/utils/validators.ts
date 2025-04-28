@@ -132,13 +132,6 @@ export const erPeriodeGyldig = (
                 }
                 break;
             case VilkårType.BARNEHAGEPLASS:
-                if (valgtDatoErSenereEnnNesteMåned(fom)) {
-                    return feil(
-                        felt,
-                        'Du kan ikke legge inn fra og med dato som er senere enn neste måned'
-                    );
-                }
-                break;
             case VilkårType.BOR_MED_SØKER:
             case VilkårType.BOSATT_I_RIKET:
             case VilkårType.LOVLIG_OPPHOLD:
