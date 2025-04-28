@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 
 import { useFelt, useSkjema } from '@navikt/familie-skjema';
 
-import type { IBehandling } from '../../../../../../../typer/behandling';
-import type { IsoDatoString } from '../../../../../../../utils/dato';
-import { validerGyldigDato } from '../../../../../../../utils/dato';
+import type { IBehandling } from '../../../../../../typer/behandling';
+import type { IsoDatoString } from '../../../../../../utils/dato';
+import { validerGyldigDato } from '../../../../../../utils/dato';
 
 export const useOppdaterEndringstidspunktSkjema = (
     endringstidspunkt: IsoDatoString | undefined
