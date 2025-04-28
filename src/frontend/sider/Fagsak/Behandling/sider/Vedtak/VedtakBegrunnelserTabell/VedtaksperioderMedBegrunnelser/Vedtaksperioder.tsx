@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Alert, Heading, HelpText } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import Vedtaksperiode from './VedtaksperiodeMedBegrunnelserPanel';
+import Vedtaksperiode from './Vedtaksperiode';
 import { useApp } from '../../../../../../../context/AppContext';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import { ToggleNavn } from '../../../../../../../typer/toggles';
