@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Alert, Heading, HelpText } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import VedtaksperiodeMedBegrunnelserPanel from './VedtaksperiodeMedBegrunnelserPanel';
+import Vedtaksperiode from './VedtaksperiodeMedBegrunnelserPanel';
 import { useApp } from '../../../../../../../context/AppContext';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import { ToggleNavn } from '../../../../../../../typer/toggles';
@@ -110,7 +110,7 @@ const GrupperteVedtaksperioder: React.FC<{
                         åpenBehandling={åpenBehandling}
                         vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
                     >
-                        <VedtaksperiodeMedBegrunnelserPanel
+                        <Vedtaksperiode
                             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
                             sisteVedtaksperiodeFom={sisteVedtaksperiodeFom}
                         />

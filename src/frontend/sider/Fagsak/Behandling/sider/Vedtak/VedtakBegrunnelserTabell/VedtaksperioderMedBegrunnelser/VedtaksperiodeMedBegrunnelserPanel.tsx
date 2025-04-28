@@ -17,7 +17,7 @@ interface IProps {
     sisteVedtaksperiodeFom?: string;
 }
 
-const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
+const Vedtaksperiode: React.FC<IProps> = ({
     vedtaksperiodeMedBegrunnelser,
     sisteVedtaksperiodeFom,
 }) => {
@@ -90,4 +90,4 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
         </EkspanderbartBegrunnelsePanel>
     );
 };
-export default VedtaksperiodeMedBegrunnelserPanel;
+export default Vedtaksperiode;
