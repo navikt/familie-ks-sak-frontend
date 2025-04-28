@@ -14,7 +14,7 @@ import { Vedtaksperiodetype } from '../../../../../../../typer/vedtaksperiode';
 import { partition } from '../../../../../../../utils/commons';
 import { filtrerOgSorterPerioderMedBegrunnelseBehov } from '../../../../../../../utils/vedtakUtils';
 import { useVedtaksbegrunnelseTekster } from '../Context/VedtaksbegrunnelseTeksterContext';
-import { VedtaksperiodeProvider } from '../Context/VedtaksperiodeMedBegrunnelserContext';
+import { VedtaksperiodeProvider } from '../Context/VedtaksperiodeContext';
 
 const StyledHeading = styled(Heading)`
     display: flex;

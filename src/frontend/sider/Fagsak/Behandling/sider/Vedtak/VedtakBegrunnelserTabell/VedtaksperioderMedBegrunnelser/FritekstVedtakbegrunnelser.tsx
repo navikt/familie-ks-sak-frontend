@@ -22,7 +22,7 @@ import Knapperekke from '../../../../../../../komponenter/Knapperekke';
 import { målform } from '../../../../../../../typer/søknad';
 import type { IFritekstFelt } from '../../../../../../../utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '../../../../../../../utils/ressursUtils';
-import { useVedtaksperiodeContext } from '../Context/VedtaksperiodeMedBegrunnelserContext';
+import { useVedtaksperiodeContext } from '../Context/VedtaksperiodeContext';
 
 const FritekstContainer = styled.div`
     padding: 1rem;
