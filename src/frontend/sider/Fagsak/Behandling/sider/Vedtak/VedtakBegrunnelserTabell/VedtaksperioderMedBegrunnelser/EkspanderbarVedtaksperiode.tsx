@@ -36,7 +36,7 @@ const StyledExpansionTitle = styled(ExpansionCard.Title)`
     margin-left: 0;
 `;
 
-interface IEkspanderbartBegrunnelsePanelProps extends PropsWithChildren {
+interface EkspanderbarVedtaksperiodeProps extends PropsWithChildren {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
     sisteVedtaksperiodeFom?: string;
     vedtaksperiodeInneholderOvergangsordningBegrunnelse: boolean;
@@ -69,7 +69,7 @@ const finnPresentertTomDato = (
     return periodeTom;
 };
 
-const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProps> = ({
+const EkspanderbarVedtaksperiode: React.FC<EkspanderbarVedtaksperiodeProps> = ({
     vedtaksperiodeMedBegrunnelser,
     sisteVedtaksperiodeFom,
     vedtaksperiodeInneholderOvergangsordningBegrunnelse,
@@ -127,4 +127,4 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
     );
 };
 
-export default EkspanderbartBegrunnelsePanel;
+export default EkspanderbarVedtaksperiode;

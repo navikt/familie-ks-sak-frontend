@@ -4,7 +4,7 @@ import { BodyShort, ErrorMessage, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 
 import BegrunnelserMultiselect from './BegrunnelserMultiselect';
-import EkspanderbartBegrunnelsePanel from './EkspanderbartBegrunnelsePanel';
+import EkspanderbarVedtaksperiode from './EkspanderbarVedtaksperiode';
 import FritekstVedtakbegrunnelser from './FritekstVedtakbegrunnelser';
 import { Standardbegrunnelse } from '../../../../../../../typer/vedtak';
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../../typer/vedtaksperiode';
@@ -47,7 +47,7 @@ const Vedtaksperiode: React.FC<IProps> = ({
         vedtaksperiodeMedBegrunnelser.fritekster.length > 0;
 
     return (
-        <EkspanderbartBegrunnelsePanel
+        <EkspanderbarVedtaksperiode
             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
             sisteVedtaksperiodeFom={sisteVedtaksperiodeFom}
             vedtaksperiodeInneholderOvergangsordningBegrunnelse={
@@ -87,7 +87,7 @@ const Vedtaksperiode: React.FC<IProps> = ({
                 </>
             )}
             {vedtaksperiodeStøtterFritekst && <FritekstVedtakbegrunnelser />}
-        </EkspanderbartBegrunnelsePanel>
+        </EkspanderbarVedtaksperiode>
     );
 };
 export default Vedtaksperiode;
