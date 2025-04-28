@@ -14,7 +14,7 @@ import { Vedtaksperiodetype } from '../../../../../../../typer/vedtaksperiode';
 import { partition } from '../../../../../../../utils/commons';
 import { filtrerOgSorterPerioderMedBegrunnelseBehov } from '../../../../../../../utils/vedtakUtils';
 import { useVedtaksbegrunnelseTekster } from '../Context/VedtaksbegrunnelseTeksterContext';
-import { VedtaksperiodeMedBegrunnelserProvider } from '../Context/VedtaksperiodeMedBegrunnelserContext';
+import { VedtaksperiodeProvider } from '../Context/VedtaksperiodeMedBegrunnelserContext';
 
 const StyledHeading = styled(Heading)`
     display: flex;
@@ -105,7 +105,7 @@ const GrupperteVedtaksperioder: React.FC<{
             </StyledHeading>
             {sorterteVedtaksperioderMedBegrunnelser.map(
                 (vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser) => (
-                    <VedtaksperiodeMedBegrunnelserProvider
+                    <VedtaksperiodeProvider
                         key={vedtaksperiodeMedBegrunnelser.id}
                         åpenBehandling={åpenBehandling}
                         vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
@@ -114,7 +114,7 @@ const GrupperteVedtaksperioder: React.FC<{
                             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
                             sisteVedtaksperiodeFom={sisteVedtaksperiodeFom}
                         />
-                    </VedtaksperiodeMedBegrunnelserProvider>
+                    </VedtaksperiodeProvider>
                 )
             )}
         </>

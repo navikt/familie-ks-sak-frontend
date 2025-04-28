@@ -19,7 +19,7 @@ import {
     hentBorderfarge,
 } from '../../../../../../../utils/vedtakUtils';
 import { useVedtaksbegrunnelseTekster } from '../Context/VedtaksbegrunnelseTeksterContext';
-import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
+import { useVedtaksperiodeContext } from '../Context/VedtaksperiodeMedBegrunnelserContext';
 import { mapBegrunnelserTilSelectOptions } from '../Hooks/useVedtaksbegrunnelser';
 
 interface IProps {
@@ -40,7 +40,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
         grupperteBegrunnelser,
         begrunnelserPut,
         vedtaksperiodeMedBegrunnelser,
-    } = useVedtaksperiodeMedBegrunnelser();
+    } = useVedtaksperiodeContext();
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
 
     const [begrunnelser, settBegrunnelser] = useState<OptionType[]>([]);

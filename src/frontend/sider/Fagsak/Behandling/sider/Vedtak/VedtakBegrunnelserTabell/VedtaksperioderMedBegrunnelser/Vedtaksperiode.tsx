@@ -9,7 +9,7 @@ import FritekstVedtakbegrunnelser from './FritekstVedtakbegrunnelser';
 import { Standardbegrunnelse } from '../../../../../../../typer/vedtak';
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../../../../../../../typer/vedtaksperiode';
-import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
+import { useVedtaksperiodeContext } from '../Context/VedtaksperiodeMedBegrunnelserContext';
 import Utbetalingsresultat from '../Felles/Utbetalingsresultat';
 
 interface IProps {
@@ -22,7 +22,7 @@ const Vedtaksperiode: React.FC<IProps> = ({
     sisteVedtaksperiodeFom,
 }) => {
     const { erPanelEkspandert, onPanelClose, genererteBrevbegrunnelser } =
-        useVedtaksperiodeMedBegrunnelser();
+        useVedtaksperiodeContext();
 
     const vedtaksperiodeInneholderFramtidigOpphørBegrunnelse =
         vedtaksperiodeMedBegrunnelser.begrunnelser.filter(

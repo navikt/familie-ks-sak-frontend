@@ -22,7 +22,7 @@ import Knapperekke from '../../../../../../../komponenter/Knapperekke';
 import { målform } from '../../../../../../../typer/søknad';
 import type { IFritekstFelt } from '../../../../../../../utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '../../../../../../../utils/ressursUtils';
-import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
+import { useVedtaksperiodeContext } from '../Context/VedtaksperiodeMedBegrunnelserContext';
 
 const FritekstContainer = styled.div`
     padding: 1rem;
@@ -89,7 +89,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
         onPanelClose,
         putVedtaksperiodeMedFritekster,
         vedtaksperiodeMedBegrunnelser,
-    } = useVedtaksperiodeMedBegrunnelser();
+    } = useVedtaksperiodeContext();
 
     const erMaksAntallKulepunkter = skjema.felter.fritekster.verdi.length >= maksAntallKulepunkter;
 
