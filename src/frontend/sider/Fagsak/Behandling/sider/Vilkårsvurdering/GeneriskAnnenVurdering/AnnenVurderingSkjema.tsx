@@ -39,6 +39,7 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
             error={lagreAnnenVurderingFeilmelding}
             errorPropagation={false}
             legend={''}
+            $lesevisning={erLesevisning}
         >
             <RadioGroup
                 readOnly={erLesevisning}

@@ -51,9 +51,9 @@
     "@navikt/landvelger": "^9.1.9",
     "@sentry/browser": "^9.14.0",
     "@sentry/webpack-plugin": "^3.3.1",
-    "axios": "^1.8.2",
-    "babel-loader": "^9.2.1",
-    "body-parser": "^1.20.2",
+    "axios": "^1.9.0",
+    "babel-loader": "^10.0.0",
+    "body-parser": "^2.2.0",
     "classnames": "^2.5.1",
     "constate": "^3.3.2",
     "date-fns": "4.1.0",
@@ -67,9 +67,9 @@
     "react-collapse": "^5.1.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.56.1",
-    "react-router": "^7.5.1",
+    "react-router": "^7.5.2",
     "rxjs": "^7.8.1",
-    "styled-components": "^6.1.1",
+    "styled-components": "^6.1.17",
     "terser-webpack-plugin": "^5.3.10",
     "ts-node": "^10.9.2",
     "tslib": "^2.8.1",
@@ -95,12 +95,11 @@
     "@types/react-collapse": "^5.0.1",
     "@types/react-dom": "^18.3.0",
     "@types/react-router": "^5.1.20",
-    "@types/styled-components": "^5.1.26",
     "@types/uuid": "^10.0.0",
     "@types/webpack-hot-middleware": "^2.25.9",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "compression-webpack-plugin": "^11.1.0",
-    "copy-webpack-plugin": "^12.0.2",
+    "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^7.1.1",
     "css-minimizer-webpack-plugin": "^7.0.0",
     "cypress": "13.17.0",
@@ -151,8 +150,5 @@
     "transform": {
       "\\.[jt]sx?$": "babel-jest"
     }
-  },
-  "resolutions": {
-    "styled-components": "^6"
   }
 }
