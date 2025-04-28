@@ -413,7 +413,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
                 },
             }).then((fagsak: Ressurs<IMinimalFagsak | undefined>) => {
                 if (fagsak.status === RessursStatus.SUKSESS && !!fagsak.data) {
-                    window.location.href = `/redirect/familie-tilbake/fagsystem/BA/fagsak/${fagsak.data.id}/behandling/${oppgave.saksreferanse}`;
+                    window.location.href = `/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsak.data.id}/behandling/${oppgave.saksreferanse}`;
                 }
             });
         }
