@@ -22,9 +22,9 @@ import OvergangsordningAndelTabell from './OvergangsordningAndel/Overgangsordnin
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import { useBehandlingsresultat } from './useBehandlingsresultat';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
-import { useTidslinje } from '../../../../../context/TidslinjeContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
+import { useTidslinje } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';
 import type {
     IRestKompetanse,

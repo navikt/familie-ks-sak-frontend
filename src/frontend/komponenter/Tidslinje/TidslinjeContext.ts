@@ -9,10 +9,10 @@ import {
     YtelseType,
     type IPersonMedAndelerTilkjentYtelse,
     type IYtelsePeriode,
-} from '../typer/beregning';
-import type { IGrunnlagPerson } from '../typer/person';
-import { dagensDato, isoStringTilDate } from '../utils/dato';
-import { sorterPersonTypeOgFødselsdato } from '../utils/formatter';
+} from '../../typer/beregning';
+import type { IGrunnlagPerson } from '../../typer/person';
+import { dagensDato, isoStringTilDate } from '../../utils/dato';
+import { sorterPersonTypeOgFødselsdato } from '../../utils/formatter';
 
 interface ITidslinjeVindu {
     id: number;

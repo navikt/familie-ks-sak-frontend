@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react';
 import { endOfMonth, startOfMonth } from 'date-fns';
 
+import { TidslinjeProvider, useTidslinje } from '../../komponenter/Tidslinje/TidslinjeContext';
 import { YtelseType, type IPersonMedAndelerTilkjentYtelse } from '../../typer/beregning';
-import { TidslinjeProvider, useTidslinje } from '../TidslinjeContext';
 
 describe('TidslinjeContext', () => {
     test('skal generere tidslinjerader for en person', () => {

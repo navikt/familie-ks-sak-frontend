@@ -17,7 +17,7 @@ import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontroll
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from './sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
-import { TidslinjeProvider } from '../../../context/TidslinjeContext';
+import { TidslinjeProvider } from '../../../komponenter/Tidslinje/TidslinjeContext';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
 

@@ -6,7 +6,7 @@ import { Button } from '@navikt/ds-react';
 import { ASurfaceSelected, ATextActionSelected } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
-import { TidslinjeVindu, useTidslinje } from '../../../../../context/TidslinjeContext';
+import { TidslinjeVindu, useTidslinje } from './TidslinjeContext';
 
 interface IEtikettProp {
     etikett: Etikett;
