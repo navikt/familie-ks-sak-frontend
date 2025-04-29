@@ -20,7 +20,8 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { useVilkårBegrunnelser } from './useVedtaksbegrunnelser';
+import { grupperteBegrunnelser } from './begrunnelserUtils';
+import { useVedtaksbegrunnelseTekster } from './VedtaksbegrunnelseTeksterContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { Behandlingstype, type IBehandling } from '../../../../../../typer/behandling';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
@@ -124,9 +125,7 @@ export const VedtaksperiodeProvider = ({
             skjemanavn: 'Begrunnelser for vedtaksperiode',
         });
 
-    const { grupperteBegrunnelser, vedtaksbegrunnelseTekster } = useVilkårBegrunnelser({
-        vedtaksperiodeMedBegrunnelser,
-    });
+    const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
 
     const populerSkjemaFraBackend = () => {
         settVisfeilmeldinger(false);
@@ -276,7 +275,10 @@ export const VedtaksperiodeProvider = ({
         <VedtaksperiodeContext.Provider
             value={{
                 erPanelEkspandert,
-                grupperteBegrunnelser,
+                grupperteBegrunnelser: grupperteBegrunnelser(
+                    vedtaksperiodeMedBegrunnelser,
+                    vedtaksbegrunnelseTekster
+                ),
                 hentFeilTilOppsummering,
                 id: vedtaksperiodeMedBegrunnelser.id,
                 vedtaksperiodeMedBegrunnelser,

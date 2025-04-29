@@ -1,26 +1,23 @@
-import type { GroupBase } from 'react-select';
+import type { GroupBase, OptionType } from '@navikt/familie-form-elements';
+import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
 
-import type { Ressurs } from '@navikt/familie-typer';
-import { RessursStatus } from '@navikt/familie-typer';
-
-import { useVedtaksbegrunnelseTekster } from './VedtaksbegrunnelseTeksterContext';
-import type { OptionType } from '../../../../../../typer/common';
-import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../../../../../../typer/vedtak';
-import { BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
-import type {
-    IRestVedtaksbegrunnelse,
-    IVedtaksperiodeMedBegrunnelser,
+import {
+    BegrunnelseType,
+    begrunnelseTyper,
+    type Begrunnelse,
+    type IRestBegrunnelseTilknyttetVilkår,
+} from '../../../../../../typer/vedtak';
+import {
+    Vedtaksperiodetype,
+    type IRestVedtaksbegrunnelse,
+    type IVedtaksperiodeMedBegrunnelser,
 } from '../../../../../../typer/vedtaksperiode';
-import { Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 import type { VedtaksbegrunnelseTekster } from '../../../../../../typer/vilkår';
 
-export const useVilkårBegrunnelser = ({
-    vedtaksperiodeMedBegrunnelser,
-}: {
-    vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
-}) => {
-    const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
-
+export function grupperteBegrunnelser(
+    vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser,
+    vedtaksbegrunnelseTekster: Ressurs<VedtaksbegrunnelseTekster>
+) {
     const vedtaksperiodeTilBegrunnelseTyper = () => {
         switch (vedtaksperiodeMedBegrunnelser.type) {
             case Vedtaksperiodetype.UTBETALING:
@@ -86,8 +83,8 @@ export const useVilkårBegrunnelser = ({
                   }, [])
             : [];
 
-    return { grupperteBegrunnelser: grupperteBegrunnelserFraBackend, vedtaksbegrunnelseTekster };
-};
+    return grupperteBegrunnelserFraBackend;
+}
 
 export const mapBegrunnelserTilSelectOptions = (
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser,
