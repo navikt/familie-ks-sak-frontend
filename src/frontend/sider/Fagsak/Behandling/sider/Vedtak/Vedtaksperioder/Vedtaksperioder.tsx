@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Alert, Heading, HelpText } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
 import { useVedtaksbegrunnelseTekster } from './VedtaksbegrunnelseTeksterContext';
 import Vedtaksperiode from './Vedtaksperiode';
 import { VedtaksperiodeProvider } from './VedtaksperiodeContext';
@@ -14,7 +15,6 @@ import { ToggleNavn } from '../../../../../../typer/toggles';
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 import { partition } from '../../../../../../utils/commons';
-import { filtrerOgSorterPerioderMedBegrunnelseBehov } from '../../../../../../utils/vedtakUtils';
 
 const StyledHeading = styled(Heading)`
     display: flex;
