@@ -13,7 +13,7 @@ import {
     mockUtbetalingsperiode,
 } from '../../../../../../utils/test/vedtak/vedtaksperiode.mock';
 
-describe('VedtaksBegrunnelserContext', () => {
+describe('Vedtak utils', () => {
     describe('Test filtrerOgSorterPerioderMedBegrunnelseBehov', () => {
         const fom = '2020-01-01';
         const tom = '2020-02-28';
