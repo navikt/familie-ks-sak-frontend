@@ -10,7 +10,7 @@ import AvslagBegrunnelseMultiselect from './AvslagBegrunnelseMultiselect';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
-import { VedtaksbegrunnelseTeksterProvider } from '../../Vedtak/Vedtaksperioder/VedtaksbegrunnelseTeksterContext';
+import { VedtakBegrunnelserProvider } from '../../Vedtak/Vedtaksperioder/VedtaksbegrunnelseTeksterContext';
 
 interface IProps {
     lagretVilkår: IVilkårResultat;
@@ -64,13 +64,13 @@ const AvslagSkjema: React.FC<IProps> = ({
                 </Checkbox>
             )}
             {erEksplisittAvslagPåSøknad.verdi && (
-                <VedtaksbegrunnelseTeksterProvider>
+                <VedtakBegrunnelserProvider>
                     <AvslagBegrunnelseMultiselect
                         vilkårType={lagretVilkår.vilkårType}
                         begrunnelser={avslagBegrunnelser}
                         regelverk={lagretVilkår.vurderesEtter}
                     />
-                </VedtaksbegrunnelseTeksterProvider>
+                </VedtakBegrunnelserProvider>
             )}
         </StyledFieldset>
     );

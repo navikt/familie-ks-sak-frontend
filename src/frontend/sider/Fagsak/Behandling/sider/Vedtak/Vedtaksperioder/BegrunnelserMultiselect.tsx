@@ -10,7 +10,7 @@ import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { mapBegrunnelserTilSelectOptions } from './utils';
-import { useVedtaksbegrunnelseTekster } from './VedtaksbegrunnelseTeksterContext';
+import { useVedtakBegrunnelser } from './VedtaksbegrunnelseTeksterContext';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { OptionType } from '../../../../../../typer/common';
@@ -41,20 +41,20 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
         begrunnelserPut,
         vedtaksperiodeMedBegrunnelser,
     } = useVedtaksperiodeContext();
-    const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
+    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
 
     const [begrunnelser, settBegrunnelser] = useState<OptionType[]>([]);
 
     useEffect(() => {
-        if (vedtaksbegrunnelseTekster.status === RessursStatus.SUKSESS) {
+        if (alleBegrunnelserRessurs.status === RessursStatus.SUKSESS) {
             settBegrunnelser(
                 mapBegrunnelserTilSelectOptions(
                     vedtaksperiodeMedBegrunnelser,
-                    vedtaksbegrunnelseTekster
+                    alleBegrunnelserRessurs
                 )
             );
         }
-    }, [vedtaksperiodeMedBegrunnelser, vedtaksbegrunnelseTekster]);
+    }, [vedtaksperiodeMedBegrunnelser, alleBegrunnelserRessurs]);
 
     return (
         <FamilieReactSelect
@@ -73,7 +73,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
                 multiValue: (provided, props) => {
                     const currentOption = props.data as OptionType;
                     const begrunnelseType: BegrunnelseType | undefined = finnBegrunnelseType(
-                        vedtaksbegrunnelseTekster,
+                        alleBegrunnelserRessurs,
                         currentOption.value as Begrunnelse
                     );
 
@@ -111,7 +111,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
                 formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>
             ) => {
                 const begrunnelseType = finnBegrunnelseType(
-                    vedtaksbegrunnelseTekster,
+                    alleBegrunnelserRessurs,
                     option.value as Begrunnelse
                 );
 

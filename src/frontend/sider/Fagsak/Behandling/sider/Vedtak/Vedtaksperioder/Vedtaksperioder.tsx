@@ -6,7 +6,7 @@ import { Alert, Heading, HelpText } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
-import { useVedtaksbegrunnelseTekster } from './VedtaksbegrunnelseTeksterContext';
+import { useVedtakBegrunnelser } from './VedtaksbegrunnelseTeksterContext';
 import Vedtaksperiode from './Vedtaksperiode';
 import { VedtaksperiodeProvider } from './VedtaksperiodeContext';
 import { useApp } from '../../../../../../context/AppContext';
@@ -35,7 +35,7 @@ interface VedtaksperioderProps {
 }
 
 const Vedtaksperioder: React.FC<VedtaksperioderProps> = ({ åpenBehandling }) => {
-    const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
+    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
     const { toggles } = useApp();
 
     const sorterteVedtaksperioderSomSkalvises = filtrerOgSorterPerioderMedBegrunnelseBehov(
@@ -47,8 +47,8 @@ const Vedtaksperioder: React.FC<VedtaksperioderProps> = ({ åpenBehandling }) =>
     );
 
     if (
-        vedtaksbegrunnelseTekster.status === RessursStatus.FEILET ||
-        vedtaksbegrunnelseTekster.status === RessursStatus.FUNKSJONELL_FEIL
+        alleBegrunnelserRessurs.status === RessursStatus.FEILET ||
+        alleBegrunnelserRessurs.status === RessursStatus.FUNKSJONELL_FEIL
     ) {
         return <Alert variant="error">Klarte ikke å hente inn begrunnelser for vedtak.</Alert>;
     }

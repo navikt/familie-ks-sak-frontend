@@ -16,10 +16,10 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { BehandlingResultat } from '../typer/behandling';
 import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../typer/vedtak';
 import { BegrunnelseType } from '../typer/vedtak';
-import type { VedtaksbegrunnelseTekster } from '../typer/vilkår';
+import type { AlleBegrunnelser } from '../typer/vilkår';
 
 export const finnBegrunnelseType = (
-    vilkårBegrunnelser: Ressurs<VedtaksbegrunnelseTekster>,
+    vilkårBegrunnelser: Ressurs<AlleBegrunnelser>,
     begrunnelse: Begrunnelse
 ): BegrunnelseType | undefined => {
     return vilkårBegrunnelser.status === RessursStatus.SUKSESS

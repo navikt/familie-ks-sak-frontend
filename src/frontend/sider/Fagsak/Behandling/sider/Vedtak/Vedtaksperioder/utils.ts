@@ -22,7 +22,7 @@ import {
     type IRestVedtaksbegrunnelse,
     type IVedtaksperiodeMedBegrunnelser,
 } from '../../../../../../typer/vedtaksperiode';
-import type { VedtaksbegrunnelseTekster } from '../../../../../../typer/vilkår';
+import type { AlleBegrunnelser } from '../../../../../../typer/vilkår';
 import {
     dagensDato,
     isoStringTilDate,
@@ -33,7 +33,7 @@ import {
 
 export function grupperteBegrunnelser(
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser,
-    vedtaksbegrunnelseTekster: Ressurs<VedtaksbegrunnelseTekster>
+    alleBegrunnelserRessurs: Ressurs<AlleBegrunnelser>
 ) {
     const vedtaksperiodeTilBegrunnelseTyper = () => {
         switch (vedtaksperiodeMedBegrunnelser.type) {
@@ -62,8 +62,8 @@ export function grupperteBegrunnelser(
     const begrunnelseTyperKnyttetTilVedtaksperiodetype = vedtaksperiodeTilBegrunnelseTyper();
 
     const grupperteBegrunnelserFraBackend =
-        vedtaksbegrunnelseTekster.status === RessursStatus.SUKSESS
-            ? Object.keys(vedtaksbegrunnelseTekster.data)
+        alleBegrunnelserRessurs.status === RessursStatus.SUKSESS
+            ? Object.keys(alleBegrunnelserRessurs.data)
                   .filter((begrunnelseType: string) =>
                       begrunnelseTyperKnyttetTilVedtaksperiodetype.includes(
                           begrunnelseType as BegrunnelseType
@@ -77,7 +77,7 @@ export function grupperteBegrunnelser(
                               options: vedtaksperiodeMedBegrunnelser.gyldigeBegrunnelser
                                   .filter((begrunnelse: Begrunnelse) => {
                                       return (
-                                          vedtaksbegrunnelseTekster.data[
+                                          alleBegrunnelserRessurs.data[
                                               begrunnelseType as BegrunnelseType
                                           ].find(
                                               begrunnelseTilknyttetVilkår =>
@@ -87,7 +87,7 @@ export function grupperteBegrunnelser(
                                   })
                                   .map((begrunnelse: Begrunnelse) => ({
                                       label:
-                                          vedtaksbegrunnelseTekster.data[
+                                          alleBegrunnelserRessurs.data[
                                               begrunnelseType as BegrunnelseType
                                           ].find(
                                               begrunnelseTilknyttetVilkår =>
@@ -105,7 +105,7 @@ export function grupperteBegrunnelser(
 
 export const mapBegrunnelserTilSelectOptions = (
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser,
-    vilkårBegrunnelser: Ressurs<VedtaksbegrunnelseTekster>
+    vilkårBegrunnelser: Ressurs<AlleBegrunnelser>
 ): OptionType[] => {
     const alleBegrunnelser = [
         ...vedtaksperiodeMedBegrunnelser.begrunnelser,
@@ -124,7 +124,7 @@ export const mapBegrunnelserTilSelectOptions = (
 const hentLabelForOption = (
     begrunnelseType: BegrunnelseType,
     begrunnelse: Begrunnelse,
-    vilkårBegrunnelser: Ressurs<VedtaksbegrunnelseTekster>
+    vilkårBegrunnelser: Ressurs<AlleBegrunnelser>
 ) => {
     return vilkårBegrunnelser.status === RessursStatus.SUKSESS
         ? (vilkårBegrunnelser.data[begrunnelseType].find(
