@@ -9,7 +9,7 @@ import { ASpacing10, ASpacing4, ASpacing6 } from '@navikt/ds-tokens/dist/tokens'
 import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
-import { useTidslinje } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
+import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import { type IBehandling } from '../../../../../typer/behandling';
 import { ytelsetype, YtelseType } from '../../../../../typer/beregning';
 import type {
@@ -117,7 +117,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
     utbetaltAnnetLandBeløp,
     valutakurser,
 }) => {
-    const { settAktivEtikett } = useTidslinje();
+    const { settAktivEtikett } = useTidslinjeContext();
 
     const [utbetalingsBeløpStatusMap, setUtbetalingsBeløpStatusMap] = React.useState(
         new Map<string, boolean>()

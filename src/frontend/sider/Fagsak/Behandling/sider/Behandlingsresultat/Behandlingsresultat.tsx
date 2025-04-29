@@ -24,7 +24,7 @@ import { useBehandlingsresultat } from './useBehandlingsresultat';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
-import { useTidslinje } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
+import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';
 import type {
     IRestKompetanse,
@@ -87,7 +87,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         aktivEtikett,
         filterOgSorterAndelPersonerIGrunnlag,
         filterOgSorterGrunnlagPersonerMedAndeler,
-    } = useTidslinje();
+    } = useTidslinjeContext();
 
     const { vurderErLesevisning, behandlingresultatNesteOnClick, behandlingsstegSubmitressurs } =
         useBehandling();

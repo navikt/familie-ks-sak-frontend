@@ -7,7 +7,7 @@ import { BodyShort, Heading } from '@navikt/ds-react';
 import { Tidslinje } from '@navikt/familie-tidslinje';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
-import { useTidslinje } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
+import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import TidslinjeEtikett from '../../../../../komponenter/Tidslinje/TidslinjeEtikett';
 import TidslinjeNavigering from '../../../../../komponenter/Tidslinje/TidslinjeNavigering';
 import Vinduvelger from '../../../../../komponenter/Tidslinje/VinduVelger';
@@ -63,7 +63,7 @@ interface IProps {
 
 const TilkjentYtelseTidslinje: React.FC<IProps> = ({ grunnlagPersoner, tidslinjePersoner }) => {
     const { genererFormatertÅrstall, genererRader, aktivEtikett, aktivtTidslinjeVindu, naviger } =
-        useTidslinje();
+        useTidslinjeContext();
     const tidslinjeRader = genererRader(tidslinjePersoner);
 
     return (

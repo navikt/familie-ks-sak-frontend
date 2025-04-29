@@ -6,7 +6,7 @@ import { Button } from '@navikt/ds-react';
 import { ASurfaceSelected, ATextActionSelected } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
-import { TidslinjeVindu, useTidslinje } from './TidslinjeContext';
+import { TidslinjeVindu, useTidslinjeContext } from './TidslinjeContext';
 
 interface IEtikettProp {
     etikett: Etikett;
@@ -24,7 +24,7 @@ const TidslinjeEtikett: React.FunctionComponent<IEtikettProp> = ({ etikett }) =>
         aktivtTidslinjeVindu,
         initiellAktivEtikettErSatt,
         setInitiellAktivEtikettErSatt,
-    } = useTidslinje();
+    } = useTidslinjeContext();
 
     const onEtikettClick = () => {
         settAktivEtikett(etikett);
