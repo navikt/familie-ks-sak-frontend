@@ -21,7 +21,7 @@ import {
 } from '@navikt/familie-typer';
 
 import { grupperteBegrunnelser } from './utils';
-import { useVedtakBegrunnelser } from './VedtaksbegrunnelseTeksterContext';
+import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { Behandlingstype, type IBehandling } from '../../../../../../typer/behandling';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';

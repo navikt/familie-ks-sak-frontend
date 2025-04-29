@@ -6,7 +6,7 @@ import { Alert, Heading, HelpText } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
-import { useVedtakBegrunnelser } from './VedtaksbegrunnelseTeksterContext';
+import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import Vedtaksperiode from './Vedtaksperiode';
 import { VedtaksperiodeProvider } from './VedtaksperiodeContext';
 import { useApp } from '../../../../../../context/AppContext';

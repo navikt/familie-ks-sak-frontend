@@ -12,7 +12,7 @@ import RefusjonEøs from './RefusjonEøs/RefusjonEøs';
 import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrollsak';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
 import Vedtaksmeny from './Vedtaksmeny';
-import { VedtakBegrunnelserProvider } from './Vedtaksperioder/VedtaksbegrunnelseTeksterContext';
+import { VedtakBegrunnelserProvider } from './Vedtaksperioder/VedtakBegrunnelserContext';
 import Vedtaksperioder from './Vedtaksperioder/Vedtaksperioder';
 import { useApp } from '../../../../../context/AppContext';
 import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';

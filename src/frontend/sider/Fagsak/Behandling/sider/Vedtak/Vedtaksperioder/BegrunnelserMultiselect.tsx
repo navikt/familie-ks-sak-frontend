@@ -10,7 +10,7 @@ import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { mapBegrunnelserTilSelectOptions } from './utils';
-import { useVedtakBegrunnelser } from './VedtaksbegrunnelseTeksterContext';
+import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { OptionType } from '../../../../../../typer/common';

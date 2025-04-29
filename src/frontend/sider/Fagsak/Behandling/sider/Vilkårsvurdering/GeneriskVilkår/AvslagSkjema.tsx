@@ -10,7 +10,7 @@ import AvslagBegrunnelseMultiselect from './AvslagBegrunnelseMultiselect';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
-import { VedtakBegrunnelserProvider } from '../../Vedtak/Vedtaksperioder/VedtaksbegrunnelseTeksterContext';
+import { VedtakBegrunnelserProvider } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
 
 interface IProps {
     lagretVilkår: IVilkårResultat;

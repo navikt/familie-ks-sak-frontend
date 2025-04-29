@@ -7,7 +7,7 @@ import type { IRestBegrunnelseTilknyttetVilkår } from '../../../../../../typer/
 import { BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
 import type { VilkårType } from '../../../../../../typer/vilkår';
 import { Regelverk } from '../../../../../../typer/vilkår';
-import { useVedtakBegrunnelser } from '../../Vedtak/Vedtaksperioder/VedtaksbegrunnelseTeksterContext';
+import { useVedtakBegrunnelser } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
 
 const useAvslagBegrunnelseMultiselect = (vilkårType: VilkårType, regelverk?: Regelverk) => {
     const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
