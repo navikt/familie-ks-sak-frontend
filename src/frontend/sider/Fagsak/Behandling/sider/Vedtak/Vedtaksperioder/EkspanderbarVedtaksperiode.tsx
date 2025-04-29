@@ -6,11 +6,11 @@ import styled from 'styled-components';
 
 import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
 
-import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../../typer/vedtaksperiode';
+import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
 import {
     hentVedtaksperiodeTittel,
     Vedtaksperiodetype,
-} from '../../../../../../../typer/vedtaksperiode';
+} from '../../../../../../typer/vedtaksperiode';
 import {
     dagensDato,
     isoStringTilDateMedFallback,
@@ -18,8 +18,8 @@ import {
     isoDatoPeriodeTilFormatertString,
     parseFraOgMedDato,
     type IsoDatoString,
-} from '../../../../../../../utils/dato';
-import { formaterBeløp, summer } from '../../../../../../../utils/formatter';
+} from '../../../../../../utils/dato';
+import { formaterBeløp, summer } from '../../../../../../utils/formatter';
 
 const StyledExpansionCard = styled(ExpansionCard)`
     margin-bottom: 1rem;

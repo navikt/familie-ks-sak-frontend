@@ -22,7 +22,7 @@ import {
     hentBakgrunnsfarge,
     hentBorderfarge,
 } from '../../../../../../utils/vedtakUtils';
-import { useVedtaksbegrunnelseTekster } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
+import { useVedtaksbegrunnelseTekster } from '../../Vedtak/Vedtaksperioder/VedtaksbegrunnelseTeksterContext';
 
 interface IProps {
     vilkårType: VilkårType;

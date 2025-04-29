@@ -3,8 +3,8 @@ import React, { useContext, useEffect, type PropsWithChildren } from 'react';
 import { byggTomRessurs } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useBegrunnelseApi } from '../../../../../../../api/useBegrunnelseApi';
-import type { VedtaksbegrunnelseTekster } from '../../../../../../../typer/vilkår';
+import { useBegrunnelseApi } from '../../../../../../api/useBegrunnelseApi';
+import type { VedtaksbegrunnelseTekster } from '../../../../../../typer/vilkår';
 
 interface VedtaksbegrunnelseTeksterContextValue {
     vedtaksbegrunnelseTekster: Ressurs<VedtaksbegrunnelseTekster>;

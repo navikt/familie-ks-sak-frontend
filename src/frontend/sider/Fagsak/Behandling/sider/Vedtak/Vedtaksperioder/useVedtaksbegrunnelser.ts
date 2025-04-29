@@ -3,19 +3,16 @@ import type { GroupBase } from 'react-select';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import type { OptionType } from '../../../../../../../typer/common';
-import type {
-    IRestBegrunnelseTilknyttetVilkår,
-    Begrunnelse,
-} from '../../../../../../../typer/vedtak';
-import { BegrunnelseType, begrunnelseTyper } from '../../../../../../../typer/vedtak';
+import { useVedtaksbegrunnelseTekster } from './VedtaksbegrunnelseTeksterContext';
+import type { OptionType } from '../../../../../../typer/common';
+import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../../../../../../typer/vedtak';
+import { BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
 import type {
     IRestVedtaksbegrunnelse,
     IVedtaksperiodeMedBegrunnelser,
-} from '../../../../../../../typer/vedtaksperiode';
-import { Vedtaksperiodetype } from '../../../../../../../typer/vedtaksperiode';
-import type { VedtaksbegrunnelseTekster } from '../../../../../../../typer/vilkår';
-import { useVedtaksbegrunnelseTekster } from '../Context/VedtaksbegrunnelseTeksterContext';
+} from '../../../../../../typer/vedtaksperiode';
+import { Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
+import type { VedtaksbegrunnelseTekster } from '../../../../../../typer/vilkår';
 
 export const useVilkårBegrunnelser = ({
     vedtaksperiodeMedBegrunnelser,

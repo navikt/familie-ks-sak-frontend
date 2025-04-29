@@ -8,7 +8,7 @@ import React, {
 
 import deepEqual from 'deep-equal';
 
-import type { ActionMeta, GroupBase } from '@navikt/familie-form-elements';
+import type { ActionMeta, GroupBase, OptionType } from '@navikt/familie-form-elements';
 import { useHttp } from '@navikt/familie-http';
 import type { FeiloppsummeringFeil, FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
@@ -20,22 +20,20 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
-import type { IBehandling } from '../../../../../../../typer/behandling';
-import { Behandlingstype } from '../../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../../typer/common';
-import type { Begrunnelse } from '../../../../../../../typer/vedtak';
+import { useVilkårBegrunnelser } from './useVedtaksbegrunnelser';
+import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
+import { Behandlingstype, type IBehandling } from '../../../../../../typer/behandling';
+import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type {
     IRestPutVedtaksperiodeMedFritekster,
     IVedtaksperiodeMedBegrunnelser,
-} from '../../../../../../../typer/vedtaksperiode';
-import type { IIsoDatoPeriode } from '../../../../../../../utils/dato';
-import type { IFritekstFelt } from '../../../../../../../utils/fritekstfelter';
+} from '../../../../../../typer/vedtaksperiode';
+import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     genererIdBasertPåAndreFritekster,
     lagInitiellFritekst,
-} from '../../../../../../../utils/fritekstfelter';
-import { useVilkårBegrunnelser } from '../Hooks/useVedtaksbegrunnelser';
+    type IFritekstFelt,
+} from '../../../../../../utils/fritekstfelter';
 
 interface IProps extends PropsWithChildren {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;

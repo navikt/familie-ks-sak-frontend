@@ -9,18 +9,18 @@ import type { ActionMeta, FormatOptionLabelMeta } from '@navikt/familie-form-ele
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
-import type { OptionType } from '../../../../../../../typer/common';
-import type { Begrunnelse, BegrunnelseType } from '../../../../../../../typer/vedtak';
-import { begrunnelseTyper } from '../../../../../../../typer/vedtak';
+import { mapBegrunnelserTilSelectOptions } from './useVedtaksbegrunnelser';
+import { useVedtaksbegrunnelseTekster } from './VedtaksbegrunnelseTeksterContext';
+import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
+import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
+import type { OptionType } from '../../../../../../typer/common';
+import type { Begrunnelse, BegrunnelseType } from '../../../../../../typer/vedtak';
+import { begrunnelseTyper } from '../../../../../../typer/vedtak';
 import {
     finnBegrunnelseType,
     hentBakgrunnsfarge,
     hentBorderfarge,
-} from '../../../../../../../utils/vedtakUtils';
-import { useVedtaksbegrunnelseTekster } from '../Context/VedtaksbegrunnelseTeksterContext';
-import { useVedtaksperiodeContext } from '../Context/VedtaksperiodeContext';
-import { mapBegrunnelserTilSelectOptions } from '../Hooks/useVedtaksbegrunnelser';
+} from '../../../../../../utils/vedtakUtils';
 
 interface IProps {
     tillatKunLesevisning: boolean;
