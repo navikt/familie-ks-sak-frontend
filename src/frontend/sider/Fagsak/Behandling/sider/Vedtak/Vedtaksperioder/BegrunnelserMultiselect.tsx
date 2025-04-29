@@ -9,7 +9,7 @@ import type { ActionMeta, FormatOptionLabelMeta } from '@navikt/familie-form-ele
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { mapBegrunnelserTilSelectOptions } from './begrunnelserUtils';
+import { mapBegrunnelserTilSelectOptions } from './utils';
 import { useVedtaksbegrunnelseTekster } from './VedtaksbegrunnelseTeksterContext';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';

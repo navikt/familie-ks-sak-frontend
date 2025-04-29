@@ -20,7 +20,7 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { grupperteBegrunnelser } from './begrunnelserUtils';
+import { grupperteBegrunnelser } from './utils';
 import { useVedtaksbegrunnelseTekster } from './VedtaksbegrunnelseTeksterContext';
 import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { Behandlingstype, type IBehandling } from '../../../../../../typer/behandling';
