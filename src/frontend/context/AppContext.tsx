@@ -1,5 +1,5 @@
 import type { JSX, PropsWithChildren, ReactNode } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 import type { AxiosRequestConfig } from 'axios';
 import createUseContext from 'constate';
@@ -48,24 +48,36 @@ interface AuthProviderExports {
     innloggetSaksbehandler: ISaksbehandler | undefined;
 }
 
-const [AuthProvider, useAuth] = createUseContext(
-    ({ autentisertSaksbehandler }: IProps): AuthProviderExports => {
-        const [autentisert, settAutentisert] = React.useState(true);
-        const [innloggetSaksbehandler, settInnloggetSaksbehandler] =
-            React.useState(autentisertSaksbehandler);
+const AuthContext = createContext<AuthProviderExports | undefined>(undefined);
 
-        useEffect(() => {
-            if (autentisertSaksbehandler) {
-                settInnloggetSaksbehandler(autentisertSaksbehandler);
-            }
-        }, [autentisertSaksbehandler]);
+const AuthProvider = ({ autentisertSaksbehandler, children }: IProps) => {
+    const [autentisert, settAutentisert] = React.useState(true);
+    const [innloggetSaksbehandler, settInnloggetSaksbehandler] =
+        React.useState(autentisertSaksbehandler);
 
-        return { autentisert, settAutentisert, innloggetSaksbehandler };
+    useEffect(() => {
+        if (autentisertSaksbehandler) {
+            settInnloggetSaksbehandler(autentisertSaksbehandler);
+        }
+    }, [autentisertSaksbehandler]);
+
+    return (
+        <AuthContext.Provider value={{ autentisert, settAutentisert, innloggetSaksbehandler }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+const useAuthContext = () => {
+    const context = React.useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth må brukes innenfor AuthProvider');
     }
-);
+    return context;
+};
 
 const [AppContentProvider, useApp] = createUseContext(() => {
-    const { autentisert, innloggetSaksbehandler } = useAuth();
+    const { autentisert, innloggetSaksbehandler } = useAuthContext();
     const { request, systemetLaster } = useHttp();
 
     const [toggles, settToggles] = useState<IToggles>(alleTogglerAv());
@@ -250,7 +262,7 @@ const [AppContentProvider, useApp] = createUseContext(() => {
 });
 
 const AuthOgHttpProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const { innloggetSaksbehandler, settAutentisert } = useAuth();
+    const { innloggetSaksbehandler, settAutentisert } = useAuthContext();
 
     return (
         <HttpProvider
