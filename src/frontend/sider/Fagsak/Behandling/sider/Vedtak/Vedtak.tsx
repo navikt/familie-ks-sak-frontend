@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
-import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
+import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../../../typer/behandling';

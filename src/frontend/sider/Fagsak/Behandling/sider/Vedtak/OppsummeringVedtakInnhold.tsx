@@ -10,7 +10,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
 import RefusjonEøs from './RefusjonEøs/RefusjonEøs';
 import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrollsak';
-import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
+import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
 import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
 import Vedtaksmeny from './Vedtaksmeny';

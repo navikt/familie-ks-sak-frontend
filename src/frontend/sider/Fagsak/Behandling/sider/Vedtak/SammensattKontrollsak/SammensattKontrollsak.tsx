@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Alert, Button, ErrorMessage, Textarea, VStack } from '@navikt/ds-react';
 import { ASpacing6 } from '@navikt/ds-tokens/dist/tokens';
 
-import { useSammensattKontrollsakContext } from './useSammensattKontrollsakContext';
+import { useSammensattKontrollsakContext } from './SammensattKontrollsakContext';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 const StyledVStack = styled(VStack)`
