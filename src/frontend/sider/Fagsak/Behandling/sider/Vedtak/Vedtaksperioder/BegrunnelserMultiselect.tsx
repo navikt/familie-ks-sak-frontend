@@ -50,7 +50,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
             settBegrunnelser(
                 mapBegrunnelserTilSelectOptions(
                     vedtaksperiodeMedBegrunnelser,
-                    alleBegrunnelserRessurs
+                    alleBegrunnelserRessurs.data
                 )
             );
         }
