@@ -21,7 +21,6 @@ import type { ISkjema } from '@navikt/familie-skjema';
 
 import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
 import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import Datovelger from '../../../../../../komponenter/Datovelger/Datovelger';
 import Knapperekke from '../../../../../../komponenter/Knapperekke';
 import MånedÅrVelger from '../../../../../../komponenter/MånedÅrInput/MånedÅrVelger';
@@ -36,6 +35,7 @@ import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IsoMånedString } from '../../../../../../utils/dato';
 import { lagPersonLabel } from '../../../../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../../../../utils/ressursUtils';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 const KnapperekkeVenstre = styled.div`
     display: flex;
@@ -85,7 +85,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
     oppdaterEndretUtbetaling,
     slettEndretUtbetaling,
 }) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
 
     const finnÅrTilbakeTilStønadFra = (): number => {
         return (

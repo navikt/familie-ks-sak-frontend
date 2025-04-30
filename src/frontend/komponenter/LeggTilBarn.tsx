@@ -26,7 +26,7 @@ import {
     Adressebeskyttelsegradering,
 } from '@navikt/familie-typer';
 
-import { useBehandling } from '../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../sider/Fagsak/Behandling/context/BehandlingContext';
 import LeggTilUregistrertBarn from '../sider/Fagsak/Behandling/sider/RegistrerSøknad/LeggTilUregistrertBarn';
 import type {
     IRestBrevmottaker,
@@ -61,7 +61,7 @@ const LeggTilBarn: React.FC<IProps> = ({
     manuelleBrevmottakere,
 }) => {
     const { request } = useHttp();
-    const { logg } = useBehandling();
+    const { logg } = useBehandlingContext();
 
     const [visModal, settVisModal] = useState<boolean>(false);
     const [fnrInputNode, settFnrInputNode] = useState<HTMLInputElement | null>(null);

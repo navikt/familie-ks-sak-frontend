@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useMedlemskap } from './MedlemskapContext';
-import { useBehandling } from '../../../../../../../../context/behandlingContext/BehandlingContext';
 import { Regelverk, Resultat } from '../../../../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
@@ -24,7 +24,7 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: MedlemskapProps) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } =

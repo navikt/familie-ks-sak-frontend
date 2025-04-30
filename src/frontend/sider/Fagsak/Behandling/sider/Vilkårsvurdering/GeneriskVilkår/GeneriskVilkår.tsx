@@ -7,10 +7,10 @@ import { Button, Fieldset, Heading } from '@navikt/ds-react';
 import { ASpacing5, ASpacing8, ASpacing16 } from '@navikt/ds-tokens/dist/tokens';
 
 import VilkårTabell from './VilkårTabell';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { IVilkårConfig, IVilkårResultat, VilkårType } from '../../../../../../typer/vilkår';
 import { Resultat } from '../../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
 
 interface IProps {
@@ -37,7 +37,7 @@ const GeneriskVilkår: React.FC<IProps> = ({
     vilkårResultater,
     generiskVilkårKey,
 }) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const vilkårsvurderingApi = useVilkårsvurderingApi();
 
     const [visFeilmeldingerForVilkår, settVisFeilmeldingerForVilkår] = useState(false);

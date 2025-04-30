@@ -22,7 +22,6 @@ import {
 
 import { grupperteBegrunnelser } from './utils';
 import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import { Behandlingstype, type IBehandling } from '../../../../../../typer/behandling';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type {
@@ -35,6 +34,7 @@ import {
     lagInitiellFritekst,
     type IFritekstFelt,
 } from '../../../../../../utils/fritekstfelter';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps extends PropsWithChildren {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
@@ -72,7 +72,7 @@ export const VedtaksperiodeProvider = ({
     children,
 }: IProps) => {
     const { request } = useHttp();
-    const { settÅpenBehandling } = useBehandling();
+    const { settÅpenBehandling } = useBehandlingContext();
     const [erPanelEkspandert, settErPanelEkspandert] = useState(
         åpenBehandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING &&
             vedtaksperiodeMedBegrunnelser.begrunnelser.length === 0 &&

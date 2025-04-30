@@ -9,13 +9,13 @@ import {
 } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import type { IRestEndreBehandlendeEnhet } from '../../../../../typer/enhet';
+import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 const useEndreBehandlendeEnhet = (lukkModal: () => void) => {
     const { request } = useHttp();
-    const { åpenBehandling, settÅpenBehandling } = useBehandling();
+    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
 
     const [enhetId, settEnhetId] = useState<string | undefined>(undefined);
     const [begrunnelse, settBegrunnelse] = useState('');

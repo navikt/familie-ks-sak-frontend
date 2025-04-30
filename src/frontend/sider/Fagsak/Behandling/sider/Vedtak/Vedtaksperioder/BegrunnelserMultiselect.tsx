@@ -12,7 +12,6 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { mapBegrunnelserTilSelectOptions } from './utils';
 import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { OptionType } from '../../../../../../typer/common';
 import type { Begrunnelse, BegrunnelseType } from '../../../../../../typer/vedtak';
 import { begrunnelseTyper } from '../../../../../../typer/vedtak';
@@ -21,6 +20,7 @@ import {
     hentBakgrunnsfarge,
     hentBorderfarge,
 } from '../../../../../../utils/vedtakUtils';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps {
     tillatKunLesevisning: boolean;
@@ -31,7 +31,7 @@ const GroupLabel = styled.div`
 `;
 
 const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = tillatKunLesevisning || vurderErLesevisning();
 
     const {
