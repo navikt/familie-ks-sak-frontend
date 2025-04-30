@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import { Table } from '@navikt/ds-react';
 
+import { useOvergangsordningAndel } from './OvergangsordningAndelContext';
 import OvergangsordningAndelSkjema from './OvergangsordningAndelSkjema';
-import { useOvergangsordningAndel } from '../../../../../../context/OvergangsordningAndelContext';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../../../utils/dato';
 import { lagPersonLabel } from '../../../../../../utils/formatter';
