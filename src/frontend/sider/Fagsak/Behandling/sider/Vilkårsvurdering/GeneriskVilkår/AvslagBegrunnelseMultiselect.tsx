@@ -22,7 +22,7 @@ import {
     hentBorderfarge,
 } from '../../../../../../utils/vedtakUtils';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
-import { useVedtaksbegrunnelseTekster } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
+import { useVedtakBegrunnelser } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
 
 interface IProps {
     vilkårType: VilkårType;
@@ -40,7 +40,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
     regelverk,
 }) => {
     const { vurderErLesevisning } = useBehandlingContext();
-    const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
+    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
 
     const { grupperteAvslagsbegrunnelser } = useAvslagBegrunnelseMultiselect(vilkårType, regelverk);
 
@@ -85,7 +85,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
         }
     };
 
-    if (vedtaksbegrunnelseTekster.status === RessursStatus.FEILET) {
+    if (alleBegrunnelserRessurs.status === RessursStatus.FEILET) {
         return <Alert variant="error">Klarte ikke å hente inn begrunnelser for vilkår.</Alert>;
     }
 
@@ -116,7 +116,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
                 if (formatOptionLabelMeta.context == 'value') {
                     // Formatering når alternativet er valgt
                     const begrunnelseType = finnBegrunnelseType(
-                        vedtaksbegrunnelseTekster,
+                        alleBegrunnelserRessurs,
                         option.value as Begrunnelse
                     );
                     const begrunnelseTypeLabel =

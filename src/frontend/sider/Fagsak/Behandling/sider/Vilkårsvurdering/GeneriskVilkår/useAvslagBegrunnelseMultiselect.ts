@@ -7,12 +7,12 @@ import type { IRestBegrunnelseTilknyttetVilkår } from '../../../../../../typer/
 import { BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
 import type { VilkårType } from '../../../../../../typer/vilkår';
 import { Regelverk } from '../../../../../../typer/vilkår';
-import { useVedtaksbegrunnelseTekster } from '../../Vedtak/VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
+import { useVedtakBegrunnelser } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
 
 const useAvslagBegrunnelseMultiselect = (vilkårType: VilkårType, regelverk?: Regelverk) => {
-    const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
+    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
 
-    if (vedtaksbegrunnelseTekster.status !== RessursStatus.SUKSESS) {
+    if (alleBegrunnelserRessurs.status !== RessursStatus.SUKSESS) {
         return { grupperteAvslagsbegrunnelser: [] };
     }
 
@@ -22,7 +22,7 @@ const useAvslagBegrunnelseMultiselect = (vilkårType: VilkårType, regelverk?: R
         gyldigeBegrunnelseTyper.push(BegrunnelseType.EØS_AVSLAG);
     }
 
-    const grupperteBegrunnelser = Object.keys(vedtaksbegrunnelseTekster.data)
+    const grupperteBegrunnelser = Object.keys(alleBegrunnelserRessurs.data)
         .map((type: string) => type as BegrunnelseType)
         .filter((begrunnelseType: BegrunnelseType) =>
             gyldigeBegrunnelseTyper.includes(begrunnelseType)
@@ -32,7 +32,7 @@ const useAvslagBegrunnelseMultiselect = (vilkårType: VilkårType, regelverk?: R
                 ...acc,
                 {
                     label: begrunnelseTyper[begrunnelseType],
-                    options: vedtaksbegrunnelseTekster.data[begrunnelseType]
+                    options: alleBegrunnelserRessurs.data[begrunnelseType]
                         .filter(
                             (begrunnelse: IRestBegrunnelseTilknyttetVilkår) =>
                                 begrunnelse.vilkår === vilkårType

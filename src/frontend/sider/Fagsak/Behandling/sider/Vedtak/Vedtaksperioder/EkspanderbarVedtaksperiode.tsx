@@ -6,11 +6,11 @@ import styled from 'styled-components';
 
 import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
 
-import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../../typer/vedtaksperiode';
+import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
 import {
     hentVedtaksperiodeTittel,
     Vedtaksperiodetype,
-} from '../../../../../../../typer/vedtaksperiode';
+} from '../../../../../../typer/vedtaksperiode';
 import {
     dagensDato,
     isoStringTilDateMedFallback,
@@ -18,8 +18,8 @@ import {
     isoDatoPeriodeTilFormatertString,
     parseFraOgMedDato,
     type IsoDatoString,
-} from '../../../../../../../utils/dato';
-import { formaterBeløp, summer } from '../../../../../../../utils/formatter';
+} from '../../../../../../utils/dato';
+import { formaterBeløp, summer } from '../../../../../../utils/formatter';
 
 const StyledExpansionCard = styled(ExpansionCard)`
     margin-bottom: 1rem;
@@ -36,7 +36,7 @@ const StyledExpansionTitle = styled(ExpansionCard.Title)`
     margin-left: 0;
 `;
 
-interface IEkspanderbartBegrunnelsePanelProps extends PropsWithChildren {
+interface EkspanderbarVedtaksperiodeProps extends PropsWithChildren {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
     sisteVedtaksperiodeFom?: string;
     vedtaksperiodeInneholderOvergangsordningBegrunnelse: boolean;
@@ -69,7 +69,7 @@ const finnPresentertTomDato = (
     return periodeTom;
 };
 
-const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProps> = ({
+const EkspanderbarVedtaksperiode: React.FC<EkspanderbarVedtaksperiodeProps> = ({
     vedtaksperiodeMedBegrunnelser,
     sisteVedtaksperiodeFom,
     vedtaksperiodeInneholderOvergangsordningBegrunnelse,
@@ -127,4 +127,4 @@ const EkspanderbartBegrunnelsePanel: React.FC<IEkspanderbartBegrunnelsePanelProp
     );
 };
 
-export default EkspanderbartBegrunnelsePanel;
+export default EkspanderbarVedtaksperiode;
