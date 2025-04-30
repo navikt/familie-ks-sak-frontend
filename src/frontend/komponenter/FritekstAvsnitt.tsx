@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Textarea } from '@navikt/ds-react';
 
-import { useDokumentutsendingContext } from '../context/DokumentutsendingContext';
+import { useDokumentutsendingContext } from '../sider/Fagsak/Dokumentutsending/DokumentutsendingContext';
 
 const FritekstAvsnitt = () => {
     const { skjema } = useDokumentutsendingContext();

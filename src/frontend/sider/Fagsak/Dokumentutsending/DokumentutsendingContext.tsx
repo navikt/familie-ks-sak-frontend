@@ -6,17 +6,15 @@ import type { FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
 
-import { useFagsakContext } from './fagsak/FagsakContext';
-import useDokument from '../hooks/useDokument';
-import { Informasjonsbrev } from '../komponenter/Hendelsesoversikt/BrevModul/typer';
-import { hentEnkeltInformasjonsbrevRequest } from '../sider/Fagsak/Dokumentutsending/Informasjonsbrev/enkeltInformasjonsbrevUtils';
-import type { IManueltBrevRequestPåFagsak } from '../typer/dokument';
-import type { IForelderBarnRelasjon } from '../typer/person';
-import { ForelderBarnRelasjonRolle } from '../typer/person';
-import type { IBarnMedOpplysninger } from '../typer/søknad';
-import { Målform } from '../typer/søknad';
-import { Datoformat, isoStringTilFormatertString } from '../utils/dato';
-import { hentFrontendFeilmelding } from '../utils/ressursUtils';
+import { hentEnkeltInformasjonsbrevRequest } from './Informasjonsbrev/enkeltInformasjonsbrevUtils';
+import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
+import useDokument from '../../../hooks/useDokument';
+import { Informasjonsbrev } from '../../../komponenter/Hendelsesoversikt/BrevModul/typer';
+import type { IManueltBrevRequestPåFagsak } from '../../../typer/dokument';
+import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../typer/person';
+import { Målform, type IBarnMedOpplysninger } from '../../../typer/søknad';
+import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
+import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 
 export enum DokumentÅrsak {
     KAN_SØKE_EØS = 'KAN_SØKE_EØS',
