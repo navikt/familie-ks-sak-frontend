@@ -5,16 +5,16 @@ import styled from 'styled-components';
 import { Alert, Heading, HelpText } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import VedtaksperiodeMedBegrunnelserPanel from './VedtaksperiodeMedBegrunnelserPanel';
-import { useAppContext } from '../../../../../../../context/AppContext';
-import type { IBehandling } from '../../../../../../../typer/behandling';
-import { ToggleNavn } from '../../../../../../../typer/toggles';
-import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../../typer/vedtaksperiode';
-import { Vedtaksperiodetype } from '../../../../../../../typer/vedtaksperiode';
-import { partition } from '../../../../../../../utils/commons';
-import { filtrerOgSorterPerioderMedBegrunnelseBehov } from '../../../../../../../utils/vedtakUtils';
-import { useVedtaksbegrunnelseTekster } from '../Context/VedtaksbegrunnelseTeksterContext';
-import { VedtaksperiodeMedBegrunnelserProvider } from '../Context/VedtaksperiodeMedBegrunnelserContext';
+import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
+import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
+import Vedtaksperiode from './Vedtaksperiode';
+import { VedtaksperiodeProvider } from './VedtaksperiodeContext';
+import { useAppContext } from '../../../../../../context/AppContext';
+import type { IBehandling } from '../../../../../../typer/behandling';
+import { ToggleNavn } from '../../../../../../typer/toggles';
+import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
+import { Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
+import { partition } from '../../../../../../utils/commons';
 
 const StyledHeading = styled(Heading)`
     display: flex;
@@ -30,14 +30,12 @@ const StyledHelpText = styled(HelpText)`
     }
 `;
 
-interface IVedtakBegrunnelserTabell {
+interface VedtaksperioderProps {
     åpenBehandling: IBehandling;
 }
 
-const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
-    åpenBehandling,
-}) => {
-    const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
+const Vedtaksperioder: React.FC<VedtaksperioderProps> = ({ åpenBehandling }) => {
+    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
     const { toggles } = useAppContext();
 
     const sorterteVedtaksperioderSomSkalvises = filtrerOgSorterPerioderMedBegrunnelseBehov(
@@ -49,8 +47,8 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
     );
 
     if (
-        vedtaksbegrunnelseTekster.status === RessursStatus.FEILET ||
-        vedtaksbegrunnelseTekster.status === RessursStatus.FUNKSJONELL_FEIL
+        alleBegrunnelserRessurs.status === RessursStatus.FEILET ||
+        alleBegrunnelserRessurs.status === RessursStatus.FUNKSJONELL_FEIL
     ) {
         return <Alert variant="error">Klarte ikke å hente inn begrunnelser for vedtak.</Alert>;
     }
@@ -62,7 +60,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
 
     return sorterteVedtaksperioderSomSkalvises.length > 0 ? (
         <>
-            <VedtaksperiodeListe
+            <GrupperteVedtaksperioder
                 sorterteVedtaksperioderMedBegrunnelser={sorterteAndreVedtaksperioder}
                 overskrift={'Begrunnelser i vedtaksbrev'}
                 hjelpetekst={
@@ -71,7 +69,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
                 åpenBehandling={åpenBehandling}
             />
 
-            <VedtaksperiodeListe
+            <GrupperteVedtaksperioder
                 sorterteVedtaksperioderMedBegrunnelser={sorterteAvslagsperioder}
                 overskrift={'Begrunnelser for avslag i vedtaksbrev'}
                 hjelpetekst={
@@ -85,7 +83,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
     );
 };
 
-const VedtaksperiodeListe: React.FC<{
+const GrupperteVedtaksperioder: React.FC<{
     sorterteVedtaksperioderMedBegrunnelser: IVedtaksperiodeMedBegrunnelser[];
     overskrift: string;
     hjelpetekst: string;
@@ -107,20 +105,20 @@ const VedtaksperiodeListe: React.FC<{
             </StyledHeading>
             {sorterteVedtaksperioderMedBegrunnelser.map(
                 (vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser) => (
-                    <VedtaksperiodeMedBegrunnelserProvider
+                    <VedtaksperiodeProvider
                         key={vedtaksperiodeMedBegrunnelser.id}
                         åpenBehandling={åpenBehandling}
                         vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
                     >
-                        <VedtaksperiodeMedBegrunnelserPanel
+                        <Vedtaksperiode
                             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
                             sisteVedtaksperiodeFom={sisteVedtaksperiodeFom}
                         />
-                    </VedtaksperiodeMedBegrunnelserProvider>
+                    </VedtaksperiodeProvider>
                 )
             )}
         </>
     );
 };
 
-export default VedtaksperioderMedBegrunnelser;
+export default Vedtaksperioder;

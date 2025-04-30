@@ -17,12 +17,12 @@ import {
 import type { FeltState } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import Knapperekke from '../../../../../../../komponenter/Knapperekke';
-import { målform } from '../../../../../../../typer/søknad';
-import type { IFritekstFelt } from '../../../../../../../utils/fritekstfelter';
-import { hentFrontendFeilmelding } from '../../../../../../../utils/ressursUtils';
-import { useBehandlingContext } from '../../../../context/BehandlingContext';
-import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
+import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
+import Knapperekke from '../../../../../../komponenter/Knapperekke';
+import { målform } from '../../../../../../typer/søknad';
+import type { IFritekstFelt } from '../../../../../../utils/fritekstfelter';
+import { hentFrontendFeilmelding } from '../../../../../../utils/ressursUtils';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 const FritekstContainer = styled.div`
     padding: 1rem;
@@ -89,7 +89,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
         onPanelClose,
         putVedtaksperiodeMedFritekster,
         vedtaksperiodeMedBegrunnelser,
-    } = useVedtaksperiodeMedBegrunnelser();
+    } = useVedtaksperiodeContext();
 
     const erMaksAntallKulepunkter = skjema.felter.fritekster.verdi.length >= maksAntallKulepunkter;
 

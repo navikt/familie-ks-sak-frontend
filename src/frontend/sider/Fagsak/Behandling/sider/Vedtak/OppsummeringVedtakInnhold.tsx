@@ -11,9 +11,9 @@ import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
 import RefusjonEøs from './RefusjonEøs/RefusjonEøs';
 import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrollsak';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
-import { VedtaksbegrunnelseTeksterProvider } from './VedtakBegrunnelserTabell/Context/VedtaksbegrunnelseTeksterContext';
-import VedtaksperioderMedBegrunnelser from './VedtakBegrunnelserTabell/VedtaksperioderMedBegrunnelser/VedtaksperioderMedBegrunnelser';
 import Vedtaksmeny from './Vedtaksmeny';
+import { VedtakBegrunnelserProvider } from './Vedtaksperioder/VedtakBegrunnelserContext';
+import Vedtaksperioder from './Vedtaksperioder/Vedtaksperioder';
 import { useAppContext } from '../../../../../context/AppContext';
 import useDokument from '../../../../../hooks/useDokument';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
@@ -178,11 +178,9 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                             <SammensattKontrollsak />
                         ) : (
                             <>
-                                <VedtaksbegrunnelseTeksterProvider>
-                                    <VedtaksperioderMedBegrunnelser
-                                        åpenBehandling={åpenBehandling}
-                                    />
-                                </VedtaksbegrunnelseTeksterProvider>
+                                <VedtakBegrunnelserProvider>
+                                    <Vedtaksperioder åpenBehandling={åpenBehandling} />
+                                </VedtakBegrunnelserProvider>
                                 {visFeilutbetaltValuta && (
                                     <FeilutbetaltValuta
                                         feilutbetaltValutaListe={åpenBehandling.feilutbetaltValuta}

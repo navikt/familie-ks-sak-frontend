@@ -9,18 +9,18 @@ import type { ActionMeta, FormatOptionLabelMeta } from '@navikt/familie-form-ele
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import type { OptionType } from '../../../../../../../typer/common';
-import type { Begrunnelse, BegrunnelseType } from '../../../../../../../typer/vedtak';
-import { begrunnelseTyper } from '../../../../../../../typer/vedtak';
+import { mapBegrunnelserTilSelectOptions } from './utils';
+import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
+import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
+import type { OptionType } from '../../../../../../typer/common';
+import type { Begrunnelse, BegrunnelseType } from '../../../../../../typer/vedtak';
+import { begrunnelseTyper } from '../../../../../../typer/vedtak';
 import {
     finnBegrunnelseType,
     hentBakgrunnsfarge,
     hentBorderfarge,
-} from '../../../../../../../utils/vedtakUtils';
-import { useBehandlingContext } from '../../../../context/BehandlingContext';
-import { useVedtaksbegrunnelseTekster } from '../Context/VedtaksbegrunnelseTeksterContext';
-import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
-import { mapBegrunnelserTilSelectOptions } from '../Hooks/useVedtaksbegrunnelser';
+} from '../../../../../../utils/vedtakUtils';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps {
     tillatKunLesevisning: boolean;
@@ -40,21 +40,21 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
         grupperteBegrunnelser,
         begrunnelserPut,
         vedtaksperiodeMedBegrunnelser,
-    } = useVedtaksperiodeMedBegrunnelser();
-    const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
+    } = useVedtaksperiodeContext();
+    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
 
     const [begrunnelser, settBegrunnelser] = useState<OptionType[]>([]);
 
     useEffect(() => {
-        if (vedtaksbegrunnelseTekster.status === RessursStatus.SUKSESS) {
+        if (alleBegrunnelserRessurs.status === RessursStatus.SUKSESS) {
             settBegrunnelser(
                 mapBegrunnelserTilSelectOptions(
                     vedtaksperiodeMedBegrunnelser,
-                    vedtaksbegrunnelseTekster
+                    alleBegrunnelserRessurs.data
                 )
             );
         }
-    }, [vedtaksperiodeMedBegrunnelser, vedtaksbegrunnelseTekster]);
+    }, [vedtaksperiodeMedBegrunnelser, alleBegrunnelserRessurs]);
 
     return (
         <FamilieReactSelect
@@ -73,7 +73,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
                 multiValue: (provided, props) => {
                     const currentOption = props.data as OptionType;
                     const begrunnelseType: BegrunnelseType | undefined = finnBegrunnelseType(
-                        vedtaksbegrunnelseTekster,
+                        alleBegrunnelserRessurs,
                         currentOption.value as Begrunnelse
                     );
 
@@ -111,7 +111,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
                 formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>
             ) => {
                 const begrunnelseType = finnBegrunnelseType(
-                    vedtaksbegrunnelseTekster,
+                    alleBegrunnelserRessurs,
                     option.value as Begrunnelse
                 );
 

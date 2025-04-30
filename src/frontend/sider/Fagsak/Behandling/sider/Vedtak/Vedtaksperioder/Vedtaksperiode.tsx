@@ -4,25 +4,27 @@ import { BodyShort, ErrorMessage, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 
 import BegrunnelserMultiselect from './BegrunnelserMultiselect';
-import EkspanderbartBegrunnelsePanel from './EkspanderbartBegrunnelsePanel';
+import EkspanderbarVedtaksperiode from './EkspanderbarVedtaksperiode';
 import FritekstVedtakbegrunnelser from './FritekstVedtakbegrunnelser';
-import { Standardbegrunnelse } from '../../../../../../../typer/vedtak';
-import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../../typer/vedtaksperiode';
-import { Vedtaksperiodetype } from '../../../../../../../typer/vedtaksperiode';
-import { useVedtaksperiodeMedBegrunnelser } from '../Context/VedtaksperiodeMedBegrunnelserContext';
-import Utbetalingsresultat from '../Felles/Utbetalingsresultat';
+import Utbetalingsresultat from './Utbetalingsresultat';
+import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
+import { Standardbegrunnelse } from '../../../../../../typer/vedtak';
+import {
+    Vedtaksperiodetype,
+    type IVedtaksperiodeMedBegrunnelser,
+} from '../../../../../../typer/vedtaksperiode';
 
 interface IProps {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
     sisteVedtaksperiodeFom?: string;
 }
 
-const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
+const Vedtaksperiode: React.FC<IProps> = ({
     vedtaksperiodeMedBegrunnelser,
     sisteVedtaksperiodeFom,
 }) => {
     const { erPanelEkspandert, onPanelClose, genererteBrevbegrunnelser } =
-        useVedtaksperiodeMedBegrunnelser();
+        useVedtaksperiodeContext();
 
     const vedtaksperiodeInneholderFramtidigOpphørBegrunnelse =
         vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
@@ -47,7 +49,7 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
         vedtaksperiodeMedBegrunnelser.fritekster.length > 0;
 
     return (
-        <EkspanderbartBegrunnelsePanel
+        <EkspanderbarVedtaksperiode
             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
             sisteVedtaksperiodeFom={sisteVedtaksperiodeFom}
             vedtaksperiodeInneholderOvergangsordningBegrunnelse={
@@ -87,7 +89,7 @@ const VedtaksperiodeMedBegrunnelserPanel: React.FC<IProps> = ({
                 </>
             )}
             {vedtaksperiodeStøtterFritekst && <FritekstVedtakbegrunnelser />}
-        </EkspanderbartBegrunnelsePanel>
+        </EkspanderbarVedtaksperiode>
     );
 };
-export default VedtaksperiodeMedBegrunnelserPanel;
+export default Vedtaksperiode;
