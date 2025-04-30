@@ -5,12 +5,12 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useOppdaterEndringstidspunktSkjema } from './useOppdaterEndringstidspunktSkjema';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import Datovelger from '../../../../../../komponenter/Datovelger/Datovelger';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type { IRestOverstyrtEndringstidspunkt } from '../../../../../../typer/vedtaksperiode';
 import { dateTilIsoDatoString } from '../../../../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../../../../utils/ressursUtils';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps {
     åpenBehandling: IBehandling;
@@ -18,7 +18,7 @@ interface IProps {
 }
 
 export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({ åpenBehandling, lukkModal }) => {
-    const { settÅpenBehandling, vurderErLesevisning } = useBehandling();
+    const { settÅpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const { skjema, kanSendeSkjema, onSubmit } = useOppdaterEndringstidspunktSkjema(
         åpenBehandling.endringstidspunkt
     );

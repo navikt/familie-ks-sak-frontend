@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import { Fieldset, HelpText, Label } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import DatovelgerForGammelSkjemaløsning from '../../../../../../komponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
 import { Resultat } from '../../../../../../typer/vilkår';
 import type { IIsoDatoPeriode, IsoDatoString } from '../../../../../../utils/dato';
 import { nyIsoDatoPeriode } from '../../../../../../utils/dato';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps extends PropsWithChildren {
     periode: Felt<IIsoDatoPeriode>;
@@ -48,7 +48,7 @@ const VelgPeriode: React.FC<IProps> = ({
     children,
     tomErPåkrevd,
 }) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
 
     return (

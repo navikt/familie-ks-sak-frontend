@@ -8,12 +8,12 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
 import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import ManuellVurdering from '../../../../../../ikoner/ManuellVurdering';
 import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { IAnnenVurderingConfig, IAnnenVurdering } from '../../../../../../typer/vilkår';
 import { Resultat, uiResultat } from '../../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps {
     person: IGrunnlagPerson;
@@ -32,7 +32,7 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
     annenVurderingConfig,
     annenVurdering,
 }) => {
-    const { vurderErLesevisning, åpenBehandling } = useBehandling();
+    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const [ekspandertAnnenVurdering, settEkspandertAnnenVurdering] = useState(

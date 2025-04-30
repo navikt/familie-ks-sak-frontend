@@ -20,8 +20,7 @@ import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAug
 import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
-import { useBehandlingsresultat } from './useBehandlingsresultat';
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContextsresultat } from './useBehandlingsresultat';
 import { useTidslinje } from '../../../../../context/TidslinjeContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
@@ -33,6 +32,7 @@ import type {
 } from '../../../../../typer/eøsPerioder';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
+import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 const EndretUtbetalingAndel = styled.div`
     display: flex;
@@ -81,7 +81,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         settVisFeilmeldinger,
         hentPersonerMedUgyldigEtterbetalingsperiode,
         personerMedUgyldigEtterbetalingsperiode,
-    } = useBehandlingsresultat(åpenBehandling);
+    } = useBehandlingContextsresultat(åpenBehandling);
 
     const {
         aktivEtikett,
@@ -90,7 +90,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
     } = useTidslinje();
 
     const { vurderErLesevisning, behandlingresultatNesteOnClick, behandlingsstegSubmitressurs } =
-        useBehandling();
+        useBehandlingContext();
 
     const erLesevisning = vurderErLesevisning();
     const {

@@ -4,8 +4,8 @@ import {
     bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår,
     useBorMedSøker,
 } from './BorMedSøkerContext';
-import { useBehandling } from '../../../../../../../../context/behandlingContext/BehandlingContext';
 import type { Regelverk } from '../../../../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
@@ -19,7 +19,7 @@ export const BorMedSøker: React.FC<BosattIRiketProps> = ({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: BosattIRiketProps) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const {

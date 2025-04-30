@@ -7,7 +7,6 @@ import type { Avhengigheter, FeiloppsummeringFeil, ISkjema } from '@navikt/famil
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../../typer/behandling';
@@ -19,6 +18,7 @@ import type {
     Målform,
 } from '../../../../../typer/søknad';
 import { hentBarnMedLøpendeUtbetaling } from '../../../../../utils/fagsak';
+import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 interface Props extends React.PropsWithChildren {
     åpenBehandling: IBehandling;
@@ -41,7 +41,7 @@ interface SøknadContextValue {
 const SøknadContext = createContext<SøknadContextValue | undefined>(undefined);
 
 export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
-    const { vurderErLesevisning, settÅpenBehandling } = useBehandling();
+    const { vurderErLesevisning, settÅpenBehandling } = useBehandlingContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
     const { bruker, minimalFagsakRessurs } = useFagsakContext();

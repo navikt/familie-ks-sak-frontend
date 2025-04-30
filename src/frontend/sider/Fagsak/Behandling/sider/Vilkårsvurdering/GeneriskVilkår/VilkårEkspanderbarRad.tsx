@@ -7,7 +7,6 @@ import { BodyShort, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { vilkårFeilmeldingId } from './VilkårTabell';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import { uiResultat } from '../../../../../../typer/vilkår';
@@ -17,6 +16,7 @@ import {
     isoDatoPeriodeTilFormatertString,
 } from '../../../../../../utils/dato';
 import { alleRegelverk } from '../../../../../../utils/vilkår';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps {
     toggleForm: (visAlert: boolean) => void;
@@ -70,7 +70,7 @@ export const VilkårEkspanderbarRad: React.FC<IProps> = ({
     lagretVilkårResultat,
     erVilkårEkspandert,
 }) => {
-    const { åpenBehandling } = useBehandling();
+    const { åpenBehandling } = useBehandlingContext();
 
     const periodeErTom = !lagretVilkårResultat.periode.fom && !lagretVilkårResultat.periode.tom;
 

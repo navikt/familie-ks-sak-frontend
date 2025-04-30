@@ -17,8 +17,8 @@ import type { Ressurs } from '@navikt/familie-typer';
 
 import TotrinnskontrollModalInnhold from './TotrinnskontrollModalInnhold';
 import Totrinnskontrollskjema from './Totrinnskontrollskjema';
-import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
+import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { ITrinn } from '../../../sider/Fagsak/Behandling/sider/sider';
 import { KontrollertStatus } from '../../../sider/Fagsak/Behandling/sider/sider';
 import type { IBehandling } from '../../../typer/behandling';
@@ -48,7 +48,7 @@ const initiellModalVerdi = {
 const Totrinnskontroll: React.FunctionComponent<IProps> = ({ åpenBehandling }) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { trinnPåBehandling, settIkkeKontrollerteSiderTilManglerKontroll, settÅpenBehandling } =
-        useBehandling();
+        useBehandlingContext();
     const { request } = useHttp();
     const navigate = useNavigate();
 
