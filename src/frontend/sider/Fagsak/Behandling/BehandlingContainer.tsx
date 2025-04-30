@@ -77,7 +77,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker }) => {
                     <Route
                         path="/vedtak"
                         element={
-                            <SammensattKontrollsakProvider behandling={åpenBehandling.data}>
+                            <SammensattKontrollsakProvider åpenBehandling={åpenBehandling.data}>
                                 <Vedtak åpenBehandling={åpenBehandling.data} bruker={bruker} />
                             </SammensattKontrollsakProvider>
                         }
