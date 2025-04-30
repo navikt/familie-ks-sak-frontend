@@ -4,11 +4,11 @@ import React, { createContext, useEffect, useState } from 'react';
 import type { AxiosRequestConfig } from 'axios';
 
 import { Alert, BodyShort, Button } from '@navikt/ds-react';
-import { HttpProvider, loggFeil, useHttp } from '@navikt/familie-http';
+import { loggFeil, useHttp } from '@navikt/familie-http';
 import type { ISaksbehandler, Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { AuthProvider, useAuthContext } from './AuthContext';
+import { useAuthContext } from './AuthContext';
 import type { IToast, ToastTyper } from '../komponenter/Toast/typer';
 import { BehandlerRolle } from '../typer/behandling';
 import type { IRestTilgang } from '../typer/person';
@@ -38,11 +38,7 @@ const initalState: IModal = {
     visModal: false,
 };
 
-interface IProps extends PropsWithChildren {
-    autentisertSaksbehandler: ISaksbehandler | undefined;
-}
-
-interface AppContentContextValue {
+interface AppContextValue {
     autentisert: boolean;
     hentSaksbehandlerRolle: () => BehandlerRolle;
     innloggetSaksbehandler: ISaksbehandler | undefined;
@@ -66,9 +62,9 @@ interface AppContentContextValue {
     erTogglesHentet: boolean;
 }
 
-const AppContentContext = createContext<AppContentContextValue | undefined>(undefined);
+const AppContext = createContext<AppContextValue | undefined>(undefined);
 
-const AppContentProvider = (props: PropsWithChildren) => {
+const AppProvider = (props: PropsWithChildren) => {
     const { autentisert, innloggetSaksbehandler } = useAuthContext();
     const { request, systemetLaster } = useHttp();
 
@@ -231,7 +227,7 @@ const AppContentProvider = (props: PropsWithChildren) => {
         toggles[ToggleNavn.skalObfuskereData] && !harInnloggetSaksbehandlerSkrivetilgang();
 
     return (
-        <AppContentContext.Provider
+        <AppContext.Provider
             value={{
                 autentisert,
                 hentSaksbehandlerRolle,
@@ -255,37 +251,16 @@ const AppContentProvider = (props: PropsWithChildren) => {
             }}
         >
             {props.children}
-        </AppContentContext.Provider>
+        </AppContext.Provider>
     );
 };
 
 const useAppContext = () => {
-    const context = React.useContext(AppContentContext);
+    const context = React.useContext(AppContext);
     if (!context) {
         throw new Error('useAppContext må brukes innenfor AppContentProvider');
     }
     return context;
-};
-
-const AuthOgHttpProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const { innloggetSaksbehandler, settAutentisert } = useAuthContext();
-
-    return (
-        <HttpProvider
-            innloggetSaksbehandler={innloggetSaksbehandler}
-            settAutentisert={settAutentisert}
-        >
-            <AppContentProvider>{children}</AppContentProvider>
-        </HttpProvider>
-    );
-};
-
-const AppProvider: React.FC<IProps> = ({ autentisertSaksbehandler, children }) => {
-    return (
-        <AuthProvider autentisertSaksbehandler={autentisertSaksbehandler}>
-            <AuthOgHttpProvider children={children} />
-        </AuthProvider>
-    );
 };
 
 export { AppProvider, useAppContext };
