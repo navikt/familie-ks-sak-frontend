@@ -4,7 +4,6 @@ import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useBehandling } from '../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import type {
     IEndreVilkårResultat,
@@ -12,11 +11,12 @@ import type {
     IRestNyttVilkår,
     VilkårType,
 } from '../../../../../typer/vilkår';
+import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 export const useVilkårsvurderingApi = () => {
     const { request } = useHttp();
 
-    const { åpenBehandling, settÅpenBehandling } = useBehandling();
+    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
 
     const behandlingId =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;

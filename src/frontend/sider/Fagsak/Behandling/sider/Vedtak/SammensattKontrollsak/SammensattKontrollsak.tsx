@@ -6,7 +6,7 @@ import { Alert, Button, ErrorMessage, Textarea, VStack } from '@navikt/ds-react'
 import { ASpacing6 } from '@navikt/ds-tokens/dist/tokens';
 
 import { useSammensattKontrollsakContext } from './useSammensattKontrollsakContext';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 const StyledVStack = styled(VStack)`
     margin-bottom: ${ASpacing6};
@@ -17,7 +17,7 @@ const StyledButton = styled(Button)`
 `;
 
 export function SammensattKontrollsak() {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const { sammensattKontrollsak, opprettEllerOppdaterSammensattKontrollsak, feilmelding } =
         useSammensattKontrollsakContext();
 

@@ -7,7 +7,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import type { ISelectOptionMedBrevtekst } from './typer';
 import { Brevmal } from './typer';
-import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
+import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '../../../typer/behandling';
 import { BehandlingKategori } from '../../../typer/behandlingstema';
 import type { IManueltBrevRequestPåBehandling } from '../../../typer/dokument';
@@ -101,7 +101,7 @@ export const mottakersMålformImplementering = (
     })?.målform ?? Målform.NB;
 
 export const useBrevModul = () => {
-    const { åpenBehandling } = useBehandling();
+    const { åpenBehandling } = useBehandlingContext();
 
     const maksAntallKulepunkter = 20;
     const makslengdeFritekstHvertKulepunkt = 220;

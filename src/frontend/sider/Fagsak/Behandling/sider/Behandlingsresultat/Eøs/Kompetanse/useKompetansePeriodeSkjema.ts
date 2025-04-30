@@ -13,7 +13,6 @@ import {
     erSøkersAktivitetGyldig,
     erSøkersAktivitetslandGyldig,
 } from './valideringKompetanse';
-import { useBehandling } from '../../../../../../../context/behandlingContext/BehandlingContext';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import type {
@@ -25,6 +24,7 @@ import type {
 } from '../../../../../../../typer/eøsPerioder';
 import { nyIsoMånedPeriode, type IIsoMånedPeriode } from '../../../../../../../utils/dato';
 import { erBarnGyldig, erEøsPeriodeGyldig } from '../../../../../../../utils/eøsValidators';
+import { useBehandlingContext } from '../../../../context/BehandlingContext';
 
 export const kompetanseFeilmeldingId = (kompetanse: IRestKompetanse): string =>
     `kompetanse_${kompetanse.barnIdenter.map(barn => `${barn}-`)}_${kompetanse.fom}`;
@@ -36,7 +36,7 @@ interface IProps {
 
 const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => {
     const [erKompetanseEkspandert, settErKompetanseEkspandert] = React.useState<boolean>(false);
-    const { åpenBehandling, settÅpenBehandling } = useBehandling();
+    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
     const behandlingId =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
     const behandlingsÅrsakErOvergangsordning =

@@ -9,13 +9,13 @@ import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../typer/common';
 import type { IRestBegrunnelseTilknyttetEndretUtbetaling } from '../../../../../../typer/endretUtbetaling';
 import { IEndretUtbetalingAndelÅrsak } from '../../../../../../typer/utbetalingAndel';
 import { BegrunnelseType } from '../../../../../../typer/vedtak';
 import { begrunnelseTyper, type Begrunnelse } from '../../../../../../typer/vedtak';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { useHentEndretUtbetalingBegrunnelser } from '../useHentEndretUtbetalingBegrunnelser';
 
 const GroupLabel = styled.div`
@@ -27,7 +27,7 @@ interface IProps {
 }
 
 export const EndretUtbetalingAvslagBegrunnelse: React.FC<IProps> = ({ skjema }) => {
-    const { vurderErLesevisning } = useBehandling();
+    const { vurderErLesevisning } = useBehandlingContext();
     const { endretUtbetalingsbegrunnelser } = useHentEndretUtbetalingBegrunnelser();
 
     const prevalgtBegrunnelse =

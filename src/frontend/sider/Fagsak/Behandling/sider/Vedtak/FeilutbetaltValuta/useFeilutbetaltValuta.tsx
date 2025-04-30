@@ -5,7 +5,6 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { validerFeilutbetaltBeløp } from './FeilutbetaltValutaUtil';
-import { useBehandling } from '../../../../../../context/behandlingContext/BehandlingContext';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type {
     IFeilutbetaltValutaSkjemaFelter,
@@ -13,6 +12,7 @@ import type {
     IRestFeilutbetaltValuta,
 } from '../../../../../../typer/eøs-feilutbetalt-valuta';
 import { dateTilIsoDatoString, validerGyldigDato } from '../../../../../../utils/dato';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps {
     behandlingId: number;
@@ -21,7 +21,7 @@ interface IProps {
 }
 
 const useFeilutbetaltValuta = ({ feilutbetaltValuta, settFeilmelding, behandlingId }: IProps) => {
-    const { settÅpenBehandling } = useBehandling();
+    const { settÅpenBehandling } = useBehandlingContext();
 
     const fomFelt = useFelt<Date | undefined>({
         verdi: undefined,

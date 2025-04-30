@@ -12,12 +12,12 @@ import type { SideId } from './sider/sider';
 import { sider } from './sider/sider';
 import Simulering from './sider/Simulering/Simulering';
 import { SimuleringProvider } from './sider/Simulering/SimuleringContext';
-import OppsummeringVedtak from './sider/Vedtak/OppsummeringVedtak';
 import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/useSammensattKontrollsakContext';
+import Vedtak from './sider/Vedtak/Vedtak';
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from './sider/Vilkårsvurdering/VilkårsvurderingContext';
-import { useBehandling } from '../../../context/behandlingContext/BehandlingContext';
 import { TidslinjeProvider } from '../../../komponenter/Tidslinje/TidslinjeContext';
+import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
 
@@ -27,7 +27,7 @@ interface Props {
 
 const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker }) => {
     const location = useLocation();
-    const { åpenBehandling, leggTilBesøktSide } = useBehandling();
+    const { åpenBehandling, leggTilBesøktSide } = useBehandlingContext();
 
     const sidevisning = hentSideHref(location.pathname);
     useEffect(() => {
@@ -78,10 +78,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker }) => {
                         path="/vedtak"
                         element={
                             <SammensattKontrollsakProvider behandling={åpenBehandling.data}>
-                                <OppsummeringVedtak
-                                    åpenBehandling={åpenBehandling.data}
-                                    bruker={bruker}
-                                />
+                                <Vedtak åpenBehandling={åpenBehandling.data} bruker={bruker} />
                             </SammensattKontrollsakProvider>
                         }
                     />
