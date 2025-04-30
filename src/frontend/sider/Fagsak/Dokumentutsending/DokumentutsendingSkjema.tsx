@@ -11,7 +11,7 @@ import { useAppContext } from '../../../context/AppContext';
 import {
     dokumentÅrsak,
     DokumentÅrsak,
-    useDokumentutsending,
+    useDokumentutsendingContext,
 } from '../../../context/DokumentutsendingContext';
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import { BrevmottakereAlert } from '../../../komponenter/BrevmottakereAlert';
@@ -74,7 +74,7 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
         hentSkjemaFeilmelding,
         settVisfeilmeldinger,
         visForhåndsvisningBeskjed,
-    } = useDokumentutsending();
+    } = useDokumentutsendingContext();
 
     const { manuelleBrevmottakerePåFagsak } = useFagsakContext();
 
