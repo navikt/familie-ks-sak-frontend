@@ -55,7 +55,6 @@
     "babel-loader": "^10.0.0",
     "body-parser": "^2.2.0",
     "classnames": "^2.5.1",
-    "constate": "^3.3.2",
     "date-fns": "4.1.0",
     "deep-equal": "^2.2.2",
     "dotenv": "^16.5.0",
