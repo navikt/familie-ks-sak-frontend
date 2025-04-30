@@ -10,7 +10,7 @@ import Historikk from './Historikk';
 import Totrinnskontroll from './Totrinnskontroll/Totrinnskontroll';
 import type { Hendelse } from './typer';
 import { TabValg } from './typer';
-import { useApp } from '../../context/AppContext';
+import { useAppContext } from '../../context/AppContext';
 import { BehandlerRolle, BehandlingStatus } from '../../typer/behandling';
 import type { IBehandling } from '../../typer/behandling';
 import type { IPersonInfo } from '../../typer/person';
@@ -28,7 +28,7 @@ const Hendelsesoversikt = ({
     åpenBehandling,
     bruker,
 }: IHendelsesoversiktProps) => {
-    const { hentSaksbehandlerRolle } = useApp();
+    const { hentSaksbehandlerRolle } = useAppContext();
 
     const skalViseTotrinnskontroll =
         BehandlerRolle.BESLUTTER === hentSaksbehandlerRolle() &&

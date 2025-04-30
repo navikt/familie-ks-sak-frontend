@@ -17,7 +17,7 @@ import {
 import { idnr } from '@navikt/fnrvalidator';
 
 import OpprettFagsakModal from './OpprettFagsakModal';
-import { useApp } from '../../context/AppContext';
+import { useAppContext } from '../../context/AppContext';
 import IkkeTilgang from '../../ikoner/IkkeTilgang';
 import type { IFagsakDeltager, ISøkParam } from '../../typer/fagsakdeltager';
 import { fagsakdeltagerRoller } from '../../typer/fagsakdeltager';
@@ -26,7 +26,7 @@ import { obfuskerFagsakDeltager } from '../../utils/obfuskerData';
 const FagsakDeltagerSøk: React.FC = () => {
     const { request } = useHttp();
     const navigate = useNavigate();
-    const { skalObfuskereData } = useApp();
+    const { skalObfuskereData } = useAppContext();
 
     const [fagsakDeltagere, settFagsakDeltagere] =
         React.useState<Ressurs<IFagsakDeltager[]>>(byggTomRessurs());

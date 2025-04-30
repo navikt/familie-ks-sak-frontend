@@ -6,7 +6,7 @@ import { Alert, Heading, HelpText } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import VedtaksperiodeMedBegrunnelserPanel from './VedtaksperiodeMedBegrunnelserPanel';
-import { useApp } from '../../../../../../../context/AppContext';
+import { useAppContext } from '../../../../../../../context/AppContext';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import { ToggleNavn } from '../../../../../../../typer/toggles';
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../../typer/vedtaksperiode';
@@ -38,7 +38,7 @@ const VedtaksperioderMedBegrunnelser: React.FC<IVedtakBegrunnelserTabell> = ({
     åpenBehandling,
 }) => {
     const { vedtaksbegrunnelseTekster } = useVedtaksbegrunnelseTekster();
-    const { toggles } = useApp();
+    const { toggles } = useAppContext();
 
     const sorterteVedtaksperioderSomSkalvises = filtrerOgSorterPerioderMedBegrunnelseBehov(
         åpenBehandling.vedtak?.vedtaksperioderMedBegrunnelser ?? [],

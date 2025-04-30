@@ -6,7 +6,7 @@ import { Button, Loader } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useFagsakApi from '../../api/useFagsakApi';
-import { useApp } from '../../context/AppContext';
+import { useAppContext } from '../../context/AppContext';
 import { AlertType, ToastTyper } from '../../komponenter/Toast/typer';
 import type { IOppgave } from '../../typer/oppgave';
 import { oppgaveTypeFilter, OppgavetypeFilter } from '../../typer/oppgave';
@@ -17,9 +17,9 @@ interface IOppgaveDirektelenke {
 }
 
 const OppgaveDirektelenke: React.FC<IOppgaveDirektelenke> = ({ oppgave }) => {
-    const { settToast } = useApp();
+    const { settToast } = useAppContext();
     const { hentFagsakForPerson } = useFagsakApi();
-    const { sjekkTilgang } = useApp();
+    const { sjekkTilgang } = useAppContext();
     const [laster, settLaster] = useState<boolean>(false);
     const navigate = useNavigate();
     const oppgavetype = oppgaveTypeFilter[oppgave.oppgavetype as OppgavetypeFilter]?.id;

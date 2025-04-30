@@ -5,7 +5,7 @@ import constate from 'constate';
 import { useHttp } from '@navikt/familie-http';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useApp } from '../../../../../../context/AppContext';
+import { useAppContext } from '../../../../../../context/AppContext';
 import {
     Behandlingstype,
     erBehandlingAvslått,
@@ -28,7 +28,7 @@ interface InputProps {
 function hook({ behandling }: InputProps) {
     const { behandlingId, type, resultat } = behandling;
     const { request } = useHttp();
-    const { toggles } = useApp();
+    const { toggles } = useAppContext();
     const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
     const [erSammensattKontrollsak, settErSammensattKontrollsak] = useState<boolean>(false);
     const [sammensattKontrollsak, settSammensattKontrollsak] = useState<

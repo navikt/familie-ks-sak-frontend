@@ -7,7 +7,7 @@ import { Alert, Box, Button, Fieldset, Heading, Label, Select } from '@navikt/ds
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnIBrevSkjema from './BarnIBrev/BarnIBrevSkjema';
-import { useApp } from '../../../context/AppContext';
+import { useAppContext } from '../../../context/AppContext';
 import {
     dokumentÅrsak,
     DokumentÅrsak,
@@ -62,7 +62,7 @@ enum BarnIBrevÅrsak {
 }
 
 const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
-    const { toggles } = useApp();
+    const { toggles } = useAppContext();
     const {
         hentForhåndsvisningPåFagsak,
         hentetDokument,

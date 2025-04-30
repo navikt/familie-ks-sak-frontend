@@ -3,7 +3,7 @@ import React from 'react';
 import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
-import { useApp } from '../../../../../context/AppContext';
+import { useAppContext } from '../../../../../context/AppContext';
 import {
     behandlingÅrsak,
     BehandlingÅrsak,
@@ -25,7 +25,7 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
     visFeilmeldinger,
     erLesevisning = false,
 }) => {
-    const { toggles } = useApp();
+    const { toggles } = useAppContext();
 
     return (
         <Select

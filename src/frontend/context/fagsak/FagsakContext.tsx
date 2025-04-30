@@ -24,7 +24,7 @@ import type { IPersonInfo } from '../../typer/person';
 import type { ITilbakekrevingsbehandling } from '../../typer/tilbakekrevingsbehandling';
 import { sjekkTilgangTilPerson } from '../../utils/commons';
 import { obfuskerFagsak, obfuskerPersonInfo } from '../../utils/obfuskerData';
-import { useApp } from '../AppContext';
+import { useAppContext } from '../AppContext';
 
 interface IFagsakContext {
     bruker: Ressurs<IPersonInfo>;
@@ -61,7 +61,7 @@ export const FagsakProvider = (props: PropsWithChildren) => {
     >([]);
 
     const { request } = useHttp();
-    const { skalObfuskereData } = useApp();
+    const { skalObfuskereData } = useAppContext();
     const { hentTilbakekrevingsbehandlinger } = useTilbakekrevingApi();
     const { hentFagsakForPerson } = useFagsakApi();
 
