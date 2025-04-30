@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Table } from '@navikt/ds-react';
 
-import { useOvergangsordningAndel } from './OvergangsordningAndelContext';
+import { useOvergangsordningAndelContext } from './OvergangsordningAndelContext';
 import OvergangsordningAndelSkjema from './OvergangsordningAndelSkjema';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../../../utils/dato';
@@ -29,7 +29,7 @@ const OvergangsordningAndelRad: React.FunctionComponent<IOvergangsordningRadProp
         erOvergangsordningAndelForandret,
         erOvergangsordningAndelÅpen,
         settErOvergangsordningAndelÅpen,
-    } = useOvergangsordningAndel();
+    } = useOvergangsordningAndelContext();
 
     const toggleForm = () => {
         if (erOvergangsordningAndelForandret() && erOvergangsordningAndelÅpen) {

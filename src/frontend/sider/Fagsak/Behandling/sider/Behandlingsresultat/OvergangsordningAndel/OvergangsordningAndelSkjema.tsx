@@ -6,7 +6,7 @@ import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, Checkbox, Fieldset, Label, Select, TextField } from '@navikt/ds-react';
 import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 
-import { useOvergangsordningAndel } from './OvergangsordningAndelContext';
+import { useOvergangsordningAndelContext } from './OvergangsordningAndelContext';
 import Månedvelger, { DagIMåneden } from '../../../../../../komponenter/Datovelger/Månedvelger';
 import Knapperekke from '../../../../../../komponenter/Knapperekke';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../typer/behandling';
@@ -65,7 +65,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
         slettOvergangsordningAndel,
         oppdaterOvergangsordningAndel,
         tilbakestillOgLukkOvergangsordningAndel,
-    } = useOvergangsordningAndel();
+    } = useOvergangsordningAndelContext();
 
     const erLesevisning =
         vurderErLesevisning() || åpenBehandling.årsak !== BehandlingÅrsak.OVERGANGSORDNING_2024;
