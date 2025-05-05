@@ -28,16 +28,13 @@ export interface IRestJournalføring {
     datoMottatt?: string;
     journalpostTittel?: string;
     kategori: BehandlingKategori | null;
-    knyttTilFagsak: boolean;
     opprettOgKnyttTilNyBehandling: boolean;
     tilknyttedeBehandlinger: TilknyttetBehandling[];
-    tilknyttedeBehandlingIder: string[];
     dokumenter?: IRestJournalpostDokument[];
     navIdent: string;
     nyBehandlingstype: Behandlingstype;
     nyBehandlingsårsak: BehandlingÅrsak;
     journalførendeEnhet: string;
-    fagsakId?: number;
 }
 
 interface ILogiskVedlegg {
