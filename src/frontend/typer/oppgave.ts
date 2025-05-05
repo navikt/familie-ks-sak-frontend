@@ -176,13 +176,11 @@ export enum PrioritetFilter {
 export interface IRestLukkOppgaveOgKnyttJournalpost {
     journalpostId: string;
     tilknyttedeBehandlinger: TilknyttetBehandling[];
-    tilknyttedeBehandlingIder: string[];
     opprettOgKnyttTilNyBehandling: boolean;
     bruker?: INavnOgIdent;
     datoMottatt?: string;
     navIdent: string;
     kategori: BehandlingKategori | null;
-    fagsakId?: number;
 }
 
 export const finnBehandlingstemaFraOppgave = (oppgave: IOppgave): IBehandlingstema | undefined => {
