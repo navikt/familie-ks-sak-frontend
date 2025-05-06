@@ -6,7 +6,7 @@ import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useApp } from '../../../../../context/AppContext';
+import { useAppContext } from '../../../../../context/AppContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling, IRestNyBehandling } from '../../../../../typer/behandling';
@@ -40,7 +40,7 @@ const useOpprettBehandling = ({
     const { fagsakId } = useSakOgBehandlingParams();
     const { settÅpenBehandling } = useBehandlingContext();
     const { bruker: brukerRessurs } = useFagsakContext();
-    const { innloggetSaksbehandler } = useApp();
+    const { innloggetSaksbehandler } = useAppContext();
     const { oppdaterKlagebehandlingerPåFagsak } = useFagsakContext();
     const navigate = useNavigate();
 

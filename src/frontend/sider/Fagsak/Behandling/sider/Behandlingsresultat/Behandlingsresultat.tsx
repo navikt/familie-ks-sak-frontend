@@ -21,9 +21,9 @@ import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import { useBehandlingContextsresultat } from './useBehandlingsresultat';
-import { useTidslinje } from '../../../../../context/TidslinjeContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
+import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';
 import type {
     IRestKompetanse,
@@ -87,7 +87,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         aktivEtikett,
         filterOgSorterAndelPersonerIGrunnlag,
         filterOgSorterGrunnlagPersonerMedAndeler,
-    } = useTidslinje();
+    } = useTidslinjeContext();
 
     const { vurderErLesevisning, behandlingresultatNesteOnClick, behandlingsstegSubmitressurs } =
         useBehandlingContext();

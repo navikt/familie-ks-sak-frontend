@@ -7,12 +7,12 @@ import { Alert, Box, Button, Fieldset, Heading, Label, Select } from '@navikt/ds
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnIBrevSkjema from './BarnIBrev/BarnIBrevSkjema';
-import { useApp } from '../../../context/AppContext';
 import {
     dokumentÅrsak,
     DokumentÅrsak,
-    useDokumentutsending,
-} from '../../../context/DokumentutsendingContext';
+    useDokumentutsendingContext,
+} from './DokumentutsendingContext';
+import { useAppContext } from '../../../context/AppContext';
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import { BrevmottakereAlert } from '../../../komponenter/BrevmottakereAlert';
 import FritekstAvsnitt from '../../../komponenter/FritekstAvsnitt';
@@ -62,7 +62,7 @@ enum BarnIBrevÅrsak {
 }
 
 const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
-    const { toggles } = useApp();
+    const { toggles } = useAppContext();
     const {
         hentForhåndsvisningPåFagsak,
         hentetDokument,
@@ -74,7 +74,7 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
         hentSkjemaFeilmelding,
         settVisfeilmeldinger,
         visForhåndsvisningBeskjed,
-    } = useDokumentutsending();
+    } = useDokumentutsendingContext();
 
     const { manuelleBrevmottakerePåFagsak } = useFagsakContext();
 

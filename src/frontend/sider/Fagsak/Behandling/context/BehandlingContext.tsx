@@ -8,7 +8,7 @@ import { byggTomRessurs, hentDataFraRessurs } from '@navikt/familie-typer';
 import useBehandlingApi from './useBehandlingApi';
 import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './utils';
-import { useApp } from '../../../../context/AppContext';
+import { useAppContext } from '../../../../context/AppContext';
 import { useFagsakContext } from '../../../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
 import {
@@ -109,7 +109,7 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
         harInnloggetSaksbehandlerSuperbrukerTilgang,
         innloggetSaksbehandler,
         hentSaksbehandlerRolle,
-    } = useApp();
+    } = useAppContext();
 
     const navigate = useNavigate();
     const location = useLocation();

@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 import { Button } from '@navikt/ds-react';
 
-import { NavigeringsRetning } from '../../../../../context/TidslinjeContext';
-import FamilieChevron from '../../../../../ikoner/FamilieChevron';
+import { NavigeringsRetning } from './TidslinjeContext';
+import FamilieChevron from '../../ikoner/FamilieChevron';
 
 interface IProps extends PropsWithChildren {
     naviger: (retning: NavigeringsRetning) => void;

@@ -5,7 +5,7 @@ import { kjønnType } from '@navikt/familie-typer';
 import Visittkort from '@navikt/familie-visittkort';
 
 import Behandlingsmeny from './Behandlingsmeny/Behandlingsmeny';
-import { useApp } from '../../../context/AppContext';
+import { useAppContext } from '../../../context/AppContext';
 import DødsfallTag from '../../../komponenter/DødsfallTag';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import type { IPersonInfo } from '../../../typer/person';
@@ -17,7 +17,7 @@ interface IProps {
 }
 
 const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
-    const { harInnloggetSaksbehandlerSkrivetilgang } = useApp();
+    const { harInnloggetSaksbehandlerSkrivetilgang } = useAppContext();
     return (
         <Visittkort
             navn={bruker?.navn ?? 'Ukjent'}

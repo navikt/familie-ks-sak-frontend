@@ -14,7 +14,8 @@ import {
 } from '@navikt/ds-tokens/dist/tokens';
 import { AFontWeightRegular, ATextDanger } from '@navikt/ds-tokens/dist/tokens';
 
-import { NavigeringsRetning } from '../../../../../context/TidslinjeContext';
+import { NavigeringsRetning } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
+import TidslinjeNavigering from '../../../../../komponenter/Tidslinje/TidslinjeNavigering';
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../../../typer/simulering';
 import {
     Datoformat,
@@ -27,7 +28,6 @@ import {
     hentPeriodelisteMedTommePerioder,
     hentÅrISimuleringen,
 } from '../../../../../utils/simulering';
-import TidslinjeNavigering from '../Behandlingsresultat/TidslinjeNavigering';
 
 const Årsvelger = styled.div`
     display: flex;

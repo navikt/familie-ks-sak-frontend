@@ -10,11 +10,11 @@ import { RessursStatus } from '@navikt/familie-typer';
 import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
 import RefusjonEøs from './RefusjonEøs/RefusjonEøs';
 import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrollsak';
-import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
+import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import Vedtaksmeny from './Vedtaksmeny';
 import { VedtakBegrunnelserProvider } from './Vedtaksperioder/VedtakBegrunnelserContext';
 import Vedtaksperioder from './Vedtaksperioder/Vedtaksperioder';
-import { useApp } from '../../../../../context/AppContext';
+import { useAppContext } from '../../../../../context/AppContext';
 import useDokument from '../../../../../hooks/useDokument';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAlert';
@@ -57,7 +57,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
     settErUlagretNyRefusjonEøsPeriode,
     bruker,
 }) => {
-    const { hentSaksbehandlerRolle } = useApp();
+    const { hentSaksbehandlerRolle } = useAppContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();

@@ -13,11 +13,11 @@ import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
 import JournalpostListe from './journalposter/JournalpostListe';
 import Personlinje from './Personlinje/Personlinje';
 import Saksoversikt from './Saksoversikt/Saksoversikt';
-import { DokumentutsendingProvider } from '../../context/DokumentutsendingContext';
 import { useFagsakContext } from '../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
 import Venstremeny from './Behandling/Venstremeny/Venstremeny';
+import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
 
 const Innhold = styled.div`
     height: calc(100vh - 6rem);

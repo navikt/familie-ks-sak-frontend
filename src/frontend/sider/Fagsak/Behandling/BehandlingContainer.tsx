@@ -12,11 +12,11 @@ import type { SideId } from './sider/sider';
 import { sider } from './sider/sider';
 import Simulering from './sider/Simulering/Simulering';
 import { SimuleringProvider } from './sider/Simulering/SimuleringContext';
-import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/useSammensattKontrollsakContext';
+import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/SammensattKontrollsakContext';
 import Vedtak from './sider/Vedtak/Vedtak';
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from './sider/Vilkårsvurdering/VilkårsvurderingContext';
-import { TidslinjeProvider } from '../../../context/TidslinjeContext';
+import { TidslinjeProvider } from '../../../komponenter/Tidslinje/TidslinjeContext';
 import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
@@ -77,7 +77,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker }) => {
                     <Route
                         path="/vedtak"
                         element={
-                            <SammensattKontrollsakProvider behandling={åpenBehandling.data}>
+                            <SammensattKontrollsakProvider åpenBehandling={åpenBehandling.data}>
                                 <Vedtak åpenBehandling={åpenBehandling.data} bruker={bruker} />
                             </SammensattKontrollsakProvider>
                         }

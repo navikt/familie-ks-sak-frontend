@@ -4,7 +4,7 @@ import { Button, Select, Textarea, Dropdown, Modal, Fieldset } from '@navikt/ds-
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlendeEnhet from './useEndreBehandlendeEnhet';
-import { useApp } from '../../../../../context/AppContext';
+import { useAppContext } from '../../../../../context/AppContext';
 import { BehandlingSteg, hentStegNummer } from '../../../../../typer/behandling';
 import type { IArbeidsfordelingsenhet } from '../../../../../typer/enhet';
 import { behandendeEnheter } from '../../../../../typer/enhet';
@@ -15,7 +15,7 @@ const EndreBehandlendeEnhet: React.FC = () => {
     const { åpenBehandling, vurderErLesevisning, erBehandleneEnhetMidlertidig } =
         useBehandlingContext();
     const [visModal, settVisModal] = useState(erBehandleneEnhetMidlertidig);
-    const { innloggetSaksbehandler } = useApp();
+    const { innloggetSaksbehandler } = useAppContext();
 
     const {
         begrunnelse,

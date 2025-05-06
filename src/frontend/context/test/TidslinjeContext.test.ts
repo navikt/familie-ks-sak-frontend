@@ -1,8 +1,11 @@
 import { renderHook } from '@testing-library/react';
 import { endOfMonth, startOfMonth } from 'date-fns';
 
+import {
+    TidslinjeProvider,
+    useTidslinjeContext,
+} from '../../komponenter/Tidslinje/TidslinjeContext';
 import { YtelseType, type IPersonMedAndelerTilkjentYtelse } from '../../typer/beregning';
-import { TidslinjeProvider, useTidslinje } from '../TidslinjeContext';
 
 describe('TidslinjeContext', () => {
     test('skal generere tidslinjerader for en person', () => {
@@ -11,7 +14,7 @@ describe('TidslinjeContext', () => {
             { type: 'Ingen betaling', fom: '2024-08', tom: '2024-09' },
         ]);
 
-        const { result } = renderHook(() => useTidslinje(), { wrapper: TidslinjeProvider });
+        const { result } = renderHook(() => useTidslinjeContext(), { wrapper: TidslinjeProvider });
         const rader = result.current.genererRader(tidslinjePersoner);
 
         const forventetResultat = [
@@ -40,7 +43,7 @@ describe('TidslinjeContext', () => {
             { type: 'Overgangsordning', fom: '2024-08', tom: '2024-09' },
         ]);
 
-        const { result } = renderHook(() => useTidslinje(), { wrapper: TidslinjeProvider });
+        const { result } = renderHook(() => useTidslinjeContext(), { wrapper: TidslinjeProvider });
         const rader = result.current.genererRader(tidslinjePersoner);
 
         const forventetResultat = [

@@ -28,7 +28,7 @@ import {
     Sorteringsnøkkel,
     type IOppgaveRad,
 } from './utils';
-import { useApp } from '../../context/AppContext';
+import { useAppContext } from '../../context/AppContext';
 import { AlertType, ToastTyper } from '../../komponenter/Toast/typer';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import {
@@ -75,7 +75,7 @@ const OppgavebenkContext = createContext<OppgavebenkContextValue | undefined>(un
 
 export const OppgavebenkProvider = (props: PropsWithChildren) => {
     const navigate = useNavigate();
-    const { innloggetSaksbehandler, settToast } = useApp();
+    const { innloggetSaksbehandler, settToast } = useAppContext();
     const { request } = useHttp();
     const { opprettEllerHentFagsak } = useOpprettEllerHentFagsak();
 

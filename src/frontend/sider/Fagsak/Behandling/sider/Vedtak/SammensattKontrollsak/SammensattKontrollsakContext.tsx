@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
-
-import constate from 'constate';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useApp } from '../../../../../../context/AppContext';
+import { useAppContext } from '../../../../../../context/AppContext';
 import {
     Behandlingstype,
     erBehandlingAvslått,
@@ -21,14 +19,31 @@ import type {
 import { ToggleNavn } from '../../../../../../typer/toggles';
 import { erDefinert } from '../../../../../../utils/commons';
 
-interface InputProps {
-    behandling: IBehandling;
+interface ISammensattKontrollsakProps extends React.PropsWithChildren {
+    åpenBehandling: IBehandling;
 }
 
-function hook({ behandling }: InputProps) {
-    const { behandlingId, type, resultat } = behandling;
+interface SammensattKontrollsakContextValue {
+    opprettEllerOppdaterSammensattKontrollsak: (fritekst: string) => void;
+    slettSammensattKontrollsak: () => void;
+    feilmelding: string | undefined;
+    sammensattKontrollsak: SammensattKontrollsakDto | undefined;
+    erSammensattKontrollsak: boolean;
+    settErSammensattKontrollsak: React.Dispatch<React.SetStateAction<boolean>>;
+    skalViseSammensattKontrollsakMenyvalg: boolean;
+}
+
+const SammensattKontrollsakContext = createContext<SammensattKontrollsakContextValue | undefined>(
+    undefined
+);
+
+export const SammensattKontrollsakProvider = ({
+    åpenBehandling,
+    children,
+}: ISammensattKontrollsakProps) => {
+    const { behandlingId, type, resultat } = åpenBehandling;
     const { request } = useHttp();
-    const { toggles } = useApp();
+    const { toggles } = useAppContext();
     const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
     const [erSammensattKontrollsak, settErSammensattKontrollsak] = useState<boolean>(false);
     const [sammensattKontrollsak, settSammensattKontrollsak] = useState<
@@ -113,15 +128,29 @@ function hook({ behandling }: InputProps) {
         }
     }
 
-    return {
-        opprettEllerOppdaterSammensattKontrollsak,
-        slettSammensattKontrollsak,
-        feilmelding,
-        sammensattKontrollsak,
-        erSammensattKontrollsak,
-        settErSammensattKontrollsak,
-        skalViseSammensattKontrollsakMenyvalg,
-    };
-}
+    return (
+        <SammensattKontrollsakContext.Provider
+            value={{
+                opprettEllerOppdaterSammensattKontrollsak,
+                slettSammensattKontrollsak,
+                feilmelding,
+                sammensattKontrollsak,
+                erSammensattKontrollsak,
+                settErSammensattKontrollsak,
+                skalViseSammensattKontrollsakMenyvalg,
+            }}
+        >
+            {children}
+        </SammensattKontrollsakContext.Provider>
+    );
+};
 
-export const [SammensattKontrollsakProvider, useSammensattKontrollsakContext] = constate(hook);
+export const useSammensattKontrollsakContext = () => {
+    const context = useContext(SammensattKontrollsakContext);
+    if (context === undefined) {
+        throw new Error(
+            'useSammensattKontrollsakContext må brukes innenfor en SammensattKontrollsak'
+        );
+    }
+    return context;
+};

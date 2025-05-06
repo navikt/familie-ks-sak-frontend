@@ -30,7 +30,7 @@ import {
 } from '@navikt/familie-typer';
 
 import useFagsakApi from '../../api/useFagsakApi';
-import { useApp } from '../../context/AppContext';
+import { useAppContext } from '../../context/AppContext';
 import useDokument from '../../hooks/useDokument';
 import { Behandlingstype, BehandlingÅrsak } from '../../typer/behandling';
 import type { IBehandlingstema } from '../../typer/behandlingstema';
@@ -101,7 +101,7 @@ const ManuellJournalføringContext = createContext<ManuellJournalføringContextV
 );
 
 export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
-    const { innloggetSaksbehandler } = useApp();
+    const { innloggetSaksbehandler } = useAppContext();
     const { hentFagsakForPerson } = useFagsakApi();
     const navigate = useNavigate();
     const { request } = useHttp();

@@ -15,7 +15,7 @@ import { ASpacing10 } from '@navikt/ds-tokens/dist/tokens';
 import EndreEndringstidspunkt from './endringstidspunkt/EndreEndringstidspunkt';
 import KorrigerEtterbetaling from './KorrigerEtterbetaling/KorrigerEtterbetaling';
 import KorrigerVedtak from './KorrigerVedtakModal/KorrigerVedtak';
-import { useSammensattKontrollsakContext } from './SammensattKontrollsak/useSammensattKontrollsakContext';
+import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingKategori } from '../../../../../typer/behandlingstema';
 import { vedtakHarFortsattUtbetaling } from '../../../../../utils/vedtakUtils';

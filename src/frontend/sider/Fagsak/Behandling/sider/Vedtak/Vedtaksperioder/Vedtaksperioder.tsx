@@ -9,7 +9,7 @@ import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
 import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import Vedtaksperiode from './Vedtaksperiode';
 import { VedtaksperiodeProvider } from './VedtaksperiodeContext';
-import { useApp } from '../../../../../../context/AppContext';
+import { useAppContext } from '../../../../../../context/AppContext';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import { ToggleNavn } from '../../../../../../typer/toggles';
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
@@ -36,7 +36,7 @@ interface VedtaksperioderProps {
 
 const Vedtaksperioder: React.FC<VedtaksperioderProps> = ({ åpenBehandling }) => {
     const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
-    const { toggles } = useApp();
+    const { toggles } = useAppContext();
 
     const sorterteVedtaksperioderSomSkalvises = filtrerOgSorterPerioderMedBegrunnelseBehov(
         åpenBehandling.vedtak?.vedtaksperioderMedBegrunnelser ?? [],

@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Textarea } from '@navikt/ds-react';
 
-import { useDokumentutsending } from '../context/DokumentutsendingContext';
+import { useDokumentutsendingContext } from '../sider/Fagsak/Dokumentutsending/DokumentutsendingContext';
 
 const FritekstAvsnitt = () => {
-    const { skjema } = useDokumentutsending();
+    const { skjema } = useDokumentutsendingContext();
     const maksLengdeFritekstAvsnitt = 1000;
 
     return (
