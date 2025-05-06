@@ -1870,14 +1870,13 @@
     "@navikt/familie-typer" "^8.0.2"
     "@navikt/fnrvalidator" "^2.1.5"
 
-"@navikt/familie-http@^7.0.24":
-  version "7.0.26"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/7.0.26/613f6fb6af3f298af1af9d26fe569f501af974b6#613f6fb6af3f298af1af9d26fe569f501af974b6"
-  integrity sha512-dhHFu1++xpqRJgOUx05GLmpfA8rEIJ088oRvTqw6TgO6fVyVRgnUjvTKbqmNFUN5e9kwujCKPqHKGkhpQzPuKQ==
+"@navikt/familie-http@^8.0.0":
+  version "8.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/8.0.0/d5c33e3fc580141c4f929e61ee83d0effc763862#d5c33e3fc580141c4f929e61ee83d0effc763862"
+  integrity sha512-nPc64Be5pUsk6Mqlt/apmB6EUCNdItjZ/s7BEFSUlkCIVvo2eJHbvZ5j1f2ETvzzx9WYSY5zGqpqas197T5+hQ==
   dependencies:
     "@navikt/familie-typer" "^8.0.3"
     "@sentry/core" "^8.50.0"
-    constate "^3.3.2"
 
 "@navikt/familie-ikoner@^9.0.3":
   version "9.0.3"
@@ -1900,13 +1899,13 @@
   dependencies:
     winston "^3.17.0"
 
-"@navikt/familie-skjema@^8.2.22":
-  version "8.2.22"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.2.22/ceb6823cb0538ca7f5190c558703917a6c4aa7c5#ceb6823cb0538ca7f5190c558703917a6c4aa7c5"
-  integrity sha512-K/qUX5M8tTP6O0TFjQUlmOTPUpJ4y04Pl+gcRexFg3410k51O/A9zzmVdvKl0exhRY9qCxPA9zBhW5Kc/Fuldw==
+"@navikt/familie-skjema@^8.2.25":
+  version "8.2.25"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.2.25/a57ff2d12ab770fe6519959dd9758652031ddc6a#a57ff2d12ab770fe6519959dd9758652031ddc6a"
+  integrity sha512-ICPG6kzEsGOG5A+bNwJU+c9INSkgKz3fsP+TaiXKuqSDu+cEE4+CVSgsMHn4TrETm/80rO59RdBctHhbex6vWg==
   dependencies:
-    "@navikt/familie-http" "^7.0.24"
-    "@navikt/familie-typer" "^8.0.2"
+    "@navikt/familie-http" "^8.0.0"
+    "@navikt/familie-typer" "^8.0.3"
     "@types/deep-equal" "^1.0.4"
     deep-equal "^2.2.3"
     hashids "^2.3.0"
@@ -4164,11 +4163,6 @@ connect-redis@^8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/connect-redis/-/connect-redis-8.0.1.tgz#83d4d829ee968b9d64da9a6f40fe1ea3046bf835"
   integrity sha512-7iOI214/r15ahvu0rqKCHhsgpMdOgyLwqlw/icSTnnAR75xFvMyfxAE+je4M87rZLjDlKzKcTc48XxQXYFsMgA==
-
-constate@^3.3.2:
-  version "3.3.2"
-  resolved "https://registry.npmjs.org/constate/-/constate-3.3.2.tgz"
-  integrity sha512-ZnEWiwU6QUTil41D5EGpA7pbqAPGvnR9kBjko8DzVIxpC60mdNKrP568tT5WLJPAxAOtJqJw60+h79ot/Uz1+Q==
 
 content-disposition@0.5.4:
   version "0.5.4"
