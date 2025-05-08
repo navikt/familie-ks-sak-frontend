@@ -20,6 +20,7 @@ export interface Barnehagebarn {
     tom?: string;
     antallTimerIBarnehage?: number;
     endringstype: string;
+    avvik?: boolean;
     kommuneNavn: string;
     kommuneNr: string;
     fagsakId?: number;
