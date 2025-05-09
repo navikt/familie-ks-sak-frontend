@@ -12,13 +12,11 @@ import {
     DokumentÅrsak,
     useDokumentutsendingContext,
 } from './DokumentutsendingContext';
-import { useAppContext } from '../../../context/AppContext';
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import { BrevmottakereAlert } from '../../../komponenter/BrevmottakereAlert';
 import FritekstAvsnitt from '../../../komponenter/FritekstAvsnitt';
 import MålformVelger from '../../../komponenter/MålformVelger';
 import type { IPersonInfo } from '../../../typer/person';
-import { ToggleNavn } from '../../../typer/toggles';
 
 interface Props {
     bruker: IPersonInfo;
@@ -62,7 +60,6 @@ enum BarnIBrevÅrsak {
 }
 
 const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
-    const { toggles } = useAppContext();
     const {
         hentForhåndsvisningPåFagsak,
         hentetDokument,
@@ -131,24 +128,17 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
                     size={'medium'}
                 >
                     <option value="">Velg</option>
-                    {Object.values(DokumentÅrsak)
-                        .filter(årsak => {
-                            if (årsak === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE) {
-                                return toggles[ToggleNavn.innhenteOpplysningerKlageBrev];
-                            }
-                            return true;
-                        })
-                        .map(årsak => {
-                            return (
-                                <option
-                                    key={årsak}
-                                    aria-selected={skjema.felter.årsak.verdi === årsak}
-                                    value={årsak}
-                                >
-                                    {dokumentÅrsak[årsak]}
-                                </option>
-                            );
-                        })}
+                    {Object.values(DokumentÅrsak).map(årsak => {
+                        return (
+                            <option
+                                key={årsak}
+                                aria-selected={skjema.felter.årsak.verdi === årsak}
+                                value={årsak}
+                            >
+                                {dokumentÅrsak[årsak]}
+                            </option>
+                        );
+                    })}
                 </Select>
 
                 {skalViseFritekstAvsnitt && (
