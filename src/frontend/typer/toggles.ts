@@ -10,7 +10,6 @@ export enum ToggleNavn {
     skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
     kanOppretteRevurderingMedAarsakIverksetteKaVedtak = 'familie-ks-sak.kan-opprette-revurdering-med-aarsak-iverksette-ka-vedtak',
     skalAlltidViseAlleVedtaksperioder = 'familie-ks-sak-frontend.alltid-vis-alle-vedtaksperioder',
-    innhenteOpplysningerKlageBrev = 'familie-ks-sak.innhente-opplysninger-klage-brev',
 }
 
 export const alleTogglerAv = (): IToggles => {
