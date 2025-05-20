@@ -32,7 +32,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
 
     return (
         <Header
-            tittel="NAV Kontantstøtte"
+            tittel="Nav Kontantstøtte"
             brukerinfo={{ navn: brukerNavn ?? 'Ukjent', enhet: brukerEnhet ?? 'Ukjent' }}
             brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
             eksterneLenker={genererEksterneLenker()}
