@@ -290,7 +290,7 @@ const TilbakekrevingSkjema: React.FC<{
                                                                     feilutbetalingen ble oppdaget,
                                                                     hvem som oppdaget den og når den
                                                                     ble oppdaget eller meldt til
-                                                                    NAV.
+                                                                    Nav.
                                                                 </BodyLong>
                                                                 <BodyLong
                                                                     size="small"
