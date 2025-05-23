@@ -6,7 +6,9 @@ Frontend app for kontantstøtte
 # Kom i gang med utvikling
 
 * Sikre at du kjører node og yarn med riktig versjon for repoet. Vi bruker nyeste LTS: `nvm install --lts`
-* Logg deg på naisdevice og gcloud og kjør [hent-og-lagre-miljøvariabler.sh](hent-og-lagre-milj%C3%B8variabler.sh) for å hente miljøvariabler
+* Logg deg på naisdevice og gcloud og kjør [hent-og-lagre-miljøvariabler.sh](hent-og-lagre-milj%C3%B8variabler.sh) for å hente miljøvariabler. 
+* Installer [NVM] (https://github.com/nvm-sh/nvm).
+* Kjør `nvm use`
 * Installere avhengigheter `yarn`
 * Starte dev-server `yarn start:dev`
 * Åpne `http://localhost:8000` i nettleseren din
