@@ -16,8 +16,8 @@ export const enhetsgrupper: Record<string, string> = {
     '4820': '4a9058c7-daae-452a-9fea-23beaa0778ff',
     '4833': 'fde8342e-d9e6-4879-be17-a8f17cb9abfb',
     '4842': '4c0aff0d-78f9-4a4d-94d3-a31a28d75142',
-    '4817': '4bfcd9dc-0290-4562-b352-6c56861a2dad',
-    '4812': '7342c168-80f4-4978-8a88-68cb43b85675',
+    '4817': '8672ac10-31f5-44df-b4a2-16d5443847bc',
+    '4812': '4bfcd9dc-0290-4562-b352-6c56861a2dad',
 };
 
 export interface IArbeidsfordelingsenhet {
