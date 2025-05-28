@@ -35,13 +35,14 @@ spec:
           - id: "4e7f23d9-5db1-45c0-acec-89c86a9ec678"  # '0000-GA-Kontantstotte-Beslutter' - Beslutter
           - id: "b8158d87-a284-4620-9bf9-f0aa3f62c8aa"  # '0000-GA-Kontantstotte-Superbruker' - Superbruker
           - id: "3d718ae5-f25e-47a4-b4b3-084a97604c1d"  # teamfamilie-forvaltning
-          - id: "833f1f77-b64b-4708-b479-389ca4009af5"  # MEDLEM: 2103 NAV Vikafossen
-          - id: "c2cf4114-1f5d-47f2-bb6e-c7a06fd26412"  # MEDLEM: 4806 NAV Familie- og pensjonsytelser Drammen
-          - id: "6c8c5d93-0e08-4bd8-960c-5c4c0ce5c609"  # MEDLEM: 4820 NAV Familie- og pensjonsytelser Vadsø
-          - id: "9cd89ac3-5587-46ba-b571-a625f2af481d"  # MEDLEM: 4833 NAV Familie- og pensjonsytelser Oslo 1
-          - id: "7af5f216-6a5e-4228-9c99-687658c5b957"  # MEDLEM: 4842 NAV Familie- og pensjonsytelser Stord
-          - id: "0feaea21-ada1-48c0-9300-3f6aec36b993"  # MEDLEM: 4817 NAV Familie- og pensjonsytelser Steinkjer
-          - id: "7342c168-80f4-4978-8a88-68cb43b85675"  # MEDLEM: 4812 NAV Familie- og pensjonsytelser Bergen
+          - id: "60102d01-2521-40b4-97b9-e2d738f642c1"  # 0000-GA-ENHET_2103 (VIKAFOSSEN)
+          - id: "0d746128-7cb0-431b-9420-885e7a75260f"  # 0000-GA-ENHET_4806 (DRAMMEN)
+          - id: "4a9058c7-daae-452a-9fea-23beaa0778ff"  # 0000-GA-ENHET_4820 (VADSØ)
+          - id: "fde8342e-d9e6-4879-be17-a8f17cb9abfb"  # 0000-GA-ENHET_4833 (OSLO)
+          - id: "4c0aff0d-78f9-4a4d-94d3-a31a28d75142"  # 0000-GA-ENHET_4842 (STORD)
+          - id: "8672ac10-31f5-44df-b4a2-16d5443847bc"  # 0000-GA-ENHET_4817 (STEINKJER)
+          - id: "4bfcd9dc-0290-4562-b352-6c56861a2dad"  # 0000-GA-ENHET_4812 (BERGEN)
+          - id: "946a9fb3-1d6c-4cda-9bfe-aaa8b857dd1b"  # 0000-GA-ENHET_4863 (MIDLERTIDIG_ENHET)
   resources:
     limits:
       cpu: 2000m
