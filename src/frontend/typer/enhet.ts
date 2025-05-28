@@ -11,13 +11,13 @@ export const behandendeEnheter: IArbeidsfordelingsenhet[] = [
 ];
 
 export const enhetsgrupper: Record<string, string> = {
-    '2103': '833f1f77-b64b-4708-b479-389ca4009af5',
-    '4806': 'c2cf4114-1f5d-47f2-bb6e-c7a06fd26412',
-    '4820': '6c8c5d93-0e08-4bd8-960c-5c4c0ce5c609',
-    '4833': '9cd89ac3-5587-46ba-b571-a625f2af481d',
-    '4842': '7af5f216-6a5e-4228-9c99-687658c5b957',
-    '4817': '0feaea21-ada1-48c0-9300-3f6aec36b993',
-    '4812': '7342c168-80f4-4978-8a88-68cb43b85675',
+    '2103': '60102d01-2521-40b4-97b9-e2d738f642c1',
+    '4806': '0d746128-7cb0-431b-9420-885e7a75260f',
+    '4820': '4a9058c7-daae-452a-9fea-23beaa0778ff',
+    '4833': 'fde8342e-d9e6-4879-be17-a8f17cb9abfb',
+    '4842': '4c0aff0d-78f9-4a4d-94d3-a31a28d75142',
+    '4817': '8672ac10-31f5-44df-b4a2-16d5443847bc',
+    '4812': '4bfcd9dc-0290-4562-b352-6c56861a2dad',
 };
 
 export interface IArbeidsfordelingsenhet {
