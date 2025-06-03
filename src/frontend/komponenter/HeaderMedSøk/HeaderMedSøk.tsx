@@ -20,12 +20,12 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
                 href: `${window.origin}/redirect/drek`,
                 isExternal: true,
             },
+            {
+                name: 'Barnehagelister',
+                href: `/barnehagelister`,
+                isExternal: false,
+            },
         ];
-        eksterneLenker.push({
-            name: 'Barnehagelister',
-            href: `/barnehagelister`,
-            isExternal: false,
-        });
 
         return eksterneLenker;
     };
