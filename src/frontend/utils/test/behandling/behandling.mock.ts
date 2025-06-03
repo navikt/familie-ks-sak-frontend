@@ -75,6 +75,7 @@ export const mockBehandling = ({
         vedtak: undefined,
         totrinnskontroll: {
             saksbehandler: 'Saksbehandler',
+            saksbehandlerId: 'VL',
             beslutter: 'Beslutter',
             godkjent: true,
             opprettetTidspunkt,
