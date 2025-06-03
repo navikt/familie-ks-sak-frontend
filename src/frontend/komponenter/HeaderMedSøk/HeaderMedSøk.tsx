@@ -25,6 +25,11 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
                 href: `/barnehagelister`,
                 isExternal: false,
             },
+            {
+                name: 'nEESSI',
+                href: `${window.origin}/redirect/neessi`,
+                isExternal: true,
+            },
         ];
 
         return eksterneLenker;
