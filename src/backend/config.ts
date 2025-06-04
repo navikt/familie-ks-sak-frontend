@@ -11,6 +11,7 @@ const Environment = () => {
             proxyUrl: 'http://localhost:8083/api',
             familieTilbakeUrl: 'http://localhost:8000',
             familieKlageUrl: 'http://localhost:8000',
+            neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
         };
     } else if (process.env.ENV === 'lokalt-mot-preprod') {
         return {
@@ -19,6 +20,7 @@ const Environment = () => {
             proxyUrl: 'https://familie-kontantstotte-sak.intern.dev.nav.no/api',
             familieTilbakeUrl: 'https://tilbakekreving.ansatt.dev.nav.no',
             familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
+            neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
         };
     } else if (process.env.ENV === 'e2e') {
         return {
@@ -27,6 +29,7 @@ const Environment = () => {
             proxyUrl: 'http://familie-ks-sak:8089/api',
             familieTilbakeUrl: 'http://tilbakekreving:8000',
             familieKlageUrl: '',
+            neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
         };
     } else if (process.env.ENV === 'preprod') {
         return {
@@ -35,6 +38,7 @@ const Environment = () => {
             proxyUrl: 'http://familie-ks-sak/api',
             familieTilbakeUrl: 'https://tilbakekreving.ansatt.dev.nav.no',
             familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
+            neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
         };
     }
 
@@ -44,6 +48,7 @@ const Environment = () => {
         proxyUrl: 'http://familie-ks-sak/api',
         familieTilbakeUrl: 'https://tilbakekreving.intern.nav.no',
         familieKlageUrl: 'https://familie-klage.intern.nav.no',
+        neessiUrl: 'https://neessi.intern.nav.no/',
     };
 };
 const env = Environment();
@@ -82,4 +87,5 @@ export const redirectRecords: Record<string, string> = {
     '/redirect/familie-tilbake': env.familieTilbakeUrl,
     '/redirect/familie-klage': env.familieKlageUrl,
     '/redirect/drek': process.env.DREK_URL,
+    '/redirect/neessi': env.neessiUrl,
 };
