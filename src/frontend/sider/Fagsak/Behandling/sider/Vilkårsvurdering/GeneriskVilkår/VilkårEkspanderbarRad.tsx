@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import React, { type JSX } from 'react';
 
 import styled from 'styled-components';
 
@@ -22,7 +22,7 @@ interface IProps {
     toggleForm: (visAlert: boolean) => void;
     lagretVilkårResultat: IVilkårResultat;
     erVilkårEkspandert: boolean;
-    children: ReactElement;
+    children: JSX.Element;
 }
 
 const BeskrivelseCelle = styled(BodyShort)`
