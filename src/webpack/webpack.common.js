@@ -43,6 +43,7 @@ const baseConfig = {
         new ESLintPlugin({
             extensions: [`ts`, `tsx`],
             configType: 'flat',
+            failOnError: process.env.NODE_ENV === 'production',
         }),
     ],
     devtool: 'inline-source-map',
