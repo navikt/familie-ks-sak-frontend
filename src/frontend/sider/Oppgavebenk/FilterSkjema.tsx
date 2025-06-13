@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import React, { type JSX } from 'react';
 
 import styled from 'styled-components';
 
@@ -28,7 +28,7 @@ const FilterSkjema: React.FunctionComponent = () => {
         validerSkjema,
     } = useOppgavebenkContext();
 
-    function tilOppgaveFeltKomponent(oppgaveFelt: IOppgaveFelt): ReactElement | null {
+    function tilOppgaveFeltKomponent(oppgaveFelt: IOppgaveFelt): JSX.Element | null {
         switch (oppgaveFelt.filter?.type) {
             case 'dato':
                 return (
