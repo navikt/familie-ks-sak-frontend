@@ -12,27 +12,27 @@ interface Props {
 export const AInntekt = ({ minimalFagsak }: Props) => {
     const { data, isPending, error } = useHentAInntektUrl(minimalFagsak.søkerFødselsnummer);
 
+    if (isPending) {
+        return (
+            <Dropdown.Menu.List.Item disabled>
+                Henter A-Inntekt <Loader size="xsmall" />
+            </Dropdown.Menu.List.Item>
+        );
+    }
+
+    if (error) {
+        return (
+            <Dropdown.Menu.List.Item disabled>
+                <Alert variant="error" inline>
+                    A-Inntekt er ikke tilgjengelig
+                </Alert>
+            </Dropdown.Menu.List.Item>
+        );
+    }
+
     return (
-        <>
-            {data && (
-                <Dropdown.Menu.List.Item onClick={() => window.open(data, '_blank')}>
-                    A-Inntekt
-                </Dropdown.Menu.List.Item>
-            )}
-
-            {isPending && (
-                <Dropdown.Menu.List.Item disabled>
-                    Henter A-Inntekt <Loader size="xsmall" />
-                </Dropdown.Menu.List.Item>
-            )}
-
-            {error !== null && (
-                <Dropdown.Menu.List.Item disabled>
-                    <Alert variant="error" inline>
-                        A-Inntekt er ikke tilgjengelig
-                    </Alert>
-                </Dropdown.Menu.List.Item>
-            )}
-        </>
+        <Dropdown.Menu.List.Item onClick={() => window.open(data, '_blank')}>
+            A-Inntekt
+        </Dropdown.Menu.List.Item>
     );
 };
