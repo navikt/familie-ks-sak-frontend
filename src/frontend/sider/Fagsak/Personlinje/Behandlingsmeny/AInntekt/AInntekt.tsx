@@ -9,7 +9,7 @@ interface Props {
     minimalFagsak: IMinimalFagsak;
 }
 
-export const AInntekt: React.FC<IProps> = ({ minimalFagsak }) => {
+export const AInntekt = ({ minimalFagsak }: Props) => {
     const { data, isPending, error } = useHentAInntektUrl(minimalFagsak.søkerFødselsnummer);
 
     return (
