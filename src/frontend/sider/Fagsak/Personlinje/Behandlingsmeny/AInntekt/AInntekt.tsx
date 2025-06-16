@@ -5,7 +5,7 @@ import { Alert, Dropdown, Loader } from '@navikt/ds-react';
 import { useHentAInntektUrl } from '../../../../../hooks/useHentAInntektUrl';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 
-interface IProps {
+interface Props {
     minimalFagsak: IMinimalFagsak;
 }
 
