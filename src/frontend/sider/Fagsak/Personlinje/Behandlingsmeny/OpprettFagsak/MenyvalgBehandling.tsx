@@ -8,6 +8,7 @@ import {
 } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { AInntekt } from '../AInntekt/AInntekt';
 import EndreBehandlendeEnhet from '../EndreBehandlendeEnhet/EndreBehandlendeEnhet';
 import EndreBehandlingstema from '../EndreBehandling/EndreBehandlingstema';
 import HenleggBehandling from '../HenleggBehandling/HenleggBehandling';
@@ -52,6 +53,8 @@ const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
                         erLesevisning={erLesevisning}
                     />
                 )}
+
+            <AInntekt minimalFagsak={minimalFagsak} />
         </>
     );
 };
