@@ -15,7 +15,7 @@ export const AInntekt = ({ minimalFagsak }: Props) => {
     if (isPending) {
         return (
             <Dropdown.Menu.List.Item disabled>
-                Henter A-Inntekt <Loader size="small" />
+                A-Inntekt <Loader size="small" />
             </Dropdown.Menu.List.Item>
         );
     }
