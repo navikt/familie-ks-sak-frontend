@@ -2,14 +2,25 @@ import * as React from 'react';
 
 import '@navikt/ds-css';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import type { ISaksbehandler } from '@navikt/familie-typer';
 
 import { hentInnloggetBruker } from './api/saksbehandler';
 import Container from './Container';
 import { AppProvider } from './context/AppContext';
 import { AuthOgHttpProvider } from './context/AuthContext';
+import { ModalProvider } from './context/ModalContext';
 import ErrorBoundary from './komponenter/ErrorBoundary/ErrorBoundary';
 import { initGrafanaFaro } from './utils/grafanaFaro';
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false, // Fungerer ikke så bra med global "Systemet laster" spinner, på sikt kan vi kanskje enable retries
+        },
+    },
+});
 
 const App: React.FC = () => {
     const [autentisertSaksbehandler, settInnloggetSaksbehandler] = React.useState<
@@ -26,9 +37,13 @@ const App: React.FC = () => {
     return (
         <ErrorBoundary autentisertSaksbehandler={autentisertSaksbehandler}>
             <AuthOgHttpProvider autentisertSaksbehandler={autentisertSaksbehandler}>
-                <AppProvider>
-                    <Container />
-                </AppProvider>
+                <QueryClientProvider client={queryClient}>
+                    <AppProvider>
+                        <ModalProvider>
+                            <Container />
+                        </ModalProvider>
+                    </AppProvider>
+                </QueryClientProvider>
             </AuthOgHttpProvider>
         </ErrorBoundary>
     );
