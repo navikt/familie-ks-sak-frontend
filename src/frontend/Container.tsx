@@ -7,6 +7,7 @@ import { useAppContext } from './context/AppContext';
 import { FagsakProvider } from './context/fagsak/FagsakContext';
 import { HeaderMedSøk } from './komponenter/HeaderMedSøk/HeaderMedSøk';
 import AppInfoModal from './komponenter/Modal/AppInfoModal';
+import { FeilmeldingModal } from './komponenter/Modal/FeilmeldingModal';
 import UgyldigSesjon from './komponenter/Modal/SesjonUtløpt';
 import SystemetLaster from './komponenter/SystemetLaster/SystemetLaster';
 import { TidslinjeProvider } from './komponenter/Tidslinje/TidslinjeContext';
@@ -46,6 +47,7 @@ const Container: React.FC = () => {
                         <Toasts />
 
                         <Main $systemetLaster={systemetLaster()}>
+                            <FeilmeldingModal />
                             <HeaderMedSøk
                                 brukerNavn={innloggetSaksbehandler?.displayName}
                                 brukerEnhet={innloggetSaksbehandler?.enhet}
