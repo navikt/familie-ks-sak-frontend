@@ -7,6 +7,9 @@ on:
 env:
   VERSION: familie-ks-sak-frontend:${{ github.sha }}
 
+permissions:
+  contents: read
+
 jobs:
   eslint:
     name: 🛠️ ESLint
@@ -18,7 +21,7 @@ jobs:
       - name: 🔧💻 Setup node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ratchet:actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
           cache: yarn
           registry-url: "https://npm.pkg.github.com"
 
@@ -39,7 +42,7 @@ jobs:
       - name: 🔧💻 Setup node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ratchet:actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
           cache: yarn
           registry-url: "https://npm.pkg.github.com"
 
@@ -58,7 +61,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ratchet:actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
           cache: yarn
           registry-url: "https://npm.pkg.github.com"
       - name: Yarn install
