@@ -1,6 +1,6 @@
 import { differenceInMilliseconds, isBefore } from 'date-fns';
 
-import { dagensDato, isoStringTilDate } from './dato';
+import { hentDagensDato, isoStringTilDate } from './dato';
 import type { IGrunnlagPerson, IPersonInfo } from '../typer/person';
 import { PersonType } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/søknad';
@@ -11,7 +11,7 @@ const millisekunderIEttÅr = 3.15576e10;
 export const hentAlder = (fødselsdato: string): number => {
     return fødselsdato !== ''
         ? Math.floor(
-              differenceInMilliseconds(dagensDato, isoStringTilDate(fødselsdato)) /
+              differenceInMilliseconds(hentDagensDato(), isoStringTilDate(fødselsdato)) /
                   millisekunderIEttÅr
           )
         : 0;

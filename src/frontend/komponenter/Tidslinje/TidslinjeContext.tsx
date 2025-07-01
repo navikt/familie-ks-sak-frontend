@@ -10,7 +10,7 @@ import {
     type IYtelsePeriode,
 } from '../../typer/beregning';
 import type { IGrunnlagPerson } from '../../typer/person';
-import { dagensDato, isoStringTilDate } from '../../utils/dato';
+import { hentDagensDato, isoStringTilDate } from '../../utils/dato';
 import { sorterPersonTypeOgFødselsdato } from '../../utils/formatter';
 
 interface ITidslinjeVindu {
@@ -79,8 +79,8 @@ export const TidslinjeProvider = (props: PropsWithChildren) => {
 
     const [aktivtTidslinjeVindu, settAktivtTidslinjeVindu] = useState({
         vindu: tidslinjeVinduer[TidslinjeVindu.ETT_ÅR],
-        startDato: endOfMonth(subMonths(dagensDato, 11)),
-        sluttDato: endOfMonth(addMonths(dagensDato, 1)),
+        startDato: endOfMonth(subMonths(hentDagensDato(), 11)),
+        sluttDato: endOfMonth(addMonths(hentDagensDato(), 1)),
     });
 
     const genererFormatertÅrstall = () => {

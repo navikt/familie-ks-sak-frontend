@@ -12,7 +12,7 @@ import {
     Vedtaksperiodetype,
 } from '../../../../../../typer/vedtaksperiode';
 import {
-    dagensDato,
+    hentDagensDato,
     isoStringTilDateMedFallback,
     tidenesEnde,
     isoDatoPeriodeTilFormatertString,
@@ -50,7 +50,7 @@ const erSammeFom = (dato1?: IsoDatoString, dato2?: IsoDatoString): boolean =>
 const slutterSenereEnnInneværendeMåned = (tom?: string) =>
     isAfter(
         isoStringTilDateMedFallback({ isoString: tom, fallbackDate: tidenesEnde }),
-        endOfMonth(dagensDato)
+        endOfMonth(hentDagensDato())
     );
 
 const finnPresentertTomDato = (

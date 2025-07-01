@@ -1,7 +1,7 @@
 import { addDays, setDefaultOptions, subDays, subYears } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
-import { dagensDato, dateTilIsoDatoString } from '../dato';
+import { hentDagensDato, dateTilIsoDatoString } from '../dato';
 import { formaterIdent, formaterIdenter, hentAlder, kunSiffer } from '../formatter';
 
 describe('utils/formatter', () => {
@@ -58,12 +58,12 @@ describe('utils/formatter', () => {
     });
 
     test('Skal hente riktig alder fra fødselsdato', () => {
-        const toÅrSiden = subYears(dagensDato, 2);
+        const toÅrSiden = subYears(hentDagensDato(), 2);
         expect(hentAlder(dateTilIsoDatoString(subDays(toÅrSiden, 1)))).toBe(2);
     });
 
     test('Skal hente riktig alder før og etter fødselsdato', () => {
-        const toÅrSiden = subYears(dagensDato, 2);
+        const toÅrSiden = subYears(hentDagensDato(), 2);
         expect(hentAlder(dateTilIsoDatoString(subDays(toÅrSiden, 1)))).toBe(2);
         expect(hentAlder(dateTilIsoDatoString(addDays(toÅrSiden, 1)))).toBe(1);
     });

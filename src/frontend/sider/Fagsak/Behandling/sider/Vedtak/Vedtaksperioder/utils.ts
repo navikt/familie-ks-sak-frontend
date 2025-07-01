@@ -24,7 +24,7 @@ import {
 } from '../../../../../../typer/vedtaksperiode';
 import type { AlleBegrunnelser } from '../../../../../../typer/vilkår';
 import {
-    dagensDato,
+    hentDagensDato,
     isoStringTilDate,
     isoStringTilDateMedFallback,
     tidenesMorgen,
@@ -188,7 +188,7 @@ const erPeriodeMindreEllerLikEnnSisteVedtaksperiodeVisningDato = (
 
 const erPeriode2MndFramITidEllerMindre = (periodeFom: string | undefined) => {
     const fom = isoStringTilDateMedFallback({ isoString: periodeFom, fallbackDate: tidenesMorgen });
-    const toMånederFremITid = addMonths(startOfMonth(dagensDato), 2);
+    const toMånederFremITid = addMonths(startOfMonth(hentDagensDato()), 2);
 
     return isBefore(fom, toMånederFremITid) || isSameMonth(fom, toMånederFremITid);
 };

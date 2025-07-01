@@ -6,7 +6,7 @@ import { YtelseType } from '../../typer/beregning';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
 import { Vedtaksperiodetype } from '../../typer/vedtaksperiode';
-import { dagensDato, dateTilIsoDatoString } from '../../utils/dato';
+import { hentDagensDato, dateTilIsoDatoString } from '../../utils/dato';
 import { hentBarnMedLøpendeUtbetaling } from '../../utils/fagsak';
 import { mockMinimalFagsak } from '../../utils/test/minimalFagsak/minimalFagsak.mock';
 
@@ -45,7 +45,7 @@ describe('SøknadContext', () => {
                 },
                 {
                     periodeFom: '2021-01-01',
-                    periodeTom: dateTilIsoDatoString(addYears(dagensDato, 1)),
+                    periodeTom: dateTilIsoDatoString(addYears(hentDagensDato(), 1)),
                     vedtaksperiodetype: Vedtaksperiodetype.UTBETALING,
                     utbetalingsperiodeDetaljer: [
                         {

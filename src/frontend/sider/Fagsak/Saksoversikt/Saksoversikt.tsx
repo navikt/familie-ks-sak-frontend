@@ -18,7 +18,7 @@ import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
 import { Vedtaksperiodetype } from '../../../typer/vedtaksperiode';
 import {
-    dagensDato,
+    hentDagensDato,
     dateTilFormatertString,
     Datoformat,
     isoStringTilDate,
@@ -77,7 +77,7 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
         periodeOverlapperMedValgtDato(periode.periodeFom, periode.periodeTom, new Date())
     );
 
-    const nesteMåned = startOfMonth(addMonths(dagensDato, 1));
+    const nesteMåned = startOfMonth(addMonths(hentDagensDato(), 1));
     const utbetalingsperiodeNesteMåned = gjeldendeUtbetalingsperioder.find(periode =>
         periodeOverlapperMedValgtDato(periode.periodeFom, periode.periodeTom, nesteMåned)
     );

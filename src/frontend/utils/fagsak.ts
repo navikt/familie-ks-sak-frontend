@@ -1,6 +1,6 @@
 import { isAfter } from 'date-fns';
 
-import { dagensDato, isoStringTilDateMedFallback, tidenesEnde } from './dato';
+import { hentDagensDato, isoStringTilDateMedFallback, tidenesEnde } from './dato';
 import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
 import type { IMinimalFagsak } from '../typer/fagsak';
 import { fagsakStatus } from '../typer/fagsak';
@@ -26,7 +26,7 @@ export const hentBarnMedLøpendeUtbetaling = (minimalFagsak: IMinimalFagsak): Se
                     isoString: utbetalingsperiode.periodeTom,
                     fallbackDate: tidenesEnde,
                 }),
-                dagensDato
+                hentDagensDato()
             )
         )
         .reduce((acc, utbetalingsperiode) => {
