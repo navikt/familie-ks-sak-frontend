@@ -7,7 +7,7 @@ import { DatePicker, useDatepicker } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { senesteRelevanteDato, tidligsteRelevanteDato } from './utils';
-import { dagensDato, Datoformat } from '../../utils/dato';
+import { hentDagensDato, Datoformat } from '../../utils/dato';
 
 interface IProps {
     felt: Felt<Date | undefined>;
@@ -45,13 +45,13 @@ const Datovelger = ({
 
     const hentToDate = () => {
         if (maksDatoAvgrensning) return maksDatoAvgrensning;
-        if (kanKunVelgeFortid) return dagensDato;
+        if (kanKunVelgeFortid) return hentDagensDato();
         return senesteRelevanteDato;
     };
 
     const hentFromDate = () => {
         if (minDatoAvgrensning) return minDatoAvgrensning;
-        if (kanKunVelgeFremtid) return dagensDato;
+        if (kanKunVelgeFremtid) return hentDagensDato();
         return tidligsteRelevanteDato;
     };
 

@@ -15,7 +15,7 @@ import { feil, ok } from '@navikt/familie-skjema';
 export type IsoDatoString = string; // Format YYYY-MM-DD (ISO)
 export type IsoMånedString = string; // Format YYYY-MM (ISO)
 
-export const dagensDato = startOfToday();
+export const hentDagensDato = () => startOfToday();
 
 export const tidenesMorgen = new Date(1000, 1, 1);
 
@@ -47,6 +47,7 @@ interface DateTilFormatertStringProps {
     tilFormat: Datoformat;
     defaultString?: string;
 }
+
 export const dateTilFormatertString = ({
     date,
     tilFormat,

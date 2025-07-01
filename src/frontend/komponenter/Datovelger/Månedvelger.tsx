@@ -7,7 +7,7 @@ import { MonthPicker, useMonthpicker } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { senesteRelevanteDato, tidligsteRelevanteDato } from './utils';
-import { dagensDato, dateTilFormatertString, Datoformat } from '../../utils/dato';
+import { hentDagensDato, dateTilFormatertString, Datoformat } from '../../utils/dato';
 
 interface IProps {
     felt: Felt<Date | undefined>;
@@ -48,12 +48,12 @@ const Månedvelger = ({
 
     const hentFromDate = () => {
         if (tilhørendeFomFelt?.verdi !== undefined) return tilhørendeFomFelt.verdi;
-        if (kanKunVelgeFremtid) return dagensDato;
+        if (kanKunVelgeFremtid) return hentDagensDato();
         return tidligsteRelevanteDato;
     };
 
     const hentToDate = () => {
-        if (kanKunVelgeFortid) return dagensDato;
+        if (kanKunVelgeFortid) return hentDagensDato();
         return senesteRelevanteDato;
     };
 
@@ -109,7 +109,7 @@ const Månedvelger = ({
     const feilmeldingForDatoFørMinDato = () => {
         const tidligsteFraDato = hentFromDate();
 
-        if (isSameDay(tidligsteFraDato, dagensDato)) {
+        if (isSameDay(tidligsteFraDato, hentDagensDato())) {
             return 'Du kan ikke sette en måned som er tilbake i tid';
         }
         if (tilhørendeFomFelt?.verdi && isSameDay(tidligsteFraDato, tilhørendeFomFelt?.verdi)) {

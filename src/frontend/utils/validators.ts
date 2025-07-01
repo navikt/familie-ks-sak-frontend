@@ -4,7 +4,7 @@ import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 import { idnr } from '@navikt/fnrvalidator';
 
-import { dagensDato, type IIsoDatoPeriode, isoStringTilDate } from './dato';
+import { hentDagensDato, type IIsoDatoPeriode, isoStringTilDate } from './dato';
 import { validerPeriodePåBarnetsAlder } from '../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/Vilkår/BarnetsAlder/BarnetsAlderValidering';
 import { erBegrunnelsePåkrevd } from '../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
 import type { IGrunnlagPerson } from '../typer/person';
@@ -39,12 +39,12 @@ const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Da
     return isBefore(fom, fødselsdato) || (tom ? isBefore(tom, fødselsdato) : false);
 };
 
-const erNesteMånedEllerSenere = (dato: Date) => isAfter(dato, endOfMonth(dagensDato));
+const erNesteMånedEllerSenere = (dato: Date) => isAfter(dato, endOfMonth(hentDagensDato()));
 
 const erUendelig = (date: Date | undefined): date is undefined => date === undefined;
 
 const valgtDatoErSenereEnnNesteMåned = (valgtDato: Date) =>
-    isAfter(valgtDato, endOfMonth(addMonths(dagensDato, 1)));
+    isAfter(valgtDato, endOfMonth(addMonths(hentDagensDato(), 1)));
 
 export const erPeriodeGyldig = (
     felt: FeltState<IIsoDatoPeriode>,
@@ -106,11 +106,27 @@ export const erPeriodeGyldig = (
         const fomDatoErLikDødsfallDato =
             !!person?.dødsfallDato && isSameDay(fom, isoStringTilDate(person.dødsfallDato));
 
-        if (erNesteMånedEllerSenere(fom)) {
-            return feil(
-                felt,
-                'Du kan ikke legge inn fra og med dato som er neste måned eller senere'
-            );
+        switch (vilkår) {
+            case VilkårType.BARNEHAGEPLASS:
+                if (valgtDatoErSenereEnnNesteMåned(fom)) {
+                    return feil(
+                        felt,
+                        'Du kan ikke legge inn fra og med dato som er senere enn neste måned'
+                    );
+                }
+                break;
+            case VilkårType.BARNETS_ALDER:
+            case VilkårType.BOR_MED_SØKER:
+            case VilkårType.BOSATT_I_RIKET:
+            case VilkårType.LOVLIG_OPPHOLD:
+            case VilkårType.MEDLEMSKAP:
+            case VilkårType.MEDLEMSKAP_ANNEN_FORELDER:
+                if (erNesteMånedEllerSenere(fom)) {
+                    return feil(
+                        felt,
+                        'Du kan ikke legge inn fra og med dato som er neste måned eller senere'
+                    );
+                }
         }
 
         if (!erUendelig(tom)) {

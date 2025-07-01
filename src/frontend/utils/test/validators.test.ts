@@ -9,9 +9,14 @@ import type { IGrunnlagPerson } from '../../typer/person';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
 import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../typer/vilkår';
-import type { IIsoDatoPeriode } from '../dato';
+import { hentDagensDato, type IIsoDatoPeriode } from '../dato';
 import { nyIsoDatoPeriode } from '../dato';
 import { erPeriodeGyldig, erResultatGyldig, identValidator } from '../validators';
+
+jest.mock('../dato/dato', () => ({
+    ...jest.requireActual('../dato/dato'),
+    hentDagensDato: jest.fn(),
+}));
 
 describe('utils/validators', () => {
     const nyFeltState = <T>(verdi: T): FeltState<T> => ({
@@ -195,6 +200,32 @@ describe('utils/validators', () => {
             erEksplisittAvslagPåSøknad: false,
         });
         expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
+    });
+
+    test('Fom som settes til senere enn inneværende måned på barnehageplass vilkår skal gi OK', () => {
+        (hentDagensDato as jest.Mock).mockReturnValue(new Date('2025-07-07'));
+
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2025-08-07', '2025-08-08')
+        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNEHAGEPLASS, {
+            person: lagGrunnlagPerson(),
+            erEksplisittAvslagPåSøknad: false,
+        });
+        expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
+    });
+
+    test('Fom som settes til senere enn inneværende måned på andre vilkår enn barnehageplass skal gi FEIL', () => {
+        (hentDagensDato as jest.Mock).mockReturnValue(new Date('2025-07-07'));
+
+        const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
+            nyIsoDatoPeriode('2025-08-07', '2025-08-08')
+        );
+        const valideringsresultat = erPeriodeGyldig(periode, VilkårType.MEDLEMSKAP_ANNEN_FORELDER, {
+            person: lagGrunnlagPerson(),
+            erEksplisittAvslagPåSøknad: false,
+        });
+        expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.FEIL);
     });
 
     test('Periode med innenfor 1-2 år gir ok på BarnetsAlder-vilkåret dersom vilkår er før lovendring 2024', () => {

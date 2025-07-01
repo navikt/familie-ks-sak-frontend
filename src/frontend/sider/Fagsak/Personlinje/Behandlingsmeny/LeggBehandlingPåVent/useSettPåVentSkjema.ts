@@ -10,12 +10,12 @@ import type {
     IBehandlingPåVent,
     SettPåVentÅrsak,
 } from '../../../../../typer/behandling';
-import { dagensDato, validerGyldigDato } from '../../../../../utils/dato';
+import { hentDagensDato, validerGyldigDato } from '../../../../../utils/dato';
 
 const STANDARD_ANTALL_DAGER_FRIST = 3 * 7;
 
 export const useSettPåVentSkjema = (behandlingPåVent: IBehandlingPåVent | undefined) => {
-    const standardfrist = addDays(dagensDato, STANDARD_ANTALL_DAGER_FRIST);
+    const standardfrist = addDays(hentDagensDato(), STANDARD_ANTALL_DAGER_FRIST);
     const settPåVentFrist = behandlingPåVent?.frist ? new Date(behandlingPåVent?.frist) : undefined;
 
     const årsaker = hentAlleÅrsaker();

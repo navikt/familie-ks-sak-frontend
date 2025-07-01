@@ -4,16 +4,16 @@ import { feil, ok } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 
 import type { IIsoMånedPeriode, IsoMånedString } from './dato';
-import { dagensDato, isoStringTilDate } from './dato';
+import { hentDagensDato, isoStringTilDate } from './dato';
 import type { OptionType } from '../typer/common';
 
 const isEmpty = (text?: string | number | boolean | Date | null) =>
     text === null || text === undefined || text.toString().trim().length === 0;
 
 const valgtDatoErNesteMånedEllerSenere = (valgtDato: IsoMånedString) =>
-    isAfter(isoStringTilDate(valgtDato), endOfMonth(dagensDato));
+    isAfter(isoStringTilDate(valgtDato), endOfMonth(hentDagensDato()));
 const valgtDatoErSenereEnnNesteMåned = (valgtDato: IsoMånedString) =>
-    isAfter(isoStringTilDate(valgtDato), endOfMonth(addMonths(dagensDato, 1)));
+    isAfter(isoStringTilDate(valgtDato), endOfMonth(addMonths(hentDagensDato(), 1)));
 
 const erEøsPeriodeGyldig = (
     behandlingsÅrsakErOvergangsordning: boolean,

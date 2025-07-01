@@ -13,7 +13,7 @@ import useOpprettBehandling from './useOpprettBehandling';
 import { BehandlingstemaSelect } from '../../../../../komponenter/BehandlingstemaSelect';
 import Datovelger from '../../../../../komponenter/Datovelger/Datovelger';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
-import { dagensDato } from '../../../../../utils/dato';
+import { hentDagensDato } from '../../../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 
 const StyledFieldset = styled(Fieldset)`
@@ -51,7 +51,10 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
 
     const søknadMottattDatoErMerEnn360DagerSiden =
         opprettBehandlingSkjema.felter.søknadMottattDato.verdi &&
-        isBefore(opprettBehandlingSkjema.felter.søknadMottattDato.verdi, subDays(dagensDato, 360));
+        isBefore(
+            opprettBehandlingSkjema.felter.søknadMottattDato.verdi,
+            subDays(hentDagensDato(), 360)
+        );
 
     return (
         <>

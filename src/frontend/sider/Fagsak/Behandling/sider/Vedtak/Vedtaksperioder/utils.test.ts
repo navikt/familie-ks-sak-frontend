@@ -6,7 +6,7 @@ import {
     Vedtaksperiodetype,
     type IVedtaksperiodeMedBegrunnelser,
 } from '../../../../../../typer/vedtaksperiode';
-import { dagensDato, dateTilIsoDatoString } from '../../../../../../utils/dato';
+import { hentDagensDato, dateTilIsoDatoString } from '../../../../../../utils/dato';
 import {
     mockAvslagsperiode,
     mockOpphørsperiode,
@@ -58,8 +58,8 @@ describe('Vedtak utils', () => {
 
         describe('Test filtrering av perioder frem i tid', () => {
             test(`Test at perioder med fom-dato før eller lik 2 mnd frem i tid returneres`, () => {
-                const toMndFremITidFom = addMonths(startOfMonth(dagensDato), 2);
-                const toMndFremITidTom = addMonths(endOfMonth(dagensDato), 2);
+                const toMndFremITidFom = addMonths(startOfMonth(hentDagensDato()), 2);
+                const toMndFremITidTom = addMonths(endOfMonth(hentDagensDato()), 2);
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                     [
                         mockUtbetalingsperiode({
@@ -75,8 +75,8 @@ describe('Vedtak utils', () => {
                 expect(perioder.length).toBe(1);
             });
             test(`Test at perioder med fom-dato etter 2 mnd frem i tid ikke returneres`, () => {
-                const treMndFremITidFom = addMonths(startOfMonth(dagensDato), 3);
-                const treMndFremITidTom = addMonths(endOfMonth(dagensDato), 3);
+                const treMndFremITidFom = addMonths(startOfMonth(hentDagensDato()), 3);
+                const treMndFremITidTom = addMonths(endOfMonth(hentDagensDato()), 3);
 
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                     [
