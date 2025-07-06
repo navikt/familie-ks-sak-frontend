@@ -214,6 +214,7 @@ export const annenVurderingConfig: Record<AnnenVurderingType, IAnnenVurderingCon
 
 export enum UtdypendeVilkårsvurderingGenerell {
     VURDERING_ANNET_GRUNNLAG = 'VURDERING_ANNET_GRUNNLAG',
+    BOSATT_PÅ_SVALBARD = 'BOSATT_PÅ_SVALBARD',
     ADOPSJON = 'ADOPSJON',
     SOMMERFERIE = 'SOMMERFERIE',
 }
