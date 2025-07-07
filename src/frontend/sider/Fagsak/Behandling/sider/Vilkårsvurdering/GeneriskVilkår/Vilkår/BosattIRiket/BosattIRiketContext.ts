@@ -3,26 +3,28 @@ import { useState } from 'react';
 import { useFelt } from '@navikt/familie-skjema';
 
 import { erUtdypendeVilkårsvurderingerGyldig } from './BosattIRiketValidering';
-import { PersonType } from '../../../../../../../../typer/person';
+import { useAppContext } from '../../../../../../../../context/AppContext';
 import type { IGrunnlagPerson } from '../../../../../../../../typer/person';
+import { PersonType } from '../../../../../../../../typer/person';
+import { ToggleNavn } from '../../../../../../../../typer/toggles';
 import type { Begrunnelse } from '../../../../../../../../typer/vedtak';
-import type { UtdypendeVilkårsvurdering } from '../../../../../../../../typer/vilkår';
-import type { IVilkårResultat } from '../../../../../../../../typer/vilkår';
-import type { Resultat } from '../../../../../../../../typer/vilkår';
-import { Regelverk as RegelverkType, VilkårType } from '../../../../../../../../typer/vilkår';
+import type { IVilkårResultat, Resultat } from '../../../../../../../../typer/vilkår';
 import {
-    UtdypendeVilkårsvurderingGenerell,
-    UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
+    Regelverk as RegelverkType,
+    type UtdypendeVilkårsvurdering,
     UtdypendeVilkårsvurderingEøsBarnBosattIRiket,
+    UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
+    UtdypendeVilkårsvurderingGenerell,
+    VilkårType,
 } from '../../../../../../../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../../../../../../../utils/dato';
 import {
     erAvslagBegrunnelserGyldig,
+    erBegrunnelseGyldig,
     erPeriodeGyldig,
     erResultatGyldig,
-    erBegrunnelseGyldig,
 } from '../../../../../../../../utils/validators';
-import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { type IVilkårSkjemaContext, useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 export const useBosattIRiket = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
@@ -90,10 +92,17 @@ export const useBosattIRiket = (lagretVilkår: IVilkårResultat, person: IGrunnl
         }),
     };
 
+    const { toggles } = useAppContext();
+    const bosattPåSvalbardToggleErPå = toggles[ToggleNavn.bosattSvalbard];
+
     const initielleMuligeUtdypendeVilkårsvurderinger =
         bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
             vilkårSkjemaMedLagredeVerdier.vurderesEtter,
             person
+        ).filter(
+            utdypendeVilkårsvurdering =>
+                bosattPåSvalbardToggleErPå ||
+                utdypendeVilkårsvurdering !== UtdypendeVilkårsvurderingGenerell.BOSATT_PÅ_SVALBARD
         );
 
     const [muligeUtdypendeVilkårsvurderinger, settMuligeUtdypendeVilkårsvurderinger] = useState<
@@ -150,5 +159,8 @@ export const bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår = (
             ];
         }
     }
-    return [UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG];
+    return [
+        UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
+        UtdypendeVilkårsvurderingGenerell.BOSATT_PÅ_SVALBARD,
+    ];
 };
