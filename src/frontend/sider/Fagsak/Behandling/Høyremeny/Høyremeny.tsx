@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
+import { ASurfaceDefault } from '@navikt/ds-tokens/dist/tokens';
 import { hentDataFraRessursMedFallback, RessursStatus } from '@navikt/familie-typer';
 
 import Behandlingskort from './Behandlingskort';
@@ -28,6 +29,7 @@ const ToggleVisningHøyremeny = styled(Button)<{ $åpenhøyremeny: boolean }>`
     padding: 0;
     border-radius: 50%;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    background-color: ${ASurfaceDefault};
 `;
 
 const HøyremenyContainer = styled.div`
@@ -63,13 +65,14 @@ const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
                     aria-label="Skjul høyremeny"
                     $åpenhøyremeny={åpenHøyremeny ? 1 : 0}
                     title={åpenHøyremeny ? 'Skjul høyremeny' : 'Vis høyremeny'}
-                >
-                    {åpenHøyremeny ? (
-                        <ChevronRightIcon aria-label="Skjul høyremeny" />
-                    ) : (
-                        <ChevronLeftIcon aria-label="Vis høyremeny" />
-                    )}
-                </ToggleVisningHøyremeny>
+                    icon={
+                        åpenHøyremeny ? (
+                            <ChevronRightIcon aria-label="Skjul høyremeny" />
+                        ) : (
+                            <ChevronLeftIcon aria-label="Vis høyremeny" />
+                        )
+                    }
+                />
                 {åpenHøyremeny && (
                     <>
                         <Behandlingskort åpenBehandling={åpenBehandling.data} />
