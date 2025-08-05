@@ -7,8 +7,9 @@ import Visittkort from '@navikt/familie-visittkort';
 import Behandlingsmeny from './Behandlingsmeny/Behandlingsmeny';
 import { useAppContext } from '../../../context/AppContext';
 import DødsfallTag from '../../../komponenter/DødsfallTag';
+import { PersonIkon } from '../../../komponenter/PersonIkon';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
-import type { IPersonInfo } from '../../../typer/person';
+import { Adressebeskyttelsegradering, type IPersonInfo } from '../../../typer/person';
 import { formaterIdent, hentAlder } from '../../../utils/formatter';
 
 interface IProps {
@@ -26,6 +27,18 @@ const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
             kjønn={bruker?.kjønn ?? kjønnType.UKJENT}
             dempetKantlinje
             padding
+            ikon={
+                <PersonIkon
+                    kjønn={bruker?.kjønn ?? kjønnType.UKJENT}
+                    erBarn={hentAlder(bruker?.fødselsdato ?? '') < 18}
+                    erAdresseBeskyttet={
+                        bruker?.adressebeskyttelseGradering !== undefined &&
+                        bruker?.adressebeskyttelseGradering !== null &&
+                        bruker?.adressebeskyttelseGradering !== Adressebeskyttelsegradering.UGRADERT
+                    }
+                    harTilgang={bruker?.harTilgang}
+                />
+            }
         >
             <div>|</div>
             <BodyShort>{`Kommunenr: ${bruker?.kommunenummer ?? 'ukjent'}`}</BodyShort>
