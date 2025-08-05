@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import type { ISøkeresultat } from '@navikt/familie-header';
-import { ikoner, Søk } from '@navikt/familie-header';
+import { Søk } from '@navikt/familie-header';
 import { useHttp } from '@navikt/familie-http';
-import type { Ressurs } from '@navikt/familie-typer';
+import { kjønnType, type Ressurs } from '@navikt/familie-typer';
 import {
     byggFeiletRessurs,
     byggFunksjonellFeilRessurs,
@@ -17,9 +17,30 @@ import { idnr } from '@navikt/fnrvalidator';
 
 import OpprettFagsakModal from './OpprettFagsakModal';
 import { useAppContext } from '../../context/AppContext';
-import IkkeTilgang from '../../ikoner/IkkeTilgang';
-import type { IFagsakDeltager, ISøkParam } from '../../typer/fagsakdeltager';
+import {
+    FagsakDeltagerRolle,
+    type IFagsakDeltager,
+    type ISøkParam,
+} from '../../typer/fagsakdeltager';
+import { Adressebeskyttelsegradering } from '../../typer/person';
 import { obfuskerFagsakDeltager } from '../../utils/obfuskerData';
+import { PersonIkon } from '../PersonIkon';
+
+function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): React.ReactNode {
+    return (
+        <PersonIkon
+            kjønn={fagsakDeltager.kjønn || kjønnType.UKJENT}
+            erBarn={fagsakDeltager.rolle === FagsakDeltagerRolle.Barn}
+            erAdresseBeskyttet={
+                fagsakDeltager.adressebeskyttelseGradering !== undefined &&
+                fagsakDeltager.adressebeskyttelseGradering !== null &&
+                fagsakDeltager.adressebeskyttelseGradering !== Adressebeskyttelsegradering.UGRADERT
+            }
+            harTilgang={fagsakDeltager.harTilgang}
+            størrelse={'m'}
+        />
+    );
+}
 
 const FagsakDeltagerSøk: React.FC = () => {
     const { request } = useHttp();
@@ -87,11 +108,7 @@ const FagsakDeltagerSøk: React.FC = () => {
                           harTilgang: fagsakDeltager.harTilgang,
                           navn: fagsakDeltager.navn,
                           ident: fagsakDeltager.ident,
-                          ikon: fagsakDeltager.harTilgang ? (
-                              ikoner[`${fagsakDeltager.rolle}_${fagsakDeltager.kjønn}`]
-                          ) : (
-                              <IkkeTilgang height={30} width={30} />
-                          ),
+                          ikon: mapFagsakDeltagerTilIkon(fagsakDeltager),
                       };
                   }),
               }
