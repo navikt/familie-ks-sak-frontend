@@ -22,8 +22,8 @@ import {
     type IFagsakDeltager,
     type ISøkParam,
 } from '../../typer/fagsakdeltager';
-import { Adressebeskyttelsegradering } from '../../typer/person';
 import { obfuskerFagsakDeltager } from '../../utils/obfuskerData';
+import { erAdresseBeskyttet } from '../../utils/validators';
 import { PersonIkon } from '../PersonIkon';
 
 function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): React.ReactNode {
@@ -31,11 +31,7 @@ function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): React.ReactN
         <PersonIkon
             kjønn={fagsakDeltager.kjønn || kjønnType.UKJENT}
             erBarn={fagsakDeltager.rolle === FagsakDeltagerRolle.Barn}
-            erAdresseBeskyttet={
-                fagsakDeltager.adressebeskyttelseGradering !== undefined &&
-                fagsakDeltager.adressebeskyttelseGradering !== null &&
-                fagsakDeltager.adressebeskyttelseGradering !== Adressebeskyttelsegradering.UGRADERT
-            }
+            erAdresseBeskyttet={erAdresseBeskyttet(fagsakDeltager.adressebeskyttelseGradering)}
             harTilgang={fagsakDeltager.harTilgang}
             størrelse={'m'}
         />

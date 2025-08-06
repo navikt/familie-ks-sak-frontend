@@ -9,8 +9,9 @@ import { useAppContext } from '../../../context/AppContext';
 import DødsfallTag from '../../../komponenter/DødsfallTag';
 import { PersonIkon } from '../../../komponenter/PersonIkon';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
-import { Adressebeskyttelsegradering, type IPersonInfo } from '../../../typer/person';
+import { type IPersonInfo } from '../../../typer/person';
 import { formaterIdent, hentAlder } from '../../../utils/formatter';
+import { erAdresseBeskyttet } from '../../../utils/validators';
 
 interface IProps {
     bruker?: IPersonInfo;
@@ -31,11 +32,7 @@ const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
                 <PersonIkon
                     kjønn={bruker?.kjønn ?? kjønnType.UKJENT}
                     erBarn={hentAlder(bruker?.fødselsdato ?? '') < 18}
-                    erAdresseBeskyttet={
-                        bruker?.adressebeskyttelseGradering !== undefined &&
-                        bruker?.adressebeskyttelseGradering !== null &&
-                        bruker?.adressebeskyttelseGradering !== Adressebeskyttelsegradering.UGRADERT
-                    }
+                    erAdresseBeskyttet={erAdresseBeskyttet(bruker?.adressebeskyttelseGradering)}
                     harTilgang={bruker?.harTilgang}
                 />
             }

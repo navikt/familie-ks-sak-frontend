@@ -7,8 +7,7 @@ import { idnr } from '@navikt/fnrvalidator';
 import { hentDagensDato, type IIsoDatoPeriode, isoStringTilDate } from './dato';
 import { validerPeriodePåBarnetsAlder } from '../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/Vilkår/BarnetsAlder/BarnetsAlderValidering';
 import { erBegrunnelsePåkrevd } from '../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
-import type { IGrunnlagPerson } from '../typer/person';
-import { PersonType } from '../typer/person';
+import { Adressebeskyttelsegradering, type IGrunnlagPerson, PersonType } from '../typer/person';
 import { IEndretUtbetalingAndelÅrsak } from '../typer/utbetalingAndel';
 import type { Begrunnelse } from '../typer/vedtak';
 import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
@@ -233,4 +232,14 @@ export const erBegrunnelseGyldig = (
     } else {
         return ok(felt);
     }
+};
+
+export const erAdresseBeskyttet = (
+    adresseBeskyttelsesGradering: Adressebeskyttelsegradering | undefined | null
+) => {
+    return (
+        adresseBeskyttelsesGradering !== undefined &&
+        adresseBeskyttelsesGradering !== null &&
+        adresseBeskyttelsesGradering !== Adressebeskyttelsegradering.UGRADERT
+    );
 };
