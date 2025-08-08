@@ -11,7 +11,6 @@ import {
     byggFunksjonellFeilRessurs,
     byggHenterRessurs,
     byggTomRessurs,
-    kjønnType,
     RessursStatus,
 } from '@navikt/familie-typer';
 import { idnr } from '@navikt/fnrvalidator';
@@ -20,7 +19,6 @@ import OpprettFagsakModal from './OpprettFagsakModal';
 import { useAppContext } from '../../context/AppContext';
 import IkkeTilgang from '../../ikoner/IkkeTilgang';
 import type { IFagsakDeltager, ISøkParam } from '../../typer/fagsakdeltager';
-import { fagsakdeltagerRoller } from '../../typer/fagsakdeltager';
 import { obfuskerFagsakDeltager } from '../../utils/obfuskerData';
 
 const FagsakDeltagerSøk: React.FC = () => {
@@ -94,9 +92,6 @@ const FagsakDeltagerSøk: React.FC = () => {
                           ) : (
                               <IkkeTilgang height={30} width={30} />
                           ),
-                          rolle: fagsakdeltagerRoller[fagsakDeltager.rolle][
-                              fagsakDeltager.kjønn ?? kjønnType.UKJENT
-                          ],
                       };
                   }),
               }
