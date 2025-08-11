@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { Link as ReactRouterLink } from 'react-router';
 import styled from 'styled-components';
 
-import { BodyShort, Box, HStack, LinkPanel } from '@navikt/ds-react';
+import { BodyShort, Box, HStack, Link, LinkCard, VStack } from '@navikt/ds-react';
 import {
     AFontSizeHeadingMedium,
     AFontSizeXlarge,
-    ASpacing8,
     ASpacing16,
     ASpacing4,
 } from '@navikt/ds-tokens/dist/tokens';
@@ -62,18 +62,12 @@ const Innholdstabell: React.FC<IInnholdstabell> = ({ minimalFagsak }) => {
 };
 export const SaksoversiktPanelBredde = `calc(10 * ${ASpacing16})`;
 
-const FagsakPanelMedAktivBehandling = styled(LinkPanel)`
-    width: ${SaksoversiktPanelBredde};
-    margin-top: ${ASpacing4};
-    padding: ${ASpacing8};
-`;
-
 const FagsakPanel = styled(Box)`
     width: ${SaksoversiktPanelBredde};
     margin-top: ${ASpacing4};
 `;
 
-const genererHoverTekst = (behandling: VisningBehandling) => {
+const genererLinkTekst = (behandling: VisningBehandling) => {
     return behandling.status === BehandlingStatus.AVSLUTTET
         ? 'Gå til gjeldende vedtak'
         : 'Gå til åpen behandling';
@@ -84,14 +78,25 @@ const FagsakLenkepanel: React.FC<IFagsakLinkPanel> = ({ minimalFagsak }) => {
         hentAktivBehandlingPåMinimalFagsak(minimalFagsak);
 
     return aktivBehandling ? (
-        <FagsakPanelMedAktivBehandling
-            title={genererHoverTekst(aktivBehandling)}
-            href={`/fagsak/${minimalFagsak.id}/${aktivBehandling.behandlingId}`}
-        >
-            <LinkPanel.Description>
-                <Innholdstabell minimalFagsak={minimalFagsak} />
-            </LinkPanel.Description>
-        </FagsakPanelMedAktivBehandling>
+        <Box width={SaksoversiktPanelBredde} marginBlock={'8 0'}>
+            <LinkCard>
+                <LinkCard.Title>
+                    <LinkCard.Anchor asChild={true}>
+                        <Link
+                            as={ReactRouterLink}
+                            to={`/fagsak/${minimalFagsak.id}/${aktivBehandling.behandlingId}`}
+                        >
+                            {genererLinkTekst(aktivBehandling)}
+                        </Link>
+                    </LinkCard.Anchor>
+                </LinkCard.Title>
+                <LinkCard.Description>
+                    <VStack paddingBlock={'4 0'}>
+                        <Innholdstabell minimalFagsak={minimalFagsak} />
+                    </VStack>
+                </LinkCard.Description>
+            </LinkCard>
+        </Box>
     ) : (
         <FagsakPanel borderColor="border-strong" borderWidth="1" borderRadius="small" padding="8">
             <Innholdstabell minimalFagsak={minimalFagsak} />
