@@ -3,6 +3,7 @@ import path from 'path';
 import { sentryWebpackPlugin } from '@sentry/webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import CssMinimizerWebpackPlugin from 'css-minimizer-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import { mergeWithRules } from 'webpack-merge';
 
@@ -46,7 +47,51 @@ const prodConfig = mergeWithRules({
         maxEntrypointSize: 800000,
         maxAssetSize: 800000,
     },
+    module: {
+        rules: [
+            {
+                test: /\.module\.css$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: {
+                                namedExport: false,
+                            },
+                            importLoaders: 1,
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.css$/,
+                exclude: /\.module\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: {
+                                mode: 'icss',
+                            },
+                            importLoaders: 2,
+                        },
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [['autoprefixer']],
+                            },
+                        },
+                    },
+                ],
+            },
+        ],
+    },
     plugins: [
+        new MiniCssExtractPlugin(),
         new CompressionPlugin({
             algorithm: 'gzip',
             test: /\.js$|\.css$|\.html$/,
