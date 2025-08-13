@@ -15,14 +15,8 @@ updates:
     registries: "*"
     ignore:
       - dependency-name: "*"
-        update-types: [ "version-update:semver-patch" ]
+        update-types: ["version-update:semver-patch"]
     groups:
-      minor-and-patch:
-        patterns:
-          - '*'
-        update-types:
-          - 'minor'
-          - 'patch'
       react:
         patterns:
           - "react"
