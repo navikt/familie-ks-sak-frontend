@@ -78,14 +78,6 @@ const prodConfig = mergeWithRules({
                             importLoaders: 2,
                         },
                     },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: [['autoprefixer']],
-                            },
-                        },
-                    },
                 ],
             },
         ],
