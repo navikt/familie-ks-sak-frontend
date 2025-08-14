@@ -1,7 +1,6 @@
 import React from 'react';
 
 import classNames from 'classnames';
-import styled from 'styled-components';
 
 import {
     GuttIkon,
@@ -15,62 +14,6 @@ import { kjønnType } from '@navikt/familie-typer';
 import styles from './PersonIkon.module.css';
 import IkkeTilgang from '../ikoner/IkkeTilgang';
 import NavLogo from '../ikoner/NavLogo';
-
-const StyledNavIkon = styled(NavLogo)`
-    path {
-        fill: var(--a-white);
-    }
-
-    margin: auto;
-    height: 100%;
-    width: 100%;
-`;
-
-const StyledNavIkonContaier = styled.div<{
-    $adresseBeskyttet: boolean;
-    $kjønn: string;
-    $størrelse: string;
-}>`
-    border-radius: 100%;
-    padding: 2px;
-    place-content: center;
-
-    min-height: 24px;
-    min-width: 24px;
-    max-height: 24px;
-    max-width: 24px;
-
-    background-color: var(--a-blue-400);
-
-    ${props => {
-        if (props.$størrelse === 'm') {
-            return `
-                min-height: 32px;
-                min-width: 32px;
-                max-height: 32px;
-                max-width: 32px;
-            `;
-        }
-    }}
-
-    ${props => {
-        if (props.$kjønn === 'KVINNE') {
-            return `
-            background-color: var(--a-purple-400);
-        `;
-        }
-    }}
-
-    ${props => {
-        if (props.$adresseBeskyttet) {
-            return `
-                path {
-                    fill: var(--a-orange-600);
-                }
-            `;
-        }
-    }};
-`;
 
 interface PersonIkonProps {
     kjønn: kjønnType;
@@ -95,13 +38,16 @@ export const PersonIkon = ({
 
     if (erNavAnsatt) {
         return (
-            <StyledNavIkonContaier
-                $adresseBeskyttet={erAdresseBeskyttet}
-                $kjønn={kjønn}
-                $størrelse={størrelse}
+            <div
+                className={classNames(styles.ansattIkon, {
+                    [styles.ansattStorIkon]: størrelse === 'm',
+                    [styles.ansattMannlig]: kjønn === kjønnType.MANN,
+                    [styles.ansattKvinnelig]: kjønn === kjønnType.KVINNE,
+                    [styles.ansattAdresseBeskyttet]: erAdresseBeskyttet,
+                })}
             >
-                <StyledNavIkon />
-            </StyledNavIkonContaier>
+                <NavLogo className={styles.navLogo} />
+            </div>
         );
     }
 
