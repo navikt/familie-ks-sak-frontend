@@ -1,0 +1,35 @@
+.litenIkon {
+    height: 24px;
+    width: 24px;
+}
+
+.storIkon {
+    height: 32px;
+    width: 32px;
+}
+
+.mannlig {
+    g {
+        fill: var(--a-blue-400);
+    }
+}
+
+.kvinnelig {
+    g {
+        fill: var(--a-purple-400);
+    }
+}
+
+.adresseBeskyttet {
+    g {
+        fill: var(--a-orange-600);
+    }
+}
+
+.nøytralAdresseBeskyttet {
+    path {
+        &:first-of-type {
+            fill: var(--a-orange-600);
+        }
+    }
+}
