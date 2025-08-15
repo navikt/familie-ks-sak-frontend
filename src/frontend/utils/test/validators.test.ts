@@ -1,4 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
+import { addDays, addMonths, formatISO } from 'date-fns';
 
 import type { FeltState } from '@navikt/familie-skjema';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
@@ -9,14 +10,9 @@ import type { IGrunnlagPerson } from '../../typer/person';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
 import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../typer/vilkår';
-import { hentDagensDato, type IIsoDatoPeriode } from '../dato';
+import { type IIsoDatoPeriode } from '../dato';
 import { nyIsoDatoPeriode } from '../dato';
 import { erPeriodeGyldig, erResultatGyldig, identValidator } from '../validators';
-
-jest.mock('../dato/dato', () => ({
-    ...jest.requireActual('../dato/dato'),
-    hentDagensDato: jest.fn(),
-}));
 
 describe('utils/validators', () => {
     const nyFeltState = <T>(verdi: T): FeltState<T> => ({
@@ -203,11 +199,16 @@ describe('utils/validators', () => {
     });
 
     test('Fom som settes til senere enn inneværende måned på barnehageplass vilkår skal gi OK', () => {
-        (hentDagensDato as jest.Mock).mockReturnValue(new Date('2025-07-07'));
+        const nesteMåned = addMonths(new Date(), 1);
+        const nesteMånedOgEnDag = addDays(nesteMåned, 1);
 
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
-            nyIsoDatoPeriode('2025-08-07', '2025-08-08')
+            nyIsoDatoPeriode(
+                formatISO(nesteMåned, { representation: 'date' }),
+                formatISO(nesteMånedOgEnDag, { representation: 'date' })
+            )
         );
+
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.BARNEHAGEPLASS, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
@@ -216,11 +217,16 @@ describe('utils/validators', () => {
     });
 
     test('Fom som settes til senere enn inneværende måned på andre vilkår enn barnehageplass skal gi FEIL', () => {
-        (hentDagensDato as jest.Mock).mockReturnValue(new Date('2025-07-07'));
+        const nesteMåned = addMonths(new Date(), 1);
+        const nesteMånedOgEnDag = addDays(nesteMåned, 1);
 
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(
-            nyIsoDatoPeriode('2025-08-07', '2025-08-08')
+            nyIsoDatoPeriode(
+                formatISO(nesteMåned, { representation: 'date' }),
+                formatISO(nesteMånedOgEnDag, { representation: 'date' })
+            )
         );
+
         const valideringsresultat = erPeriodeGyldig(periode, VilkårType.MEDLEMSKAP_ANNEN_FORELDER, {
             person: lagGrunnlagPerson(),
             erEksplisittAvslagPåSøknad: false,
