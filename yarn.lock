@@ -1936,19 +1936,19 @@
   resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/7.28.0/4bbc825585bb5eb1e6d7f7be79a4b46fa4eb29d0#4bbc825585bb5eb1e6d7f7be79a4b46fa4eb29d0"
   integrity sha512-T+30eAyPWRZrrzItuRLoVaNFQgud4PwsQMtomSA/RQMKUUhmjPDY9/OzuDf2wBt1gsrtlkTJ2JZctSoHin7kag==
 
-"@navikt/familie-backend@^10.1.4":
-  version "10.1.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-backend/10.1.4/a6dc8597e5a4ece1329022519f9fc5e8de0983ac#a6dc8597e5a4ece1329022519f9fc5e8de0983ac"
-  integrity sha512-qbjAs42sygvivC5j3ahRvbIYkZWKkmGAsBk4RkyQck8gmowfAhH+F3zQ8k3Esp53jZukokOHAvnla0k1NF1W3g==
+"@navikt/familie-backend@^10.1.9":
+  version "10.1.9"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-backend/10.1.9/f55283ce4c0ca5bf85ca887ee26273da5920caa6#f55283ce4c0ca5bf85ca887ee26273da5920caa6"
+  integrity sha512-qjiQXGSGCh/+0RsC7RzDHplAmcONwhTHw2NXkT4jPNPDj7TfYWZiyaml3LgKYi1ms+txurINGxdMmuR2V0wE8A==
   dependencies:
-    "@navikt/familie-logging" "^7.0.3"
+    "@navikt/familie-logging" "^7.0.4"
     "@types/cookie-parser" "^1.4.8"
-    "@types/express" "^5.0.0"
+    "@types/express" "^5.0.3"
     "@types/express-session" "^1.18.1"
     "@types/passport" "^1.0.17"
     connect-redis "^8.0.1"
     cookie-parser "^1.4.7"
-    express "^5.0.1"
+    express "^5.1.0"
     express-http-proxy "^2.1.1"
     express-session "^1.18.1"
     https-proxy-agent "^7.0.6"
@@ -1958,13 +1958,13 @@
     prom-client "^15.1.3"
     redis "^4.7.0"
 
-"@navikt/familie-form-elements@^21.0.4":
-  version "21.0.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/21.0.4/cfbd3541081b539804664c4a02018cfe7b4e114b#cfbd3541081b539804664c4a02018cfe7b4e114b"
-  integrity sha512-stYA0FyjxvatWA4SEbBRkjN9vaoFCwFKInRSMKQLnLzZkK1MZnh7R95OAKS3e3I4+8uCWKjWP7D/kxkDbQ2u4g==
+"@navikt/familie-form-elements@^21.0.7":
+  version "21.0.7"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/21.0.7/bd36ecbdc77cb059fb1593bf29cde9078e863ce4#bd36ecbdc77cb059fb1593bf29cde9078e863ce4"
+  integrity sha512-tIFGcPkydqzEsyKavyV9g3/0q9iRJX5UCStlVQZzKEhnJkGHr7YrIHtW4k0FhuvVW3z7L02PaF8acy+nt9la/w==
   dependencies:
     classnames "^2.5.1"
-    react-select "5.9.0"
+    react-select "5.10.2"
 
 "@navikt/familie-header@^16.1.2":
   version "16.1.2"
@@ -1975,59 +1975,59 @@
     "@navikt/familie-typer" "^8.0.4"
     "@navikt/fnrvalidator" "^2.1.5"
 
-"@navikt/familie-http@^8.0.0":
-  version "8.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/8.0.0/d5c33e3fc580141c4f929e61ee83d0effc763862#d5c33e3fc580141c4f929e61ee83d0effc763862"
-  integrity sha512-nPc64Be5pUsk6Mqlt/apmB6EUCNdItjZ/s7BEFSUlkCIVvo2eJHbvZ5j1f2ETvzzx9WYSY5zGqpqas197T5+hQ==
+"@navikt/familie-http@^8.0.2":
+  version "8.0.2"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-http/8.0.2/5bcbdf5497ebba39d50d940267704ba36ea3d529#5bcbdf5497ebba39d50d940267704ba36ea3d529"
+  integrity sha512-qXxXK/4Ts1cFWgroQ7OH4/MNhXRhFA52Fa1Bu/W6jSvHtJxLXoOzj15DX0CjzAehSO69ybCNPaFQVXcd98k+eg==
   dependencies:
-    "@navikt/familie-typer" "^8.0.3"
+    "@navikt/familie-typer" "^8.0.4"
     "@sentry/core" "^8.50.0"
 
-"@navikt/familie-ikoner@^9.1.0", "@navikt/familie-ikoner@^9.1.3":
+"@navikt/familie-ikoner@^9.1.3":
   version "9.1.3"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-ikoner/9.1.3/1c623007f01fd157dc9c9d946831e79f82181f61#1c623007f01fd157dc9c9d946831e79f82181f61"
   integrity sha512-12Aon/KludBUbZdWDaz7WW1ZsqIr2CyHJ2fXpr2bF4ACnIR4fdjUDDfkiFKBmsTPouNlu9djfxYf55VdCLYzUA==
   dependencies:
     "@navikt/familie-typer" "^8.0.4"
 
-"@navikt/familie-logging@^7.0.3":
-  version "7.0.3"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/7.0.3/64e03ec40585d30ab00c193d373f69dfa855def8#64e03ec40585d30ab00c193d373f69dfa855def8"
-  integrity sha512-rhAz7p+9kRqvTJLFmFTSGfs80w+vsEwdZMhWXKeKlaegetHB3RHQMYqkxJRNKUUzZh2tzlWlHug3Du2Ue8pyMw==
+"@navikt/familie-logging@^7.0.4":
+  version "7.0.4"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/7.0.4/e171c64a7d3d3cfcb131fdfde45d69361815cb97#e171c64a7d3d3cfcb131fdfde45d69361815cb97"
+  integrity sha512-h44fDF6i3wxoYMm81zKRlgEcrV9NAJZ1NCGYuCUkK2Af7qlzCj1A2jBbwR+P5Xq07GUlejEOF8Y7AZeE4iwHYQ==
   dependencies:
     winston "^3.17.0"
 
-"@navikt/familie-skjema@^8.2.25":
-  version "8.2.25"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.2.25/a57ff2d12ab770fe6519959dd9758652031ddc6a#a57ff2d12ab770fe6519959dd9758652031ddc6a"
-  integrity sha512-ICPG6kzEsGOG5A+bNwJU+c9INSkgKz3fsP+TaiXKuqSDu+cEE4+CVSgsMHn4TrETm/80rO59RdBctHhbex6vWg==
+"@navikt/familie-skjema@^8.2.28":
+  version "8.2.28"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-skjema/8.2.28/a713736503cb80d24dd374cbc545093c18faa721#a713736503cb80d24dd374cbc545093c18faa721"
+  integrity sha512-/gb138RdwC/j5b6JkHBG+b+vSU8pAe90yrY6zpINFGz1LP486VwulJGRX5YL5BbWyd5waC6MhM/B1R7FBNUUYg==
   dependencies:
-    "@navikt/familie-http" "^8.0.0"
-    "@navikt/familie-typer" "^8.0.3"
+    "@navikt/familie-http" "^8.0.2"
+    "@navikt/familie-typer" "^8.0.4"
     "@types/deep-equal" "^1.0.4"
     deep-equal "^2.2.3"
     hashids "^2.3.0"
 
-"@navikt/familie-tidslinje@^10.0.5":
-  version "10.0.5"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-tidslinje/10.0.5/029ef6a413df10a6fa4181ce66ecd2c1a1a5e919#029ef6a413df10a6fa4181ce66ecd2c1a1a5e919"
-  integrity sha512-QXBGcw/jUyEMy2zY7FRHXdA0Pld0Ya+2TLUXzo640SwHp0FJPrJmDIYVubrgq9uqQ+0e2GfFKIiGzIHTr28kyQ==
+"@navikt/familie-tidslinje@^10.0.8":
+  version "10.0.8"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-tidslinje/10.0.8/8a5842ca500542e74a19b0a99d6dbb2eda3d2ced#8a5842ca500542e74a19b0a99d6dbb2eda3d2ced"
+  integrity sha512-hnxjaYxfUGB8RY4pT0NG2KriTslX438G0CrXu6U773qOopm1DZVKz4zlAiZMDozVusouTDZmNooKGqkK8nZDyw==
   dependencies:
     classnames "^2.5.1"
-    nanoid "^5.0.9"
+    nanoid "^5.1.5"
 
-"@navikt/familie-typer@^8.0.2", "@navikt/familie-typer@^8.0.3", "@navikt/familie-typer@^8.0.4":
+"@navikt/familie-typer@^8.0.4":
   version "8.0.4"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/8.0.4/52b1173d1b3432fb0d13adf542b1a1876eda6fce#52b1173d1b3432fb0d13adf542b1a1876eda6fce"
   integrity sha512-aVXlGDl196Ebp6tEdgw+F57fHtsFw5aCgJUugk2z10xxDc9y7MtpYSDMwFdIS5ATTNiHS9y5YUDpBz+JdRcDxQ==
 
-"@navikt/familie-visittkort@^15.1.4":
-  version "15.1.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/15.1.4/b8e3c423f27dfe2d2bd8a8f47d2e4c614737295a#b8e3c423f27dfe2d2bd8a8f47d2e4c614737295a"
-  integrity sha512-84skNuXlFFG0rUYrlL00F55rbDrcOu/uAksxtrWVXBn7oNWN1A829BvMlWwmvD/23YAvXVmEGpVKLYxhtla0/Q==
+"@navikt/familie-visittkort@^15.1.7":
+  version "15.1.7"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/15.1.7/a0971bbdc48b9e76cff42f60e0424dd899b80b03#a0971bbdc48b9e76cff42f60e0424dd899b80b03"
+  integrity sha512-+bEqYVzXWyWkrXdog4WqI+Dhi5Y1vZkrq1FxaVBilt+X/gLOk17cXS/1edxNhiUs2KsvJPuSx6zbgvhd7Ka3Uw==
   dependencies:
-    "@navikt/familie-ikoner" "^9.1.0"
-    "@navikt/familie-typer" "^8.0.2"
+    "@navikt/familie-ikoner" "^9.1.3"
+    "@navikt/familie-typer" "^8.0.4"
     classnames "^2.5.1"
 
 "@navikt/flagg-ikoner@^10.0.0":
@@ -2747,7 +2747,7 @@
   dependencies:
     "@types/express" "*"
 
-"@types/express@*", "@types/express@^5.0.0", "@types/express@^5.0.1":
+"@types/express@*", "@types/express@^5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-5.0.1.tgz#138d741c6e5db8cc273bec5285cd6e9d0779fc9f"
   integrity sha512-UZUw8vjpWFXuDnjFTh7/5c2TWDlQqeXHi6hcN7F2XSVT5P+WmUnnbFS3KA6Jnc6IsEqI2qCVu2bK0R0J4A8ZQQ==
@@ -2764,6 +2764,15 @@
     "@types/body-parser" "*"
     "@types/express-serve-static-core" "^4.17.33"
     "@types/qs" "*"
+    "@types/serve-static" "*"
+
+"@types/express@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@types/express/-/express-5.0.3.tgz#6c4bc6acddc2e2a587142e1d8be0bce20757e956"
+  integrity sha512-wGA0NX93b19/dZC1J18tKWVIYWyyF2ZjT9vin/NRu0qzzvfVzWjs04iq2rQ3H65vCTQYlRqs3YHfY7zjdV+9Kw==
+  dependencies:
+    "@types/body-parser" "*"
+    "@types/express-serve-static-core" "^5.0.0"
     "@types/serve-static" "*"
 
 "@types/graceful-fs@^4.1.3":
@@ -6283,7 +6292,7 @@ express@^4.21.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-express@^5.0.1, express@^5.1.0:
+express@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/express/-/express-5.1.0.tgz#d31beaf715a0016f0d53f47d3b4d7acf28c75cc9"
   integrity sha512-DT9ck5YIRU+8GYzzU5kT3eHGA5iL+1Zd0EutOmTE9Dtk+Tvuzd23VBU+ec7HPNSTxXYO55gPV/hq4pSBJDjFpA==
@@ -9091,10 +9100,10 @@ nanoid@^3.3.11, nanoid@^3.3.7:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.11.tgz#4f4f112cefbe303202f2199838128936266d185b"
   integrity sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==
 
-nanoid@^5.0.9:
-  version "5.0.9"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.9.tgz#977dcbaac055430ce7b1e19cf0130cea91a20e50"
-  integrity sha512-Aooyr6MXU6HpvvWXKoVoXwKMs/KyVakWwg7xQfv5/S/RIgJMy0Ifa45H9qqYy7pTCszrHzP21Uk4PZq2HpEM8Q==
+nanoid@^5.1.5:
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.1.5.tgz#f7597f9d9054eb4da9548cdd53ca70f1790e87de"
+  integrity sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -10213,10 +10222,10 @@ react-router@^7.8.0:
     cookie "^1.0.1"
     set-cookie-parser "^2.6.0"
 
-react-select@5.9.0:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.9.0.tgz#41325b7bfe8452a8d401b82fc4fb7d44a03e29c5"
-  integrity sha512-nwRKGanVHGjdccsnzhFte/PULziueZxGD8LL2WojON78Mvnq7LdAMEtu2frrwld1fr3geixg3iiMBIc/LLAZpw==
+react-select@5.10.2:
+  version "5.10.2"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.10.2.tgz#8dffc69dfd7d74684d9613e6eb27204e3b99e127"
+  integrity sha512-Z33nHdEFWq9tfnfVXaiM12rbJmk+QjFEztWLtmXqQhz6Al4UZZ9xc0wiatmGtUOCCnHN0WizL3tCMYRENX4rVQ==
   dependencies:
     "@babel/runtime" "^7.12.0"
     "@emotion/cache" "^11.4.0"
