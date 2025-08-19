@@ -12,7 +12,7 @@ import Høyremeny from './Behandling/Høyremeny/Høyremeny';
 import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
 import JournalpostListe from './journalposter/JournalpostListe';
 import Personlinje from './Personlinje/Personlinje';
-import Saksoversikt from './Saksoversikt/Saksoversikt';
+import { Saksoversikt } from './Saksoversikt/Saksoversikt';
 import { useFagsakContext } from '../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';

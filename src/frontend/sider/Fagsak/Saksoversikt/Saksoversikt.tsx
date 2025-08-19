@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { addMonths, differenceInMilliseconds, startOfMonth } from 'date-fns';
-import styled from 'styled-components';
+import { Link as ReactRouterLink } from 'react-router';
 
-import { Alert, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, Box, Heading, Link, VStack } from '@navikt/ds-react';
 import { byggTomRessurs } from '@navikt/familie-typer';
 
 import Behandlinger from './Behandlinger';
@@ -30,20 +30,7 @@ interface IProps {
     minimalFagsak: IMinimalFagsak;
 }
 
-const SaksoversiktWrapper = styled.div`
-    max-width: 70rem;
-    margin: 4rem;
-`;
-
-const SaksoversiktHeading = styled(Heading)`
-    margin-bottom: 1rem;
-`;
-
-const StyledAlert = styled(Alert)`
-    width: ${SaksoversiktPanelBredde};
-`;
-
-const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
+export function Saksoversikt({ minimalFagsak }: IProps) {
     const { settÅpenBehandling } = useBehandlingContext();
 
     React.useEffect(() => {
@@ -85,7 +72,8 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
     const lenkeTilBehandlingsresultat = () => {
         return aktivBehandling ? (
             <Link
-                href={`/fagsak/${minimalFagsak.id}/${aktivBehandling.behandlingId}/tilkjent-ytelse`}
+                as={ReactRouterLink}
+                to={`/fagsak/${minimalFagsak.id}/${aktivBehandling.behandlingId}/tilkjent-ytelse`}
             >
                 Se detaljer
             </Link>
@@ -99,51 +87,61 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
         ) {
             return utbetalingsperiodeInneværendeMåned.utbetaltPerMnd < 1 &&
                 gjeldendeBehandling?.kategori === BehandlingKategori.EØS ? (
-                <StyledAlert variant="info">
-                    Siste gjeldende vedtak er en EØS-sak uten månedlige utbetalinger fra Nav
-                </StyledAlert>
+                <Box width={SaksoversiktPanelBredde}>
+                    <Alert variant="info">
+                        Siste gjeldende vedtak er en EØS-sak uten månedlige utbetalinger fra Nav
+                    </Alert>
+                </Box>
             ) : (
                 <>
                     {utbetalingsperiodeNesteMåned &&
                         utbetalingsperiodeNesteMåned !== utbetalingsperiodeInneværendeMåned && (
-                            <StyledAlert variant="info">
-                                <VStack>
-                                    {`Utbetalingen endres fra og med ${dateTilFormatertString({
-                                        date: nesteMåned,
-                                        tilFormat: Datoformat.MÅNED_ÅR_NAVN,
-                                    })}`}
-                                    {lenkeTilBehandlingsresultat()}
-                                </VStack>
-                            </StyledAlert>
+                            <Box width={SaksoversiktPanelBredde}>
+                                <Alert variant="info">
+                                    <VStack>
+                                        {`Utbetalingen endres fra og med ${dateTilFormatertString({
+                                            date: nesteMåned,
+                                            tilFormat: Datoformat.MÅNED_ÅR_NAVN,
+                                        })}`}
+                                        {lenkeTilBehandlingsresultat()}
+                                    </VStack>
+                                </Alert>
+                            </Box>
                         )}
                     <Utbetalinger vedtaksperiode={utbetalingsperiodeInneværendeMåned} />
                 </>
             );
         } else if (utbetalingsperiodeNesteMåned) {
             return (
-                <StyledAlert variant="info">
-                    <VStack>
-                        {`Utbetalingen starter ${dateTilFormatertString({
-                            date: nesteMåned,
-                            tilFormat: Datoformat.MÅNED_ÅR_NAVN,
-                        })}`}
-                        {lenkeTilBehandlingsresultat()}
-                    </VStack>
-                </StyledAlert>
+                <Box width={SaksoversiktPanelBredde}>
+                    <Alert variant="info">
+                        <VStack>
+                            {`Utbetalingen starter ${dateTilFormatertString({
+                                date: nesteMåned,
+                                tilFormat: Datoformat.MÅNED_ÅR_NAVN,
+                            })}`}
+                            {lenkeTilBehandlingsresultat()}
+                        </VStack>
+                    </Alert>
+                </Box>
             );
         } else {
             return (
-                <StyledAlert variant="error">
-                    Noe gikk galt ved henting av utbetalinger. Prøv igjen eller kontakt brukerstøtte
-                    hvis problemet vedvarer.
-                </StyledAlert>
+                <Box width={SaksoversiktPanelBredde}>
+                    <Alert variant="error">
+                        Noe gikk galt ved henting av utbetalinger. Prøv igjen eller kontakt
+                        brukerstøtte hvis problemet vedvarer.
+                    </Alert>
+                </Box>
             );
         }
     };
 
     return (
-        <SaksoversiktWrapper>
-            <SaksoversiktHeading size={'large'} level={'1'} children={'Saksoversikt'} />
+        <Box maxWidth="70rem" margin="16">
+            <Heading size={'large'} level={'1'} spacing>
+                Saksoversikt
+            </Heading>
             <VStack gap="14">
                 <FagsakLenkepanel minimalFagsak={minimalFagsak} />
                 {minimalFagsak.status === FagsakStatus.LØPENDE && (
@@ -156,9 +154,9 @@ const Saksoversikt: React.FunctionComponent<IProps> = ({ minimalFagsak }) => {
                 )}
                 <Behandlinger minimalFagsak={minimalFagsak} />
             </VStack>
-        </SaksoversiktWrapper>
+        </Box>
     );
-};
+}
 
 export const sakstype = (behandling?: IBehandling) => {
     if (!behandling) {
@@ -169,5 +167,3 @@ export const sakstype = (behandling?: IBehandling) => {
         behandling?.kategori ? behandlingKategori[behandling?.kategori] : behandling?.kategori
     }`;
 };
-
-export default Saksoversikt;
