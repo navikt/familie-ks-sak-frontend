@@ -5,25 +5,25 @@ import styled from 'styled-components';
 
 import { ExternalLinkIcon, PlusCircleIcon } from '@navikt/aksel-icons';
 import {
-    HelpText,
     BodyLong,
-    Heading,
     Button,
+    Fieldset,
+    Heading,
+    HelpText,
+    HStack,
     Link,
     Modal,
-    Fieldset,
     TextField,
-    HStack,
 } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Avhengigheter, Felt } from '@navikt/familie-skjema';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import {
+    Adressebeskyttelsegradering,
     byggFeiletRessurs,
     byggHenterRessurs,
     RessursStatus,
-    Adressebeskyttelsegradering,
 } from '@navikt/familie-typer';
 
 import { useBehandlingContext } from '../sider/Fagsak/Behandling/context/BehandlingContext';
@@ -31,7 +31,7 @@ import LeggTilUregistrertBarn from '../sider/Fagsak/Behandling/sider/RegistrerS√
 import type {
     IRestBrevmottaker,
     SkjemaBrevmottaker,
-} from '../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+} from '../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IPersonInfo, IRestTilgang } from '../typer/person';
 import { adressebeskyttelsestyper } from '../typer/person';
 import type { IBarnMedOpplysninger } from '../typer/s√∏knad';

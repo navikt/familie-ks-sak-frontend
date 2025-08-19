@@ -5,7 +5,7 @@ import type { Informasjonsbrev } from '../../../../komponenter/Hendelsesoversikt
 import type { IManueltBrevRequestPåFagsak } from '../../../../typer/dokument';
 import type { IPersonInfo } from '../../../../typer/person';
 import type { Målform } from '../../../../typer/søknad';
-import type { SkjemaBrevmottaker } from '../../Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import type { SkjemaBrevmottaker } from '../../Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 
 interface IHentEnkeltInformasjonsbrevRequestInput {
     bruker: Ressurs<IPersonInfo>;
