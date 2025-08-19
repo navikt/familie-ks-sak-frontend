@@ -7,8 +7,8 @@ import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 import { BehandlingstemaSelect } from '../../komponenter/BehandlingstemaSelect';
-import BehandlingstypeFelt from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingstypeFelt';
-import { BehandlingårsakFelt } from '../Fagsak/Personlinje/Behandlingsmeny/OpprettBehandling/BehandlingsårsakFelt';
+import BehandlingstypeFelt from '../Fagsak/Fagsaklinje/Behandlingsmeny/OpprettBehandling/BehandlingstypeFelt';
+import { BehandlingårsakFelt } from '../Fagsak/Fagsaklinje/Behandlingsmeny/OpprettBehandling/BehandlingsårsakFelt';
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: ${ASpacing8};

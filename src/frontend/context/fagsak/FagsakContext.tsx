@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, type PropsWithChildren } from 'react';
+import React, { createContext, type PropsWithChildren, useContext, useState } from 'react';
 
 import type { AxiosError } from 'axios';
 import deepEqual from 'deep-equal';
@@ -17,7 +17,7 @@ import {
 import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import useFagsakApi from '../../api/useFagsakApi';
 import { useTilbakekrevingApi } from '../../api/useTilbakekrevingApi';
-import type { SkjemaBrevmottaker } from '../../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import type { SkjemaBrevmottaker } from '../../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import type { IKlagebehandling } from '../../typer/klage';
 import type { IPersonInfo } from '../../typer/person';

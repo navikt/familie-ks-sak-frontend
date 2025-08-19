@@ -1,65 +1,56 @@
 import React from 'react';
 
-import { BodyShort, Link, Spacer } from '@navikt/ds-react';
+import { BodyShort, Box, CopyButton, HStack } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
-import Visittkort from '@navikt/familie-visittkort';
 
-import Behandlingsmeny from './Behandlingsmeny/Behandlingsmeny';
-import { useAppContext } from '../../../context/AppContext';
-import DødsfallTag from '../../../komponenter/DødsfallTag';
 import { PersonIkon } from '../../../komponenter/PersonIkon';
-import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { type IPersonInfo } from '../../../typer/person';
-import { formaterIdent, hentAlder } from '../../../utils/formatter';
+import { hentAlder } from '../../../utils/formatter';
 import { erAdresseBeskyttet } from '../../../utils/validators';
 
 interface IProps {
     bruker?: IPersonInfo;
-    minimalFagsak?: IMinimalFagsak;
 }
 
-const Personlinje: React.FC<IProps> = ({ bruker, minimalFagsak }) => {
-    const { harInnloggetSaksbehandlerSkrivetilgang } = useAppContext();
+const InnholdContainer = ({ children }: React.PropsWithChildren) => {
     return (
-        <Visittkort
-            navn={bruker?.navn ?? 'Ukjent'}
-            ident={formaterIdent(bruker?.personIdent ?? '')}
-            alder={hentAlder(bruker?.fødselsdato ?? '')}
-            kjønn={bruker?.kjønn ?? kjønnType.UKJENT}
-            dempetKantlinje
-            padding
-            ikon={
-                <PersonIkon
-                    kjønn={bruker?.kjønn ?? kjønnType.UKJENT}
-                    erBarn={hentAlder(bruker?.fødselsdato ?? '') < 18}
-                    erAdresseBeskyttet={erAdresseBeskyttet(bruker?.adressebeskyttelseGradering)}
-                    harTilgang={bruker?.harTilgang}
-                />
-            }
-        >
-            <div>|</div>
-            <BodyShort>{`Kommunenr: ${bruker?.kommunenummer ?? 'ukjent'}`}</BodyShort>
-            {bruker?.dødsfallDato?.length && (
-                <>
-                    <div>|</div>
-                    <DødsfallTag dødsfallDato={bruker.dødsfallDato} />
-                </>
-            )}
-            <Spacer />
-            {minimalFagsak !== undefined && (
-                <>
-                    <Link href={`/fagsak/${minimalFagsak.id}/saksoversikt`}>
-                        <BodyShort>Saksoversikt</BodyShort>
-                    </Link>
-                    <Link href={`/fagsak/${minimalFagsak.id}/dokumenter`}>
-                        <BodyShort>Dokumenter</BodyShort>
-                    </Link>
-                    {harInnloggetSaksbehandlerSkrivetilgang() && (
-                        <Behandlingsmeny minimalFagsak={minimalFagsak} />
-                    )}
-                </>
-            )}
-        </Visittkort>
+        <Box borderWidth="0 0 1 0" borderColor="border-subtle" paddingInline="4" paddingBlock="2">
+            {children}
+        </Box>
+    );
+};
+
+const Divider = () => {
+    return <div>|</div>;
+};
+
+const Personlinje: React.FC<IProps> = ({ bruker }) => {
+    return (
+        <InnholdContainer>
+            <HStack align="center" gap="3 4">
+                <HStack align="center" gap="3 4">
+                    <PersonIkon
+                        kjønn={bruker?.kjønn ?? kjønnType.UKJENT}
+                        erBarn={hentAlder(bruker?.fødselsdato ?? '') < 18}
+                        erAdresseBeskyttet={erAdresseBeskyttet(bruker?.adressebeskyttelseGradering)}
+                        harTilgang={bruker?.harTilgang}
+                    />
+                    <BodyShort as="span" weight="semibold">
+                        {bruker?.navn} ({hentAlder(bruker?.fødselsdato ?? '')} år)
+                    </BodyShort>
+                    <Divider />
+                    <HStack align="center" gap="1">
+                        {bruker?.personIdent}
+                        <CopyButton
+                            copyText={bruker?.personIdent.replace(' ', '') || 'bleg'}
+                            size="small"
+                        />
+                    </HStack>
+                </HStack>
+                <Divider />
+                <BodyShort>{`Kommunenr: ${bruker?.kommunenummer}`}</BodyShort>
+            </HStack>
+        </InnholdContainer>
     );
 };
 
