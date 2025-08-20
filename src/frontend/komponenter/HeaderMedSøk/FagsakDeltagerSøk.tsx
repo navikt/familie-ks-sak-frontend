@@ -5,12 +5,13 @@ import { useNavigate } from 'react-router';
 import type { ISøkeresultat } from '@navikt/familie-header';
 import { Søk } from '@navikt/familie-header';
 import { useHttp } from '@navikt/familie-http';
-import { kjønnType, type Ressurs } from '@navikt/familie-typer';
 import {
     byggFeiletRessurs,
     byggFunksjonellFeilRessurs,
     byggHenterRessurs,
     byggTomRessurs,
+    kjønnType,
+    type Ressurs,
     RessursStatus,
 } from '@navikt/familie-typer';
 import { idnr } from '@navikt/fnrvalidator';
@@ -34,6 +35,7 @@ function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): React.ReactN
             erAdresseBeskyttet={erAdresseBeskyttet(fagsakDeltager.adressebeskyttelseGradering)}
             harTilgang={fagsakDeltager.harTilgang}
             størrelse={'m'}
+            erEgenAnsatt={fagsakDeltager.erEgenAnsatt}
         />
     );
 }

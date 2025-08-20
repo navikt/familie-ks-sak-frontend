@@ -43,27 +43,30 @@ const Personlinje: React.FC<IProps> = ({ bruker }) => {
     return (
         <InnholdContainer>
             <HStack align="center" gap="3 4">
-                <HStack align="center" gap="3 4">
+                <HStack gap="3 4">
                     <PersonIkon
-                        kjønn={bruker?.kjønn ?? kjønnType.UKJENT}
-                        erBarn={hentAlder(bruker?.fødselsdato ?? '') < 18}
-                        erAdresseBeskyttet={erAdresseBeskyttet(bruker?.adressebeskyttelseGradering)}
-                        harTilgang={bruker?.harTilgang}
+                        kjønn={bruker.kjønn}
+                        erBarn={hentAlder(bruker.fødselsdato) < 18}
+                        erAdresseBeskyttet={erAdresseBeskyttet(bruker.adressebeskyttelseGradering)}
+                        harTilgang={bruker.harTilgang}
+                        erEgenAnsatt={bruker.erEgenAnsatt}
                     />
-                    <BodyShort as="span" weight="semibold">
-                        {bruker?.navn} ({hentAlder(bruker?.fødselsdato ?? '')} år)
-                    </BodyShort>
-                    <Divider />
-                    <HStack align="center" gap="1">
-                        {bruker?.personIdent}
-                        <CopyButton
-                            copyText={bruker?.personIdent.replace(' ', '') || 'bleg'}
-                            size="small"
-                        />
+                    <HStack align="center" gap="3 4">
+                        <BodyShort as="span" weight="semibold">
+                            {bruker.navn} ({hentAlder(bruker.fødselsdato ?? '')} år)
+                        </BodyShort>
+                        <Divider />
+                        <HStack align="center" gap="1">
+                            {bruker.personIdent}
+                            <CopyButton
+                                copyText={bruker.personIdent.replace(' ', '')}
+                                size="small"
+                            />
+                        </HStack>
                     </HStack>
                 </HStack>
                 <Divider />
-                <BodyShort>{`Kommunenr: ${bruker?.kommunenummer}`}</BodyShort>
+                <BodyShort>{`Kommunenr: ${bruker.kommunenummer}`}</BodyShort>
             </HStack>
         </InnholdContainer>
     );
