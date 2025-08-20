@@ -14,7 +14,7 @@ import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import PersonInformasjon from '../../../../../komponenter/PersonInformasjon/PersonInformasjon';
 import { PersonType } from '../../../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../../../typer/vilkår';
-import { vilkårConfig, Resultat, annenVurderingConfig } from '../../../../../typer/vilkår';
+import { annenVurderingConfig, Resultat, vilkårConfig } from '../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 const PersonLinje = styled.div`
