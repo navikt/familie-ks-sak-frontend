@@ -82,7 +82,7 @@ const useBehandlingApi = (
             url: `/familie-ks-sak/api/behandlinger/${behandlingId}`,
             påvirkerSystemLaster: true,
         }).then((response: Ressurs<IBehandling>) => {
-            if (skalObfuskereData()) {
+            if (skalObfuskereData) {
                 obfuskerBehandling(response);
             }
             oppdaterBehandling(response, false);
@@ -99,7 +99,7 @@ const useBehandlingApi = (
                 url: `/familie-ks-sak/api/logg/${behandlingId}`,
             })
                 .then((hentetLogg: Ressurs<ILogg[]>) => {
-                    if (skalObfuskereData()) {
+                    if (skalObfuskereData) {
                         obfuskerLogg(hentetLogg);
                     }
                     settLogg(hentetLogg);

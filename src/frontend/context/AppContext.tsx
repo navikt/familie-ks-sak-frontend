@@ -58,7 +58,7 @@ interface AppContextValue {
         [toastId: string]: IToast;
     };
     toggles: IToggles;
-    skalObfuskereData: () => boolean;
+    skalObfuskereData: boolean;
     erTogglesHentet: boolean;
 }
 
@@ -223,7 +223,7 @@ const AppProvider = (props: PropsWithChildren) => {
         return rolle >= BehandlerRolle.SAKSBEHANDLER;
     };
 
-    const skalObfuskereData = () =>
+    const skalObfuskereData =
         toggles[ToggleNavn.skalObfuskereData] && !harInnloggetSaksbehandlerSkrivetilgang();
 
     return (

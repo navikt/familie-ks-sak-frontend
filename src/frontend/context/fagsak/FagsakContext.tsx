@@ -77,7 +77,7 @@ export const FagsakProvider = (props: PropsWithChildren) => {
         })
             .then((hentetFagsak: Ressurs<IMinimalFagsak>) => {
                 if (påvirkerSystemLaster || !deepEqual(hentetFagsak, minimalFagsakRessurs)) {
-                    if (skalObfuskereData()) {
+                    if (skalObfuskereData) {
                         obfuskerFagsak(hentetFagsak);
                     }
                     settMinimalFagsakRessurs(hentetFagsak);
@@ -118,7 +118,7 @@ export const FagsakProvider = (props: PropsWithChildren) => {
             if (brukerEtterTilgangssjekk.status === RessursStatus.FEILET) {
                 settBruker(sjekkTilgangTilPerson(hentetPerson));
             } else if (brukerEtterTilgangssjekk.status === RessursStatus.SUKSESS) {
-                if (skalObfuskereData()) {
+                if (skalObfuskereData) {
                     obfuskerPersonInfo(brukerEtterTilgangssjekk);
                 }
                 const brukerMedFagsakId = brukerEtterTilgangssjekk.data;
