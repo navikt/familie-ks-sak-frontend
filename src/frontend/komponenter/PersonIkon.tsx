@@ -15,16 +15,16 @@ import styles from './PersonIkon.module.css';
 import IkkeTilgang from '../ikoner/IkkeTilgang';
 
 interface PersonIkonProps {
-    kjønn: kjønnType;
-    erBarn: boolean;
+    kjønn?: kjønnType;
+    erBarn?: boolean;
     størrelse?: 's' | 'm';
     erAdresseBeskyttet?: boolean;
     harTilgang?: boolean;
 }
 
 export const PersonIkon = ({
-    kjønn,
-    erBarn,
+    kjønn = kjønnType.UKJENT,
+    erBarn = false,
     størrelse = 's',
     erAdresseBeskyttet = false,
     harTilgang = true,

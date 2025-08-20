@@ -25,6 +25,21 @@ const Divider = () => {
 };
 
 const Personlinje: React.FC<IProps> = ({ bruker }) => {
+    if (bruker === undefined) {
+        return (
+            <InnholdContainer>
+                <HStack align="center" gap="3 4">
+                    <HStack align="center" gap="3 4">
+                        <PersonIkon kjønn={kjønnType.UKJENT} erBarn={false} />
+                        <Divider />
+                        <HStack align="center" gap="1">
+                            Personen er ikke identifisert
+                        </HStack>
+                    </HStack>
+                </HStack>
+            </InnholdContainer>
+        );
+    }
     return (
         <InnholdContainer>
             <HStack align="center" gap="3 4">
