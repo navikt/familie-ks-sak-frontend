@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
+import { Link as ReactRouterLink } from 'react-router';
+
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { HStack, Link, Tooltip } from '@navikt/ds-react';
 
@@ -128,7 +130,7 @@ export const lagLenkePåType = (
                 return behandlingstyper[behandling.type].navn;
             }
             return (
-                <Link href={`/fagsak/${fagsakId}/${behandling.behandlingId}`}>
+                <Link as={ReactRouterLink} to={`/fagsak/${fagsakId}/${behandling.behandlingId}`}>
                     {behandlingstyper[behandling.type].navn}
                 </Link>
             );
@@ -168,7 +170,10 @@ export const lagLenkePåResultat = (
         case Saksoversiktstype.KONTANTSTØTTE:
             if (behandling.status === BehandlingStatus.AVSLUTTET) {
                 return (
-                    <Link href={`/fagsak/${minimalFagsak.id}/${behandling.behandlingId}`}>
+                    <Link
+                        as={ReactRouterLink}
+                        to={`/fagsak/${minimalFagsak.id}/${behandling.behandlingId}`}
+                    >
                         {behandling ? behandlingsresultater[behandling.resultat] : '-'}
                     </Link>
                 );
