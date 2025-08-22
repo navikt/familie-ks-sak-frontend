@@ -11,6 +11,9 @@ import type { HenleggÅrsak, IBehandling } from '../../../../../typer/behandling
 import type { IManueltBrevRequestPåBehandling } from '../../../../../typer/dokument';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
+/**
+ * @Deprecated - Erstattes av {@link HenleggBehandlingNy} og {@link useHenleggBehandlingForm}.
+ */
 const useHenleggBehandling = (lukkModal: () => void) => {
     const [visVeivalgModal, settVisVeivalgModal] = useState(false);
     const [begrunnelse, settBegrunnelse] = useState('');

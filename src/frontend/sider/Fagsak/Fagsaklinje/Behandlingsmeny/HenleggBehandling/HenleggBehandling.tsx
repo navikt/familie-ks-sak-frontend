@@ -38,6 +38,7 @@ interface HenleggÅrsakSelect extends HTMLSelectElement {
 const StyledVeivalgTekst = styled(BodyShort)`
     position: relative;
     top: -32px;
+
     svg {
         position: relative;
         top: 6px;
@@ -45,6 +46,9 @@ const StyledVeivalgTekst = styled(BodyShort)`
     }
 `;
 
+/**
+ * @Deprecated - Erstattes av {@link HenleggBehandlingNy}.
+ */
 const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
     const navigate = useNavigate();
     const [visModal, settVisModal] = useState(false);

@@ -124,6 +124,17 @@ export enum BehandlingSteg {
     AVSLUTT_BEHANDLING = 'AVSLUTT_BEHANDLING',
 }
 
+export function erPåHenleggbartSteg(steg: BehandlingSteg) {
+    return [
+        BehandlingSteg.REGISTRERE_SØKNAD,
+        BehandlingSteg.REGISTRERE_PERSONGRUNNLAG,
+        BehandlingSteg.VILKÅRSVURDERING,
+        BehandlingSteg.BEHANDLINGSRESULTAT,
+        BehandlingSteg.SIMULERING,
+        BehandlingSteg.VEDTAK,
+    ].includes(steg);
+}
+
 export enum BehandlingStegStatus {
     UTFØRT = 'UTFØRT',
     IKKE_UTFØRT = 'IKKE_UTFØRT',
