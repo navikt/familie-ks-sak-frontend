@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Navigate, Route, Routes } from 'react-router';
 import styled from 'styled-components';
 
-import { Alert } from '@navikt/ds-react';
+import { Alert, HStack, Loader } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingContainer from './Behandling/BehandlingContainer';
@@ -13,9 +13,11 @@ import { Fagsaklinje } from './Fagsaklinje/Fagsaklinje';
 import JournalpostListe from './journalposter/JournalpostListe';
 import Personlinje from './Personlinje/Personlinje';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
-import { useFagsakContext } from '../../context/fagsak/FagsakContext';
-import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
+import { FagsakProvider, useFagsakContext } from '../../context/fagsak/FagsakContext';
+import { useFagsakId } from '../../hooks/useFagsakId';
+import { useHentFagsak } from '../../hooks/useHentFagsak';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
+import type { IMinimalFagsak } from '../../typer/fagsak';
 
 const Innhold = styled.div`
     height: calc(100vh - 6rem);
@@ -27,116 +29,109 @@ const Hovedinnhold = styled.div`
     overflow: auto;
 `;
 
-const FagsakContainer: React.FunctionComponent = () => {
-    const { fagsakId } = useSakOgBehandlingParams();
-    useScrollTilAnker();
+const FagsakContainerInnhold = ({ minimalFagsak }: { minimalFagsak: IMinimalFagsak }) => {
+    const { bruker } = useFagsakContext();
 
-    const { bruker, minimalFagsakRessurs, hentMinimalFagsak } = useFagsakContext();
-
-    useEffect(() => {
-        if (fagsakId !== undefined) {
-            if (minimalFagsakRessurs.status !== RessursStatus.SUKSESS) {
-                hentMinimalFagsak(fagsakId);
-            } else if (
-                minimalFagsakRessurs.status === RessursStatus.SUKSESS &&
-                minimalFagsakRessurs.data.id !== parseInt(fagsakId, 10)
-            ) {
-                hentMinimalFagsak(fagsakId);
-            }
-        }
-    }, [fagsakId]);
-
-    switch (minimalFagsakRessurs.status) {
+    switch (bruker.status) {
         case RessursStatus.SUKSESS:
-            switch (bruker.status) {
-                case RessursStatus.SUKSESS:
-                    return (
-                        <Innhold>
-                            <Hovedinnhold id={'fagsak-main'}>
-                                <Personlinje bruker={bruker.data} />
-                                <Routes>
-                                    <Route
-                                        path="/saksoversikt"
-                                        element={
-                                            <>
-                                                <Fagsaklinje
-                                                    minimalFagsak={minimalFagsakRessurs.data}
-                                                />
-                                                <Saksoversikt
-                                                    minimalFagsak={minimalFagsakRessurs.data}
-                                                />
-                                            </>
-                                        }
-                                    />
-
-                                    <Route
-                                        path="/dokumentutsending"
-                                        element={
-                                            <>
-                                                <Fagsaklinje
-                                                    minimalFagsak={minimalFagsakRessurs.data}
-                                                />
-                                                <DokumentutsendingProvider
-                                                    fagsakId={minimalFagsakRessurs.data.id}
-                                                >
-                                                    <Dokumentutsending bruker={bruker.data} />
-                                                </DokumentutsendingProvider>
-                                            </>
-                                        }
-                                    />
-
-                                    <Route
-                                        path="/dokumenter"
-                                        element={
-                                            <>
-                                                <Fagsaklinje
-                                                    minimalFagsak={minimalFagsakRessurs.data}
-                                                />
-                                                <JournalpostListe bruker={bruker.data} />
-                                            </>
-                                        }
-                                    />
-
-                                    <Route
-                                        path="/:behandlingId/*"
-                                        element={
-                                            <BehandlingContainer
-                                                bruker={bruker.data}
-                                                minimalFagsak={minimalFagsakRessurs.data}
-                                            />
-                                        }
-                                    />
-                                    <Route
-                                        path="/"
-                                        element={
-                                            <Navigate to={`/fagsak/${fagsakId}/saksoversikt`} />
-                                        }
-                                    />
-                                </Routes>
-                            </Hovedinnhold>
-                        </Innhold>
-                    );
-                case RessursStatus.FEILET:
-                case RessursStatus.FUNKSJONELL_FEIL:
-                case RessursStatus.IKKE_TILGANG:
-                    return <Alert children={bruker.frontendFeilmelding} variant="error" />;
-                default:
-                    return <div />;
-            }
-        case RessursStatus.IKKE_TILGANG:
             return (
-                <Alert
-                    children={minimalFagsakRessurs.frontendFeilmelding}
-                    variant="error"
-                    contentMaxWidth={false}
-                />
+                <Innhold>
+                    <Hovedinnhold id={'fagsak-main'}>
+                        <Personlinje bruker={bruker.data} />
+                        <Routes>
+                            <Route
+                                path="/saksoversikt"
+                                element={
+                                    <>
+                                        <Fagsaklinje minimalFagsak={minimalFagsak} />
+                                        <Saksoversikt minimalFagsak={minimalFagsak} />
+                                    </>
+                                }
+                            />
+
+                            <Route
+                                path="/dokumentutsending"
+                                element={
+                                    <>
+                                        <Fagsaklinje minimalFagsak={minimalFagsak} />
+                                        <DokumentutsendingProvider fagsakId={minimalFagsak.id}>
+                                            <Dokumentutsending bruker={bruker.data} />
+                                        </DokumentutsendingProvider>
+                                    </>
+                                }
+                            />
+
+                            <Route
+                                path="/dokumenter"
+                                element={
+                                    <>
+                                        <Fagsaklinje minimalFagsak={minimalFagsak} />
+                                        <JournalpostListe bruker={bruker.data} />
+                                    </>
+                                }
+                            />
+
+                            <Route
+                                path="/:behandlingId/*"
+                                element={
+                                    <BehandlingContainer
+                                        bruker={bruker.data}
+                                        minimalFagsak={minimalFagsak}
+                                    />
+                                }
+                            />
+                            <Route
+                                path="/"
+                                element={
+                                    <Navigate to={`/fagsak/${minimalFagsak.id}/saksoversikt`} />
+                                }
+                            />
+                        </Routes>
+                    </Hovedinnhold>
+                </Innhold>
             );
         case RessursStatus.FEILET:
         case RessursStatus.FUNKSJONELL_FEIL:
-            return <Alert children={minimalFagsakRessurs.frontendFeilmelding} variant="error" />;
+        case RessursStatus.IKKE_TILGANG:
+            return <Alert children={bruker.frontendFeilmelding} variant="error" />;
         default:
             return <div />;
     }
+};
+
+const FagsakContainer: React.FunctionComponent = () => {
+    const fagsakId = useFagsakId();
+
+    useScrollTilAnker();
+
+    const {
+        data: minimalFagsak,
+        isPending: hentMinimalFagsakLaster,
+        error: hentMinimalFagsakError,
+    } = useHentFagsak(fagsakId);
+
+    if (hentMinimalFagsakLaster) {
+        return (
+            <HStack gap={'4'} margin={'space-16'}>
+                <Loader size={'small'} />
+                Laster fagsak...
+            </HStack>
+        );
+    }
+
+    if (hentMinimalFagsakError !== null) {
+        return (
+            <Alert variant={'error'}>
+                Feil oppstod ved innlasting av fagsak: {hentMinimalFagsakError.message}
+            </Alert>
+        );
+    }
+
+    return (
+        <FagsakProvider fagsak={minimalFagsak}>
+            <FagsakContainerInnhold minimalFagsak={minimalFagsak} />
+        </FagsakProvider>
+    );
 };
 
 export default FagsakContainer;

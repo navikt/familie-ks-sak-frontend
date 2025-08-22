@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../../context/AppContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
-import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
+import { useFagsakId } from '../../../../../hooks/useFagsakId';
+import { HentKlagebehandlingerQueryKeyFactory } from '../../../../../hooks/useHentKlagebehandlinger';
 import type { IBehandling, IRestNyBehandling } from '../../../../../typer/behandling';
 import { Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
 import type { IBehandlingstema } from '../../../../../typer/behandlingstema';
@@ -37,11 +39,11 @@ const useOpprettBehandling = ({
     lukkModal: () => void;
     onOpprettTilbakekrevingSuccess: () => void;
 }) => {
-    const { fagsakId } = useSakOgBehandlingParams();
+    const fagsakId = useFagsakId();
     const { settÅpenBehandling } = useBehandlingContext();
     const { bruker: brukerRessurs } = useFagsakContext();
     const { innloggetSaksbehandler } = useAppContext();
-    const { oppdaterKlagebehandlingerPåFagsak } = useFagsakContext();
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
     const bruker = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data : undefined;
@@ -141,7 +143,9 @@ const useOpprettBehandling = ({
             },
             response => {
                 if (response.status === RessursStatus.SUKSESS) {
-                    oppdaterKlagebehandlingerPåFagsak();
+                    queryClient.invalidateQueries({
+                        queryKey: HentKlagebehandlingerQueryKeyFactory.fagsak(fagsakId),
+                    });
                     lukkModal();
                     nullstillSkjema();
                 }

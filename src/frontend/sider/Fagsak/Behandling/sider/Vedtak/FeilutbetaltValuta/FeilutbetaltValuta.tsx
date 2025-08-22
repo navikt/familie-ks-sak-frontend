@@ -13,7 +13,7 @@ import { isoDatoPeriodeTilFormatertString } from '../../../../../../utils/dato';
 
 interface IFeilutbetaltValuta {
     behandlingId: number;
-    fagsakId: string | undefined;
+    fagsakId: number | undefined;
     feilutbetaltValutaListe: IRestFeilutbetaltValuta[];
     settErUlagretNyFeilutbetaltValutaPeriode: (erUlagretNyFeilutbetaltValuta: boolean) => void;
     erLesevisning: boolean;

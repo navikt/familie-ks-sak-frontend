@@ -10,7 +10,6 @@ import Behandlinger from './Behandlinger';
 import FagsakLenkepanel, { SaksoversiktPanelBredde } from './FagsakLenkepanel';
 import Utbetalinger from './Utbetalinger';
 import type { VisningBehandling } from './visningBehandling';
-import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingStatus, erBehandlingHenlagt } from '../../../typer/behandling';
 import { behandlingKategori, BehandlingKategori } from '../../../typer/behandlingstema';
@@ -25,6 +24,7 @@ import {
     periodeOverlapperMedValgtDato,
 } from '../../../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../utils/fagsak';
+import { useBehandlingContext } from '../Behandling/context/BehandlingContext';
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;
@@ -152,7 +152,7 @@ export function Saksoversikt({ minimalFagsak }: IProps) {
                         {løpendeMånedligUtbetaling()}
                     </div>
                 )}
-                <Behandlinger minimalFagsak={minimalFagsak} />
+                <Behandlinger fagsakId={minimalFagsak.id} />
             </VStack>
         </Box>
     );
