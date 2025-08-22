@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Heading } from '@navikt/ds-react';
 
-import BarnehagebarnTabell from './BarnehagebarnTabell';
+import { BarnehagebarnTabell } from './BarnehagebarnTabell';
 import BarnehagebarnTabellNavigator from './BarnehagebarnTabellNavigator';
 import BarnehagelisterFilterskjema from './BarnehagelisterFilterskjema';
 import { useBarnehagelister } from './useBarnehagelister';

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import styled from 'styled-components';
+import { Link as ReactRouterLink } from 'react-router';
 
-import { Alert, Link, Table } from '@navikt/ds-react';
+import { Alert, Box, Link, Table } from '@navikt/ds-react';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type {
@@ -12,20 +12,14 @@ import type {
 } from '../../typer/barnehagebarn';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 
-const StyledAlert = styled(Alert)`
-    margin-top: 1rem;
-`;
-
-export interface BarnehagebarnTabellProps<T> {
+interface BarnehagebarnTabellProps<T> {
     barnehagebarnRequestParams: BarnehagebarnRequestParams;
     barnehagebarnResponse: Ressurs<BarnehagebarnResponse<T>>;
     data: readonly T[];
     updateSortByAscDesc: (fieldName: string) => void;
 }
 
-const BarnehagebarnTabell: React.FC<BarnehagebarnTabellProps<Barnehagebarn>> = (
-    props: BarnehagebarnTabellProps<Barnehagebarn>
-) => {
+export const BarnehagebarnTabell = (props: BarnehagebarnTabellProps<Barnehagebarn>) => {
     const { barnehagebarnRequestParams, barnehagebarnResponse, data, updateSortByAscDesc } = props;
 
     function visAvvikstekst(avvik?: boolean) {
@@ -121,8 +115,9 @@ const BarnehagebarnTabell: React.FC<BarnehagebarnTabellProps<Barnehagebarn>> = (
                                 <Table.DataCell>
                                     {barnehagebarn.fagsakId ? (
                                         <Link
+                                            as={ReactRouterLink}
                                             title={`FagsakId: ${barnehagebarn.fagsakId}`}
-                                            href={`/fagsak/${barnehagebarn.fagsakId}/saksoversikt`}
+                                            to={`/fagsak/${barnehagebarn.fagsakId}/saksoversikt`}
                                         >
                                             Gå til saksoversikt
                                         </Link>
@@ -138,19 +133,22 @@ const BarnehagebarnTabell: React.FC<BarnehagebarnTabellProps<Barnehagebarn>> = (
 
             {barnehagebarnResponse.status === RessursStatus.SUKSESS &&
                 barnehagebarnResponse.data.content.length === 0 && (
-                    <StyledAlert variant="warning">Ingen barnehagebarn (ev tøm filter)</StyledAlert>
+                    <Box marginBlock="space-16 0">
+                        <Alert variant="warning">Ingen barnehagebarn (ev tøm filter)</Alert>
+                    </Box>
                 )}
             {(barnehagebarnResponse.status === RessursStatus.FEILET ||
                 barnehagebarnResponse.status === RessursStatus.FUNKSJONELL_FEIL ||
                 barnehagebarnResponse.status === RessursStatus.IKKE_TILGANG) && (
-                <StyledAlert variant="error">
-                    {barnehagebarnResponse.frontendFeilmelding}
-                </StyledAlert>
+                <Box marginBlock="space-16 0">
+                    <Alert variant="error">{barnehagebarnResponse.frontendFeilmelding}</Alert>
+                </Box>
             )}
             {barnehagebarnResponse.status === RessursStatus.HENTER && (
-                <StyledAlert variant="info">Henter...</StyledAlert>
+                <Box marginBlock="space-16 0">
+                    <Alert variant="info">Henter...</Alert>
+                </Box>
             )}
         </>
     );
 };
-export default BarnehagebarnTabell;
