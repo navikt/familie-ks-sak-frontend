@@ -22,9 +22,9 @@ import {
     erKlageFeilregistrertAvKA,
     harAnkeEksistertPåKlagebehandling,
     type IKlagebehandling,
+    Klagebehandlingstype,
     utledKlagebehandlingResultattekst,
 } from '../../../typer/klage';
-import { Klagebehandlingstype } from '../../../typer/klage';
 import type { ITilbakekrevingsbehandling } from '../../../typer/tilbakekrevingsbehandling';
 import {
     Behandlingsresultatstype,
@@ -92,16 +92,16 @@ export const hentBehandlingId = (saksoversiktsbehandling: Saksoversiktsbehandlin
 };
 
 export const hentBehandlingerTilSaksoversikten = (
-    minimalFagsak: IMinimalFagsak,
+    minimalFagsak: IMinimalFagsak | undefined,
     klagebehandlinger: IKlagebehandling[],
     tilbakekrevingsbehandlinger: ITilbakekrevingsbehandling[]
 ): Saksoversiktsbehandling[] => {
-    const kontantstøtteBehandlinger: Saksoversiktsbehandling[] = minimalFagsak.behandlinger.map(
-        behandling => ({
+    const kontantstøtteBehandlinger: Saksoversiktsbehandling[] =
+        minimalFagsak?.behandlinger.map(behandling => ({
             ...behandling,
             saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE,
-        })
-    );
+        })) || [];
+
     const saksoversiktTilbakekrevingsbehandlinger: Saksoversiktsbehandling[] =
         tilbakekrevingsbehandlinger.map(behandling => ({
             ...behandling,
@@ -160,7 +160,7 @@ export const lagLenkePåType = (
 };
 
 export const lagLenkePåResultat = (
-    minimalFagsak: IMinimalFagsak,
+    fagsakId: number,
     behandling: Saksoversiktsbehandling
 ): ReactNode => {
     if (!behandling.resultat) {
@@ -172,7 +172,7 @@ export const lagLenkePåResultat = (
                 return (
                     <Link
                         as={ReactRouterLink}
-                        to={`/fagsak/${minimalFagsak.id}/${behandling.behandlingId}`}
+                        to={`/fagsak/${fagsakId}/${behandling.behandlingId}`}
                     >
                         {behandling ? behandlingsresultater[behandling.resultat] : '-'}
                     </Link>
@@ -182,7 +182,7 @@ export const lagLenkePåResultat = (
         case Saksoversiktstype.TILBAKEBETALING:
             return (
                 <Link
-                    href={`/redirect/familie-tilbake/fagsystem/KS/fagsak/${minimalFagsak.id}/behandling/${behandling.behandlingId}`}
+                    href={`/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsakId}/behandling/${behandling.behandlingId}`}
                     onMouseDown={e => e.preventDefault()}
                     target="_blank"
                 >

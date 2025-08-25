@@ -1,6 +1,11 @@
 import { useMatch } from 'react-router';
 
-const useSakOgBehandlingParams = (): { fagsakId?: string; behandlingId?: string } => {
+const makeNumber = (id: string | undefined): number | undefined => {
+    const erTall = id !== undefined && !isNaN(Number(id));
+    return erTall ? Number(id) : undefined;
+};
+
+const useSakOgBehandlingParams = (): { fagsakId?: number; behandlingId?: string } => {
     const matchFagsakIdOgBehandlingId = useMatch('/fagsak/:fagsakId/:behandlingId/*');
     const matchBareFagsakId = useMatch('/fagsak/:fagsakId/*');
 
@@ -10,7 +15,7 @@ const useSakOgBehandlingParams = (): { fagsakId?: string; behandlingId?: string 
                 matchFagsakIdOgBehandlingId.params.fagsakId &&
                 isNaN(parseInt(matchFagsakIdOgBehandlingId.params.fagsakId))
                     ? undefined
-                    : matchFagsakIdOgBehandlingId.params.fagsakId,
+                    : makeNumber(matchFagsakIdOgBehandlingId.params.fagsakId),
             behandlingId:
                 matchFagsakIdOgBehandlingId.params.behandlingId &&
                 isNaN(parseInt(matchFagsakIdOgBehandlingId.params.behandlingId))
@@ -25,7 +30,7 @@ const useSakOgBehandlingParams = (): { fagsakId?: string; behandlingId?: string 
                 matchBareFagsakId.params.fagsakId &&
                 isNaN(parseInt(matchBareFagsakId.params.fagsakId))
                     ? undefined
-                    : matchBareFagsakId.params.fagsakId,
+                    : makeNumber(matchBareFagsakId.params.fagsakId),
             behandlingId: undefined,
         };
     }

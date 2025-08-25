@@ -2,7 +2,6 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 
 import type { IBehandling } from '../typer/behandling';
-import type { IMinimalFagsak } from '../typer/fagsak';
 import { FagsakDeltagerRolle, type IFagsakDeltager } from '../typer/fagsakdeltager';
 import { type ILogg, LoggType } from '../typer/logg';
 import {
@@ -77,21 +76,6 @@ export const obfuskerPersonInfo = (personInfo: Ressurs<IPersonInfo>) => {
     }
 };
 
-export const obfuskerFagsak = (fagsak: Ressurs<IMinimalFagsak>) => {
-    if (fagsak.status === RessursStatus.SUKSESS) {
-        fagsak.data.gjeldendeUtbetalingsperioder?.forEach(gup => {
-            let indeks = 1;
-            gup.utbetalingsperiodeDetaljer?.sort(sammenlignFødselsdato).forEach(upd => {
-                if (upd.person.type === PersonType.SØKER) {
-                    upd.person.navn = 'Søker Søkersen';
-                } else {
-                    upd.person.navn = '[' + indeks++ + '] Barn Barnesen';
-                }
-            });
-        });
-    }
-};
-
 export const obfuskerFagsakDeltager = (fagsakDeltager: Ressurs<IFagsakDeltager[]>) => {
     if (fagsakDeltager.status === RessursStatus.SUKSESS) {
         fagsakDeltager.data?.forEach(fagsakDeltager => {
@@ -106,7 +90,7 @@ export const obfuskerFagsakDeltager = (fagsakDeltager: Ressurs<IFagsakDeltager[]
     }
 };
 
-const sammenlignFødselsdato = <T extends { fødselsdato?: string; person?: IGrunnlagPerson }>(
+export const sammenlignFødselsdato = <T extends { fødselsdato?: string; person?: IGrunnlagPerson }>(
     a: T,
     b: T
 ) => {

@@ -15,7 +15,7 @@ import { summerBeløpForPerioder } from '../utils';
 
 interface IRefusjonEøs {
     behandlingId: number;
-    fagsakId: string | undefined;
+    fagsakId: number | undefined;
     refusjonEøsListe: IRestRefusjonEøs[];
     settErUlagretNyRefusjonEøsPeriode: (erUlagretNyRefusjonEøs: boolean) => void;
     skjulRefusjonEøs: () => void;
