@@ -1,7 +1,7 @@
 import React from 'react';
 
-import type { SkjemaBrevmottaker } from '../../../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
-import { Mottaker } from '../../../sider/Fagsak/Personlinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import type { SkjemaBrevmottaker } from '../../../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import { Mottaker } from '../../../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IPersonInfo } from '../../../typer/person';
 import { formaterIdent, lagBrukerLabel } from '../../../utils/formatter';
 

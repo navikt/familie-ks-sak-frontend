@@ -25,7 +25,7 @@ const ToKolonnerDiv = styled.div<{ $viserAlert?: boolean }>`
 `;
 
 const ManuellJournalføringContent: React.FC = () => {
-    const { dataForManuellJournalføring, minimalFagsak } = useManuellJournalføringContext();
+    const { dataForManuellJournalføring } = useManuellJournalføringContext();
 
     switch (dataForManuellJournalføring.status) {
         case RessursStatus.SUKSESS:
@@ -34,10 +34,7 @@ const ManuellJournalføringContent: React.FC = () => {
                 Journalstatus.MOTTATT;
             return (
                 <>
-                    <Personlinje
-                        bruker={dataForManuellJournalføring.data.person}
-                        minimalFagsak={minimalFagsak}
-                    />
+                    <Personlinje bruker={dataForManuellJournalføring.data.person} />
 
                     {dataForManuellJournalføring.data.journalpost.journalstatus !==
                         Journalstatus.MOTTATT && (

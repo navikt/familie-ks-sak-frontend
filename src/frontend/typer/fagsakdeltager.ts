@@ -32,6 +32,7 @@ export interface IFagsakDeltager {
     fagsakId?: number;
     adressebeskyttelseGradering?: Adressebeskyttelsegradering;
     harTilgang: boolean;
+    erEgenAnsatt?: boolean;
 }
 
 export interface ISøkParam {

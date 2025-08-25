@@ -33,3 +33,43 @@
         }
     }
 }
+
+.navLogo {
+    path {
+        fill: var(--a-white);
+    }
+
+    margin: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.ansattIkon {
+    border-radius: 100%;
+    padding: 2px;
+    place-content: center;
+
+    min-height: 24px;
+    min-width: 24px;
+    max-height: 24px;
+    max-width: 24px;
+}
+
+.ansattStorIkon {
+    min-height: 32px;
+    min-width: 32px;
+    max-height: 32px;
+    max-width: 32px;
+}
+
+.ansattMannlig {
+    background-color: var(--a-blue-400);
+}
+
+.ansattKvinnelig {
+    background-color: var(--a-purple-400);
+}
+
+.ansattAdresseBeskyttet {
+    background-color: var(--a-orange-600);
+}

@@ -57,6 +57,7 @@ export interface IPersonInfo {
     dødsfallDato?: string;
     fagsakId?: number;
     bostedsadresse?: IBostedsadresse;
+    erEgenAnsatt?: boolean;
 }
 
 export interface IForelderBarnRelasjon {

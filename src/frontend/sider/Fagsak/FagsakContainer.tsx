@@ -1,23 +1,21 @@
 import React, { useEffect } from 'react';
 
-import { Navigate, Route, Routes, useLocation } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
-import { ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingContainer from './Behandling/BehandlingContainer';
-import Høyremeny from './Behandling/Høyremeny/Høyremeny';
 import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
+import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
+import { Fagsaklinje } from './Fagsaklinje/Fagsaklinje';
 import JournalpostListe from './journalposter/JournalpostListe';
 import Personlinje from './Personlinje/Personlinje';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
 import { useFagsakContext } from '../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
-import Venstremeny from './Behandling/Venstremeny/Venstremeny';
-import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
 
 const Innhold = styled.div`
     height: calc(100vh - 6rem);
@@ -29,29 +27,9 @@ const Hovedinnhold = styled.div`
     overflow: auto;
 `;
 
-const VenstremenyContainer = styled.div`
-    min-width: 1rem;
-    border-right: 1px solid ${ABorderDivider};
-    overflow: hidden;
-`;
-
-const HøyremenyContainer = styled.div`
-    border-left: 1px solid ${ABorderDivider};
-    overflow-x: hidden;
-    overflow-y: scroll;
-`;
 const FagsakContainer: React.FunctionComponent = () => {
     const { fagsakId } = useSakOgBehandlingParams();
     useScrollTilAnker();
-
-    const location = useLocation();
-    const erPåSaksoversikt = location.pathname.includes('saksoversikt');
-    const erPåDokumentliste = location.pathname.includes('dokumenter');
-    const erPåDokumentutsending = location.pathname.includes('dokumentutsending');
-
-    const skalHaVenstremeny = !erPåSaksoversikt && !erPåDokumentliste && !erPåDokumentutsending;
-
-    const skalHaHøyremeny = !erPåSaksoversikt && !erPåDokumentutsending;
 
     const { bruker, minimalFagsakRessurs, hentMinimalFagsak } = useFagsakContext();
 
@@ -73,64 +51,70 @@ const FagsakContainer: React.FunctionComponent = () => {
             switch (bruker.status) {
                 case RessursStatus.SUKSESS:
                     return (
-                        <>
-                            <Personlinje
-                                bruker={bruker.data}
-                                minimalFagsak={minimalFagsakRessurs.data}
-                            />
-
-                            <Innhold>
-                                {skalHaVenstremeny && (
-                                    <VenstremenyContainer>
-                                        <Venstremeny />
-                                    </VenstremenyContainer>
-                                )}
-                                <Hovedinnhold id={'fagsak-main'}>
-                                    <Routes>
-                                        <Route
-                                            path="/saksoversikt"
-                                            element={
+                        <Innhold>
+                            <Hovedinnhold id={'fagsak-main'}>
+                                <Personlinje bruker={bruker.data} />
+                                <Routes>
+                                    <Route
+                                        path="/saksoversikt"
+                                        element={
+                                            <>
+                                                <Fagsaklinje
+                                                    minimalFagsak={minimalFagsakRessurs.data}
+                                                />
                                                 <Saksoversikt
                                                     minimalFagsak={minimalFagsakRessurs.data}
                                                 />
-                                            }
-                                        />
+                                            </>
+                                        }
+                                    />
 
-                                        <Route
-                                            path="/dokumentutsending"
-                                            element={
+                                    <Route
+                                        path="/dokumentutsending"
+                                        element={
+                                            <>
+                                                <Fagsaklinje
+                                                    minimalFagsak={minimalFagsakRessurs.data}
+                                                />
                                                 <DokumentutsendingProvider
                                                     fagsakId={minimalFagsakRessurs.data.id}
                                                 >
                                                     <Dokumentutsending bruker={bruker.data} />
                                                 </DokumentutsendingProvider>
-                                            }
-                                        />
+                                            </>
+                                        }
+                                    />
 
-                                        <Route
-                                            path="/dokumenter"
-                                            element={<JournalpostListe bruker={bruker.data} />}
-                                        />
+                                    <Route
+                                        path="/dokumenter"
+                                        element={
+                                            <>
+                                                <Fagsaklinje
+                                                    minimalFagsak={minimalFagsakRessurs.data}
+                                                />
+                                                <JournalpostListe bruker={bruker.data} />
+                                            </>
+                                        }
+                                    />
 
-                                        <Route
-                                            path="/:behandlingId/*"
-                                            element={<BehandlingContainer bruker={bruker.data} />}
-                                        />
-                                        <Route
-                                            path="/"
-                                            element={
-                                                <Navigate to={`/fagsak/${fagsakId}/saksoversikt`} />
-                                            }
-                                        />
-                                    </Routes>
-                                </Hovedinnhold>
-                                {skalHaHøyremeny && (
-                                    <HøyremenyContainer>
-                                        <Høyremeny bruker={bruker.data} />
-                                    </HøyremenyContainer>
-                                )}
-                            </Innhold>
-                        </>
+                                    <Route
+                                        path="/:behandlingId/*"
+                                        element={
+                                            <BehandlingContainer
+                                                bruker={bruker.data}
+                                                minimalFagsak={minimalFagsakRessurs.data}
+                                            />
+                                        }
+                                    />
+                                    <Route
+                                        path="/"
+                                        element={
+                                            <Navigate to={`/fagsak/${fagsakId}/saksoversikt`} />
+                                        }
+                                    />
+                                </Routes>
+                            </Hovedinnhold>
+                        </Innhold>
                     );
                 case RessursStatus.FEILET:
                 case RessursStatus.FUNKSJONELL_FEIL:
