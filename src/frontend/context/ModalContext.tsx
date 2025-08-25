@@ -6,24 +6,32 @@ import React, {
     useReducer,
 } from 'react';
 
+import type { HenleggÅrsak } from '../typer/behandling';
+
 interface ModalContext {
     hentTittel: (type: ModalType) => string;
     settTittel: (type: ModalType, tittel: string) => void;
-    åpneModal: <T extends keyof Args>(type: T, args: Args[T]) => void;
+    åpneModal: <T extends keyof typeof ModalType>(
+        type: T,
+        args: T extends keyof Args ? Args[T] : void
+    ) => void;
     lukkModal: (type: ModalType) => void;
     erModalÅpen: (type: ModalType) => boolean;
-    hentArgs: <T extends keyof Args>(type: T) => Args[T] | undefined;
+    hentArgs: <T extends keyof typeof ModalType>(
+        type: T
+    ) => T extends keyof Args ? Args[T] : undefined;
     hentBredde: (type: ModalType) => `${number}${string}`;
     settBredde: (type: ModalType, bredde: `${number}${string}`) => void;
 }
 
 export enum ModalType {
-    EXAMPLE_MODAL = 'EXAMPLE_MODAL',
+    HENLEGG_BEHANDLING_VEIVALG = 'HENLEGG_BEHANDLING_VEIVALG',
+    HENLEGG_BEHANDLING = 'HENLEGG_BEHANDLING',
     FEILMELDING = 'FEILMELDING',
 }
 
 export interface Args {
-    [ModalType.EXAMPLE_MODAL]: { fagsak: string };
+    [ModalType.HENLEGG_BEHANDLING_VEIVALG]: { årsak: HenleggÅrsak };
     [ModalType.FEILMELDING]: { feilmelding: string | React.ReactNode };
 }
 
@@ -33,21 +41,23 @@ interface BaseState {
     bredde: `${number}${string}`;
 }
 
-interface State {
-    [ModalType.EXAMPLE_MODAL]: BaseState & {
-        args: Args[ModalType.EXAMPLE_MODAL] | undefined;
-    };
-    [ModalType.FEILMELDING]: BaseState & {
-        args: Args[ModalType.FEILMELDING] | undefined;
-    };
-}
+type State = {
+    [key in ModalType]: key extends keyof Args
+        ? BaseState & { args: Args[key] | undefined }
+        : BaseState;
+};
 
-const initialState: { [key in ModalType]: State[key] } = {
-    [ModalType.EXAMPLE_MODAL]: {
-        tittel: 'Example modal',
+const initialState: State = {
+    [ModalType.HENLEGG_BEHANDLING_VEIVALG]: {
+        tittel: 'Behandling henlagt',
         åpen: false,
-        bredde: '80rem',
+        bredde: '35rem',
         args: undefined,
+    },
+    [ModalType.HENLEGG_BEHANDLING]: {
+        tittel: 'Henlegg behandling',
+        åpen: false,
+        bredde: '37rem',
     },
     [ModalType.FEILMELDING]: {
         tittel: 'Det har oppstått en feil',
@@ -69,9 +79,9 @@ interface SettTittelAction {
     payload: { type: ModalType; tittel: string };
 }
 
-interface ÅpneModalAction<T extends keyof Args> {
+interface ÅpneModalAction<T extends keyof typeof ModalType> {
     type: ActionType.ÅPNE_MODAL;
-    payload: { type: ModalType; args: Args[T] };
+    payload: { type: T; args: T extends keyof Args ? Args[T] : void };
 }
 
 interface LukkModalAction {
@@ -84,20 +94,20 @@ interface SettBreddeAction {
     payload: { type: ModalType; bredde: `${number}${string}` };
 }
 
-type Action<T extends keyof Args> =
+type Action<T extends keyof typeof ModalType> =
     | ÅpneModalAction<T>
     | LukkModalAction
     | SettBreddeAction
     | SettTittelAction;
 
-function reducer<T extends keyof Args>(state: State, action: Action<T>) {
+function reducer<T extends keyof typeof ModalType>(state: State, action: Action<T>) {
     const { type, payload } = action;
     switch (type) {
         case ActionType.ÅPNE_MODAL:
             return {
                 ...state,
                 [payload.type]: {
-                    ...state[payload.type],
+                    ...state[ModalType[payload.type]],
                     åpen: true,
                     args: payload.args,
                 },
@@ -154,7 +164,10 @@ export function ModalProvider({ children }: PropsWithChildren) {
     );
 
     const åpneModal = useCallback(
-        <T extends keyof Args>(type: ModalType, args: Args[T]) => {
+        <T extends keyof typeof ModalType>(
+            type: T,
+            args: T extends keyof Args ? Args[T] : void
+        ) => {
             dispatch({ type: ActionType.ÅPNE_MODAL, payload: { type, args } });
         },
         [dispatch]
@@ -175,8 +188,10 @@ export function ModalProvider({ children }: PropsWithChildren) {
     );
 
     const hentArgs = useCallback(
-        <T extends keyof Args>(type: T) => {
-            return state[type].args as Args[T];
+        <T extends keyof typeof ModalType>(type: T) => {
+            const stateFromType = state[ModalType[type]];
+            const value = 'args' in stateFromType ? stateFromType.args : undefined;
+            return value as T extends keyof Args ? Args[T] : undefined;
         },
         [state]
     );

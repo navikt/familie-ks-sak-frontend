@@ -13,6 +13,7 @@ import type { IMinimalFagsak } from '../../../typer/fagsak';
 import type { IPersonInfo } from '../../../typer/person';
 import { Fagsaklinje } from '../Fagsaklinje/Fagsaklinje';
 import Venstremeny from './Venstremeny/Venstremeny';
+import { HenleggBehandlingVeivalgModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingVeivalgModal';
 
 const FlexContainer = styled.div`
     display: flex;
@@ -48,6 +49,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFa
         case RessursStatus.SUKSESS:
             return (
                 <>
+                    <HenleggBehandlingVeivalgModal />
                     <Fagsaklinje minimalFagsak={minimalFagsak} />
                     <FlexContainer>
                         <VenstremenyContainer>
