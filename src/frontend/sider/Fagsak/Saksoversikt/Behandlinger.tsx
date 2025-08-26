@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 import { differenceInMilliseconds } from 'date-fns';
-import styled from 'styled-components';
 
 import { Alert, BodyShort, Heading, Skeleton, Switch, Table, VStack } from '@navikt/ds-react';
 
 import { Behandling } from './Behandling';
+import styles from './Behandlinger.module.css';
 import type { Saksoversiktsbehandling } from './utils';
 import {
     hentBehandlingerTilSaksoversikten,
@@ -18,30 +18,17 @@ import { useHentKlagebehandlinger } from '../../../hooks/useHentKlagebehandlinge
 import { useHentTilbakekrevingsbehandlinger } from '../../../hooks/useHentTilbakekrevingsbehandlinger';
 import { isoStringTilDate } from '../../../utils/dato';
 
-const SwitchHøyre = styled(Switch)`
-    margin-right: 0.275rem;
-    float: right;
-`;
-
-const StyledOpprettetKolonne = styled(Table.HeaderCell)`
-    width: 10%;
-`;
-
-const StyledResultatKolonne = styled(Table.HeaderCell)`
-    width: 22%;
-`;
-
 const TableHeader = () => {
     return (
         <Table.Header>
             <Table.Row>
-                <StyledOpprettetKolonne children={'Opprettet'} />
+                <Table.HeaderCell children={'Opprettet'} className={styles.opprettetKolonne} />
                 <Table.HeaderCell children={'Årsak'} />
                 <Table.HeaderCell children={'Type'} />
                 <Table.HeaderCell children={'Behandlingstema'} />
                 <Table.HeaderCell children={'Status'} />
                 <Table.HeaderCell children={'Vedtaksdato'} />
-                <StyledResultatKolonne children={'Resultat'} />
+                <Table.HeaderCell children={'Resultat'} className={styles.resultatKolonne} />
             </Table.Row>
         </Table.Header>
     );
@@ -124,8 +111,9 @@ export function Behandlinger({ fagsakId }: Props) {
                 <Heading level="2" size={'medium'} spacing>
                     Behandlinger
                     {finnesRadSomKanFiltreresBort && (
-                        <SwitchHøyre
+                        <Switch
                             size="small"
+                            className={styles.switchHøyre}
                             position="left"
                             id={'vis-henlagte-behandlinger'}
                             checked={visHenlagteBehandlinger}
@@ -134,7 +122,7 @@ export function Behandlinger({ fagsakId }: Props) {
                             }}
                         >
                             Vis henlagte behandlinger
-                        </SwitchHøyre>
+                        </Switch>
                     )}
                 </Heading>
                 {saksoversiktbehandlinger.length > 0 ? (
