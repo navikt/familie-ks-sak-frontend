@@ -14,8 +14,10 @@ import { Alert, Detail, Heading } from '@navikt/ds-react';
 import { AFontWeightRegular, ASpacing4 } from '@navikt/ds-tokens/dist/tokens';
 
 import RegisteropplysningerTabell from './RegisteropplysningerTabell';
+import { useAppContext } from '../../../../../../context/AppContext';
 import type { IRestRegisterhistorikk } from '../../../../../../typer/person';
 import { Registeropplysning } from '../../../../../../typer/registeropplysning';
+import { ToggleNavn } from '../../../../../../typer/toggles';
 import { Datoformat, isoStringTilFormatertString } from '../../../../../../utils/dato';
 
 const Container = styled.div`
@@ -35,6 +37,7 @@ const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({
     opplysninger,
     fødselsdato,
 }) => {
+    const { toggles } = useAppContext();
     const manglerRegisteropplysninger = opplysninger.statsborgerskap.length === 0;
 
     const personErDød = opplysninger.dødsboadresse.length > 0;
@@ -118,6 +121,19 @@ const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({
                         ikon={<HouseIcon fontSize={'1.5rem'} title="Hjem-ikon" focusable="false" />}
                         historikk={opplysninger.bostedsadresse}
                     />
+                    {toggles[ToggleNavn.skalViseOppholdsadresse] && (
+                        <RegisteropplysningerTabell
+                            opplysningstype={Registeropplysning.OPPHOLDSADRESSE}
+                            ikon={
+                                <HouseIcon
+                                    fontSize={'1.5rem'}
+                                    title="Hjem-ikon"
+                                    focusable="false"
+                                />
+                            }
+                            historikk={opplysninger.oppholdsadresse}
+                        />
+                    )}
                 </Container>
             )}
         </>

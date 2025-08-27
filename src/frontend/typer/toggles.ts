@@ -13,6 +13,7 @@ export enum ToggleNavn {
     bosattSvalbard = 'familie-ks-sak.bosatt-svalbard',
     brukNyHenleggModal = 'familie-ks-sak.bruk-ny-henlegg-modal',
     brukReactQueryPaaSaksoversiktsiden = 'familie-ks-sak.bruk-react-query-paa-saksoversiktsiden',
+    skalViseOppholdsadresse = 'familie-ks-sak.skal-vise-oppholdsadresse',
 }
 
 export const alleTogglerAv = (): IToggles => {
