@@ -2,10 +2,10 @@ import React, { createContext, useContext } from 'react';
 
 import { useNavigate } from 'react-router';
 
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeiloppsummeringFeil, ISkjema } from '@navikt/familie-skjema';
-import { RessursStatus } from '@navikt/familie-typer';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
@@ -18,7 +18,7 @@ import type {
     Målform,
 } from '../../../../../typer/søknad';
 import { hentBarnMedLøpendeUtbetaling } from '../../../../../utils/fagsak';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface Props extends React.PropsWithChildren {
     åpenBehandling: IBehandling;

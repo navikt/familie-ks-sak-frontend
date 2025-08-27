@@ -7,15 +7,17 @@ import { Alert, Box, Heading, Link, VStack } from '@navikt/ds-react';
 import { byggTomRessurs } from '@navikt/familie-typer';
 
 import Behandlinger from './Behandlinger';
+import BehandlingerOld from './BehandlingerOld';
 import FagsakLenkepanel, { SaksoversiktPanelBredde } from './FagsakLenkepanel';
 import Utbetalinger from './Utbetalinger';
 import type { VisningBehandling } from './visningBehandling';
-import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
+import { useAppContext } from '../../../context/AppContext';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingStatus, erBehandlingHenlagt } from '../../../typer/behandling';
 import { behandlingKategori, BehandlingKategori } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
+import { ToggleNavn } from '../../../typer/toggles';
 import { Vedtaksperiodetype } from '../../../typer/vedtaksperiode';
 import {
     dateTilFormatertString,
@@ -25,6 +27,7 @@ import {
     periodeOverlapperMedValgtDato,
 } from '../../../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../utils/fagsak';
+import { useBehandlingContext } from '../Behandling/context/BehandlingContext';
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;
@@ -32,6 +35,7 @@ interface IProps {
 
 export function Saksoversikt({ minimalFagsak }: IProps) {
     const { settÅpenBehandling } = useBehandlingContext();
+    const { toggles } = useAppContext();
 
     React.useEffect(() => {
         settÅpenBehandling(byggTomRessurs(), false);
@@ -152,7 +156,11 @@ export function Saksoversikt({ minimalFagsak }: IProps) {
                         {løpendeMånedligUtbetaling()}
                     </div>
                 )}
-                <Behandlinger minimalFagsak={minimalFagsak} />
+                {toggles[ToggleNavn.brukReactQueryPaaSaksoversiktsiden] ? (
+                    <Behandlinger fagsakId={minimalFagsak.id} />
+                ) : (
+                    <BehandlingerOld minimalFagsak={minimalFagsak} />
+                )}
             </VStack>
         </Box>
     );

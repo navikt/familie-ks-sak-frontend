@@ -20,7 +20,7 @@ import { BehandlingSteg, BehandlingÅrsak } from '../../../../../typer/behandlin
 import { Datoformat, isoStringTilFormatertString } from '../../../../../utils/dato';
 import { erProd } from '../../../../../utils/miljø';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const UregistrerteBarnListe = styled.ol`
     margin: ${ASpacing2} 0;
