@@ -12,6 +12,7 @@ export enum ToggleNavn {
     skalAlltidViseAlleVedtaksperioder = 'familie-ks-sak-frontend.alltid-vis-alle-vedtaksperioder',
     bosattSvalbard = 'familie-ks-sak.bosatt-svalbard',
     brukNyHenleggModal = 'familie-ks-sak.bruk-ny-henlegg-modal',
+    skalViseOppholdsadresse = 'familie-ks-sak.skal-vise-oppholdsadresse',
 }
 
 export const alleTogglerAv = (): IToggles => {
