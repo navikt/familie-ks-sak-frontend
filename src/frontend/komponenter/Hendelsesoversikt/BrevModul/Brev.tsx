@@ -1,9 +1,8 @@
 import * as React from 'react';
 
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 
-import { Button, Modal } from '@navikt/ds-react';
+import { Button, Modal, VStack } from '@navikt/ds-react';
 
 import Brevskjema from './Brevskjema';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
@@ -14,10 +13,6 @@ interface IProps {
     bruker: IPersonInfo;
 }
 
-const BoksMedMargin = styled.div`
-    margin: 1rem 1.25rem;
-`;
-
 const Brev = ({ onIModalClick, bruker }: IProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
@@ -25,7 +20,7 @@ const Brev = ({ onIModalClick, bruker }: IProps) => {
     const [visInnsendtBrevModal, settVisInnsendtBrevModal] = React.useState(false);
 
     return (
-        <BoksMedMargin>
+        <VStack marginInline={'space-20'} marginBlock={'space-16'}>
             <Brevskjema
                 onSubmitSuccess={() => {
                     settVisInnsendtBrevModal(true);
@@ -70,7 +65,7 @@ const Brev = ({ onIModalClick, bruker }: IProps) => {
                     </Modal.Footer>
                 </Modal>
             )}
-        </BoksMedMargin>
+        </VStack>
     );
 };
 export default Brev;
