@@ -11,8 +11,8 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnBrevetGjelder from './BarnBrevetGjelder';
 import BrevmottakerListe from './BrevmottakerListe';
-import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
+import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import { useBrevModul } from './useBrevModul';
 import { ModalType } from '../../../context/ModalContext';
 import { useModal } from '../../../hooks/useModal';
