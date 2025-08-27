@@ -80,7 +80,8 @@ const RegisteropplysningerTabell: React.FC<IRegisteropplysningerTabellProps> = (
     const skalVæreEkspanderbar =
         !manglerOpplysninger &&
         historikk.length > GRENSE_FOR_EKSPANDERBAR_HISTORIKK &&
-        opplysningstype === Registeropplysning.BOSTEDSADRESSE;
+        (opplysningstype === Registeropplysning.BOSTEDSADRESSE ||
+            opplysningstype === Registeropplysning.OPPHOLDSADRESSE);
 
     const synligHistorikk =
         !skalVæreEkspanderbar || erEkspandert

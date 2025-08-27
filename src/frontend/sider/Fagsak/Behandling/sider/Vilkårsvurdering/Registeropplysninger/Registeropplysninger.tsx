@@ -118,6 +118,11 @@ const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({
                         ikon={<HouseIcon fontSize={'1.5rem'} title="Hjem-ikon" focusable="false" />}
                         historikk={opplysninger.bostedsadresse}
                     />
+                    <RegisteropplysningerTabell
+                        opplysningstype={Registeropplysning.OPPHOLDSADRESSE}
+                        ikon={<HouseIcon fontSize={'1.5rem'} title="Hjem-ikon" focusable="false" />}
+                        historikk={opplysninger.oppholdsadresse}
+                    />
                 </Container>
             )}
         </>
