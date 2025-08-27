@@ -106,7 +106,7 @@ export const obfuskerFagsakDeltager = (fagsakDeltager: Ressurs<IFagsakDeltager[]
     }
 };
 
-const sammenlignFødselsdato = <T extends { fødselsdato?: string; person?: IGrunnlagPerson }>(
+export const sammenlignFødselsdato = <T extends { fødselsdato?: string; person?: IGrunnlagPerson }>(
     a: T,
     b: T
 ) => {

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 import { differenceInMilliseconds } from 'date-fns';
-import styled from 'styled-components';
 
-import { Alert, BodyShort, Heading, Switch, Table, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Heading, Skeleton, Switch, Table, VStack } from '@navikt/ds-react';
 
 import { Behandling } from './Behandling';
+import styles from './Behandlinger.module.css';
 import type { Saksoversiktsbehandling } from './utils';
 import {
     hentBehandlingerTilSaksoversikten,
@@ -13,52 +13,96 @@ import {
     hentTidspunktForSortering,
     skalRadVises,
 } from './utils';
-import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
-import type { IMinimalFagsak } from '../../../typer/fagsak';
+import { useHentFagsak } from '../../../hooks/useHentFagsak';
+import { useHentKlagebehandlinger } from '../../../hooks/useHentKlagebehandlinger';
+import { useHentTilbakekrevingsbehandlinger } from '../../../hooks/useHentTilbakekrevingsbehandlinger';
 import { isoStringTilDate } from '../../../utils/dato';
-import { ressursHarFeilet } from '../../../utils/ressursUtils';
 
-const SwitchHøyre = styled(Switch)`
-    margin-right: 0.275rem;
-    float: right;
-`;
+const TableHeader = () => {
+    return (
+        <Table.Header>
+            <Table.Row>
+                <Table.HeaderCell children={'Opprettet'} className={styles.opprettetKolonne} />
+                <Table.HeaderCell children={'Årsak'} />
+                <Table.HeaderCell children={'Type'} />
+                <Table.HeaderCell children={'Behandlingstema'} />
+                <Table.HeaderCell children={'Status'} />
+                <Table.HeaderCell children={'Vedtaksdato'} />
+                <Table.HeaderCell children={'Resultat'} className={styles.resultatKolonne} />
+            </Table.Row>
+        </Table.Header>
+    );
+};
 
-const StyledOpprettetKolonne = styled(Table.HeaderCell)`
-    width: 10%;
-`;
+type Props = {
+    fagsakId: number;
+};
 
-const StyledResultatKolonne = styled(Table.HeaderCell)`
-    width: 22%;
-`;
+export function Behandlinger({ fagsakId }: Props) {
+    const [visHenlagteBehandlinger, setVisHenlagteBehandlinger] = useState(false);
 
-interface IBehandlingshistorikkProps {
-    minimalFagsak: IMinimalFagsak;
-}
+    const {
+        data: minimalFagsak,
+        isPending: hentMinimalFagsakLaster,
+        error: hentMinimalFagsakError,
+    } = useHentFagsak(fagsakId);
 
-const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) => {
-    const { klagebehandlinger, klageStatus, tilbakekrevingsbehandlinger, tilbakekrevingStatus } =
-        useFagsakContext();
+    const {
+        data: klagebehandlinger,
+        isPending: hentKlagebehandlingLaster,
+        error: hentKlagebehandlingError,
+    } = useHentKlagebehandlinger(fagsakId);
 
-    const behandlinger = hentBehandlingerTilSaksoversikten(
+    const {
+        data: tilbakekrevingsbehandlinger,
+        isPending: hentTilbakekrevingsbehandlingerLaster,
+        error: hentTilbakekrevingsbehandlingerError,
+    } = useHentTilbakekrevingsbehandlinger(fagsakId);
+
+    const behandlingerLaster =
+        hentKlagebehandlingLaster ||
+        hentTilbakekrevingsbehandlingerLaster ||
+        hentMinimalFagsakLaster;
+
+    if (behandlingerLaster) {
+        return (
+            <VStack gap={'2'} marginBlock={'1 0'}>
+                <Heading level={'2'} size={'medium'} spacing={true}>
+                    Behandlinger
+                </Heading>
+                <Table size={'large'}>
+                    <TableHeader />
+                    <Table.Body />
+                </Table>
+                <Skeleton variant={'rectangle'} width={'100%'} height={'2.5rem'} />
+                <Skeleton variant={'rectangle'} width={'100%'} height={'2.5rem'} />
+                <Skeleton variant={'rectangle'} width={'100%'} height={'2.5rem'} />
+            </VStack>
+        );
+    }
+    const saksoversiktbehandlinger = hentBehandlingerTilSaksoversikten(
         minimalFagsak,
-        klagebehandlinger,
-        tilbakekrevingsbehandlinger
+        klagebehandlinger ?? [],
+        tilbakekrevingsbehandlinger ?? []
     );
 
-    const finnesRadSomKanFiltreresBort = behandlinger.some(
+    const finnesRadSomKanFiltreresBort = saksoversiktbehandlinger.some(
         (behandling: Saksoversiktsbehandling) => !skalRadVises(behandling, false)
     );
 
-    const [visHenlagteBehandlinger, setVisHenlagteBehandlinger] = useState(false);
-
     return (
         <VStack gap="6">
-            {ressursHarFeilet(klageStatus) && (
+            {hentMinimalFagsakError !== null && (
+                <Alert variant="warning">
+                    <BodyShort>Fagsaken er ikke tilgjengelig for øyeblikket.</BodyShort>
+                </Alert>
+            )}
+            {hentKlagebehandlingError !== null && (
                 <Alert variant="warning">
                     <BodyShort>Klagebehandlinger er ikke tilgjengelig for øyeblikket.</BodyShort>
                 </Alert>
             )}
-            {ressursHarFeilet(tilbakekrevingStatus) && (
+            {hentTilbakekrevingsbehandlingerError !== null && (
                 <Alert variant="warning">
                     <BodyShort>Tilbakekreving er ikke tilgjengelig for øyeblikket.</BodyShort>
                 </Alert>
@@ -67,8 +111,9 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                 <Heading level="2" size={'medium'} spacing>
                     Behandlinger
                     {finnesRadSomKanFiltreresBort && (
-                        <SwitchHøyre
+                        <Switch
                             size="small"
+                            className={styles.switchHøyre}
                             position="left"
                             id={'vis-henlagte-behandlinger'}
                             checked={visHenlagteBehandlinger}
@@ -77,24 +122,14 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                             }}
                         >
                             Vis henlagte behandlinger
-                        </SwitchHøyre>
+                        </Switch>
                     )}
                 </Heading>
-                {behandlinger.length > 0 ? (
+                {saksoversiktbehandlinger.length > 0 ? (
                     <Table size={'large'}>
-                        <Table.Header>
-                            <Table.Row>
-                                <StyledOpprettetKolonne children={'Opprettet'} />
-                                <Table.HeaderCell children={'Årsak'} />
-                                <Table.HeaderCell children={'Type'} />
-                                <Table.HeaderCell children={'Behandlingstema'} />
-                                <Table.HeaderCell children={'Status'} />
-                                <Table.HeaderCell children={'Vedtaksdato'} />
-                                <StyledResultatKolonne children={'Resultat'} />
-                            </Table.Row>
-                        </Table.Header>
+                        <TableHeader />
                         <Table.Body>
-                            {behandlinger
+                            {saksoversiktbehandlinger
                                 .filter(behandling =>
                                     skalRadVises(behandling, visHenlagteBehandlinger)
                                 )
@@ -108,7 +143,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                                     <Behandling
                                         key={hentBehandlingId(behandling)}
                                         saksoversiktsbehandling={behandling}
-                                        minimalFagsak={minimalFagsak}
+                                        fagsakId={fagsakId}
                                     />
                                 ))}
                         </Table.Body>
@@ -119,6 +154,6 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
             </div>
         </VStack>
     );
-};
+}
 
 export default Behandlinger;
