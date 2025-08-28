@@ -25,6 +25,7 @@ interface ModalContext {
 }
 
 export enum ModalType {
+    OPPRETT_FAGSAK = 'OPPRETT_FAGSAK',
     HENLEGG_BEHANDLING_VEIVALG = 'HENLEGG_BEHANDLING_VEIVALG',
     HENLEGG_BEHANDLING = 'HENLEGG_BEHANDLING',
     FEILMELDING = 'FEILMELDING',
@@ -32,6 +33,7 @@ export enum ModalType {
 }
 
 export interface Args {
+    [ModalType.OPPRETT_FAGSAK]: { ident: string };
     [ModalType.HENLEGG_BEHANDLING_VEIVALG]: { årsak: HenleggÅrsak };
     [ModalType.FEILMELDING]: { feilmelding: string | React.ReactNode };
     [ModalType.FORHÅNDSVIS_PDF]: { blob: Blob };
@@ -50,6 +52,12 @@ type State = {
 };
 
 const initialState: State = {
+    [ModalType.OPPRETT_FAGSAK]: {
+        tittel: 'Opprett fagsak',
+        åpen: false,
+        bredde: '50rem',
+        args: undefined,
+    },
     [ModalType.HENLEGG_BEHANDLING_VEIVALG]: {
         tittel: 'Behandling henlagt',
         åpen: false,
