@@ -6,6 +6,7 @@ import { FileTextIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
 import {
     Button,
     Fieldset,
+    HStack,
     Label,
     Loader,
     Select,
@@ -24,8 +25,8 @@ import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from
 import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
 import { useBrevModul } from './useBrevModul';
 import { ModalType } from '../../../context/ModalContext';
-import { useHentForhåndsvisbarBehandlingBrevPdf } from '../../../hooks/useHentForhåndsvisbarBehandlingBrevPdf';
 import { useModal } from '../../../hooks/useModal';
+import { useOpprettForhåndsvisbarBehandlingBrevPdf } from '../../../hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
 import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
 import type { IManueltBrevRequestPåBehandling } from '../../../typer/dokument';
@@ -113,18 +114,18 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
     const { åpneModal: åpneForhåndsvisPdfModal } = useModal(ModalType.FORHÅNDSVIS_PDF);
     const { åpneModal: åpneFeilmeldingModal } = useModal(ModalType.FEILMELDING);
 
-    const { refetch: hentForhåndsvisbarBrevPdf, isFetching: isHentForhåndsvisbarBrevPdfFetching } =
-        useHentForhåndsvisbarBehandlingBrevPdf({
-            behandlingId: behandlingId,
-            payload: hentSkjemaData(),
-            onSuccess: blob => åpneForhåndsvisPdfModal({ blob }),
-            onError: error => åpneFeilmeldingModal({ feilmelding: error.message }),
-            enabled: false,
-        });
+    const {
+        mutate: opprettForhåndsvisbarBrevPdf,
+        isPending: isOpprettForhåndsvisbarBrevPdfPending,
+    } = useOpprettForhåndsvisbarBehandlingBrevPdf({
+        onSuccess: blob => åpneForhåndsvisPdfModal({ blob }),
+        onError: error => åpneFeilmeldingModal({ feilmelding: error.message }),
+    });
 
     const brevMaler = hentMuligeBrevMaler();
     const skjemaErLåst =
-        skjema.submitRessurs.status === RessursStatus.HENTER || isHentForhåndsvisbarBrevPdfFetching;
+        skjema.submitRessurs.status === RessursStatus.HENTER ||
+        isOpprettForhåndsvisbarBrevPdfPending;
 
     const fieldsetId = 'Fritekster-brev';
     const erMaksAntallKulepunkter =
@@ -404,15 +405,28 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                     id={'forhandsvis-vedtaksbrev'}
                     variant={'tertiary'}
                     size={'medium'}
-                    disabled={skjemaErLåst || isHentForhåndsvisbarBrevPdfFetching}
+                    disabled={skjemaErLåst || isOpprettForhåndsvisbarBrevPdfPending}
                     onClick={() => {
+                        if (behandlingId === undefined) {
+                            // TODO: Fjern når BehandlingContext alltid inneholder en behandling. Dette burde aldri skje.
+                            åpneFeilmeldingModal({
+                                feilmelding: 'Kan ikke forhåndsvise PDF uten behandling.',
+                            });
+                            return;
+                        }
                         if (kanSendeSkjema()) {
-                            hentForhåndsvisbarBrevPdf();
+                            opprettForhåndsvisbarBrevPdf({
+                                behandlingId: behandlingId,
+                                payload: hentSkjemaData(),
+                            });
                         }
                     }}
                     icon={<FileTextIcon />}
                 >
-                    Forhåndsvis {isHentForhåndsvisbarBrevPdfFetching && <Loader size={'small'} />}
+                    <HStack gap={'space-8'}>
+                        Forhåndsvis
+                        {isOpprettForhåndsvisbarBrevPdfPending && <Loader size={'small'} />}
+                    </HStack>
                 </Button>
                 <Button
                     variant={'secondary'}
