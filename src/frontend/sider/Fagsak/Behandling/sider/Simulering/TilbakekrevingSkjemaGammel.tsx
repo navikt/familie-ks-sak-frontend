@@ -15,27 +15,25 @@ import {
     HStack,
     Label,
     Link,
-    Loader,
     Radio,
     RadioGroup,
     Spacer,
     Tag,
     Textarea,
 } from '@navikt/ds-react';
-import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
+import type { Ressurs } from '@navikt/familie-typer';
 
 import { useSimuleringContext } from './SimuleringContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
-import { ModalType } from '../../../../../context/ModalContext';
-import { useModal } from '../../../../../hooks/useModal';
-import { useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf } from '../../../../../hooks/useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf';
+import useDokument from '../../../../../hooks/useDokument';
 import type { BrevmottakereAlertBehandlingProps } from '../../../../../komponenter/BrevmottakereAlert';
 import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAlert';
+import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisningModal';
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../../../typer/simulering';
 import type { Målform } from '../../../../../typer/søknad';
 import { målform } from '../../../../../typer/søknad';
-import { useBehandlingContext } from '../../context/BehandlingContext';
+import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 const ForhåndsvisVarselKnappContainer = styled.div`
     display: flex;
@@ -69,11 +67,15 @@ const StyledLabel = styled(Label)`
     margin-top: 4rem;
 `;
 
+interface IForhåndsvisTilbakekrevingsvarselbrevRequest {
+    fritekst: string;
+}
+
 const StyledBrevmottakereAlert = styled(BrevmottakereAlert)<BrevmottakereAlertBehandlingProps>`
     margin: 1rem 0 3rem 2rem;
 `;
 
-const TilbakekrevingSkjema: React.FC<{
+const TilbakekrevingSkjemaGammel: React.FC<{
     søkerMålform: Målform;
     harÅpenTilbakekrevingRessurs: Ressurs<boolean>;
 }> = ({ søkerMålform, harÅpenTilbakekrevingRessurs }) => {
@@ -81,18 +83,8 @@ const TilbakekrevingSkjema: React.FC<{
     const { tilbakekrevingSkjema, hentFeilTilOppsummering, maksLengdeTekst } =
         useSimuleringContext();
     const { fritekstVarsel, begrunnelse, tilbakekrevingsvalg } = tilbakekrevingSkjema.felter;
-
-    const { åpneModal: åpneForhåndsvisPdfModal } = useModal(ModalType.FORHÅNDSVIS_PDF);
-    const { åpneModal: åpneFeilmeldingModal } = useModal(ModalType.FEILMELDING);
-
-    const {
-        mutate: opprettTilbakekrevingVarselBrevPdf,
-        isPending: isOpprettTilbakekrevingVarselBrevPdfPending,
-    } = useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf({
-        onSuccess: blob => åpneForhåndsvisPdfModal({ blob }),
-        onError: error => åpneFeilmeldingModal({ feilmelding: error.message }),
-    });
-
+    const { hentForhåndsvisning, visDokumentModal, hentetDokument, settVisDokumentModal } =
+        useDokument();
     const { bruker: brukerRessurs } = useFagsakContext();
     const bruker = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data : undefined;
 
@@ -147,6 +139,13 @@ const TilbakekrevingSkjema: React.FC<{
 
     return (
         <>
+            {visDokumentModal && (
+                <PdfVisningModal
+                    onRequestClose={() => settVisDokumentModal(false)}
+                    pdfdata={hentetDokument}
+                />
+            )}
+
             <StyledFieldset legend="Tilbakekreving">
                 <Textarea
                     label={
@@ -346,36 +345,26 @@ const TilbakekrevingSkjema: React.FC<{
                                             <Button
                                                 variant={'tertiary'}
                                                 id={'forhandsvis-varsel'}
-                                                onClick={() => {
-                                                    if (
-                                                        åpenBehandling.status !==
-                                                        RessursStatus.SUKSESS
-                                                    ) {
-                                                        // TODO: Fjern når BehanldingContext alltid har en behandling. Dette burde aldri skje.
-                                                        åpneFeilmeldingModal({
-                                                            feilmelding:
-                                                                'Kan ikke forhåndsvise PDF uten behandling.',
-                                                        });
-                                                        return;
-                                                    }
-                                                    opprettTilbakekrevingVarselBrevPdf({
-                                                        behandlingId:
-                                                            åpenBehandling.data.behandlingId,
-                                                        payload: { fritekst: fritekstVarsel.verdi },
-                                                    });
-                                                }}
+                                                onClick={() =>
+                                                    åpenBehandling.status ===
+                                                        RessursStatus.SUKSESS &&
+                                                    hentForhåndsvisning<IForhåndsvisTilbakekrevingsvarselbrevRequest>(
+                                                        {
+                                                            method: 'POST',
+                                                            url: `/familie-ks-sak/api/tilbakekreving/${åpenBehandling.data.behandlingId}/forhaandsvis-tilbakekreving-varselbrev`,
+                                                            data: {
+                                                                fritekst: fritekstVarsel.verdi,
+                                                            },
+                                                        }
+                                                    )
+                                                }
+                                                loading={
+                                                    hentetDokument.status === RessursStatus.HENTER
+                                                }
                                                 size={'small'}
                                                 icon={<FileTextIcon />}
-                                                disabled={
-                                                    isOpprettTilbakekrevingVarselBrevPdfPending
-                                                }
                                             >
-                                                <HStack gap={'space-8'}>
-                                                    Forhåndsvis varsel
-                                                    {isOpprettTilbakekrevingVarselBrevPdfPending && (
-                                                        <Loader size={'small'} />
-                                                    )}
-                                                </HStack>
+                                                Forhåndsvis varsel
                                             </Button>
                                         </ForhåndsvisVarselKnappContainer>
                                     </FritekstVarsel>
@@ -422,4 +411,4 @@ const TilbakekrevingSkjema: React.FC<{
         </>
     );
 };
-export default TilbakekrevingSkjema;
+export default TilbakekrevingSkjemaGammel;
