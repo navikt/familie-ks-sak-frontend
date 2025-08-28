@@ -5,7 +5,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import { ModalType } from '../../../../../context/ModalContext';
-import { useHentForhåndsvisBehandlingBrev } from '../../../../../hooks/useHentForhåndsvisBehandlingBrev';
+import { useHentForhåndsvisbarBehandlingBrevPdf } from '../../../../../hooks/useHentForhåndsvisbarBehandlingBrevPdf';
 import { useModal } from '../../../../../hooks/useModal';
 import { Brevmal } from '../../../../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IBehandling } from '../../../../../typer/behandling';
@@ -44,7 +44,7 @@ function Lenke({ fagsak, behandling }: { fagsak: IMinimalFagsak; behandling: IBe
     const { åpneModal: åpneForhåndsvisPdfModal } = useModal(ModalType.FORHÅNDSVIS_PDF);
     const { åpneModal: åpneFeilmeldingModal } = useModal(ModalType.FEILMELDING);
 
-    const { refetch, isFetching } = useHentForhåndsvisBehandlingBrev({
+    const { refetch, isFetching } = useHentForhåndsvisbarBehandlingBrevPdf({
         behandlingId: behandling.behandlingId,
         payload: lagRequestPayload(fagsak.søkerFødselsnummer),
         onSuccess: blob => åpneForhåndsvisPdfModal({ blob }),

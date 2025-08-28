@@ -10,21 +10,23 @@ type Parameters = Omit<
     UseQueryOptions<Blob, DefaultError, IManueltBrevRequestPåBehandling>,
     'queryKey' | 'queryFn' | 'gcTime'
 > & {
-    behandlingId: number;
+    behandlingId: number | undefined;
     payload: IManueltBrevRequestPåBehandling;
     onSuccess?: (blob: Blob) => void;
     onError?: (error: Error) => void;
 };
 
-export const HentForhåndsvisBrevBehandlingBrevQueryKeyFactory = {
-    forhåndsvisBrev: (behandlingId: number, payload: IManueltBrevRequestPåBehandling) => [
-        'forhaandsvis_brev',
-        behandlingId,
-        payload,
-    ],
+export const HentForhåndsvisbarBehandlingBrevPdfQueryKeyFactory = {
+    forhåndsvisbarBehandlingBrevPdf: (
+        behandlingId: number | undefined,
+        payload: IManueltBrevRequestPåBehandling
+    ) => ['forhaandsvisbar_behandling_brev_pdf', behandlingId, payload],
 };
 
-export function useHentForhåndsvisBehandlingBrev({
+// TODO : Når BehandlingContext er refaktrer til å alltid inneholde en behandling burde denne hooken ikke godta at
+//  behandlingId er "undefined". BehandlingId burde aldri være "undefined" når man tar i bruk denne hooken. Foreløpig
+//  er det tillat som en workaround.
+export function useHentForhåndsvisbarBehandlingBrevPdf({
     behandlingId,
     payload,
     onSuccess,
@@ -33,12 +35,18 @@ export function useHentForhåndsvisBehandlingBrev({
 }: Parameters) {
     const { request } = useHttp();
     return useQuery({
-        queryKey: HentForhåndsvisBrevBehandlingBrevQueryKeyFactory.forhåndsvisBrev(
-            behandlingId,
-            payload
-        ),
+        queryKey:
+            HentForhåndsvisbarBehandlingBrevPdfQueryKeyFactory.forhåndsvisbarBehandlingBrevPdf(
+                behandlingId,
+                payload
+            ),
         queryFn: async () => {
             try {
+                if (behandlingId === undefined) {
+                    return Promise.reject(
+                        new Error('Forhåndsvisning av brev krever en behandling ID.')
+                    );
+                }
                 const bytes = await hentForhåndsvisBehandlingBrev(request, behandlingId, payload);
                 const blob = opprettPdfBlob(bytes);
                 onSuccess?.(blob);
