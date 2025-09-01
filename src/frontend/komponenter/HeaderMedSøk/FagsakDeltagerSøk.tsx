@@ -128,8 +128,7 @@ const FagsakDeltagerSøk: React.FC = () => {
                 søkeresultatOnClick={(søkeresultat: ISøkeresultat) => {
                     if (søkeresultat.fagsakId) {
                         navigate(`/fagsak/${søkeresultat.fagsakId}/saksoversikt`);
-                    }
-                    if (søkeresultat.harTilgang) {
+                    } else if (søkeresultat.harTilgang) {
                         if (toggles[ToggleNavn.brukNyOpprettFagsakModal]) {
                             åpneModal({ ident: søkeresultat.ident });
                         } else {
