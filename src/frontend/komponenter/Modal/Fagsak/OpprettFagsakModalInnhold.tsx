@@ -15,8 +15,6 @@ interface Props {
     personNavn: string;
 }
 
-const kulepunkt = `\u2022`;
-
 export function OpprettFagsakModalInnhold({ personIdent, personNavn }: Props) {
     const navigate = useNavigate();
     const { lukkModal } = useModal(ModalType.OPPRETT_FAGSAK);
@@ -36,7 +34,7 @@ export function OpprettFagsakModalInnhold({ personIdent, personNavn }: Props) {
             <Modal.Body>
                 <VStack gap={'4'}>
                     <BodyShort>Ønsker du å opprette fagsak for denne personen?</BodyShort>
-                    <BodyShort>{`${kulepunkt} ${personNavn} ${formaterIdent(personIdent)}`}</BodyShort>
+                    <BodyShort>{`${personNavn} (${formaterIdent(personIdent)})`}</BodyShort>
                     {visFeilmelding && (
                         <Alert
                             variant={'error'}
