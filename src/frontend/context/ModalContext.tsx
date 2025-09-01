@@ -33,7 +33,7 @@ export enum ModalType {
 }
 
 export interface Args {
-    [ModalType.OPPRETT_FAGSAK]: { ident: string };
+    [ModalType.OPPRETT_FAGSAK]: { personIdent: string; personNavn: string };
     [ModalType.HENLEGG_BEHANDLING_VEIVALG]: { årsak: HenleggÅrsak };
     [ModalType.FEILMELDING]: { feilmelding: string | React.ReactNode };
     [ModalType.FORHÅNDSVIS_PDF]: { blob: Blob };

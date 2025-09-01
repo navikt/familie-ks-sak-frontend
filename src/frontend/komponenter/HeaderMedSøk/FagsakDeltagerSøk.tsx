@@ -130,7 +130,10 @@ const FagsakDeltagerSøk: React.FC = () => {
                         navigate(`/fagsak/${søkeresultat.fagsakId}/saksoversikt`);
                     } else if (søkeresultat.harTilgang) {
                         if (toggles[ToggleNavn.brukNyOpprettFagsakModal]) {
-                            åpneModal({ ident: søkeresultat.ident });
+                            åpneModal({
+                                personIdent: søkeresultat.ident,
+                                personNavn: søkeresultat.navn ?? 'Ukjent person',
+                            });
                         } else {
                             settDeltagerForOpprettFagsak(søkeresultat);
                         }

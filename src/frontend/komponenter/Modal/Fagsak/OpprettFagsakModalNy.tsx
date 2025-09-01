@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Modal } from '@navikt/ds-react';
+import { Alert, Button, Modal } from '@navikt/ds-react';
 
+import { OpprettFagsakModalInnhold } from './OpprettFagsakModalInnhold';
 import { ModalType } from '../../../context/ModalContext';
 import { useModal } from '../../../hooks/useModal';
 
@@ -16,10 +17,32 @@ export function OpprettFagsakModalNy() {
             portal={true}
             width={bredde}
         >
-            {args !== undefined && erModalÅpen ? (
-                <Modal.Body>Model er åpen</Modal.Body>
-            ) : (
-                <Modal.Body>Model er ikke åpen</Modal.Body>
+            {erModalÅpen && (
+                <>
+                    {args === undefined && (
+                        <>
+                            <Modal.Body>
+                                <Alert variant={'error'}>
+                                    Feil oppstod ved innhenting av argumenter for modal.
+                                </Alert>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button key={'Bekreft'} variant={'primary'} disabled={true}>
+                                    Opprett fagsak
+                                </Button>
+                                <Button key={'avbryt'} variant={'tertiary'} onClick={lukkModal}>
+                                    Avbryt
+                                </Button>
+                            </Modal.Footer>
+                        </>
+                    )}
+                    {args !== undefined && (
+                        <OpprettFagsakModalInnhold
+                            personIdent={args.personIdent}
+                            personNavn={args.personNavn}
+                        />
+                    )}
+                </>
             )}
         </Modal>
     );
