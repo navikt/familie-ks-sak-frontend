@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import { Alert, BodyShort, Heading, Switch, Table, VStack } from '@navikt/ds-react';
 
 import { Behandling } from './Behandling';
-import type { Saksoversiktsbehandling } from './utils';
 import {
-    hentBehandlingerTilSaksoversikten,
+    hentBehandlingerTilSaksoversiktenOld,
     hentBehandlingId,
     hentTidspunktForSortering,
+    type Saksoversiktsbehandling,
     skalRadVises,
 } from './utils';
 import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
@@ -37,7 +37,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
     const { klagebehandlinger, klageStatus, tilbakekrevingsbehandlinger, tilbakekrevingStatus } =
         useFagsakContext();
 
-    const behandlinger = hentBehandlingerTilSaksoversikten(
+    const behandlinger = hentBehandlingerTilSaksoversiktenOld(
         minimalFagsak,
         klagebehandlinger,
         tilbakekrevingsbehandlinger

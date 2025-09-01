@@ -13,8 +13,8 @@ import {
     hentTidspunktForSortering,
     skalRadVises,
 } from './utils';
-import { useHentFagsak } from '../../../hooks/useHentFagsak';
 import { useHentKlagebehandlinger } from '../../../hooks/useHentKlagebehandlinger';
+import { useHentKontantstøtteBehandlinger } from '../../../hooks/useHentKontantstøtteBehandlinger';
 import { useHentTilbakekrevingsbehandlinger } from '../../../hooks/useHentTilbakekrevingsbehandlinger';
 import { isoStringTilDate } from '../../../utils/dato';
 
@@ -42,10 +42,10 @@ export function Behandlinger({ fagsakId }: Props) {
     const [visHenlagteBehandlinger, setVisHenlagteBehandlinger] = useState(false);
 
     const {
-        data: minimalFagsak,
-        isPending: hentMinimalFagsakLaster,
-        error: hentMinimalFagsakError,
-    } = useHentFagsak(fagsakId);
+        data: kontantstøtteBehandlinger,
+        isPending: hentKontantstøtteBehandlingerLaster,
+        error: hentKontantstøtteBehandlingerError,
+    } = useHentKontantstøtteBehandlinger(fagsakId);
 
     const {
         data: klagebehandlinger,
@@ -62,7 +62,7 @@ export function Behandlinger({ fagsakId }: Props) {
     const behandlingerLaster =
         hentKlagebehandlingLaster ||
         hentTilbakekrevingsbehandlingerLaster ||
-        hentMinimalFagsakLaster;
+        hentKontantstøtteBehandlingerLaster;
 
     if (behandlingerLaster) {
         return (
@@ -81,7 +81,7 @@ export function Behandlinger({ fagsakId }: Props) {
         );
     }
     const saksoversiktbehandlinger = hentBehandlingerTilSaksoversikten(
-        minimalFagsak,
+        kontantstøtteBehandlinger ?? [],
         klagebehandlinger ?? [],
         tilbakekrevingsbehandlinger ?? []
     );
@@ -92,7 +92,7 @@ export function Behandlinger({ fagsakId }: Props) {
 
     return (
         <VStack gap="6">
-            {hentMinimalFagsakError !== null && (
+            {hentKontantstøtteBehandlingerError !== null && (
                 <Alert variant="warning">
                     <BodyShort>Fagsaken er ikke tilgjengelig for øyeblikket.</BodyShort>
                 </Alert>

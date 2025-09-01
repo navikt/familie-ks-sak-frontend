@@ -91,13 +91,41 @@ export const hentBehandlingId = (saksoversiktsbehandling: Saksoversiktsbehandlin
     }
 };
 
-export const hentBehandlingerTilSaksoversikten = (
+export const hentBehandlingerTilSaksoversiktenOld = (
     minimalFagsak: IMinimalFagsak | undefined,
     klagebehandlinger: IKlagebehandling[],
     tilbakekrevingsbehandlinger: ITilbakekrevingsbehandling[]
 ): Saksoversiktsbehandling[] => {
     const kontantstøtteBehandlinger: Saksoversiktsbehandling[] =
         minimalFagsak?.behandlinger.map(behandling => ({
+            ...behandling,
+            saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE,
+        })) || [];
+
+    const saksoversiktTilbakekrevingsbehandlinger: Saksoversiktsbehandling[] =
+        tilbakekrevingsbehandlinger.map(behandling => ({
+            ...behandling,
+            saksoversiktstype: Saksoversiktstype.TILBAKEBETALING,
+        }));
+    const saksoversiktKlagebehandlinger: Saksoversiktsbehandling[] = klagebehandlinger.map(
+        behandling => ({
+            ...behandling,
+            saksoversiktstype: Saksoversiktstype.KLAGE,
+        })
+    );
+    return [
+        ...kontantstøtteBehandlinger,
+        ...saksoversiktTilbakekrevingsbehandlinger,
+        ...saksoversiktKlagebehandlinger,
+    ];
+};
+export const hentBehandlingerTilSaksoversikten = (
+    kontantstøttebehandlinger: VisningBehandling[],
+    klagebehandlinger: IKlagebehandling[],
+    tilbakekrevingsbehandlinger: ITilbakekrevingsbehandling[]
+): Saksoversiktsbehandling[] => {
+    const kontantstøtteBehandlinger: Saksoversiktsbehandling[] =
+        kontantstøttebehandlinger.map(behandling => ({
             ...behandling,
             saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE,
         })) || [];
