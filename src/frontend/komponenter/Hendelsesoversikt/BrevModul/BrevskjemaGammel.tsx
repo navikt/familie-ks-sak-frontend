@@ -1,19 +1,10 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { FileTextIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
-import {
-    Button,
-    Fieldset,
-    HStack,
-    Label,
-    Loader,
-    Select,
-    Tag,
-    Textarea,
-    TextField,
-} from '@navikt/ds-react';
+import { Button, Fieldset, Label, Select, Tag, Textarea, TextField } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -24,9 +15,7 @@ import BrevmottakerListe from './BrevmottakerListe';
 import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
 import { useBrevModul } from './useBrevModul';
-import { ModalType } from '../../../context/ModalContext';
-import { useModal } from '../../../hooks/useModal';
-import { useOpprettForhåndsvisbarBehandlingBrevPdf } from '../../../hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
+import useDokument from '../../../hooks/useDokument';
 import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
 import type { IManueltBrevRequestPåBehandling } from '../../../typer/dokument';
@@ -37,6 +26,7 @@ import { lagPersonLabel } from '../../../utils/formatter';
 import type { IFritekstFelt } from '../../../utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import Knapperekke from '../../Knapperekke';
+import PdfVisningModal from '../../PdfVisningModal/PdfVisningModal';
 import SkjultLegend from '../../SkjultLegend';
 
 interface IProps {
@@ -82,10 +72,14 @@ const FritekstWrapper = styled.div`
     margin: 1rem 0;
 `;
 
-const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
+/**
+ * @Deprecated - Erstattes av {@link Brevskjema}.
+ */
+const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
     const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } =
         useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
+    const { hentForhåndsvisning, hentetDokument } = useDokument();
 
     const {
         skjema,
@@ -106,26 +100,25 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
         settVisFritekstAvsnittTekstboks,
     } = useBrevModul();
 
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS
-            ? åpenBehandling.data.behandlingId
-            : undefined;
+    const [visForhåndsvisningModal, settForhåndsviningModal] = useState(false);
 
-    const { åpneModal: åpneForhåndsvisPdfModal } = useModal(ModalType.FORHÅNDSVIS_PDF);
-    const { åpneModal: åpneFeilmeldingModal } = useModal(ModalType.FEILMELDING);
+    useEffect(() => {
+        if (hentetDokument.status === RessursStatus.SUKSESS) {
+            settForhåndsviningModal(true);
+        }
+    }, [hentetDokument]);
 
-    const {
-        mutate: opprettForhåndsvisbarBrevPdf,
-        isPending: isOpprettForhåndsvisbarBrevPdfPending,
-    } = useOpprettForhåndsvisbarBehandlingBrevPdf({
-        onSuccess: blob => åpneForhåndsvisPdfModal({ blob }),
-        onError: error => åpneFeilmeldingModal({ feilmelding: error.message }),
-    });
+    useEffect(() => {
+        settForhåndsviningModal(false);
+    }, []);
 
     const brevMaler = hentMuligeBrevMaler();
     const skjemaErLåst =
         skjema.submitRessurs.status === RessursStatus.HENTER ||
-        isOpprettForhåndsvisbarBrevPdfPending;
+        hentetDokument.status === RessursStatus.HENTER;
+
+    const behandlingId =
+        åpenBehandling.status === RessursStatus.SUKSESS && åpenBehandling.data.behandlingId;
 
     const fieldsetId = 'Fritekster-brev';
     const erMaksAntallKulepunkter =
@@ -157,8 +150,17 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
 
     return (
         <div>
+            {visForhåndsvisningModal && (
+                <PdfVisningModal
+                    onRequestClose={() => settForhåndsviningModal(false)}
+                    pdfdata={hentetDokument}
+                />
+            )}
             <Fieldset
-                error={hentFrontendFeilmelding(skjema.submitRessurs)}
+                error={
+                    hentFrontendFeilmelding(skjema.submitRessurs) ||
+                    hentFrontendFeilmelding(hentetDokument)
+                }
                 legend={'Send brev'}
                 hideLegend
             >
@@ -405,28 +407,20 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                     id={'forhandsvis-vedtaksbrev'}
                     variant={'tertiary'}
                     size={'medium'}
-                    disabled={skjemaErLåst || isOpprettForhåndsvisbarBrevPdfPending}
+                    loading={hentetDokument.status === RessursStatus.HENTER}
+                    disabled={skjemaErLåst}
                     onClick={() => {
-                        if (behandlingId === undefined) {
-                            // TODO: Fjern når BehandlingContext alltid inneholder en behandling. Dette burde aldri skje.
-                            åpneFeilmeldingModal({
-                                feilmelding: 'Kan ikke forhåndsvise PDF uten behandling.',
-                            });
-                            return;
-                        }
                         if (kanSendeSkjema()) {
-                            opprettForhåndsvisbarBrevPdf({
-                                behandlingId: behandlingId,
-                                payload: hentSkjemaData(),
+                            hentForhåndsvisning<IManueltBrevRequestPåBehandling>({
+                                method: 'POST',
+                                data: hentSkjemaData(),
+                                url: `/familie-ks-sak/api/brev/forhaandsvis-brev/${behandlingId}`,
                             });
                         }
                     }}
                     icon={<FileTextIcon />}
                 >
-                    <HStack gap={'space-8'}>
-                        Forhåndsvis
-                        {isOpprettForhåndsvisbarBrevPdfPending && <Loader size={'small'} />}
-                    </HStack>
+                    {'Forhåndsvis'}
                 </Button>
                 <Button
                     variant={'secondary'}
@@ -457,4 +451,4 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
     );
 };
 
-export default Brevskjema;
+export default BrevskjemaGammel;
