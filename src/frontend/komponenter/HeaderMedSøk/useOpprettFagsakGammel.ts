@@ -15,7 +15,7 @@ interface IOpprettFagsakData {
     aktørId: string | null;
 }
 
-const useOpprettFagsak = () => {
+const useOpprettFagsakGammel = () => {
     const navigate = useNavigate();
     const { request } = useHttp();
     const [feilmelding, settFeilmelding] = useState('');
@@ -63,4 +63,4 @@ const useOpprettFagsak = () => {
     };
 };
 
-export default useOpprettFagsak;
+export default useOpprettFagsakGammel;

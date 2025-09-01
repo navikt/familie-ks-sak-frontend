@@ -16,7 +16,7 @@ import {
 } from '@navikt/familie-typer';
 import { idnr } from '@navikt/fnrvalidator';
 
-import OpprettFagsakModal from './OpprettFagsakModal';
+import OpprettFagsakModalGammel from './OpprettFagsakModalGammel';
 import { useAppContext } from '../../context/AppContext';
 import { ModalType } from '../../context/ModalContext';
 import { useModal } from '../../hooks/useModal';
@@ -141,7 +141,7 @@ const FagsakDeltagerSøk: React.FC = () => {
                 }}
             />
             {deltagerForOpprettFagsak && (
-                <OpprettFagsakModal
+                <OpprettFagsakModalGammel
                     søkeresultat={deltagerForOpprettFagsak}
                     lukkModal={() => settDeltagerForOpprettFagsak(undefined)}
                 />

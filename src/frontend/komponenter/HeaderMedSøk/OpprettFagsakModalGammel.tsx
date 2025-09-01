@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { BodyShort, Button, ErrorMessage, Modal } from '@navikt/ds-react';
 import type { ISøkeresultat } from '@navikt/familie-header';
 
-import useOpprettFagsak from './useOpprettFagsak';
+import useOpprettFagsakGammel from './useOpprettFagsakGammel';
 import { formaterIdent } from '../../utils/formatter';
 
 interface IOpprettFagsakModal {
@@ -17,8 +17,8 @@ const StyledBodyShort = styled(BodyShort)`
     margin-top: 2rem;
 `;
 
-const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({ lukkModal, søkeresultat }) => {
-    const { opprettFagsak, feilmelding, senderInn, settSenderInn } = useOpprettFagsak();
+const OpprettFagsakModalGammel: React.FC<IOpprettFagsakModal> = ({ lukkModal, søkeresultat }) => {
+    const { opprettFagsak, feilmelding, senderInn, settSenderInn } = useOpprettFagsakGammel();
     const { navn, ident } = søkeresultat;
 
     return (
@@ -68,4 +68,4 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({ lukkModal, søkeres
     );
 };
 
-export default OpprettFagsakModal;
+export default OpprettFagsakModalGammel;
