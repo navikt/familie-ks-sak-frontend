@@ -22,6 +22,7 @@ const CheckboxOgSlettknapp = styled.div`
 
 const StyledCheckbox = styled(Checkbox)`
     margin-left: 1rem;
+
     > label {
         width: 100%;
     }
@@ -57,12 +58,9 @@ const BarnMedOpplysninger: React.FunctionComponent<IProps> = ({ barn }) => {
             {erLesevisning ? (
                 barn.merket ? (
                     <BodyShort
+                        title={navnOgIdentTekst}
                         className={classNames('skjemaelement', 'lese-felt')}
-                        children={
-                            <LabelContent>
-                                <LabelTekst title={navnOgIdentTekst}>{navnOgIdentTekst}</LabelTekst>
-                            </LabelContent>
-                        }
+                        children={navnOgIdentTekst}
                     />
                 ) : null
             ) : (
