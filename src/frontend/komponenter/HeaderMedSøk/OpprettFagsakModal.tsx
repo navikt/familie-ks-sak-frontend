@@ -1,8 +1,6 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
-import { BodyShort, Button, ErrorMessage, Modal } from '@navikt/ds-react';
+import { BodyShort, Button, ErrorMessage, Modal, VStack } from '@navikt/ds-react';
 import type { ISøkeresultat } from '@navikt/familie-header';
 
 import useOpprettFagsak from './useOpprettFagsak';
@@ -12,10 +10,6 @@ interface IOpprettFagsakModal {
     lukkModal: () => void;
     søkeresultat: ISøkeresultat;
 }
-
-const StyledBodyShort = styled(BodyShort)`
-    margin-top: 2rem;
-`;
 
 const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({ lukkModal, søkeresultat }) => {
     const { opprettFagsak, feilmelding, senderInn, settSenderInn } = useOpprettFagsak();
@@ -30,11 +24,13 @@ const OpprettFagsakModal: React.FC<IOpprettFagsakModal> = ({ lukkModal, søkeres
             header={{ heading: 'Opprett fagsak', size: 'medium' }}
         >
             <Modal.Body>
-                <BodyShort size={'small'}>
-                    Personen har ingen tilknyttet fagsak. Ønsker du å opprette fagsak for denne
-                    personen?
-                </BodyShort>
-                <StyledBodyShort>{`${navn} (${formaterIdent(ident)})`}</StyledBodyShort>
+                <VStack gap={'space-32'}>
+                    <BodyShort size={'small'}>
+                        Personen har ingen tilknyttet fagsak. Ønsker du å opprette fagsak for denne
+                        personen?
+                    </BodyShort>
+                    <BodyShort>{`${navn} (${formaterIdent(ident)})`}</BodyShort>
+                </VStack>
                 {!!feilmelding && <ErrorMessage children={feilmelding} />}
             </Modal.Body>
             <Modal.Footer>
