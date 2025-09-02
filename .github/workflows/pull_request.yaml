@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   pull-request:
-    name: Pull request
+    name: Build, test, validate
     permissions:
       contents: read
       actions: write
