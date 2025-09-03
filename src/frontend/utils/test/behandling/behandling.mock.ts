@@ -91,6 +91,7 @@ export const mockBehandling = ({
         feilutbetaltValuta: [],
         refusjonEøs: [],
         brevmottakere: [],
+        manglendeSvalbardmerking: [],
     };
 };
 

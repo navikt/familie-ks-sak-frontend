@@ -11,6 +11,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderingITestmiljøKnapp';
+import { ManglendeSvalbardmerkingVarsel } from './Varsel/ManglendeSvalbardmerkingVarsel';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
@@ -160,6 +161,9 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                     <BodyShort>Dette vil føre til avslag for barna i listen.</BodyShort>
                 </Alert>
             )}
+            <ManglendeSvalbardmerkingVarsel
+                manglendeSvalbardmerking={åpenBehandling.manglendeSvalbardmerking}
+            />
             {erFeilISkjema && visFeilmeldinger && (
                 <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
                     {feiloppsummeringFeil.map(item => (

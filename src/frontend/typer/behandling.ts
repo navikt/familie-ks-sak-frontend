@@ -4,6 +4,7 @@ import type { INøkkelPar } from './common';
 import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
 import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
+import type { ManglendeSvalbardmerking } from './ManglendeSvalbardmerking';
 import type { IRestOvergangsordningAndel } from './overgangsordningAndel';
 import type { IGrunnlagPerson } from './person';
 import type { IRestRefusjonEøs } from './refusjon-eøs';
@@ -257,6 +258,7 @@ export interface IBehandling {
     feilutbetaltValuta: IRestFeilutbetaltValuta[];
     refusjonEøs: IRestRefusjonEøs[];
     brevmottakere: IRestBrevmottaker[];
+    manglendeSvalbardmerking: ManglendeSvalbardmerking[];
 }
 
 interface IArbeidsfordelingPåBehandling {
