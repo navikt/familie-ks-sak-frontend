@@ -19,7 +19,7 @@ import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 
 const Innhold = styled.div`
-    height: calc(100vh - 6rem);
+    height: calc(100vh - 3rem);
     display: flex;
 `;
 
