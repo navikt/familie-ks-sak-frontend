@@ -4,6 +4,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../../../context/AppContext';
 import { ModalType } from '../../../../../../context/ModalContext';
+import { useAngreKorrigertEtterbetaling } from '../../../../../../hooks/useAngreKorrigertEtterbetaling';
 import { useKorrigerEtterbetaling } from '../../../../../../hooks/useKorrigerEtterbetaling';
 import { useModal } from '../../../../../../hooks/useModal';
 import { AlertType, ToastTyper } from '../../../../../../komponenter/Toast/typer';
@@ -43,8 +44,12 @@ export function useKorrigerEtterbetalingForm(behandling: IBehandling) {
 
     const { settToast } = useAppContext();
 
-    const { korrigerEtterbetalingMutation, angreKorrigertEtterbetalingMutation } =
-        useKorrigerEtterbetaling();
+    const { mutateAsync: korrigerEtterbetalingAsync } = useKorrigerEtterbetaling();
+
+    const {
+        mutateAsync: angreKorrigertEtterbetalingAsync,
+        isPending: angreKorrigertEtterbetalingPending,
+    } = useAngreKorrigertEtterbetaling();
 
     const { lukkModal } = useModal(ModalType.KORRIGER_ETTERBETALING);
 
@@ -62,10 +67,10 @@ export function useKorrigerEtterbetalingForm(behandling: IBehandling) {
         },
     });
 
-    const { setError } = form;
-
-    const isPending =
-        angreKorrigertEtterbetalingMutation.isPending || korrigerEtterbetalingMutation.isPending;
+    const {
+        setError,
+        formState: { isSubmitting: korrigerEtterbetalingPending },
+    } = form;
 
     async function korrigerEtterbetaling(values: KorrigerEtterbetalingFormValues) {
         const { årsak, beløp, begrunnelse } = values;
@@ -77,8 +82,7 @@ export function useKorrigerEtterbetalingForm(behandling: IBehandling) {
             behandlingId: behandling.behandlingId,
         };
 
-        korrigerEtterbetalingMutation
-            .mutateAsync(korrigerEtterbetalingParameters)
+        return korrigerEtterbetalingAsync(korrigerEtterbetalingParameters)
             .then(behandling => {
                 settToast(ToastTyper.ETTERBETALING_KORRIGERT, {
                     alertType: AlertType.SUCCESS,
@@ -95,8 +99,7 @@ export function useKorrigerEtterbetalingForm(behandling: IBehandling) {
     }
 
     async function angreKorrigertEtterbetaling() {
-        angreKorrigertEtterbetalingMutation
-            .mutateAsync(behandling.behandlingId)
+        return angreKorrigertEtterbetalingAsync(behandling.behandlingId)
             .then(behandling => {
                 settToast(ToastTyper.ETTERBETALING_KORRIGERT, {
                     alertType: AlertType.SUCCESS,
@@ -112,5 +115,11 @@ export function useKorrigerEtterbetalingForm(behandling: IBehandling) {
             });
     }
 
-    return { form, korrigerEtterbetaling, angreKorrigertEtterbetaling, isPending };
+    return {
+        form,
+        korrigerEtterbetaling,
+        angreKorrigertEtterbetaling,
+        korrigerEtterbetalingPending,
+        angreKorrigertEtterbetalingPending,
+    };
 }
