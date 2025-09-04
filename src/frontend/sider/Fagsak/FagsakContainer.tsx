@@ -11,6 +11,7 @@ import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
 import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
 import { Fagsaklinje } from './Fagsaklinje/Fagsaklinje';
 import JournalpostListe from './journalposter/JournalpostListe';
+import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
 import Personlinje from './Personlinje/Personlinje';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
 import { useFagsakContext } from '../../context/fagsak/FagsakContext';
@@ -34,60 +35,62 @@ const FagsakContainerInnhold = ({ minimalFagsak }: { minimalFagsak: IMinimalFags
     switch (bruker.status) {
         case RessursStatus.SUKSESS:
             return (
-                <Innhold>
-                    <Hovedinnhold id={'fagsak-main'}>
-                        <Personlinje bruker={bruker.data} />
-                        <Routes>
-                            <Route
-                                path="/saksoversikt"
-                                element={
-                                    <>
-                                        <Fagsaklinje minimalFagsak={minimalFagsak} />
-                                        <Saksoversikt minimalFagsak={minimalFagsak} />
-                                    </>
-                                }
-                            />
+                <ManuelleBrevmottakerePåFagsakProvider key={minimalFagsak.id}>
+                    <Innhold>
+                        <Hovedinnhold id={'fagsak-main'}>
+                            <Personlinje bruker={bruker.data} />
+                            <Routes>
+                                <Route
+                                    path="/saksoversikt"
+                                    element={
+                                        <>
+                                            <Fagsaklinje minimalFagsak={minimalFagsak} />
+                                            <Saksoversikt minimalFagsak={minimalFagsak} />
+                                        </>
+                                    }
+                                />
 
-                            <Route
-                                path="/dokumentutsending"
-                                element={
-                                    <>
-                                        <Fagsaklinje minimalFagsak={minimalFagsak} />
-                                        <DokumentutsendingProvider fagsakId={minimalFagsak.id}>
-                                            <Dokumentutsending bruker={bruker.data} />
-                                        </DokumentutsendingProvider>
-                                    </>
-                                }
-                            />
+                                <Route
+                                    path="/dokumentutsending"
+                                    element={
+                                        <>
+                                            <Fagsaklinje minimalFagsak={minimalFagsak} />
+                                            <DokumentutsendingProvider fagsakId={minimalFagsak.id}>
+                                                <Dokumentutsending bruker={bruker.data} />
+                                            </DokumentutsendingProvider>
+                                        </>
+                                    }
+                                />
 
-                            <Route
-                                path="/dokumenter"
-                                element={
-                                    <>
-                                        <Fagsaklinje minimalFagsak={minimalFagsak} />
-                                        <JournalpostListe bruker={bruker.data} />
-                                    </>
-                                }
-                            />
+                                <Route
+                                    path="/dokumenter"
+                                    element={
+                                        <>
+                                            <Fagsaklinje minimalFagsak={minimalFagsak} />
+                                            <JournalpostListe bruker={bruker.data} />
+                                        </>
+                                    }
+                                />
 
-                            <Route
-                                path="/:behandlingId/*"
-                                element={
-                                    <BehandlingContainer
-                                        bruker={bruker.data}
-                                        minimalFagsak={minimalFagsak}
-                                    />
-                                }
-                            />
-                            <Route
-                                path="/"
-                                element={
-                                    <Navigate to={`/fagsak/${minimalFagsak.id}/saksoversikt`} />
-                                }
-                            />
-                        </Routes>
-                    </Hovedinnhold>
-                </Innhold>
+                                <Route
+                                    path="/:behandlingId/*"
+                                    element={
+                                        <BehandlingContainer
+                                            bruker={bruker.data}
+                                            minimalFagsak={minimalFagsak}
+                                        />
+                                    }
+                                />
+                                <Route
+                                    path="/"
+                                    element={
+                                        <Navigate to={`/fagsak/${minimalFagsak.id}/saksoversikt`} />
+                                    }
+                                />
+                            </Routes>
+                        </Hovedinnhold>
+                    </Innhold>
+                </ManuelleBrevmottakerePåFagsakProvider>
             );
         case RessursStatus.FEILET:
         case RessursStatus.FUNKSJONELL_FEIL:

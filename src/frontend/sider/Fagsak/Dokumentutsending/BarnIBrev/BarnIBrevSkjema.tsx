@@ -6,10 +6,10 @@ import { CheckboxGroup } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import BarnCheckbox from './BarnCheckbox';
-import { useFagsakContext } from '../../../../context/fagsak/FagsakContext';
 import LeggTilBarn from '../../../../komponenter/LeggTilBarn';
 import type { IBarnMedOpplysninger } from '../../../../typer/søknad';
 import { isoStringTilDate } from '../../../../utils/dato';
+import { useManuelleBrevmottakerePåFagsakContext } from '../../ManuelleBrevmottakerePåFagsakContext';
 
 interface IProps {
     barnIBrevFelt: Felt<IBarnMedOpplysninger[]>;
@@ -19,7 +19,7 @@ interface IProps {
 }
 
 const BarnIBrevSkjema = (props: IProps) => {
-    const { manuelleBrevmottakerePåFagsak } = useFagsakContext();
+    const { manuelleBrevmottakerePåFagsak } = useManuelleBrevmottakerePåFagsakContext();
 
     const { barnIBrevFelt, visFeilmeldinger, settVisFeilmeldinger } = props;
 
