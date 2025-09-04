@@ -9,7 +9,7 @@ import { HeaderMedSøk } from './komponenter/HeaderMedSøk/HeaderMedSøk';
 import AppInfoModal from './komponenter/Modal/AppInfoModal';
 import { FeilmeldingModal } from './komponenter/Modal/FeilmeldingModal';
 import UgyldigSesjon from './komponenter/Modal/SesjonUtløpt';
-import { ForhåndsvisPdfModal } from './komponenter/PdfVisningModal/ForhåndsvisPdfModal';
+import { ForhåndsvisOpprettingAvPdfModal } from './komponenter/PdfVisningModal/ForhåndsvisOpprettingAvPdfModal';
 import SystemetLaster from './komponenter/SystemetLaster/SystemetLaster';
 import { TidslinjeProvider } from './komponenter/Tidslinje/TidslinjeContext';
 import Toasts from './komponenter/Toast/Toasts';
@@ -49,7 +49,7 @@ const Container: React.FC = () => {
 
                         <Main $systemetLaster={systemetLaster()}>
                             <FeilmeldingModal />
-                            <ForhåndsvisPdfModal />
+                            <ForhåndsvisOpprettingAvPdfModal />
                             <HeaderMedSøk
                                 brukerNavn={innloggetSaksbehandler?.displayName}
                                 brukerEnhet={innloggetSaksbehandler?.enhet}
