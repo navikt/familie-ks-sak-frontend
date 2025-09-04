@@ -15,6 +15,7 @@ import { Fagsaklinje } from '../Fagsaklinje/Fagsaklinje';
 import Venstremeny from './Venstremeny/Venstremeny';
 import { HenleggBehandlingModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingModal';
 import { HenleggBehandlingVeivalgModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingVeivalgModal';
+import { KorrigerEtterbetalingModal } from './sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetalingModal';
 
 const FlexContainer = styled.div`
     display: flex;
@@ -52,6 +53,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFa
                 <>
                     <HenleggBehandlingModal />
                     <HenleggBehandlingVeivalgModal />
+                    <KorrigerEtterbetalingModal behandling={åpenBehandling.data} />
                     <Fagsaklinje minimalFagsak={minimalFagsak} />
                     <FlexContainer>
                         <VenstremenyContainer>
