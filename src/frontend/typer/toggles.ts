@@ -14,6 +14,7 @@ export enum ToggleNavn {
     brukReactQueryPaaSaksoversiktsiden = 'familie-ks-sak.bruk-react-query-paa-saksoversiktsiden',
     skalViseOppholdsadresse = 'familie-ks-sak.skal-vise-oppholdsadresse',
     brukNyPdfModal = 'familie-ks-sak.bruk-ny-pdf-modal',
+    brukNyOpprettFagsakModal = 'familie-ks-sak.bruk.ny.opprett.fagsak.modal',
 }
 
 export const alleTogglerAv = (): IToggles => {

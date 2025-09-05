@@ -16,13 +16,16 @@ import {
 } from '@navikt/familie-typer';
 import { idnr } from '@navikt/fnrvalidator';
 
-import OpprettFagsakModal from './OpprettFagsakModal';
+import OpprettFagsakModalGammel from './OpprettFagsakModalGammel';
 import { useAppContext } from '../../context/AppContext';
+import { ModalType } from '../../context/ModalContext';
+import { useModal } from '../../hooks/useModal';
 import {
     FagsakDeltagerRolle,
     type IFagsakDeltager,
     type ISøkParam,
 } from '../../typer/fagsakdeltager';
+import { ToggleNavn } from '../../typer/toggles';
 import { obfuskerFagsakDeltager } from '../../utils/obfuskerData';
 import { erAdresseBeskyttet } from '../../utils/validators';
 import { PersonIkon } from '../PersonIkon';
@@ -43,10 +46,12 @@ function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): React.ReactN
 const FagsakDeltagerSøk: React.FC = () => {
     const { request } = useHttp();
     const navigate = useNavigate();
-    const { skalObfuskereData } = useAppContext();
+    const { skalObfuskereData, toggles } = useAppContext();
 
     const [fagsakDeltagere, settFagsakDeltagere] =
         React.useState<Ressurs<IFagsakDeltager[]>>(byggTomRessurs());
+
+    const { åpneModal } = useModal(ModalType.OPPRETT_FAGSAK);
 
     const [deltagerForOpprettFagsak, settDeltagerForOpprettFagsak] = useState<
         ISøkeresultat | undefined
@@ -120,14 +125,23 @@ const FagsakDeltagerSøk: React.FC = () => {
                 placeholder={'Fødsels- eller D-nummer (11 siffer)'}
                 nullstillSøkeresultater={() => settFagsakDeltagere(byggTomRessurs())}
                 søkeresultater={mapTilSøkeresultater()}
-                søkeresultatOnClick={(søkeresultat: ISøkeresultat) =>
-                    søkeresultat.fagsakId
-                        ? navigate(`/fagsak/${søkeresultat.fagsakId}/saksoversikt`)
-                        : søkeresultat.harTilgang && settDeltagerForOpprettFagsak(søkeresultat)
-                }
+                søkeresultatOnClick={(søkeresultat: ISøkeresultat) => {
+                    if (søkeresultat.fagsakId) {
+                        navigate(`/fagsak/${søkeresultat.fagsakId}/saksoversikt`);
+                    } else if (søkeresultat.harTilgang) {
+                        if (toggles[ToggleNavn.brukNyOpprettFagsakModal]) {
+                            åpneModal({
+                                personIdent: søkeresultat.ident,
+                                personNavn: søkeresultat.navn ?? 'Ukjent person',
+                            });
+                        } else {
+                            settDeltagerForOpprettFagsak(søkeresultat);
+                        }
+                    }
+                }}
             />
             {deltagerForOpprettFagsak && (
-                <OpprettFagsakModal
+                <OpprettFagsakModalGammel
                     søkeresultat={deltagerForOpprettFagsak}
                     lukkModal={() => settDeltagerForOpprettFagsak(undefined)}
                 />
