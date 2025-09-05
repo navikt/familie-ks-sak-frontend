@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useNavigate } from 'react-router';
 
@@ -16,7 +16,6 @@ import {
 } from '@navikt/familie-typer';
 import { idnr } from '@navikt/fnrvalidator';
 
-import OpprettFagsakModalGammel from './OpprettFagsakModalGammel';
 import { useAppContext } from '../../context/AppContext';
 import { ModalType } from '../../context/ModalContext';
 import { useModal } from '../../hooks/useModal';
@@ -25,7 +24,6 @@ import {
     type IFagsakDeltager,
     type ISøkParam,
 } from '../../typer/fagsakdeltager';
-import { ToggleNavn } from '../../typer/toggles';
 import { obfuskerFagsakDeltager } from '../../utils/obfuskerData';
 import { erAdresseBeskyttet } from '../../utils/validators';
 import { PersonIkon } from '../PersonIkon';
@@ -46,16 +44,12 @@ function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): React.ReactN
 const FagsakDeltagerSøk: React.FC = () => {
     const { request } = useHttp();
     const navigate = useNavigate();
-    const { skalObfuskereData, toggles } = useAppContext();
+    const { skalObfuskereData } = useAppContext();
 
     const [fagsakDeltagere, settFagsakDeltagere] =
         React.useState<Ressurs<IFagsakDeltager[]>>(byggTomRessurs());
 
     const { åpneModal } = useModal(ModalType.OPPRETT_FAGSAK);
-
-    const [deltagerForOpprettFagsak, settDeltagerForOpprettFagsak] = useState<
-        ISøkeresultat | undefined
-    >(undefined);
 
     const fnrValidator = (verdi: string): boolean => {
         return idnr(verdi).status === 'valid';
@@ -129,23 +123,13 @@ const FagsakDeltagerSøk: React.FC = () => {
                     if (søkeresultat.fagsakId) {
                         navigate(`/fagsak/${søkeresultat.fagsakId}/saksoversikt`);
                     } else if (søkeresultat.harTilgang) {
-                        if (toggles[ToggleNavn.brukNyOpprettFagsakModal]) {
-                            åpneModal({
-                                personIdent: søkeresultat.ident,
-                                personNavn: søkeresultat.navn ?? 'Ukjent person',
-                            });
-                        } else {
-                            settDeltagerForOpprettFagsak(søkeresultat);
-                        }
+                        åpneModal({
+                            personIdent: søkeresultat.ident,
+                            personNavn: søkeresultat.navn ?? 'Ukjent person',
+                        });
                     }
                 }}
             />
-            {deltagerForOpprettFagsak && (
-                <OpprettFagsakModalGammel
-                    søkeresultat={deltagerForOpprettFagsak}
-                    lukkModal={() => settDeltagerForOpprettFagsak(undefined)}
-                />
-            )}
         </>
     );
 };
