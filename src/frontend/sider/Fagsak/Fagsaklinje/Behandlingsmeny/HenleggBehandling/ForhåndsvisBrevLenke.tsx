@@ -1,12 +1,15 @@
 import React from 'react';
 
-import { HStack, Link, Loader } from '@navikt/ds-react';
+import { Link } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import { ModalType } from '../../../../../context/ModalContext';
 import { useModal } from '../../../../../hooks/useModal';
-import { useOpprettForhåndsvisbarBehandlingBrevPdf } from '../../../../../hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
+import {
+    mutationKey,
+    useOpprettForhåndsvisbarBehandlingBrevPdf,
+} from '../../../../../hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
 import { Brevmal } from '../../../../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IManueltBrevRequestPåBehandling } from '../../../../../typer/dokument';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
@@ -24,23 +27,21 @@ export function ForhåndsvisBrevLenke() {
     const { minimalFagsak } = useFagsakContext();
     const { åpenBehandling } = useBehandlingContext();
 
-    const { åpneModal: åpneForhåndsvisPdfModal } = useModal(ModalType.FORHÅNDSVIS_PDF);
-    const { åpneModal: åpneFeilmeldingModal } = useModal(ModalType.FEILMELDING);
+    const { åpneModal: åpneForhåndsvisOpprettingAvPdfModal } = useModal(
+        ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF
+    );
 
     const { mutate, isPending } = useOpprettForhåndsvisbarBehandlingBrevPdf({
-        onSuccess: blob => åpneForhåndsvisPdfModal({ blob }),
-        onError: error => åpneFeilmeldingModal({ feilmelding: error.message }),
+        onMutate: () => åpneForhåndsvisOpprettingAvPdfModal({ mutationKey }),
     });
 
     function forhåndsvisBrev() {
         if (minimalFagsak === undefined) {
-            // TODO: Fjern når FagsakContext alltid inneholder en fagsak. Dette burde aldri skje.
-            åpneFeilmeldingModal({ feilmelding: 'Kan ikke forhåndsvise PDF uten fagsak.' });
+            // TODO : Fjern når FagsakContext får innsendt en fagsak fra react-query. Dette skal aldri skje.
             return;
         }
         if (åpenBehandling.status !== RessursStatus.SUKSESS) {
-            // TODO: Fjern når BehandlingContext alltid inneholder en behandling. Dette burde aldri skje.
-            åpneFeilmeldingModal({ feilmelding: 'Kan ikke forhåndsvise PDF uten behandling.' });
+            // TODO : Fjern når BehandlingContext får innsendt en behandling fra react-query. Dette skal aldri skje
             return;
         }
         if (!isPending) {
@@ -51,12 +52,5 @@ export function ForhåndsvisBrevLenke() {
         }
     }
 
-    return (
-        <Link onClick={forhåndsvisBrev}>
-            <HStack gap={'space-8'}>
-                Forhåndsvis
-                {isPending && <Loader size={'small'} />}
-            </HStack>
-        </Link>
-    );
+    return <Link onClick={forhåndsvisBrev}>Forhåndsvis</Link>;
 }

@@ -3,17 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { FileTextIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
-import {
-    Button,
-    Fieldset,
-    HStack,
-    Label,
-    Loader,
-    Select,
-    Tag,
-    Textarea,
-    TextField,
-} from '@navikt/ds-react';
+import { Button, Fieldset, Label, Select, Tag, Textarea, TextField } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -26,7 +16,10 @@ import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
 import { useBrevModul } from './useBrevModul';
 import { ModalType } from '../../../context/ModalContext';
 import { useModal } from '../../../hooks/useModal';
-import { useOpprettForhåndsvisbarBehandlingBrevPdf } from '../../../hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
+import {
+    mutationKey,
+    useOpprettForhåndsvisbarBehandlingBrevPdf,
+} from '../../../hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
 import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IBehandling } from '../../../typer/behandling';
 import type { IManueltBrevRequestPåBehandling } from '../../../typer/dokument';
@@ -111,15 +104,15 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
             ? åpenBehandling.data.behandlingId
             : undefined;
 
-    const { åpneModal: åpneForhåndsvisPdfModal } = useModal(ModalType.FORHÅNDSVIS_PDF);
-    const { åpneModal: åpneFeilmeldingModal } = useModal(ModalType.FEILMELDING);
+    const { åpneModal: åpneForhåndsvisOpprettingAvPdfModal } = useModal(
+        ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF
+    );
 
     const {
         mutate: opprettForhåndsvisbarBrevPdf,
         isPending: isOpprettForhåndsvisbarBrevPdfPending,
     } = useOpprettForhåndsvisbarBehandlingBrevPdf({
-        onSuccess: blob => åpneForhåndsvisPdfModal({ blob }),
-        onError: error => åpneFeilmeldingModal({ feilmelding: error.message }),
+        onMutate: () => åpneForhåndsvisOpprettingAvPdfModal({ mutationKey }),
     });
 
     const brevMaler = hentMuligeBrevMaler();
@@ -405,14 +398,10 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                     id={'forhandsvis-vedtaksbrev'}
                     variant={'tertiary'}
                     size={'medium'}
-                    disabled={skjemaErLåst || isOpprettForhåndsvisbarBrevPdfPending}
+                    disabled={skjemaErLåst}
                     onClick={() => {
                         if (behandlingId === undefined) {
-                            // TODO: Fjern når BehandlingContext alltid inneholder en behandling. Dette burde aldri skje.
-                            åpneFeilmeldingModal({
-                                feilmelding: 'Kan ikke forhåndsvise PDF uten behandling.',
-                            });
-                            return;
+                            return; // Dette skal aldri skje
                         }
                         if (kanSendeSkjema()) {
                             opprettForhåndsvisbarBrevPdf({
@@ -423,10 +412,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                     }}
                     icon={<FileTextIcon />}
                 >
-                    <HStack gap={'space-8'}>
-                        Forhåndsvis
-                        {isOpprettForhåndsvisbarBrevPdfPending && <Loader size={'small'} />}
-                    </HStack>
+                    Forhåndsvis
                 </Button>
                 <Button
                     variant={'secondary'}
