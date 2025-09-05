@@ -7,7 +7,7 @@ import { useAppContext } from './context/AppContext';
 import { FagsakProvider } from './context/fagsak/FagsakContext';
 import { HeaderMedSøk } from './komponenter/HeaderMedSøk/HeaderMedSøk';
 import AppInfoModal from './komponenter/Modal/AppInfoModal';
-import OpprettFagsakModalNy from './komponenter/Modal/Fagsak/OpprettFagsakModalNy';
+import OpprettFagsakModal from './komponenter/Modal/Fagsak/OpprettFagsakModal';
 import { FeilmeldingModal } from './komponenter/Modal/FeilmeldingModal';
 import UgyldigSesjon from './komponenter/Modal/SesjonUtløpt';
 import { ForhåndsvisPdfModal } from './komponenter/PdfVisningModal/ForhåndsvisPdfModal';
@@ -49,7 +49,7 @@ const Container: React.FC = () => {
                         <Toasts />
 
                         <Main $systemetLaster={systemetLaster()}>
-                            <OpprettFagsakModalNy />
+                            <OpprettFagsakModal />
                             <FeilmeldingModal />
                             <ForhåndsvisPdfModal />
                             <HeaderMedSøk
