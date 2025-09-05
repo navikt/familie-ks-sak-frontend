@@ -12,11 +12,11 @@ import {
     DokumentÅrsak,
     useDokumentutsendingContext,
 } from './DokumentutsendingContext';
-import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import { BrevmottakereAlert } from '../../../komponenter/BrevmottakereAlert';
 import FritekstAvsnitt from '../../../komponenter/FritekstAvsnitt';
 import MålformVelger from '../../../komponenter/MålformVelger';
 import type { IPersonInfo } from '../../../typer/person';
+import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
 
 interface Props {
     bruker: IPersonInfo;
@@ -73,7 +73,7 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
         visForhåndsvisningBeskjed,
     } = useDokumentutsendingContext();
 
-    const { manuelleBrevmottakerePåFagsak } = useFagsakContext();
+    const { manuelleBrevmottakerePåFagsak } = useManuelleBrevmottakerePåFagsakContext();
 
     const årsakVerdi = skjema.felter.årsak.verdi;
 

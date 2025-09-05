@@ -17,7 +17,6 @@ import {
 import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import useFagsakApi from '../../api/useFagsakApi';
 import { useTilbakekrevingApi } from '../../api/useTilbakekrevingApi';
-import type { SkjemaBrevmottaker } from '../../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import type { IKlagebehandling } from '../../typer/klage';
 import type { IPersonInfo } from '../../typer/person';
@@ -38,8 +37,6 @@ interface IFagsakContext {
     oppdaterKlagebehandlingerPåFagsak: () => void;
     tilbakekrevingsbehandlinger: ITilbakekrevingsbehandling[];
     tilbakekrevingStatus: RessursStatus;
-    manuelleBrevmottakerePåFagsak: SkjemaBrevmottaker[];
-    settManuelleBrevmottakerePåFagsak: (brevmottakere: SkjemaBrevmottaker[]) => void;
 }
 
 const FagsakContext = createContext<IFagsakContext | undefined>(undefined);
@@ -55,10 +52,6 @@ export const FagsakProvider = (props: PropsWithChildren) => {
 
     const [tilbakekrevingsbehandlinger, settTilbakekrevingsbehandlinger] =
         useState<Ressurs<ITilbakekrevingsbehandling[]>>(byggTomRessurs());
-
-    const [manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak] = useState<
-        SkjemaBrevmottaker[]
-    >([]);
 
     const { request } = useHttp();
     const { skalObfuskereData } = useAppContext();
@@ -159,7 +152,6 @@ export const FagsakProvider = (props: PropsWithChildren) => {
         bruker,
         oppdaterKlagebehandlingerPåFagsak,
         oppdaterTilbakekrevingsbehandlingerPåFagsak,
-        settManuelleBrevmottakerePåFagsak,
     });
 
     return (
@@ -176,8 +168,6 @@ export const FagsakProvider = (props: PropsWithChildren) => {
                 oppdaterKlagebehandlingerPåFagsak,
                 tilbakekrevingsbehandlinger: hentDataFraRessurs(tilbakekrevingsbehandlinger) ?? [],
                 tilbakekrevingStatus: tilbakekrevingsbehandlinger.status,
-                manuelleBrevmottakerePåFagsak,
-                settManuelleBrevmottakerePåFagsak,
             }}
         >
             {props.children}
