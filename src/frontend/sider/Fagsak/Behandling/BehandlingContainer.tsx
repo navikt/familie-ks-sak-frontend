@@ -15,6 +15,7 @@ import { Fagsaklinje } from '../Fagsaklinje/Fagsaklinje';
 import Venstremeny from './Venstremeny/Venstremeny';
 import { HenleggBehandlingModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingModal';
 import { HenleggBehandlingVeivalgModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingVeivalgModal';
+import { KorrigerEtterbetalingModal } from './sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetalingModal';
 
 const FlexContainer = styled.div`
     display: flex;
@@ -27,7 +28,7 @@ const VenstremenyContainer = styled.div`
 `;
 
 const HovedinnholdContainer = styled.div`
-    height: calc(100vh - 6rem);
+    height: calc(100vh - 146px);
     flex: 1;
     overflow: auto;
 `;
@@ -36,6 +37,7 @@ const HøyremenyContainer = styled.div`
     border-left: 1px solid ${ABorderDivider};
     overflow-x: hidden;
     overflow-y: scroll;
+    height: calc(100vh - 146px);
 `;
 
 interface Props {
@@ -52,6 +54,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFa
                 <>
                     <HenleggBehandlingModal />
                     <HenleggBehandlingVeivalgModal />
+                    <KorrigerEtterbetalingModal behandling={åpenBehandling.data} />
                     <Fagsaklinje minimalFagsak={minimalFagsak} />
                     <FlexContainer>
                         <VenstremenyContainer>

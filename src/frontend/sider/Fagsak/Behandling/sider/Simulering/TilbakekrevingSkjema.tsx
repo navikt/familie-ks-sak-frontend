@@ -15,7 +15,6 @@ import {
     HStack,
     Label,
     Link,
-    Loader,
     Radio,
     RadioGroup,
     Spacer,
@@ -29,7 +28,10 @@ import { useSimuleringContext } from './SimuleringContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import { ModalType } from '../../../../../context/ModalContext';
 import { useModal } from '../../../../../hooks/useModal';
-import { useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf } from '../../../../../hooks/useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf';
+import {
+    mutationKey,
+    useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf,
+} from '../../../../../hooks/useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf';
 import type { BrevmottakereAlertBehandlingProps } from '../../../../../komponenter/BrevmottakereAlert';
 import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAlert';
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../../../typer/simulering';
@@ -82,15 +84,15 @@ const TilbakekrevingSkjema: React.FC<{
         useSimuleringContext();
     const { fritekstVarsel, begrunnelse, tilbakekrevingsvalg } = tilbakekrevingSkjema.felter;
 
-    const { åpneModal: åpneForhåndsvisPdfModal } = useModal(ModalType.FORHÅNDSVIS_PDF);
-    const { åpneModal: åpneFeilmeldingModal } = useModal(ModalType.FEILMELDING);
+    const { åpneModal: åpneForhåndsvisOpprettingAvPdfModal } = useModal(
+        ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF
+    );
 
     const {
         mutate: opprettTilbakekrevingVarselBrevPdf,
         isPending: isOpprettTilbakekrevingVarselBrevPdfPending,
     } = useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf({
-        onSuccess: blob => åpneForhåndsvisPdfModal({ blob }),
-        onError: error => åpneFeilmeldingModal({ feilmelding: error.message }),
+        onMutate: () => åpneForhåndsvisOpprettingAvPdfModal({ mutationKey }),
     });
 
     const { bruker: brukerRessurs } = useFagsakContext();
@@ -352,10 +354,6 @@ const TilbakekrevingSkjema: React.FC<{
                                                         RessursStatus.SUKSESS
                                                     ) {
                                                         // TODO: Fjern når BehanldingContext alltid har en behandling. Dette burde aldri skje.
-                                                        åpneFeilmeldingModal({
-                                                            feilmelding:
-                                                                'Kan ikke forhåndsvise PDF uten behandling.',
-                                                        });
                                                         return;
                                                     }
                                                     opprettTilbakekrevingVarselBrevPdf({
@@ -370,12 +368,7 @@ const TilbakekrevingSkjema: React.FC<{
                                                     isOpprettTilbakekrevingVarselBrevPdfPending
                                                 }
                                             >
-                                                <HStack gap={'space-8'}>
-                                                    Forhåndsvis varsel
-                                                    {isOpprettTilbakekrevingVarselBrevPdfPending && (
-                                                        <Loader size={'small'} />
-                                                    )}
-                                                </HStack>
+                                                Forhåndsvis varsel
                                             </Button>
                                         </ForhåndsvisVarselKnappContainer>
                                     </FritekstVarsel>
