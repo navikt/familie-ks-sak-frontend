@@ -15,6 +15,7 @@ import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../
 import { Målform, type IBarnMedOpplysninger } from '../../../typer/søknad';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
+import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
 
 export enum DokumentÅrsak {
     KAN_SØKE_EØS = 'KAN_SØKE_EØS',
@@ -94,8 +95,9 @@ const DokumentutsendingContext = createContext<DokumentutsendingContextValue | u
 );
 
 export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
-    const { bruker, manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak } =
-        useFagsakContext();
+    const { bruker } = useFagsakContext();
+    const { manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak } =
+        useManuelleBrevmottakerePåFagsakContext();
     const [visInnsendtBrevModal, settVisInnsendtBrevModal] = useState(false);
     const { hentForhåndsvisning, hentetDokument } = useDokument();
 
