@@ -1,16 +1,13 @@
 import * as React from 'react';
 
 import { Alert } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
 import { BehandlingStatus } from '../../typer/behandling';
 import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '../../utils/behandling';
 
 export function MidlertidigEnhetAlert() {
-    const { åpenBehandling } = useBehandlingContext();
-
-    const behandling = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data : undefined;
+    const { behandling } = useBehandlingContext();
 
     if (!behandling) {
         return null;

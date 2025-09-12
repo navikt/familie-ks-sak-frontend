@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { useHttp } from '@navikt/familie-http';
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { FeltState } from '@navikt/familie-skjema';
-import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
@@ -14,7 +14,7 @@ import type {
     IUtenlandskPeriodeBeløp,
     UtenlandskPeriodeBeløpIntervall,
 } from '../../../../../../../typer/eøsPerioder';
-import { nyIsoMånedPeriode, type IIsoMånedPeriode } from '../../../../../../../utils/dato';
+import { type IIsoMånedPeriode, nyIsoMånedPeriode } from '../../../../../../../utils/dato';
 import { erBarnGyldig, erEøsPeriodeGyldig, isEmpty, isNumeric } from '../../../../../../../utils/eøsValidators';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import { konverterDesimalverdiTilSkjemaVisning, konverterSkjemaverdiTilDesimal } from '../utils';
@@ -53,12 +53,9 @@ interface IProps {
 
 const useUtenlandskPeriodeBeløpSkjema = ({ barnIUtenlandskPeriodeBeløp, utenlandskPeriodeBeløp }: IProps) => {
     const [erUtenlandskPeriodeBeløpEkspandert, settErUtenlandskPeriodeBeløpEkspandert] = React.useState<boolean>(false);
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
-    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
-    const behandlingsÅrsakErOvergangsordning =
-        åpenBehandling.status === RessursStatus.SUKSESS
-            ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
-            : false;
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
+    const behandlingId = behandling.behandlingId;
+    const behandlingsÅrsakErOvergangsordning = behandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024;
     const initelFom = useFelt<string>({ verdi: utenlandskPeriodeBeløp.fom });
     const { request } = useHttp();
 
