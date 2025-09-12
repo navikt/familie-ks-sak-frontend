@@ -1,7 +1,6 @@
 import React from 'react';
 
-import type { IBehandling } from '../../../../../typer/behandling';
-import { BehandlingStatus, Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
+import { BehandlingStatus, Behandlingstype, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 import { AInntekt } from '../AInntekt/AInntekt';
@@ -15,10 +14,10 @@ import { LeggTilEllerFjernBrevmottakere } from '../LeggTilEllerFjernBrevmottaker
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;
-    åpenBehandling: IBehandling;
+    behandling: IBehandling;
 }
 
-const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
+const MenyvalgBehandling = ({ minimalFagsak, behandling }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
 
     const erLesevisning = vurderErLesevisning();
@@ -29,23 +28,21 @@ const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
             <EndreBehandlingstema />
             <HenleggBehandling />
             {!erLesevisning &&
-                (åpenBehandling.årsak === BehandlingÅrsak.NYE_OPPLYSNINGER ||
-                    åpenBehandling.årsak === BehandlingÅrsak.KLAGE ||
-                    åpenBehandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
-                    åpenBehandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV) && (
-                    <LeggTiLBarnPåBehandling behandling={åpenBehandling} />
+                (behandling.årsak === BehandlingÅrsak.NYE_OPPLYSNINGER ||
+                    behandling.årsak === BehandlingÅrsak.KLAGE ||
+                    behandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
+                    behandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV) && (
+                    <LeggTiLBarnPåBehandling behandling={behandling} />
                 )}
-            {åpenBehandling.status === BehandlingStatus.UTREDES && (
-                <SettEllerOppdaterVenting behandling={åpenBehandling} />
-            )}
-            {åpenBehandling.behandlingPåVent && <TaBehandlingAvVent behandling={åpenBehandling} />}
+            {behandling.status === BehandlingStatus.UTREDES && <SettEllerOppdaterVenting behandling={behandling} />}
+            {behandling.behandlingPåVent && <TaBehandlingAvVent behandling={behandling} />}
 
-            {(!erLesevisning || åpenBehandling.brevmottakere.length > 0) &&
-                (åpenBehandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING ||
-                    åpenBehandling.type === Behandlingstype.REVURDERING) && (
+            {(!erLesevisning || behandling.brevmottakere.length > 0) &&
+                (behandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING ||
+                    behandling.type === Behandlingstype.REVURDERING) && (
                     <LeggTilEllerFjernBrevmottakere
                         erPåBehandling={true}
-                        behandling={åpenBehandling}
+                        behandling={behandling}
                         erLesevisning={erLesevisning}
                     />
                 )}
