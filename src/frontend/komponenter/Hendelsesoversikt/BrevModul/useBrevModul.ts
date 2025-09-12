@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
-import type { Ressurs } from '@navikt/familie-typer';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import type { ISelectOptionMedBrevtekst } from './typer';
 import { Brevmal } from './typer';
@@ -18,13 +16,9 @@ import { Målform } from '../../../typer/søknad';
 import type { IFritekstFelt } from '../../../utils/fritekstfelter';
 import { genererIdBasertPåAndreFritekster, lagInitiellFritekst } from '../../../utils/fritekstfelter';
 
-export const hentMuligeBrevmalerImplementering = (åpenBehandling: Ressurs<IBehandling>): Brevmal[] => {
-    if (åpenBehandling.status !== RessursStatus.SUKSESS) {
-        return [];
-    }
-
+export const hentMuligeBrevmalerImplementering = (behandling: IBehandling): Brevmal[] => {
     const brevmaler: Brevmal[] = Object.keys(Brevmal) as Brevmal[];
-    return brevmaler.filter(brevmal => brevmalKanVelgesForBehandling(brevmal, åpenBehandling.data));
+    return brevmaler.filter(brevmal => brevmalKanVelgesForBehandling(brevmal, behandling));
 };
 
 const brevmalKanVelgesForBehandling = (brevmal: Brevmal, åpenBehandling: IBehandling): boolean => {
@@ -85,7 +79,7 @@ export const mottakersMålformImplementering = (
     })?.målform ?? Målform.NB;
 
 export const useBrevModul = () => {
-    const { åpenBehandling } = useBehandlingContext();
+    const { behandling } = useBehandlingContext();
 
     const maksAntallKulepunkter = 20;
     const makslengdeFritekstHvertKulepunkt = 220;
@@ -93,10 +87,9 @@ export const useBrevModul = () => {
 
     const [visFritekstAvsnittTekstboks, settVisFritekstAvsnittTekstboks] = useState(false);
 
-    const behandlingKategori =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.kategori : undefined;
+    const behandlingKategori = behandling.kategori;
 
-    const brevmottakere = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere : [];
+    const brevmottakere = behandling.brevmottakere;
 
     const mottakerIdent = useFelt({
         verdi: '',
@@ -269,13 +262,13 @@ export const useBrevModul = () => {
     useEffect(() => {
         skjema.felter.dokumenter.nullstill();
         nullstillBarnBrevetGjelder();
-    }, [åpenBehandling]);
+    }, [behandling]);
 
     useEffect(() => {
         nullstillBarnBrevetGjelder();
     }, [skjema.felter.brevmal.verdi]);
 
-    const personer = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.personer : [];
+    const personer = behandling.personer;
 
     const mottakersMålform = (): Målform =>
         mottakersMålformImplementering(
@@ -284,7 +277,7 @@ export const useBrevModul = () => {
             skjema.felter.mottakerIdent.verdi
         );
 
-    const hentMuligeBrevMaler = (): Brevmal[] => hentMuligeBrevmalerImplementering(åpenBehandling);
+    const hentMuligeBrevMaler = (): Brevmal[] => hentMuligeBrevmalerImplementering(behandling);
 
     const leggTilFritekst = (valideringsmelding?: string) => {
         skjema.felter.friteksterKulepunkter.validerOgSettFelt([

@@ -4,7 +4,6 @@ import deepEqual from 'deep-equal';
 import styled from 'styled-components';
 
 import { BodyShort, HStack, Table } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
 import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
@@ -28,7 +27,7 @@ const BeskrivelseCelle = styled(BodyShort)`
 `;
 
 const AnnenVurderingTabellRad = ({ person, annenVurderingConfig, annenVurdering }: IProps) => {
-    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
+    const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const [ekspandertAnnenVurdering, settEkspandertAnnenVurdering] = useState(
@@ -73,11 +72,7 @@ const AnnenVurderingTabellRad = ({ person, annenVurderingConfig, annenVurdering 
             <Table.DataCell>
                 <ManuellVurdering />
             </Table.DataCell>
-            <Table.DataCell>
-                {åpenBehandling.status === RessursStatus.SUKSESS && annenVurdering.erVurdert
-                    ? 'Vurdert i denne behandlingen'
-                    : ''}
-            </Table.DataCell>
+            <Table.DataCell>{annenVurdering.erVurdert ? 'Vurdert i denne behandlingen' : ''}</Table.DataCell>
         </Table.ExpandableRow>
     );
 };

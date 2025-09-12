@@ -33,9 +33,9 @@ const OvergangsordningAndelContext = createContext<OvergangsordningAndelContextV
 
 export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children }: Props) => {
     const { request } = useHttp();
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
 
-    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingId = behandling.behandlingId;
 
     const { skjema, kanSendeSkjema, onSubmit, nullstillSkjema } = useSkjema<IOvergangsordningAndelSkjema, IBehandling>({
         felter: {

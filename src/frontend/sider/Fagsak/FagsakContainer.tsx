@@ -17,6 +17,7 @@ import { useFagsakId } from '../../hooks/useFagsakId';
 import { useHentFagsak } from '../../hooks/useHentFagsak';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
 import type { IMinimalFagsak } from '../../typer/fagsak';
+import { HentOgSettBehandlingProvider } from './Behandling/context/HentOgSettBehandlingContext';
 
 const Innhold = styled.div`
     height: calc(100vh - 3rem);
@@ -73,7 +74,11 @@ const FagsakContainerInnhold = ({ minimalFagsak }: { minimalFagsak: IMinimalFags
 
                                 <Route
                                     path="/:behandlingId/*"
-                                    element={<BehandlingContainer bruker={bruker.data} minimalFagsak={minimalFagsak} />}
+                                    element={
+                                        <HentOgSettBehandlingProvider fagsak={minimalFagsak}>
+                                            <BehandlingContainer bruker={bruker.data} minimalFagsak={minimalFagsak} />
+                                        </HentOgSettBehandlingProvider>
+                                    }
                                 />
                                 <Route
                                     path="/"

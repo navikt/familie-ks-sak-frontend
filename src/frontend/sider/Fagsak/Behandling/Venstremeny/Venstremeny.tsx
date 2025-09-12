@@ -19,7 +19,6 @@ import {
     ASurfaceWarning,
     ATextDefault,
 } from '@navikt/ds-tokens/dist/tokens';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import { useVenstremeny } from './useVenstremeny';
 import { useFagsakId } from '../../../../hooks/useFagsakId';
@@ -77,7 +76,7 @@ const UndersideSirkel = styled.span`
 `;
 
 export function Venstremeny() {
-    const { åpenBehandling, trinnPåBehandling } = useBehandlingContext();
+    const { behandling, trinnPåBehandling } = useBehandlingContext();
 
     const fagsakId = useFagsakId();
     const [erÅpen, settErÅpen] = useVenstremeny();
@@ -94,10 +93,6 @@ export function Venstremeny() {
         <ChevronRightIcon aria-label={'Skjul venstremeny'} />
     );
 
-    if (åpenBehandling.status !== RessursStatus.SUKSESS) {
-        return null;
-    }
-
     return (
         <Stack direction={'row-reverse'}>
             <ToggleVisningVenstremeny
@@ -112,9 +107,9 @@ export function Venstremeny() {
             <Activity mode={erÅpen ? 'visible' : 'hidden'}>
                 <Box as={'nav'} paddingBlock={'space-8'}>
                     {Object.entries(trinnPåBehandling).map(([sideId, side], index) => {
-                        const tilPath = `/fagsak/${fagsakId}/${åpenBehandling.data.behandlingId}/${side.href}`;
-                        const undersider = side.undersider ? side.undersider(åpenBehandling.data) : [];
-                        const sidenErAktiv = erSidenAktiv(side, åpenBehandling.data);
+                        const tilPath = `/fagsak/${fagsakId}/${behandling.behandlingId}/${side.href}`;
+                        const undersider = side.undersider ? side.undersider(behandling) : [];
+                        const sidenErAktiv = erSidenAktiv(side, behandling);
                         return (
                             <VStack key={sideId}>
                                 <MenyLenke
