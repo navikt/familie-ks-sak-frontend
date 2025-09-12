@@ -14,13 +14,12 @@ import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const RegistrerSøknad = () => {
-    const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
+    const { behandling, vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const { hentFeilTilOppsummering, nesteAction, skjema, søknadErLastetFraBackend } = useSøknadContext();
 
-    const harBrevmottaker =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere.length > 0 : false;
+    const harBrevmottaker = behandling.brevmottakere.length > 0;
 
     function onLeggTilBarn(barn: IBarnMedOpplysninger) {
         skjema.felter.barnaMedOpplysninger.validerOgSettFelt([...skjema.felter.barnaMedOpplysninger.verdi, barn]);

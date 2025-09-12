@@ -1,5 +1,4 @@
 import { Link } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import { ModalType } from '../../../../../context/ModalContext';
 import { useModal } from '../../../../../hooks/useModal';
@@ -23,7 +22,7 @@ function lagRequestPayload(mottakerIdent: string): IManueltBrevRequestPåBehandl
 
 export function ForhåndsvisBrevLenke() {
     const { fagsak } = useFagsakContext();
-    const { åpenBehandling } = useBehandlingContext();
+    const { behandling } = useBehandlingContext();
 
     const { åpneModal: åpneForhåndsvisOpprettingAvPdfModal } = useModal(ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF);
 
@@ -32,13 +31,9 @@ export function ForhåndsvisBrevLenke() {
     });
 
     function forhåndsvisBrev() {
-        if (åpenBehandling.status !== RessursStatus.SUKSESS) {
-            // TODO : Fjern når BehandlingContext får innsendt en behandling fra react-query. Dette skal aldri skje
-            return;
-        }
         if (!isPending) {
             mutate({
-                behandlingId: åpenBehandling.data.behandlingId,
+                behandlingId: behandling.behandlingId,
                 payload: lagRequestPayload(fagsak.søkerFødselsnummer),
             });
         }
