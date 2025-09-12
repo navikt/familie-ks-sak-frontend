@@ -5,8 +5,7 @@ import { useHttp } from '@navikt/familie-http';
 import { hentTilbakekrevingsbehandlinger } from '../api/hentTilbakekrevingsbehandlinger';
 
 export const HentTilbakekrevingsbehandlingerQueryKeyFactory = {
-    // TODO : Fjern "undefined" når FagsakContext alltid inneholder en fagsak
-    tilbakekrevingsbehandlinger: (fagsakId: number | undefined) => ['tilbakekrevingsbehandlinger', fagsakId],
+    tilbakekrevingsbehandlinger: (fagsakId: number) => ['tilbakekrevingsbehandlinger', fagsakId],
 };
 
 export function useHentTilbakekrevingsbehandlinger(fagsakId: number) {

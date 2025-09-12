@@ -1,34 +1,31 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 
-import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
-import { useFagsakContext } from './FagsakContext';
-import type { VisningBehandling } from './Saksoversikt/visningBehandling';
 import type { IOpprettEllerHentFagsakData } from '../../api/fagsak';
 import useFagsakApi from '../../api/useFagsakApi';
+import { HentFagsakQueryKeyFactory } from '../../hooks/useHentFagsak';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../utils/fagsak';
 
 export const useOpprettEllerHentFagsak = () => {
-    const { settMinimalFagsakRessurs } = useFagsakContext();
-
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const { hentFagsak } = useFagsakApi();
 
     function opprettEllerHentFagsak(data: IOpprettEllerHentFagsakData) {
         hentFagsak(data)
             .then((response: Ressurs<IMinimalFagsak>) => {
                 if (response.status === RessursStatus.SUKSESS) {
-                    settMinimalFagsakRessurs(response);
-
-                    const aktivBehandling: VisningBehandling | undefined = hentAktivBehandlingPåMinimalFagsak(
-                        response.data
-                    );
+                    const hentetFagsak = response.data;
+                    queryClient.setQueryData(HentFagsakQueryKeyFactory.fagsak(hentetFagsak.id), hentetFagsak);
+                    const aktivBehandling = hentAktivBehandlingPåMinimalFagsak(hentetFagsak);
                     if (aktivBehandling) {
-                        navigate(`/fagsak/${response.data.id}/${aktivBehandling.behandlingId}`);
+                        navigate(`/fagsak/${hentetFagsak.id}/${aktivBehandling.behandlingId}`);
                     } else {
-                        navigate(`/fagsak/${response.data.id}/saksoversikt`);
+                        navigate(`/fagsak/${hentetFagsak.id}/saksoversikt`);
                     }
                 } else if (
                     response.status === RessursStatus.FEILET ||

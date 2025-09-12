@@ -1,21 +1,22 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Navigate, Route, Routes } from 'react-router';
 import styled from 'styled-components';
 
-import { Alert } from '@navikt/ds-react';
+import { Alert, HStack, Loader } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingContainer from './Behandling/BehandlingContainer';
 import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
 import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
-import { useFagsakContext } from './FagsakContext';
+import { FagsakProvider, useFagsakContext } from './FagsakContext';
 import { Fagsaklinje } from './Fagsaklinje/Fagsaklinje';
 import JournalpostListe from './journalposter/JournalpostListe';
 import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
 import Personlinje from './Personlinje/Personlinje';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
-import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
+import { useFagsakId } from '../../hooks/useFagsakId';
+import { useHentFagsak } from '../../hooks/useHentFagsak';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 
@@ -94,38 +95,29 @@ const FagsakContainerInnhold = ({ minimalFagsak }: { minimalFagsak: IMinimalFags
     }
 };
 
-const FagsakContainer: React.FunctionComponent = () => {
-    const { fagsakId } = useSakOgBehandlingParams();
-    const { minimalFagsakRessurs, hentMinimalFagsak } = useFagsakContext();
+export function FagsakContainer() {
+    const fagsakId = useFagsakId();
+
+    const { data: fagsak, isPending: isPendingFagsak, error: fagsakError } = useHentFagsak(fagsakId);
 
     useScrollTilAnker();
 
-    useEffect(() => {
-        if (fagsakId !== undefined) {
-            if (minimalFagsakRessurs.status !== RessursStatus.SUKSESS) {
-                hentMinimalFagsak(fagsakId);
-            } else if (
-                minimalFagsakRessurs.status === RessursStatus.SUKSESS &&
-                minimalFagsakRessurs.data.id !== parseInt(fagsakId, 10)
-            ) {
-                hentMinimalFagsak(fagsakId);
-            }
-        }
-    }, [fagsakId]);
-
-    switch (minimalFagsakRessurs.status) {
-        case RessursStatus.SUKSESS:
-            return <FagsakContainerInnhold minimalFagsak={minimalFagsakRessurs.data} />;
-        case RessursStatus.IKKE_TILGANG:
-            return (
-                <Alert children={minimalFagsakRessurs.frontendFeilmelding} variant="error" contentMaxWidth={false} />
-            );
-        case RessursStatus.FEILET:
-        case RessursStatus.FUNKSJONELL_FEIL:
-            return <Alert children={minimalFagsakRessurs.frontendFeilmelding} variant="error" />;
-        default:
-            return <div />;
+    if (isPendingFagsak) {
+        return (
+            <HStack gap={'4'} margin={'space-16'}>
+                <Loader size={'small'} />
+                Laster fagsak...
+            </HStack>
+        );
     }
-};
 
-export default FagsakContainer;
+    if (fagsakError) {
+        return <Alert variant={'error'}>Feil oppstod ved innlasting av fagsak: {fagsakError.message}</Alert>;
+    }
+
+    return (
+        <FagsakProvider fagsak={fagsak}>
+            <FagsakContainerInnhold minimalFagsak={fagsak} />
+        </FagsakProvider>
+    );
+}
