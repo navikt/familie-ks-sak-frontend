@@ -39,16 +39,13 @@ interface InnholdProps {
 }
 
 function Innhold({ årsak }: InnholdProps) {
-    const { minimalFagsak } = useFagsakContext();
+    const { fagsak } = useFagsakContext();
     const { lukkModal } = useModal(ModalType.HENLEGG_BEHANDLING_VEIVALG);
     const navigate = useNavigate();
 
     function gåTilSaksoversikt() {
-        if (minimalFagsak === undefined) {
-            return;
-        }
         lukkModal();
-        navigate(`/fagsak/${minimalFagsak.id}/saksoversikt`);
+        navigate(`/fagsak/${fagsak.id}/saksoversikt`);
     }
 
     function gåTilOppgaver() {
