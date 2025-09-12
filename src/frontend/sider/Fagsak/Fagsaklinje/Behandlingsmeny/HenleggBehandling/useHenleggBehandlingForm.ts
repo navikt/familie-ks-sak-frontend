@@ -1,6 +1,6 @@
 import { type FieldErrors, useForm } from 'react-hook-form';
 
-import { byggSuksessRessurs, RessursStatus } from '@navikt/familie-typer';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { ModalType } from '../../../../../context/ModalContext';
 import { useHenleggBehandling } from '../../../../../hooks/useHenleggBehandling';
@@ -34,7 +34,7 @@ export interface HenleggBehandlingFormValues {
 export const HENLEGG_BEHANDLING_FORM_ID = 'henlegg_behandling_modal_form';
 
 export function useHenleggBehandlingForm() {
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const { lukkModal } = useModal(ModalType.HENLEGG_BEHANDLING);
     const { åpneModal } = useModal(ModalType.HENLEGG_BEHANDLING_VEIVALG);
@@ -58,13 +58,6 @@ export function useHenleggBehandlingForm() {
             });
             return;
         }
-        if (åpenBehandling.status !== RessursStatus.SUKSESS) {
-            setError(HenleggBehandlingServerErrors.onSubmitError.id, {
-                message: 'Mangler behandling.',
-            });
-            return;
-        }
-        const behandling = åpenBehandling.data;
         return mutateAsync({ behandling, årsak, begrunnelse })
             .then(behandling => {
                 settÅpenBehandling(byggSuksessRessurs(behandling));
