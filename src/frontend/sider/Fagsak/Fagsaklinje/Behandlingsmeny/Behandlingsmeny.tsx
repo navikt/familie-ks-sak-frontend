@@ -4,16 +4,15 @@ import styled from 'styled-components';
 
 import { ChevronDownIcon } from '@navikt/aksel-icons';
 import { Button, Dropdown } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import MenyvalgFagsak from './MenyvalgFagsak';
 import MenyvalgBehandling from './OpprettFagsak/MenyvalgBehandling';
-import { BehandlingStatus } from '../../../../typer/behandling';
+import { BehandlingStatus, type IBehandling } from '../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
-import { useBehandlingContext } from '../../Behandling/context/BehandlingContext';
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;
+    åpenBehandling?: IBehandling;
 }
 
 const PosisjonertMenyknapp = styled(Button)`
@@ -24,12 +23,9 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
     width: 30ch;
 `;
 
-const Behandlingsmeny: React.FC<IProps> = ({ minimalFagsak }) => {
-    const { åpenBehandling } = useBehandlingContext();
-
+const Behandlingsmeny: React.FC<IProps> = ({ minimalFagsak, åpenBehandling }) => {
     const skalViseMenyvalgForBehandling =
-        åpenBehandling.status === RessursStatus.SUKSESS &&
-        åpenBehandling.data.status !== BehandlingStatus.AVSLUTTET;
+        åpenBehandling && åpenBehandling.status !== BehandlingStatus.AVSLUTTET;
 
     return (
         <Dropdown>
@@ -49,7 +45,7 @@ const Behandlingsmeny: React.FC<IProps> = ({ minimalFagsak }) => {
                     {skalViseMenyvalgForBehandling && (
                         <MenyvalgBehandling
                             minimalFagsak={minimalFagsak}
-                            åpenBehandling={åpenBehandling.data}
+                            åpenBehandling={åpenBehandling}
                         />
                     )}
                 </Dropdown.Menu.List>

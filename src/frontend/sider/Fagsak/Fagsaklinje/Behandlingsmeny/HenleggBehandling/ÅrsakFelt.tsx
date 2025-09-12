@@ -3,7 +3,6 @@ import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import {
     HenleggBehandlingFormFields,
@@ -15,10 +14,7 @@ import { ToggleNavn } from '../../../../../typer/toggles';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 export function ÅrsakFelt() {
-    const { åpenBehandling } = useBehandlingContext();
-
-    const behandling =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data : undefined;
+    const { behandling } = useBehandlingContext();
 
     const { toggles } = useAppContext();
 

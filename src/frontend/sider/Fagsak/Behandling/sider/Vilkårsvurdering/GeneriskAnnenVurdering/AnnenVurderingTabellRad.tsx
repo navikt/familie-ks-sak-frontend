@@ -4,14 +4,13 @@ import deepEqual from 'deep-equal';
 import styled from 'styled-components';
 
 import { BodyShort, HStack, Table } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
 import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
 import ManuellVurdering from '../../../../../../ikoner/ManuellVurdering';
 import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import type { IAnnenVurderingConfig, IAnnenVurdering } from '../../../../../../typer/vilkår';
+import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../../../typer/vilkår';
 import { Resultat, uiResultat } from '../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
@@ -32,7 +31,7 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
     annenVurderingConfig,
     annenVurdering,
 }) => {
-    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
+    const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const [ekspandertAnnenVurdering, settEkspandertAnnenVurdering] = useState(
@@ -83,9 +82,7 @@ const AnnenVurderingTabellRad: React.FC<IProps> = ({
                 <ManuellVurdering />
             </Table.DataCell>
             <Table.DataCell>
-                {åpenBehandling.status === RessursStatus.SUKSESS && annenVurdering.erVurdert
-                    ? 'Vurdert i denne behandlingen'
-                    : ''}
+                {annenVurdering.erVurdert ? 'Vurdert i denne behandlingen' : ''}
             </Table.DataCell>
         </Table.ExpandableRow>
     );
