@@ -15,9 +15,10 @@ import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakereP
 import Personlinje from './Personlinje/Personlinje';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
 import { useFagsakContext } from '../../context/fagsak/FagsakContext';
-import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
 import type { IMinimalFagsak } from '../../typer/fagsak';
+import { HentOgSettBehandlingProvider } from './Behandling/context/HentOgSettBehandlingContext';
+import useSakOgBehandlingParams from '../../hooks/useSakOgBehandlingParams';
 
 const Innhold = styled.div`
     height: calc(100vh - 3rem);
@@ -75,10 +76,12 @@ const FagsakContainerInnhold = ({ minimalFagsak }: { minimalFagsak: IMinimalFags
                                 <Route
                                     path="/:behandlingId/*"
                                     element={
-                                        <BehandlingContainer
-                                            bruker={bruker.data}
-                                            minimalFagsak={minimalFagsak}
-                                        />
+                                        <HentOgSettBehandlingProvider fagsak={minimalFagsak}>
+                                            <BehandlingContainer
+                                                bruker={bruker.data}
+                                                minimalFagsak={minimalFagsak}
+                                            />
+                                        </HentOgSettBehandlingProvider>
                                     }
                                 />
                                 <Route

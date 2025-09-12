@@ -12,8 +12,8 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnBrevetGjelder from './BarnBrevetGjelder';
 import BrevmottakerListe from './BrevmottakerListe';
-import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
+import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import { useBrevModul } from './useBrevModul';
 import useDokument from '../../../hooks/useDokument';
 import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
@@ -76,7 +76,7 @@ const FritekstWrapper = styled.div`
  * @Deprecated - Erstattes av {@link Brevskjema}.
  */
 const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
-    const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } =
+    const { behandling, settÅpenBehandling, vurderErLesevisning, hentLogg } =
         useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
     const { hentForhåndsvisning, hentetDokument } = useDokument();
@@ -117,15 +117,13 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
         skjema.submitRessurs.status === RessursStatus.HENTER ||
         hentetDokument.status === RessursStatus.HENTER;
 
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS && åpenBehandling.data.behandlingId;
+    const behandlingId = behandling.behandlingId;
 
     const fieldsetId = 'Fritekster-brev';
     const erMaksAntallKulepunkter =
         skjema.felter.friteksterKulepunkter.verdi.length >= maksAntallKulepunkter;
 
-    const behandlingSteg =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.steg : undefined;
+    const behandlingSteg = behandling.steg;
 
     const onChangeFritekst = (event: React.ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
         skjema.felter.friteksterKulepunkter.validerOgSettFelt([
@@ -428,20 +426,18 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                     loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                     disabled={skjemaErLåst}
                     onClick={() => {
-                        if (åpenBehandling.status === RessursStatus.SUKSESS) {
-                            onSubmit<IManueltBrevRequestPåBehandling>(
-                                {
-                                    method: 'POST',
-                                    data: hentSkjemaData(),
-                                    url: `/familie-ks-sak/api/brev/send-brev/${åpenBehandling.data.behandlingId}`,
-                                },
-                                (ressurs: Ressurs<IBehandling>) => {
-                                    onSubmitSuccess();
-                                    settÅpenBehandling(ressurs);
-                                    hentLogg();
-                                }
-                            );
-                        }
+                        onSubmit<IManueltBrevRequestPåBehandling>(
+                            {
+                                method: 'POST',
+                                data: hentSkjemaData(),
+                                url: `/familie-ks-sak/api/brev/send-brev/${behandling.behandlingId}`,
+                            },
+                            (ressurs: Ressurs<IBehandling>) => {
+                                onSubmitSuccess();
+                                settÅpenBehandling(ressurs);
+                                hentLogg();
+                            }
+                        );
                     }}
                 >
                     Send brev

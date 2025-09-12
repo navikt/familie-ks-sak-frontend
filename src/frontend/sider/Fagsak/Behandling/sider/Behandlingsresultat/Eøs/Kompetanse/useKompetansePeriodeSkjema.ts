@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useHttp } from '@navikt/familie-http';
 import { useFelt, useSkjema } from '@navikt/familie-skjema';
-import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import {
     erAnnenForeldersAktivitetGyldig,
@@ -22,7 +22,7 @@ import type {
     KompetanseAktivitet,
     KompetanseResultat,
 } from '../../../../../../../typer/eøsPerioder';
-import { nyIsoMånedPeriode, type IIsoMånedPeriode } from '../../../../../../../utils/dato';
+import { type IIsoMånedPeriode, nyIsoMånedPeriode } from '../../../../../../../utils/dato';
 import { erBarnGyldig, erEøsPeriodeGyldig } from '../../../../../../../utils/eøsValidators';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 
@@ -36,13 +36,10 @@ interface IProps {
 
 const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => {
     const [erKompetanseEkspandert, settErKompetanseEkspandert] = React.useState<boolean>(false);
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
+    const behandlingId = behandling.behandlingId;
     const behandlingsÅrsakErOvergangsordning =
-        åpenBehandling.status === RessursStatus.SUKSESS
-            ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
-            : false;
+        behandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024;
     const { request } = useHttp();
 
     const initelFom = useFelt<string>({ verdi: kompetanse.fom });
