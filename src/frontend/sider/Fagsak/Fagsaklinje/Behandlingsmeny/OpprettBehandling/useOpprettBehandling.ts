@@ -20,7 +20,6 @@ import { Klagebehandlingstype } from '../../../../../typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
 import type { IsoDatoString } from '../../../../../utils/dato';
 import { dateTilIsoDatoString, dateTilIsoDatoStringEllerUndefined, validerGyldigDato } from '../../../../../utils/dato';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 import { useFagsakContext } from '../../../FagsakContext';
 
 interface IOpprettBehandlingSkjemaFelter {
@@ -39,7 +38,6 @@ const useOpprettBehandling = ({
     onOpprettTilbakekrevingSuccess: () => void;
 }) => {
     const { fagsakId } = useSakOgBehandlingParams();
-    const { settÅpenBehandling } = useBehandlingContext();
     const { fagsak, bruker: brukerRessurs } = useFagsakContext();
     const { innloggetSaksbehandler } = useAppContext();
     const queryClient = useQueryClient();
@@ -192,7 +190,6 @@ const useOpprettBehandling = ({
                         queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id),
                     });
 
-                    settÅpenBehandling(response);
                     const behandling: IBehandling | undefined = hentDataFraRessurs(response);
 
                     if (behandling && behandling.årsak === BehandlingÅrsak.SØKNAD) {

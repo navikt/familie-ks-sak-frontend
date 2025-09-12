@@ -10,7 +10,7 @@ import { useBehandlingContext } from '../../../Behandling/context/BehandlingCont
 
 const useEndreBehandlendeEnhet = (lukkModal: () => void) => {
     const { request } = useHttp();
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const [enhetId, settEnhetId] = useState<string | undefined>(undefined);
     const [begrunnelse, settBegrunnelse] = useState('');
@@ -18,12 +18,10 @@ const useEndreBehandlendeEnhet = (lukkModal: () => void) => {
     const [submitRessurs, settSubmitRessurs] = useState(byggTomRessurs());
 
     useEffect(() => {
-        if (åpenBehandling.status === RessursStatus.SUKSESS) {
-            settEnhetId(åpenBehandling.data.arbeidsfordelingPåBehandling.behandlendeEnhetId);
-            settBegrunnelse('');
-            settSubmitRessurs(byggTomRessurs());
-        }
-    }, [åpenBehandling]);
+        settEnhetId(behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId);
+        settBegrunnelse('');
+        settSubmitRessurs(byggTomRessurs());
+    }, [behandling]);
 
     const endreEnhet = (behandlingId: number) => {
         if (begrunnelse === '') {
@@ -56,11 +54,7 @@ const useEndreBehandlendeEnhet = (lukkModal: () => void) => {
     };
 
     const fjernState = () => {
-        settEnhetId(
-            åpenBehandling.status === RessursStatus.SUKSESS
-                ? åpenBehandling.data.arbeidsfordelingPåBehandling.behandlendeEnhetId
-                : undefined
-        );
+        settEnhetId(behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId);
         settBegrunnelse('');
         settSubmitRessurs(byggTomRessurs());
     };

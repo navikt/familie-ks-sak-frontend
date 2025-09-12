@@ -11,14 +11,14 @@ import type {
     IRestNyttVilkår,
     VilkårType,
 } from '../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 export const useVilkårsvurderingApi = () => {
     const { request } = useHttp();
 
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
 
-    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingId = behandling.behandlingId;
 
     const [lagrerVilkår, settLagrerVilkår] = useState<boolean>(false);
     const [lagreVilkårFeilmelding, settLagreVilkårFeilmelding] = useState<string>('');

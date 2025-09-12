@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, Label, Radio, RadioGroup, Select, Textarea } from '@navikt/ds-react';
 import { ABorderDefault, ASurfaceAction } from '@navikt/ds-tokens/dist/tokens';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import AvslagSkjema from './AvslagSkjema';
 import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
@@ -76,9 +75,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     oppdaterMuligeUtdypendeVilkårsvurderinger,
     settFokusPåLeggTilPeriodeKnapp,
 }: IVilkårSkjema<T>) => {
-    const { åpenBehandling } = useBehandlingContext();
-    const årsakErSøknad =
-        åpenBehandling.status !== RessursStatus.SUKSESS || åpenBehandling.data.årsak === BehandlingÅrsak.SØKNAD;
+    const { behandling } = useBehandlingContext();
+    const årsakErSøknad = behandling.årsak === BehandlingÅrsak.SØKNAD;
     const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding, nullstillSkjema } =
         vilkårSkjemaContext;
 

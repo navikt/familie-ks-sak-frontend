@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
@@ -11,10 +11,9 @@ import { useAppContext } from '../../../../context/AppContext';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
 import { BehandlingÅrsak, type IBehandling, type IOpprettBehandlingData } from '../../../../typer/behandling';
 import type { ILogg } from '../../../../typer/logg';
-import { obfuskerBehandling, obfuskerLogg } from '../../../../utils/obfuskerData';
+import { obfuskerLogg } from '../../../../utils/obfuskerData';
 
 const useBehandlingApi = (
-    behandling: Ressurs<IBehandling>,
     oppdaterBehandling: (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak?: boolean) => void
 ) => {
     const { request } = useHttp();
@@ -23,19 +22,6 @@ const useBehandlingApi = (
     const navigate = useNavigate();
     const [logg, settLogg] = useState<Ressurs<ILogg[]>>(byggTomRessurs());
     const { skalObfuskereData } = useAppContext();
-
-    useEffect(() => {
-        if (behandlingId !== undefined) {
-            if (behandling.status !== RessursStatus.SUKSESS) {
-                hentBehandling();
-            } else if (
-                behandling.status === RessursStatus.SUKSESS &&
-                behandling.data.behandlingId !== parseInt(behandlingId, 10)
-            ) {
-                hentBehandling();
-            }
-        }
-    }, [behandlingId]);
 
     const opprettBehandling = (data: IOpprettBehandlingData): Promise<void | Ressurs<IBehandling>> => {
         return request<IOpprettBehandlingData, IBehandling>({
@@ -59,19 +45,6 @@ const useBehandlingApi = (
             .catch(() => {
                 return byggFeiletRessurs('Opprettelse av behandling feilet');
             });
-    };
-
-    const hentBehandling = () => {
-        request<void, IBehandling>({
-            method: 'GET',
-            url: `/familie-ks-sak/api/behandlinger/${behandlingId}`,
-            påvirkerSystemLaster: true,
-        }).then((response: Ressurs<IBehandling>) => {
-            if (skalObfuskereData) {
-                obfuskerBehandling(response);
-            }
-            oppdaterBehandling(response, false);
-        });
     };
 
     const hentLogg = (): void => {

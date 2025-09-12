@@ -80,7 +80,7 @@ const TilbakekrevingSkjema = ({
     søkerMålform: Målform;
     harÅpenTilbakekrevingRessurs: Ressurs<boolean>;
 }) => {
-    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
+    const { vurderErLesevisning, behandling } = useBehandlingContext();
     const { tilbakekrevingSkjema, hentFeilTilOppsummering, maksLengdeTekst } = useSimuleringContext();
     const { fritekstVarsel, begrunnelse, tilbakekrevingsvalg } = tilbakekrevingSkjema.felter;
 
@@ -231,17 +231,16 @@ const TilbakekrevingSkjema = ({
                                 >
                                     Opprett tilbakekreving, send varsel
                                 </Radio>
-                                {åpenBehandling.status === RessursStatus.SUKSESS &&
-                                    tilbakekrevingsvalg.verdi ===
-                                        Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL && (
-                                        <StyledBrevmottakereAlert
-                                            bruker={bruker}
-                                            erPåBehandling={true}
-                                            erLesevisning={erLesevisning}
-                                            åpenBehandling={åpenBehandling.data}
-                                            brevmottakere={åpenBehandling.data.brevmottakere}
-                                        />
-                                    )}
+                                {tilbakekrevingsvalg.verdi ===
+                                    Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL && (
+                                    <StyledBrevmottakereAlert
+                                        bruker={bruker}
+                                        erPåBehandling={true}
+                                        erLesevisning={erLesevisning}
+                                        åpenBehandling={behandling}
+                                        brevmottakere={behandling.brevmottakere}
+                                    />
+                                )}
                                 {fritekstVarsel.erSynlig && (
                                     <FritekstVarsel>
                                         <Textarea
@@ -297,12 +296,8 @@ const TilbakekrevingSkjema = ({
                                                 variant={'tertiary'}
                                                 id={'forhandsvis-varsel'}
                                                 onClick={() => {
-                                                    if (åpenBehandling.status !== RessursStatus.SUKSESS) {
-                                                        // TODO: Fjern når BehanldingContext alltid har en behandling. Dette burde aldri skje.
-                                                        return;
-                                                    }
                                                     opprettTilbakekrevingVarselBrevPdf({
-                                                        behandlingId: åpenBehandling.data.behandlingId,
+                                                        behandlingId: behandling.behandlingId,
                                                         payload: { fritekst: fritekstVarsel.verdi },
                                                     });
                                                 }}
