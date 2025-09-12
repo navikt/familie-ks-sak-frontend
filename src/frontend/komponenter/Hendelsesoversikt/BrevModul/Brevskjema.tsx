@@ -11,8 +11,8 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnBrevetGjelder from './BarnBrevetGjelder';
 import BrevmottakerListe from './BrevmottakerListe';
-import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
+import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import { useBrevModul } from './useBrevModul';
 import { ModalType } from '../../../context/ModalContext';
 import { useModal } from '../../../hooks/useModal';
@@ -76,7 +76,7 @@ const FritekstWrapper = styled.div`
 `;
 
 const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
-    const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } =
+    const { behandling, settÅpenBehandling, vurderErLesevisning, hentLogg } =
         useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
@@ -99,11 +99,6 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
         settVisFritekstAvsnittTekstboks,
     } = useBrevModul();
 
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS
-            ? åpenBehandling.data.behandlingId
-            : undefined;
-
     const { åpneModal: åpneForhåndsvisOpprettingAvPdfModal } = useModal(
         ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF
     );
@@ -123,9 +118,6 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
     const fieldsetId = 'Fritekster-brev';
     const erMaksAntallKulepunkter =
         skjema.felter.friteksterKulepunkter.verdi.length >= maksAntallKulepunkter;
-
-    const behandlingSteg =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.steg : undefined;
 
     const onChangeFritekst = (event: React.ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
         skjema.felter.friteksterKulepunkter.validerOgSettFelt([
@@ -378,7 +370,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                 {skjema.felter.barnBrevetGjelder.erSynlig && (
                     <BarnBrevetGjelder
                         barnBrevetGjelderFelt={skjema.felter.barnBrevetGjelder}
-                        behandlingsSteg={behandlingSteg}
+                        behandlingsSteg={behandling.steg}
                         visFeilmeldinger={skjema.visFeilmeldinger}
                         settVisFeilmeldinger={settVisfeilmeldinger}
                     />
@@ -400,12 +392,12 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                     size={'medium'}
                     disabled={skjemaErLåst}
                     onClick={() => {
-                        if (behandlingId === undefined) {
+                        if (behandling.behandlingId === undefined) {
                             return; // Dette skal aldri skje
                         }
                         if (kanSendeSkjema()) {
                             opprettForhåndsvisbarBrevPdf({
-                                behandlingId: behandlingId,
+                                behandlingId: behandling.behandlingId,
                                 payload: hentSkjemaData(),
                             });
                         }
@@ -420,20 +412,18 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                     loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                     disabled={skjemaErLåst}
                     onClick={() => {
-                        if (åpenBehandling.status === RessursStatus.SUKSESS) {
-                            onSubmit<IManueltBrevRequestPåBehandling>(
-                                {
-                                    method: 'POST',
-                                    data: hentSkjemaData(),
-                                    url: `/familie-ks-sak/api/brev/send-brev/${åpenBehandling.data.behandlingId}`,
-                                },
-                                (ressurs: Ressurs<IBehandling>) => {
-                                    onSubmitSuccess();
-                                    settÅpenBehandling(ressurs);
-                                    hentLogg();
-                                }
-                            );
-                        }
+                        onSubmit<IManueltBrevRequestPåBehandling>(
+                            {
+                                method: 'POST',
+                                data: hentSkjemaData(),
+                                url: `/familie-ks-sak/api/brev/send-brev/${behandling.behandlingId}`,
+                            },
+                            (ressurs: Ressurs<IBehandling>) => {
+                                onSubmitSuccess();
+                                settÅpenBehandling(ressurs);
+                                hentLogg();
+                            }
+                        );
                     }}
                 >
                     Send brev

@@ -7,13 +7,12 @@ import styled from 'styled-components';
 
 import { Alert, Button, ErrorMessage, Heading } from '@navikt/ds-react';
 import {
+    ASpacing10,
+    ASpacing24,
     ASpacing4,
     ASpacing6,
     ASpacing8,
-    ASpacing10,
-    ASpacing24,
 } from '@navikt/ds-tokens/dist/tokens';
-import { hentDataFraRessurs } from '@navikt/familie-typer';
 
 import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { ISide } from '../../sider/Fagsak/Behandling/sider/sider';
@@ -57,6 +56,7 @@ const Navigering = styled.div`
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
+
     button:not(:first-child) {
         margin-right: ${ASpacing6};
     }
@@ -79,12 +79,12 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
     const location = useLocation();
     const {
         forrigeÅpneSide,
-        åpenBehandling,
+        behandling,
         vurderErLesevisning,
         erBehandleneEnhetMidlertidig,
         erBehandlingAvsluttet,
     } = useBehandlingContext();
-    const erBehandlingSattPåVent = hentDataFraRessurs(åpenBehandling)?.behandlingPåVent;
+    const erBehandlingSattPåVent = behandling?.behandlingPåVent;
 
     useEffect(() => {
         const element = document.getElementById('skjemasteg');
@@ -99,10 +99,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
         }
     }, [forrigeÅpneSide]);
 
-    const kanGåVidereILesevisning = behandlingErEtterSteg(
-        BehandlingSteg.SIMULERING,
-        hentDataFraRessurs(åpenBehandling)
-    );
+    const kanGåVidereILesevisning = behandlingErEtterSteg(BehandlingSteg.SIMULERING, behandling);
     return (
         <>
             {erBehandlingSattPåVent && (

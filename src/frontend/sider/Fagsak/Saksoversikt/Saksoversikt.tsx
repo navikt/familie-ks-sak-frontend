@@ -4,7 +4,6 @@ import { addMonths, differenceInMilliseconds, startOfMonth } from 'date-fns';
 import { Link as ReactRouterLink } from 'react-router';
 
 import { Alert, Box, Heading, Link, VStack } from '@navikt/ds-react';
-import { byggTomRessurs } from '@navikt/familie-typer';
 
 import Behandlinger from './Behandlinger';
 import BehandlingerOld from './BehandlingerOld';
@@ -27,19 +26,13 @@ import {
     periodeOverlapperMedValgtDato,
 } from '../../../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../utils/fagsak';
-import { useBehandlingContext } from '../Behandling/context/BehandlingContext';
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;
 }
 
 export function Saksoversikt({ minimalFagsak }: IProps) {
-    const { settÅpenBehandling } = useBehandlingContext();
     const { toggles } = useAppContext();
-
-    React.useEffect(() => {
-        settÅpenBehandling(byggTomRessurs(), false);
-    }, [minimalFagsak.status]);
 
     const iverksatteBehandlinger = minimalFagsak.behandlinger.filter(
         (behandling: VisningBehandling) =>

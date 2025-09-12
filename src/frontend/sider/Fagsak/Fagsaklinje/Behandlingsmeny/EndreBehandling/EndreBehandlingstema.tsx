@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, Fieldset, Dropdown, Modal } from '@navikt/ds-react';
+import { Button, Dropdown, Fieldset, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlingstema from './useEndreBehandlingstema';
@@ -14,7 +14,7 @@ const EndreBehandlingstema: React.FC = () => {
         settVisModal(false)
     );
 
-    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
+    const { vurderErLesevisning, behandling } = useBehandlingContext();
 
     const lukkEndreBehandlingModal = () => {
         nullstillSkjema();
@@ -56,11 +56,7 @@ const EndreBehandlingstema: React.FC = () => {
                             key={'bekreft'}
                             variant="primary"
                             size="small"
-                            onClick={() => {
-                                if (åpenBehandling.status === RessursStatus.SUKSESS) {
-                                    endreBehandlingstema(åpenBehandling.data.behandlingId);
-                                }
-                            }}
+                            onClick={() => endreBehandlingstema(behandling.behandlingId)}
                             children={'Bekreft'}
                             loading={ressurs.status === RessursStatus.HENTER}
                         />

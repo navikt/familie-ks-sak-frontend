@@ -15,7 +15,7 @@ import type { IForelderBarnRelasjonMaskert } from '../../../../../typer/person';
 import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '../../../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
 import { isoStringTilDate } from '../../../../../utils/dato';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const BarnMedDiskresjonskode = styled.div`
     display: flex;
@@ -40,12 +40,11 @@ const IngenBarnRegistrertInfo = styled(Alert)`
 `;
 
 const Barna: React.FunctionComponent = () => {
-    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
+    const { vurderErLesevisning, behandling } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
     const { bruker } = useFagsakContext();
     const { skjema } = useSøknadContext();
-    const brevmottakere =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere : [];
+    const brevmottakere = behandling.brevmottakere;
 
     const sorterteBarnMedOpplysninger = skjema.felter.barnaMedOpplysninger.verdi.sort(
         (a: IBarnMedOpplysninger, b: IBarnMedOpplysninger) => {

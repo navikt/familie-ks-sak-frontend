@@ -6,23 +6,22 @@ import styled from 'styled-components';
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, Button, HStack, VStack } from '@navikt/ds-react';
 import {
-    ABorderWarning,
     ABorderFocus,
+    ABorderSelected,
+    ABorderWarning,
     AGrayalpha500,
-    ASurfaceDefault,
-    ASurfaceHover,
-    ASurfaceWarning,
     ASpacing2,
     ASpacing6,
     ASpacing8,
-    ATextDefault,
+    ASurfaceDefault,
+    ASurfaceHover,
     ASurfaceNeutralSubtle,
-    ABorderSelected,
+    ASurfaceWarning,
+    ATextDefault,
 } from '@navikt/ds-tokens/dist/tokens';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
-import { useBehandlingContext } from '../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../context/BehandlingContext';
 import type { IUnderside } from '../sider/sider';
 import { erSidenAktiv } from '../sider/sider';
 
@@ -81,7 +80,7 @@ const UndersideSirkel = styled.span`
 
 const Venstremeny: React.FunctionComponent = () => {
     const { fagsakId } = useSakOgBehandlingParams();
-    const { åpenBehandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } =
+    const { behandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } =
         useBehandlingContext();
 
     const stansNavigeringDersomSidenIkkeErAktiv = (
@@ -97,65 +96,58 @@ const Venstremeny: React.FunctionComponent = () => {
         <HStack justify="start">
             {åpenVenstremeny && (
                 <Meny as="nav">
-                    {åpenBehandling.status === RessursStatus.SUKSESS &&
-                        Object.entries(trinnPåBehandling).map(([sideId, side], index: number) => {
-                            const tilPath = `/fagsak/${fagsakId}/${åpenBehandling.data.behandlingId}/${side.href}`;
+                    {Object.entries(trinnPåBehandling).map(([sideId, side], index: number) => {
+                        const tilPath = `/fagsak/${fagsakId}/${behandling.behandlingId}/${side.href}`;
 
-                            const undersider: IUnderside[] = side.undersider
-                                ? side.undersider(åpenBehandling.data)
-                                : [];
+                        const undersider: IUnderside[] = side.undersider
+                            ? side.undersider(behandling)
+                            : [];
 
-                            const sidenErAktiv = erSidenAktiv(side, åpenBehandling.data);
+                        const sidenErAktiv = erSidenAktiv(side, behandling);
 
-                            return (
-                                <VStack key={sideId}>
-                                    <MenyLenke
-                                        id={sideId}
-                                        to={tilPath}
-                                        $erLenkenAktiv={sidenErAktiv}
-                                        onClick={event =>
-                                            stansNavigeringDersomSidenIkkeErAktiv(
-                                                event,
-                                                sidenErAktiv
-                                            )
-                                        }
-                                    >
-                                        {`${side.steg ? `${index + 1}. ` : ''}${side.navn}`}
-                                    </MenyLenke>
-                                    {undersider.map((underside: IUnderside) => {
-                                        const antallAksjonspunkter =
-                                            underside.antallAksjonspunkter();
-                                        return (
-                                            <MenyLenke
-                                                key={`${sideId}_${underside.hash}`}
-                                                id={`${sideId}_${underside.hash}`}
-                                                to={`${tilPath}#${underside.hash}`}
-                                                $erLenkenAktiv={sidenErAktiv}
-                                                onClick={event =>
-                                                    stansNavigeringDersomSidenIkkeErAktiv(
-                                                        event,
-                                                        sidenErAktiv
-                                                    )
-                                                }
-                                            >
-                                                <HStack align="center" gap="1">
-                                                    {antallAksjonspunkter > 0 ? (
-                                                        <UndersideSirkel>
-                                                            {antallAksjonspunkter}
-                                                        </UndersideSirkel>
-                                                    ) : (
-                                                        <Box padding="3" />
-                                                    )}
-                                                    <BodyShort size="small">
-                                                        {underside.navn}
-                                                    </BodyShort>
-                                                </HStack>
-                                            </MenyLenke>
-                                        );
-                                    })}
-                                </VStack>
-                            );
-                        })}
+                        return (
+                            <VStack key={sideId}>
+                                <MenyLenke
+                                    id={sideId}
+                                    to={tilPath}
+                                    $erLenkenAktiv={sidenErAktiv}
+                                    onClick={event =>
+                                        stansNavigeringDersomSidenIkkeErAktiv(event, sidenErAktiv)
+                                    }
+                                >
+                                    {`${side.steg ? `${index + 1}. ` : ''}${side.navn}`}
+                                </MenyLenke>
+                                {undersider.map((underside: IUnderside) => {
+                                    const antallAksjonspunkter = underside.antallAksjonspunkter();
+                                    return (
+                                        <MenyLenke
+                                            key={`${sideId}_${underside.hash}`}
+                                            id={`${sideId}_${underside.hash}`}
+                                            to={`${tilPath}#${underside.hash}`}
+                                            $erLenkenAktiv={sidenErAktiv}
+                                            onClick={event =>
+                                                stansNavigeringDersomSidenIkkeErAktiv(
+                                                    event,
+                                                    sidenErAktiv
+                                                )
+                                            }
+                                        >
+                                            <HStack align="center" gap="1">
+                                                {antallAksjonspunkter > 0 ? (
+                                                    <UndersideSirkel>
+                                                        {antallAksjonspunkter}
+                                                    </UndersideSirkel>
+                                                ) : (
+                                                    <Box padding="3" />
+                                                )}
+                                                <BodyShort size="small">{underside.navn}</BodyShort>
+                                            </HStack>
+                                        </MenyLenke>
+                                    );
+                                })}
+                            </VStack>
+                        );
+                    })}
                 </Meny>
             )}
             <div>
