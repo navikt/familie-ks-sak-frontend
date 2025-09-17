@@ -16,7 +16,6 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import useFagsakApi from '../../api/useFagsakApi';
 import { useTilbakekrevingApi } from '../../api/useTilbakekrevingApi';
 import type { IMinimalFagsak } from '../../typer/fagsak';
@@ -57,20 +56,6 @@ export const FagsakProvider = ({ fagsak, children }: Props) => {
     const { hentTilbakekrevingsbehandlinger } = useTilbakekrevingApi();
     const { hentFagsakForPerson } = useFagsakApi();
 
-    useEffect(() => {
-        hentBruker(fagsak.søkerFødselsnummer);
-    }, [fagsak.søkerFødselsnummer]);
-
-    const oppdaterBrukerHvisFagsakEndres = (bruker: Ressurs<IPersonInfo>, søkerFødselsnummer?: string): void => {
-        if (søkerFødselsnummer === undefined) {
-            return;
-        }
-
-        if (bruker.status !== RessursStatus.SUKSESS || søkerFødselsnummer !== bruker.data.personIdent) {
-            hentBruker(søkerFødselsnummer);
-        }
-    };
-
     const hentBruker = (personIdent: string): void => {
         settBruker(byggHenterRessurs());
         request<{ ident: string }, IPersonInfo>({
@@ -100,32 +85,27 @@ export const FagsakProvider = ({ fagsak, children }: Props) => {
     };
 
     const oppdaterKlagebehandlingerPåFagsak = () => {
-        const fagsakId = fagsak?.id;
-
-        if (fagsakId) {
-            request<void, IKlagebehandling[]>({
-                method: 'GET',
-                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/hent-klagebehandlinger`,
-                påvirkerSystemLaster: true,
-            }).then(klagebehandlingerRessurs => settKlagebehandlinger(klagebehandlingerRessurs));
-        }
+        request<void, IKlagebehandling[]>({
+            method: 'GET',
+            url: `/familie-ks-sak/api/fagsaker/${fagsak.id}/hent-klagebehandlinger`,
+            påvirkerSystemLaster: true,
+        }).then(klagebehandlingerRessurs => settKlagebehandlinger(klagebehandlingerRessurs));
     };
 
     const oppdaterTilbakekrevingsbehandlingerPåFagsak = () => {
-        const fagsakId = fagsak?.id;
-
-        hentTilbakekrevingsbehandlinger(fagsakId).then(tilbakekrevingsbehandlingerRessurs =>
+        hentTilbakekrevingsbehandlinger(fagsak.id).then(tilbakekrevingsbehandlingerRessurs =>
             settTilbakekrevingsbehandlinger(tilbakekrevingsbehandlingerRessurs)
         );
     };
 
-    useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg({
-        fagsak,
-        oppdaterBrukerHvisFagsakEndres,
-        bruker,
-        oppdaterKlagebehandlingerPåFagsak,
-        oppdaterTilbakekrevingsbehandlingerPåFagsak,
-    });
+    useEffect(() => {
+        hentBruker(fagsak.søkerFødselsnummer);
+    }, [fagsak.søkerFødselsnummer]);
+
+    useEffect(() => {
+        oppdaterKlagebehandlingerPåFagsak();
+        oppdaterTilbakekrevingsbehandlingerPåFagsak();
+    }, [fagsak.id]);
 
     return (
         <FagsakContext.Provider
