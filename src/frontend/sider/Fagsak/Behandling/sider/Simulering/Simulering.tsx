@@ -87,9 +87,7 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
         >
             {simuleringsresultat?.status === RessursStatus.SUKSESS ? (
                 simuleringsresultat.data.perioder.length === 0 ? (
-                    <Alert variant="info">
-                        Det er ingen etterbetaling, feilutbetaling eller neste utbetaling
-                    </Alert>
+                    <Alert variant="info">Det er ingen etterbetaling, feilutbetaling eller neste utbetaling</Alert>
                 ) : (
                     <>
                         <SimuleringPanel simulering={simuleringsresultat.data} />
@@ -109,9 +107,7 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
                     </>
                 )
             ) : (
-                <Alert variant="info">
-                    Det har skjedd en feil: {simuleringsresultat?.frontendFeilmelding}
-                </Alert>
+                <Alert variant="info">Det har skjedd en feil: {simuleringsresultat?.frontendFeilmelding}</Alert>
             )}
 
             {(tilbakekrevingSkjema.submitRessurs.status === RessursStatus.FEILET ||

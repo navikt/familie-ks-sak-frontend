@@ -28,8 +28,7 @@ const Behandlingsmeny: React.FC<IProps> = ({ minimalFagsak }) => {
     const { åpenBehandling } = useBehandlingContext();
 
     const skalViseMenyvalgForBehandling =
-        åpenBehandling.status === RessursStatus.SUKSESS &&
-        åpenBehandling.data.status !== BehandlingStatus.AVSLUTTET;
+        åpenBehandling.status === RessursStatus.SUKSESS && åpenBehandling.data.status !== BehandlingStatus.AVSLUTTET;
 
     return (
         <Dropdown>
@@ -47,10 +46,7 @@ const Behandlingsmeny: React.FC<IProps> = ({ minimalFagsak }) => {
                     <MenyvalgFagsak minimalFagsak={minimalFagsak} />
                     {skalViseMenyvalgForBehandling && <Dropdown.Menu.Divider />}
                     {skalViseMenyvalgForBehandling && (
-                        <MenyvalgBehandling
-                            minimalFagsak={minimalFagsak}
-                            åpenBehandling={åpenBehandling.data}
-                        />
+                        <MenyvalgBehandling minimalFagsak={minimalFagsak} åpenBehandling={åpenBehandling.data} />
                     )}
                 </Dropdown.Menu.List>
             </StyledDropdownMenu>

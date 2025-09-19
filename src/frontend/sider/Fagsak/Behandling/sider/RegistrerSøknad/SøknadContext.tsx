@@ -51,10 +51,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
             ? hentBarnMedLøpendeUtbetaling(minimalFagsakRessurs.data)
             : new Set<string>();
 
-    const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<
-        SøknadSkjema,
-        IBehandling
-    >({
+    const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<SøknadSkjema, IBehandling>({
         felter: {
             barnaMedOpplysninger: useFelt<IBarnMedOpplysninger[]>({
                 verdi: [],
@@ -86,8 +83,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
             skjema.felter.barnaMedOpplysninger.validerOgSettFelt(
                 bruker.data.forelderBarnRelasjon
                     .filter(
-                        (relasjon: IForelderBarnRelasjon) =>
-                            relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN
+                        (relasjon: IForelderBarnRelasjon) => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN
                     )
                     .map(
                         (relasjon: IForelderBarnRelasjon): IBarnMedOpplysninger => ({
@@ -120,9 +116,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
                 )
             );
 
-            skjema.felter.målform.validerOgSettFelt(
-                åpenBehandling.søknadsgrunnlag.søkerMedOpplysninger.målform
-            );
+            skjema.felter.målform.validerOgSettFelt(åpenBehandling.søknadsgrunnlag.søkerMedOpplysninger.målform);
             skjema.felter.endringAvOpplysningerBegrunnelse.validerOgSettFelt(
                 åpenBehandling.søknadsgrunnlag.endringAvOpplysningerBegrunnelse
             );
@@ -153,8 +147,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
                                         ident: barn.ident ?? '',
                                     })
                                 ),
-                                endringAvOpplysningerBegrunnelse:
-                                    skjema.felter.endringAvOpplysningerBegrunnelse.verdi,
+                                endringAvOpplysningerBegrunnelse: skjema.felter.endringAvOpplysningerBegrunnelse.verdi,
                             },
                             bekreftEndringerViaFrontend,
                         },
@@ -163,9 +156,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
                     (response: Ressurs<IBehandling>) => {
                         if (response.status === RessursStatus.SUKSESS) {
                             settÅpenBehandling(response);
-                            navigate(
-                                `/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`
-                            );
+                            navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`);
                         }
                     }
                 );

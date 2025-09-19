@@ -17,9 +17,7 @@ interface VilkårsvurderingContextValue {
     personResultater: IRestPersonResultat[];
 }
 
-const VilkårsvurderingContext = React.createContext<VilkårsvurderingContextValue | undefined>(
-    undefined
-);
+const VilkårsvurderingContext = React.createContext<VilkårsvurderingContextValue | undefined>(undefined);
 
 export function VilkårsvurderingProvider({ åpenBehandling, children }: IProps) {
     const vilkårsvurdering = åpenBehandling
@@ -28,8 +26,7 @@ export function VilkårsvurderingProvider({ åpenBehandling, children }: IProps)
 
     const personResultater = åpenBehandling.personResultater;
 
-    const feiloppsummeringFeil: FeiloppsummeringFeil[] =
-        hentFeilIVilkårsvurdering(vilkårsvurdering);
+    const feiloppsummeringFeil: FeiloppsummeringFeil[] = hentFeilIVilkårsvurdering(vilkårsvurdering);
 
     return (
         <VilkårsvurderingContext.Provider
@@ -48,9 +45,7 @@ export const useVilkårsvurderingContext = () => {
     const context = React.useContext(VilkårsvurderingContext);
 
     if (context === undefined) {
-        throw new Error(
-            'useVilkårsvurderingContext må brukes innenfor en VilkårsvurderingProvider'
-        );
+        throw new Error('useVilkårsvurderingContext må brukes innenfor en VilkårsvurderingProvider');
     }
     return context;
 };

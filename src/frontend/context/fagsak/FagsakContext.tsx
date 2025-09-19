@@ -42,13 +42,11 @@ interface IFagsakContext {
 const FagsakContext = createContext<IFagsakContext | undefined>(undefined);
 
 export const FagsakProvider = (props: PropsWithChildren) => {
-    const [minimalFagsakRessurs, settMinimalFagsakRessurs] =
-        React.useState<Ressurs<IMinimalFagsak>>(byggTomRessurs());
+    const [minimalFagsakRessurs, settMinimalFagsakRessurs] = React.useState<Ressurs<IMinimalFagsak>>(byggTomRessurs());
 
     const [bruker, settBruker] = React.useState<Ressurs<IPersonInfo>>(byggTomRessurs());
 
-    const [klagebehandlinger, settKlagebehandlinger] =
-        useState<Ressurs<IKlagebehandling[]>>(byggTomRessurs());
+    const [klagebehandlinger, settKlagebehandlinger] = useState<Ressurs<IKlagebehandling[]>>(byggTomRessurs());
 
     const [tilbakekrevingsbehandlinger, settTilbakekrevingsbehandlinger] =
         useState<Ressurs<ITilbakekrevingsbehandling[]>>(byggTomRessurs());
@@ -81,18 +79,12 @@ export const FagsakProvider = (props: PropsWithChildren) => {
             });
     };
 
-    const oppdaterBrukerHvisFagsakEndres = (
-        bruker: Ressurs<IPersonInfo>,
-        søkerFødselsnummer?: string
-    ): void => {
+    const oppdaterBrukerHvisFagsakEndres = (bruker: Ressurs<IPersonInfo>, søkerFødselsnummer?: string): void => {
         if (søkerFødselsnummer === undefined) {
             return;
         }
 
-        if (
-            bruker.status !== RessursStatus.SUKSESS ||
-            søkerFødselsnummer !== bruker.data.personIdent
-        ) {
+        if (bruker.status !== RessursStatus.SUKSESS || søkerFødselsnummer !== bruker.data.personIdent) {
             hentBruker(søkerFødselsnummer);
         }
     };

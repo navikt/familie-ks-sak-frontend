@@ -14,9 +14,7 @@ describe('Journalføringsbehandling', () => {
             type => BehandlingÅrsak[type as keyof typeof BehandlingÅrsak]
         );
 
-        const klageÅrsakTyper = Object.keys(KlageÅrsak).map(
-            type => KlageÅrsak[type as keyof typeof KlageÅrsak]
-        );
+        const klageÅrsakTyper = Object.keys(KlageÅrsak).map(type => KlageÅrsak[type as keyof typeof KlageÅrsak]);
 
         test('skal returnere en bindestrek når årsak er undefined', () => {
             // Act
@@ -26,17 +24,14 @@ describe('Journalføringsbehandling', () => {
             expect(visningstekst).toBe('-');
         });
 
-        test.each(behandlingsÅrsakTyper)(
-            'skal returnere en visningstekst når for BehandlingÅrsak',
-            årsak => {
-                // Act
-                const visningstekst = finnVisningstekstForJournalføringsbehandlingsårsak(årsak);
+        test.each(behandlingsÅrsakTyper)('skal returnere en visningstekst når for BehandlingÅrsak', årsak => {
+            // Act
+            const visningstekst = finnVisningstekstForJournalføringsbehandlingsårsak(årsak);
 
-                // Expect
-                expect(visningstekst).toBe(behandlingÅrsak[årsak]);
-                expect(visningstekst).not.toBe('-');
-            }
-        );
+            // Expect
+            expect(visningstekst).toBe(behandlingÅrsak[årsak]);
+            expect(visningstekst).not.toBe('-');
+        });
 
         test.each(klageÅrsakTyper)('skal returnere en visningstekst når for KlageÅrsak', årsak => {
             // Act
@@ -58,8 +53,7 @@ describe('Journalføringsbehandling', () => {
             });
 
             // Act
-            const journalføringsbehandling =
-                opprettJournalføringsbehandlingFraKlagebehandling(klagebehandling);
+            const journalføringsbehandling = opprettJournalføringsbehandlingFraKlagebehandling(klagebehandling);
 
             // Expect
             expect(journalføringsbehandling.id).toBe(klagebehandling.id);
@@ -92,9 +86,7 @@ describe('Journalføringsbehandling', () => {
 
             // Expect
             expect(journalføringsbehandling.id).toBe(kontantstøttebehandling.behandlingId + '');
-            expect(journalføringsbehandling.opprettetTidspunkt).toBe(
-                kontantstøttebehandling.opprettetTidspunkt
-            );
+            expect(journalføringsbehandling.opprettetTidspunkt).toBe(kontantstøttebehandling.opprettetTidspunkt);
             expect(journalføringsbehandling.type).toBe(kontantstøttebehandling.type);
             expect(journalføringsbehandling.status).toBe(kontantstøttebehandling.status);
         });
@@ -117,9 +109,7 @@ describe('Journalføringsbehandling', () => {
 
             // Expect
             expect(journalføringsbehandling.id).toBe(kontantstøttebehandling.behandlingId);
-            expect(journalføringsbehandling.opprettetTidspunkt).toBe(
-                kontantstøttebehandling.opprettetTidspunkt
-            );
+            expect(journalføringsbehandling.opprettetTidspunkt).toBe(kontantstøttebehandling.opprettetTidspunkt);
             expect(journalføringsbehandling.type).toBe(kontantstøttebehandling.type);
             expect(journalføringsbehandling.status).toBe(kontantstøttebehandling.status);
         });
@@ -140,15 +130,11 @@ describe('Journalføringsbehandling', () => {
 
                 // Act
                 const journalføringsbehandling =
-                    opprettJournalføringsbehandlingFraKontantstøttebehandling(
-                        kontantstøttebehandling
-                    );
+                    opprettJournalføringsbehandlingFraKontantstøttebehandling(kontantstøttebehandling);
 
                 // Expect
                 expect(journalføringsbehandling.id).toBe(kontantstøttebehandling.behandlingId);
-                expect(journalføringsbehandling.opprettetTidspunkt).toBe(
-                    kontantstøttebehandling.opprettetTidspunkt
-                );
+                expect(journalføringsbehandling.opprettetTidspunkt).toBe(kontantstøttebehandling.opprettetTidspunkt);
                 expect(journalføringsbehandling.type).toBe(kontantstøttebehandling.type);
                 expect(journalføringsbehandling.status).toBe(kontantstøttebehandling.status);
             }

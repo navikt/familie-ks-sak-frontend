@@ -22,8 +22,9 @@ export const useOpprettEllerHentFagsak = () => {
                 if (response.status === RessursStatus.SUKSESS) {
                     settMinimalFagsakRessurs(response);
 
-                    const aktivBehandling: VisningBehandling | undefined =
-                        hentAktivBehandlingPåMinimalFagsak(response.data);
+                    const aktivBehandling: VisningBehandling | undefined = hentAktivBehandlingPåMinimalFagsak(
+                        response.data
+                    );
                     if (aktivBehandling) {
                         navigate(`/fagsak/${response.data.id}/${aktivBehandling.behandlingId}`);
                     } else {

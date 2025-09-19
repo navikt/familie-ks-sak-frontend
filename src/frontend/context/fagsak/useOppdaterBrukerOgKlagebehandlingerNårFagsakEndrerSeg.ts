@@ -9,10 +9,7 @@ import type { IPersonInfo } from '../../typer/person';
 interface Props {
     minimalFagsakRessurs: Ressurs<IMinimalFagsak>;
     settBruker: (ressurs: Ressurs<IPersonInfo>) => void;
-    oppdaterBrukerHvisFagsakEndres: (
-        bruker: Ressurs<IPersonInfo>,
-        søkerFødselsnummer?: string
-    ) => void;
+    oppdaterBrukerHvisFagsakEndres: (bruker: Ressurs<IPersonInfo>, søkerFødselsnummer?: string) => void;
     bruker: Ressurs<IPersonInfo>;
     oppdaterKlagebehandlingerPåFagsak: () => void;
     oppdaterTilbakekrevingsbehandlingerPåFagsak: () => void;
@@ -33,10 +30,7 @@ export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
         ) {
             settBruker(byggTomRessurs());
         } else {
-            oppdaterBrukerHvisFagsakEndres(
-                bruker,
-                hentDataFraRessurs(minimalFagsakRessurs)?.søkerFødselsnummer
-            );
+            oppdaterBrukerHvisFagsakEndres(bruker, hentDataFraRessurs(minimalFagsakRessurs)?.søkerFødselsnummer);
         }
         oppdaterKlagebehandlingerPåFagsak();
         oppdaterTilbakekrevingsbehandlingerPåFagsak();

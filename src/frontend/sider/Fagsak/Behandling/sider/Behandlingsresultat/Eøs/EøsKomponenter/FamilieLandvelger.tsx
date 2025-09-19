@@ -4,11 +4,7 @@ import classNames from 'classnames';
 import styled from 'styled-components';
 
 import { Label } from '@navikt/ds-react';
-import {
-    ABorderDefault,
-    AFontLineHeightLarge,
-    AFontSizeLarge,
-} from '@navikt/ds-tokens/dist/tokens';
+import { ABorderDefault, AFontLineHeightLarge, AFontSizeLarge } from '@navikt/ds-tokens/dist/tokens';
 import {
     ABorderDanger,
     ABorderStrong,

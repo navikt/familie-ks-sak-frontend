@@ -47,9 +47,7 @@ const TidslinjeEtikett: React.FunctionComponent<IEtikettProp> = ({ etikett }) =>
             size="xsmall"
             disabled={aktivtTidslinjeVindu.vindu.id === TidslinjeVindu.TRE_ÅR}
             onClick={onEtikettClick}
-            $valgt={
-                !!aktivEtikett && aktivEtikett.date.toDateString() === etikett.date.toDateString()
-            }
+            $valgt={!!aktivEtikett && aktivEtikett.date.toDateString() === etikett.date.toDateString()}
         >
             {etikett.label}
         </EtikettKnapp>

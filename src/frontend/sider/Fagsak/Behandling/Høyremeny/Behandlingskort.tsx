@@ -100,9 +100,7 @@ const Behandlingskort: React.FC<IBehandlingskortProps> = ({ åpenBehandling }) =
 
     const antallBehandlinger = behandlinger.length;
     const åpenBehandlingIndex =
-        behandlinger.findIndex(
-            behandling => behandling.behandlingId === åpenBehandling.behandlingId
-        ) + 1;
+        behandlinger.findIndex(behandling => behandling.behandlingId === åpenBehandling.behandlingId) + 1;
 
     const tittel = `${
         åpenBehandling ? behandlingstyper[åpenBehandling.type].navn : 'ukjent'
@@ -115,10 +113,7 @@ const Behandlingskort: React.FC<IBehandlingskortProps> = ({ åpenBehandling }) =
             </StyledHeading>
             <BodyShort>{behandlingÅrsak[åpenBehandling.årsak]}</BodyShort>
             <StyledHr />
-            <Informasjonsbolk
-                label="Behandlingsstatus"
-                tekst={behandlingsstatuser[åpenBehandling.status]}
-            />
+            <Informasjonsbolk label="Behandlingsstatus" tekst={behandlingsstatuser[åpenBehandling.status]} />
             <Informasjonsbolk
                 label="Resultat"
                 tekst={behandlingsresultater[åpenBehandling.resultat]}

@@ -13,9 +13,7 @@ describe('sider.ts', () => {
     describe('siderForBehandling', () => {
         test('REGISTRERE_SØKNAD returneres ved årsak SØKNAD', () => {
             const behandling = mockBehandling({ årsak: BehandlingÅrsak.SØKNAD });
-            expect(Object.keys(hentTrinnForBehandling(behandling))).toContain(
-                SideId.REGISTRERE_SØKNAD
-            );
+            expect(Object.keys(hentTrinnForBehandling(behandling))).toContain(SideId.REGISTRERE_SØKNAD);
         });
         test('VEDTAK returneres ikke ved årsak SATSENDRING', () => {
             const behandling = mockBehandling({ årsak: BehandlingÅrsak.SATSENDRING });
@@ -47,9 +45,7 @@ describe('sider.ts', () => {
             const testUrl = 'test-url/';
             Object.values(sider)
                 .map(side => side.href)
-                .forEach(sideUrl =>
-                    expect(erViPåUdefinertFagsakSide(testUrl + sideUrl)).toBeFalsy()
-                );
+                .forEach(sideUrl => expect(erViPåUdefinertFagsakSide(testUrl + sideUrl)).toBeFalsy());
             expect(erViPåUdefinertFagsakSide(testUrl + 'saksoversikt')).toBeFalsy();
             expect(erViPåUdefinertFagsakSide(testUrl + 'ny-behandling')).toBeFalsy();
 

@@ -27,8 +27,10 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } =
-        useMedlemskap(lagretVilkårResultat, person);
+    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } = useMedlemskap(
+        lagretVilkårResultat,
+        person
+    );
 
     const skjema = vilkårSkjemaContext.skjema;
 
@@ -79,9 +81,7 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
                 <RadioGroup
                     legend={
                         <Label>
-                            {vilkårFraConfig.spørsmål
-                                ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
-                                : ''}
+                            {vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
                         </Label>
                     }
                     value={skjema.felter.resultat.verdi}

@@ -48,10 +48,7 @@ export const BrukerPanel: React.FC = () => {
     }, [nyIdent.verdi]);
 
     useEffect(() => {
-        if (
-            skjema.visFeilmeldinger &&
-            skjema.felter.bruker.valideringsstatus === Valideringsstatus.FEIL
-        ) {
+        if (skjema.visFeilmeldinger && skjema.felter.bruker.valideringsstatus === Valideringsstatus.FEIL) {
             settÅpen(true);
         }
     }, [skjema.visFeilmeldinger, skjema.felter.bruker.valideringsstatus]);

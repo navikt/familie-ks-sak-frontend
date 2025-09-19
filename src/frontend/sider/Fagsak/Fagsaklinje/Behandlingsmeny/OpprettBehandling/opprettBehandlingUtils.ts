@@ -9,9 +9,7 @@ const kanOppretteNyBehandling = (aktivBehandling: VisningBehandling | undefined)
 export const kanOppretteFørstegangsbehandling = (
     minimalFagsak: IMinimalFagsak | undefined,
     aktivBehandling: VisningBehandling | undefined
-) =>
-    !minimalFagsak ||
-    (minimalFagsak.status !== FagsakStatus.LØPENDE && kanOppretteNyBehandling(aktivBehandling));
+) => !minimalFagsak || (minimalFagsak.status !== FagsakStatus.LØPENDE && kanOppretteNyBehandling(aktivBehandling));
 
 export const kanOppretteRevurdering = (
     minimalFagsak: IMinimalFagsak | undefined,

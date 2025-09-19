@@ -34,17 +34,13 @@ const utledMenyinnslag = (antallMottakere: number, erLesevisning: boolean) => {
 export const LeggTilEllerFjernBrevmottakere = (props: BehandlingProps | FagsakProps) => {
     const [visModal, settVisModal] = useState(false);
 
-    const brevmottakere = props.erPåBehandling
-        ? props.behandling.brevmottakere
-        : props.brevmottakere;
+    const brevmottakere = props.erPåBehandling ? props.behandling.brevmottakere : props.brevmottakere;
 
     const menyinnslag = utledMenyinnslag(brevmottakere.length, !!props.erLesevisning);
 
     return (
         <>
-            <Dropdown.Menu.List.Item onClick={() => settVisModal(true)}>
-                {menyinnslag}
-            </Dropdown.Menu.List.Item>
+            <Dropdown.Menu.List.Item onClick={() => settVisModal(true)}>{menyinnslag}</Dropdown.Menu.List.Item>
 
             {visModal &&
                 (props.erPåBehandling ? (

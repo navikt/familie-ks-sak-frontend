@@ -5,13 +5,7 @@ import { isAfter } from 'date-fns';
 import styled from 'styled-components';
 
 import { Alert, BodyShort, Heading, Switch, Table } from '@navikt/ds-react';
-import {
-    AFontWeightBold,
-    AGreen700,
-    ASpacing18,
-    ATextDefault,
-    ASurfaceSubtle,
-} from '@navikt/ds-tokens/dist/tokens';
+import { AFontWeightBold, AGreen700, ASpacing18, ATextDefault, ASurfaceSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { AFontWeightRegular, ATextDanger } from '@navikt/ds-tokens/dist/tokens';
 
 import { NavigeringsRetning } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
@@ -24,10 +18,7 @@ import {
     isoStringTilFormatertString,
 } from '../../../../../utils/dato';
 import { formaterBeløp } from '../../../../../utils/formatter';
-import {
-    hentPeriodelisteMedTommePerioder,
-    hentÅrISimuleringen,
-} from '../../../../../utils/simulering';
+import { hentPeriodelisteMedTommePerioder, hentÅrISimuleringen } from '../../../../../utils/simulering';
 
 const Årsvelger = styled.div`
     display: flex;
@@ -71,8 +62,7 @@ const DataCellMedFarge = styled(DataCelle)<{
         }
         return ATextDefault;
     }};
-    font-weight: ${props =>
-        props.$erNesteUtbetalingsperiode ? AFontWeightBold : AFontWeightRegular};
+    font-weight: ${props => (props.$erNesteUtbetalingsperiode ? AFontWeightBold : AFontWeightRegular)};
 `;
 
 const FørsteKolonne = styled(Table.HeaderCell)`
@@ -103,10 +93,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
 
     const erManuellPosteringSamtidigSomResultatIkkeErNull = perioder.some(
         periode =>
-            periode.manuellPostering &&
-            periode.manuellPostering !== 0 &&
-            periode.resultat &&
-            periode.resultat !== 0
+            periode.manuellPostering && periode.manuellPostering !== 0 && periode.resultat && periode.resultat !== 0
     );
     const [visManuellePosteringer, setVisManuellePosteringer] = useState(
         erManuellPosteringSamtidigSomResultatIkkeErNull
@@ -117,21 +104,17 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
     };
 
     const periodeErEtterNesteUtbetalingsPeriode = (periode: ISimuleringPeriode) =>
-        fomDatoNestePeriode &&
-        isAfter(isoStringTilDate(periode.fom), isoStringTilDate(fomDatoNestePeriode));
+        fomDatoNestePeriode && isAfter(isoStringTilDate(periode.fom), isoStringTilDate(fomDatoNestePeriode));
 
     const periodeSkalVisesITabell = (periode: ISimuleringPeriode) =>
         !periodeErEtterNesteUtbetalingsPeriode(periode) &&
-        (!erMerEnn12MånederISimulering ||
-            isoStringTilDate(periode.fom).getFullYear() === aktueltÅr);
+        (!erMerEnn12MånederISimulering || isoStringTilDate(periode.fom).getFullYear() === aktueltÅr);
 
-    const formaterBeløpUtenValutakode = (beløp?: number) =>
-        beløp ? formaterBeløp(beløp).slice(0, -3) : '-';
+    const formaterBeløpUtenValutakode = (beløp?: number) => (beløp ? formaterBeløp(beløp).slice(0, -3) : '-');
 
     const erISisteÅrAvPerioden = indexFramvistÅr === hentÅrISimuleringen(perioder).length - 1;
 
-    const erNestePeriode = (periode: ISimuleringPeriode): boolean =>
-        periode.fom === fomDatoNestePeriode;
+    const erNestePeriode = (periode: ISimuleringPeriode): boolean => periode.fom === fomDatoNestePeriode;
 
     const tilOgFraDatoForSimulering = `${isoDatoPeriodeTilFormatertString({
         fom,
@@ -142,9 +125,8 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
         <>
             {erManuellPosteringSamtidigSomResultatIkkeErNull && (
                 <StyledAlert variant={'warning'}>
-                    Det finnes manuelle posteringer på den forrige behandlingen. Du må mest
-                    sannsynlig sende en oppgave til NØS og be dem gjøre manuelle posteringer
-                    tilsvarende de manuelle posteringene i tabellen.
+                    Det finnes manuelle posteringer på den forrige behandlingen. Du må mest sannsynlig sende en oppgave
+                    til NØS og be dem gjøre manuelle posteringer tilsvarende de manuelle posteringene i tabellen.
                 </StyledAlert>
             )}
             <Heading size={'small'} level={'2'} spacing>
@@ -167,9 +149,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
             )}
             <IkkeFullBreddeTabell
                 aria-label={`Simuleringsresultat for ${
-                    erMerEnn12MånederISimulering
-                        ? aktueltÅr
-                        : `perioden ${tilOgFraDatoForSimulering}`
+                    erMerEnn12MånederISimulering ? aktueltÅr : `perioden ${tilOgFraDatoForSimulering}`
                 }`}
             >
                 <Table.Header>
@@ -185,16 +165,10 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                         }
                                         kanNavigereTilHøyre={!erISisteÅrAvPerioden}
                                         kanNavigereTilVenstre={!(indexFramvistÅr === 0)}
-                                        navigerTilHyøyreTittel={`Vis simuleringsresultat for ${
-                                            aktueltÅr + 1
-                                        }`}
-                                        navigerTilVenstreTittel={`Vis simuleringsresultat for ${
-                                            aktueltÅr - 1
-                                        }`}
+                                        navigerTilHyøyreTittel={`Vis simuleringsresultat for ${aktueltÅr + 1}`}
+                                        navigerTilVenstreTittel={`Vis simuleringsresultat for ${aktueltÅr - 1}`}
                                     >
-                                        <BodyShort size={'small'}>
-                                            {årISimuleringen[indexFramvistÅr]}
-                                        </BodyShort>
+                                        <BodyShort size={'small'}>{årISimuleringen[indexFramvistÅr]}</BodyShort>
                                     </TidslinjeNavigering>
                                 </Årsvelger>
                             )}
@@ -258,9 +232,7 @@ const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulerin
                                     <DataCellMedFarge
                                         key={'resultat - ' + periode.fom}
                                         align={'center'}
-                                        $erNegativtBeløp={
-                                            !!periode.resultat && periode.resultat < 0
-                                        }
+                                        $erNegativtBeløp={!!periode.resultat && periode.resultat < 0}
                                         $erNesteUtbetalingsperiode={erNestePeriode(periode)}
                                         $skalViseStipletLinje={erNestePeriode(periode)}
                                     >

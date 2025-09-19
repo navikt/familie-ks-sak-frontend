@@ -36,8 +36,7 @@ const Main = styled.main<{ $systemetLaster: boolean }>`
 `;
 
 const Container: React.FC = () => {
-    const { autentisert, systemetLaster, innloggetSaksbehandler, appInfoModal, erTogglesHentet } =
-        useAppContext();
+    const { autentisert, systemetLaster, innloggetSaksbehandler, appInfoModal, erTogglesHentet } = useAppContext();
 
     return (
         <Router>
@@ -59,10 +58,7 @@ const Container: React.FC = () => {
                             <FagsakProvider>
                                 <BehandlingProvider>
                                     <Routes>
-                                        <Route
-                                            path="/fagsak/:fagsakId/*"
-                                            element={<FagsakContainer />}
-                                        />
+                                        <Route path="/fagsak/:fagsakId/*" element={<FagsakContainer />} />
                                         <Route
                                             path="/oppgaver/journalfor/:oppgaveId"
                                             element={<ManuellJournalføring />}
@@ -75,14 +71,8 @@ const Container: React.FC = () => {
                                                 </TidslinjeProvider>
                                             }
                                         />
-                                        <Route
-                                            path="/internstatistikk"
-                                            element={<Internstatistikk />}
-                                        />
-                                        <Route
-                                            path="/barnehagelister"
-                                            element={<Barnehagelister />}
-                                        />
+                                        <Route path="/internstatistikk" element={<Internstatistikk />} />
+                                        <Route path="/barnehagelister" element={<Barnehagelister />} />
                                         <Route path="/oppgaver" element={<Oppgavebenk />} />
                                         <Route path="/" element={<Navigate to="/oppgaver" />} />
                                     </Routes>

@@ -33,10 +33,7 @@ interface IRegisteropplysningerProps {
     fødselsdato: string;
 }
 
-const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({
-    opplysninger,
-    fødselsdato,
-}) => {
+const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({ opplysninger, fødselsdato }) => {
     const { toggles } = useAppContext();
     const manglerRegisteropplysninger = opplysninger.statsborgerskap.length === 0;
 
@@ -66,13 +63,7 @@ const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({
                     />
                     <RegisteropplysningerTabell
                         opplysningstype={Registeropplysning.FØDSELSDATO}
-                        ikon={
-                            <CalendarIcon
-                                fontSize={'1.5rem'}
-                                title="Kalender-ikon"
-                                focusable="false"
-                            />
-                        }
+                        ikon={<CalendarIcon fontSize={'1.5rem'} title="Kalender-ikon" focusable="false" />}
                         historikk={[
                             {
                                 verdi: isoStringTilFormatertString({
@@ -85,35 +76,23 @@ const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({
                     {personErDød && (
                         <RegisteropplysningerTabell
                             opplysningstype={Registeropplysning.DØDSBOADRESSE}
-                            ikon={
-                                <FlowerPetalFallingIcon
-                                    fontSize={'1.5rem'}
-                                    title="Blomst-ikon"
-                                    focusable="false"
-                                />
-                            }
+                            ikon={<FlowerPetalFallingIcon fontSize={'1.5rem'} title="Blomst-ikon" focusable="false" />}
                             historikk={opplysninger.dødsboadresse}
                         />
                     )}
                     <RegisteropplysningerTabell
                         opplysningstype={Registeropplysning.SIVILSTAND}
-                        ikon={
-                            <HeartIcon fontSize={'1.5rem'} title="Hjerte-ikon" focusable="false" />
-                        }
+                        ikon={<HeartIcon fontSize={'1.5rem'} title="Hjerte-ikon" focusable="false" />}
                         historikk={opplysninger.sivilstand}
                     />
                     <RegisteropplysningerTabell
                         opplysningstype={Registeropplysning.OPPHOLD}
-                        ikon={
-                            <PassportIcon fontSize={'1.5rem'} title="Pass-ikon" focusable="false" />
-                        }
+                        ikon={<PassportIcon fontSize={'1.5rem'} title="Pass-ikon" focusable="false" />}
                         historikk={opplysninger.oppholdstillatelse}
                     />
                     <RegisteropplysningerTabell
                         opplysningstype={Registeropplysning.STATSBORGERSKAP}
-                        ikon={
-                            <GlobeIcon fontSize={'1.5rem'} title="Globe-ikon" focusable="false" />
-                        }
+                        ikon={<GlobeIcon fontSize={'1.5rem'} title="Globe-ikon" focusable="false" />}
                         historikk={opplysninger.statsborgerskap}
                     />
                     <RegisteropplysningerTabell
@@ -124,13 +103,7 @@ const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({
                     {toggles[ToggleNavn.skalViseOppholdsadresse] && (
                         <RegisteropplysningerTabell
                             opplysningstype={Registeropplysning.OPPHOLDSADRESSE}
-                            ikon={
-                                <HouseIcon
-                                    fontSize={'1.5rem'}
-                                    title="Hjem-ikon"
-                                    focusable="false"
-                                />
-                            }
+                            ikon={<HouseIcon fontSize={'1.5rem'} title="Hjem-ikon" focusable="false" />}
                             historikk={opplysninger.oppholdsadresse}
                         />
                     )}

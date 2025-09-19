@@ -24,8 +24,7 @@ const StyledPagination = styled(Pagination)`
     padding-left: 1rem;
 `;
 
-const beregnAntallSider = (oppgaver: IOppgave[]): number =>
-    Math.ceil(oppgaver.length / oppgaveSideLimit);
+const beregnAntallSider = (oppgaver: IOppgave[]): number => Math.ceil(oppgaver.length / oppgaveSideLimit);
 
 const OppgavelisteNavigator: React.FunctionComponent = () => {
     const { oppgaver, side, settSide } = useOppgavebenkContext();
@@ -42,20 +41,11 @@ const OppgavelisteNavigator: React.FunctionComponent = () => {
                     |
                     <StyledSpan>
                         Viser {(side - 1) * oppgaveSideLimit + 1} -{' '}
-                        {side === antallSider
-                            ? oppgaver.data.oppgaver.length
-                            : side * oppgaveSideLimit}{' '}
-                        av {oppgaver.data.oppgaver.length} oppgaver (totalt{' '}
-                        {oppgaver.data.antallTreffTotalt} oppgaver)
+                        {side === antallSider ? oppgaver.data.oppgaver.length : side * oppgaveSideLimit} av{' '}
+                        {oppgaver.data.oppgaver.length} oppgaver (totalt {oppgaver.data.antallTreffTotalt} oppgaver)
                     </StyledSpan>
                     |
-                    <StyledPagination
-                        size="small"
-                        page={side}
-                        count={antallSider}
-                        onPageChange={settSide}
-                    />
-                    |
+                    <StyledPagination size="small" page={side} count={antallSider} onPageChange={settSide} />|
                 </>
             )}
         </StyledDiv>

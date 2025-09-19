@@ -1,10 +1,4 @@
-import React, {
-    createContext,
-    useContext,
-    useEffect,
-    useState,
-    type PropsWithChildren,
-} from 'react';
+import React, { createContext, useContext, useEffect, useState, type PropsWithChildren } from 'react';
 
 import deepEqual from 'deep-equal';
 
@@ -13,12 +7,7 @@ import { useHttp } from '@navikt/familie-http';
 import type { FeiloppsummeringFeil, FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
-import {
-    byggFeiletRessurs,
-    byggHenterRessurs,
-    byggTomRessurs,
-    RessursStatus,
-} from '@navikt/familie-typer';
+import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { grupperteBegrunnelser } from './utils';
 import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
@@ -66,11 +55,7 @@ interface VedtaksperiodeContextValue {
 
 const VedtaksperiodeContext = createContext<VedtaksperiodeContextValue | undefined>(undefined);
 
-export const VedtaksperiodeProvider = ({
-    åpenBehandling,
-    vedtaksperiodeMedBegrunnelser,
-    children,
-}: IProps) => {
+export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegrunnelser, children }: IProps) => {
     const { request } = useHttp();
     const { settÅpenBehandling } = useBehandlingContext();
     const [erPanelEkspandert, settErPanelEkspandert] = useState(
@@ -79,8 +64,7 @@ export const VedtaksperiodeProvider = ({
             vedtaksperiodeMedBegrunnelser.fritekster.length === 0
     );
     const [begrunnelserPut, settBegrunnelserPut] = useState(byggTomRessurs());
-    const [genererteBrevbegrunnelser, settGenererteBrevbegrunnelser] =
-        useState<Ressurs<string[]>>(byggTomRessurs());
+    const [genererteBrevbegrunnelser, settGenererteBrevbegrunnelser] = useState<Ressurs<string[]>>(byggTomRessurs());
 
     const maksAntallKulepunkter = 3;
     const makslengdeFritekst = 350;
@@ -101,29 +85,26 @@ export const VedtaksperiodeProvider = ({
         verdi: [],
         valideringsfunksjon: (felt: FeltState<FeltState<IFritekstFelt>[]>) => {
             return felt.verdi.some(
-                fritekst =>
-                    fritekst.valideringsstatus === Valideringsstatus.FEIL ||
-                    fritekst.verdi.tekst.length === 0
+                fritekst => fritekst.valideringsstatus === Valideringsstatus.FEIL || fritekst.verdi.tekst.length === 0
             )
                 ? feil(felt, '')
                 : ok(felt);
         },
     });
 
-    const { hentFeilTilOppsummering, kanSendeSkjema, onSubmit, settVisfeilmeldinger, skjema } =
-        useSkjema<
-            {
-                periode: IIsoDatoPeriode;
-                fritekster: FeltState<IFritekstFelt>[];
-            },
-            IBehandling
-        >({
-            felter: {
-                periode,
-                fritekster,
-            },
-            skjemanavn: 'Begrunnelser for vedtaksperiode',
-        });
+    const { hentFeilTilOppsummering, kanSendeSkjema, onSubmit, settVisfeilmeldinger, skjema } = useSkjema<
+        {
+            periode: IIsoDatoPeriode;
+            fritekster: FeltState<IFritekstFelt>[];
+        },
+        IBehandling
+    >({
+        felter: {
+            periode,
+            fritekster,
+        },
+        skjemanavn: 'Begrunnelser for vedtaksperiode',
+    });
 
     const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
 
@@ -153,9 +134,7 @@ export const VedtaksperiodeProvider = ({
             case 'select-option':
                 if (action.option) {
                     oppdaterBegrunnelser([
-                        ...alleBegrunnelser.map(
-                            vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse
-                        ),
+                        ...alleBegrunnelser.map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
                         action.option?.value as Begrunnelse,
                     ]);
                 }
@@ -167,8 +146,7 @@ export const VedtaksperiodeProvider = ({
                         [
                             ...alleBegrunnelser.filter(
                                 persistertBegrunnelse =>
-                                    persistertBegrunnelse.begrunnelse !==
-                                    (action.removedValue?.value as Begrunnelse)
+                                    persistertBegrunnelse.begrunnelse !== (action.removedValue?.value as Begrunnelse)
                             ),
                         ].map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse)
                     );
@@ -210,9 +188,7 @@ export const VedtaksperiodeProvider = ({
             if (hentedeBegrunnelser.status === RessursStatus.SUKSESS) {
                 settGenererteBrevbegrunnelser(hentedeBegrunnelser);
             } else if (hentedeBegrunnelser.status === RessursStatus.FUNKSJONELL_FEIL) {
-                settGenererteBrevbegrunnelser(
-                    byggFeiletRessurs(hentedeBegrunnelser.frontendFeilmelding)
-                );
+                settGenererteBrevbegrunnelser(byggFeiletRessurs(hentedeBegrunnelser.frontendFeilmelding));
             } else {
                 settGenererteBrevbegrunnelser(
                     byggFeiletRessurs(
@@ -227,11 +203,7 @@ export const VedtaksperiodeProvider = ({
     const leggTilFritekst = () => {
         skjema.felter.fritekster.validerOgSettFelt([
             ...skjema.felter.fritekster.verdi,
-            lagInitiellFritekst(
-                '',
-                genererIdBasertPåAndreFritekster(skjema.felter.fritekster),
-                makslengdeFritekst
-            ),
+            lagInitiellFritekst('', genererIdBasertPåAndreFritekster(skjema.felter.fritekster), makslengdeFritekst),
         ]);
     };
 
@@ -258,9 +230,7 @@ export const VedtaksperiodeProvider = ({
                     method: 'PUT',
                     url: `/familie-ks-sak/api/vedtaksperioder/fritekster/${vedtaksperiodeMedBegrunnelser.id}`,
                     data: {
-                        fritekster: skjema.felter.fritekster.verdi.map(
-                            fritekst => fritekst.verdi.tekst
-                        ),
+                        fritekster: skjema.felter.fritekster.verdi.map(fritekst => fritekst.verdi.tekst),
                     },
                 },
                 (behandling: Ressurs<IBehandling>) => {
@@ -275,10 +245,7 @@ export const VedtaksperiodeProvider = ({
         <VedtaksperiodeContext.Provider
             value={{
                 erPanelEkspandert,
-                grupperteBegrunnelser: grupperteBegrunnelser(
-                    vedtaksperiodeMedBegrunnelser,
-                    alleBegrunnelserRessurs
-                ),
+                grupperteBegrunnelser: grupperteBegrunnelser(vedtaksperiodeMedBegrunnelser, alleBegrunnelserRessurs),
                 hentFeilTilOppsummering,
                 id: vedtaksperiodeMedBegrunnelser.id,
                 vedtaksperiodeMedBegrunnelser,

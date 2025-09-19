@@ -8,10 +8,7 @@ export const HentBehandlingerQueryKeyFactory = {
     fagsak: (fagsakId: number | undefined) => ['visningsBehandlinger', fagsakId],
 };
 
-export function useHentKontantstøtteBehandlinger(
-    fagsakId: number | undefined,
-    påvirkerSystemLaster: boolean = true
-) {
+export function useHentKontantstøtteBehandlinger(fagsakId: number | undefined, påvirkerSystemLaster: boolean = true) {
     const { request } = useHttp();
     return useQuery({
         queryKey: HentBehandlingerQueryKeyFactory.fagsak(fagsakId),

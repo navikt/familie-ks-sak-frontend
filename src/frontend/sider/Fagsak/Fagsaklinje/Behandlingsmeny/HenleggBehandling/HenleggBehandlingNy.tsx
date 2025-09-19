@@ -15,11 +15,9 @@ export function HenleggBehandlingNy() {
     const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const { åpneModal } = useModal(ModalType.HENLEGG_BEHANDLING);
 
-    const behandling =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data : undefined;
+    const behandling = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data : undefined;
 
-    const harTilgangTilTekniskVedlikeholdHenleggelse =
-        toggles[ToggleNavn.tekniskVedlikeholdHenleggelse];
+    const harTilgangTilTekniskVedlikeholdHenleggelse = toggles[ToggleNavn.tekniskVedlikeholdHenleggelse];
 
     const kanHenlegge =
         harTilgangTilTekniskVedlikeholdHenleggelse ||
@@ -29,9 +27,5 @@ export function HenleggBehandlingNy() {
         return null;
     }
 
-    return (
-        <Dropdown.Menu.List.Item onClick={() => åpneModal()}>
-            Henlegg behandling
-        </Dropdown.Menu.List.Item>
-    );
+    return <Dropdown.Menu.List.Item onClick={() => åpneModal()}>Henlegg behandling</Dropdown.Menu.List.Item>;
 }

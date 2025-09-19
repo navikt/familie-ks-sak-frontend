@@ -2,11 +2,7 @@ import React from 'react';
 
 import { useAppContext } from '../../../../../context/AppContext';
 import type { IBehandling } from '../../../../../typer/behandling';
-import {
-    BehandlingStatus,
-    Behandlingstype,
-    BehandlingÅrsak,
-} from '../../../../../typer/behandling';
+import { BehandlingStatus, Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { ToggleNavn } from '../../../../../typer/toggles';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';

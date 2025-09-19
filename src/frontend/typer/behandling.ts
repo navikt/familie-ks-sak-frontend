@@ -19,11 +19,7 @@ import { type IToggles, ToggleNavn } from './toggles';
 import type { ITotrinnskontroll } from './totrinnskontroll';
 import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
 import type { Utbetalingsperiode } from './utbetalingsperiode';
-import type {
-    IRestKorrigertEtterbetaling,
-    IRestKorrigertVedtak,
-    IVedtakForBehandling,
-} from './vedtak';
+import type { IRestKorrigertEtterbetaling, IRestKorrigertVedtak, IVedtakForBehandling } from './vedtak';
 import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 import type { IRestBrevmottaker } from '../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IsoDatoString } from '../utils/dato';
@@ -72,15 +68,10 @@ export const behandlingÅrsakerSomIkkeSkalSettesManuelt = (toggles: IToggles): B
         toggles[ToggleNavn.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
             ? null
             : BehandlingÅrsak.IVERKSETTE_KA_VEDTAK,
-        toggles[ToggleNavn.kanManueltKorrigereMedVedtaksbrev]
-            ? null
-            : BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
+        toggles[ToggleNavn.kanManueltKorrigereMedVedtaksbrev] ? null : BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
     ].filter(behandlingsårsak => behandlingsårsak !== null);
 
-export const behandlingÅrsak: Record<
-    BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak | KlageÅrsak,
-    string
-> = {
+export const behandlingÅrsak: Record<BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak | KlageÅrsak, string> = {
     SØKNAD: 'Søknad',
     ÅRLIG_KONTROLL: 'Årlig kontroll',
     DØDSFALL: 'Dødsfall',
@@ -99,8 +90,7 @@ export const behandlingÅrsak: Record<
     REVURDERING_KLAGE_KA: 'Klage omgjort av KA',
     REVURDERING_OPPLYSNINGER_OM_VILKÅR: 'Nye opplysninger',
     REVURDERING_OPPLYSNINGER_OM_FORELDELSE: 'Nye opplysninger',
-    REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT:
-        'Feilutbetalt beløp helt eller delvis bortfalt',
+    REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT: 'Feilutbetalt beløp helt eller delvis bortfalt',
 
     /** Klage: **/
     ANNET: 'annet',
@@ -355,10 +345,7 @@ export const behandlingsresultater: Record<
     MEDHOLD: 'Medhold',
 };
 
-export const behandlingsstatuser: Record<
-    BehandlingStatus | Behandlingsstatus | KlageStatus,
-    string
-> = {
+export const behandlingsstatuser: Record<BehandlingStatus | Behandlingsstatus | KlageStatus, string> = {
     UTREDES: 'Utredes',
     SATT_PÅ_MASKINELL_VENT: 'Satt på maskinell vent',
     FATTER_VEDTAK: 'Fatter vedtak',
@@ -395,8 +382,6 @@ export const erBehandlingAvslått = (behandlingsResultat?: BehandlingResultat): 
     ].some(resultat => resultat === behandlingsResultat);
 };
 
-export const erBehandlingFortsattInnvilget = (
-    behandlingsResultat?: BehandlingResultat
-): boolean => {
+export const erBehandlingFortsattInnvilget = (behandlingsResultat?: BehandlingResultat): boolean => {
     return behandlingsResultat === BehandlingResultat.FORTSATT_INNVILGET;
 };

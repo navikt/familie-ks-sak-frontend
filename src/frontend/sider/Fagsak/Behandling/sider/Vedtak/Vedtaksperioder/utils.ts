@@ -1,11 +1,4 @@
-import {
-    addMonths,
-    differenceInMilliseconds,
-    isAfter,
-    isBefore,
-    isSameMonth,
-    startOfMonth,
-} from 'date-fns';
+import { addMonths, differenceInMilliseconds, isAfter, isBefore, isSameMonth, startOfMonth } from 'date-fns';
 
 import type { GroupBase, OptionType } from '@navikt/familie-form-elements';
 import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
@@ -49,11 +42,7 @@ export function grupperteBegrunnelser(
             case Vedtaksperiodetype.FORTSATT_INNVILGET:
                 return [BegrunnelseType.FORTSATT_INNVILGET];
             case Vedtaksperiodetype.OPPHØR:
-                return [
-                    BegrunnelseType.OPPHØR,
-                    BegrunnelseType.EØS_OPPHØR,
-                    BegrunnelseType.ETTER_ENDRET_UTBETALING,
-                ];
+                return [BegrunnelseType.OPPHØR, BegrunnelseType.EØS_OPPHØR, BegrunnelseType.ETTER_ENDRET_UTBETALING];
             default:
                 return [];
         }
@@ -65,9 +54,7 @@ export function grupperteBegrunnelser(
         alleBegrunnelserRessurs.status === RessursStatus.SUKSESS
             ? Object.keys(alleBegrunnelserRessurs.data)
                   .filter((begrunnelseType: string) =>
-                      begrunnelseTyperKnyttetTilVedtaksperiodetype.includes(
-                          begrunnelseType as BegrunnelseType
-                      )
+                      begrunnelseTyperKnyttetTilVedtaksperiodetype.includes(begrunnelseType as BegrunnelseType)
                   )
                   .reduce((acc: GroupBase<OptionType>[], begrunnelseType: string) => {
                       return [
@@ -77,9 +64,7 @@ export function grupperteBegrunnelser(
                               options: vedtaksperiodeMedBegrunnelser.gyldigeBegrunnelser
                                   .filter((begrunnelse: Begrunnelse) => {
                                       return (
-                                          alleBegrunnelserRessurs.data[
-                                              begrunnelseType as BegrunnelseType
-                                          ].find(
+                                          alleBegrunnelserRessurs.data[begrunnelseType as BegrunnelseType].find(
                                               begrunnelseTilknyttetVilkår =>
                                                   begrunnelseTilknyttetVilkår.id === begrunnelse
                                           ) !== undefined
@@ -87,9 +72,7 @@ export function grupperteBegrunnelser(
                                   })
                                   .map((begrunnelse: Begrunnelse) => ({
                                       label:
-                                          alleBegrunnelserRessurs.data[
-                                              begrunnelseType as BegrunnelseType
-                                          ].find(
+                                          alleBegrunnelserRessurs.data[begrunnelseType as BegrunnelseType].find(
                                               begrunnelseTilknyttetVilkår =>
                                                   begrunnelseTilknyttetVilkår.id === begrunnelse
                                           )?.navn ?? begrunnelse,
@@ -113,11 +96,7 @@ export const mapBegrunnelserTilSelectOptions = (
     ];
     return alleBegrunnelser.map((begrunnelse: IRestVedtaksbegrunnelse) => ({
         value: begrunnelse.begrunnelse.toString(),
-        label: hentLabelForOption(
-            begrunnelse.begrunnelseType,
-            begrunnelse.begrunnelse,
-            vilkårBegrunnelser
-        ),
+        label: hentLabelForOption(begrunnelse.begrunnelseType, begrunnelse.begrunnelse, vilkårBegrunnelser),
     }));
 };
 
@@ -199,10 +178,8 @@ const harPeriodeBegrunnelse = (vedtaksperiode: IVedtaksperiodeMedBegrunnelser) =
 
 const hentSisteOpphørsperiode = (sortertePerioder: IVedtaksperiodeMedBegrunnelser[]) => {
     const sorterteOgFiltrerteOpphørsperioder = sortertePerioder.filter(
-        (vedtaksperiode: IVedtaksperiodeMedBegrunnelser) =>
-            vedtaksperiode.type === Vedtaksperiodetype.OPPHØR
+        (vedtaksperiode: IVedtaksperiodeMedBegrunnelser) => vedtaksperiode.type === Vedtaksperiodetype.OPPHØR
     );
-    const sisteOpphørsPeriode =
-        sorterteOgFiltrerteOpphørsperioder[sorterteOgFiltrerteOpphørsperioder.length - 1];
+    const sisteOpphørsPeriode = sorterteOgFiltrerteOpphørsperioder[sorterteOgFiltrerteOpphørsperioder.length - 1];
     return sisteOpphørsPeriode ? [sisteOpphørsPeriode] : [];
 };

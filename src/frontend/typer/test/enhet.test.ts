@@ -2,9 +2,7 @@ import { enhetsgrupper, harTilgangTilEnhet } from '../enhet';
 
 describe('Enhet typer', () => {
     test('Skal sjekke tilgangsstyring på enheter', () => {
-        expect(
-            harTilgangTilEnhet('4806', ['0d746128-7cb0-431b-9420-885e7a75260f'], () => false)
-        ).toBe(true);
+        expect(harTilgangTilEnhet('4806', ['0d746128-7cb0-431b-9420-885e7a75260f'], () => false)).toBe(true);
         expect(harTilgangTilEnhet('4806', [], () => false)).toBe(false);
     });
 

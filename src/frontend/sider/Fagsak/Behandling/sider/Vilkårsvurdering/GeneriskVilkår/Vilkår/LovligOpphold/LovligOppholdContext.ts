@@ -94,8 +94,7 @@ export const useLovligOpphold = (lagretVilkår: IVilkårResultat, person: IGrunn
             feilmelding,
             nullstillSkjema,
         },
-        finnesEndringerSomIkkeErLagret: () =>
-            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        finnesEndringerSomIkkeErLagret: () => finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
         skalViseDatoVarsel,
     };
 };

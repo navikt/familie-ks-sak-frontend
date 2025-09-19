@@ -92,10 +92,7 @@ describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder',
         ];
 
         // Act
-        const identer = finnUnikeIdenterForPersonTypeIUtbetalingsperioder(
-            utbetalingsperioder,
-            PersonType.BARN
-        );
+        const identer = finnUnikeIdenterForPersonTypeIUtbetalingsperioder(utbetalingsperioder, PersonType.BARN);
 
         // Assert
         expect(identer).toHaveLength(2);
@@ -119,8 +116,10 @@ describe('Tester for metoden finnUtbetalingsperioderHvorTomErEnBestemtMåned', (
         ];
 
         // Act
-        const utbetalingsperioderHvorTomErEnBestemtMåned =
-            finnUtbetalingsperioderHvorTomErEnBestemtMåned(utbetalingsperioder, new Date(2024, 7));
+        const utbetalingsperioderHvorTomErEnBestemtMåned = finnUtbetalingsperioderHvorTomErEnBestemtMåned(
+            utbetalingsperioder,
+            new Date(2024, 7)
+        );
 
         // Assert
         expect(utbetalingsperioderHvorTomErEnBestemtMåned).toHaveLength(0);
@@ -140,8 +139,10 @@ describe('Tester for metoden finnUtbetalingsperioderHvorTomErEnBestemtMåned', (
         ];
 
         // Act
-        const utbetalingsperioderHvorTomErEnBestemtMåned =
-            finnUtbetalingsperioderHvorTomErEnBestemtMåned(utbetalingsperioder, new Date(2024, 7));
+        const utbetalingsperioderHvorTomErEnBestemtMåned = finnUtbetalingsperioderHvorTomErEnBestemtMåned(
+            utbetalingsperioder,
+            new Date(2024, 7)
+        );
 
         // Assert
         expect(utbetalingsperioderHvorTomErEnBestemtMåned).toHaveLength(0);
@@ -161,8 +162,10 @@ describe('Tester for metoden finnUtbetalingsperioderHvorTomErEnBestemtMåned', (
         ];
 
         // Act
-        const utbetalingsperioderHvorTomErEnBestemtMåned =
-            finnUtbetalingsperioderHvorTomErEnBestemtMåned(utbetalingsperioder, new Date(2024, 7));
+        const utbetalingsperioderHvorTomErEnBestemtMåned = finnUtbetalingsperioderHvorTomErEnBestemtMåned(
+            utbetalingsperioder,
+            new Date(2024, 7)
+        );
 
         // Assert
         expect(utbetalingsperioderHvorTomErEnBestemtMåned).toHaveLength(0);
@@ -182,8 +185,10 @@ describe('Tester for metoden finnUtbetalingsperioderHvorTomErEnBestemtMåned', (
         ];
 
         // Act
-        const utbetalingsperioderHvorTomErEnBestemtMåned =
-            finnUtbetalingsperioderHvorTomErEnBestemtMåned(utbetalingsperioder, new Date(2024, 7));
+        const utbetalingsperioderHvorTomErEnBestemtMåned = finnUtbetalingsperioderHvorTomErEnBestemtMåned(
+            utbetalingsperioder,
+            new Date(2024, 7)
+        );
 
         // Assert
         expect(utbetalingsperioderHvorTomErEnBestemtMåned).toHaveLength(1);
@@ -204,8 +209,10 @@ describe('Tester for metoden finnUtbetalingsperioderHvorTomErEnBestemtMåned', (
         ];
 
         // Act
-        const utbetalingsperioderHvorTomErEnBestemtMåned =
-            finnUtbetalingsperioderHvorTomErEnBestemtMåned(utbetalingsperioder, new Date(2024, 7));
+        const utbetalingsperioderHvorTomErEnBestemtMåned = finnUtbetalingsperioderHvorTomErEnBestemtMåned(
+            utbetalingsperioder,
+            new Date(2024, 7)
+        );
 
         // Assert
         expect(utbetalingsperioderHvorTomErEnBestemtMåned).toHaveLength(1);
@@ -234,8 +241,10 @@ describe('Tester for metoden finnUtbetalingsperioderHvorTomErEnBestemtMåned', (
         ];
 
         // Act
-        const utbetalingsperioderHvorTomErEnBestemtMåned =
-            finnUtbetalingsperioderHvorTomErEnBestemtMåned(utbetalingsperioder, new Date(2024, 7));
+        const utbetalingsperioderHvorTomErEnBestemtMåned = finnUtbetalingsperioderHvorTomErEnBestemtMåned(
+            utbetalingsperioder,
+            new Date(2024, 7)
+        );
 
         // Assert
         expect(utbetalingsperioderHvorTomErEnBestemtMåned).toHaveLength(2);

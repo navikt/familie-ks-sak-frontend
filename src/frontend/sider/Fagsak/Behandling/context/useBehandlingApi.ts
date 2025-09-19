@@ -5,20 +5,11 @@ import { useNavigate } from 'react-router';
 
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
-import {
-    byggFeiletRessurs,
-    byggHenterRessurs,
-    byggTomRessurs,
-    RessursStatus,
-} from '@navikt/familie-typer';
+import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../context/AppContext';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
-import {
-    BehandlingÅrsak,
-    type IBehandling,
-    type IOpprettBehandlingData,
-} from '../../../../typer/behandling';
+import { BehandlingÅrsak, type IBehandling, type IOpprettBehandlingData } from '../../../../typer/behandling';
 import type { ILogg } from '../../../../typer/logg';
 import { obfuskerBehandling, obfuskerLogg } from '../../../../utils/obfuskerData';
 
@@ -46,9 +37,7 @@ const useBehandlingApi = (
         }
     }, [behandlingId]);
 
-    const opprettBehandling = (
-        data: IOpprettBehandlingData
-    ): Promise<void | Ressurs<IBehandling>> => {
+    const opprettBehandling = (data: IOpprettBehandlingData): Promise<void | Ressurs<IBehandling>> => {
         return request<IOpprettBehandlingData, IBehandling>({
             data,
             method: 'POST',
@@ -61,13 +50,9 @@ const useBehandlingApi = (
                     const behandling = response.data;
 
                     if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
-                        navigate(
-                            `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`
-                        );
+                        navigate(`/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`);
                     } else {
-                        navigate(
-                            `/fagsak/${fagsakId}/${behandling?.behandlingId}/vilkaarsvurdering`
-                        );
+                        navigate(`/fagsak/${fagsakId}/${behandling?.behandlingId}/vilkaarsvurdering`);
                     }
                 }
             })
@@ -131,9 +116,7 @@ const useBehandlingApi = (
                 }
             })
             .catch((_error: AxiosError) => {
-                return byggFeiletRessurs(
-                    'Ukjent feil ved oppdatering av registeropplysninger'
-                ) as Ressurs<IBehandling>;
+                return byggFeiletRessurs('Ukjent feil ved oppdatering av registeropplysninger') as Ressurs<IBehandling>;
             });
     };
 

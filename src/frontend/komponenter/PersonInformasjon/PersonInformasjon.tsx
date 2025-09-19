@@ -31,9 +31,7 @@ const hentAdresseBeskyttelseGradering = (
     if (brukerRessurs.status === RessursStatus.SUKSESS) {
         const bruker = brukerRessurs.data;
         const forelderBarnRelasjoner = brukerRessurs.data.forelderBarnRelasjon;
-        const forelderBarnRelasjon = forelderBarnRelasjoner.find(
-            rel => rel.personIdent === personIdent
-        );
+        const forelderBarnRelasjon = forelderBarnRelasjoner.find(rel => rel.personIdent === personIdent);
 
         if (bruker.personIdent === personIdent) {
             return erAdresseBeskyttet(bruker.adressebeskyttelseGradering);
@@ -61,8 +59,7 @@ const PersonInformasjon: React.FunctionComponent<IProps> = ({ person, somOverskr
     const { bruker: brukerRessurs } = useFagsakContext();
 
     const erAdresseBeskyttet = hentAdresseBeskyttelseGradering(brukerRessurs, person.personIdent);
-    const erEgenAnsatt =
-        brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data.erEgenAnsatt : false;
+    const erEgenAnsatt = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data.erEgenAnsatt : false;
 
     if (somOverskrift) {
         return (
@@ -86,12 +83,8 @@ const PersonInformasjon: React.FunctionComponent<IProps> = ({ person, somOverskr
                         <CopyButton size="small" copyText={person.personIdent} />
                     </HStack>
                     <Skillelinje erHeading />
-                    <Heading level="2" size="medium" as="span">{`${
-                        personTypeMap[person.type]
-                    } `}</Heading>
-                    {person.dødsfallDato?.length && (
-                        <DødsfallTag dødsfallDato={person.dødsfallDato} />
-                    )}
+                    <Heading level="2" size="medium" as="span">{`${personTypeMap[person.type]} `}</Heading>
+                    {person.dødsfallDato?.length && <DødsfallTag dødsfallDato={person.dødsfallDato} />}
                 </HStack>
             </HStack>
         );

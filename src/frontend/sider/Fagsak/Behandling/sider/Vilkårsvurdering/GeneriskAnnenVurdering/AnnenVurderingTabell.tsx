@@ -18,11 +18,7 @@ interface IProps {
     annenVurderingConfig: IAnnenVurderingConfig;
 }
 
-const AnnenVurderingTabell: React.FC<IProps> = ({
-    person,
-    annenVurderingConfig,
-    andreVurderinger,
-}) => {
+const AnnenVurderingTabell: React.FC<IProps> = ({ person, annenVurderingConfig, andreVurderinger }) => {
     return (
         <Table>
             <Table.Header>

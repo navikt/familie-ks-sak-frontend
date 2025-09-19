@@ -41,8 +41,7 @@ const HøyremenyContainer = styled.div`
 `;
 
 const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
-    const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } =
-        useBehandlingContext();
+    const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } = useBehandlingContext();
 
     React.useEffect(() => {
         if (åpenBehandling && åpenBehandling.status === RessursStatus.SUKSESS) {
@@ -76,21 +75,19 @@ const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
                     <>
                         <Behandlingskort åpenBehandling={åpenBehandling.data} />
                         <Hendelsesoversikt
-                            hendelser={hentDataFraRessursMedFallback(logg, []).map(
-                                (loggElement: ILogg): Hendelse => {
-                                    return {
-                                        id: loggElement.id.toString(),
-                                        dato: isoStringTilFormatertString({
-                                            isoString: loggElement.opprettetTidspunkt,
-                                            tilFormat: Datoformat.DATO_TID,
-                                        }),
-                                        utførtAv: loggElement.opprettetAv,
-                                        rolle: loggElement.rolle,
-                                        tittel: loggElement.tittel,
-                                        beskrivelse: loggElement.tekst,
-                                    };
-                                }
-                            )}
+                            hendelser={hentDataFraRessursMedFallback(logg, []).map((loggElement: ILogg): Hendelse => {
+                                return {
+                                    id: loggElement.id.toString(),
+                                    dato: isoStringTilFormatertString({
+                                        isoString: loggElement.opprettetTidspunkt,
+                                        tilFormat: Datoformat.DATO_TID,
+                                    }),
+                                    utførtAv: loggElement.opprettetAv,
+                                    rolle: loggElement.rolle,
+                                    tittel: loggElement.tittel,
+                                    beskrivelse: loggElement.tekst,
+                                };
+                            })}
                             åpenBehandling={åpenBehandling.data}
                             bruker={bruker}
                         />

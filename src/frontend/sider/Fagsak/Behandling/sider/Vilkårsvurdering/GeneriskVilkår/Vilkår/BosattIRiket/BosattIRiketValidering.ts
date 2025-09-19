@@ -13,11 +13,10 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
         return feil(felt, 'Utdypende vilkårsvurdering er ugyldig');
     }
 
-    const muligeUtdypendeVilkårsvurderinger =
-        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
-            avhengigheter.vurderesEtter,
-            avhengigheter.person
-        );
+    const muligeUtdypendeVilkårsvurderinger = bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
+        avhengigheter.vurderesEtter,
+        avhengigheter.person
+    );
 
     if (muligeUtdypendeVilkårsvurderinger.length === 0) {
         return ok(felt);

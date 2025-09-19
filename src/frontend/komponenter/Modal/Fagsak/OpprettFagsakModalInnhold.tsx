@@ -36,11 +36,7 @@ export function OpprettFagsakModalInnhold({ personIdent, personNavn }: Props) {
                     <BodyShort>Ønsker du å opprette fagsak for denne personen?</BodyShort>
                     <BodyShort>{`${personNavn} (${formaterIdent(personIdent)})`}</BodyShort>
                     {visFeilmelding && (
-                        <Alert
-                            variant={'error'}
-                            closeButton={true}
-                            onClose={() => settVisFeilmelding(false)}
-                        >
+                        <Alert variant={'error'} closeButton={true} onClose={() => settVisFeilmelding(false)}>
                             {error?.message ?? 'Ukjent feil oppstod'}
                         </Alert>
                     )}

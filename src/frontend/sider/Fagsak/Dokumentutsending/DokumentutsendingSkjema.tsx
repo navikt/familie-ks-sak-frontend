@@ -7,11 +7,7 @@ import { Alert, Box, Button, Fieldset, Heading, Label, Select } from '@navikt/ds
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnIBrevSkjema from './BarnIBrev/BarnIBrevSkjema';
-import {
-    dokumentÅrsak,
-    DokumentÅrsak,
-    useDokumentutsendingContext,
-} from './DokumentutsendingContext';
+import { dokumentÅrsak, DokumentÅrsak, useDokumentutsendingContext } from './DokumentutsendingContext';
 import { BrevmottakereAlert } from '../../../komponenter/BrevmottakereAlert';
 import FritekstAvsnitt from '../../../komponenter/FritekstAvsnitt';
 import MålformVelger from '../../../komponenter/MålformVelger';
@@ -130,11 +126,7 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
                     <option value="">Velg</option>
                     {Object.values(DokumentÅrsak).map(årsak => {
                         return (
-                            <option
-                                key={årsak}
-                                aria-selected={skjema.felter.årsak.verdi === årsak}
-                                value={årsak}
-                            >
+                            <option key={årsak} aria-selected={skjema.felter.årsak.verdi === årsak} value={årsak}>
                                 {dokumentÅrsak[årsak]}
                             </option>
                         );
@@ -166,9 +158,7 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
                 />
 
                 {årsakVerdi && visForhåndsvisningBeskjed() && (
-                    <StyledAlert variant="info">
-                        Du har gjort endringer i brevet som ikke er forhåndsvist
-                    </StyledAlert>
+                    <StyledAlert variant="info">Du har gjort endringer i brevet som ikke er forhåndsvist</StyledAlert>
                 )}
             </StyledFieldset>
 

@@ -24,19 +24,14 @@ const useAvslagBegrunnelseMultiselect = (vilkårType: VilkårType, regelverk?: R
 
     const grupperteBegrunnelser = Object.keys(alleBegrunnelserRessurs.data)
         .map((type: string) => type as BegrunnelseType)
-        .filter((begrunnelseType: BegrunnelseType) =>
-            gyldigeBegrunnelseTyper.includes(begrunnelseType)
-        )
+        .filter((begrunnelseType: BegrunnelseType) => gyldigeBegrunnelseTyper.includes(begrunnelseType))
         .reduce((acc: GroupBase<OptionType>[], begrunnelseType: BegrunnelseType) => {
             return [
                 ...acc,
                 {
                     label: begrunnelseTyper[begrunnelseType],
                     options: alleBegrunnelserRessurs.data[begrunnelseType]
-                        .filter(
-                            (begrunnelse: IRestBegrunnelseTilknyttetVilkår) =>
-                                begrunnelse.vilkår === vilkårType
-                        )
+                        .filter((begrunnelse: IRestBegrunnelseTilknyttetVilkår) => begrunnelse.vilkår === vilkårType)
                         .map((begrunnelse: IRestBegrunnelseTilknyttetVilkår) => ({
                             label: begrunnelse.navn,
                             value: begrunnelse.id,

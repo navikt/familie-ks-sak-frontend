@@ -43,8 +43,7 @@ export function Saksoversikt({ minimalFagsak }: IProps) {
 
     const iverksatteBehandlinger = minimalFagsak.behandlinger.filter(
         (behandling: VisningBehandling) =>
-            behandling.status === BehandlingStatus.AVSLUTTET &&
-            !erBehandlingHenlagt(behandling.resultat)
+            behandling.status === BehandlingStatus.AVSLUTTET && !erBehandlingHenlagt(behandling.resultat)
     );
 
     let gjeldendeBehandling =
@@ -133,8 +132,8 @@ export function Saksoversikt({ minimalFagsak }: IProps) {
             return (
                 <Box width={SaksoversiktPanelBredde}>
                     <Alert variant="error">
-                        Noe gikk galt ved henting av utbetalinger. Prøv igjen eller kontakt
-                        brukerstøtte hvis problemet vedvarer.
+                        Noe gikk galt ved henting av utbetalinger. Prøv igjen eller kontakt brukerstøtte hvis problemet
+                        vedvarer.
                     </Alert>
                 </Box>
             );
@@ -171,7 +170,5 @@ export const sakstype = (behandling?: IBehandling) => {
         return 'Ikke satt';
     }
 
-    return `${
-        behandling?.kategori ? behandlingKategori[behandling?.kategori] : behandling?.kategori
-    }`;
+    return `${behandling?.kategori ? behandlingKategori[behandling?.kategori] : behandling?.kategori}`;
 };

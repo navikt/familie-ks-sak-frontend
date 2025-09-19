@@ -9,11 +9,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BrevmottakerSkjema from './BrevmottakerSkjema';
 import BrevmottakerTabell from './BrevmottakerTabell';
-import type {
-    BrevmottakerUseSkjema,
-    IRestBrevmottaker,
-    SkjemaBrevmottaker,
-} from './useBrevmottakerSkjema';
+import type { BrevmottakerUseSkjema, IRestBrevmottaker, SkjemaBrevmottaker } from './useBrevmottakerSkjema';
 import { useBrevmottakerSkjema } from './useBrevmottakerSkjema';
 
 const StyledAlert = styled(Alert)`
@@ -74,17 +70,11 @@ export const LeggTilBrevmottakerModal = <T extends SkjemaBrevmottaker | IRestBre
     };
 
     return (
-        <Modal
-            open
-            onClose={lukkModalOgSkjema}
-            header={{ heading: heading, size: 'medium' }}
-            width={'35rem'}
-            portal
-        >
+        <Modal open onClose={lukkModalOgSkjema} header={{ heading: heading, size: 'medium' }} width={'35rem'} portal>
             <Modal.Body>
                 <StyledAlert variant="info">
-                    Brev sendes til brukers folkeregistrerte adresse eller annen foretrukken kanal.
-                    Legg til mottaker dersom brev skal sendes til utenlandsk adresse, fullmektig
+                    Brev sendes til brukers folkeregistrerte adresse eller annen foretrukken kanal. Legg til mottaker
+                    dersom brev skal sendes til utenlandsk adresse, fullmektig
                     {erPåDokumentutsendingPåFagsak ? ' eller verge' : ', verge eller dødsbo'}.
                 </StyledAlert>
                 {brevmottakere.map((mottaker, index) => (
@@ -97,9 +87,7 @@ export const LeggTilBrevmottakerModal = <T extends SkjemaBrevmottaker | IRestBre
                 ))}
                 {erSkjemaSynlig ? (
                     <>
-                        {brevmottakere.length === 1 && (
-                            <StyledHeading size="medium">Ny mottaker</StyledHeading>
-                        )}
+                        {brevmottakere.length === 1 && <StyledHeading size="medium">Ny mottaker</StyledHeading>}
                         <BrevmottakerSkjema
                             erLesevisning={erLesevisning}
                             skjema={skjema}

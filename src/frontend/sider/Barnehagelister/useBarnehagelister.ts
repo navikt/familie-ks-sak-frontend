@@ -42,13 +42,12 @@ export interface BarnehagebarnContext<T> {
 
 const BARNEHAGEKOMMUNER_URL = '/familie-ks-sak/api/barnehagebarn/barnehagekommuner';
 
-export const useBarnehagelister = <T = Barnehagebarn>(
-    barnehagebarn_url: string
-): BarnehagebarnContext<T> => {
+export const useBarnehagelister = <T = Barnehagebarn>(barnehagebarn_url: string): BarnehagebarnContext<T> => {
     const { request } = useHttp();
 
-    const [barnehagebarnRequestParams, settBarnehagebarnRequestParams] =
-        useState<BarnehagebarnRequestParams>({ ...defaultBarnehagebarnRequestParams });
+    const [barnehagebarnRequestParams, settBarnehagebarnRequestParams] = useState<BarnehagebarnRequestParams>({
+        ...defaultBarnehagebarnRequestParams,
+    });
 
     const [barnehagebarnResponse, settBarnehagebarnResponse] =
         useState<Ressurs<BarnehagebarnResponse<T>>>(byggTomRessurs<BarnehagebarnResponse<T>>());
@@ -57,8 +56,7 @@ export const useBarnehagelister = <T = Barnehagebarn>(
         useState<Ressurs<Barnehagekommune[]>>(byggTomRessurs<Barnehagekommune[]>());
 
     const data: ReadonlyArray<T> = useMemo(() => {
-        return barnehagebarnResponse.status === RessursStatus.SUKSESS &&
-            barnehagebarnResponse.data.content.length > 0
+        return barnehagebarnResponse.status === RessursStatus.SUKSESS && barnehagebarnResponse.data.content.length > 0
             ? barnehagebarnResponse.data.content
             : [];
     }, [barnehagebarnResponse]);
@@ -88,9 +86,7 @@ export const useBarnehagelister = <T = Barnehagebarn>(
                 settBarnehagekommunerRessurs(barnehageKommuner);
             })
             .catch((_error: AxiosError) => {
-                settBarnehagekommunerRessurs(
-                    byggFeiletRessurs('Ukjent feil ved innhenting av barnehagekommuner')
-                );
+                settBarnehagekommunerRessurs(byggFeiletRessurs('Ukjent feil ved innhenting av barnehagekommuner'));
             });
     };
 

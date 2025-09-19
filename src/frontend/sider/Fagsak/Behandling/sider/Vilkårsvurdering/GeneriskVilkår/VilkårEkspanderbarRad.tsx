@@ -90,9 +90,7 @@ export const VilkårEkspanderbarRad: React.FC<IProps> = ({
             </Table.DataCell>
             <Table.DataCell>
                 <BodyShort>
-                    {periodeErTom
-                        ? '-'
-                        : isoDatoPeriodeTilFormatertString(lagretVilkårResultat.periode)}
+                    {periodeErTom ? '-' : isoDatoPeriodeTilFormatertString(lagretVilkårResultat.periode)}
                 </BodyShort>
             </Table.DataCell>
             <Table.DataCell>
@@ -119,8 +117,7 @@ export const VilkårEkspanderbarRad: React.FC<IProps> = ({
                         <StyledPersonIcon title={'Manuell vurdering'} />
                     )}
                     <div>
-                        {åpenBehandling.status === RessursStatus.SUKSESS &&
-                        lagretVilkårResultat.erVurdert
+                        {åpenBehandling.status === RessursStatus.SUKSESS && lagretVilkårResultat.erVurdert
                             ? lagretVilkårResultat.behandlingId === åpenBehandling.data.behandlingId
                                 ? 'Vurdert i denne behandlingen'
                                 : `Vurdert ${isoStringTilFormatertString({

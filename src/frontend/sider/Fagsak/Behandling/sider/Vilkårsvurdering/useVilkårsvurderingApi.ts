@@ -18,8 +18,7 @@ export const useVilkårsvurderingApi = () => {
 
     const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
 
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
 
     const [lagrerVilkår, settLagrerVilkår] = useState<boolean>(false);
     const [lagreVilkårFeilmelding, settLagreVilkårFeilmelding] = useState<string>('');
@@ -31,8 +30,7 @@ export const useVilkårsvurderingApi = () => {
     const [slettVilkårFeilmelding, settSlettVilkårFeilmelding] = useState<string>('');
 
     const [lagrerAnnenVurdering, settLagrerAnnenVurdering] = useState<boolean>(false);
-    const [lagreAnnenVurderingFeilmelding, settLagreAnnenVurderingFeilmelding] =
-        useState<string>('');
+    const [lagreAnnenVurderingFeilmelding, settLagreAnnenVurderingFeilmelding] = useState<string>('');
 
     const lagreVilkår = (
         endreVilkårResultat: IEndreVilkårResultat,
@@ -66,9 +64,7 @@ export const useVilkårsvurderingApi = () => {
             })
             .catch(() => {
                 settLagrerVilkår(false);
-                settLagreVilkårFeilmelding(
-                    'En ukjent feil har oppstått, vi har ikke klart å lagre vilkåret.'
-                );
+                settLagreVilkårFeilmelding('En ukjent feil har oppstått, vi har ikke klart å lagre vilkåret.');
                 if (onFailure) {
                     onFailure(lagreVilkårFeilmelding);
                 }
@@ -107,9 +103,7 @@ export const useVilkårsvurderingApi = () => {
                 }
             })
             .catch(() => {
-                settSlettVilkårFeilmelding(
-                    'En ukjent feil har oppstått, vi har ikke klart å slette vilkåret.'
-                );
+                settSlettVilkårFeilmelding('En ukjent feil har oppstått, vi har ikke klart å slette vilkåret.');
                 settSletterVilkår(false);
                 if (onFailure) {
                     onFailure(slettVilkårFeilmelding);
@@ -139,19 +133,14 @@ export const useVilkårsvurderingApi = () => {
             })
             .catch(() => {
                 settOppretterVilkår(false);
-                settOpprettVilkårFeilmelding(
-                    'En ukjent feil har oppstått, vi har ikke klart å legge til periode.'
-                );
+                settOpprettVilkårFeilmelding('En ukjent feil har oppstått, vi har ikke klart å legge til periode.');
                 if (onFailure) {
                     onFailure();
                 }
             });
     };
 
-    const lagreAnnenVurdering = (
-        restAnnenVurdering: IRestAnnenVurdering,
-        onSuccess?: () => void
-    ) => {
+    const lagreAnnenVurdering = (restAnnenVurdering: IRestAnnenVurdering, onSuccess?: () => void) => {
         settLagrerAnnenVurdering(true);
         settLagreAnnenVurderingFeilmelding('');
         request<IRestAnnenVurdering, IBehandling>({
@@ -176,9 +165,7 @@ export const useVilkårsvurderingApi = () => {
             })
             .catch(() => {
                 settLagrerAnnenVurdering(false);
-                settLagreAnnenVurderingFeilmelding(
-                    'En ukjent feil har oppstått, vi har ikke klart å lagre endringen.'
-                );
+                settLagreAnnenVurderingFeilmelding('En ukjent feil har oppstått, vi har ikke klart å lagre endringen.');
             });
     };
 

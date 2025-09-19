@@ -30,9 +30,7 @@ export const Behandling: React.FC<Props> = ({ saksoversiktsbehandling, fagsakId 
             </Table.DataCell>
             <Table.DataCell>{finnÅrsak(saksoversiktsbehandling)}</Table.DataCell>
             <Table.DataCell>{lagLenkePåType(fagsakId, saksoversiktsbehandling)}</Table.DataCell>
-            <Table.DataCell>
-                {hentBehandlingstema(saksoversiktsbehandling)?.navn ?? '-'}
-            </Table.DataCell>
+            <Table.DataCell>{hentBehandlingstema(saksoversiktsbehandling)?.navn ?? '-'}</Table.DataCell>
             <Table.DataCell>{behandlingsstatuser[saksoversiktsbehandling.status]}</Table.DataCell>
             <Table.DataCell>
                 {isoStringTilFormatertString({

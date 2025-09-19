@@ -21,9 +21,7 @@ const PersonCelle = styled.div`
     }
 `;
 
-const OvergangsordningAndelRad: React.FunctionComponent<IOvergangsordningRadProps> = ({
-    åpenBehandling,
-}) => {
+const OvergangsordningAndelRad: React.FunctionComponent<IOvergangsordningRadProps> = ({ åpenBehandling }) => {
     const {
         overgangsordningAndel,
         erOvergangsordningAndelForandret,

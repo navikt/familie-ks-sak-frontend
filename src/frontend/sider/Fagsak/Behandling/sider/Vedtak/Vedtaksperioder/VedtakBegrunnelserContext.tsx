@@ -10,9 +10,7 @@ interface VedtakBegrunnelserContextValue {
     alleBegrunnelserRessurs: Ressurs<AlleBegrunnelser>;
 }
 
-const VedtakBegrunnelserContext = React.createContext<VedtakBegrunnelserContextValue | undefined>(
-    undefined
-);
+const VedtakBegrunnelserContext = React.createContext<VedtakBegrunnelserContextValue | undefined>(undefined);
 
 export function VedtakBegrunnelserProvider({ children }: PropsWithChildren) {
     const { hentAlleBegrunnelser } = useBegrunnelseApi();
@@ -27,9 +25,7 @@ export function VedtakBegrunnelserProvider({ children }: PropsWithChildren) {
     }, []);
 
     return (
-        <VedtakBegrunnelserContext.Provider
-            value={{ alleBegrunnelserRessurs: alleBegrunnelserRessurs }}
-        >
+        <VedtakBegrunnelserContext.Provider value={{ alleBegrunnelserRessurs: alleBegrunnelserRessurs }}>
             {children}
         </VedtakBegrunnelserContext.Provider>
     );

@@ -73,14 +73,11 @@ export interface IRestOverstyrtEndringstidspunkt {
     behandlingId: number;
 }
 
-export const hentVedtaksperiodeTittel = (
-    vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser
-) => {
+export const hentVedtaksperiodeTittel = (vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser) => {
     const { type, utbetalingsperiodeDetaljer } = vedtaksperiodeMedBegrunnelser;
 
     if (
-        (type === Vedtaksperiodetype.UTBETALING ||
-            type === Vedtaksperiodetype.FORTSATT_INNVILGET) &&
+        (type === Vedtaksperiodetype.UTBETALING || type === Vedtaksperiodetype.FORTSATT_INNVILGET) &&
         utbetalingsperiodeDetaljer.length > 0
     ) {
         return ytelsetype.ORDINÆR_KONTANTSTØTTE.navn;

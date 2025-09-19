@@ -141,9 +141,7 @@ const RegisteropplysningerTabell: React.FC<IRegisteropplysningerTabellProps> = (
                         icon={erEkspandert ? <ChevronUpIcon /> : <ChevronDownIcon />}
                         iconPosition="right"
                     >
-                        {erEkspandert
-                            ? 'Skjul'
-                            : `Vis ${historikk.length - GRENSE_FOR_EKSPANDERBAR_HISTORIKK} flere`}
+                        {erEkspandert ? 'Skjul' : `Vis ${historikk.length - GRENSE_FOR_EKSPANDERBAR_HISTORIKK} flere`}
                     </Button>
                 </HøyrejustertKnapperad>
             )}

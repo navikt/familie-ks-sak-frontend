@@ -63,9 +63,7 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behand
             onClose={lukkModal}
             width={'35rem'}
             header={{
-                heading: erBehandlingAlleredePåVent
-                    ? 'Endre ventende behandling'
-                    : 'Sett behandling på vent',
+                heading: erBehandlingAlleredePåVent ? 'Endre ventende behandling' : 'Sett behandling på vent',
                 size: 'small',
             }}
             portal
@@ -77,9 +75,7 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behand
                     legend={'Sett behandling på vent'}
                     hideLegend
                 >
-                    {erBehandlingAlleredePåVent && (
-                        <StyledBodyShort>Behandlingen er satt på vent.</StyledBodyShort>
-                    )}
+                    {erBehandlingAlleredePåVent && <StyledBodyShort>Behandlingen er satt på vent.</StyledBodyShort>}
 
                     <Feltmargin>
                         <Datovelger
@@ -109,13 +105,7 @@ export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behand
                     loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                     disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                 />
-                <Button
-                    variant={'tertiary'}
-                    key={'Avbryt'}
-                    size="medium"
-                    onClick={lukkModal}
-                    children={'Avbryt'}
-                />
+                <Button variant={'tertiary'} key={'Avbryt'} size="medium" onClick={lukkModal} children={'Avbryt'} />
             </Modal.Footer>
         </Modal>
     );

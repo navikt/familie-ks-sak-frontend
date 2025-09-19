@@ -46,18 +46,14 @@ export function useKorrigerEtterbetalingForm(behandling: IBehandling) {
 
     const { mutateAsync: korrigerEtterbetalingAsync } = useKorrigerEtterbetaling();
 
-    const {
-        mutateAsync: angreKorrigertEtterbetalingAsync,
-        isPending: angreKorrigertEtterbetalingPending,
-    } = useAngreKorrigertEtterbetaling();
+    const { mutateAsync: angreKorrigertEtterbetalingAsync, isPending: angreKorrigertEtterbetalingPending } =
+        useAngreKorrigertEtterbetaling();
 
     const { lukkModal } = useModal(ModalType.KORRIGER_ETTERBETALING);
 
     const valgtÅrsak: string =
-        (
-            korrigertEtterbetaling &&
-            årsaker.find(option => option.value === korrigertEtterbetaling.årsak.toString())
-        )?.value ?? '';
+        (korrigertEtterbetaling && årsaker.find(option => option.value === korrigertEtterbetaling.årsak.toString()))
+            ?.value ?? '';
 
     const form = useForm<KorrigerEtterbetalingFormValues>({
         values: {

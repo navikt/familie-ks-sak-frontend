@@ -58,10 +58,7 @@ const Personlinje: React.FC<IProps> = ({ bruker }) => {
                         <Divider />
                         <HStack align="center" gap="1">
                             {bruker.personIdent}
-                            <CopyButton
-                                copyText={bruker.personIdent.replace(' ', '')}
-                                size="small"
-                            />
+                            <CopyButton copyText={bruker.personIdent.replace(' ', '')} size="small" />
                         </HStack>
                     </HStack>
                 </HStack>

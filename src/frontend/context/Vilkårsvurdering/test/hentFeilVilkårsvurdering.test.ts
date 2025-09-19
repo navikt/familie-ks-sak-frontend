@@ -34,9 +34,7 @@ describe('hentFeilIVilkårsvurdering', () => {
     });
 
     test('Skal ikke gi feilmelding dersom ingenting er galt', () => {
-        const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
-            happyCase as unknown as IPersonResultat[]
-        );
+        const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(happyCase as unknown as IPersonResultat[]);
 
         expect(feilIVilkåarsvurdering.length).toEqual(0);
     });

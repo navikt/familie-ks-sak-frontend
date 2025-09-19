@@ -10,16 +10,10 @@ import type {
     UtdypendeVilkårsvurdering,
 } from '../../../../../../../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../../../../../../../utils/dato';
-import {
-    erAvslagBegrunnelserGyldig,
-    erResultatGyldig,
-} from '../../../../../../../../utils/validators';
+import { erAvslagBegrunnelserGyldig, erResultatGyldig } from '../../../../../../../../utils/validators';
 import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
 
-export const useMedlemskapAnnenForelder = (
-    lagretVilkår: IVilkårResultat,
-    person: IGrunnlagPerson
-) => {
+export const useMedlemskapAnnenForelder = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
         vurderesEtter: lagretVilkår.vurderesEtter ?? undefined,
         resultat: lagretVilkår.resultat,
@@ -95,7 +89,6 @@ export const useMedlemskapAnnenForelder = (
             feilmelding,
             nullstillSkjema,
         },
-        finnesEndringerSomIkkeErLagret: () =>
-            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        finnesEndringerSomIkkeErLagret: () => finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
     };
 };

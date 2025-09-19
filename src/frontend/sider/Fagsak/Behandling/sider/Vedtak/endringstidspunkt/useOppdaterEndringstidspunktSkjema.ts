@@ -6,9 +6,7 @@ import type { IBehandling } from '../../../../../../typer/behandling';
 import type { IsoDatoString } from '../../../../../../utils/dato';
 import { validerGyldigDato } from '../../../../../../utils/dato';
 
-export const useOppdaterEndringstidspunktSkjema = (
-    endringstidspunkt: IsoDatoString | undefined
-) => {
+export const useOppdaterEndringstidspunktSkjema = (endringstidspunkt: IsoDatoString | undefined) => {
     const oppdaterEndringstidspunktSkjema = useSkjema<
         {
             endringstidspunkt: Date | undefined;

@@ -1,13 +1,4 @@
-import {
-    addMonths,
-    addYears,
-    isAfter,
-    isBefore,
-    isSameDay,
-    isValid,
-    setMonth,
-    subDays,
-} from 'date-fns';
+import { addMonths, addYears, isAfter, isBefore, isSameDay, isValid, setMonth, subDays } from 'date-fns';
 
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
@@ -38,10 +29,7 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
     return ok(felt);
 };
 
-export const erBegrunnelseGyldig = (
-    felt: FeltState<string>,
-    avhengigheter?: Avhengigheter
-): FeltState<string> => {
+export const erBegrunnelseGyldig = (felt: FeltState<string>, avhengigheter?: Avhengigheter): FeltState<string> => {
     if (!avhengigheter) {
         return feil(felt, 'Begrunnelse er ugyldig');
     }
@@ -90,11 +78,7 @@ const datoErPersonsXÅrsdag = (person: IGrunnlagPerson, dato: Date, antallÅr: n
     return isSameDay(dato, personsXÅrsdag);
 };
 
-const datoErXAntallMånederEtterFødselsdato = (
-    person: IGrunnlagPerson,
-    dato: Date,
-    antallMåneder: number
-) => {
+const datoErXAntallMånederEtterFødselsdato = (person: IGrunnlagPerson, dato: Date, antallMåneder: number) => {
     const personsXÅrsdag = addMonths(isoStringTilDate(person.fødselsdato), antallMåneder);
     return isSameDay(dato, personsXÅrsdag);
 };
@@ -125,10 +109,7 @@ export const validerAdopsjonPåBarnetsAlder = ({
     førsteFomPåVilkåret,
 }: ValiderAdopsjonPåBarnetsAlderProps): FeltState<IIsoDatoPeriode> | undefined => {
     if (tomEtterAugustÅretBarnetFyller6(person, tom)) {
-        return feil(
-            felt,
-            'Du kan ikke sette en t.o.m dato som er etter august året barnet fyller 6 år'
-        );
+        return feil(felt, 'Du kan ikke sette en t.o.m dato som er etter august året barnet fyller 6 år');
     }
 
     if (adopsjonsdato && isBefore(fom, adopsjonsdato)) {
@@ -138,19 +119,13 @@ export const validerAdopsjonPåBarnetsAlder = ({
     switch (lovverk) {
         case Lovverk.LOVENDRING_FEBRUAR_2025:
             if (datoDifferanseMerEnnXAntallMåneder(fom, tom, 8)) {
-                return feil(
-                    felt,
-                    'Differansen mellom f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 8 måneder'
-                );
+                return feil(felt, 'Differansen mellom f.o.m.-dato og t.o.m.-datoen kan ikke være mer enn 8 måneder');
             }
             break;
         case Lovverk.FØR_LOVENDRING_2025:
             if (isBefore(tom, datoForLovendringAugust24)) {
                 if (datoDifferanseMerEnnXAntallMåneder(fom, tom, 12)) {
-                    return feil(
-                        felt,
-                        'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år'
-                    );
+                    return feil(felt, 'Differansen mellom f.o.m datoen og t.o.m datoen kan ikke være mer enn 1 år');
                 }
             } else {
                 if (datoDifferanseMerEnnXAntallMåneder(førsteFomPåVilkåret, tom, 6)) {
@@ -208,10 +183,7 @@ export const validerPeriodePåBarnetsAlder = ({
                     return feil(felt, 'F.o.m datoen må være lik barnets 1 års dag');
                 }
 
-                if (
-                    !datoErXAntallMånederEtterFødselsdato(person, tom, 20) &&
-                    !datoErPersonsDødsfallsdag(person, tom)
-                ) {
+                if (!datoErXAntallMånederEtterFødselsdato(person, tom, 20) && !datoErPersonsDødsfallsdag(person, tom)) {
                     return feil(felt, 'T.o.m datoen må være lik datoen barnet fyller 20 måneder');
                 }
                 break;
@@ -233,20 +205,14 @@ export const validerPeriodePåBarnetsAlder = ({
                         !datoErXAntallMånederEtterFødselsdato(person, fom, 13) &&
                         !isSameDay(fom, datoForLovendringAugust24)
                     ) {
-                        return feil(
-                            felt,
-                            'F.o.m datoen må være lik datoen barnet fyller 13 måneder'
-                        );
+                        return feil(felt, 'F.o.m datoen må være lik datoen barnet fyller 13 måneder');
                     }
                     if (
                         tom &&
                         !datoErXAntallMånederEtterFødselsdato(person, tom, 19) &&
                         !datoErPersonsDødsfallsdag(person, tom)
                     ) {
-                        return feil(
-                            felt,
-                            'T.o.m datoen må være lik datoen barnet fyller 19 måneder'
-                        );
+                        return feil(felt, 'T.o.m datoen må være lik datoen barnet fyller 19 måneder');
                     }
                 }
         }

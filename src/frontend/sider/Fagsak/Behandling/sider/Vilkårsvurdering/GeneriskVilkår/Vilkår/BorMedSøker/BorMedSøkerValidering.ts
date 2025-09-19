@@ -13,8 +13,9 @@ export const erUtdypendeVilkårsvurderingerGyldig = (
         return feil(felt, 'Utdypende vilkårsvurdering er ugyldig');
     }
 
-    const muligeUtdypendeVilkårsvurderinger =
-        bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(avhengigheter.vurderesEtter);
+    const muligeUtdypendeVilkårsvurderinger = bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(
+        avhengigheter.vurderesEtter
+    );
 
     if (muligeUtdypendeVilkårsvurderinger.length === 0) {
         return ok(felt);

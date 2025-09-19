@@ -34,16 +34,8 @@ const Header = ({ skalViseTotrinnskontroll }: IProps) => {
                     icon={<IkonTotrinnskontroll />}
                 />
             )}
-            <Tabs.Tab
-                value={TabValg.Historikk}
-                label={TabValg.Historikk}
-                icon={<IkonHistorikk />}
-            />
-            <Tabs.Tab
-                value={TabValg.Dokumenter}
-                label={TabValg.Dokumenter}
-                icon={<IkonDokumenter />}
-            />
+            <Tabs.Tab value={TabValg.Historikk} label={TabValg.Historikk} icon={<IkonHistorikk />} />
+            <Tabs.Tab value={TabValg.Dokumenter} label={TabValg.Dokumenter} icon={<IkonDokumenter />} />
             {!vurderErLesevisning() && (
                 <Tabs.Tab value={TabValg.Meldinger} label={'Send brev'} icon={<IkonMeldinger />} />
             )}

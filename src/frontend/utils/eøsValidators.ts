@@ -29,16 +29,10 @@ const erEøsPeriodeGyldig = (
         return feil(felt, 'Fra og med måned må være utfylt');
     }
     if (fom && valgtDatoErSenereEnnNesteMåned(fom) && !behandlingsÅrsakErOvergangsordning) {
-        return feil(
-            felt,
-            'Du kan ikke sette fra og med (f.o.m.) til måneden etter neste måned eller senere'
-        );
+        return feil(felt, 'Du kan ikke sette fra og med (f.o.m.) til måneden etter neste måned eller senere');
     }
     if (initielFom && !isAfter(isoStringTilDate(fom), isoStringTilDate(initielFom))) {
-        return feil(
-            felt,
-            `Du kan ikke legge inn fra og med måned som er før: ${avhengigheter?.initielFom}`
-        );
+        return feil(felt, `Du kan ikke legge inn fra og med måned som er før: ${avhengigheter?.initielFom}`);
     }
     if (tom && valgtDatoErNesteMånedEllerSenere(tom) && !behandlingsÅrsakErOvergangsordning) {
         return feil(felt, 'Du kan ikke sette til og med (t.o.m.) til neste måned eller senere');
@@ -57,11 +51,4 @@ const tellAntallDesimaler = (verdi: string): number => verdi.split(/[,.]/)[1]?.l
 
 const isNumeric = (val: string): boolean => !isNaN(Number(val));
 
-export {
-    erEøsPeriodeGyldig,
-    erBarnGyldig,
-    erValutakodeGyldig,
-    isEmpty,
-    isNumeric,
-    tellAntallDesimaler,
-};
+export { erEøsPeriodeGyldig, erBarnGyldig, erValutakodeGyldig, isEmpty, isNumeric, tellAntallDesimaler };

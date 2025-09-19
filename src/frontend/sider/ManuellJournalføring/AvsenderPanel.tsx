@@ -24,8 +24,7 @@ const StyledExpansionCard = styled(ExpansionCard)`
 `;
 
 export const AvsenderPanel: React.FC = () => {
-    const { skjema, erLesevisning, settAvsenderLikBruker, tilbakestillAvsender } =
-        useManuellJournalføringContext();
+    const { skjema, erLesevisning, settAvsenderLikBruker, tilbakestillAvsender } = useManuellJournalføringContext();
     const [åpen, settÅpen] = useState(false);
     const [brukerErAvsender, settBrukerErAvsender] = useState(false);
 

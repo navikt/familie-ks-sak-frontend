@@ -5,12 +5,7 @@ import type { IBehandling } from '../typer/behandling';
 import type { IMinimalFagsak } from '../typer/fagsak';
 import { FagsakDeltagerRolle, type IFagsakDeltager } from '../typer/fagsakdeltager';
 import { type ILogg, LoggType } from '../typer/logg';
-import {
-    ForelderBarnRelasjonRolle,
-    type IGrunnlagPerson,
-    type IPersonInfo,
-    PersonType,
-} from '../typer/person';
+import { ForelderBarnRelasjonRolle, type IGrunnlagPerson, type IPersonInfo, PersonType } from '../typer/person';
 
 export const obfuskerLogg = (logg: Ressurs<ILogg[]>) => {
     if (logg.status === RessursStatus.SUKSESS) {
@@ -23,11 +18,9 @@ export const obfuskerLogg = (logg: Ressurs<ILogg[]>) => {
 export const obfuskerBehandling = (behandlingRessurs: Ressurs<IBehandling>) => {
     if (behandlingRessurs.status === RessursStatus.SUKSESS) {
         let indeks = 1;
-        behandlingRessurs.data.søknadsgrunnlag?.barnaMedOpplysninger
-            ?.sort(sammenlignFødselsdato)
-            .forEach(barn => {
-                barn.navn = '[' + indeks++ + '] Barn Barnesen';
-            });
+        behandlingRessurs.data.søknadsgrunnlag?.barnaMedOpplysninger?.sort(sammenlignFødselsdato).forEach(barn => {
+            barn.navn = '[' + indeks++ + '] Barn Barnesen';
+        });
         indeks = 1;
         behandlingRessurs.data.personer?.sort(sammenlignFødselsdato).forEach(person => {
             if (person.type === PersonType.BARN) {
@@ -106,10 +99,7 @@ export const obfuskerFagsakDeltager = (fagsakDeltager: Ressurs<IFagsakDeltager[]
     }
 };
 
-export const sammenlignFødselsdato = <T extends { fødselsdato?: string; person?: IGrunnlagPerson }>(
-    a: T,
-    b: T
-) => {
+export const sammenlignFødselsdato = <T extends { fødselsdato?: string; person?: IGrunnlagPerson }>(a: T, b: T) => {
     if (a.person && b.person) return b.person.fødselsdato.localeCompare(a.person.fødselsdato);
     if (a.fødselsdato && b.fødselsdato) return b.fødselsdato.localeCompare(a.fødselsdato);
     return 0;

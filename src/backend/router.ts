@@ -11,10 +11,7 @@ import { prometheusTellere } from './metrikker';
 
 const redirectHvisInternUrlIPreprod = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        if (
-            process.env.ENV === 'preprod' &&
-            req.headers.host === 'kontantstotte.intern.dev.nav.no'
-        ) {
+        if (process.env.ENV === 'preprod' && req.headers.host === 'kontantstotte.intern.dev.nav.no') {
             res.redirect(`https://kontantstotte.ansatt.dev.nav.no${req.url}`);
         } else {
             next();

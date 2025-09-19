@@ -5,11 +5,7 @@ import { addDays } from 'date-fns';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 
 import { hentAlleÅrsaker } from './settPåVentUtils';
-import type {
-    IBehandling,
-    IBehandlingPåVent,
-    SettPåVentÅrsak,
-} from '../../../../../typer/behandling';
+import type { IBehandling, IBehandlingPåVent, SettPåVentÅrsak } from '../../../../../typer/behandling';
 import { hentDagensDato, validerGyldigDato } from '../../../../../utils/dato';
 
 const STANDARD_ANTALL_DAGER_FRIST = 3 * 7;

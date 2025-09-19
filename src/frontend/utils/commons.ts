@@ -9,14 +9,11 @@ export const randomUUID = (): string => {
     return uuidv4();
 };
 
-export function erDefinert<T extends NonNullable<unknown>>(
-    value: T | undefined | null
-): value is T {
+export function erDefinert<T extends NonNullable<unknown>>(value: T | undefined | null): value is T {
     return value !== undefined && value !== null;
 }
 
-export const fjernWhitespace = (streng: string) =>
-    streng.replace(/\s/g, '').replace(/[ \u0085]/g, '');
+export const fjernWhitespace = (streng: string) => streng.replace(/\s/g, '').replace(/[ \u0085]/g, '');
 
 export const tilFeilside = (): void => {
     window.location.assign(window.location.protocol + '//' + window.location.host + '/error');

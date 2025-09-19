@@ -66,8 +66,8 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                 {skjema.felter.vurderesEtter.verdi === Regelverk.EØS_FORORDNINGEN && (
                     <>
                         <StyledAlert variant="info" inline>
-                            Du må vurdere dette vilkåret når den andre forelderen er omfattet av
-                            norsk lovgivning og søker har selvstendig rett
+                            Du må vurdere dette vilkåret når den andre forelderen er omfattet av norsk lovgivning og
+                            søker har selvstendig rett
                         </StyledAlert>
                         <br />
                     </>
@@ -76,9 +76,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                 <RadioGroup
                     legend={
                         <Label>
-                            {vilkårFraConfig.spørsmål
-                                ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
-                                : ''}
+                            {vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
                         </Label>
                     }
                     value={skjema.felter.resultat.verdi}

@@ -52,12 +52,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
         next();
     });
 
-    app.use(
-        '/familie-ks-sak/api',
-        ensureAuthenticated(azureAuthClient, true),
-        attachToken(azureAuthClient),
-        doProxy()
-    );
+    app.use('/familie-ks-sak/api', ensureAuthenticated(azureAuthClient, true), attachToken(azureAuthClient), doProxy());
 
     app.use('/redirect', doRedirectProxy());
 

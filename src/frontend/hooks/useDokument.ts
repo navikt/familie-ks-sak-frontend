@@ -53,15 +53,11 @@ const useDokument = () => {
                 ) {
                     settHentetDokument(response);
                 } else {
-                    settHentetDokument(
-                        byggFeiletRessurs('Ukjent feil, kunne ikke generere forhåndsvisning.')
-                    );
+                    settHentetDokument(byggFeiletRessurs('Ukjent feil, kunne ikke generere forhåndsvisning.'));
                 }
             })
             .catch((_error: AxiosError) => {
-                settHentetDokument(
-                    byggFeiletRessurs('Ukjent feil, kunne ikke generere forhåndsvisning.')
-                );
+                settHentetDokument(byggFeiletRessurs('Ukjent feil, kunne ikke generere forhåndsvisning.'));
             });
     };
 

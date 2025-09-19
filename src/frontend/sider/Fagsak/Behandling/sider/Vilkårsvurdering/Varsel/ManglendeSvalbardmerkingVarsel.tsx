@@ -26,9 +26,8 @@ export const ManglendeSvalbardmerkingVarsel: React.FC<ManglendeSvalbardmerkingVa
                 </Heading>
                 <VStack gap={'space-8'}>
                     <BodyLong>
-                        Personer i behandlingen har oppholdsadresse på Svalbard i en periode hvor
-                        «Bosatt på Svalbard» ikke er lagt til i "Bosatt i riket"-vilkåret. Dette
-                        gjelder:
+                        Personer i behandlingen har oppholdsadresse på Svalbard i en periode hvor «Bosatt på Svalbard»
+                        ikke er lagt til i "Bosatt i riket"-vilkåret. Dette gjelder:
                     </BodyLong>
                     <Table size={'small'} style={{ width: '20rem' }}>
                         <Table.Header>
@@ -42,13 +41,8 @@ export const ManglendeSvalbardmerkingVarsel: React.FC<ManglendeSvalbardmerkingVa
                                 return manglendeSvalbardmerking.manglendeSvalbardmerkingPerioder.map(
                                     (manglendeSvalbardmerkingPeriode, i) => {
                                         return (
-                                            <Table.Row
-                                                key={i + manglendeSvalbardmerking.ident}
-                                                shadeOnHover={false}
-                                            >
-                                                <Table.DataCell>
-                                                    {manglendeSvalbardmerking.ident}
-                                                </Table.DataCell>
+                                            <Table.Row key={i + manglendeSvalbardmerking.ident} shadeOnHover={false}>
+                                                <Table.DataCell>{manglendeSvalbardmerking.ident}</Table.DataCell>
                                                 <Table.DataCell>
                                                     {isoDatoPeriodeTilFormatertString({
                                                         fom: manglendeSvalbardmerkingPeriode.fom,

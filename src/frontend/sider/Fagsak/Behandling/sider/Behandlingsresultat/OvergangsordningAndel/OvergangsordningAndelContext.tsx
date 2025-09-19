@@ -29,26 +29,19 @@ interface OvergangsordningAndelContextValue {
     tilbakestillOgLukkOvergangsordningAndel: () => void;
 }
 
-const OvergangsordningAndelContext = createContext<OvergangsordningAndelContextValue | undefined>(
-    undefined
-);
+const OvergangsordningAndelContext = createContext<OvergangsordningAndelContextValue | undefined>(undefined);
 
 export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children }: Props) => {
     const { request } = useHttp();
     const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
 
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
 
-    const { skjema, kanSendeSkjema, onSubmit, nullstillSkjema } = useSkjema<
-        IOvergangsordningAndelSkjema,
-        IBehandling
-    >({
+    const { skjema, kanSendeSkjema, onSubmit, nullstillSkjema } = useSkjema<IOvergangsordningAndelSkjema, IBehandling>({
         felter: {
             personIdent: useFelt<string | undefined>({
                 verdi: overgangsordningAndel.personIdent,
-                valideringsfunksjon: felt =>
-                    felt.verdi ? ok(felt) : feil(felt, 'Du må velge en person'),
+                valideringsfunksjon: felt => (felt.verdi ? ok(felt) : feil(felt, 'Du må velge en person')),
             }),
             antallTimer: useFelt<string | undefined>({
                 verdi: overgangsordningAndel.antallTimer?.toString(),
@@ -121,8 +114,7 @@ export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children 
         }).then((behandling: Ressurs<IBehandling>) => settÅpenBehandling(behandling));
     };
 
-    const erOvergangsordningAndelForandret = () =>
-        !deepEqual(overgangsordningAndel, hentSkjemaData());
+    const erOvergangsordningAndelForandret = () => !deepEqual(overgangsordningAndel, hentSkjemaData());
 
     return (
         <OvergangsordningAndelContext.Provider
@@ -146,9 +138,7 @@ export const useOvergangsordningAndelContext = () => {
     const context = React.useContext(OvergangsordningAndelContext);
 
     if (context === undefined) {
-        throw new Error(
-            'useOvergangsordningAndelContext må brukes innenfor en OvergangsordningAndelProvider'
-        );
+        throw new Error('useOvergangsordningAndelContext må brukes innenfor en OvergangsordningAndelProvider');
     }
 
     return context;

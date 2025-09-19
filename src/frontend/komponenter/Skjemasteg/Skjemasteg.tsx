@@ -6,13 +6,7 @@ import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
 import { Alert, Button, ErrorMessage, Heading } from '@navikt/ds-react';
-import {
-    ASpacing4,
-    ASpacing6,
-    ASpacing8,
-    ASpacing10,
-    ASpacing24,
-} from '@navikt/ds-tokens/dist/tokens';
+import { ASpacing4, ASpacing6, ASpacing8, ASpacing10, ASpacing24 } from '@navikt/ds-tokens/dist/tokens';
 import { hentDataFraRessurs } from '@navikt/familie-typer';
 
 import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
@@ -89,9 +83,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
     useEffect(() => {
         const element = document.getElementById('skjemasteg');
 
-        const index: number = Object.values(sider).findIndex((side: ISide) =>
-            location.pathname.includes(side.href)
-        );
+        const index: number = Object.values(sider).findIndex((side: ISide) => location.pathname.includes(side.href));
         const forrigeSide: ISide | undefined = Object.values(sider)[index - 1];
 
         if (element && forrigeSide && forrigeÅpneSide?.href.includes(forrigeSide.href)) {
@@ -107,8 +99,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
         <>
             {erBehandlingSattPåVent && (
                 <StyledAlert variant="info">
-                    Behandlingen er satt på vent. Årsak:{' '}
-                    {settPåVentÅrsaker[erBehandlingSattPåVent.årsak]}. Frist:{' '}
+                    Behandlingen er satt på vent. Årsak: {settPåVentÅrsaker[erBehandlingSattPåVent.årsak]}. Frist:{' '}
                     {isoStringTilFormatertString({
                         isoString: erBehandlingSattPåVent.frist,
                         tilFormat: Datoformat.DATO,
@@ -119,8 +110,8 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
 
             {erBehandleneEnhetMidlertidig && !erBehandlingAvsluttet && (
                 <StyledAlert variant="warning">
-                    Denne behandlingen er låst fordi vi ikke har klart å sette behandlende enhet. Du
-                    må endre dette i menyen før du kan fortsette.
+                    Denne behandlingen er låst fordi vi ikke har klart å sette behandlende enhet. Du må endre dette i
+                    menyen før du kan fortsette.
                 </StyledAlert>
             )}
 
@@ -132,20 +123,18 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
                 {feilmelding !== '' && <StyledErrorMessage>{feilmelding}</StyledErrorMessage>}
 
                 <Navigering>
-                    {nesteOnClick &&
-                        skalViseNesteKnapp &&
-                        (!vurderErLesevisning() || kanGåVidereILesevisning) && (
-                            <Button
-                                loading={senderInn}
-                                disabled={senderInn}
-                                onClick={() => {
-                                    if (!senderInn) {
-                                        nesteOnClick();
-                                    }
-                                }}
-                                children={nesteKnappTittel ?? 'Neste steg'}
-                            />
-                        )}
+                    {nesteOnClick && skalViseNesteKnapp && (!vurderErLesevisning() || kanGåVidereILesevisning) && (
+                        <Button
+                            loading={senderInn}
+                            disabled={senderInn}
+                            onClick={() => {
+                                if (!senderInn) {
+                                    nesteOnClick();
+                                }
+                            }}
+                            children={nesteKnappTittel ?? 'Neste steg'}
+                        />
+                    )}
                     {forrigeOnClick && skalViseForrigeKnapp && (
                         <Button
                             onClick={() => {

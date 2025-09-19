@@ -2,13 +2,7 @@ import React from 'react';
 
 import classNames from 'classnames';
 
-import {
-    GuttIkon,
-    JenteIkon,
-    KvinneIkon,
-    MannIkon,
-    NøytralPersonIkon,
-} from '@navikt/familie-ikoner';
+import { GuttIkon, JenteIkon, KvinneIkon, MannIkon, NøytralPersonIkon } from '@navikt/familie-ikoner';
 import { kjønnType } from '@navikt/familie-typer';
 
 import styles from './PersonIkon.module.css';

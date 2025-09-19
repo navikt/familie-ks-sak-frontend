@@ -127,20 +127,13 @@ export const initialOppgaveFelter = (innloggetSaksbehandler?: ISaksbehandler): I
             label: 'Enhet',
             filter: {
                 type: 'select',
-                selectedValue: hentPar(
-                    searchParams['tildeltEnhetsnr']?.toString(),
-                    enhetFilter,
-                    EnhetFilter.VELG
-                ),
+                selectedValue: hentPar(searchParams['tildeltEnhetsnr']?.toString(), enhetFilter, EnhetFilter.VELG),
                 initialValue: EnhetFilter.VELG,
                 nøkkelPar: enhetFilter,
             },
             order: FeltSortOrder.NONE,
             erSynlig: (par: IPar, innloggetSaksbehandler?: ISaksbehandler) => {
-                return harTilgangTilEnhet(
-                    par.id.replace('E', ''),
-                    innloggetSaksbehandler?.groups ?? []
-                );
+                return harTilgangTilEnhet(par.id.replace('E', ''), innloggetSaksbehandler?.groups ?? []);
             },
         },
         tilordnetRessurs: {

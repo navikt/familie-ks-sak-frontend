@@ -14,18 +14,15 @@ const ikkeUtfyltFelt = 'Feltet er påkrevd, men mangler input';
 
 const erSøkersAktivitetGyldig = (
     felt: FeltState<KompetanseAktivitet | undefined>
-): FeltState<KompetanseAktivitet | undefined> =>
-    !isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt);
+): FeltState<KompetanseAktivitet | undefined> => (!isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt));
 const erAnnenForeldersAktivitetGyldig = (
     felt: FeltState<KompetanseAktivitet | undefined>
-): FeltState<KompetanseAktivitet | undefined> =>
-    !isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt);
+): FeltState<KompetanseAktivitet | undefined> => (!isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt));
 const erAnnenForeldersAktivitetslandGyldig = (
     felt: FeltState<string | undefined>,
     avhengigheter?: Avhengigheter
 ): FeltState<string | undefined> => {
-    const annenForeldersAktivitet =
-        avhengigheter?.annenForeldersAktivitet as Felt<KompetanseAktivitet>;
+    const annenForeldersAktivitet = avhengigheter?.annenForeldersAktivitet as Felt<KompetanseAktivitet>;
     if (
         annenForeldersAktivitet?.valideringsstatus === Valideringsstatus.IKKE_VALIDERT ||
         annenForeldersAktivitet?.verdi === AnnenForelderAktivitet.IKKE_AKTUELT ||
@@ -48,13 +45,11 @@ const erSøkersAktivitetslandGyldig = (
     }
     return !isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt);
 };
-const erBarnetsBostedslandGyldig = (
-    felt: FeltState<string | undefined>
-): FeltState<string | undefined> => (!isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt));
+const erBarnetsBostedslandGyldig = (felt: FeltState<string | undefined>): FeltState<string | undefined> =>
+    !isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt);
 const erKompetanseResultatGyldig = (
     felt: FeltState<KompetanseResultat | undefined>
-): FeltState<KompetanseResultat | undefined> =>
-    !isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt);
+): FeltState<KompetanseResultat | undefined> => (!isEmpty(felt.verdi) ? ok(felt) : feil(felt, ikkeUtfyltFelt));
 
 export {
     erSøkersAktivitetGyldig,

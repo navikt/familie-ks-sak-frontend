@@ -29,14 +29,9 @@ const PersonUtbetaling: React.FC<IPersonUtbetalingProps> = ({ utbetalingsperiode
             <Ytelser>
                 {utbetalingsperiodeDetaljer.map(utbetalingsperiodeDetalj => {
                     return (
-                        <Ytelselinje
-                            key={utbetalingsperiodeDetalj.person.personIdent}
-                            justify="space-between"
-                        >
+                        <Ytelselinje key={utbetalingsperiodeDetalj.person.personIdent} justify="space-between">
                             <BodyShort>Kontantstøtte</BodyShort>
-                            <BodyShort>
-                                {formaterBeløp(utbetalingsperiodeDetalj.utbetaltPerMnd)}
-                            </BodyShort>
+                            <BodyShort>{formaterBeløp(utbetalingsperiodeDetalj.utbetaltPerMnd)}</BodyShort>
                         </Ytelselinje>
                     );
                 })}

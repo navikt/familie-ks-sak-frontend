@@ -55,9 +55,7 @@ const AvslagSkjema: React.FC<IProps> = ({
                 <Checkbox
                     value={'Vurderingen er et avslag'}
                     checked={erEksplisittAvslagPåSøknad.verdi}
-                    onChange={event =>
-                        erEksplisittAvslagPåSøknad.validerOgSettFelt(event.target.checked)
-                    }
+                    onChange={event => erEksplisittAvslagPåSøknad.validerOgSettFelt(event.target.checked)}
                 >
                     {'Vurderingen er et avslag'}
                 </Checkbox>

@@ -45,8 +45,7 @@ export const JournalpostSkjema: React.FC = () => {
                 <Heading spacing size="medium" level="2">
                     {
                         oppgaveTypeFilter[
-                            dataForManuellJournalføring.data.oppgave
-                                .oppgavetype as keyof typeof OppgavetypeFilter
+                            dataForManuellJournalføring.data.oppgave.oppgavetype as keyof typeof OppgavetypeFilter
                         ].navn
                     }
                 </Heading>
@@ -74,10 +73,7 @@ export const JournalpostSkjema: React.FC = () => {
                 {skjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
                     <ErrorSummary heading={'For å gå videre må du rette opp følgende'}>
                         {hentFeilTilOppsummering().map(item => (
-                            <ErrorSummary.Item
-                                href={`#${item.skjemaelementId}`}
-                                key={item.skjemaelementId}
-                            >
+                            <ErrorSummary.Item href={`#${item.skjemaelementId}`} key={item.skjemaelementId}>
                                 {item.feilmelding}
                             </ErrorSummary.Item>
                         ))}

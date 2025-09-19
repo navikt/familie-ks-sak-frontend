@@ -57,6 +57,6 @@ export const optionTilsats = (satsLabel: string): boolean => {
     return satsLabel === IEndretUtbetalingAndelFullSats.FULL_SATS.valueOf();
 };
 
-export const satser: IEndretUtbetalingAndelFullSats[] = Object.keys(
-    IEndretUtbetalingAndelFullSats
-).map(k => k as IEndretUtbetalingAndelFullSats);
+export const satser: IEndretUtbetalingAndelFullSats[] = Object.keys(IEndretUtbetalingAndelFullSats).map(
+    k => k as IEndretUtbetalingAndelFullSats
+);

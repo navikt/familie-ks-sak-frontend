@@ -4,22 +4,9 @@ import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
 import { FunnelIcon, FileResetIcon } from '@navikt/aksel-icons';
-import {
-    Button,
-    Checkbox,
-    Fieldset,
-    HelpText,
-    HStack,
-    TextField,
-    UNSAFE_Combobox,
-    VStack,
-} from '@navikt/ds-react';
+import { Button, Checkbox, Fieldset, HelpText, HStack, TextField, UNSAFE_Combobox, VStack } from '@navikt/ds-react';
 
-import type {
-    BarnehagebarnFilter,
-    BarnehagebarnRequestParams,
-    Barnehagekommune,
-} from '../../typer/barnehagebarn';
+import type { BarnehagebarnFilter, BarnehagebarnRequestParams, Barnehagekommune } from '../../typer/barnehagebarn';
 
 const StyledFieldset = styled(Fieldset)`
     margin: 0 1rem 2rem 0;
@@ -40,8 +27,7 @@ const BarnehagelisterFilterskjema: React.FunctionComponent<BarnehagebarnFilterSk
 ) => {
     const { oppdaterFiltrering, barnehageKommuner } = props;
 
-    const { register, handleSubmit, reset, control, watch, setValue } =
-        useForm<BarnehagebarnFilter>();
+    const { register, handleSubmit, reset, control, watch, setValue } = useForm<BarnehagebarnFilter>();
 
     const onSubmit: SubmitHandler<BarnehagebarnFilter> = barnehagebarnFilter => {
         oppdaterFiltrering(barnehagebarnFilter);
@@ -111,12 +97,7 @@ const BarnehagelisterFilterskjema: React.FunctionComponent<BarnehagebarnFilterSk
                         </HStack>
                     </HStack>
                     <HStack gap="4">
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            size="medium"
-                            icon={<FunnelIcon aria-hidden />}
-                        >
+                        <Button type="submit" variant="primary" size="medium" icon={<FunnelIcon aria-hidden />}>
                             Filtrer
                         </Button>
                         <Button
