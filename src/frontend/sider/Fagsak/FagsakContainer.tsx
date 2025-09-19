@@ -74,18 +74,11 @@ const FagsakContainerInnhold = ({ minimalFagsak }: { minimalFagsak: IMinimalFags
 
                                 <Route
                                     path="/:behandlingId/*"
-                                    element={
-                                        <BehandlingContainer
-                                            bruker={bruker.data}
-                                            minimalFagsak={minimalFagsak}
-                                        />
-                                    }
+                                    element={<BehandlingContainer bruker={bruker.data} minimalFagsak={minimalFagsak} />}
                                 />
                                 <Route
                                     path="/"
-                                    element={
-                                        <Navigate to={`/fagsak/${minimalFagsak.id}/saksoversikt`} />
-                                    }
+                                    element={<Navigate to={`/fagsak/${minimalFagsak.id}/saksoversikt`} />}
                                 />
                             </Routes>
                         </Hovedinnhold>
@@ -125,11 +118,7 @@ const FagsakContainer: React.FunctionComponent = () => {
             return <FagsakContainerInnhold minimalFagsak={minimalFagsakRessurs.data} />;
         case RessursStatus.IKKE_TILGANG:
             return (
-                <Alert
-                    children={minimalFagsakRessurs.frontendFeilmelding}
-                    variant="error"
-                    contentMaxWidth={false}
-                />
+                <Alert children={minimalFagsakRessurs.frontendFeilmelding} variant="error" contentMaxWidth={false} />
             );
         case RessursStatus.FEILET:
         case RessursStatus.FUNKSJONELL_FEIL:

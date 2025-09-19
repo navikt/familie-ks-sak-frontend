@@ -21,8 +21,7 @@ const RegistrerSøknad: React.FC = () => {
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
-    const { hentFeilTilOppsummering, nesteAction, skjema, søknadErLastetFraBackend } =
-        useSøknadContext();
+    const { hentFeilTilOppsummering, nesteAction, skjema, søknadErLastetFraBackend } = useSøknadContext();
 
     return (
         <StyledSkjemasteg
@@ -65,10 +64,7 @@ const RegistrerSøknad: React.FC = () => {
             {skjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
                 <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
                     {hentFeilTilOppsummering().map(item => (
-                        <ErrorSummary.Item
-                            key={item.skjemaelementId}
-                            href={`#${item.skjemaelementId}`}
-                        >
+                        <ErrorSummary.Item key={item.skjemaelementId} href={`#${item.skjemaelementId}`}>
                             {item.feilmelding}
                         </ErrorSummary.Item>
                     ))}

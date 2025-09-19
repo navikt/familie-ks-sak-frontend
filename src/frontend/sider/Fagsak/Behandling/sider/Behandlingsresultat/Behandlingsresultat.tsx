@@ -25,11 +25,7 @@ import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingPar
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';
-import type {
-    IRestKompetanse,
-    IRestUtenlandskPeriodeBeløp,
-    IRestValutakurs,
-} from '../../../../../typer/eøsPerioder';
+import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from '../../../../../typer/eøsPerioder';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
@@ -67,9 +63,7 @@ interface IBehandlingsresultatProps {
     åpenBehandling: IBehandling;
 }
 
-const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = ({
-    åpenBehandling,
-}) => {
+const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = ({ åpenBehandling }) => {
     const navigate = useNavigate();
     const { fagsakId } = useSakOgBehandlingParams();
 
@@ -83,11 +77,8 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
         personerMedUgyldigEtterbetalingsperiode,
     } = useBehandlingContextsresultat(åpenBehandling);
 
-    const {
-        aktivEtikett,
-        filterOgSorterAndelPersonerIGrunnlag,
-        filterOgSorterGrunnlagPersonerMedAndeler,
-    } = useTidslinjeContext();
+    const { aktivEtikett, filterOgSorterAndelPersonerIGrunnlag, filterOgSorterGrunnlagPersonerMedAndeler } =
+        useTidslinjeContext();
 
     const { vurderErLesevisning, behandlingresultatNesteOnClick, behandlingsstegSubmitressurs } =
         useBehandlingContext();
@@ -134,9 +125,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
             tittel="Behandlingsresultat"
             className="behandlingsresultat"
-            forrigeOnClick={() =>
-                navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`)
-            }
+            forrigeOnClick={() => navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`)}
             nesteOnClick={() => {
                 if (erLesevisning) {
                     navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/simulering`);
@@ -151,9 +140,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
             steg={BehandlingSteg.BEHANDLINGSRESULTAT}
             skalViseNesteKnapp={skalViseNesteKnapp}
         >
-            <FulltidBarnehageplassAugust2024Alert
-                utbetalingsperioder={åpenBehandling.utbetalingsperioder}
-            />
+            <FulltidBarnehageplassAugust2024Alert utbetalingsperioder={åpenBehandling.utbetalingsperioder} />
             {personerMedUgyldigEtterbetalingsperiode.length > 0 && (
                 <StyledAlert variant={'warning'}>
                     Du har perioder som kan føre til etterbetaling utover 3 måneder for person{' '}
@@ -164,18 +151,10 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                 </StyledAlert>
             )}
 
-            <TilkjentYtelseTidslinje
-                grunnlagPersoner={grunnlagPersoner}
-                tidslinjePersoner={tidslinjePersoner}
-            />
+            <TilkjentYtelseTidslinje grunnlagPersoner={grunnlagPersoner} tidslinjePersoner={tidslinjePersoner} />
             {!erLesevisning && (
                 <EndretUtbetalingAndel>
-                    <Button
-                        variant="tertiary"
-                        size="small"
-                        onClick={opprettEndretUtbetaling}
-                        icon={<StyledEditIkon />}
-                    >
+                    <Button variant="tertiary" size="small" onClick={opprettEndretUtbetaling} icon={<StyledEditIkon />}>
                         <Label>Endre utbetalingsperiode</Label>
                     </Button>
                     {visFeilmeldinger && opprettEndretUtbetalingFeilmelding !== '' && (
@@ -199,19 +178,18 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                 åpenBehandling.overgangsordningAndeler.length > 0) && (
                 <>
                     <OvergangsordningAndelTabell åpenBehandling={åpenBehandling} />
-                    {åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 &&
-                        !erLesevisning && (
-                            <OvergangsordningAndel>
-                                <Button
-                                    variant="primary"
-                                    size="medium"
-                                    onClick={opprettOvergangsordningAndel}
-                                    icon={<StyledPlusIkon />}
-                                >
-                                    <Label>Legg til periode</Label>
-                                </Button>
-                            </OvergangsordningAndel>
-                        )}
+                    {åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 && !erLesevisning && (
+                        <OvergangsordningAndel>
+                            <Button
+                                variant="primary"
+                                size="medium"
+                                onClick={opprettOvergangsordningAndel}
+                                icon={<StyledPlusIkon />}
+                            >
+                                <Label>Legg til periode</Label>
+                            </Button>
+                        </OvergangsordningAndel>
+                    )}
                 </>
             )}
             {harKompetanser && (
@@ -247,8 +225,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                         ...hentUtbetaltAnnetLandBeløpMedFeil().map(
                             (utenlandskPeriodeBeløp: IRestUtenlandskPeriodeBeløp) => ({
                                 feilmelding: `Utenlandsk beløp barn: ${utenlandskPeriodeBeløp.barnIdenter}, f.o.m.: ${utenlandskPeriodeBeløp.fom} er ikke fullstendig.`,
-                                skjemaelementId:
-                                    utenlandskPeriodeBeløpFeilmeldingId(utenlandskPeriodeBeløp),
+                                skjemaelementId: utenlandskPeriodeBeløpFeilmeldingId(utenlandskPeriodeBeløp),
                             })
                         ),
                         ...hentValutakurserMedFeil().map((valutakurs: IRestValutakurs) => ({
@@ -256,10 +233,7 @@ const Behandlingsresultat: React.FunctionComponent<IBehandlingsresultatProps> = 
                             skjemaelementId: valutakursFeilmeldingId(valutakurs),
                         })),
                     ].map(item => (
-                        <ErrorSummary.Item
-                            key={item.skjemaelementId}
-                            href={`#${item.skjemaelementId}`}
-                        >
+                        <ErrorSummary.Item key={item.skjemaelementId} href={`#${item.skjemaelementId}`}>
                             {item.feilmelding}
                         </ErrorSummary.Item>
                     ))}

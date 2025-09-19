@@ -10,9 +10,7 @@ import { useModal } from '../../../../../hooks/useModal';
 import { HenleggÅrsak } from '../../../../../typer/behandling';
 
 export function HenleggBehandlingVeivalgModal() {
-    const { args, erModalÅpen, tittel, lukkModal, bredde } = useModal(
-        ModalType.HENLEGG_BEHANDLING_VEIVALG
-    );
+    const { args, erModalÅpen, tittel, lukkModal, bredde } = useModal(ModalType.HENLEGG_BEHANDLING_VEIVALG);
 
     return (
         <Modal
@@ -26,9 +24,7 @@ export function HenleggBehandlingVeivalgModal() {
                 <>
                     {args === undefined && (
                         <Modal.Body>
-                            <Alert variant={'error'}>
-                                En feil oppstod ved innlasting av modalen.
-                            </Alert>
+                            <Alert variant={'error'}>En feil oppstod ved innlasting av modalen.</Alert>
                         </Modal.Body>
                     )}
                     {args !== undefined && <Innhold årsak={args.årsak} />}

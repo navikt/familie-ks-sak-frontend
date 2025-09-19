@@ -61,9 +61,8 @@ const VelgPeriode: React.FC<IProps> = ({
                 <StyledLegend>
                     <StyledLabel>Velg periode</StyledLabel>
                     <HelpText title="Hvordan fastsette periode">
-                        Oppgi startdato/periode hvor vilkåret er oppfylt/ikke oppfylt.
-                        Virkningstidspunktet vil bli beregnet ut fra dette. Dersom vurderingen
-                        gjelder et avslag er ikke periode påkrevd.
+                        Oppgi startdato/periode hvor vilkåret er oppfylt/ikke oppfylt. Virkningstidspunktet vil bli
+                        beregnet ut fra dette. Dersom vurderingen gjelder et avslag er ikke periode påkrevd.
                     </HelpText>
                 </StyledLegend>
             )}

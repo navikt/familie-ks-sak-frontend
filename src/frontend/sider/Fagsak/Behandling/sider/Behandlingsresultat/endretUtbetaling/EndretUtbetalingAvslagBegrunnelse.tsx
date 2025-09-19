@@ -31,23 +31,19 @@ export const EndretUtbetalingAvslagBegrunnelse: React.FC<IProps> = ({ skjema }) 
     const { endretUtbetalingsbegrunnelser } = useHentEndretUtbetalingBegrunnelser();
 
     const prevalgtBegrunnelse =
-        skjema.felter.vedtaksbegrunnelser.verdi &&
-        skjema.felter.vedtaksbegrunnelser.verdi.length > 0
+        skjema.felter.vedtaksbegrunnelser.verdi && skjema.felter.vedtaksbegrunnelser.verdi.length > 0
             ? skjema.felter.vedtaksbegrunnelser.verdi[0]
             : undefined;
 
     const gyldigeBegrunnelseTyper = [BegrunnelseType.AVSLAG];
     const lastedeTekster =
-        endretUtbetalingsbegrunnelser.status === RessursStatus.SUKSESS &&
-        endretUtbetalingsbegrunnelser.data;
+        endretUtbetalingsbegrunnelser.status === RessursStatus.SUKSESS && endretUtbetalingsbegrunnelser.data;
 
     const grupperteBegrunnelser: GroupBase<OptionType>[] = gyldigeBegrunnelseTyper.map(type => {
         const begrunnelser = lastedeTekster
             ? lastedeTekster[type]
                   .filter(begrunnelse =>
-                      begrunnelse.endringsårsaker.includes(
-                          IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT
-                      )
+                      begrunnelse.endringsårsaker.includes(IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT)
                   )
                   .map(begrunnelse => ({
                       label: begrunnelse.navn,
@@ -61,11 +57,7 @@ export const EndretUtbetalingAvslagBegrunnelse: React.FC<IProps> = ({ skjema }) 
     });
 
     if (endretUtbetalingsbegrunnelser.status === RessursStatus.FEILET) {
-        return (
-            <Alert variant="error">
-                Klarte ikke å hente inn begrunnelser for endret utbetaling.
-            </Alert>
-        );
+        return <Alert variant="error">Klarte ikke å hente inn begrunnelser for endret utbetaling.</Alert>;
     }
 
     const finnBegrunnelseType = (begrunnelse: Begrunnelse): BegrunnelseType | undefined => {
@@ -125,15 +117,11 @@ export const EndretUtbetalingAvslagBegrunnelse: React.FC<IProps> = ({ skjema }) 
                     </GroupLabel>
                 );
             }}
-            formatOptionLabel={(
-                option: OptionType,
-                formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>
-            ) => {
+            formatOptionLabel={(option: OptionType, formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>) => {
                 if (formatOptionLabelMeta.context == 'value') {
                     // Formatering når alternativet er valgt
                     const begrunnelseType = finnBegrunnelseType(option.value as Begrunnelse);
-                    const begrunnelseTypeLabel =
-                        begrunnelseTyper[begrunnelseType as BegrunnelseType];
+                    const begrunnelseTypeLabel = begrunnelseTyper[begrunnelseType as BegrunnelseType];
                     return (
                         <BodyShort>
                             <strong>{begrunnelseTypeLabel}</strong>: {option.label}

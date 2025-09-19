@@ -11,11 +11,7 @@ import { type IRestEndretUtbetalingAndel } from '../../../../../../typer/utbetal
 import { IEndretUtbetalingAndelÅrsak } from '../../../../../../typer/utbetalingAndel';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IsoMånedString } from '../../../../../../utils/dato';
-import {
-    dateTilIsoDatoStringEllerUndefined,
-    erIsoStringGyldig,
-    validerGyldigDato,
-} from '../../../../../../utils/dato';
+import { dateTilIsoDatoStringEllerUndefined, erIsoStringGyldig, validerGyldigDato } from '../../../../../../utils/dato';
 import { erAvslagBegrunnelseGyldig } from '../../../../../../utils/validators';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
@@ -54,15 +50,11 @@ export const useEndretUtbetalingAndel = (
         verdi: lagretEndretUtbetalingAndel.erEksplisittAvslagPåSøknad,
     });
 
-    const { skjema, kanSendeSkjema, onSubmit } = useSkjema<
-        IEndretUtbetalingAndelSkjema,
-        IBehandling
-    >({
+    const { skjema, kanSendeSkjema, onSubmit } = useSkjema<IEndretUtbetalingAndelSkjema, IBehandling>({
         felter: {
             person: useFelt<string | undefined>({
                 verdi: undefined,
-                valideringsfunksjon: felt =>
-                    felt.verdi ? ok(felt) : feil(felt, 'Du må velge en person'),
+                valideringsfunksjon: felt => (felt.verdi ? ok(felt) : feil(felt, 'Du må velge en person')),
             }),
             fom: useFelt<IsoMånedString | undefined>({
                 verdi: undefined,
@@ -82,8 +74,7 @@ export const useEndretUtbetalingAndel = (
             }),
             begrunnelse: useFelt<string | undefined>({
                 verdi: undefined,
-                valideringsfunksjon: felt =>
-                    felt.verdi ? ok(felt) : feil(felt, 'Du må oppgi en begrunnelse.'),
+                valideringsfunksjon: felt => (felt.verdi ? ok(felt) : feil(felt, 'Du må oppgi en begrunnelse.')),
             }),
             erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad,
             vedtaksbegrunnelser: useFelt<Begrunnelse[] | undefined>({
@@ -103,17 +94,14 @@ export const useEndretUtbetalingAndel = (
         skjema.felter.fom.validerOgSettFelt(lagretEndretUtbetalingAndel.fom);
         skjema.felter.tom.validerOgSettFelt(lagretEndretUtbetalingAndel.tom);
         skjema.felter.periodeSkalUtbetalesTilSøker.validerOgSettFelt(
-            lagretEndretUtbetalingAndel.prosent !== undefined &&
-                lagretEndretUtbetalingAndel.prosent > 0
+            lagretEndretUtbetalingAndel.prosent !== undefined && lagretEndretUtbetalingAndel.prosent > 0
         );
         skjema.felter.årsak.validerOgSettFelt(lagretEndretUtbetalingAndel.årsak);
         skjema.felter.begrunnelse.validerOgSettFelt(lagretEndretUtbetalingAndel.begrunnelse);
         skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
             lagretEndretUtbetalingAndel.erEksplisittAvslagPåSøknad
         );
-        skjema.felter.vedtaksbegrunnelser.validerOgSettFelt(
-            lagretEndretUtbetalingAndel.vedtaksbegrunnelser
-        );
+        skjema.felter.vedtaksbegrunnelser.validerOgSettFelt(lagretEndretUtbetalingAndel.vedtaksbegrunnelser);
         skjema.felter.søknadstidspunkt.validerOgSettFelt(
             lagretEndretUtbetalingAndel.søknadstidspunkt
                 ? new Date(lagretEndretUtbetalingAndel.søknadstidspunkt)
@@ -121,8 +109,7 @@ export const useEndretUtbetalingAndel = (
         );
     };
 
-    const [forrigeEndretUtbetalingAndel, settForrigeEndretUtbetalingAndel] =
-        useState<IRestEndretUtbetalingAndel>();
+    const [forrigeEndretUtbetalingAndel, settForrigeEndretUtbetalingAndel] = useState<IRestEndretUtbetalingAndel>();
 
     if (lagretEndretUtbetalingAndel !== forrigeEndretUtbetalingAndel) {
         settForrigeEndretUtbetalingAndel(lagretEndretUtbetalingAndel);
@@ -164,9 +151,7 @@ export const useEndretUtbetalingAndel = (
             {
                 ...lagretEndretUtbetalingAndel,
                 prosent:
-                    typeof lagretEndretUtbetalingAndel.prosent === 'number'
-                        ? lagretEndretUtbetalingAndel.prosent
-                        : 0,
+                    typeof lagretEndretUtbetalingAndel.prosent === 'number' ? lagretEndretUtbetalingAndel.prosent : 0,
             },
             hentSkjemaData()
         );

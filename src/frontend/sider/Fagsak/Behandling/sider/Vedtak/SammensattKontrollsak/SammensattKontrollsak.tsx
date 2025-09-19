@@ -39,8 +39,7 @@ export function SammensattKontrollsak() {
             />
             {fritekstErEndret && (
                 <Alert variant="warning" size="small">
-                    Du har ikke lagret dine siste endringer, og vil miste disse om du forlater siden
-                    uten å lagre.
+                    Du har ikke lagret dine siste endringer, og vil miste disse om du forlater siden uten å lagre.
                 </Alert>
             )}
             {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}

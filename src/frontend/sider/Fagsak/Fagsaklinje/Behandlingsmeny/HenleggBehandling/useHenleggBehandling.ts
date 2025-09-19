@@ -62,9 +62,7 @@ const useHenleggBehandling = (lukkModal: () => void) => {
 
     const hentSkjemaData = (): IManueltBrevRequestPåBehandling => ({
         mottakerIdent:
-            minimalFagsakRessurs.status === RessursStatus.SUKSESS
-                ? minimalFagsakRessurs.data.søkerFødselsnummer
-                : '',
+            minimalFagsakRessurs.status === RessursStatus.SUKSESS ? minimalFagsakRessurs.data.søkerFødselsnummer : '',
         multiselectVerdier: [],
         brevmal: Brevmal.HENLEGGE_TRUKKET_SØKNAD,
         barnIBrev: [],

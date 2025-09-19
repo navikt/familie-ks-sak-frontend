@@ -65,8 +65,7 @@ const RefusjonEøsSkjema: React.FunctionComponent<IRefusjonEøsSkjemaProps> = ({
                 kunEøs
                 eksluderLand={['NO']}
                 feil={
-                    skjema.visFeilmeldinger &&
-                    skjema.felter.land.valideringsstatus === Valideringsstatus.FEIL
+                    skjema.visFeilmeldinger && skjema.felter.land.valideringsstatus === Valideringsstatus.FEIL
                         ? skjema.felter.land.feilmelding?.toString()
                         : ''
                 }
@@ -76,24 +75,14 @@ const RefusjonEøsSkjema: React.FunctionComponent<IRefusjonEøsSkjemaProps> = ({
                 readOnly={erLesevisning}
                 legend="Tekst i vedtaksbrev"
                 value={skjema.felter.refusjonAvklart.verdi}
-                onChange={(val: boolean | undefined) =>
-                    skjema.felter.refusjonAvklart.validerOgSettFelt(val)
-                }
+                onChange={(val: boolean | undefined) => skjema.felter.refusjonAvklart.validerOgSettFelt(val)}
                 error={skjema.visFeilmeldinger && skjema.felter.refusjonAvklart.feilmelding}
                 size="small"
             >
-                <Radio
-                    name={'refusjonAvklart'}
-                    value={true}
-                    id={`ja-refusjon-er-avklart-${inputUuid}`}
-                >
+                <Radio name={'refusjonAvklart'} value={true} id={`ja-refusjon-er-avklart-${inputUuid}`}>
                     {'Refusjon avklart'}
                 </Radio>
-                <Radio
-                    name={'refusjonAvklart'}
-                    value={false}
-                    id={`nei-refusjon-er-ikke-avklart-${inputUuid}`}
-                >
+                <Radio name={'refusjonAvklart'} value={false} id={`nei-refusjon-er-ikke-avklart-${inputUuid}`}>
                     {'Refusjon ikke avklart'}
                 </Radio>
             </RadioGroup>
@@ -127,9 +116,7 @@ const RefusjonEøsSkjema: React.FunctionComponent<IRefusjonEøsSkjemaProps> = ({
                 type="text"
                 inputMode="numeric"
                 pattern="[0-9]*"
-                onChange={changeEvent =>
-                    skjema.felter.refusjonsbeløp.validerOgSettFelt(changeEvent.target.value)
-                }
+                onChange={changeEvent => skjema.felter.refusjonsbeløp.validerOgSettFelt(changeEvent.target.value)}
                 readOnly={erLesevisning}
             />
         </>

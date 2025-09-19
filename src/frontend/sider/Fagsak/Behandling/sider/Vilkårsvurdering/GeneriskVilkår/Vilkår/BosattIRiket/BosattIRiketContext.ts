@@ -90,11 +90,10 @@ export const useBosattIRiket = (lagretVilkår: IVilkårResultat, person: IGrunnl
         }),
     };
 
-    const initielleMuligeUtdypendeVilkårsvurderinger =
-        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
-            vilkårSkjemaMedLagredeVerdier.vurderesEtter,
-            person
-        );
+    const initielleMuligeUtdypendeVilkårsvurderinger = bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
+        vilkårSkjemaMedLagredeVerdier.vurderesEtter,
+        person
+    );
 
     const [muligeUtdypendeVilkårsvurderinger, settMuligeUtdypendeVilkårsvurderinger] = useState<
         UtdypendeVilkårsvurdering[]
@@ -124,8 +123,7 @@ export const useBosattIRiket = (lagretVilkår: IVilkårResultat, person: IGrunnl
                 settMuligeUtdypendeVilkårsvurderinger(initielleMuligeUtdypendeVilkårsvurderinger);
             },
         },
-        finnesEndringerSomIkkeErLagret: () =>
-            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        finnesEndringerSomIkkeErLagret: () => finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
         muligeUtdypendeVilkårsvurderinger,
         settMuligeUtdypendeVilkårsvurderinger,
     };

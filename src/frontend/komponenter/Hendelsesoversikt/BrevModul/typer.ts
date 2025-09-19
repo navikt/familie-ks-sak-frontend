@@ -42,15 +42,12 @@ export const brevmaler: Record<Brevmal, string> = {
     HENLEGGE_TRUKKET_SØKNAD: 'Henlegg søknad',
     SVARTIDSBREV: 'Svartidsbrev',
     VARSEL_OM_REVURDERING_FRA_NASJONAL_TIL_EØS: 'Varsel om revurdering fra nasjonal til EØS',
-    VARSEL_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_SØKT:
-        'Varsel annen forelder med selvstendig rett søkt',
+    VARSEL_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_SØKT: 'Varsel annen forelder med selvstendig rett søkt',
     FORLENGET_SVARTIDSBREV: 'Forlenget svartidsbrev',
     UTBETALING_ETTER_KA_VEDTAK: 'Utbetaling etter KA-vedtak',
 };
 
-export const leggTilValuePåOption = (
-    option: Omit<ISelectOptionMedBrevtekst, 'value'>
-): ISelectOptionMedBrevtekst => ({
+export const leggTilValuePåOption = (option: Omit<ISelectOptionMedBrevtekst, 'value'>): ISelectOptionMedBrevtekst => ({
     ...option,
     value: option.label.toLocaleLowerCase().replace(' ', '_'),
 });

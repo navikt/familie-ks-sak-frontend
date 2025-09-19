@@ -23,10 +23,7 @@ const EndreEndringstidspunkt: React.FC<{
             </Dropdown.Menu.List.Item>
 
             {visModal && (
-                <OppdaterEndringstidspunktModal
-                    lukkModal={() => settVisModal(false)}
-                    åpenBehandling={åpenBehandling}
-                />
+                <OppdaterEndringstidspunktModal lukkModal={() => settVisModal(false)} åpenBehandling={åpenBehandling} />
             )}
         </>
     );

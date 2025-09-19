@@ -27,26 +27,17 @@ const BeskrivelseCelle = styled(BodyShort)`
     text-overflow: ellipsis;
 `;
 
-const AnnenVurderingTabellRad: React.FC<IProps> = ({
-    person,
-    annenVurderingConfig,
-    annenVurdering,
-}) => {
+const AnnenVurderingTabellRad: React.FC<IProps> = ({ person, annenVurderingConfig, annenVurdering }) => {
     const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const [ekspandertAnnenVurdering, settEkspandertAnnenVurdering] = useState(
         erLesevisning || false || annenVurdering.resultat === Resultat.IKKE_VURDERT
     );
-    const [redigerbartAnnenVurdering, settRedigerbartAnnenVurdering] =
-        useState<IAnnenVurdering>(annenVurdering);
+    const [redigerbartAnnenVurdering, settRedigerbartAnnenVurdering] = useState<IAnnenVurdering>(annenVurdering);
 
     const toggleForm = (visAlert: boolean) => {
-        if (
-            ekspandertAnnenVurdering &&
-            visAlert &&
-            !deepEqual(annenVurdering, redigerbartAnnenVurdering)
-        ) {
+        if (ekspandertAnnenVurdering && visAlert && !deepEqual(annenVurdering, redigerbartAnnenVurdering)) {
             alert('Vurderingen har endringer som ikke er lagret!');
         } else {
             settEkspandertAnnenVurdering(!ekspandertAnnenVurdering);

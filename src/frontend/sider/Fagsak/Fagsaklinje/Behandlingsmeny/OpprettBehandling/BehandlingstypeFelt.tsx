@@ -14,9 +14,7 @@ import { hentAktivBehandlingPåMinimalFagsak } from '../../../../../utils/fagsak
 import type { VisningBehandling } from '../../../Saksoversikt/visningBehandling';
 
 interface IProps {
-    behandlingstype: Felt<
-        Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''
-    >;
+    behandlingstype: Felt<Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''>;
     visFeilmeldinger: boolean;
     minimalFagsak?: IMinimalFagsak;
     erLesevisning?: boolean;
@@ -41,8 +39,7 @@ const BehandlingstypeFelt: React.FC<IProps> = ({
         : undefined;
 
     const kanOppretteTekniskEndring =
-        kanOppretteRevurdering(minimalFagsak, aktivBehandling) &&
-        toggles[ToggleNavn.kanBehandleTekniskEndring];
+        kanOppretteRevurdering(minimalFagsak, aktivBehandling) && toggles[ToggleNavn.kanBehandleTekniskEndring];
 
     const kanOppretteTilbakekreving = !manuellJournalfør;
 
@@ -87,9 +84,7 @@ const BehandlingstypeFelt: React.FC<IProps> = ({
 
             {kanOppretteTilbakekreving && (
                 <option
-                    aria-selected={
-                        behandlingstype.verdi === Tilbakekrevingsbehandlingstype.TILBAKEKREVING
-                    }
+                    aria-selected={behandlingstype.verdi === Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
                     value={Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
                 >
                     Tilbakekreving

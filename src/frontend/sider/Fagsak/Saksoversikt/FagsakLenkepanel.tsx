@@ -4,12 +4,7 @@ import { Link as ReactRouterLink } from 'react-router';
 import styled from 'styled-components';
 
 import { BodyShort, Box, HStack, Link, LinkCard, VStack } from '@navikt/ds-react';
-import {
-    AFontSizeHeadingMedium,
-    AFontSizeXlarge,
-    ASpacing16,
-    ASpacing4,
-} from '@navikt/ds-tokens/dist/tokens';
+import { AFontSizeHeadingMedium, AFontSizeXlarge, ASpacing16, ASpacing4 } from '@navikt/ds-tokens/dist/tokens';
 
 import type { VisningBehandling } from './visningBehandling';
 import { BehandlingStatus } from '../../../typer/behandling';
@@ -68,24 +63,18 @@ const FagsakPanel = styled(Box)`
 `;
 
 const genererLinkTekst = (behandling: VisningBehandling) => {
-    return behandling.status === BehandlingStatus.AVSLUTTET
-        ? 'Gå til gjeldende vedtak'
-        : 'Gå til åpen behandling';
+    return behandling.status === BehandlingStatus.AVSLUTTET ? 'Gå til gjeldende vedtak' : 'Gå til åpen behandling';
 };
 
 const FagsakLenkepanel: React.FC<IFagsakLinkPanel> = ({ minimalFagsak }) => {
-    const aktivBehandling: VisningBehandling | undefined =
-        hentAktivBehandlingPåMinimalFagsak(minimalFagsak);
+    const aktivBehandling: VisningBehandling | undefined = hentAktivBehandlingPåMinimalFagsak(minimalFagsak);
 
     return aktivBehandling ? (
         <Box width={SaksoversiktPanelBredde} marginBlock={'8 0'}>
             <LinkCard>
                 <LinkCard.Title>
                     <LinkCard.Anchor asChild={true}>
-                        <Link
-                            as={ReactRouterLink}
-                            to={`/fagsak/${minimalFagsak.id}/${aktivBehandling.behandlingId}`}
-                        >
+                        <Link as={ReactRouterLink} to={`/fagsak/${minimalFagsak.id}/${aktivBehandling.behandlingId}`}>
                             {genererLinkTekst(aktivBehandling)}
                         </Link>
                     </LinkCard.Anchor>

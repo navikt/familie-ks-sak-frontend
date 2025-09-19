@@ -7,10 +7,7 @@ import styled from 'styled-components';
 import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
 
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
-import {
-    hentVedtaksperiodeTittel,
-    Vedtaksperiodetype,
-} from '../../../../../../typer/vedtaksperiode';
+import { hentVedtaksperiodeTittel, Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 import {
     hentDagensDato,
     isoStringTilDateMedFallback,
@@ -48,10 +45,7 @@ const erSammeFom = (dato1?: IsoDatoString, dato2?: IsoDatoString): boolean =>
     isSameDay(parseFraOgMedDato(dato1), parseFraOgMedDato(dato2));
 
 const slutterSenereEnnInneværendeMåned = (tom?: string) =>
-    isAfter(
-        isoStringTilDateMedFallback({ isoString: tom, fallbackDate: tidenesEnde }),
-        endOfMonth(hentDagensDato())
-    );
+    isAfter(isoStringTilDateMedFallback({ isoString: tom, fallbackDate: tidenesEnde }), endOfMonth(hentDagensDato()));
 
 const finnPresentertTomDato = (
     vedtaksperiodeInneholderOvergangsordningBegrunnelse: boolean,
@@ -113,8 +107,7 @@ const EkspanderbarVedtaksperiode: React.FC<EkspanderbarVedtaksperiodeProps> = ({
                                 {formaterBeløp(
                                     summer(
                                         vedtaksperiodeMedBegrunnelser.utbetalingsperiodeDetaljer.map(
-                                            utbetalingsperiodeDetalj =>
-                                                utbetalingsperiodeDetalj.utbetaltPerMnd
+                                            utbetalingsperiodeDetalj => utbetalingsperiodeDetalj.utbetaltPerMnd
                                         )
                                     )
                                 )}

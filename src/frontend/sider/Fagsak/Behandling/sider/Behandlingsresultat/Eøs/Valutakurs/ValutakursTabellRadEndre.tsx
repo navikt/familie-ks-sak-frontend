@@ -102,11 +102,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
     };
 
     return (
-        <Fieldset
-            error={skjema.visFeilmeldinger && visSubmitFeilmelding()}
-            legend={'Endre valutakurs'}
-            hideLegend
-        >
+        <Fieldset error={skjema.visFeilmeldinger && visSubmitFeilmelding()} legend={'Endre valutakurs'} hideLegend>
             <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
                 <FamilieReactSelect
                     {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}
@@ -115,9 +111,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                     isMulti
                     options={tilgjengeligeBarn}
                     value={skjema.felter.barnIdenter.verdi}
-                    onChange={options =>
-                        skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])
-                    }
+                    onChange={options => skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])}
                 />
                 <StyledEøsPeriodeSkjema
                     periode={skjema.felter.periode}
@@ -164,18 +158,13 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
                             label={'Valutakurs'}
                             readOnly={lesevisning || !erManuellInputAvKurs}
                             value={skjema.felter.kurs?.verdi}
-                            onChange={event =>
-                                skjema.felter.kurs?.validerOgSettFelt(event.target.value)
-                            }
+                            onChange={event => skjema.felter.kurs?.validerOgSettFelt(event.target.value)}
                         />
                     </ValutakursRad>
                     {erManuellInputAvKurs && (
                         <StyledISKAlert variant="warning" size="small" inline>
-                            <Heading size="small">
-                                Manuell innhenting av valutakurs for Islandske kroner (ISK)
-                            </Heading>
-                            Systemet har ikke valutakurser for valutakursdatoer før 1. februar 2018.
-                            Disse må hentes fra{' '}
+                            <Heading size="small">Manuell innhenting av valutakurs for Islandske kroner (ISK)</Heading>
+                            Systemet har ikke valutakurser for valutakursdatoer før 1. februar 2018. Disse må hentes fra{' '}
                             <Link
                                 href="https://navno.sharepoint.com/:x:/r/sites/fag-og-ytelser-familie-barnetrygd/Delte%20dokumenter/E%C3%98S/Valutakalkulator%202022.xlsm?d=w200955f53e1d4323ae72f9d1b15f617c&csf=1&web=1&e=w3OE5N"
                                 target="_blank"

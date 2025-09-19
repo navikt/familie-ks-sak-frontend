@@ -6,11 +6,7 @@ import { HStack, Select } from '@navikt/ds-react';
 import { Pagination } from '@navikt/ds-react';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import type {
-    Barnehagebarn,
-    BarnehagebarnRequestParams,
-    BarnehagebarnResponse,
-} from '../../typer/barnehagebarn';
+import type { Barnehagebarn, BarnehagebarnRequestParams, BarnehagebarnResponse } from '../../typer/barnehagebarn';
 
 const StyledHStack = styled(HStack)`
     margin-bottom: 1rem;
@@ -29,9 +25,7 @@ interface BarnehagebarnTabellNavigatorProps<T> {
     updateSortByAscDesc: (fieldName: string) => void;
 }
 
-const BarnehagebarnTabellNavigator = <T = Barnehagebarn,>(
-    props: BarnehagebarnTabellNavigatorProps<T>
-) => {
+const BarnehagebarnTabellNavigator = <T = Barnehagebarn,>(props: BarnehagebarnTabellNavigatorProps<T>) => {
     const { barnehagebarnResponse, updateOffset, updateLimit, barnehagebarnRequestParams } = props;
 
     return (

@@ -34,8 +34,7 @@ interface IBehandlingshistorikkProps {
 }
 
 const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) => {
-    const { klagebehandlinger, klageStatus, tilbakekrevingsbehandlinger, tilbakekrevingStatus } =
-        useFagsakContext();
+    const { klagebehandlinger, klageStatus, tilbakekrevingsbehandlinger, tilbakekrevingStatus } = useFagsakContext();
 
     const behandlinger = hentBehandlingerTilSaksoversiktenOld(
         minimalFagsak,
@@ -93,9 +92,7 @@ const Behandlinger: React.FC<IBehandlingshistorikkProps> = ({ minimalFagsak }) =
                         </Table.Header>
                         <Table.Body>
                             {behandlinger
-                                .filter(behandling =>
-                                    skalRadVises(behandling, visHenlagteBehandlinger)
-                                )
+                                .filter(behandling => skalRadVises(behandling, visHenlagteBehandlinger))
                                 .sort((a, b) =>
                                     differenceInMilliseconds(
                                         isoStringTilDate(hentTidspunktForSortering(b)),

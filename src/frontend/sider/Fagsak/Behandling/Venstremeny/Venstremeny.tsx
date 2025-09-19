@@ -81,13 +81,9 @@ const UndersideSirkel = styled.span`
 
 const Venstremeny: React.FunctionComponent = () => {
     const { fagsakId } = useSakOgBehandlingParams();
-    const { åpenBehandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } =
-        useBehandlingContext();
+    const { åpenBehandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } = useBehandlingContext();
 
-    const stansNavigeringDersomSidenIkkeErAktiv = (
-        event: React.MouseEvent,
-        sidenErAktiv: boolean
-    ) => {
+    const stansNavigeringDersomSidenIkkeErAktiv = (event: React.MouseEvent, sidenErAktiv: boolean) => {
         if (!sidenErAktiv) {
             event.preventDefault();
         }
@@ -113,18 +109,12 @@ const Venstremeny: React.FunctionComponent = () => {
                                         id={sideId}
                                         to={tilPath}
                                         $erLenkenAktiv={sidenErAktiv}
-                                        onClick={event =>
-                                            stansNavigeringDersomSidenIkkeErAktiv(
-                                                event,
-                                                sidenErAktiv
-                                            )
-                                        }
+                                        onClick={event => stansNavigeringDersomSidenIkkeErAktiv(event, sidenErAktiv)}
                                     >
                                         {`${side.steg ? `${index + 1}. ` : ''}${side.navn}`}
                                     </MenyLenke>
                                     {undersider.map((underside: IUnderside) => {
-                                        const antallAksjonspunkter =
-                                            underside.antallAksjonspunkter();
+                                        const antallAksjonspunkter = underside.antallAksjonspunkter();
                                         return (
                                             <MenyLenke
                                                 key={`${sideId}_${underside.hash}`}
@@ -132,23 +122,16 @@ const Venstremeny: React.FunctionComponent = () => {
                                                 to={`${tilPath}#${underside.hash}`}
                                                 $erLenkenAktiv={sidenErAktiv}
                                                 onClick={event =>
-                                                    stansNavigeringDersomSidenIkkeErAktiv(
-                                                        event,
-                                                        sidenErAktiv
-                                                    )
+                                                    stansNavigeringDersomSidenIkkeErAktiv(event, sidenErAktiv)
                                                 }
                                             >
                                                 <HStack align="center" gap="1">
                                                     {antallAksjonspunkter > 0 ? (
-                                                        <UndersideSirkel>
-                                                            {antallAksjonspunkter}
-                                                        </UndersideSirkel>
+                                                        <UndersideSirkel>{antallAksjonspunkter}</UndersideSirkel>
                                                     ) : (
                                                         <Box padding="3" />
                                                     )}
-                                                    <BodyShort size="small">
-                                                        {underside.navn}
-                                                    </BodyShort>
+                                                    <BodyShort size="small">{underside.navn}</BodyShort>
                                                 </HStack>
                                             </MenyLenke>
                                         );

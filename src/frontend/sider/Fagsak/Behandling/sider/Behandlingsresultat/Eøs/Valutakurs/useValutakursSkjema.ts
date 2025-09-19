@@ -10,11 +10,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
-import type {
-    EøsPeriodeStatus,
-    IRestValutakurs,
-    IValutakurs,
-} from '../../../../../../../typer/eøsPerioder';
+import type { EøsPeriodeStatus, IRestValutakurs, IValutakurs } from '../../../../../../../typer/eøsPerioder';
 import {
     dateTilIsoDatoString,
     dateTilIsoDatoStringEllerUndefined,
@@ -72,8 +68,7 @@ const useValutakursSkjema = ({ barnIValutakurs, valutakurs }: IProps) => {
     const [erValutakursEkspandert, settErValutakursEkspandert] = React.useState<boolean>(false);
     const [sletterValutakurs, settSletterValutakurs] = React.useState<boolean>(false);
     const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
     const behandlingsÅrsakErOvergangsordning =
         åpenBehandling.status === RessursStatus.SUKSESS
             ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
@@ -189,9 +184,7 @@ const useValutakursSkjema = ({ barnIValutakurs, valutakurs }: IProps) => {
                         tom: skjema.felter.periode.verdi.tom,
                         barnIdenter: skjema.felter.barnIdenter.verdi.map(barn => barn.value),
                         valutakode: skjema.felter.valutakode?.verdi,
-                        valutakursdato: dateTilIsoDatoStringEllerUndefined(
-                            skjema.felter.valutakursdato?.verdi
-                        ),
+                        valutakursdato: dateTilIsoDatoStringEllerUndefined(skjema.felter.valutakursdato?.verdi),
                         kurs: konverterSkjemaverdiTilDesimal(skjema.felter.kurs?.verdi),
                     },
                     url: `/familie-ks-sak/api/differanseberegning/valutakurs/${behandlingId}`,
@@ -232,8 +225,7 @@ const useValutakursSkjema = ({ barnIValutakurs, valutakurs }: IProps) => {
         dateTilIsoDatoStringEllerUndefined(valutakursdato?.verdi) === valutakurs.valutakursdato;
 
     const erValutakurserLike = () =>
-        (!kurs.verdi && !valutakurs.kurs) ||
-        kurs.verdi === konverterDesimalverdiTilSkjemaVisning(valutakurs.kurs);
+        (!kurs.verdi && !valutakurs.kurs) || kurs.verdi === konverterDesimalverdiTilSkjemaVisning(valutakurs.kurs);
 
     const erValutakursSkjemaEndret = () => {
         const barnFjernetISkjema = valutakurs.barnIdenter.filter(

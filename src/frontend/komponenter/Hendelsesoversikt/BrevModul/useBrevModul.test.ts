@@ -22,11 +22,7 @@ describe('useBrevModul', () => {
             type: Behandlingstype.FØRSTEGANGSBEHANDLING,
         });
         test('Skal returnere liste med gyldige brev for når behandlingsårsaken er SØKNAD og behandlingstypen er FØRSTEGANGSBEHANDLING', () => {
-            expect(
-                hentMuligeBrevmalerImplementering(
-                    lagBehandlignRessursSuksess(behandlingSøknad)
-                ).sort()
-            ).toEqual(
+            expect(hentMuligeBrevmalerImplementering(lagBehandlignRessursSuksess(behandlingSøknad)).sort()).toEqual(
                 [
                     Brevmal.INNHENTE_OPPLYSNINGER,
                     Brevmal.INNHENTE_OPPLYSNINGER_OG_INFORMASJON_OM_AT_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_HAR_SØKT,
@@ -69,15 +65,11 @@ describe('useBrevModul', () => {
         const personerNB = [mockBarn, mockSøker({ målform: Målform.NB, personIdent })];
         const personerNN = [mockBarn, mockSøker({ målform: Målform.NN, personIdent })];
         test('Skal returnere NB når søkers målform er NB', () => {
-            expect(
-                mottakersMålformImplementering(personerNB, Valideringsstatus.OK, personIdent)
-            ).toEqual(Målform.NB);
+            expect(mottakersMålformImplementering(personerNB, Valideringsstatus.OK, personIdent)).toEqual(Målform.NB);
         });
 
         test('Skal returnere NN når søkers målform er NN', () => {
-            expect(
-                mottakersMålformImplementering(personerNN, Valideringsstatus.OK, personIdent)
-            ).toEqual(Målform.NN);
+            expect(mottakersMålformImplementering(personerNN, Valideringsstatus.OK, personIdent)).toEqual(Målform.NN);
         });
     });
 });
