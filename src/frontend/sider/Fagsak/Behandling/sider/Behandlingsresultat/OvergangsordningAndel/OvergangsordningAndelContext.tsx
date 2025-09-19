@@ -3,7 +3,7 @@ import React, { createContext, useState } from 'react';
 import deepEqual from 'deep-equal';
 
 import { useHttp } from '@navikt/familie-http';
-import { feil, ok, useFelt, useSkjema, type ISkjema } from '@navikt/familie-skjema';
+import { feil, type ISkjema, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type { IBehandling } from '../../../../../../typer/behandling';
@@ -35,10 +35,9 @@ const OvergangsordningAndelContext = createContext<OvergangsordningAndelContextV
 
 export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children }: Props) => {
     const { request } = useHttp();
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
 
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingId = behandling.behandlingId;
 
     const { skjema, kanSendeSkjema, onSubmit, nullstillSkjema } = useSkjema<
         IOvergangsordningAndelSkjema,

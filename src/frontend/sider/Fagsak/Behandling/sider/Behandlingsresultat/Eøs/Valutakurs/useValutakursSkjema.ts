@@ -5,8 +5,8 @@ import { isBefore } from 'date-fns';
 import { useHttp } from '@navikt/familie-http';
 import type { FeltState } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
-import { RessursStatus, byggTomRessurs } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
@@ -18,9 +18,9 @@ import type {
 import {
     dateTilIsoDatoString,
     dateTilIsoDatoStringEllerUndefined,
+    type IIsoMånedPeriode,
     nyIsoMånedPeriode,
     validerGyldigDato,
-    type IIsoMånedPeriode,
 } from '../../../../../../../utils/dato';
 import {
     erBarnGyldig,
@@ -71,13 +71,10 @@ interface IProps {
 const useValutakursSkjema = ({ barnIValutakurs, valutakurs }: IProps) => {
     const [erValutakursEkspandert, settErValutakursEkspandert] = React.useState<boolean>(false);
     const [sletterValutakurs, settSletterValutakurs] = React.useState<boolean>(false);
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
+    const behandlingId = behandling.behandlingId;
     const behandlingsÅrsakErOvergangsordning =
-        åpenBehandling.status === RessursStatus.SUKSESS
-            ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
-            : false;
+        behandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024;
     const initelFom = useFelt<string>({ verdi: valutakurs.fom });
     const { request } = useHttp();
 

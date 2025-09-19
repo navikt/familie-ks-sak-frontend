@@ -6,12 +6,12 @@ import styled from 'styled-components';
 import {
     BodyShort,
     Button,
+    Dropdown,
+    Fieldset,
+    Link,
     Modal,
     Select,
     Textarea,
-    Dropdown,
-    Link,
-    Fieldset,
 } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -59,11 +59,10 @@ const HenleggBehandling: React.FC<IProps> = ({ fagsakId, behandling }) => {
         hentetDokument,
         settVisDokumentModal,
     } = useDokument();
-    const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
+    const { vurderErLesevisning } = useBehandlingContext();
     const { toggles } = useAppContext();
 
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS && åpenBehandling.data.behandlingId;
+    const behandlingId = behandling.behandlingId;
 
     const {
         skjema,

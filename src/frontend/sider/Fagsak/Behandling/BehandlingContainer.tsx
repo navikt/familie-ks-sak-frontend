@@ -7,11 +7,12 @@ import { ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingRouter } from './BehandlingRouter';
-import { useBehandlingContext } from './context/BehandlingContext';
+import { BehandlingProvider } from './context/BehandlingContext';
 import Høyremeny from './Høyremeny/Høyremeny';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import type { IPersonInfo } from '../../../typer/person';
 import { Fagsaklinje } from '../Fagsaklinje/Fagsaklinje';
+import { useHentOgSettBehandlingContext } from './context/HentOgSettBehandlingContext';
 import Venstremeny from './Venstremeny/Venstremeny';
 import { HenleggBehandlingModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingModal';
 import { HenleggBehandlingVeivalgModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingVeivalgModal';
@@ -46,23 +47,26 @@ interface Props {
 }
 
 const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFagsak }) => {
-    const { åpenBehandling } = useBehandlingContext();
+    const { behandlingRessurs } = useHentOgSettBehandlingContext();
 
-    switch (åpenBehandling.status) {
+    switch (behandlingRessurs.status) {
         case RessursStatus.SUKSESS:
             return (
-                <>
+                <BehandlingProvider behandling={behandlingRessurs.data}>
                     <HenleggBehandlingModal />
                     <HenleggBehandlingVeivalgModal />
-                    <KorrigerEtterbetalingModal behandling={åpenBehandling.data} />
-                    <Fagsaklinje minimalFagsak={minimalFagsak} />
+                    <KorrigerEtterbetalingModal behandling={behandlingRessurs.data} />
+                    <Fagsaklinje
+                        minimalFagsak={minimalFagsak}
+                        behandling={behandlingRessurs.data}
+                    />
                     <FlexContainer>
                         <VenstremenyContainer>
                             <Venstremeny />
                         </VenstremenyContainer>
                         <HovedinnholdContainer>
                             <BehandlingRouter
-                                åpenBehandling={åpenBehandling.data}
+                                åpenBehandling={behandlingRessurs.data}
                                 bruker={bruker}
                             />
                         </HovedinnholdContainer>
@@ -70,7 +74,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFa
                             <Høyremeny bruker={bruker} />
                         </HøyremenyContainer>
                     </FlexContainer>
-                </>
+                </BehandlingProvider>
             );
         case RessursStatus.IKKE_TILGANG:
             return (
@@ -81,7 +85,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFa
             );
         case RessursStatus.FEILET:
         case RessursStatus.FUNKSJONELL_FEIL:
-            return <Alert children={åpenBehandling.frontendFeilmelding} variant="error" />;
+            return <Alert children={behandlingRessurs.frontendFeilmelding} variant="error" />;
         default:
             return <div />;
     }

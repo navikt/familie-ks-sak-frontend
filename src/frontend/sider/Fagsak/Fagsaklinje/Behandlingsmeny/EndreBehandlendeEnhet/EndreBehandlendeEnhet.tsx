@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { Button, Select, Textarea, Dropdown, Modal, Fieldset } from '@navikt/ds-react';
-import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
+import { Button, Dropdown, Fieldset, Modal, Select, Textarea } from '@navikt/ds-react';
+import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlendeEnhet from './useEndreBehandlendeEnhet';
 import { useAppContext } from '../../../../../context/AppContext';
@@ -12,7 +12,7 @@ import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 const EndreBehandlendeEnhet: React.FC = () => {
-    const { åpenBehandling, vurderErLesevisning, erBehandleneEnhetMidlertidig } =
+    const { behandling, vurderErLesevisning, erBehandleneEnhetMidlertidig } =
         useBehandlingContext();
     const [visModal, settVisModal] = useState(erBehandleneEnhetMidlertidig);
     const { innloggetSaksbehandler } = useAppContext();
@@ -34,13 +34,11 @@ const EndreBehandlendeEnhet: React.FC = () => {
     };
 
     const erLesevisningPåBehandling = () => {
-        const åpenBehandlingData = hentDataFraRessurs(åpenBehandling);
-        const steg = åpenBehandlingData?.steg;
+        const steg = behandling.steg;
         if (
             steg &&
             hentStegNummer(steg) === hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK) &&
-            innloggetSaksbehandler?.navIdent !==
-                åpenBehandlingData?.totrinnskontroll?.saksbehandlerId
+            innloggetSaksbehandler?.navIdent !== behandling.totrinnskontroll?.saksbehandlerId
         ) {
             return false;
         } else {
@@ -87,8 +85,7 @@ const EndreBehandlendeEnhet: React.FC = () => {
                                             key={enhet.enhetId}
                                             value={enhet.enhetId}
                                             disabled={
-                                                hentDataFraRessurs(åpenBehandling)
-                                                    ?.arbeidsfordelingPåBehandling
+                                                behandling.arbeidsfordelingPåBehandling
                                                     .behandlendeEnhetId === enhet.enhetId
                                             }
                                         >
@@ -117,11 +114,7 @@ const EndreBehandlendeEnhet: React.FC = () => {
                             variant="primary"
                             size="small"
                             disabled={submitRessurs.status === RessursStatus.HENTER}
-                            onClick={() => {
-                                if (åpenBehandling.status === RessursStatus.SUKSESS) {
-                                    endreEnhet(åpenBehandling.data.behandlingId);
-                                }
-                            }}
+                            onClick={() => endreEnhet(behandling.behandlingId)}
                             children={'Bekreft'}
                             loading={submitRessurs.status === RessursStatus.HENTER}
                         />

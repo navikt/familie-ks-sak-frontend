@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { useAppContext } from '../../../../../context/AppContext';
-import type { IBehandling } from '../../../../../typer/behandling';
 import {
     BehandlingStatus,
     Behandlingstype,
     BehandlingÅrsak,
+    type IBehandling,
 } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
 import { ToggleNavn } from '../../../../../typer/toggles';
@@ -22,10 +22,10 @@ import { LeggTilEllerFjernBrevmottakere } from '../LeggTilEllerFjernBrevmottaker
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;
-    åpenBehandling: IBehandling;
+    behandling: IBehandling;
 }
 
-const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
+const MenyvalgBehandling = ({ minimalFagsak, behandling }: IProps) => {
     const { toggles } = useAppContext();
     const { vurderErLesevisning } = useBehandlingContext();
 
@@ -37,26 +37,26 @@ const MenyvalgBehandling = ({ minimalFagsak, åpenBehandling }: IProps) => {
             <EndreBehandlingstema />
             {toggles[ToggleNavn.brukNyHenleggModal] && <HenleggBehandlingNy />}
             {!toggles[ToggleNavn.brukNyHenleggModal] && (
-                <HenleggBehandling fagsakId={minimalFagsak.id} behandling={åpenBehandling} />
+                <HenleggBehandling fagsakId={minimalFagsak.id} behandling={behandling} />
             )}
             {!erLesevisning &&
-                (åpenBehandling.årsak === BehandlingÅrsak.NYE_OPPLYSNINGER ||
-                    åpenBehandling.årsak === BehandlingÅrsak.KLAGE ||
-                    åpenBehandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
-                    åpenBehandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV) && (
-                    <LeggTiLBarnPåBehandling behandling={åpenBehandling} />
+                (behandling.årsak === BehandlingÅrsak.NYE_OPPLYSNINGER ||
+                    behandling.årsak === BehandlingÅrsak.KLAGE ||
+                    behandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
+                    behandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV) && (
+                    <LeggTiLBarnPåBehandling behandling={behandling} />
                 )}
-            {åpenBehandling.status === BehandlingStatus.UTREDES && (
-                <SettEllerOppdaterVenting behandling={åpenBehandling} />
+            {behandling.status === BehandlingStatus.UTREDES && (
+                <SettEllerOppdaterVenting behandling={behandling} />
             )}
-            {åpenBehandling.behandlingPåVent && <TaBehandlingAvVent behandling={åpenBehandling} />}
+            {behandling.behandlingPåVent && <TaBehandlingAvVent behandling={behandling} />}
 
-            {(!erLesevisning || åpenBehandling.brevmottakere.length > 0) &&
-                (åpenBehandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING ||
-                    åpenBehandling.type === Behandlingstype.REVURDERING) && (
+            {(!erLesevisning || behandling.brevmottakere.length > 0) &&
+                (behandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING ||
+                    behandling.type === Behandlingstype.REVURDERING) && (
                     <LeggTilEllerFjernBrevmottakere
                         erPåBehandling={true}
-                        behandling={åpenBehandling}
+                        behandling={behandling}
                         erLesevisning={erLesevisning}
                     />
                 )}

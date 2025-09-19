@@ -21,8 +21,8 @@ import {
     Tag,
     Textarea,
 } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { useSimuleringContext } from './SimuleringContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
@@ -33,7 +33,7 @@ import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisni
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../../../typer/simulering';
 import type { Målform } from '../../../../../typer/søknad';
 import { målform } from '../../../../../typer/søknad';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const ForhåndsvisVarselKnappContainer = styled.div`
     display: flex;
@@ -79,7 +79,7 @@ const TilbakekrevingSkjemaGammel: React.FC<{
     søkerMålform: Målform;
     harÅpenTilbakekrevingRessurs: Ressurs<boolean>;
 }> = ({ søkerMålform, harÅpenTilbakekrevingRessurs }) => {
-    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
+    const { vurderErLesevisning, behandling } = useBehandlingContext();
     const { tilbakekrevingSkjema, hentFeilTilOppsummering, maksLengdeTekst } =
         useSimuleringContext();
     const { fritekstVarsel, begrunnelse, tilbakekrevingsvalg } = tilbakekrevingSkjema.felter;
@@ -255,17 +255,16 @@ const TilbakekrevingSkjemaGammel: React.FC<{
                                 >
                                     Opprett tilbakekreving, send varsel
                                 </Radio>
-                                {åpenBehandling.status === RessursStatus.SUKSESS &&
-                                    tilbakekrevingsvalg.verdi ===
-                                        Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL && (
-                                        <StyledBrevmottakereAlert
-                                            bruker={bruker}
-                                            erPåBehandling={true}
-                                            erLesevisning={erLesevisning}
-                                            åpenBehandling={åpenBehandling.data}
-                                            brevmottakere={åpenBehandling.data.brevmottakere}
-                                        />
-                                    )}
+                                {tilbakekrevingsvalg.verdi ===
+                                    Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL && (
+                                    <StyledBrevmottakereAlert
+                                        bruker={bruker}
+                                        erPåBehandling={true}
+                                        erLesevisning={erLesevisning}
+                                        åpenBehandling={behandling}
+                                        brevmottakere={behandling.brevmottakere}
+                                    />
+                                )}
                                 {fritekstVarsel.erSynlig && (
                                     <FritekstVarsel>
                                         <Textarea
@@ -346,12 +345,10 @@ const TilbakekrevingSkjemaGammel: React.FC<{
                                                 variant={'tertiary'}
                                                 id={'forhandsvis-varsel'}
                                                 onClick={() =>
-                                                    åpenBehandling.status ===
-                                                        RessursStatus.SUKSESS &&
                                                     hentForhåndsvisning<IForhåndsvisTilbakekrevingsvarselbrevRequest>(
                                                         {
                                                             method: 'POST',
-                                                            url: `/familie-ks-sak/api/tilbakekreving/${åpenBehandling.data.behandlingId}/forhaandsvis-tilbakekreving-varselbrev`,
+                                                            url: `/familie-ks-sak/api/tilbakekreving/${behandling.behandlingId}/forhaandsvis-tilbakekreving-varselbrev`,
                                                             data: {
                                                                 fritekst: fritekstVarsel.verdi,
                                                             },

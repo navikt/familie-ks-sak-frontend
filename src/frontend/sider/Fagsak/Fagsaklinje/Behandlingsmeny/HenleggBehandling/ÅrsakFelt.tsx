@@ -3,7 +3,6 @@ import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import {
     HenleggBehandlingFormFields,
@@ -15,10 +14,7 @@ import { ToggleNavn } from '../../../../../typer/toggles';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 export function ÅrsakFelt() {
-    const { åpenBehandling } = useBehandlingContext();
-
-    const behandling =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data : undefined;
+    const { behandling } = useBehandlingContext();
 
     const { toggles } = useAppContext();
 
@@ -33,24 +29,21 @@ export function ÅrsakFelt() {
     const harTilgangTilTekniskVedlikeholdHenleggelse =
         toggles[ToggleNavn.tekniskVedlikeholdHenleggelse];
 
-    const valgmuligheter =
-        behandling !== undefined
-            ? Object.values(HenleggÅrsak)
-                  .filter(
-                      årsak =>
-                          (årsak !== HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&
-                              erPåHenleggbartSteg(behandling.steg)) ||
-                          (årsak === HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&
-                              harTilgangTilTekniskVedlikeholdHenleggelse)
-                  )
-                  .map(årsak => {
-                      return (
-                          <option key={årsak} aria-selected={field.value === årsak} value={årsak}>
-                              {henleggÅrsak[årsak]}
-                          </option>
-                      );
-                  })
-            : [];
+    const valgmuligheter = Object.values(HenleggÅrsak)
+        .filter(
+            årsak =>
+                (årsak !== HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&
+                    erPåHenleggbartSteg(behandling.steg)) ||
+                (årsak === HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&
+                    harTilgangTilTekniskVedlikeholdHenleggelse)
+        )
+        .map(årsak => {
+            return (
+                <option key={årsak} aria-selected={field.value === årsak} value={årsak}>
+                    {henleggÅrsak[årsak]}
+                </option>
+            );
+        });
 
     return (
         <Select
