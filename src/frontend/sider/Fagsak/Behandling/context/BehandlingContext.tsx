@@ -1,21 +1,26 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router';
 
-import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
-import { byggTomRessurs, hentDataFraRessurs } from '@navikt/familie-typer';
+import {
+    byggTomRessurs,
+    hentDataFraRessurs,
+    type Ressurs,
+    RessursStatus,
+} from '@navikt/familie-typer';
 
 import useBehandlingApi from './useBehandlingApi';
 import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './utils';
 import { useAppContext } from '../../../../context/AppContext';
-import { useFagsakContext } from '../../../../context/fagsak/FagsakContext';
+import { HentFagsakQueryKeyFactory } from '../../../../hooks/useHentFagsak';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
 import {
     BehandlerRolle,
     BehandlingStatus,
-    BehandlingÅrsak,
     type BehandlingSteg,
+    BehandlingÅrsak,
     type IBehandling,
     type IBehandlingPåVent,
     type IOpprettBehandlingData,
@@ -31,11 +36,11 @@ import {
     erViPåUlovligSteg,
     finnSideForBehandlingssteg,
     hentTrinnForBehandling,
-    KontrollertStatus,
-    sider,
     type ISide,
     type ITrinn,
+    KontrollertStatus,
     type SideId,
+    sider,
 } from '../sider/sider';
 
 interface BehandlingContextValue {
@@ -77,7 +82,7 @@ const BehandlingContext = createContext<BehandlingContextValue | undefined>(unde
 
 export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
     const { fagsakId } = useSakOgBehandlingParams();
-    const { hentMinimalFagsak } = useFagsakContext();
+    const queryClient = useQueryClient();
     const [åpenBehandling, privatSettÅpenBehandling] =
         useState<Ressurs<IBehandling>>(byggTomRessurs());
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
@@ -85,7 +90,9 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
 
     const settÅpenBehandling = (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak = true) => {
         if (oppdaterMinimalFagsak && fagsakId) {
-            hentMinimalFagsak(fagsakId, false);
+            queryClient.invalidateQueries({
+                queryKey: HentFagsakQueryKeyFactory.fagsak(Number(fagsakId)),
+            });
         }
         privatSettÅpenBehandling(behandling);
         settBehandlingsstegSubmitressurs(byggTomRessurs());
