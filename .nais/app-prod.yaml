@@ -34,7 +34,7 @@ spec:
           - id: "e40090eb-c2fb-400e-b412-e9084019a73b"  # '0000-GA-Kontantstotte-Saksbehandler' - Saksbehandler
           - id: "4e7f23d9-5db1-45c0-acec-89c86a9ec678"  # '0000-GA-Kontantstotte-Beslutter' - Beslutter
           - id: "b8158d87-a284-4620-9bf9-f0aa3f62c8aa"  # '0000-GA-Kontantstotte-Superbruker' - Superbruker
-          - id: "3d718ae5-f25e-47a4-b4b3-084a97604c1d"  # teamfamilie-forvaltning
+          - id: "024bfb25-ead3-4c04-bbe1-1db3d3362188"  # teamfamilie-baks-forvaltning
           - id: "60102d01-2521-40b4-97b9-e2d738f642c1"  # 0000-GA-ENHET_2103 (VIKAFOSSEN)
           - id: "0d746128-7cb0-431b-9420-885e7a75260f"  # 0000-GA-ENHET_4806 (DRAMMEN)
           - id: "4a9058c7-daae-452a-9fea-23beaa0778ff"  # 0000-GA-ENHET_4820 (VADSØ)

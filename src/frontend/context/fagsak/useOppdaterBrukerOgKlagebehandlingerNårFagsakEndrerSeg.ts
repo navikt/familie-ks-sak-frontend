@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
-import type { SkjemaBrevmottaker } from '../../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import type { IPersonInfo } from '../../typer/person';
 
@@ -17,7 +16,6 @@ interface Props {
     bruker: Ressurs<IPersonInfo>;
     oppdaterKlagebehandlingerPåFagsak: () => void;
     oppdaterTilbakekrevingsbehandlingerPåFagsak: () => void;
-    settManuelleBrevmottakerePåFagsak: (manuelleBrevmottakere: SkjemaBrevmottaker[]) => void;
 }
 
 export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
@@ -27,7 +25,6 @@ export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
     bruker,
     oppdaterKlagebehandlingerPåFagsak,
     oppdaterTilbakekrevingsbehandlingerPåFagsak,
-    settManuelleBrevmottakerePåFagsak,
 }: Props) =>
     useEffect(() => {
         if (
@@ -43,5 +40,4 @@ export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
         }
         oppdaterKlagebehandlingerPåFagsak();
         oppdaterTilbakekrevingsbehandlingerPåFagsak();
-        settManuelleBrevmottakerePåFagsak([]);
     }, [minimalFagsakRessurs]);

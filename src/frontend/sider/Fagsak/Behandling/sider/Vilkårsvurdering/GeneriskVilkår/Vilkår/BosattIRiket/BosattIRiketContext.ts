@@ -3,10 +3,8 @@ import { useState } from 'react';
 import { useFelt } from '@navikt/familie-skjema';
 
 import { erUtdypendeVilkårsvurderingerGyldig } from './BosattIRiketValidering';
-import { useAppContext } from '../../../../../../../../context/AppContext';
 import type { IGrunnlagPerson } from '../../../../../../../../typer/person';
 import { PersonType } from '../../../../../../../../typer/person';
-import { ToggleNavn } from '../../../../../../../../typer/toggles';
 import type { Begrunnelse } from '../../../../../../../../typer/vedtak';
 import type { IVilkårResultat, Resultat } from '../../../../../../../../typer/vilkår';
 import {
@@ -92,17 +90,10 @@ export const useBosattIRiket = (lagretVilkår: IVilkårResultat, person: IGrunnl
         }),
     };
 
-    const { toggles } = useAppContext();
-    const bosattPåSvalbardToggleErPå = toggles[ToggleNavn.bosattSvalbard];
-
     const initielleMuligeUtdypendeVilkårsvurderinger =
         bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
             vilkårSkjemaMedLagredeVerdier.vurderesEtter,
             person
-        ).filter(
-            utdypendeVilkårsvurdering =>
-                bosattPåSvalbardToggleErPå ||
-                utdypendeVilkårsvurdering !== UtdypendeVilkårsvurderingGenerell.BOSATT_PÅ_SVALBARD
         );
 
     const [muligeUtdypendeVilkårsvurderinger, settMuligeUtdypendeVilkårsvurderinger] = useState<

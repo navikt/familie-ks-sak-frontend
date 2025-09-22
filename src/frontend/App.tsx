@@ -3,6 +3,7 @@ import * as React from 'react';
 import '@navikt/ds-css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import type { ISaksbehandler } from '@navikt/familie-typer';
 
@@ -38,6 +39,7 @@ const App: React.FC = () => {
         <ErrorBoundary autentisertSaksbehandler={autentisertSaksbehandler}>
             <AuthOgHttpProvider autentisertSaksbehandler={autentisertSaksbehandler}>
                 <QueryClientProvider client={queryClient}>
+                    <ReactQueryDevtools position={'right'} initialIsOpen={false} />
                     <AppProvider>
                         <ModalProvider>
                             <Container />

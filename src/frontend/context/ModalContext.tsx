@@ -6,6 +6,8 @@ import React, {
     useReducer,
 } from 'react';
 
+import type { MutationKey } from '@tanstack/react-query';
+
 import type { HenleggÅrsak } from '../typer/behandling';
 
 interface ModalContext {
@@ -25,16 +27,19 @@ interface ModalContext {
 }
 
 export enum ModalType {
+    OPPRETT_FAGSAK = 'OPPRETT_FAGSAK',
     HENLEGG_BEHANDLING_VEIVALG = 'HENLEGG_BEHANDLING_VEIVALG',
     HENLEGG_BEHANDLING = 'HENLEGG_BEHANDLING',
     FEILMELDING = 'FEILMELDING',
-    FORHÅNDSVIS_PDF = 'FORHÅNDSVIS_PDF',
+    KORRIGER_ETTERBETALING = 'KORRIGER_ETTERBETALING',
+    FORHÅNDSVIS_OPPRETTING_AV_PDF = 'FORHÅNDSVIS_OPPRETTING_AV_PDF',
 }
 
 export interface Args {
+    [ModalType.OPPRETT_FAGSAK]: { personIdent: string; personNavn: string };
     [ModalType.HENLEGG_BEHANDLING_VEIVALG]: { årsak: HenleggÅrsak };
     [ModalType.FEILMELDING]: { feilmelding: string | React.ReactNode };
-    [ModalType.FORHÅNDSVIS_PDF]: { blob: Blob };
+    [ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF]: { mutationKey: MutationKey };
 }
 
 interface BaseState {
@@ -50,6 +55,12 @@ type State = {
 };
 
 const initialState: State = {
+    [ModalType.OPPRETT_FAGSAK]: {
+        tittel: 'Opprett fagsak',
+        åpen: false,
+        bredde: '50rem',
+        args: undefined,
+    },
     [ModalType.HENLEGG_BEHANDLING_VEIVALG]: {
         tittel: 'Behandling henlagt',
         åpen: false,
@@ -67,11 +78,16 @@ const initialState: State = {
         bredde: '50rem',
         args: undefined,
     },
-    [ModalType.FORHÅNDSVIS_PDF]: {
-        tittel: '',
+    [ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF]: {
+        tittel: 'Forhåndsvis PDF',
         åpen: false,
         bredde: '100rem',
         args: undefined,
+    },
+    [ModalType.KORRIGER_ETTERBETALING]: {
+        tittel: 'Korriger etterbetaling',
+        åpen: false,
+        bredde: '35rem',
     },
 };
 

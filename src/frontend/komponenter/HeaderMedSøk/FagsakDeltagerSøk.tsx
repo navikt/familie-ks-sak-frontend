@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useNavigate } from 'react-router';
 
@@ -16,8 +16,9 @@ import {
 } from '@navikt/familie-typer';
 import { idnr } from '@navikt/fnrvalidator';
 
-import OpprettFagsakModal from './OpprettFagsakModal';
 import { useAppContext } from '../../context/AppContext';
+import { ModalType } from '../../context/ModalContext';
+import { useModal } from '../../hooks/useModal';
 import {
     FagsakDeltagerRolle,
     type IFagsakDeltager,
@@ -48,9 +49,7 @@ const FagsakDeltagerSøk: React.FC = () => {
     const [fagsakDeltagere, settFagsakDeltagere] =
         React.useState<Ressurs<IFagsakDeltager[]>>(byggTomRessurs());
 
-    const [deltagerForOpprettFagsak, settDeltagerForOpprettFagsak] = useState<
-        ISøkeresultat | undefined
-    >(undefined);
+    const { åpneModal } = useModal(ModalType.OPPRETT_FAGSAK);
 
     const fnrValidator = (verdi: string): boolean => {
         return idnr(verdi).status === 'valid';
@@ -120,18 +119,17 @@ const FagsakDeltagerSøk: React.FC = () => {
                 placeholder={'Fødsels- eller D-nummer (11 siffer)'}
                 nullstillSøkeresultater={() => settFagsakDeltagere(byggTomRessurs())}
                 søkeresultater={mapTilSøkeresultater()}
-                søkeresultatOnClick={(søkeresultat: ISøkeresultat) =>
-                    søkeresultat.fagsakId
-                        ? navigate(`/fagsak/${søkeresultat.fagsakId}/saksoversikt`)
-                        : søkeresultat.harTilgang && settDeltagerForOpprettFagsak(søkeresultat)
-                }
+                søkeresultatOnClick={(søkeresultat: ISøkeresultat) => {
+                    if (søkeresultat.fagsakId) {
+                        navigate(`/fagsak/${søkeresultat.fagsakId}/saksoversikt`);
+                    } else if (søkeresultat.harTilgang) {
+                        åpneModal({
+                            personIdent: søkeresultat.ident,
+                            personNavn: søkeresultat.navn ?? 'Ukjent person',
+                        });
+                    }
+                }}
             />
-            {deltagerForOpprettFagsak && (
-                <OpprettFagsakModal
-                    søkeresultat={deltagerForOpprettFagsak}
-                    lukkModal={() => settDeltagerForOpprettFagsak(undefined)}
-                />
-            )}
         </>
     );
 };

@@ -71,9 +71,7 @@ const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
                     {erBehandlingMedVedtaksbrevutsending && (
                         <>
                             <KorrigerEtterbetaling
-                                erLesevisning={erLesevisning}
                                 korrigertEtterbetaling={åpenBehandling.korrigertEtterbetaling}
-                                behandlingId={åpenBehandling.behandlingId}
                             />
                             <KorrigerVedtak
                                 erLesevisning={erLesevisning}
