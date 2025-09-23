@@ -22,12 +22,7 @@ interface IHendelsesoversiktProps {
     bruker: IPersonInfo;
 }
 
-const Hendelsesoversikt = ({
-    hendelser,
-    className,
-    åpenBehandling,
-    bruker,
-}: IHendelsesoversiktProps) => {
+const Hendelsesoversikt = ({ hendelser, className, åpenBehandling, bruker }: IHendelsesoversiktProps) => {
     const { hentSaksbehandlerRolle } = useAppContext();
 
     const skalViseTotrinnskontroll =
@@ -40,11 +35,7 @@ const Hendelsesoversikt = ({
 
     return (
         <div className={classNames('hendelsesoversikt', className)}>
-            <Tabs
-                value={aktivTab}
-                onChange={tab => settAktivTab(tab as TabValg)}
-                iconPosition="top"
-            >
+            <Tabs value={aktivTab} onChange={tab => settAktivTab(tab as TabValg)} iconPosition="top">
                 <Header skalViseTotrinnskontroll={skalViseTotrinnskontroll} />
 
                 {aktivTab === TabValg.Totrinnskontroll && (
@@ -52,9 +43,7 @@ const Hendelsesoversikt = ({
                         <Totrinnskontroll åpenBehandling={åpenBehandling} />
                     </Tabs.Panel>
                 )}
-                {aktivTab === TabValg.Historikk && hendelser.length > 0 && (
-                    <Historikk hendelser={hendelser} />
-                )}
+                {aktivTab === TabValg.Historikk && hendelser.length > 0 && <Historikk hendelser={hendelser} />}
                 {aktivTab === TabValg.Meldinger && (
                     <Brev onIModalClick={() => settAktivTab(TabValg.Historikk)} bruker={bruker} />
                 )}

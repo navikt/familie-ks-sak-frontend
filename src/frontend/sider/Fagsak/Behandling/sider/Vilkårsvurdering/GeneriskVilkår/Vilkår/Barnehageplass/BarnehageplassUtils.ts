@@ -11,9 +11,7 @@ export const vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie = (
     utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering[]
 ) =>
     resultat === Resultat.IKKE_OPPFYLT &&
-    !utdypendeVilkårsvurdering.find(
-        utdypende => utdypende === UtdypendeVilkårsvurderingGenerell.SOMMERFERIE
-    );
+    !utdypendeVilkårsvurdering.find(utdypende => utdypende === UtdypendeVilkårsvurderingGenerell.SOMMERFERIE);
 
 export const vilkårOppfyltOgAntallTimerKvalifiserer = (resultat: Resultat, antallTimer: string) =>
     resultat === Resultat.OPPFYLT && antallTimerKvalifiserer(Number(antallTimer));

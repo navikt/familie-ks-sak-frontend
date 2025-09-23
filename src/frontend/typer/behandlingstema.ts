@@ -37,9 +37,7 @@ export const behandlingstemaer: Record<Behandlingstema, IBehandlingstema> = {
 };
 
 export const tilBehandlingstema = (kategori: BehandlingKategori): IBehandlingstema | undefined => {
-    return Object.values(behandlingstemaer).find(
-        (tema: IBehandlingstema) => tema.kategori === kategori
-    );
+    return Object.values(behandlingstemaer).find((tema: IBehandlingstema) => tema.kategori === kategori);
 };
 
 export const kodeTilBehandlingKategoriMap: Record<string, BehandlingKategori> = {

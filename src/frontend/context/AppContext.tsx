@@ -89,8 +89,8 @@ const AppProvider = (props: PropsWithChildren) => {
                                 <div className={'utdatert-losning'}>
                                     <Alert variant={'info'} inline>
                                         <BodyShort>
-                                            Det finnes en oppdatert versjon av løsningen. Det
-                                            anbefales at du oppdaterer med en gang.
+                                            Det finnes en oppdatert versjon av løsningen. Det anbefales at du oppdaterer
+                                            med en gang.
                                         </BodyShort>
                                     </Alert>
                                 </div>
@@ -149,10 +149,7 @@ const AppProvider = (props: PropsWithChildren) => {
         settAppInfoModal(initalState);
     };
 
-    const sjekkTilgang = async (
-        brukerIdent: string,
-        visSystemetLaster = true
-    ): Promise<boolean> => {
+    const sjekkTilgang = async (brukerIdent: string, visSystemetLaster = true): Promise<boolean> => {
         return request<{ brukerIdent: string }, IRestTilgang>({
             method: 'POST',
             url: '/familie-ks-sak/api/tilgang',
@@ -169,9 +166,7 @@ const AppProvider = (props: PropsWithChildren) => {
                             <Alert variant={'error'} inline>
                                 <BodyShort>
                                     {`Bruker har diskresjonskode ${
-                                        adressebeskyttelsestyper[
-                                            ressurs.data.adressebeskyttelsegradering
-                                        ]
+                                        adressebeskyttelsestyper[ressurs.data.adressebeskyttelsegradering]
                                     }`}
                                 </BodyShort>
                             </Alert>
@@ -223,8 +218,7 @@ const AppProvider = (props: PropsWithChildren) => {
         return rolle >= BehandlerRolle.SAKSBEHANDLER;
     };
 
-    const skalObfuskereData =
-        toggles[ToggleNavn.skalObfuskereData] && !harInnloggetSaksbehandlerSkrivetilgang();
+    const skalObfuskereData = toggles[ToggleNavn.skalObfuskereData] && !harInnloggetSaksbehandlerSkrivetilgang();
 
     return (
         <AppContext.Provider

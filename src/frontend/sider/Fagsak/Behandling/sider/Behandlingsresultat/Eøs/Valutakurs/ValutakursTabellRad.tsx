@@ -17,11 +17,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const ValutakursTabellRad: React.FC<IProps> = ({
-    valutakurs,
-    åpenBehandling,
-    visFeilmeldinger,
-}) => {
+const ValutakursTabellRad: React.FC<IProps> = ({ valutakurs, åpenBehandling, visFeilmeldinger }) => {
     const barn: OptionType[] = valutakurs.barnIdenter.map(barn => ({
         value: barn,
         label: lagPersonLabel(barn, åpenBehandling.personer),
@@ -77,9 +73,7 @@ const ValutakursTabellRad: React.FC<IProps> = ({
                     sletterValutakurs={sletterValutakurs}
                     erManuellInputAvKurs={erManuellInputAvKurs}
                     key={`${valutakurs.id}-${erValutakursEkspandert ? 'ekspandert' : 'lukket'}`}
-                    behandlingsÅrsakErOvergangsordning={
-                        åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
-                    }
+                    behandlingsÅrsakErOvergangsordning={åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024}
                 />
             }
         >

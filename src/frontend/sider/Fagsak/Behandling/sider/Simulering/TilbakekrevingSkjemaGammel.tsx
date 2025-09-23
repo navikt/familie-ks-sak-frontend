@@ -80,20 +80,16 @@ const TilbakekrevingSkjemaGammel: React.FC<{
     harÅpenTilbakekrevingRessurs: Ressurs<boolean>;
 }> = ({ søkerMålform, harÅpenTilbakekrevingRessurs }) => {
     const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
-    const { tilbakekrevingSkjema, hentFeilTilOppsummering, maksLengdeTekst } =
-        useSimuleringContext();
+    const { tilbakekrevingSkjema, hentFeilTilOppsummering, maksLengdeTekst } = useSimuleringContext();
     const { fritekstVarsel, begrunnelse, tilbakekrevingsvalg } = tilbakekrevingSkjema.felter;
-    const { hentForhåndsvisning, visDokumentModal, hentetDokument, settVisDokumentModal } =
-        useDokument();
+    const { hentForhåndsvisning, visDokumentModal, hentetDokument, settVisDokumentModal } = useDokument();
     const { bruker: brukerRessurs } = useFagsakContext();
     const bruker = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data : undefined;
 
     const erLesevisning = vurderErLesevisning();
 
     const radioOnChange = (tilbakekrevingsalternativ: Tilbakekrevingsvalg) => {
-        tilbakekrevingSkjema.felter.tilbakekrevingsvalg.validerOgSettFelt(
-            tilbakekrevingsalternativ
-        );
+        tilbakekrevingSkjema.felter.tilbakekrevingsvalg.validerOgSettFelt(tilbakekrevingsalternativ);
     };
 
     if (
@@ -118,8 +114,8 @@ const TilbakekrevingSkjemaGammel: React.FC<{
             <>
                 <StyledLabel>Tilbakekrevingsvalg</StyledLabel>
                 <StyledAlert variant="warning">
-                    Det foreligger en åpen tilbakekrevingsbehandling. Endringer i vedtaket vil
-                    automatisk oppdatere eksisterende feilutbetalte perioder og beløp.
+                    Det foreligger en åpen tilbakekrevingsbehandling. Endringer i vedtaket vil automatisk oppdatere
+                    eksisterende feilutbetalte perioder og beløp.
                 </StyledAlert>
             </>
         );
@@ -130,8 +126,8 @@ const TilbakekrevingSkjemaGammel: React.FC<{
             <>
                 <StyledLabel>Tilbakekrevingsvalg</StyledLabel>
                 <StyledAlert variant="warning">
-                    Tilbakekreving uten varsel er valgt automatisk, da feilutbetailngen ble avdekket
-                    etter at saken ble sendt til beslutter.
+                    Tilbakekreving uten varsel er valgt automatisk, da feilutbetailngen ble avdekket etter at saken ble
+                    sendt til beslutter.
                 </StyledAlert>
             </>
         );
@@ -140,10 +136,7 @@ const TilbakekrevingSkjemaGammel: React.FC<{
     return (
         <>
             {visDokumentModal && (
-                <PdfVisningModal
-                    onRequestClose={() => settVisDokumentModal(false)}
-                    pdfdata={hentetDokument}
-                />
+                <PdfVisningModal onRequestClose={() => settVisDokumentModal(false)} pdfdata={hentetDokument} />
             )}
 
             <StyledFieldset legend="Tilbakekreving">
@@ -151,10 +144,7 @@ const TilbakekrevingSkjemaGammel: React.FC<{
                     label={
                         <HStack>
                             Årsak til feilutbetaling og videre behandling
-                            <StyledHelpText
-                                title="Hvordan skal feltet fylles ut?"
-                                placement="right"
-                            >
+                            <StyledHelpText title="Hvordan skal feltet fylles ut?" placement="right">
                                 <StyledHelpTextContainer>
                                     <Heading size="xsmall">Hvordan skal feltet fylles ut?</Heading>
                                     <BodyLong size="small">
@@ -165,32 +155,24 @@ const TilbakekrevingSkjemaGammel: React.FC<{
                                             <li>Når ble feilutbetalingen oppdaget?</li>
                                         </ul>
                                     </BodyLong>
-                                    <Heading size="xsmall">
-                                        Teksteksempel ved opprett tilbakekreving
-                                    </Heading>
+                                    <Heading size="xsmall">Teksteksempel ved opprett tilbakekreving</Heading>
                                     <BodyLong size="small" spacing={true}>
-                                        Barn født 01.02.03 flyttet fra bruker 01.01.2019. Bruker har
-                                        mottatt kontantstøtte for barnet etter at barnet ikke lenger
-                                        bor fast sammen med bruker.
+                                        Barn født 01.02.03 flyttet fra bruker 01.01.2019. Bruker har mottatt
+                                        kontantstøtte for barnet etter at barnet ikke lenger bor fast sammen med bruker.
                                     </BodyLong>
                                     <BodyLong size="small" spacing={true}>
-                                        Søknaden ble mottatt 11.03.2022. Bruker har ikke meldt fra
-                                        om dette selv.
+                                        Søknaden ble mottatt 11.03.2022. Bruker har ikke meldt fra om dette selv.
                                     </BodyLong>
-                                    <Heading size="xsmall">
-                                        Teksteksempel ved avvent tilbakekreving
-                                    </Heading>
+                                    <Heading size="xsmall">Teksteksempel ved avvent tilbakekreving</Heading>
                                     <BodyLong size="small">
-                                        Feilutbetaling gjelder kun inneværende måned, og
-                                        utbetalingen stoppes antakelig.
+                                        Feilutbetaling gjelder kun inneværende måned, og utbetalingen stoppes antakelig.
                                     </BodyLong>
                                 </StyledHelpTextContainer>
                             </StyledHelpText>
                         </HStack>
                     }
                     {...begrunnelse.hentNavInputProps(
-                        tilbakekrevingSkjema.visFeilmeldinger ||
-                            begrunnelse.verdi.length > maksLengdeTekst
+                        tilbakekrevingSkjema.visFeilmeldinger || begrunnelse.verdi.length > maksLengdeTekst
                     )}
                     readOnly={vurderErLesevisning()}
                     maxLength={maksLengdeTekst}
@@ -207,9 +189,7 @@ const TilbakekrevingSkjemaGammel: React.FC<{
                     </>
                 ) : (
                     <RadioGroup
-                        {...tilbakekrevingsvalg.hentNavBaseSkjemaProps(
-                            tilbakekrevingSkjema.visFeilmeldinger
-                        )}
+                        {...tilbakekrevingsvalg.hentNavBaseSkjemaProps(tilbakekrevingSkjema.visFeilmeldinger)}
                         value={tilbakekrevingsvalg.verdi}
                         onChange={(val: Tilbakekrevingsvalg) => radioOnChange(val)}
                         legend={
@@ -217,29 +197,21 @@ const TilbakekrevingSkjemaGammel: React.FC<{
                                 Fastsett videre behandling
                                 <StyledHelpText placement="right">
                                     <StyledHelpTextContainer>
-                                        <Heading size="small">
-                                            Hvordan fastsette videre behandling?
-                                        </Heading>
-                                        <Heading size="xsmall">
-                                            Opprett tilbakekreving, send varsel
-                                        </Heading>
+                                        <Heading size="small">Hvordan fastsette videre behandling?</Heading>
+                                        <Heading size="xsmall">Opprett tilbakekreving, send varsel</Heading>
                                         <BodyLong size="small" spacing={true}>
-                                            Hovedregel er at en feilutbetaling skal varsles, og at
-                                            bruker får varsel samtidig med revurderingsvedtaket.
+                                            Hovedregel er at en feilutbetaling skal varsles, og at bruker får varsel
+                                            samtidig med revurderingsvedtaket.
                                         </BodyLong>
-                                        <Heading size="xsmall">
-                                            Opprett tilbakekreving, ikke send varsel
-                                        </Heading>
+                                        <Heading size="xsmall">Opprett tilbakekreving, ikke send varsel</Heading>
                                         <BodyLong size="small" spacing={true}>
-                                            Velges unntaksvis når man er usikker på om inneværende
-                                            måned blir feilutbetalt eller ikke. Eller at det
-                                            fremstår som relativt sikkert at feilutbetalt beløp ikke
-                                            skal kreves inn.
+                                            Velges unntaksvis når man er usikker på om inneværende måned blir
+                                            feilutbetalt eller ikke. Eller at det fremstår som relativt sikkert at
+                                            feilutbetalt beløp ikke skal kreves inn.
                                         </BodyLong>
                                         <Heading size="small">Avvent tilbakekreving</Heading>
                                         <BodyLong size="small" spacing={true}>
-                                            Velges når man er rimelig sikker på at det ikke blir
-                                            feilutbetaling.
+                                            Velges når man er rimelig sikker på at det ikke blir feilutbetaling.
                                         </BodyLong>
                                     </StyledHelpTextContainer>
                                 </StyledHelpText>
@@ -270,59 +242,34 @@ const TilbakekrevingSkjemaGammel: React.FC<{
                                     <FritekstVarsel>
                                         <Textarea
                                             label={
-                                                <HStack
-                                                    align="center"
-                                                    justify="space-between"
-                                                    wrap={false}
-                                                >
+                                                <HStack align="center" justify="space-between" wrap={false}>
                                                     <HStack align="center" wrap={false}>
                                                         <Label>Fritekst i varselet</Label>
                                                         <StyledHelpText placement="right">
                                                             <StyledHelpTextContainer>
-                                                                <BodyLong
-                                                                    size="small"
-                                                                    spacing={true}
-                                                                >
-                                                                    Her skal du oppgi hvorfor
-                                                                    brukeren ikke skulle fått
-                                                                    utbetalt ytelsen i perioden(e).
-                                                                    Du må også oppgi hvordan
-                                                                    feilutbetalingen ble oppdaget,
-                                                                    hvem som oppdaget den og når den
-                                                                    ble oppdaget eller meldt til
+                                                                <BodyLong size="small" spacing={true}>
+                                                                    Her skal du oppgi hvorfor brukeren ikke skulle fått
+                                                                    utbetalt ytelsen i perioden(e). Du må også oppgi
+                                                                    hvordan feilutbetalingen ble oppdaget, hvem som
+                                                                    oppdaget den og når den ble oppdaget eller meldt til
                                                                     Nav.
                                                                 </BodyLong>
-                                                                <BodyLong
-                                                                    size="small"
-                                                                    spacing={true}
-                                                                >
+                                                                <BodyLong size="small" spacing={true}>
                                                                     Eksempel på tekst:
                                                                 </BodyLong>
-                                                                <BodyLong
-                                                                    size="small"
-                                                                    spacing={true}
-                                                                >
-                                                                    Vi mottok melding fra deg (dato)
-                                                                    om at du flyttet utenlands
-                                                                    (dato). Du har ikke rett på
-                                                                    kontantstøtte når du oppholder
-                                                                    deg utenlands. Da vi mottok
-                                                                    meldingen fra deg, var det
-                                                                    allerede utbetalt kontantstøtte
-                                                                    for perioden (Fom dato - Tom
-                                                                    dato).
+                                                                <BodyLong size="small" spacing={true}>
+                                                                    Vi mottok melding fra deg (dato) om at du flyttet
+                                                                    utenlands (dato). Du har ikke rett på kontantstøtte
+                                                                    når du oppholder deg utenlands. Da vi mottok
+                                                                    meldingen fra deg, var det allerede utbetalt
+                                                                    kontantstøtte for perioden (Fom dato - Tom dato).
                                                                 </BodyLong>
                                                                 <Link
                                                                     href="https://navno.sharepoint.com/sites/intranett-kommunikasjon/SitePages/Språk.aspx"
                                                                     target="_blank"
                                                                 >
-                                                                    <span>
-                                                                        Se retningslinjer for
-                                                                        klarspråk:
-                                                                    </span>
-                                                                    <ExternalLinkIcon
-                                                                        fontSize={'1.3rem'}
-                                                                    />
+                                                                    <span>Se retningslinjer for klarspråk:</span>
+                                                                    <ExternalLinkIcon fontSize={'1.3rem'} />
                                                                 </Link>
                                                             </StyledHelpTextContainer>
                                                         </StyledHelpText>
@@ -346,21 +293,16 @@ const TilbakekrevingSkjemaGammel: React.FC<{
                                                 variant={'tertiary'}
                                                 id={'forhandsvis-varsel'}
                                                 onClick={() =>
-                                                    åpenBehandling.status ===
-                                                        RessursStatus.SUKSESS &&
-                                                    hentForhåndsvisning<IForhåndsvisTilbakekrevingsvarselbrevRequest>(
-                                                        {
-                                                            method: 'POST',
-                                                            url: `/familie-ks-sak/api/tilbakekreving/${åpenBehandling.data.behandlingId}/forhaandsvis-tilbakekreving-varselbrev`,
-                                                            data: {
-                                                                fritekst: fritekstVarsel.verdi,
-                                                            },
-                                                        }
-                                                    )
+                                                    åpenBehandling.status === RessursStatus.SUKSESS &&
+                                                    hentForhåndsvisning<IForhåndsvisTilbakekrevingsvarselbrevRequest>({
+                                                        method: 'POST',
+                                                        url: `/familie-ks-sak/api/tilbakekreving/${åpenBehandling.data.behandlingId}/forhaandsvis-tilbakekreving-varselbrev`,
+                                                        data: {
+                                                            fritekst: fritekstVarsel.verdi,
+                                                        },
+                                                    })
                                                 }
-                                                loading={
-                                                    hentetDokument.status === RessursStatus.HENTER
-                                                }
+                                                loading={hentetDokument.status === RessursStatus.HENTER}
                                                 size={'small'}
                                                 icon={<FileTextIcon />}
                                             >
@@ -398,10 +340,7 @@ const TilbakekrevingSkjemaGammel: React.FC<{
                 {tilbakekrevingSkjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
                     <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
                         {hentFeilTilOppsummering().map(item => (
-                            <ErrorSummary.Item
-                                href={`#${item.skjemaelementId}`}
-                                key={item.skjemaelementId}
-                            >
+                            <ErrorSummary.Item href={`#${item.skjemaelementId}`} key={item.skjemaelementId}>
                                 {item.feilmelding}
                             </ErrorSummary.Item>
                         ))}

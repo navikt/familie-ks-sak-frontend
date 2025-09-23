@@ -119,8 +119,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
             <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
                 <UtbetaltBeløpInfo variant="info" inline>
                     <UtbetaltBeløpText size="small">
-                        Dersom det er ulike beløp per barn utbetalt i det andre landet, må barna
-                        registreres separat
+                        Dersom det er ulike beløp per barn utbetalt i det andre landet, må barna registreres separat
                     </UtbetaltBeløpText>
                 </UtbetaltBeløpInfo>
                 <FamilieReactSelect
@@ -130,9 +129,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                     isMulti
                     options={tilgjengeligeBarn}
                     value={skjema.felter.barnIdenter.verdi}
-                    onChange={options =>
-                        skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])
-                    }
+                    onChange={options => skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])}
                 />
                 <StyledEøsPeriodeSkjema
                     periode={skjema.felter.periode}
@@ -154,9 +151,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                             label={'Beløp per barn'}
                             readOnly={lesevisning}
                             value={skjema.felter.beløp?.verdi}
-                            onChange={event =>
-                                skjema.felter.beløp?.validerOgSettFelt(event.target.value)
-                            }
+                            onChange={event => skjema.felter.beløp?.validerOgSettFelt(event.target.value)}
                             size={'medium'}
                         />
                         <StyledFamilieValutavelger

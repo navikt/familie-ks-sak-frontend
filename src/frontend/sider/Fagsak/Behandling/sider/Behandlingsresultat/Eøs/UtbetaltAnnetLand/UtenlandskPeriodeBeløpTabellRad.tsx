@@ -19,11 +19,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const UtenlandskPeriodeBeløpRad: React.FC<IProps> = ({
-    utenlandskPeriodeBeløp,
-    åpenBehandling,
-    visFeilmeldinger,
-}) => {
+const UtenlandskPeriodeBeløpRad: React.FC<IProps> = ({ utenlandskPeriodeBeløp, åpenBehandling, visFeilmeldinger }) => {
     const barn: OptionType[] = utenlandskPeriodeBeløp.barnIdenter.map(barn => ({
         value: barn,
         label: lagPersonLabel(barn, åpenBehandling.personer),
@@ -58,11 +54,7 @@ const UtenlandskPeriodeBeløpRad: React.FC<IProps> = ({
     }, [visFeilmeldinger, erUtenlandskPeriodeBeløpEkspandert]);
 
     const toggleForm = (visAlert: boolean) => {
-        if (
-            erUtenlandskPeriodeBeløpEkspandert &&
-            visAlert &&
-            erUtenlandskPeriodeBeløpSkjemaEndret()
-        ) {
+        if (erUtenlandskPeriodeBeløpEkspandert && visAlert && erUtenlandskPeriodeBeløpSkjemaEndret()) {
             alert('Utenlandsk beløp har endringer som ikke er lagret!');
         } else {
             settErUtenlandskPeriodeBeløpEkspandert(!erUtenlandskPeriodeBeløpEkspandert);
@@ -93,9 +85,7 @@ const UtenlandskPeriodeBeløpRad: React.FC<IProps> = ({
                     toggleForm={toggleForm}
                     slettUtenlandskPeriodeBeløp={slettUtenlandskPeriodeBeløp}
                     status={utenlandskPeriodeBeløp.status}
-                    behandlingsÅrsakErOvergangsordning={
-                        åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
-                    }
+                    behandlingsÅrsakErOvergangsordning={åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024}
                 />
             }
         >

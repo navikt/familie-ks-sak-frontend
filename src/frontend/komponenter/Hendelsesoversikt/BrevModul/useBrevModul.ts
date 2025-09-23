@@ -16,14 +16,9 @@ import { PersonType } from '../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../typer/søknad';
 import { Målform } from '../../../typer/søknad';
 import type { IFritekstFelt } from '../../../utils/fritekstfelter';
-import {
-    genererIdBasertPåAndreFritekster,
-    lagInitiellFritekst,
-} from '../../../utils/fritekstfelter';
+import { genererIdBasertPåAndreFritekster, lagInitiellFritekst } from '../../../utils/fritekstfelter';
 
-export const hentMuligeBrevmalerImplementering = (
-    åpenBehandling: Ressurs<IBehandling>
-): Brevmal[] => {
+export const hentMuligeBrevmalerImplementering = (åpenBehandling: Ressurs<IBehandling>): Brevmal[] => {
     if (åpenBehandling.status !== RessursStatus.SUKSESS) {
         return [];
     }
@@ -38,39 +33,30 @@ const brevmalKanVelgesForBehandling = (brevmal: Brevmal, åpenBehandling: IBehan
             return åpenBehandling.årsak === BehandlingÅrsak.SØKNAD;
         case Brevmal.VARSEL_OM_REVURDERING:
             return (
-                åpenBehandling.type === Behandlingstype.REVURDERING &&
-                åpenBehandling.årsak !== BehandlingÅrsak.SØKNAD
+                åpenBehandling.type === Behandlingstype.REVURDERING && åpenBehandling.årsak !== BehandlingÅrsak.SØKNAD
             );
         case Brevmal.SVARTIDSBREV:
             return åpenBehandling.årsak === BehandlingÅrsak.SØKNAD;
         case Brevmal.FORLENGET_SVARTIDSBREV:
-            return [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING].includes(
-                åpenBehandling.type
-            );
+            return [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING].includes(åpenBehandling.type);
         case Brevmal.HENLEGGE_TRUKKET_SØKNAD:
             return false;
         case Brevmal.VARSEL_OM_REVURDERING_FRA_NASJONAL_TIL_EØS:
             return (
                 åpenBehandling.type === Behandlingstype.REVURDERING &&
                 åpenBehandling.kategori === BehandlingKategori.EØS &&
-                [BehandlingÅrsak.NYE_OPPLYSNINGER, BehandlingÅrsak.SØKNAD].includes(
-                    åpenBehandling.årsak
-                )
+                [BehandlingÅrsak.NYE_OPPLYSNINGER, BehandlingÅrsak.SØKNAD].includes(åpenBehandling.årsak)
             );
         case Brevmal.INNHENTE_OPPLYSNINGER_ETTER_SØKNAD_I_SED:
             return (
                 åpenBehandling.årsak === BehandlingÅrsak.SØKNAD &&
                 åpenBehandling.kategori === BehandlingKategori.EØS &&
-                [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING].includes(
-                    åpenBehandling.type
-                )
+                [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING].includes(åpenBehandling.type)
             );
         case Brevmal.INNHENTE_OPPLYSNINGER_OG_INFORMASJON_OM_AT_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_HAR_SØKT:
             return (
                 åpenBehandling.årsak === BehandlingÅrsak.SØKNAD &&
-                [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING].includes(
-                    åpenBehandling.type
-                )
+                [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING].includes(åpenBehandling.type)
             );
         case Brevmal.VARSEL_ANNEN_FORELDER_MED_SELVSTENDIG_RETT_SØKT:
             return åpenBehandling.type === Behandlingstype.REVURDERING;
@@ -78,9 +64,7 @@ const brevmalKanVelgesForBehandling = (brevmal: Brevmal, åpenBehandling: IBehan
             return (
                 åpenBehandling.årsak === BehandlingÅrsak.SØKNAD &&
                 åpenBehandling.kategori === BehandlingKategori.EØS &&
-                [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING].includes(
-                    åpenBehandling.type
-                )
+                [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING].includes(åpenBehandling.type)
             );
         case Brevmal.UTBETALING_ETTER_KA_VEDTAK:
             return åpenBehandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK;
@@ -112,8 +96,7 @@ export const useBrevModul = () => {
     const behandlingKategori =
         åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.kategori : undefined;
 
-    const brevmottakere =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere : [];
+    const brevmottakere = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere : [];
 
     const mottakerIdent = useFelt({
         verdi: '',
@@ -130,9 +113,7 @@ export const useBrevModul = () => {
         verdi: [],
         valideringsfunksjon: (felt: FeltState<FeltState<IFritekstFelt>[]>) => {
             return felt.verdi.some(
-                fritekst =>
-                    fritekst.valideringsstatus === Valideringsstatus.FEIL ||
-                    fritekst.verdi.tekst.length === 0
+                fritekst => fritekst.valideringsstatus === Valideringsstatus.FEIL || fritekst.verdi.tekst.length === 0
             )
                 ? feil(felt, '')
                 : ok(felt);
@@ -140,9 +121,7 @@ export const useBrevModul = () => {
         skalFeltetVises: (avhengigheter: Avhengigheter) => {
             return (
                 avhengigheter?.brevmal.valideringsstatus === Valideringsstatus.OK &&
-                ![Brevmal.SVARTIDSBREV, Brevmal.UTBETALING_ETTER_KA_VEDTAK].includes(
-                    avhengigheter.brevmal.verdi
-                )
+                ![Brevmal.SVARTIDSBREV, Brevmal.UTBETALING_ETTER_KA_VEDTAK].includes(avhengigheter.brevmal.verdi)
             );
         },
         avhengigheter: { brevmal },
@@ -156,10 +135,7 @@ export const useBrevModul = () => {
             }
 
             if (fritekst.verdi.trim() === '') {
-                return feil(
-                    fritekst,
-                    'Du må skrive tekst i feltet, eller fjerne det om du ikke skal ha fritekst.'
-                );
+                return feil(fritekst, 'Du må skrive tekst i feltet, eller fjerne det om du ikke skal ha fritekst.');
             }
 
             if (fritekst.verdi.length > maksLengdeFritekstAvsnitt) {
@@ -206,10 +182,7 @@ export const useBrevModul = () => {
 
     const dokumenter = useFelt({
         verdi: [],
-        valideringsfunksjon: (
-            felt: FeltState<ISelectOptionMedBrevtekst[]>,
-            avhengigheter?: Avhengigheter
-        ) => {
+        valideringsfunksjon: (felt: FeltState<ISelectOptionMedBrevtekst[]>, avhengigheter?: Avhengigheter) => {
             if (felt.verdi.length === 0 && avhengigheter?.fritekster.verdi.length === 0) {
                 return feil(felt, `Du må velge minst ett dokument`);
             }
@@ -302,8 +275,7 @@ export const useBrevModul = () => {
         nullstillBarnBrevetGjelder();
     }, [skjema.felter.brevmal.verdi]);
 
-    const personer =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.personer : [];
+    const personer = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.personer : [];
 
     const mottakersMålform = (): Målform =>
         mottakersMålformImplementering(
@@ -339,12 +311,8 @@ export const useBrevModul = () => {
      * Legger til initielt fritekstpunkt for brevmaler med obligatorisk fritekst
      */
     useEffect(() => {
-        if (
-            friteksterKulepunkter.verdi.length === 0 &&
-            erBrevmalMedObligatoriskFritekst(brevmal.verdi as Brevmal)
-        ) {
-            const valideringsmelding =
-                'Dette kulepunktet er obligatorisk. Du må skrive tekst i feltet.';
+        if (friteksterKulepunkter.verdi.length === 0 && erBrevmalMedObligatoriskFritekst(brevmal.verdi as Brevmal)) {
+            const valideringsmelding = 'Dette kulepunktet er obligatorisk. Du må skrive tekst i feltet.';
             leggTilFritekst(valideringsmelding);
         }
     }, [brevmal, friteksterKulepunkter]);

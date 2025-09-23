@@ -27,9 +27,7 @@ export function ForhåndsvisBrevLenke() {
     const { minimalFagsak } = useFagsakContext();
     const { åpenBehandling } = useBehandlingContext();
 
-    const { åpneModal: åpneForhåndsvisOpprettingAvPdfModal } = useModal(
-        ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF
-    );
+    const { åpneModal: åpneForhåndsvisOpprettingAvPdfModal } = useModal(ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF);
 
     const { mutate, isPending } = useOpprettForhåndsvisbarBehandlingBrevPdf({
         onMutate: () => åpneForhåndsvisOpprettingAvPdfModal({ mutationKey }),

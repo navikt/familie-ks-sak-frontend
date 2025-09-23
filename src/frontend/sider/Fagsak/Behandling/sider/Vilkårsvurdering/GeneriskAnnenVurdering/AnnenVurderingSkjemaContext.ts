@@ -1,11 +1,7 @@
 import { useSkjema, useFelt } from '@navikt/familie-skjema';
 
 import type { IBehandling } from '../../../../../../typer/behandling';
-import type {
-    IAnnenVurdering,
-    IRestAnnenVurdering,
-    Resultat,
-} from '../../../../../../typer/vilkår';
+import type { IAnnenVurdering, IRestAnnenVurdering, Resultat } from '../../../../../../typer/vilkår';
 import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
 
 interface IAnnenVurderingSkjema {
@@ -13,10 +9,7 @@ interface IAnnenVurderingSkjema {
     begrunnelse: string;
 }
 
-export const useAnnenVurderingSkjema = (
-    annenVurdering: IAnnenVurdering,
-    toggleForm: (visSkjema: boolean) => void
-) => {
+export const useAnnenVurderingSkjema = (annenVurdering: IAnnenVurdering, toggleForm: (visSkjema: boolean) => void) => {
     const vilkårsvurderingApi = useVilkårsvurderingApi();
 
     const { skjema, kanSendeSkjema, settVisfeilmeldinger, nullstillSkjema } = useSkjema<

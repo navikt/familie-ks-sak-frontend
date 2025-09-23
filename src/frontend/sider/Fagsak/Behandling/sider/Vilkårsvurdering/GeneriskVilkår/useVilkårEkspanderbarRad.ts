@@ -8,15 +8,11 @@ interface IProps {
     lagretVilkårResultat: IVilkårResultat;
 }
 
-export const useVilkårEkspanderbarRad = ({
-    vilkårHarEndringerSomIkkeErLagret,
-    lagretVilkårResultat,
-}: IProps) => {
+export const useVilkårEkspanderbarRad = ({ vilkårHarEndringerSomIkkeErLagret, lagretVilkårResultat }: IProps) => {
     const { vurderErLesevisning, behandlingPåVent } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
-    const initiellEkspandering =
-        erLesevisning || lagretVilkårResultat.resultat === Resultat.IKKE_VURDERT;
+    const initiellEkspandering = erLesevisning || lagretVilkårResultat.resultat === Resultat.IKKE_VURDERT;
 
     const [erVilkårEkspandert, settErVilkårEkspandert] = useState(initiellEkspandering);
 

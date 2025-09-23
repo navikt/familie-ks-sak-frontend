@@ -76,8 +76,7 @@ const FritekstWrapper = styled.div`
  * @Deprecated - Erstattes av {@link Brevskjema}.
  */
 const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
-    const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } =
-        useBehandlingContext();
+    const { åpenBehandling, settÅpenBehandling, vurderErLesevisning, hentLogg } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
     const { hentForhåndsvisning, hentetDokument } = useDokument();
 
@@ -114,18 +113,14 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
 
     const brevMaler = hentMuligeBrevMaler();
     const skjemaErLåst =
-        skjema.submitRessurs.status === RessursStatus.HENTER ||
-        hentetDokument.status === RessursStatus.HENTER;
+        skjema.submitRessurs.status === RessursStatus.HENTER || hentetDokument.status === RessursStatus.HENTER;
 
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS && åpenBehandling.data.behandlingId;
+    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS && åpenBehandling.data.behandlingId;
 
     const fieldsetId = 'Fritekster-brev';
-    const erMaksAntallKulepunkter =
-        skjema.felter.friteksterKulepunkter.verdi.length >= maksAntallKulepunkter;
+    const erMaksAntallKulepunkter = skjema.felter.friteksterKulepunkter.verdi.length >= maksAntallKulepunkter;
 
-    const behandlingSteg =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.steg : undefined;
+    const behandlingSteg = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.steg : undefined;
 
     const onChangeFritekst = (event: React.ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
         skjema.felter.friteksterKulepunkter.validerOgSettFelt([
@@ -151,16 +146,10 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
     return (
         <div>
             {visForhåndsvisningModal && (
-                <PdfVisningModal
-                    onRequestClose={() => settForhåndsviningModal(false)}
-                    pdfdata={hentetDokument}
-                />
+                <PdfVisningModal onRequestClose={() => settForhåndsviningModal(false)} pdfdata={hentetDokument} />
             )}
             <Fieldset
-                error={
-                    hentFrontendFeilmelding(skjema.submitRessurs) ||
-                    hentFrontendFeilmelding(hentetDokument)
-                }
+                error={hentFrontendFeilmelding(skjema.submitRessurs) || hentFrontendFeilmelding(hentetDokument)}
                 legend={'Send brev'}
                 hideLegend
             >
@@ -179,9 +168,7 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                         .map((person, index) => {
                             return (
                                 <option
-                                    aria-selected={
-                                        person.personIdent === skjema.felter.mottakerIdent.verdi
-                                    }
+                                    aria-selected={person.personIdent === skjema.felter.mottakerIdent.verdi}
                                     key={`${index}_${person.fødselsdato}`}
                                     value={person.personIdent}
                                 >
@@ -201,11 +188,7 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                     <option value={''}>Velg</option>
                     {brevMaler.map(mal => {
                         return (
-                            <option
-                                aria-selected={mal === skjema.felter.brevmal.verdi}
-                                key={mal}
-                                value={mal}
-                            >
+                            <option aria-selected={mal === skjema.felter.brevmal.verdi} key={mal} value={mal}>
                                 {brevmaler[mal]}
                             </option>
                         );
@@ -217,13 +200,7 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                         {...skjema.felter.dokumenter.hentNavInputProps(skjema.visFeilmeldinger)}
                         label={
                             <LabelOgEtikett>
-                                <Label
-                                    htmlFor={
-                                        skjema.felter.dokumenter.hentNavInputProps(
-                                            skjema.visFeilmeldinger
-                                        ).id
-                                    }
-                                >
+                                <Label htmlFor={skjema.felter.dokumenter.hentNavInputProps(skjema.visFeilmeldinger).id}>
                                     Velg dokumenter
                                 </Label>
                                 <Tag variant="neutral" size="small">
@@ -235,9 +212,7 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                         isMulti={true}
                         onChange={valgteOptions => {
                             skjema.felter.dokumenter.onChange(
-                                valgteOptions === null
-                                    ? []
-                                    : (valgteOptions as ISelectOptionMedBrevtekst[])
+                                valgteOptions === null ? [] : (valgteOptions as ISelectOptionMedBrevtekst[])
                             );
                         }}
                         options={opplysningsdokumenter.map(leggTilValuePåOption)}
@@ -249,10 +224,7 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                         <>
                             <Fieldset
                                 id={fieldsetId}
-                                error={
-                                    skjema.visFeilmeldinger &&
-                                    hentFrontendFeilmelding(skjema.submitRessurs)
-                                }
+                                error={skjema.visFeilmeldinger && hentFrontendFeilmelding(skjema.submitRessurs)}
                                 hideLegend
                                 legend={'Legg til kulepunkt'}
                             >
@@ -261,9 +233,7 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                                         const fritekstId = fritekst.verdi.id;
 
                                         return (
-                                            <StyledFamilieFritekstFelt
-                                                key={`fritekst-${fritekstId}`}
-                                            >
+                                            <StyledFamilieFritekstFelt key={`fritekst-${fritekstId}`}>
                                                 <SkjultLegend>{`Kulepunkt ${fritekstId}`}</SkjultLegend>
                                                 <TextareaBegrunnelseFritekst
                                                     key={`fritekst-${fritekstId}`}
@@ -274,13 +244,8 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                                                     className={'fritekst-textarea'}
                                                     value={fritekst.verdi.tekst}
                                                     maxLength={makslengdeFritekstHvertKulepunkt}
-                                                    onChange={event =>
-                                                        onChangeFritekst(event, fritekstId)
-                                                    }
-                                                    error={
-                                                        skjema.visFeilmeldinger &&
-                                                        fritekst.feilmelding
-                                                    }
+                                                    onChange={event => onChangeFritekst(event, fritekstId)}
+                                                    error={skjema.visFeilmeldinger && fritekst.feilmelding}
                                                     /* eslint-disable-next-line jsx-a11y/no-autofocus */
                                                     autoFocus
                                                 />
@@ -291,15 +256,12 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                                                 ) && (
                                                     <StyledButton
                                                         onClick={() => {
-                                                            skjema.felter.friteksterKulepunkter.validerOgSettFelt(
-                                                                [
-                                                                    ...skjema.felter.friteksterKulepunkter.verdi.filter(
-                                                                        mapFritekst =>
-                                                                            mapFritekst.verdi.id !==
-                                                                            fritekst.verdi.id
-                                                                    ),
-                                                                ]
-                                                            );
+                                                            skjema.felter.friteksterKulepunkter.validerOgSettFelt([
+                                                                ...skjema.felter.friteksterKulepunkter.verdi.filter(
+                                                                    mapFritekst =>
+                                                                        mapFritekst.verdi.id !== fritekst.verdi.id
+                                                                ),
+                                                            ]);
                                                         }}
                                                         id={`fjern_fritekst-${fritekstId}`}
                                                         size={'small'}
@@ -342,14 +304,9 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                                         value={skjema.felter.fritekstAvsnitt.verdi}
                                         maxLength={maksLengdeFritekstAvsnitt}
                                         onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                                            skjema.felter.fritekstAvsnitt.validerOgSettFelt(
-                                                event.target.value
-                                            )
+                                            skjema.felter.fritekstAvsnitt.validerOgSettFelt(event.target.value)
                                         }
-                                        error={
-                                            skjema.visFeilmeldinger &&
-                                            skjema.felter.fritekstAvsnitt?.feilmelding
-                                        }
+                                        error={skjema.visFeilmeldinger && skjema.felter.fritekstAvsnitt?.feilmelding}
                                         /* eslint-disable-next-line jsx-a11y/no-autofocus */
                                         autoFocus
                                     />
@@ -394,9 +351,7 @@ const BrevskjemaGammel = ({ onSubmitSuccess, bruker }: IProps) => {
                 )}
                 {skjema.felter.brevmal.verdi === Brevmal.FORLENGET_SVARTIDSBREV && (
                     <StyledTextField
-                        {...skjema.felter.antallUkerSvarfrist.hentNavInputProps(
-                            skjema.visFeilmeldinger
-                        )}
+                        {...skjema.felter.antallUkerSvarfrist.hentNavInputProps(skjema.visFeilmeldinger)}
                         label={'Antall uker svarfrist'}
                         size={'small'}
                     />

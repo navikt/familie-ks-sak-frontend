@@ -7,22 +7,14 @@ import type { IJournalpostRelevantDato } from '@navikt/familie-typer';
 import type { ITilgangsstyrtJournalpost } from '../../../typer/journalpost';
 import { isoStringTilDate } from '../../../utils/dato';
 
-const sorterJournalposterStigende = (
-    a: ITilgangsstyrtJournalpost,
-    b: ITilgangsstyrtJournalpost
-) => {
+const sorterJournalposterStigende = (a: ITilgangsstyrtJournalpost, b: ITilgangsstyrtJournalpost) => {
     if (!a.journalpost.datoMottatt) {
         return -1;
     }
     if (!b.journalpost.datoMottatt) {
         return 1;
     }
-    return isAfter(
-        isoStringTilDate(a.journalpost.datoMottatt),
-        isoStringTilDate(b.journalpost.datoMottatt)
-    )
-        ? 1
-        : -1;
+    return isAfter(isoStringTilDate(a.journalpost.datoMottatt), isoStringTilDate(b.journalpost.datoMottatt)) ? 1 : -1;
 };
 
 const sorterJournalposterSynkende = (a: ITilgangsstyrtJournalpost, b: ITilgangsstyrtJournalpost) =>
@@ -59,10 +51,7 @@ const mapFagsystemkodeTilTekst = (kode: string | undefined) => {
     }
 };
 
-export const hentDatoRegistrertSendt = (
-    relevanteDatoer: IJournalpostRelevantDato[],
-    journalposttype: string
-) => {
+export const hentDatoRegistrertSendt = (relevanteDatoer: IJournalpostRelevantDato[], journalposttype: string) => {
     return relevanteDatoer.find(dato => {
         if (journalposttype === 'I') {
             return dato.datotype === JournalpostDatotype.DATO_REGISTRERT;
@@ -72,10 +61,7 @@ export const hentDatoRegistrertSendt = (
     })?.dato;
 };
 
-export const hentSortState = (
-    sortering: Sorteringsrekkefølge,
-    sortKey: string
-): SortState | undefined =>
+export const hentSortState = (sortering: Sorteringsrekkefølge, sortKey: string): SortState | undefined =>
     sortering === Sorteringsrekkefølge.INGEN_SORTERING
         ? undefined
         : {

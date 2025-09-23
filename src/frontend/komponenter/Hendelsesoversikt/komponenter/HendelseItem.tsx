@@ -52,8 +52,7 @@ const HendelseItem = ({ hendelse }: IHendelseItemProps) => (
         {hendelse.beskrivelse && <BodyShort>{hendelse.beskrivelse}</BodyShort>}
         <BodyShort textColor="subtle">{`${hendelse.dato}`}</BodyShort>
         <BodyShort textColor="subtle">{`${hendelse.utførtAv} ${
-            hendelse.rolle.toString() !== BehandlerRolle[BehandlerRolle.SYSTEM] &&
-            behandlerRoller[hendelse.rolle]
+            hendelse.rolle.toString() !== BehandlerRolle[BehandlerRolle.SYSTEM] && behandlerRoller[hendelse.rolle]
                 ? `(${behandlerRoller[hendelse.rolle].navn})`
                 : ''
         }`}</BodyShort>

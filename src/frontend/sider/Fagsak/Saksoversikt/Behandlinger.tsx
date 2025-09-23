@@ -7,12 +7,7 @@ import { Alert, BodyShort, Heading, Skeleton, Switch, Table, VStack } from '@nav
 import { Behandling } from './Behandling';
 import styles from './Behandlinger.module.css';
 import type { Saksoversiktsbehandling } from './utils';
-import {
-    hentBehandlingerTilSaksoversikten,
-    hentBehandlingId,
-    hentTidspunktForSortering,
-    skalRadVises,
-} from './utils';
+import { hentBehandlingerTilSaksoversikten, hentBehandlingId, hentTidspunktForSortering, skalRadVises } from './utils';
 import { useHentKlagebehandlinger } from '../../../hooks/useHentKlagebehandlinger';
 import { useHentKontantstøtteBehandlinger } from '../../../hooks/useHentKontantstøtteBehandlinger';
 import { useHentTilbakekrevingsbehandlinger } from '../../../hooks/useHentTilbakekrevingsbehandlinger';
@@ -60,9 +55,7 @@ export function Behandlinger({ fagsakId }: Props) {
     } = useHentTilbakekrevingsbehandlinger(fagsakId);
 
     const behandlingerLaster =
-        hentKlagebehandlingLaster ||
-        hentTilbakekrevingsbehandlingerLaster ||
-        hentKontantstøtteBehandlingerLaster;
+        hentKlagebehandlingLaster || hentTilbakekrevingsbehandlingerLaster || hentKontantstøtteBehandlingerLaster;
 
     if (behandlingerLaster) {
         return (
@@ -130,9 +123,7 @@ export function Behandlinger({ fagsakId }: Props) {
                         <TableHeader />
                         <Table.Body>
                             {saksoversiktbehandlinger
-                                .filter(behandling =>
-                                    skalRadVises(behandling, visHenlagteBehandlinger)
-                                )
+                                .filter(behandling => skalRadVises(behandling, visHenlagteBehandlinger))
                                 .sort((a, b) =>
                                     differenceInMilliseconds(
                                         isoStringTilDate(hentTidspunktForSortering(b)),

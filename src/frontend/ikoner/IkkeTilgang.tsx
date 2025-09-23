@@ -6,11 +6,7 @@ interface IIkkeTilgang {
     width?: number;
 }
 
-const IkkeTilgang: React.FunctionComponent<IIkkeTilgang> = ({
-    className,
-    height = 24,
-    width = 24,
-}) => {
+const IkkeTilgang: React.FunctionComponent<IIkkeTilgang> = ({ className, height = 24, width = 24 }) => {
     return (
         <svg
             aria-labelledby={'ikkeTilgang'}

@@ -19,9 +19,7 @@ interface IProps {
 
 export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({ åpenBehandling, lukkModal }) => {
     const { settÅpenBehandling, vurderErLesevisning } = useBehandlingContext();
-    const { skjema, kanSendeSkjema, onSubmit } = useOppdaterEndringstidspunktSkjema(
-        åpenBehandling.endringstidspunkt
-    );
+    const { skjema, kanSendeSkjema, onSubmit } = useOppdaterEndringstidspunktSkjema(åpenBehandling.endringstidspunkt);
 
     const erLesevisning = vurderErLesevisning();
     const oppdaterEndringstidspunkt = () => {
@@ -30,9 +28,7 @@ export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({ åpenBehandli
                 {
                     method: 'PUT',
                     data: {
-                        overstyrtEndringstidspunkt: dateTilIsoDatoString(
-                            skjema.felter.endringstidspunkt.verdi
-                        ),
+                        overstyrtEndringstidspunkt: dateTilIsoDatoString(skjema.felter.endringstidspunkt.verdi),
                         behandlingId: åpenBehandling.behandlingId,
                     },
                     url: `/familie-ks-sak/api/vedtaksperioder/endringstidspunkt`,
@@ -84,13 +80,7 @@ export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({ åpenBehandli
                     loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                     disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                 />
-                <Button
-                    variant={'tertiary'}
-                    key={'Avbryt'}
-                    size={'small'}
-                    onClick={lukkModal}
-                    children={'Avbryt'}
-                />
+                <Button variant={'tertiary'} key={'Avbryt'} size={'small'} onClick={lukkModal} children={'Avbryt'} />
             </Modal.Footer>
         </Modal>
     );
