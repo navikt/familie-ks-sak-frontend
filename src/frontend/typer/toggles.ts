@@ -10,7 +10,6 @@ export enum ToggleNavn {
     skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
     kanOppretteRevurderingMedAarsakIverksetteKaVedtak = 'familie-ks-sak.kan-opprette-revurdering-med-aarsak-iverksette-ka-vedtak',
     skalAlltidViseAlleVedtaksperioder = 'familie-ks-sak-frontend.alltid-vis-alle-vedtaksperioder',
-    brukNyHenleggModal = 'familie-ks-sak.bruk-ny-henlegg-modal',
     brukReactQueryPaaSaksoversiktsiden = 'familie-ks-sak.bruk-react-query-paa-saksoversiktsiden',
     skalViseOppholdsadresse = 'familie-ks-sak.skal-vise-oppholdsadresse',
     brukNyPdfModal = 'familie-ks-sak.bruk-ny-pdf-modal',
