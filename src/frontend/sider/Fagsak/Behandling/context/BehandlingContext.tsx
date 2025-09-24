@@ -3,12 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router';
 
-import {
-    byggTomRessurs,
-    hentDataFraRessurs,
-    type Ressurs,
-    RessursStatus,
-} from '@navikt/familie-typer';
+import { byggTomRessurs, hentDataFraRessurs, type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import useBehandlingApi from './useBehandlingApi';
 import useBehandlingssteg from './useBehandlingssteg';

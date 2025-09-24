@@ -98,11 +98,7 @@ const FagsakContainerInnhold = ({ minimalFagsak }: { minimalFagsak: IMinimalFags
 const FagsakContainer: React.FunctionComponent = () => {
     const fagsakId = useFagsakId();
 
-    const {
-        data: fagsak,
-        isPending: isPendingFagsak,
-        error: fagsakError,
-    } = useHentFagsak(fagsakId);
+    const { data: fagsak, isPending: isPendingFagsak, error: fagsakError } = useHentFagsak(fagsakId);
 
     useScrollTilAnker();
     if (isPendingFagsak) {
@@ -115,11 +111,7 @@ const FagsakContainer: React.FunctionComponent = () => {
     }
 
     if (fagsakError) {
-        return (
-            <Alert variant={'error'}>
-                Feil oppstod ved innlasting av fagsak: {fagsakError.message}
-            </Alert>
-        );
+        return <Alert variant={'error'}>Feil oppstod ved innlasting av fagsak: {fagsakError.message}</Alert>;
     }
 
     return (

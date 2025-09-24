@@ -21,10 +21,7 @@ export const useOpprettEllerHentFagsak = () => {
             .then((response: Ressurs<IMinimalFagsak>) => {
                 if (response.status === RessursStatus.SUKSESS) {
                     const hentetFagsak = response.data;
-                    queryClient.setQueryData(
-                        HentFagsakQueryKeyFactory.fagsak(hentetFagsak.id),
-                        hentetFagsak
-                    );
+                    queryClient.setQueryData(HentFagsakQueryKeyFactory.fagsak(hentetFagsak.id), hentetFagsak);
                     const aktivBehandling: VisningBehandling | undefined =
                         hentAktivBehandlingPåMinimalFagsak(hentetFagsak);
                     if (aktivBehandling) {

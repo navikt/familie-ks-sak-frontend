@@ -1,10 +1,4 @@
-import React, {
-    createContext,
-    type PropsWithChildren,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
