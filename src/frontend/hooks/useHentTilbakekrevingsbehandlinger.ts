@@ -5,7 +5,7 @@ import { useHttp } from '@navikt/familie-http';
 import { hentTilbakekrevingsbehandlinger } from '../api/hentTilbakekrevingsbehandlinger';
 
 export const HentTilbakekrevingsbehandlingerQueryKeyFactory = {
-    fagsak: (fagsakId: number) => ['tilbakekrevingsbehandlinger', fagsakId],
+    fagsak: (fagsakId: number | undefined) => ['tilbakekrevingsbehandlinger', fagsakId],
 };
 
 export function useHentTilbakekrevingsbehandlinger(fagsakId: number) {
