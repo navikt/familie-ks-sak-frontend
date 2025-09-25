@@ -8,6 +8,9 @@
         "allowJs": true,
         "allowSyntheticDefaultImports": true,
     },
+    "exclude": [
+        "../../node_modules"
+    ],
     "lib": [
         "es2015",
         "esnext"
