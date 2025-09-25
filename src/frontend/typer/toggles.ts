@@ -12,7 +12,6 @@ export enum ToggleNavn {
     skalAlltidViseAlleVedtaksperioder = 'familie-ks-sak-frontend.alltid-vis-alle-vedtaksperioder',
     brukReactQueryPaaSaksoversiktsiden = 'familie-ks-sak.bruk-react-query-paa-saksoversiktsiden',
     skalViseOppholdsadresse = 'familie-ks-sak.skal-vise-oppholdsadresse',
-    brukNyPdfModal = 'familie-ks-sak.bruk-ny-pdf-modal',
 }
 
 export const alleTogglerAv = (): IToggles => {
