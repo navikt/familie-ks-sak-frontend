@@ -24,5 +24,9 @@
         "vitest/globals",
         "@testing-library/jest-dom"
       ],
+    },
+    "tsc-alias": {
+      "resolveFullPaths": true,
+      "verbose": false
     }
-  }
+}
