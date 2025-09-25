@@ -18,9 +18,6 @@
     "prettier-check": "prettier --check './src/**/*.{js,jsx,ts,tsx,json,css}'",
     "prettier:fix": "prettier --write './src/**/*.{js,jsx,ts,tsx,json,css}'",
     "prepare": "husky",
-    "start:cypress": "tsc -p tsconfig.backend.json && NODE_ENV=production node --loader ts-node/esm --es-module-specifier-resolution=node backend/backend/cypress-server.js",
-    "run:cypress": "cypress run",
-    "cypress": "yarn start:cypress & yarn run:cypress",
     "typecheck": "tsc --noEmit -p src/frontend/tsconfig.json",
     "validate": "yarn typecheck && yarn lint && yarn prettier"
   },
@@ -106,7 +103,6 @@
     "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^7.1.1",
     "css-minimizer-webpack-plugin": "^7.0.0",
-    "cypress": "14.5.2",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-import": "^2.32.0",
