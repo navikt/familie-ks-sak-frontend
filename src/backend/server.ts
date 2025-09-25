@@ -7,9 +7,6 @@ import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import expressStaticGzip from 'express-static-gzip';
 import { v4 as uuidv4 } from 'uuid';
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import type { IApp } from '@navikt/familie-backend';
 import { default as backend, ensureAuthenticated, envVar } from '@navikt/familie-backend';
@@ -19,27 +16,11 @@ import { sessionConfig } from './config';
 import { prometheusTellere } from './metrikker';
 import { attachToken, doProxy, doRedirectProxy } from './proxy';
 import setupRouter from './router';
-import webpackDevConfig from '../webpack/webpack.dev';
 
 const port = 8000;
 
-backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }: IApp) => {
+backend(sessionConfig, prometheusTellere).then(async ({ app, azureAuthClient, router }: IApp) => {
     if (process.env.NODE_ENV === 'development') {
-        const compiler = webpack(webpackDevConfig);
-
-        if (!compiler) {
-            throw new Error('Webpack compileren feilet');
-        }
-
-        const middleware = webpackDevMiddleware(compiler, {
-            // eslint-disable-next-line
-            // @ts-ignore
-            publicPath: webpackDevConfig.output.publicPath,
-            writeToDisk: true,
-        });
-
-        app.use(middleware);
-        app.use(webpackHotMiddleware(compiler));
         app.use('/assets/favicon.svg', express.static('./frontend_development/assets/favicon.svg'));
     } else {
         app.use('/assets', expressStaticGzip(path.join(process.cwd(), 'frontend_production'), {}));
@@ -59,7 +40,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
     // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser
     app.use(bodyParser.json({ limit: '200mb' }));
     app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
-    app.use('/', setupRouter(azureAuthClient, router));
+    app.use('/', await setupRouter(azureAuthClient, router));
 
     app.listen(port, '0.0.0.0', () => {
         logInfo(`Server startet på port ${port}. Build version: ${envVar('APP_VERSION')}.`);

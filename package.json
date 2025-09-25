@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=production node backend/backend/server.js",
-    "start:dev": "yarn build:backend && NODE_ENV=development node backend/backend/server.js",
+    "start:dev": "yarn build:backend && NODE_ENV=development node backend/backend/server.js && vite src/frontend/index.tsx",
     "build": "yarn build:prod",
     "build:prod": "tsc -p tsconfig.backend.json && NODE_ENV=production webpack --config ./src/webpack/webpack.prod.js && yarn tsc-alias",
     "build:backend": "tsc -p tsconfig.backend.json && yarn tsc-alias",
