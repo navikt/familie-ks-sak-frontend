@@ -1,32 +1,47 @@
 {
     "compilerOptions": {
-      "target": "es6",
-      "module": "es6",
-      "lib": ["dom", "esnext", "es6"],
-      "importHelpers": true,
-      "declaration": true,
-      "strict": true,
-      "noImplicitAny": true,
-      "strictNullChecks": true,
-      "strictFunctionTypes": true,
-      "strictPropertyInitialization": true,
-      "noImplicitThis": true,
-      "alwaysStrict": true,
-      "noImplicitReturns": false,
-      "noFallthroughCasesInSwitch": true,
-      "moduleResolution": "node",
-      "traceResolution": false,
-      "jsx": "react",
-      "esModuleInterop": true,
-      "isolatedModules": true,
-      "verbatimModuleSyntax": true,
-      "types": [
-        "vitest/globals",
-        "@testing-library/jest-dom"
-      ],
+        /* Language and Environment */
+        "target": "es6",
+        "lib": ["dom", "esnext", "es6"],
+        "jsx": "react",
+
+        /* Modules */
+        "module": "es6",
+        "moduleResolution": "node",
+
+        /* Emit */
+        "declaration": true,
+
+        /* Interop Constraints */
+        "isolatedModules": true,
+        "verbatimModuleSyntax": true,
+        "esModuleInterop": true,
+
+        /* Type Checking */
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "noImplicitReturns": false,
+        "noFallthroughCasesInSwitch": true,
+
+        /* Completeness */
+        "types": [
+            "vitest/globals",
+            "@testing-library/jest-dom"
+        ],
+
+        /* Compiler Diagnostics */
+        "traceResolution": false,
+
+        /* Projects */
+        "importHelpers": true
     },
     "tsc-alias": {
-      "resolveFullPaths": true,
-      "verbose": false
+        "resolveFullPaths": true,
+        "verbose": false
     }
 }
