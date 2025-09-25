@@ -7,10 +7,16 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import Annet from './Annet';
 import Barna from './Barna';
+import { LeggTilBarnKnapp } from './LeggTilBarnKnapp';
 import { useSøknadContext } from './SøknadContext';
+import { useAppContext } from '../../../../../context/AppContext';
+import { LeggTilBarnModal } from '../../../../../komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
+import { LeggTilBarnModalContextProvider } from '../../../../../komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
 import MålformVelger from '../../../../../komponenter/MålformVelger';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { BehandlingSteg } from '../../../../../typer/behandling';
+import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
+import { ToggleNavn } from '../../../../../typer/toggles';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 const StyledSkjemasteg = styled(Skjemasteg)`
@@ -18,59 +24,78 @@ const StyledSkjemasteg = styled(Skjemasteg)`
 `;
 
 const RegistrerSøknad: React.FC = () => {
-    const { vurderErLesevisning } = useBehandlingContext();
+    const { toggles } = useAppContext();
+    const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const { hentFeilTilOppsummering, nesteAction, skjema, søknadErLastetFraBackend } = useSøknadContext();
 
+    const harBrevmottaker =
+        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere.length > 0 : false;
+
+    function onLeggTilBarn(barn: IBarnMedOpplysninger) {
+        skjema.felter.barnaMedOpplysninger.validerOgSettFelt([...skjema.felter.barnaMedOpplysninger.verdi, barn]);
+    }
+
     return (
-        <StyledSkjemasteg
-            className={'søknad'}
-            tittel={'Registrer opplysninger fra søknaden'}
-            nesteOnClick={() => {
-                nesteAction(false);
-            }}
-            nesteKnappTittel={erLesevisning ? 'Neste' : 'Bekreft og fortsett'}
-            senderInn={skjema.submitRessurs.status === RessursStatus.HENTER}
-            steg={BehandlingSteg.REGISTRERE_SØKNAD}
-        >
-            {søknadErLastetFraBackend && !erLesevisning && (
-                <>
-                    <br />
-                    <Alert
-                        variant="warning"
-                        children={
-                            'En søknad er allerede registrert på behandlingen. Vi har fylt ut søknaden i skjemaet.'
-                        }
-                    />
-                    <br />
-                </>
+        <LeggTilBarnModalContextProvider>
+            {!erLesevisning && toggles[ToggleNavn.brukNyLeggTilBarnModal] && (
+                <LeggTilBarnModal
+                    barn={skjema.felter.barnaMedOpplysninger.verdi}
+                    onLeggTilBarn={onLeggTilBarn}
+                    harBrevmottaker={harBrevmottaker}
+                />
             )}
+            <StyledSkjemasteg
+                className={'søknad'}
+                tittel={'Registrer opplysninger fra søknaden'}
+                nesteOnClick={() => {
+                    nesteAction(false);
+                }}
+                nesteKnappTittel={erLesevisning ? 'Neste' : 'Bekreft og fortsett'}
+                senderInn={skjema.submitRessurs.status === RessursStatus.HENTER}
+                steg={BehandlingSteg.REGISTRERE_SØKNAD}
+            >
+                {søknadErLastetFraBackend && !erLesevisning && (
+                    <>
+                        <br />
+                        <Alert
+                            variant="warning"
+                            children={
+                                'En søknad er allerede registrert på behandlingen. Vi har fylt ut søknaden i skjemaet.'
+                            }
+                        />
+                        <br />
+                    </>
+                )}
 
-            <Barna />
+                <Barna />
 
-            <MålformVelger
-                målformFelt={skjema.felter.målform}
-                visFeilmeldinger={skjema.visFeilmeldinger}
-                erLesevisning={erLesevisning}
-            />
+                {!erLesevisning && toggles[ToggleNavn.brukNyLeggTilBarnModal] && <LeggTilBarnKnapp />}
 
-            <Annet />
+                <MålformVelger
+                    målformFelt={skjema.felter.målform}
+                    visFeilmeldinger={skjema.visFeilmeldinger}
+                    erLesevisning={erLesevisning}
+                />
 
-            {(skjema.submitRessurs.status === RessursStatus.FEILET ||
-                skjema.submitRessurs.status === RessursStatus.IKKE_TILGANG) && (
-                <Alert variant="error">{skjema.submitRessurs.frontendFeilmelding}</Alert>
-            )}
-            {skjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
-                <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
-                    {hentFeilTilOppsummering().map(item => (
-                        <ErrorSummary.Item key={item.skjemaelementId} href={`#${item.skjemaelementId}`}>
-                            {item.feilmelding}
-                        </ErrorSummary.Item>
-                    ))}
-                </ErrorSummary>
-            )}
-        </StyledSkjemasteg>
+                <Annet />
+
+                {(skjema.submitRessurs.status === RessursStatus.FEILET ||
+                    skjema.submitRessurs.status === RessursStatus.IKKE_TILGANG) && (
+                    <Alert variant="error">{skjema.submitRessurs.frontendFeilmelding}</Alert>
+                )}
+                {skjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
+                    <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
+                        {hentFeilTilOppsummering().map(item => (
+                            <ErrorSummary.Item key={item.skjemaelementId} href={`#${item.skjemaelementId}`}>
+                                {item.feilmelding}
+                            </ErrorSummary.Item>
+                        ))}
+                    </ErrorSummary>
+                )}
+            </StyledSkjemasteg>
+        </LeggTilBarnModalContextProvider>
     );
 };
 
