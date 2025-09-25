@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router';
 
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../../context/AppContext';
@@ -16,7 +16,6 @@ import { Klagebehandlingstype } from '../../../../../typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
 import type { IsoDatoString } from '../../../../../utils/dato';
 import { dateTilIsoDatoString, dateTilIsoDatoStringEllerUndefined, validerGyldigDato } from '../../../../../utils/dato';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 interface IOpprettBehandlingSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
@@ -34,7 +33,6 @@ const useOpprettBehandling = ({
     onOpprettTilbakekrevingSuccess: () => void;
 }) => {
     const { fagsakId } = useSakOgBehandlingParams();
-    const { settÅpenBehandling } = useBehandlingContext();
     const { bruker: brukerRessurs } = useFagsakContext();
     const { innloggetSaksbehandler } = useAppContext();
     const { oppdaterKlagebehandlingerPåFagsak } = useFagsakContext();
@@ -173,8 +171,6 @@ const useOpprettBehandling = ({
                 if (response.status === RessursStatus.SUKSESS) {
                     lukkModal();
                     nullstillSkjema();
-
-                    settÅpenBehandling(response);
                     const behandling: IBehandling | undefined = hentDataFraRessurs(response);
 
                     if (behandling && behandling.årsak === BehandlingÅrsak.SØKNAD) {

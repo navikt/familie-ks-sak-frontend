@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Dropdown } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../../context/AppContext';
 import { ModalType } from '../../../../../context/ModalContext';
@@ -12,10 +11,8 @@ import { useBehandlingContext } from '../../../Behandling/context/BehandlingCont
 
 export function HenleggBehandling() {
     const { toggles } = useAppContext();
-    const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
+    const { behandling, vurderErLesevisning } = useBehandlingContext();
     const { åpneModal } = useModal(ModalType.HENLEGG_BEHANDLING);
-
-    const behandling = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data : undefined;
 
     const harTilgangTilTekniskVedlikeholdHenleggelse = toggles[ToggleNavn.tekniskVedlikeholdHenleggelse];
 
