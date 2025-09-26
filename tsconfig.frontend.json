@@ -1,0 +1,37 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        /* Language and Environment */
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "jsx": "react", // TODO: Egen PR. Bruk react-jsx og fjern all overflødige imports
+
+        /* Modules */
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "allowImportingTsExtensions": true,
+        "moduleDetection": "force",
+
+        /* Emit */
+        "noEmit": true,
+
+        /* Interop Constraints */
+        "verbatimModuleSyntax": true,
+        "useDefineForClassFields": true,
+
+        /* Type Checking */
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedSideEffectImports": false, // Trenger for import av @navikt/ds-css
+
+        /* Completeness */
+        "types": [
+            "vite/client",
+            "vitest/globals",
+            "@testing-library/jest-dom"
+        ]
+    },
+    "include": ["src/frontend"],
+    "exclude": ["src/backend"]
+}
