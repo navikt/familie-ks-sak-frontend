@@ -24,14 +24,14 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
-        "noUncheckedSideEffectImports": true,
+        "noUncheckedSideEffectImports": false, // Trenger for import av @navikt/ds-css
 
         /* Completeness */
         "types": [
             "vite/client",
             "vitest/globals",
             "@testing-library/jest-dom"
-        ],
+        ]
     },
     "include": ["src/frontend"],
     "exclude": ["src/backend"]
