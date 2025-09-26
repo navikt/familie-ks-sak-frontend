@@ -6,7 +6,7 @@ import { Link as ReactRouterLink } from 'react-router';
 import { Alert, Box, Heading, Link, VStack } from '@navikt/ds-react';
 import { byggTomRessurs } from '@navikt/familie-typer';
 
-import Behandlinger from './Behandlinger';
+import { Behandlinger } from './Behandlinger';
 import BehandlingerOld from './BehandlingerOld';
 import FagsakLenkepanel, { SaksoversiktPanelBredde } from './FagsakLenkepanel';
 import Utbetalinger from './Utbetalinger';

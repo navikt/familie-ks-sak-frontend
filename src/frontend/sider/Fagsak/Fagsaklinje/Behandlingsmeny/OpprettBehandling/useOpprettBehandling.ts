@@ -11,7 +11,7 @@ import { useAppContext } from '../../../../../context/AppContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import { HentFagsakQueryKeyFactory } from '../../../../../hooks/useHentFagsak';
 import { HentKlagebehandlingerQueryKeyFactory } from '../../../../../hooks/useHentKlagebehandlinger';
-import { HentBehandlingerQueryKeyFactory } from '../../../../../hooks/useHentKontantstøtteBehandlinger';
+import { HentKontantstøttebehandlingerQueryKeyFactory } from '../../../../../hooks/useHentKontantstøttebehandlinger';
 import { HentTilbakekrevingsbehandlingerQueryKeyFactory } from '../../../../../hooks/useHentTilbakekrevingsbehandlinger';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling, IRestNyBehandling } from '../../../../../typer/behandling';
@@ -40,14 +40,11 @@ const useOpprettBehandling = ({
 }) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { settÅpenBehandling } = useBehandlingContext();
-    const { bruker: brukerRessurs } = useFagsakContext();
+    const { minimalFagsak, bruker: brukerRessurs } = useFagsakContext();
     const { innloggetSaksbehandler } = useAppContext();
     const { oppdaterKlagebehandlingerPåFagsak } = useFagsakContext();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-
-    const erFagsakIdTall = fagsakId !== undefined && !isNaN(Number(fagsakId));
-    const fagsakIdTall = erFagsakIdTall ? Number(fagsakId) : undefined;
 
     const bruker = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data : undefined;
 
@@ -144,7 +141,7 @@ const useOpprettBehandling = ({
                     lukkModal();
                     nullstillSkjema();
                     queryClient.invalidateQueries({
-                        queryKey: HentKlagebehandlingerQueryKeyFactory.fagsak(fagsakIdTall),
+                        queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(minimalFagsak?.id),
                     });
                 }
             }
@@ -163,7 +160,9 @@ const useOpprettBehandling = ({
                     nullstillSkjemaStatus();
                     onOpprettTilbakekrevingSuccess();
                     queryClient.invalidateQueries({
-                        queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.fagsak(fagsakIdTall),
+                        queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(
+                            minimalFagsak?.id
+                        ),
                     });
                 }
             }
@@ -188,11 +187,15 @@ const useOpprettBehandling = ({
                 if (response.status === RessursStatus.SUKSESS) {
                     lukkModal();
                     nullstillSkjema();
+
                     queryClient.invalidateQueries({
-                        queryKey: HentBehandlingerQueryKeyFactory.fagsak(fagsakIdTall),
+                        queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(
+                            minimalFagsak?.id
+                        ),
                     });
+
                     queryClient.invalidateQueries({
-                        queryKey: HentFagsakQueryKeyFactory.fagsak(fagsakIdTall),
+                        queryKey: HentFagsakQueryKeyFactory.fagsak(minimalFagsak?.id),
                     });
 
                     settÅpenBehandling(response);
