@@ -20,14 +20,6 @@ import setupRouter from './router.js';
 const port = 8000;
 
 backend(sessionConfig, prometheusTellere).then(async ({ app, azureAuthClient, router }: IApp) => {
-    // FIXME
-    if (process.env.NODE_ENV === 'development') {
-        app.use('/assets/favicon.svg', express.static('./frontend_development/assets/favicon.svg'));
-    } else {
-        app.use('/assets', expressStaticGzip(path.join(process.cwd(), 'frontend_production'), {}));
-        app.use('/assets/favicon.svg', express.static('./frontend_production/assets/favicon.svg'));
-    }
-
     app.use((req: Request, _res: Response, next: NextFunction) => {
         req.headers['nav-call-id'] = uuidv4();
         req.headers['nav-consumer-id'] = 'familie-ks-sak-front';

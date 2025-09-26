@@ -11,7 +11,7 @@
         "resolveJsonModule": true,
 
         /* Emit */
-        "outDir": "dist/backend",
+        "outDir": "dist",
         "rootDir": "./src",
 
         /* Completeness */

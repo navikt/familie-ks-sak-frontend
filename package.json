@@ -7,8 +7,8 @@
   "author": "Team BAKS",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_ENV=production node backend/backend/server.js",
-    "start:dev": "yarn build:backend && NODE_ENV=development node backend/backend/server.js && vite src/frontend/index.tsx",
+    "start": "NODE_ENV=production node dist/backend/server.js",
+    "start:dev": "yarn build:backend && NODE_ENV=development node dist/backend/server.js && vite src/frontend/index.tsx",
     "build": "yarn build:prod",
     "build:dev": "NODE_ENV=development yarn build:backend && yarn build:frontend",
     "build:prod": "NODE_ENV=production yarn build:backend && yarn build:frontend",

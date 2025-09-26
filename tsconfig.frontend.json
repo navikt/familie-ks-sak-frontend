@@ -7,7 +7,7 @@
 
         /* Modules */
         "module": "ESNext",
-        "moduleResolution": "NodeNext",
+        "moduleResolution": "Bundler",
 
         "allowImportingTsExtensions": true,
         "moduleDetection": "force",
@@ -28,7 +28,11 @@
         "noUncheckedSideEffectImports": true,
 
         /* Completeness */
-        "types": ["vite/client"],
+        "types": [
+            "vite/client",
+            "vitest/globals",
+            "@testing-library/jest-dom"
+        ],
 
         /* Backwards Compatibility */
         "erasableSyntaxOnly": true
