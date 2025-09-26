@@ -11,8 +11,7 @@
         "rootDir": "./src",
 
         /* Completeness */
-        "types": ["express-session"],
-        "skipLibCheck": true,
+        "types": ["express-session"]
     },
     "include": ["./src/backend"],
     "exclude": ["./src/frontend"],

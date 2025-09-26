@@ -29,7 +29,6 @@
 
         /* Completeness */
         "types": ["vite/client"],
-        "skipLibCheck": true,
 
         /* Backwards Compatibility */
         "erasableSyntaxOnly": true

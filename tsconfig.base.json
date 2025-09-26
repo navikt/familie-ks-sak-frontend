@@ -29,6 +29,7 @@
         "noFallthroughCasesInSwitch": true,
 
         /* Completeness */
+        "skipLibCheck": true,
         "types": [
             "vitest/globals",
             "@testing-library/jest-dom"
