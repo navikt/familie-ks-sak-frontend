@@ -15,7 +15,7 @@ import { TidslinjeProvider } from './komponenter/Tidslinje/TidslinjeContext';
 import Toasts from './komponenter/Toast/Toasts';
 import Barnehagelister from './sider/Barnehagelister/Barnehagelister';
 import { BehandlingProvider } from './sider/Fagsak/Behandling/context/BehandlingContext';
-import FagsakContainer from './sider/Fagsak/FagsakContainer';
+import { FagsakContainer } from './sider/Fagsak/FagsakContainer';
 import Internstatistikk from './sider/Internstatistikk/Internstatistikk';
 import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';
 import { Oppgavebenk } from './sider/Oppgavebenk/Oppgavebenk';

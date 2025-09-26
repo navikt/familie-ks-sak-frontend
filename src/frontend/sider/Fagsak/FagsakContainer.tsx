@@ -95,12 +95,13 @@ const FagsakContainerInnhold = ({ minimalFagsak }: { minimalFagsak: IMinimalFags
     }
 };
 
-const FagsakContainer: React.FunctionComponent = () => {
+export function FagsakContainer() {
     const fagsakId = useFagsakId();
 
     const { data: fagsak, isPending: isPendingFagsak, error: fagsakError } = useHentFagsak(fagsakId);
 
     useScrollTilAnker();
+
     if (isPendingFagsak) {
         return (
             <HStack gap={'4'} margin={'space-16'}>
@@ -119,6 +120,4 @@ const FagsakContainer: React.FunctionComponent = () => {
             <FagsakContainerInnhold minimalFagsak={fagsak} />
         </FagsakProvider>
     );
-};
-
-export default FagsakContainer;
+}
