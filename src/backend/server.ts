@@ -1,7 +1,10 @@
 import './konfigurerApp.js';
 
+import path from 'path';
+
 import bodyParser from 'body-parser';
 import type { NextFunction, Request, Response } from 'express';
+import expressStaticGzip from 'express-static-gzip';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { IApp } from '@navikt/familie-backend';
@@ -21,6 +24,12 @@ backend(sessionConfig, prometheusTellere).then(async ({ app, azureAuthClient, ro
         req.headers['nav-consumer-id'] = 'familie-ks-sak-front';
         next();
     });
+
+    if (process.env.NODE_ENV === 'development') {
+        app.use(expressStaticGzip(path.join(process.cwd(), 'dist/frontend'), {}));
+    } else {
+        app.use('/assets', expressStaticGzip(path.join(process.cwd(), 'frontend'), {}));
+    }
 
     app.use('/familie-ks-sak/api', ensureAuthenticated(azureAuthClient, true), attachToken(azureAuthClient), doProxy());
 
