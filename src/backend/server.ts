@@ -1,11 +1,7 @@
 import './konfigurerApp.js';
 
-import path from 'path';
-
 import bodyParser from 'body-parser';
 import type { NextFunction, Request, Response } from 'express';
-import express from 'express';
-import expressStaticGzip from 'express-static-gzip';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { IApp } from '@navikt/familie-backend';

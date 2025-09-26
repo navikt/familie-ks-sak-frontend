@@ -3,12 +3,11 @@
     "compilerOptions": {
         /* Language and Environment */
         "lib": ["ES2022", "DOM", "DOM.Iterable"],
-        "jsx": "react-jsx",
+        "jsx": "react", // TODO
 
         /* Modules */
         "module": "ESNext",
         "moduleResolution": "Bundler",
-
         "allowImportingTsExtensions": true,
         "moduleDetection": "force",
 
@@ -33,9 +32,6 @@
             "vitest/globals",
             "@testing-library/jest-dom"
         ],
-
-        /* Backwards Compatibility */
-        "erasableSyntaxOnly": true
     },
     "include": ["src/frontend"],
     "exclude": ["src/backend"]
