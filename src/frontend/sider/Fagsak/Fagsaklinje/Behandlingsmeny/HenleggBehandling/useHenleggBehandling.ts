@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
-import { useSkjema, useFelt, feil, ok } from '@navikt/familie-skjema';
 import type { FeltState } from '@navikt/familie-skjema';
-import { RessursStatus } from '@navikt/familie-typer';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
@@ -19,7 +18,7 @@ const useHenleggBehandling = (lukkModal: () => void) => {
     const [begrunnelse, settBegrunnelse] = useState('');
     const [årsak, settÅrsak] = useState('');
     const { settÅpenBehandling } = useBehandlingContext();
-    const { minimalFagsakRessurs } = useFagsakContext();
+    const { fagsak } = useFagsakContext();
 
     const { onSubmit, skjema, nullstillSkjema } = useSkjema<
         {
@@ -61,8 +60,7 @@ const useHenleggBehandling = (lukkModal: () => void) => {
     };
 
     const hentSkjemaData = (): IManueltBrevRequestPåBehandling => ({
-        mottakerIdent:
-            minimalFagsakRessurs.status === RessursStatus.SUKSESS ? minimalFagsakRessurs.data.søkerFødselsnummer : '',
+        mottakerIdent: fagsak.søkerFødselsnummer,
         multiselectVerdier: [],
         brevmal: Brevmal.HENLEGGE_TRUKKET_SØKNAD,
         barnIBrev: [],
