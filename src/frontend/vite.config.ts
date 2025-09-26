@@ -10,4 +10,8 @@ export default defineConfig({
     define: {
         global: 'window',
     },
+    build: {
+        outDir: '../../dist/frontend/',
+        emptyOutDir: true,
+    },
 });

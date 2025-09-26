@@ -1,12 +1,7 @@
 {
     "compilerOptions": {
         /* Language and Environment */
-        "target": "es6",
-        "lib": ["dom", "esnext", "es6"],
-
-        /* Modules */
-        "module": "es6",
-        "moduleResolution": "node",
+        "target": "ES2022",
 
         /* Emit */
         "declaration": true,
@@ -39,9 +34,5 @@
 
         /* Projects */
         "importHelpers": true
-    },
-    "tsc-alias": {
-        "resolveFullPaths": true,
-        "verbose": false
     }
 }

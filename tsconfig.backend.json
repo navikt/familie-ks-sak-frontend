@@ -1,13 +1,17 @@
 {
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
+        /* Language and Environment */
+        "lib": ["ES2022"],
+
         /* Modules */
-        "module": "esnext",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "allowJs": true,
         "resolveJsonModule": true,
 
         /* Emit */
-        "outDir": "backend",
+        "outDir": "dist/backend",
         "rootDir": "./src",
 
         /* Completeness */
@@ -15,5 +19,4 @@
     },
     "include": ["./src/backend"],
     "exclude": ["./src/frontend"],
-    "lib": ["es2015"]
 }

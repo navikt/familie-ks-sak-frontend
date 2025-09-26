@@ -10,8 +10,10 @@
     "start": "NODE_ENV=production node backend/backend/server.js",
     "start:dev": "yarn build:backend && NODE_ENV=development node backend/backend/server.js && vite src/frontend/index.tsx",
     "build": "yarn build:prod",
-    "build:prod": "tsc -p tsconfig.backend.json && NODE_ENV=production vite build src/frontend && yarn tsc-alias",
-    "build:backend": "tsc -p tsconfig.backend.json && yarn tsc-alias",
+    "build:dev": "NODE_ENV=development yarn build:backend && yarn build:frontend",
+    "build:prod": "NODE_ENV=production yarn build:backend && yarn build:frontend",
+    "build:backend": "tsc -p tsconfig.backend.json",
+    "build:frontend": "vite build src/frontend",
     "test": "vitest",
     "lint": "eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
@@ -20,8 +22,7 @@
     "prettier:fix": "prettier --write './src/**/*.{js,jsx,ts,tsx,json,css}'",
     "prepare": "husky",
     "typecheck": "tsc --noEmit -p src/frontend/tsconfig.json",
-    "validate": "yarn typecheck && yarn lint && yarn prettier",
-    "tsc-alias": "tsc-alias -p tsconfig.backend.json"
+    "validate": "yarn typecheck && yarn lint && yarn prettier"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,css}": [
@@ -111,7 +112,6 @@
     "prettier": "^3.6.2",
     "react-refresh": "^0.17.0",
     "style-loader": "^4.0.0",
-    "tsc-alias": "^1.8.16",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.44.0",
     "vite": "^7.1.7",

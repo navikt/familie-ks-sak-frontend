@@ -2,13 +2,13 @@
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
         /* Language and Environment */
-        "target": "ES2022",
         "lib": ["ES2022", "DOM", "DOM.Iterable"],
         "jsx": "react-jsx",
 
         /* Modules */
         "module": "ESNext",
-        "moduleResolution": "bundler",
+        "moduleResolution": "NodeNext",
+
         "allowImportingTsExtensions": true,
         "moduleDetection": "force",
 
