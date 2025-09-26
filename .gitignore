@@ -1,7 +1,4 @@
 node_modules
-frontend_production
-frontend_development
-backend
 dist
 .DS_Store
 .idea
@@ -11,5 +8,3 @@ yarn-error.log
 secure.log
 ci-tests/reports
 .eslintcache
-node_dist
-coverage
