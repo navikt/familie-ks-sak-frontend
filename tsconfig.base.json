@@ -3,7 +3,6 @@
         /* Language and Environment */
         "target": "es6",
         "lib": ["dom", "esnext", "es6"],
-        "jsx": "react",
 
         /* Modules */
         "module": "es6",
