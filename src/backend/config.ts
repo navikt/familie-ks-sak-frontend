@@ -39,7 +39,6 @@ const Environment = () => {
     }
 
     return {
-        buildPath: 'frontend_production',
         namespace: 'production',
         proxyUrl: 'http://familie-ks-sak/api',
         familieTilbakeUrl: 'https://tilbakekreving.intern.nav.no',
@@ -76,7 +75,6 @@ export const oboConfig: IApi = {
     scopes: [process.env.KS_SAK_SCOPE],
 };
 
-export const buildPath = 'dist';
 export const proxyUrl = env.proxyUrl;
 
 export const redirectRecords: Record<string, string> = {
