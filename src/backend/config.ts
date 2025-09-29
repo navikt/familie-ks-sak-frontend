@@ -6,6 +6,7 @@ import { appConfig } from '@navikt/familie-backend';
 const Environment = () => {
     if (process.env.ENV === 'local') {
         return {
+            buildPath: 'dist/frontend',
             namespace: 'local',
             proxyUrl: 'http://localhost:8083/api',
             familieTilbakeUrl: 'http://localhost:8000',
@@ -14,6 +15,7 @@ const Environment = () => {
         };
     } else if (process.env.ENV === 'lokalt-mot-preprod') {
         return {
+            buildPath: 'dist/frontend',
             namespace: 'local',
             proxyUrl: 'https://familie-kontantstotte-sak.intern.dev.nav.no/api',
             familieTilbakeUrl: 'https://tilbakekreving.ansatt.dev.nav.no',
@@ -22,6 +24,7 @@ const Environment = () => {
         };
     } else if (process.env.ENV === 'e2e') {
         return {
+            buildPath: 'frontend',
             namespace: 'e2e',
             proxyUrl: 'http://familie-ks-sak:8089/api',
             familieTilbakeUrl: 'http://tilbakekreving:8000',
@@ -30,6 +33,7 @@ const Environment = () => {
         };
     } else if (process.env.ENV === 'preprod') {
         return {
+            buildPath: 'frontend',
             namespace: 'preprod',
             proxyUrl: 'http://familie-ks-sak/api',
             familieTilbakeUrl: 'https://tilbakekreving.ansatt.dev.nav.no',
@@ -39,6 +43,7 @@ const Environment = () => {
     }
 
     return {
+        buildPath: 'frontend',
         namespace: 'production',
         proxyUrl: 'http://familie-ks-sak/api',
         familieTilbakeUrl: 'https://tilbakekreving.intern.nav.no',
@@ -75,6 +80,7 @@ export const oboConfig: IApi = {
     scopes: [process.env.KS_SAK_SCOPE],
 };
 
+export const buildPath = env.buildPath;
 export const proxyUrl = env.proxyUrl;
 
 export const redirectRecords: Record<string, string> = {

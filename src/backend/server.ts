@@ -11,6 +11,7 @@ import type { IApp } from '@navikt/familie-backend';
 import { default as backend, ensureAuthenticated, envVar } from '@navikt/familie-backend';
 import { logInfo } from '@navikt/familie-logging';
 
+import { buildPath } from './config.js';
 import { sessionConfig } from './config.js';
 import { prometheusTellere } from './metrikker.js';
 import { attachToken, doProxy, doRedirectProxy } from './proxy.js';
@@ -25,11 +26,7 @@ backend(sessionConfig, prometheusTellere).then(async ({ app, azureAuthClient, ro
         next();
     });
 
-    if (process.env.NODE_ENV === 'development') {
-        app.use(expressStaticGzip(path.join(process.cwd(), 'dist/frontend'), {}));
-    } else {
-        app.use('/assets', expressStaticGzip(path.join(process.cwd(), 'frontend'), {}));
-    }
+    app.use('/assets', expressStaticGzip(path.join(process.cwd(), buildPath + '/assets'), {}));
 
     app.use('/familie-ks-sak/api', ensureAuthenticated(azureAuthClient, true), attachToken(azureAuthClient), doProxy());
 
