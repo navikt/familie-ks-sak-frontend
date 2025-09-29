@@ -12,6 +12,7 @@ export default defineConfig({
     },
     build: {
         outDir: '../../dist/frontend/',
+        sourcemap: true,
         emptyOutDir: true,
     },
 });
