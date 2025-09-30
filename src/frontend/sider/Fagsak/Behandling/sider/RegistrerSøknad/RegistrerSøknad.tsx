@@ -38,14 +38,12 @@ const RegistrerSøknad: React.FC = () => {
     }
 
     return (
-        <LeggTilBarnModalContextProvider>
-            {!erLesevisning && toggles[ToggleNavn.brukNyLeggTilBarnModal] && (
-                <LeggTilBarnModal
-                    barn={skjema.felter.barnaMedOpplysninger.verdi}
-                    onLeggTilBarn={onLeggTilBarn}
-                    harBrevmottaker={harBrevmottaker}
-                />
-            )}
+        <LeggTilBarnModalContextProvider
+            barn={skjema.felter.barnaMedOpplysninger.verdi}
+            onLeggTilBarn={onLeggTilBarn}
+            harBrevmottaker={harBrevmottaker}
+        >
+            {!erLesevisning && toggles[ToggleNavn.brukNyLeggTilBarnModal] && <LeggTilBarnModal />}
             <StyledSkjemasteg
                 className={'søknad'}
                 tittel={'Registrer opplysninger fra søknaden'}
