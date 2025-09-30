@@ -7,17 +7,14 @@ import { Alert, Box, Heading, Link, VStack } from '@navikt/ds-react';
 import { byggTomRessurs } from '@navikt/familie-typer';
 
 import { Behandlinger } from './Behandlinger';
-import BehandlingerOld from './BehandlingerOld';
 import FagsakLenkepanel, { SaksoversiktPanelBredde } from './FagsakLenkepanel';
 import Utbetalinger from './Utbetalinger';
 import type { VisningBehandling } from './visningBehandling';
-import { useAppContext } from '../../../context/AppContext';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingStatus, erBehandlingHenlagt } from '../../../typer/behandling';
 import { behandlingKategori, BehandlingKategori } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
-import { ToggleNavn } from '../../../typer/toggles';
 import { Vedtaksperiodetype } from '../../../typer/vedtaksperiode';
 import {
     dateTilFormatertString,
@@ -35,7 +32,6 @@ interface IProps {
 
 export function Saksoversikt({ minimalFagsak }: IProps) {
     const { settÅpenBehandling } = useBehandlingContext();
-    const { toggles } = useAppContext();
 
     React.useEffect(() => {
         settÅpenBehandling(byggTomRessurs(), false);
@@ -155,11 +151,7 @@ export function Saksoversikt({ minimalFagsak }: IProps) {
                         {løpendeMånedligUtbetaling()}
                     </div>
                 )}
-                {toggles[ToggleNavn.brukReactQueryPaaSaksoversiktsiden] ? (
-                    <Behandlinger fagsakId={minimalFagsak.id} />
-                ) : (
-                    <BehandlingerOld minimalFagsak={minimalFagsak} />
-                )}
+                <Behandlinger fagsakId={minimalFagsak.id} />
             </VStack>
         </Box>
     );
