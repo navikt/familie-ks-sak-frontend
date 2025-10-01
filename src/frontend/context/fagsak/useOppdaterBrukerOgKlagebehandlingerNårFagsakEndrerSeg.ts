@@ -11,8 +11,6 @@ interface Props {
     settBruker: (ressurs: Ressurs<IPersonInfo>) => void;
     oppdaterBrukerHvisFagsakEndres: (bruker: Ressurs<IPersonInfo>, søkerFødselsnummer?: string) => void;
     bruker: Ressurs<IPersonInfo>;
-    oppdaterKlagebehandlingerPåFagsak: () => void;
-    oppdaterTilbakekrevingsbehandlingerPåFagsak: () => void;
 }
 
 export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
@@ -20,8 +18,6 @@ export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
     settBruker,
     oppdaterBrukerHvisFagsakEndres,
     bruker,
-    oppdaterKlagebehandlingerPåFagsak,
-    oppdaterTilbakekrevingsbehandlingerPåFagsak,
 }: Props) =>
     useEffect(() => {
         if (
@@ -32,6 +28,4 @@ export const useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg = ({
         } else {
             oppdaterBrukerHvisFagsakEndres(bruker, hentDataFraRessurs(minimalFagsakRessurs)?.søkerFødselsnummer);
         }
-        oppdaterKlagebehandlingerPåFagsak();
-        oppdaterTilbakekrevingsbehandlingerPåFagsak();
     }, [minimalFagsakRessurs]);

@@ -42,7 +42,6 @@ const useOpprettBehandling = ({
     const { settÅpenBehandling } = useBehandlingContext();
     const { minimalFagsak, bruker: brukerRessurs } = useFagsakContext();
     const { innloggetSaksbehandler } = useAppContext();
-    const { oppdaterKlagebehandlingerPåFagsak } = useFagsakContext();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
@@ -137,7 +136,6 @@ const useOpprettBehandling = ({
             },
             response => {
                 if (response.status === RessursStatus.SUKSESS) {
-                    oppdaterKlagebehandlingerPåFagsak();
                     lukkModal();
                     nullstillSkjema();
                     queryClient.invalidateQueries({
