@@ -6,16 +6,10 @@ import {
     vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie,
     vilkårOppfyltOgAntallTimerKvalifiserer,
 } from './BarnehageplassUtils';
-import {
-    erAntallTimerGyldig,
-    erUtdypendeVilkårsvurderingerGyldig,
-} from './BarnehageplassValidering';
+import { erAntallTimerGyldig, erUtdypendeVilkårsvurderingerGyldig } from './BarnehageplassValidering';
 import type { IGrunnlagPerson } from '../../../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../../../typer/vedtak';
-import {
-    UtdypendeVilkårsvurderingGenerell,
-    VilkårType,
-} from '../../../../../../../../typer/vilkår';
+import { UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../../../../../../../typer/vilkår';
 import type { UtdypendeVilkårsvurdering } from '../../../../../../../../typer/vilkår';
 import type { IVilkårResultat } from '../../../../../../../../typer/vilkår';
 import type { Regelverk as RegelverkType, Resultat } from '../../../../../../../../typer/vilkår';
@@ -79,8 +73,7 @@ export const useBarnehageplass = (lagretVilkår: IVilkårResultat, person: IGrun
             erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             søkerHarMeldtFraOmBarnehageplass: søkerHarMeldtFraOmBarnehageplass.verdi,
         },
-        valideringsfunksjon: (felt, avhengigheter) =>
-            erPeriodeGyldig(felt, VilkårType.BARNEHAGEPLASS, avhengigheter),
+        valideringsfunksjon: (felt, avhengigheter) => erPeriodeGyldig(felt, VilkårType.BARNEHAGEPLASS, avhengigheter),
     });
 
     const felter = {
@@ -157,8 +150,7 @@ export const useBarnehageplass = (lagretVilkår: IVilkårResultat, person: IGrun
                 settHarBarnehageplass(initiellHarBarnehageplass);
             },
         },
-        finnesEndringerSomIkkeErLagret: () =>
-            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        finnesEndringerSomIkkeErLagret: () => finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
         harBarnehageplass,
         settHarBarnehageplass,
     };

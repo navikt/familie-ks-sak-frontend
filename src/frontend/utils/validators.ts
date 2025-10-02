@@ -14,9 +14,7 @@ import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
 import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../typer/vilkår';
 
 const harFyltInnIdent = (felt: FeltState<string>): FeltState<string> => {
-    return /^\d{11}$/.test(felt.verdi.replace(' ', ''))
-        ? ok(felt)
-        : feil(felt, 'Identen har ikke 11 tall');
+    return /^\d{11}$/.test(felt.verdi.replace(' ', '')) ? ok(felt) : feil(felt, 'Identen har ikke 11 tall');
 };
 
 const validerIdent = (felt: FeltState<string>): FeltState<string> => {
@@ -51,19 +49,15 @@ export const erPeriodeGyldig = (
     avhengigheter?: Avhengigheter
 ): FeltState<IIsoDatoPeriode> => {
     const person: IGrunnlagPerson | undefined = avhengigheter?.person;
-    const erEksplisittAvslagPåSøknad: boolean | undefined =
-        avhengigheter?.erEksplisittAvslagPåSøknad;
+    const erEksplisittAvslagPåSøknad: boolean | undefined = avhengigheter?.erEksplisittAvslagPåSøknad;
     const erBarnetsAlderVilkår: boolean = vilkår === VilkårType.BARNETS_ALDER;
     const erBarnehageVilkår: boolean = vilkår === VilkårType.BARNEHAGEPLASS;
 
-    const erMedlemskapAnnenForelderVilkår: boolean =
-        avhengigheter?.erMedlemskapAnnenForelderVilkår ?? false;
+    const erMedlemskapAnnenForelderVilkår: boolean = avhengigheter?.erMedlemskapAnnenForelderVilkår ?? false;
 
-    const utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering | undefined =
-        avhengigheter?.utdypendeVilkårsvurdering;
+    const utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering | undefined = avhengigheter?.utdypendeVilkårsvurdering;
 
-    const søkerHarMeldtFraOmBarnehageplass: boolean | undefined =
-        avhengigheter?.søkerHarMeldtFraOmBarnehageplass;
+    const søkerHarMeldtFraOmBarnehageplass: boolean | undefined = avhengigheter?.søkerHarMeldtFraOmBarnehageplass;
 
     if (felt.verdi.fom) {
         const fom = parseISO(felt.verdi.fom);
@@ -86,9 +80,7 @@ export const erPeriodeGyldig = (
                         person,
                         adopsjonsdato: avhengigheter?.adopsjonsdato,
                         erAdopsjon:
-                            utdypendeVilkårsvurdering?.includes(
-                                UtdypendeVilkårsvurderingGenerell.ADOPSJON
-                            ) ?? false,
+                            utdypendeVilkårsvurdering?.includes(UtdypendeVilkårsvurderingGenerell.ADOPSJON) ?? false,
                         fom,
                         tom,
                         førsteLagredeFom: avhengigheter?.førsteLagredeFom,
@@ -108,10 +100,7 @@ export const erPeriodeGyldig = (
         switch (vilkår) {
             case VilkårType.BARNEHAGEPLASS:
                 if (valgtDatoErSenereEnnNesteMåned(fom)) {
-                    return feil(
-                        felt,
-                        'Du kan ikke legge inn fra og med dato som er senere enn neste måned'
-                    );
+                    return feil(felt, 'Du kan ikke legge inn fra og med dato som er senere enn neste måned');
                 }
                 break;
             case VilkårType.BARNETS_ALDER:
@@ -121,23 +110,16 @@ export const erPeriodeGyldig = (
             case VilkårType.MEDLEMSKAP:
             case VilkårType.MEDLEMSKAP_ANNEN_FORELDER:
                 if (erNesteMånedEllerSenere(fom)) {
-                    return feil(
-                        felt,
-                        'Du kan ikke legge inn fra og med dato som er neste måned eller senere'
-                    );
+                    return feil(felt, 'Du kan ikke legge inn fra og med dato som er neste måned eller senere');
                 }
         }
 
         if (!erUendelig(tom)) {
             if (!erBarnetsAlderVilkår && valgtDatoErSenereEnnNesteMåned(tom)) {
-                const skalTillateFramtidigOpphør =
-                    erBarnehageVilkår && søkerHarMeldtFraOmBarnehageplass;
+                const skalTillateFramtidigOpphør = erBarnehageVilkår && søkerHarMeldtFraOmBarnehageplass;
 
                 if (!skalTillateFramtidigOpphør) {
-                    return feil(
-                        felt,
-                        'Du kan ikke legge inn til og med dato som er senere enn neste måned'
-                    );
+                    return feil(felt, 'Du kan ikke legge inn til og med dato som er senere enn neste måned');
                 }
             }
 
@@ -172,8 +154,7 @@ export const erAvslagBegrunnelserGyldig = (
     felt: FeltState<Begrunnelse[]>,
     avhengigheter?: Avhengigheter
 ): FeltState<Begrunnelse[]> => {
-    const erEksplisittAvslagPåSøknad: boolean | undefined =
-        avhengigheter?.erEksplisittAvslagPåSøknad;
+    const erEksplisittAvslagPåSøknad: boolean | undefined = avhengigheter?.erEksplisittAvslagPåSøknad;
     return erEksplisittAvslagPåSøknad && !felt.verdi.length
         ? feil(felt, 'Du må velge minst en begrunnelse ved avslag')
         : ok(felt);
@@ -209,10 +190,7 @@ export const erLik0 = (string: string) => {
     return Number.isInteger(tall) && tall === 0;
 };
 
-export const erBegrunnelseGyldig = (
-    felt: FeltState<string>,
-    avhengigheter?: Avhengigheter
-): FeltState<string> => {
+export const erBegrunnelseGyldig = (felt: FeltState<string>, avhengigheter?: Avhengigheter): FeltState<string> => {
     if (!avhengigheter) {
         return feil(felt, 'Begrunnelse er ugyldig');
     }
@@ -234,9 +212,7 @@ export const erBegrunnelseGyldig = (
     }
 };
 
-export const erAdresseBeskyttet = (
-    adresseBeskyttelsesGradering: Adressebeskyttelsegradering | undefined | null
-) => {
+export const erAdresseBeskyttet = (adresseBeskyttelsesGradering: Adressebeskyttelsegradering | undefined | null) => {
     return (
         adresseBeskyttelsesGradering !== undefined &&
         adresseBeskyttelsesGradering !== null &&

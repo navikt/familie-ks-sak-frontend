@@ -40,8 +40,7 @@ interface IProps {
 
 const KompetanseSkjema: React.FC<IProps> = ({ kompetanser, åpenBehandling, visFeilmeldinger }) => {
     const harUfullstendigeKompetanser =
-        åpenBehandling.kompetanser?.filter(kompetanse => kompetanse.status !== EøsPeriodeStatus.OK)
-            .length > 0;
+        åpenBehandling.kompetanser?.filter(kompetanse => kompetanse.status !== EøsPeriodeStatus.OK).length > 0;
 
     return (
         <KompetanseContainer>

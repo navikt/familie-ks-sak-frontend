@@ -63,18 +63,14 @@ const Vedtaksperioder: React.FC<VedtaksperioderProps> = ({ åpenBehandling }) =>
             <GrupperteVedtaksperioder
                 sorterteVedtaksperioderMedBegrunnelser={sorterteAndreVedtaksperioder}
                 overskrift={'Begrunnelser i vedtaksbrev'}
-                hjelpetekst={
-                    'Her skal du sette begrunnelsestekster for innvilgelse, reduksjon og opphør.'
-                }
+                hjelpetekst={'Her skal du sette begrunnelsestekster for innvilgelse, reduksjon og opphør.'}
                 åpenBehandling={åpenBehandling}
             />
 
             <GrupperteVedtaksperioder
                 sorterteVedtaksperioderMedBegrunnelser={sorterteAvslagsperioder}
                 overskrift={'Begrunnelser for avslag i vedtaksbrev'}
-                hjelpetekst={
-                    'Her har vi hentet begrunnelser for avslag som er satt tidligere i behandlingen.'
-                }
+                hjelpetekst={'Her har vi hentet begrunnelser for avslag som er satt tidligere i behandlingen.'}
                 åpenBehandling={åpenBehandling}
             />
         </>
@@ -94,8 +90,7 @@ const GrupperteVedtaksperioder: React.FC<{
     }
 
     const sisteVedtaksperiodeFom =
-        sorterteVedtaksperioderMedBegrunnelser[sorterteVedtaksperioderMedBegrunnelser.length - 1]
-            .fom;
+        sorterteVedtaksperioderMedBegrunnelser[sorterteVedtaksperioderMedBegrunnelser.length - 1].fom;
 
     return (
         <>

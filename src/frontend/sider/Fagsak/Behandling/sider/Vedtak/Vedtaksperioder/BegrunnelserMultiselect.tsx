@@ -15,11 +15,7 @@ import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
 import type { OptionType } from '../../../../../../typer/common';
 import type { Begrunnelse, BegrunnelseType } from '../../../../../../typer/vedtak';
 import { begrunnelseTyper } from '../../../../../../typer/vedtak';
-import {
-    finnBegrunnelseType,
-    hentBakgrunnsfarge,
-    hentBorderfarge,
-} from '../../../../../../utils/vedtakUtils';
+import { finnBegrunnelseType, hentBakgrunnsfarge, hentBorderfarge } from '../../../../../../utils/vedtakUtils';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps {
@@ -34,13 +30,8 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = tillatKunLesevisning || vurderErLesevisning();
 
-    const {
-        id,
-        onChangeBegrunnelse,
-        grupperteBegrunnelser,
-        begrunnelserPut,
-        vedtaksperiodeMedBegrunnelser,
-    } = useVedtaksperiodeContext();
+    const { id, onChangeBegrunnelse, grupperteBegrunnelser, begrunnelserPut, vedtaksperiodeMedBegrunnelser } =
+        useVedtaksperiodeContext();
     const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
 
     const [begrunnelser, settBegrunnelser] = useState<OptionType[]>([]);
@@ -48,10 +39,7 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
     useEffect(() => {
         if (alleBegrunnelserRessurs.status === RessursStatus.SUKSESS) {
             settBegrunnelser(
-                mapBegrunnelserTilSelectOptions(
-                    vedtaksperiodeMedBegrunnelser,
-                    alleBegrunnelserRessurs.data
-                )
+                mapBegrunnelserTilSelectOptions(vedtaksperiodeMedBegrunnelser, alleBegrunnelserRessurs.data)
             );
         }
     }, [vedtaksperiodeMedBegrunnelser, alleBegrunnelserRessurs]);
@@ -106,14 +94,8 @@ const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => 
             onChange={(_, action: ActionMeta<OptionType>) => {
                 onChangeBegrunnelse(action);
             }}
-            formatOptionLabel={(
-                option: OptionType,
-                formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>
-            ) => {
-                const begrunnelseType = finnBegrunnelseType(
-                    alleBegrunnelserRessurs,
-                    option.value as Begrunnelse
-                );
+            formatOptionLabel={(option: OptionType, formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>) => {
+                const begrunnelseType = finnBegrunnelseType(alleBegrunnelserRessurs, option.value as Begrunnelse);
 
                 if (formatOptionLabelMeta.context === 'value') {
                     const type = begrunnelseTyper[begrunnelseType as BegrunnelseType];

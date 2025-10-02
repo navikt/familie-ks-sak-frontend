@@ -16,11 +16,7 @@ import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import { BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
 import type { VilkårType } from '../../../../../../typer/vilkår';
 import type { Regelverk } from '../../../../../../typer/vilkår';
-import {
-    finnBegrunnelseType,
-    hentBakgrunnsfarge,
-    hentBorderfarge,
-} from '../../../../../../utils/vedtakUtils';
+import { finnBegrunnelseType, hentBakgrunnsfarge, hentBorderfarge } from '../../../../../../utils/vedtakUtils';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { useVedtakBegrunnelser } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
 
@@ -34,11 +30,7 @@ const GroupLabel = styled.div`
     color: black;
 `;
 
-const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
-    vilkårType,
-    begrunnelser,
-    regelverk,
-}) => {
+const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnelser, regelverk }) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
 
@@ -61,10 +53,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
         switch (action.action) {
             case 'select-option':
                 if (action.option) {
-                    begrunnelser.validerOgSettFelt([
-                        ...begrunnelser.verdi,
-                        action.option.value as Begrunnelse,
-                    ]);
+                    begrunnelser.validerOgSettFelt([...begrunnelser.verdi, action.option.value as Begrunnelse]);
                 } else {
                     throw new Error('Klarer ikke legge til begrunnelse');
                 }
@@ -72,9 +61,7 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
             case 'pop-value':
             case 'remove-value':
                 begrunnelser.validerOgSettFelt(
-                    begrunnelser.verdi.filter(
-                        begrunnelse => begrunnelse !== action.removedValue?.value
-                    )
+                    begrunnelser.verdi.filter(begrunnelse => begrunnelse !== action.removedValue?.value)
                 );
                 break;
             case 'clear':
@@ -109,18 +96,11 @@ const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({
                     </GroupLabel>
                 );
             }}
-            formatOptionLabel={(
-                option: OptionType,
-                formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>
-            ) => {
+            formatOptionLabel={(option: OptionType, formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>) => {
                 if (formatOptionLabelMeta.context == 'value') {
                     // Formatering når alternativet er valgt
-                    const begrunnelseType = finnBegrunnelseType(
-                        alleBegrunnelserRessurs,
-                        option.value as Begrunnelse
-                    );
-                    const begrunnelseTypeLabel =
-                        begrunnelseTyper[begrunnelseType as BegrunnelseType];
+                    const begrunnelseType = finnBegrunnelseType(alleBegrunnelserRessurs, option.value as Begrunnelse);
+                    const begrunnelseTypeLabel = begrunnelseTyper[begrunnelseType as BegrunnelseType];
                     return (
                         <BodyShort>
                             <b>{begrunnelseTypeLabel}</b>: {option.label}

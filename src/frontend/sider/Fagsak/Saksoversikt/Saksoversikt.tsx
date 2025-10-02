@@ -6,18 +6,15 @@ import { Link as ReactRouterLink } from 'react-router';
 import { Alert, Box, Heading, Link, VStack } from '@navikt/ds-react';
 import { byggTomRessurs } from '@navikt/familie-typer';
 
-import Behandlinger from './Behandlinger';
-import BehandlingerOld from './BehandlingerOld';
+import { Behandlinger } from './Behandlinger';
 import FagsakLenkepanel, { SaksoversiktPanelBredde } from './FagsakLenkepanel';
 import Utbetalinger from './Utbetalinger';
 import type { VisningBehandling } from './visningBehandling';
-import { useAppContext } from '../../../context/AppContext';
 import type { IBehandling } from '../../../typer/behandling';
 import { BehandlingStatus, erBehandlingHenlagt } from '../../../typer/behandling';
 import { behandlingKategori, BehandlingKategori } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
-import { ToggleNavn } from '../../../typer/toggles';
 import { Vedtaksperiodetype } from '../../../typer/vedtaksperiode';
 import {
     dateTilFormatertString,
@@ -35,7 +32,6 @@ interface IProps {
 
 export function Saksoversikt({ minimalFagsak }: IProps) {
     const { settÅpenBehandling } = useBehandlingContext();
-    const { toggles } = useAppContext();
 
     React.useEffect(() => {
         settÅpenBehandling(byggTomRessurs(), false);
@@ -43,8 +39,7 @@ export function Saksoversikt({ minimalFagsak }: IProps) {
 
     const iverksatteBehandlinger = minimalFagsak.behandlinger.filter(
         (behandling: VisningBehandling) =>
-            behandling.status === BehandlingStatus.AVSLUTTET &&
-            !erBehandlingHenlagt(behandling.resultat)
+            behandling.status === BehandlingStatus.AVSLUTTET && !erBehandlingHenlagt(behandling.resultat)
     );
 
     let gjeldendeBehandling =
@@ -133,8 +128,8 @@ export function Saksoversikt({ minimalFagsak }: IProps) {
             return (
                 <Box width={SaksoversiktPanelBredde}>
                     <Alert variant="error">
-                        Noe gikk galt ved henting av utbetalinger. Prøv igjen eller kontakt
-                        brukerstøtte hvis problemet vedvarer.
+                        Noe gikk galt ved henting av utbetalinger. Prøv igjen eller kontakt brukerstøtte hvis problemet
+                        vedvarer.
                     </Alert>
                 </Box>
             );
@@ -156,11 +151,7 @@ export function Saksoversikt({ minimalFagsak }: IProps) {
                         {løpendeMånedligUtbetaling()}
                     </div>
                 )}
-                {toggles[ToggleNavn.brukReactQueryPaaSaksoversiktsiden] ? (
-                    <Behandlinger fagsakId={minimalFagsak.id} />
-                ) : (
-                    <BehandlingerOld minimalFagsak={minimalFagsak} />
-                )}
+                <Behandlinger fagsakId={minimalFagsak.id} />
             </VStack>
         </Box>
     );
@@ -171,7 +162,5 @@ export const sakstype = (behandling?: IBehandling) => {
         return 'Ikke satt';
     }
 
-    return `${
-        behandling?.kategori ? behandlingKategori[behandling?.kategori] : behandling?.kategori
-    }`;
+    return `${behandling?.kategori ? behandlingKategori[behandling?.kategori] : behandling?.kategori}`;
 };

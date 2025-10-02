@@ -42,18 +42,11 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
             </option>
             {Object.values(BehandlingÅrsak)
                 .filter(
-                    behandlingsårsak =>
-                        !behandlingÅrsakerSomIkkeSkalSettesManuelt(toggles).includes(
-                            behandlingsårsak
-                        )
+                    behandlingsårsak => !behandlingÅrsakerSomIkkeSkalSettesManuelt(toggles).includes(behandlingsårsak)
                 )
                 .map(årsak => {
                     return (
-                        <option
-                            key={årsak}
-                            aria-selected={behandlingsårsak.verdi === årsak}
-                            value={årsak}
-                        >
+                        <option key={årsak} aria-selected={behandlingsårsak.verdi === årsak} value={årsak}>
                             {behandlingÅrsak[årsak]}
                         </option>
                     );

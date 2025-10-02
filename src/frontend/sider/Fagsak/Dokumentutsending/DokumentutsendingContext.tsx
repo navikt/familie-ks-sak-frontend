@@ -44,10 +44,7 @@ const hentBarnMedOpplysningerFraBruker = () => {
     if (brukerRessurs.status === RessursStatus.SUKSESS) {
         return (
             brukerRessurs.data.forelderBarnRelasjon
-                .filter(
-                    (relasjon: IForelderBarnRelasjon) =>
-                        relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN
-                )
+                .filter((relasjon: IForelderBarnRelasjon) => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN)
                 .map(
                     (relasjon: IForelderBarnRelasjon): IBarnMedOpplysninger => ({
                         merket: false,
@@ -90,9 +87,7 @@ interface DokumentutsendingContextValue {
     nullstillSkjema: () => void;
 }
 
-const DokumentutsendingContext = createContext<DokumentutsendingContextValue | undefined>(
-    undefined
-);
+const DokumentutsendingContext = createContext<DokumentutsendingContextValue | undefined>(undefined);
 
 export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
     const { bruker } = useFagsakContext();
@@ -219,8 +214,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
     };
 
     const skjemaErLåst = () =>
-        skjema.submitRessurs.status === RessursStatus.HENTER ||
-        hentetDokument.status === RessursStatus.HENTER;
+        skjema.submitRessurs.status === RessursStatus.HENTER || hentetDokument.status === RessursStatus.HENTER;
 
     const senderBrev = () => skjema.submitRessurs.status === RessursStatus.HENTER;
 
@@ -251,10 +245,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
         }
     };
 
-    const hentBarnIBrevSkjemaData = (
-        brevmal: Informasjonsbrev,
-        målform: Målform
-    ): IManueltBrevRequestPåFagsak => {
+    const hentBarnIBrevSkjemaData = (brevmal: Informasjonsbrev, målform: Målform): IManueltBrevRequestPåFagsak => {
         if (bruker.status === RessursStatus.SUKSESS) {
             const barnIBrev = skjema.felter.barnIBrev.verdi.filter(barn => barn.merket);
 
@@ -280,9 +271,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
         }
     };
 
-    const hentInnhenteOpplysningerKlageSkjemaData = (
-        målform: Målform
-    ): IManueltBrevRequestPåFagsak => {
+    const hentInnhenteOpplysningerKlageSkjemaData = (målform: Målform): IManueltBrevRequestPåFagsak => {
         if (bruker.status === RessursStatus.SUKSESS) {
             return {
                 mottakerIdent: bruker.data.personIdent,
@@ -315,8 +304,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
                 settVisInnsendtBrevModal,
                 settVisfeilmeldinger,
                 skjemaErLåst,
-                visForhåndsvisningBeskjed: () =>
-                    !deepEqual(hentSkjemaData(), sistBrukteDataVedForhåndsvisning),
+                visForhåndsvisningBeskjed: () => !deepEqual(hentSkjemaData(), sistBrukteDataVedForhåndsvisning),
                 visInnsendtBrevModal,
                 skjema,
                 nullstillSkjema,
@@ -330,9 +318,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
 export const useDokumentutsendingContext = () => {
     const context = useContext(DokumentutsendingContext);
     if (context === undefined) {
-        throw new Error(
-            'useDokumentutsendingContext må brukes innenfor en DokumentutsendingProvider'
-        );
+        throw new Error('useDokumentutsendingContext må brukes innenfor en DokumentutsendingProvider');
     }
     return context;
 };

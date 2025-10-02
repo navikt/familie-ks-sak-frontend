@@ -15,9 +15,7 @@ const mapBarnIdenterTilPerson = (barnIdenter: string[], personer: IGrunnlagPerso
     return barnIdenter.map<IGrunnlagPerson>(barnIdent => {
         const person = personer.find(person => person.personIdent === barnIdent);
         if (person === undefined)
-            throw Error(
-                'Barn ikke funnet. Skal ikke kunne være mulig, siden sjekken er gjort annen plass i koden'
-            );
+            throw Error('Barn ikke funnet. Skal ikke kunne være mulig, siden sjekken er gjort annen plass i koden');
         return person;
     });
 };

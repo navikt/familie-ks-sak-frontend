@@ -1,4 +1,4 @@
-import React, { createContext, type PropsWithChildren, useContext, useState } from 'react';
+import React, { createContext, type PropsWithChildren, useContext } from 'react';
 
 import type { AxiosError } from 'axios';
 import deepEqual from 'deep-equal';
@@ -16,11 +16,8 @@ import {
 
 import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import useFagsakApi from '../../api/useFagsakApi';
-import { useTilbakekrevingApi } from '../../api/useTilbakekrevingApi';
 import type { IMinimalFagsak } from '../../typer/fagsak';
-import type { IKlagebehandling } from '../../typer/klage';
 import type { IPersonInfo } from '../../typer/person';
-import type { ITilbakekrevingsbehandling } from '../../typer/tilbakekrevingsbehandling';
 import { sjekkTilgangTilPerson } from '../../utils/commons';
 import { obfuskerFagsak, obfuskerPersonInfo } from '../../utils/obfuskerData';
 import { useAppContext } from '../AppContext';
@@ -32,30 +29,17 @@ interface IFagsakContext {
     settMinimalFagsakRessurs: (fagsak: Ressurs<IMinimalFagsak>) => void;
     minimalFagsak: IMinimalFagsak | undefined;
     hentBruker: (personIdent: string) => void;
-    klagebehandlinger: IKlagebehandling[];
-    klageStatus: RessursStatus;
-    oppdaterKlagebehandlingerPåFagsak: () => void;
-    tilbakekrevingsbehandlinger: ITilbakekrevingsbehandling[];
-    tilbakekrevingStatus: RessursStatus;
 }
 
 const FagsakContext = createContext<IFagsakContext | undefined>(undefined);
 
 export const FagsakProvider = (props: PropsWithChildren) => {
-    const [minimalFagsakRessurs, settMinimalFagsakRessurs] =
-        React.useState<Ressurs<IMinimalFagsak>>(byggTomRessurs());
+    const [minimalFagsakRessurs, settMinimalFagsakRessurs] = React.useState<Ressurs<IMinimalFagsak>>(byggTomRessurs());
 
     const [bruker, settBruker] = React.useState<Ressurs<IPersonInfo>>(byggTomRessurs());
 
-    const [klagebehandlinger, settKlagebehandlinger] =
-        useState<Ressurs<IKlagebehandling[]>>(byggTomRessurs());
-
-    const [tilbakekrevingsbehandlinger, settTilbakekrevingsbehandlinger] =
-        useState<Ressurs<ITilbakekrevingsbehandling[]>>(byggTomRessurs());
-
     const { request } = useHttp();
     const { skalObfuskereData } = useAppContext();
-    const { hentTilbakekrevingsbehandlinger } = useTilbakekrevingApi();
     const { hentFagsakForPerson } = useFagsakApi();
 
     const hentMinimalFagsak = (fagsakId: string | number, påvirkerSystemLaster = true): void => {
@@ -81,18 +65,12 @@ export const FagsakProvider = (props: PropsWithChildren) => {
             });
     };
 
-    const oppdaterBrukerHvisFagsakEndres = (
-        bruker: Ressurs<IPersonInfo>,
-        søkerFødselsnummer?: string
-    ): void => {
+    const oppdaterBrukerHvisFagsakEndres = (bruker: Ressurs<IPersonInfo>, søkerFødselsnummer?: string): void => {
         if (søkerFødselsnummer === undefined) {
             return;
         }
 
-        if (
-            bruker.status !== RessursStatus.SUKSESS ||
-            søkerFødselsnummer !== bruker.data.personIdent
-        ) {
+        if (bruker.status !== RessursStatus.SUKSESS || søkerFødselsnummer !== bruker.data.personIdent) {
             hentBruker(søkerFødselsnummer);
         }
     };
@@ -125,33 +103,11 @@ export const FagsakProvider = (props: PropsWithChildren) => {
         });
     };
 
-    const oppdaterKlagebehandlingerPåFagsak = () => {
-        const fagsakId = hentDataFraRessurs(minimalFagsakRessurs)?.id;
-
-        if (fagsakId) {
-            request<void, IKlagebehandling[]>({
-                method: 'GET',
-                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/hent-klagebehandlinger`,
-                påvirkerSystemLaster: true,
-            }).then(klagebehandlingerRessurs => settKlagebehandlinger(klagebehandlingerRessurs));
-        }
-    };
-
-    const oppdaterTilbakekrevingsbehandlingerPåFagsak = () => {
-        const fagsakId = hentDataFraRessurs(minimalFagsakRessurs)?.id;
-
-        hentTilbakekrevingsbehandlinger(fagsakId).then(tilbakekrevingsbehandlingerRessurs =>
-            settTilbakekrevingsbehandlinger(tilbakekrevingsbehandlingerRessurs)
-        );
-    };
-
     useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg({
         minimalFagsakRessurs,
         settBruker,
         oppdaterBrukerHvisFagsakEndres,
         bruker,
-        oppdaterKlagebehandlingerPåFagsak,
-        oppdaterTilbakekrevingsbehandlingerPåFagsak,
     });
 
     return (
@@ -163,11 +119,6 @@ export const FagsakProvider = (props: PropsWithChildren) => {
                 settMinimalFagsakRessurs,
                 minimalFagsak: hentDataFraRessurs(minimalFagsakRessurs),
                 hentBruker,
-                klagebehandlinger: hentDataFraRessurs(klagebehandlinger) ?? [],
-                klageStatus: klagebehandlinger.status,
-                oppdaterKlagebehandlingerPåFagsak,
-                tilbakekrevingsbehandlinger: hentDataFraRessurs(tilbakekrevingsbehandlinger) ?? [],
-                tilbakekrevingStatus: tilbakekrevingsbehandlinger.status,
             }}
         >
             {props.children}

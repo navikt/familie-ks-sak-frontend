@@ -52,9 +52,7 @@ const TidslinjeNavigering: React.FC<IProps> = ({
             >
                 <FamilieChevron title={'Naviger til venstre'} retning={'venstre'} />
                 <span className="sr-only">
-                    {navigerTilVenstreTittel
-                        ? navigerTilVenstreTittel
-                        : 'Naviger til venstre i tidslinjen'}
+                    {navigerTilVenstreTittel ? navigerTilVenstreTittel : 'Naviger til venstre i tidslinjen'}
                 </span>
             </Button>
             {children && <DivMedHøyremargin>{children}</DivMedHøyremargin>}
@@ -67,9 +65,7 @@ const TidslinjeNavigering: React.FC<IProps> = ({
             >
                 <FamilieChevron title={'Naviger til høyre'} />
                 <span className="sr-only">
-                    {navigerTilHyøyreTittel
-                        ? navigerTilHyøyreTittel
-                        : 'Naviger til høyre i tidslinjen'}
+                    {navigerTilHyøyreTittel ? navigerTilHyøyreTittel : 'Naviger til høyre i tidslinjen'}
                 </span>
             </Button>
         </StyledTidslinjenavigering>

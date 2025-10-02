@@ -4,17 +4,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import { ExternalLinkIcon, PlusCircleIcon } from '@navikt/aksel-icons';
-import {
-    BodyLong,
-    Button,
-    Fieldset,
-    Heading,
-    HelpText,
-    HStack,
-    Link,
-    Modal,
-    TextField,
-} from '@navikt/ds-react';
+import { BodyLong, Button, Fieldset, Heading, HelpText, HStack, Link, Modal, TextField } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import type { Avhengigheter, Felt } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
@@ -55,11 +45,7 @@ interface IProps {
     manuelleBrevmottakere: SkjemaBrevmottaker[] | IRestBrevmottaker[];
 }
 
-const LeggTilBarn: React.FC<IProps> = ({
-    barnaMedOpplysninger,
-    onSuccess,
-    manuelleBrevmottakere,
-}) => {
+const LeggTilBarn: React.FC<IProps> = ({ barnaMedOpplysninger, onSuccess, manuelleBrevmottakere }) => {
     const { request } = useHttp();
     const { logg } = useBehandlingContext();
 
@@ -103,8 +89,7 @@ const LeggTilBarn: React.FC<IProps> = ({
         felter: {
             ident: useFelt<string>({
                 verdi: '',
-                valideringsfunksjon:
-                    process.env.NODE_ENV === 'development' ? felt => ok(felt) : identValidator,
+                valideringsfunksjon: process.env.NODE_ENV === 'development' ? felt => ok(felt) : identValidator,
                 skalFeltetVises: (avhengigheter: Avhengigheter) => {
                     // Bruker logikk i skjema for å disable validering på feltet, men det er fortsatt synlig for bruker.
                     const { erFolkeregistrert } = avhengigheter;
@@ -123,8 +108,7 @@ const LeggTilBarn: React.FC<IProps> = ({
             }),
             uregistrertBarnNavn: useFelt<string>({
                 verdi: '',
-                valideringsfunksjon: felt =>
-                    felt.verdi !== '' ? ok(felt) : feil(felt, 'Må fylle ut navn'),
+                valideringsfunksjon: felt => (felt.verdi !== '' ? ok(felt) : feil(felt, 'Må fylle ut navn')),
                 skalFeltetVises: (avhengigheter: Avhengigheter) => {
                     const { erFolkeregistrert } = avhengigheter;
                     return !erFolkeregistrert;
@@ -146,8 +130,7 @@ const LeggTilBarn: React.FC<IProps> = ({
     ): boolean => {
         return (
             (adressebeskyttelsegradering === Adressebeskyttelsegradering.STRENGT_FORTROLIG ||
-                adressebeskyttelsegradering ===
-                    Adressebeskyttelsegradering.STRENGT_FORTROLIG_UTLAND) &&
+                adressebeskyttelsegradering === Adressebeskyttelsegradering.STRENGT_FORTROLIG_UTLAND) &&
             antallBrevmottakere > 0
         );
     };
@@ -234,19 +217,15 @@ const LeggTilBarn: React.FC<IProps> = ({
                             settSubmitRessurs(
                                 byggFeiletRessurs(
                                     `Barnet kan ikke legges til på grunn av diskresjonskode ${
-                                        adressebeskyttelsestyper[
-                                            ressurs.data.adressebeskyttelsegradering
-                                        ] ?? 'ukjent'
+                                        adressebeskyttelsestyper[ressurs.data.adressebeskyttelsegradering] ?? 'ukjent'
                                     }`
                                 )
                             );
                         }
                     } else if (
-                        [
-                            RessursStatus.FEILET,
-                            RessursStatus.FUNKSJONELL_FEIL,
-                            RessursStatus.IKKE_TILGANG,
-                        ].includes(ressurs.status)
+                        [RessursStatus.FEILET, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.IKKE_TILGANG].includes(
+                            ressurs.status
+                        )
                     ) {
                         settSubmitRessurs(ressurs);
                     }
@@ -281,21 +260,19 @@ const LeggTilBarn: React.FC<IProps> = ({
                                     Nasjonale saker:
                                 </Heading>
                                 <BodyLong size="small" spacing>
-                                    Hvis barnet ikke er registrert i Folkeregisteret må du tilskrive
-                                    bruker først.
+                                    Hvis barnet ikke er registrert i Folkeregisteret må du tilskrive bruker først.
                                 </BodyLong>
                                 <BodyLong size="small" spacing>
-                                    Hvis barnet ikke er folkeregistrert innen angitt frist, kan du
-                                    registrere barnet med fødselsdato og/eller navn. Det vil føre
-                                    til et avslag, uten at vilkårene skal vurderes. Har du ikke
-                                    navnet på barnet kan du skrive “ukjent”.
+                                    Hvis barnet ikke er folkeregistrert innen angitt frist, kan du registrere barnet med
+                                    fødselsdato og/eller navn. Det vil føre til et avslag, uten at vilkårene skal
+                                    vurderes. Har du ikke navnet på barnet kan du skrive “ukjent”.
                                 </BodyLong>
                                 <Heading level="3" size="xsmall">
                                     EØS-saker:
                                 </Heading>
                                 <BodyLong size="small">
-                                    Dersom Folkeregisteret ikke har registrerte barn tilknyttet
-                                    denne søkeren kan du registrere D-nummer i DREK.
+                                    Dersom Folkeregisteret ikke har registrerte barn tilknyttet denne søkeren kan du
+                                    registrere D-nummer i DREK.
                                 </BodyLong>
                             </HelpText>
                         </HStack>
@@ -304,12 +281,9 @@ const LeggTilBarn: React.FC<IProps> = ({
                         <Fieldset
                             error={
                                 registrerBarnSkjema.visFeilmeldinger &&
-                                (registrerBarnSkjema.submitRessurs.status ===
-                                    RessursStatus.FEILET ||
-                                    registrerBarnSkjema.submitRessurs.status ===
-                                        RessursStatus.FUNKSJONELL_FEIL ||
-                                    registrerBarnSkjema.submitRessurs.status ===
-                                        RessursStatus.IKKE_TILGANG)
+                                (registrerBarnSkjema.submitRessurs.status === RessursStatus.FEILET ||
+                                    registrerBarnSkjema.submitRessurs.status === RessursStatus.FUNKSJONELL_FEIL ||
+                                    registrerBarnSkjema.submitRessurs.status === RessursStatus.IKKE_TILGANG)
                                     ? registrerBarnSkjema.submitRessurs.frontendFeilmelding
                                     : undefined
                             }
@@ -340,10 +314,7 @@ const LeggTilBarn: React.FC<IProps> = ({
                                     }}
                                 >
                                     Rekvirer D-nummer i DREK
-                                    <ExternalLinkIcon
-                                        title="Rekvirer D-nummer i DREK"
-                                        fontSize={'1.5rem'}
-                                    />
+                                    <ExternalLinkIcon title="Rekvirer D-nummer i DREK" fontSize={'1.5rem'} />
                                 </Link>
                             </DrekLenkeContainer>
                             {registrerBarnSkjema.felter.erFolkeregistrert.erSynlig && (
@@ -358,12 +329,8 @@ const LeggTilBarn: React.FC<IProps> = ({
                             size={'small'}
                             onClick={leggTilOnClick}
                             children={'Legg til'}
-                            loading={
-                                registrerBarnSkjema.submitRessurs.status === RessursStatus.HENTER
-                            }
-                            disabled={
-                                registrerBarnSkjema.submitRessurs.status === RessursStatus.HENTER
-                            }
+                            loading={registrerBarnSkjema.submitRessurs.status === RessursStatus.HENTER}
+                            disabled={registrerBarnSkjema.submitRessurs.status === RessursStatus.HENTER}
                         />
                         <Button
                             variant={'tertiary'}

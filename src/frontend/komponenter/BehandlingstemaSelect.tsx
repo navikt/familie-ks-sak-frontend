@@ -13,11 +13,7 @@ interface EgneProps {
 
 type Props = EgneProps & Omit<SelectProps, 'children'>;
 
-export const BehandlingstemaSelect = ({
-    behandlingstema,
-    visFeilmeldinger = false,
-    ...selectProps
-}: Props) => {
+export const BehandlingstemaSelect = ({ behandlingstema, visFeilmeldinger = false, ...selectProps }: Props) => {
     const { verdi } = behandlingstema;
     return (
         <Select
@@ -25,28 +21,17 @@ export const BehandlingstemaSelect = ({
             {...behandlingstema.hentNavInputProps(visFeilmeldinger)}
             value={verdi !== undefined ? verdi.id : ''}
             onChange={evt => {
-                behandlingstema.validerOgSettFelt(
-                    behandlingstemaer[evt.target.value as Behandlingstema]
-                );
+                behandlingstema.validerOgSettFelt(behandlingstemaer[evt.target.value as Behandlingstema]);
             }}
         >
             {verdi === undefined && (
-                <option
-                    disabled
-                    key={'behandlingstema-select-disabled'}
-                    value={''}
-                    aria-selected={true}
-                >
+                <option disabled key={'behandlingstema-select-disabled'} value={''} aria-selected={true}>
                     Velg behandlingstema
                 </option>
             )}
             {Object.values(behandlingstemaer).map(tema => {
                 return (
-                    <option
-                        key={tema.id}
-                        aria-selected={verdi !== undefined && verdi.id === tema.id}
-                        value={tema.id}
-                    >
+                    <option key={tema.id} aria-selected={verdi !== undefined && verdi.id === tema.id} value={tema.id}>
                         {tema.navn}
                     </option>
                 );

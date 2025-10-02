@@ -61,10 +61,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFa
                             <Venstremeny />
                         </VenstremenyContainer>
                         <HovedinnholdContainer>
-                            <BehandlingRouter
-                                åpenBehandling={åpenBehandling.data}
-                                bruker={bruker}
-                            />
+                            <BehandlingRouter åpenBehandling={åpenBehandling.data} bruker={bruker} />
                         </HovedinnholdContainer>
                         <HøyremenyContainer>
                             <Høyremeny bruker={bruker} />
@@ -73,12 +70,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFa
                 </>
             );
         case RessursStatus.IKKE_TILGANG:
-            return (
-                <Alert
-                    variant="warning"
-                    children={`Du har ikke tilgang til å se denne behandlingen.`}
-                />
-            );
+            return <Alert variant="warning" children={`Du har ikke tilgang til å se denne behandlingen.`} />;
         case RessursStatus.FEILET:
         case RessursStatus.FUNKSJONELL_FEIL:
             return <Alert children={åpenBehandling.frontendFeilmelding} variant="error" />;

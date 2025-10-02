@@ -12,9 +12,7 @@ export const hentFagsakStatusVisning = (minimalFagsak: IMinimalFagsak): string =
           ? 'Under behandling'
           : fagsakStatus[minimalFagsak.status].navn;
 
-export const hentAktivBehandlingPåMinimalFagsak = (
-    minimalFagsak: IMinimalFagsak
-): VisningBehandling | undefined => {
+export const hentAktivBehandlingPåMinimalFagsak = (minimalFagsak: IMinimalFagsak): VisningBehandling | undefined => {
     return minimalFagsak.behandlinger.find((behandling: VisningBehandling) => behandling.aktiv);
 };
 

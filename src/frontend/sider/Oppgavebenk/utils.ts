@@ -1,12 +1,7 @@
 import type { ISaksbehandler } from '@navikt/familie-typer';
 
 import type { IPar } from '../../typer/common';
-import type {
-    BehandlingstypeFilter,
-    EnhetFilter,
-    IOppgave,
-    IOppgaveIdent,
-} from '../../typer/oppgave';
+import type { BehandlingstypeFilter, EnhetFilter, IOppgave, IOppgaveIdent } from '../../typer/oppgave';
 import { behandlingstypeFilter, enhetFilter } from '../../typer/oppgave';
 import { hentFnrFraOppgaveIdenter } from '../../utils/oppgave';
 
@@ -23,11 +18,7 @@ export enum Sorteringsnøkkel {
     HANDLINGER = 'handlinger',
 }
 
-export const sorterEtterNøkkel = (
-    a: IOppgaveRad,
-    b: IOppgaveRad,
-    sorteringsnøkkel: Sorteringsnøkkel
-): number => {
+export const sorterEtterNøkkel = (a: IOppgaveRad, b: IOppgaveRad, sorteringsnøkkel: Sorteringsnøkkel): number => {
     let aVerdi;
     let bVerdi;
     if (sorteringsnøkkel === Sorteringsnøkkel.IDENT) {
@@ -66,8 +57,7 @@ export const mapIOppgaverTilOppgaveRad = (
             ...oppg,
             ident: oppg.identer,
             behandlingstype: oppg.behandlingstype
-                ? (behandlingstypeFilter[oppg.behandlingstype as BehandlingstypeFilter]?.navn ??
-                  oppg.behandlingstype)
+                ? (behandlingstypeFilter[oppg.behandlingstype as BehandlingstypeFilter]?.navn ?? oppg.behandlingstype)
                 : 'Ikke satt',
             fristFerdigstillelse: oppg.fristFerdigstillelse,
             oppgavetype: oppg.oppgavetype,

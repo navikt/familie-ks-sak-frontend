@@ -30,9 +30,7 @@ export const BehandlingRouter: React.FC<Props> = ({ bruker, åpenBehandling }) =
     const sidevisning = hentSideHref(location.pathname);
     useEffect(() => {
         if (sidevisning) {
-            leggTilBesøktSide(
-                Object.entries(sider).find(([_, side]) => side.href === sidevisning)?.[0] as SideId
-            );
+            leggTilBesøktSide(Object.entries(sider).find(([_, side]) => side.href === sidevisning)?.[0] as SideId);
         }
     }, [sidevisning]);
 

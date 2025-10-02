@@ -50,9 +50,7 @@ export const Fagsaklinje = ({ minimalFagsak }: FagsaklinjeProps) => {
                             </Button>
                         </HStack>
                     )}
-                    {harInnloggetSaksbehandlerSkrivetilgang() && (
-                        <Behandlingsmeny minimalFagsak={minimalFagsak} />
-                    )}
+                    {harInnloggetSaksbehandlerSkrivetilgang() && <Behandlingsmeny minimalFagsak={minimalFagsak} />}
                 </HStack>
             </Box>
         </>

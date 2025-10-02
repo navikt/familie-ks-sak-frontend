@@ -42,14 +42,7 @@ interface ISimuleringProps {
 }
 
 const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
-    simulering: {
-        feilutbetaling,
-        fom,
-        etterbetaling,
-        fomDatoNestePeriode,
-        perioder,
-        tomSisteUtbetaling,
-    },
+    simulering: { feilutbetaling, fom, etterbetaling, fomDatoNestePeriode, perioder, tomSisteUtbetaling },
 }) => {
     const kapitaliserTekst = (tekst: string): string => {
         return tekst.charAt(0).toUpperCase() + tekst.slice(1).toLowerCase();
@@ -64,8 +57,7 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
         : undefined;
 
     const erFørNestePeriode = (periode: ISimuleringPeriode) =>
-        !fomDatoNestePeriode ||
-        isBefore(isoStringTilDate(periode.fom), isoStringTilDate(fomDatoNestePeriode));
+        !fomDatoNestePeriode || isBefore(isoStringTilDate(periode.fom), isoStringTilDate(fomDatoNestePeriode));
 
     const panelTittel = (): string => {
         const utbetaltePerioder = perioder.filter(periode => erFørNestePeriode(periode));
@@ -101,9 +93,7 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
                 <HStack>
                     <BodyShort>Etterbetaling</BodyShort>
                     <Spacer />
-                    <BoldTekstMedFarge>
-                        {formaterBeløpEllerDashOmUndefined(etterbetaling)}
-                    </BoldTekstMedFarge>
+                    <BoldTekstMedFarge>{formaterBeløpEllerDashOmUndefined(etterbetaling)}</BoldTekstMedFarge>
                 </HStack>
 
                 <HStackMedBorderTop>
@@ -124,11 +114,7 @@ const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
                         </BodyShort>
                         <Spacer />
                         <BoldTekstMedFarge
-                            $farge={
-                                nestePeriode?.resultat && nestePeriode.resultat > 0
-                                    ? AGreen700
-                                    : ATextDefault
-                            }
+                            $farge={nestePeriode?.resultat && nestePeriode.resultat > 0 ? AGreen700 : ATextDefault}
                         >
                             {formaterBeløpEllerDashOmUndefined(nestePeriode?.resultat)}
                         </BoldTekstMedFarge>

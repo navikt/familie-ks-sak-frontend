@@ -6,8 +6,10 @@ import { CheckboxGroup } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import BarnCheckbox from './BarnCheckbox';
+import { useAppContext } from '../../../../context/AppContext';
 import LeggTilBarn from '../../../../komponenter/LeggTilBarn';
 import type { IBarnMedOpplysninger } from '../../../../typer/søknad';
+import { ToggleNavn } from '../../../../typer/toggles';
 import { isoStringTilDate } from '../../../../utils/dato';
 import { useManuelleBrevmottakerePåFagsakContext } from '../../ManuelleBrevmottakerePåFagsakContext';
 
@@ -19,28 +21,24 @@ interface IProps {
 }
 
 const BarnIBrevSkjema = (props: IProps) => {
+    const { toggles } = useAppContext();
     const { manuelleBrevmottakerePåFagsak } = useManuelleBrevmottakerePåFagsakContext();
 
     const { barnIBrevFelt, visFeilmeldinger, settVisFeilmeldinger } = props;
 
-    const sorterteBarn = barnIBrevFelt.verdi.sort(
-        (a: IBarnMedOpplysninger, b: IBarnMedOpplysninger) => {
-            if (!a.fødselsdato) {
-                return 1;
-            }
-
-            if (!b.fødselsdato) {
-                return -1;
-            }
-
-            return !a.ident
-                ? 1
-                : differenceInMilliseconds(
-                      isoStringTilDate(b.fødselsdato),
-                      isoStringTilDate(a.fødselsdato)
-                  );
+    const sorterteBarn = barnIBrevFelt.verdi.sort((a: IBarnMedOpplysninger, b: IBarnMedOpplysninger) => {
+        if (!a.fødselsdato) {
+            return 1;
         }
-    );
+
+        if (!b.fødselsdato) {
+            return -1;
+        }
+
+        return !a.ident
+            ? 1
+            : differenceInMilliseconds(isoStringTilDate(b.fødselsdato), isoStringTilDate(a.fødselsdato));
+    });
 
     const oppdaterBarnMedNyMerketStatus = (barnaSomErMerket: string[]) => {
         barnIBrevFelt.validerOgSettFelt(
@@ -69,17 +67,15 @@ const BarnIBrevSkjema = (props: IProps) => {
             }}
         >
             {sorterteBarn.map((barnMedOpplysninger: IBarnMedOpplysninger) => (
-                <BarnCheckbox
-                    key={barnMedOpplysninger.ident}
-                    barn={barnMedOpplysninger}
-                    {...props}
-                />
+                <BarnCheckbox key={barnMedOpplysninger.ident} barn={barnMedOpplysninger} {...props} />
             ))}
 
-            <LeggTilBarn
-                barnaMedOpplysninger={barnIBrevFelt}
-                manuelleBrevmottakere={manuelleBrevmottakerePåFagsak}
-            />
+            {!toggles[ToggleNavn.brukNyLeggTilBarnModal] && (
+                <LeggTilBarn
+                    barnaMedOpplysninger={barnIBrevFelt}
+                    manuelleBrevmottakere={manuelleBrevmottakerePåFagsak}
+                />
+            )}
         </CheckboxGroup>
     );
 };

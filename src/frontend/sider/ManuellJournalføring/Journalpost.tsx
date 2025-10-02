@@ -62,11 +62,7 @@ const Journalpost: React.FC = () => {
             : undefined;
 
     return (
-        <ExpansionCard
-            id={skjema.felter.journalpostTittel.id}
-            size={'small'}
-            aria-label={'journalpost'}
-        >
+        <ExpansionCard id={skjema.felter.journalpostTittel.id} size={'small'} aria-label={'journalpost'}>
             <ExpansionCard.Header>
                 <ExpansionCard.Title>
                     <Heading size={'small'} level={'2'}>

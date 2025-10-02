@@ -19,11 +19,7 @@ const StyledFieldset = styled(Fieldset)`
     margin-top: ${ASpacing16};
 `;
 
-const GeneriskAnnenVurdering: React.FC<IProps> = ({
-    person,
-    annenVurderingConfig,
-    andreVurderinger,
-}) => {
+const GeneriskAnnenVurdering: React.FC<IProps> = ({ person, annenVurderingConfig, andreVurderinger }) => {
     return (
         <StyledFieldset legend={annenVurderingConfig.tittel} hideLegend>
             <Heading size="medium" level="3">

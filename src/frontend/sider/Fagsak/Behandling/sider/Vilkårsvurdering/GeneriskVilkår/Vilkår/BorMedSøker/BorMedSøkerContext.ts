@@ -88,10 +88,9 @@ export const useBorMedSøker = (lagretVilkår: IVilkårResultat, person: IGrunnl
         }),
     };
 
-    const initielleMuligeUtdypendeVilkårsvurderinger =
-        bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(
-            vilkårSkjemaMedLagredeVerdier.vurderesEtter
-        );
+    const initielleMuligeUtdypendeVilkårsvurderinger = bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(
+        vilkårSkjemaMedLagredeVerdier.vurderesEtter
+    );
 
     const [muligeUtdypendeVilkårsvurderinger, settMuligeUtdypendeVilkårsvurderinger] = useState<
         UtdypendeVilkårsvurdering[]
@@ -121,8 +120,7 @@ export const useBorMedSøker = (lagretVilkår: IVilkårResultat, person: IGrunnl
                 settMuligeUtdypendeVilkårsvurderinger(initielleMuligeUtdypendeVilkårsvurderinger);
             },
         },
-        finnesEndringerSomIkkeErLagret: () =>
-            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        finnesEndringerSomIkkeErLagret: () => finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
         muligeUtdypendeVilkårsvurderinger,
         settMuligeUtdypendeVilkårsvurderinger,
     };

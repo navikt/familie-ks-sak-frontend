@@ -1,13 +1,4 @@
-import {
-    format,
-    isValid,
-    parseISO,
-    startOfDay,
-    startOfToday,
-    isBefore,
-    isAfter,
-    isSameDay,
-} from 'date-fns';
+import { format, isValid, parseISO, startOfDay, startOfToday, isBefore, isAfter, isSameDay } from 'date-fns';
 
 import type { FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';
@@ -61,7 +52,7 @@ export const dateTilIsoDatoString = (dato?: Date): IsoDatoString =>
 export const dateTilIsoMånedÅrString = (dato?: Date): IsoDatoString =>
     dateTilFormatertString({ date: dato, tilFormat: Datoformat.ISO_MÅNED, defaultString: '' });
 
-export const dateTilIsoDatoStringEllerUndefined = (dato?: Date): IsoDatoString | undefined =>
+export const dateTilIsoDatoStringEllerUndefined = (dato?: Date | null): IsoDatoString | undefined =>
     dato && isValid(dato) ? format(dato, Datoformat.ISO_DAG) : undefined;
 
 interface IsoStringTilFormatertStringProps {
@@ -135,11 +126,9 @@ export const parseFraOgMedDato = (fom: IsoDatoString | undefined) =>
 /**
  * @returns true hvis dato1 er før eller samme dato som dato2
  */
-export const erFørEllerSammeDato = (dato1: Date, dato2: Date) =>
-    isBefore(dato1, dato2) || isSameDay(dato1, dato2);
+export const erFørEllerSammeDato = (dato1: Date, dato2: Date) => isBefore(dato1, dato2) || isSameDay(dato1, dato2);
 
 /**
  * @returns true hvis dato1 er etter eller samme dato som dato2
  */
-export const erEtterEllerSammeDato = (dato1: Date, dato2: Date) =>
-    isAfter(dato1, dato2) || isSameDay(dato1, dato2);
+export const erEtterEllerSammeDato = (dato1: Date, dato2: Date) => isAfter(dato1, dato2) || isSameDay(dato1, dato2);

@@ -4,11 +4,7 @@ import { addMonths, endOfMonth, startOfMonth, subMonths } from 'date-fns';
 
 import type { Periode, Etikett } from '@navikt/familie-tidslinje';
 
-import {
-    YtelseType,
-    type IPersonMedAndelerTilkjentYtelse,
-    type IYtelsePeriode,
-} from '../../typer/beregning';
+import { YtelseType, type IPersonMedAndelerTilkjentYtelse, type IYtelsePeriode } from '../../typer/beregning';
 import type { IGrunnlagPerson } from '../../typer/person';
 import { hentDagensDato, isoStringTilDate } from '../../utils/dato';
 import { sorterPersonTypeOgFødselsdato } from '../../utils/formatter';
@@ -50,9 +46,7 @@ interface TidslinjeContextValue {
     };
     naviger: (retning: NavigeringsRetning) => void;
     endreTidslinjeVindu: (vindu: ITidslinjeVindu) => void;
-    genererRader: (
-        personerMedAndelerTilkjentYtelse?: IPersonMedAndelerTilkjentYtelse[]
-    ) => Periode[][];
+    genererRader: (personerMedAndelerTilkjentYtelse?: IPersonMedAndelerTilkjentYtelse[]) => Periode[][];
     initiellAktivEtikettErSatt: boolean;
     setInitiellAktivEtikettErSatt: (initiellAktivEtikettErSatt: boolean) => void;
     filterOgSorterGrunnlagPersonerMedAndeler: (
@@ -123,9 +117,7 @@ export const TidslinjeProvider = (props: PropsWithChildren) => {
         }));
     };
 
-    const genererRader = (
-        personerMedAndelerTilkjentYtelse?: IPersonMedAndelerTilkjentYtelse[]
-    ): Periode[][] => {
+    const genererRader = (personerMedAndelerTilkjentYtelse?: IPersonMedAndelerTilkjentYtelse[]): Periode[][] => {
         return personerMedAndelerTilkjentYtelse
             ? personerMedAndelerTilkjentYtelse.map(
                   (personMedAndelerTilkjentYtelse: IPersonMedAndelerTilkjentYtelse) => {
@@ -135,9 +127,7 @@ export const TidslinjeProvider = (props: PropsWithChildren) => {
                               const periode: Periode = {
                                   fom,
                                   tom: endOfMonth(isoStringTilDate(ytelsePeriode.stønadTom)),
-                                  id: `${
-                                      personMedAndelerTilkjentYtelse.personIdent
-                                  }_${fom.getMonth()}_${fom.getDay()}`,
+                                  id: `${personMedAndelerTilkjentYtelse.personIdent}_${fom.getMonth()}_${fom.getDay()}`,
                                   status: utledStatus(ytelsePeriode),
                               };
                               return [...acc, periode];

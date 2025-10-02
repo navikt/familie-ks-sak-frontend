@@ -28,9 +28,7 @@ const periodeDiff = (periodeA: IIsoDatoPeriode, periodeB: IIsoDatoPeriode) => {
     );
 };
 
-const sorterVilkårsvurderingForPerson = (
-    vilkårResultater: IVilkårResultat[]
-): IVilkårResultat[] => {
+const sorterVilkårsvurderingForPerson = (vilkårResultater: IVilkårResultat[]): IVilkårResultat[] => {
     return vilkårResultater.sort(
         (a, b) => a.vilkårType.localeCompare(b.vilkårType) || periodeDiff(a.periode, b.periode)
     );
@@ -50,9 +48,7 @@ export const mapFraRestVilkårsvurderingTilUi = (
     return mapFraRestPersonResultatTilPersonResultat(personResultater, personer);
 };
 
-const mapFraRestVilkårResultatTilVilkårResultat = (
-    vilkårResultat: IRestVilkårResultat
-): IVilkårResultat => {
+const mapFraRestVilkårResultatTilVilkårResultat = (vilkårResultat: IRestVilkårResultat): IVilkårResultat => {
     return {
         begrunnelse: vilkårResultat.begrunnelse,
         id: vilkårResultat.id,
@@ -90,41 +86,31 @@ export const mapFraRestPersonResultatTilPersonResultat = (
                     person,
                     personIdent: personResultat.personIdent,
                     vilkårResultater: sorterVilkårsvurderingForPerson(
-                        personResultat.vilkårResultater.map(
-                            (vilkårResultat: IRestVilkårResultat) => {
-                                return mapFraRestVilkårResultatTilVilkårResultat(vilkårResultat);
-                            }
-                        )
+                        personResultat.vilkårResultater.map((vilkårResultat: IRestVilkårResultat) => {
+                            return mapFraRestVilkårResultatTilVilkårResultat(vilkårResultat);
+                        })
                     ),
-                    andreVurderinger: personResultat.andreVurderinger.map(
-                        (annenVurdering: IRestAnnenVurdering) => {
-                            return {
-                                begrunnelse: annenVurdering.begrunnelse,
-                                id: annenVurdering.id,
-                                resultat: annenVurdering.resultat,
-                                endretAv: annenVurdering.endretAv,
-                                erVurdert: annenVurdering.resultat !== Resultat.IKKE_VURDERT,
-                                endretTidspunkt: annenVurdering.endretTidspunkt,
-                                behandlingId: annenVurdering.behandlingId,
-                                type: annenVurdering.type,
-                            };
-                        }
-                    ),
+                    andreVurderinger: personResultat.andreVurderinger.map((annenVurdering: IRestAnnenVurdering) => {
+                        return {
+                            begrunnelse: annenVurdering.begrunnelse,
+                            id: annenVurdering.id,
+                            resultat: annenVurdering.resultat,
+                            endretAv: annenVurdering.endretAv,
+                            erVurdert: annenVurdering.resultat !== Resultat.IKKE_VURDERT,
+                            endretTidspunkt: annenVurdering.endretTidspunkt,
+                            behandlingId: annenVurdering.behandlingId,
+                            type: annenVurdering.type,
+                        };
+                    }),
                 };
             }
         })
         .sort((a: IPersonResultat, b: IPersonResultat) => {
-            if (
-                PersonTypeVisningsRangering[a.person.type] >
-                PersonTypeVisningsRangering[b.person.type]
-            ) {
+            if (PersonTypeVisningsRangering[a.person.type] > PersonTypeVisningsRangering[b.person.type]) {
                 return 1;
             }
 
-            if (
-                PersonTypeVisningsRangering[a.person.type] <
-                PersonTypeVisningsRangering[b.person.type]
-            ) {
+            if (PersonTypeVisningsRangering[a.person.type] < PersonTypeVisningsRangering[b.person.type]) {
                 return -1;
             }
 

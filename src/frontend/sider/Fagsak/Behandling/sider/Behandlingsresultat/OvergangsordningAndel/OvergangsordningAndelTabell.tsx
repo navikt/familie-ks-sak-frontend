@@ -16,9 +16,7 @@ const OvergangsordningPerioder = styled.div`
     margin-top: 6rem;
 `;
 
-const OvergangsordningAndelTabell: React.FunctionComponent<IOvergangsordningTabellProps> = ({
-    åpenBehandling,
-}) => {
+const OvergangsordningAndelTabell: React.FunctionComponent<IOvergangsordningTabellProps> = ({ åpenBehandling }) => {
     const overgangsordningAndeler = åpenBehandling.overgangsordningAndeler;
 
     return (

@@ -15,12 +15,7 @@ import type {
     UtenlandskPeriodeBeløpIntervall,
 } from '../../../../../../../typer/eøsPerioder';
 import { nyIsoMånedPeriode, type IIsoMånedPeriode } from '../../../../../../../utils/dato';
-import {
-    erBarnGyldig,
-    erEøsPeriodeGyldig,
-    isEmpty,
-    isNumeric,
-} from '../../../../../../../utils/eøsValidators';
+import { erBarnGyldig, erEøsPeriodeGyldig, isEmpty, isNumeric } from '../../../../../../../utils/eøsValidators';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import { konverterDesimalverdiTilSkjemaVisning, konverterSkjemaverdiTilDesimal } from '../utils';
 
@@ -48,27 +43,18 @@ const erIntervallGyldig = (
 ): FeltState<UtenlandskPeriodeBeløpIntervall | undefined> =>
     !isEmpty(felt.verdi) ? ok(felt) : feil(felt, 'Intervall er påkrevd, men mangler input');
 
-export const utenlandskPeriodeBeløpFeilmeldingId = (
-    utenlandskPeriodeBeløp: IRestUtenlandskPeriodeBeløp
-): string =>
-    `utd_beløp_${utenlandskPeriodeBeløp.barnIdenter.map(barn => `${barn}-`)}_${
-        utenlandskPeriodeBeløp.fom
-    }`;
+export const utenlandskPeriodeBeløpFeilmeldingId = (utenlandskPeriodeBeløp: IRestUtenlandskPeriodeBeløp): string =>
+    `utd_beløp_${utenlandskPeriodeBeløp.barnIdenter.map(barn => `${barn}-`)}_${utenlandskPeriodeBeløp.fom}`;
 
 interface IProps {
     utenlandskPeriodeBeløp: IRestUtenlandskPeriodeBeløp;
     barnIUtenlandskPeriodeBeløp: OptionType[];
 }
 
-const useUtenlandskPeriodeBeløpSkjema = ({
-    barnIUtenlandskPeriodeBeløp,
-    utenlandskPeriodeBeløp,
-}: IProps) => {
-    const [erUtenlandskPeriodeBeløpEkspandert, settErUtenlandskPeriodeBeløpEkspandert] =
-        React.useState<boolean>(false);
+const useUtenlandskPeriodeBeløpSkjema = ({ barnIUtenlandskPeriodeBeløp, utenlandskPeriodeBeløp }: IProps) => {
+    const [erUtenlandskPeriodeBeløpEkspandert, settErUtenlandskPeriodeBeløpEkspandert] = React.useState<boolean>(false);
     const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
     const behandlingsÅrsakErOvergangsordning =
         åpenBehandling.status === RessursStatus.SUKSESS
             ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
@@ -174,15 +160,13 @@ const useUtenlandskPeriodeBeløpSkjema = ({
             barn => !skjema.felter.barnIdenter.verdi.some(ident => ident.value === barn)
         );
         const erTomEndret =
-            !(
-                skjema.felter.periode.verdi.tom === undefined && utenlandskPeriodeBeløp.tom === null
-            ) && skjema.felter.periode?.verdi.tom !== utenlandskPeriodeBeløp.tom;
+            !(skjema.felter.periode.verdi.tom === undefined && utenlandskPeriodeBeløp.tom === null) &&
+            skjema.felter.periode?.verdi.tom !== utenlandskPeriodeBeløp.tom;
         return (
             barnFjernetISkjema.length > 0 ||
             skjema.felter.periode?.verdi.fom !== utenlandskPeriodeBeløp.fom ||
             erTomEndret ||
-            skjema.felter.beløp?.verdi !==
-                konverterDesimalverdiTilSkjemaVisning(utenlandskPeriodeBeløp.beløp) ||
+            skjema.felter.beløp?.verdi !== konverterDesimalverdiTilSkjemaVisning(utenlandskPeriodeBeløp.beløp) ||
             skjema.felter.valutakode?.verdi !== utenlandskPeriodeBeløp.valutakode ||
             skjema.felter.intervall?.verdi !== utenlandskPeriodeBeløp.intervall
         );
