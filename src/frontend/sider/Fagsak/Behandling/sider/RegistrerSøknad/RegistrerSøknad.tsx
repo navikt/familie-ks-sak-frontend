@@ -9,14 +9,12 @@ import Annet from './Annet';
 import Barna from './Barna';
 import { LeggTilBarnKnapp } from './LeggTilBarnKnapp';
 import { useSøknadContext } from './SøknadContext';
-import { useAppContext } from '../../../../../context/AppContext';
 import { LeggTilBarnModal } from '../../../../../komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
 import { LeggTilBarnModalContextProvider } from '../../../../../komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
 import MålformVelger from '../../../../../komponenter/MålformVelger';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { BehandlingSteg } from '../../../../../typer/behandling';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
-import { ToggleNavn } from '../../../../../typer/toggles';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 const StyledSkjemasteg = styled(Skjemasteg)`
@@ -24,7 +22,6 @@ const StyledSkjemasteg = styled(Skjemasteg)`
 `;
 
 const RegistrerSøknad: React.FC = () => {
-    const { toggles } = useAppContext();
     const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
@@ -43,7 +40,7 @@ const RegistrerSøknad: React.FC = () => {
             onLeggTilBarn={onLeggTilBarn}
             harBrevmottaker={harBrevmottaker}
         >
-            {!erLesevisning && toggles[ToggleNavn.brukNyLeggTilBarnModal] && <LeggTilBarnModal />}
+            {!erLesevisning && <LeggTilBarnModal />}
             <StyledSkjemasteg
                 className={'søknad'}
                 tittel={'Registrer opplysninger fra søknaden'}
@@ -69,7 +66,7 @@ const RegistrerSøknad: React.FC = () => {
 
                 <Barna />
 
-                {!erLesevisning && toggles[ToggleNavn.brukNyLeggTilBarnModal] && <LeggTilBarnKnapp />}
+                {!erLesevisning && <LeggTilBarnKnapp />}
 
                 <MålformVelger
                     målformFelt={skjema.felter.målform}

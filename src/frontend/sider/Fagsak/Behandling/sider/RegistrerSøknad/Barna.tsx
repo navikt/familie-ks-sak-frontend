@@ -8,14 +8,11 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnMedOpplysninger from './BarnMedOpplysninger';
 import { useSøknadContext } from './SøknadContext';
-import { useAppContext } from '../../../../../context/AppContext';
 import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import RødError from '../../../../../ikoner/RødError';
-import LeggTilBarn from '../../../../../komponenter/LeggTilBarn';
 import type { IForelderBarnRelasjonMaskert } from '../../../../../typer/person';
 import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '../../../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
-import { ToggleNavn } from '../../../../../typer/toggles';
 import { isoStringTilDate } from '../../../../../utils/dato';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
@@ -42,12 +39,10 @@ const IngenBarnRegistrertInfo = styled(Alert)`
 `;
 
 const Barna: React.FunctionComponent = () => {
-    const { toggles } = useAppContext();
-    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
+    const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
     const { bruker } = useFagsakContext();
     const { skjema } = useSøknadContext();
-    const brevmottakere = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere : [];
 
     const sorterteBarnMedOpplysninger = skjema.felter.barnaMedOpplysninger.verdi.sort(
         (a: IBarnMedOpplysninger, b: IBarnMedOpplysninger) => {
@@ -116,13 +111,6 @@ const Barna: React.FunctionComponent = () => {
                     <IngenBarnRegistrertInfo
                         variant="info"
                         children={'Folkeregisteret har ikke registrerte barn på denne søkeren'}
-                    />
-                )}
-
-                {!lesevisning && !toggles[ToggleNavn.brukNyLeggTilBarnModal] && (
-                    <LeggTilBarn
-                        barnaMedOpplysninger={skjema.felter.barnaMedOpplysninger}
-                        manuelleBrevmottakere={brevmottakere}
                     />
                 )}
             </StyledCheckboxGroup>
