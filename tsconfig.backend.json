@@ -1,15 +1,21 @@
 {
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
+        /* Language and Environment */
+        "lib": ["ES2022"],
+
+        /* Modules */
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "allowJs": true,
-        "skipLibCheck": true,
-        "module": "esnext",
-        "outDir": "backend",
+
+        /* Emit */
+        "outDir": "dist",
         "rootDir": "./src",
-        "resolveJsonModule": true,
-        "types": ["express-session"],
+
+        /* Completeness */
+        "types": ["express-session"]
     },
-    "include": ["./src/backend", "./src/webpack"],
+    "include": ["./src/backend"],
     "exclude": ["./src/frontend"],
-    "lib": ["es2015"]
-  }
+}
