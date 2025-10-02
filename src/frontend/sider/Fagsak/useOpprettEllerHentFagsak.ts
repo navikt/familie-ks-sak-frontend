@@ -19,13 +19,13 @@ export const useOpprettEllerHentFagsak = () => {
         hentFagsak(data)
             .then((response: Ressurs<IMinimalFagsak>) => {
                 if (response.status === RessursStatus.SUKSESS) {
-                    const hentetFagsak = response.data;
-                    queryClient.setQueryData(HentFagsakQueryKeyFactory.fagsak(hentetFagsak.id), hentetFagsak);
-                    const aktivBehandling = hentAktivBehandlingPåMinimalFagsak(hentetFagsak);
+                    const fagsak = response.data;
+                    queryClient.setQueryData(HentFagsakQueryKeyFactory.fagsak(fagsak.id), fagsak);
+                    const aktivBehandling = hentAktivBehandlingPåMinimalFagsak(fagsak);
                     if (aktivBehandling) {
-                        navigate(`/fagsak/${hentetFagsak.id}/${aktivBehandling.behandlingId}`);
+                        navigate(`/fagsak/${fagsak.id}/${aktivBehandling.behandlingId}`);
                     } else {
-                        navigate(`/fagsak/${hentetFagsak.id}/saksoversikt`);
+                        navigate(`/fagsak/${fagsak.id}/saksoversikt`);
                     }
                 } else if (
                     response.status === RessursStatus.FEILET ||

@@ -96,7 +96,7 @@ const StyledHr = styled.hr`
 
 const Behandlingskort: React.FC<IBehandlingskortProps> = ({ åpenBehandling }) => {
     const { fagsak } = useFagsakContext();
-    const behandlinger = fagsak?.behandlinger ?? [];
+    const behandlinger = fagsak.behandlinger ?? [];
 
     const antallBehandlinger = behandlinger.length;
     const åpenBehandlingIndex =
