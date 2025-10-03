@@ -218,7 +218,9 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
                 (erViPåUdefinertFagsakSide(location.pathname) || erViPåUlovligSteg(location.pathname, sideForSteg)) &&
                 sideForSteg
             ) {
-                navigate(`/fagsak/${fagsakId}/${åpenBehandling.data.behandlingId}/${sideForSteg.href}`);
+                navigate(`/fagsak/${fagsakId}/${åpenBehandling.data.behandlingId}/${sideForSteg.href}`, {
+                    replace: true,
+                });
             }
         }
     };
