@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 import { Box, Button, ErrorMessage, Heading, VStack } from '@navikt/ds-react';
 import { ASpacing4, ASpacing6, ASpacing24 } from '@navikt/ds-tokens/dist/tokens';
-import { hentDataFraRessurs } from '@navikt/familie-typer';
 
 import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
 import { BehandlingSteg } from '../../typer/behandling';
@@ -58,7 +57,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
     skalViseForrigeKnapp = true,
     feilmelding = '',
 }) => {
-    const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
+    const { behandling, vurderErLesevisning } = useBehandlingContext();
 
     useEffect(() => {
         const skjema = document.getElementById('skjemasteg');
@@ -67,10 +66,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
         }
     }, []);
 
-    const kanGåVidereILesevisning = behandlingErEtterSteg(
-        BehandlingSteg.SIMULERING,
-        hentDataFraRessurs(åpenBehandling)
-    );
+    const kanGåVidereILesevisning = behandlingErEtterSteg(BehandlingSteg.SIMULERING, behandling);
 
     function onNesteClicked() {
         if (!senderInn && nesteOnClick) {

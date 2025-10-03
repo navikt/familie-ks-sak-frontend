@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 
-import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { useFagsakContext } from './FagsakContext';
 import type { VisningBehandling } from './Saksoversikt/visningBehandling';
