@@ -17,7 +17,6 @@ import { LeggTilBarnModalContextProvider } from '../../../komponenter/Modal/Legg
 import MålformVelger from '../../../komponenter/MålformVelger';
 import type { IPersonInfo } from '../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../typer/søknad';
-import { ToggleNavn } from '../../../typer/toggles';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
 
 interface Props {
@@ -62,7 +61,7 @@ enum BarnIBrevÅrsak {
 }
 
 const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
-    const { toggles, harInnloggetSaksbehandlerSkrivetilgang } = useAppContext();
+    const { harInnloggetSaksbehandlerSkrivetilgang } = useAppContext();
 
     const {
         hentForhåndsvisningPåFagsak,
@@ -116,7 +115,7 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
             onLeggTilBarn={onLeggTilBarn}
             harBrevmottaker={manuelleBrevmottakerePåFagsak.length > 0}
         >
-            {!erLesevisning && toggles[ToggleNavn.brukNyLeggTilBarnModal] && <LeggTilBarnModal />}
+            {!erLesevisning && <LeggTilBarnModal />}
             <Container>
                 <Heading size={'large'} level={'1'} children={'Send informasjonsbrev'} />
 
@@ -168,7 +167,7 @@ const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
                                     settVisFeilmeldinger={settVisfeilmeldinger}
                                     tittel={barnIBrevÅrsakTilTittel[barnIBrevÅrsak]}
                                 />
-                                {!erLesevisning && toggles[ToggleNavn.brukNyLeggTilBarnModal] && <LeggTilBarnKnapp />}
+                                {!erLesevisning && <LeggTilBarnKnapp />}
                             </>
                         )}
                     </FeltMargin>
