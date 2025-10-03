@@ -24,7 +24,7 @@ function lagRequestPayload(mottakerIdent: string): IManueltBrevRequestPåBehandl
 }
 
 export function ForhåndsvisBrevLenke() {
-    const { minimalFagsak } = useFagsakContext();
+    const { fagsak } = useFagsakContext();
     const { åpenBehandling } = useBehandlingContext();
 
     const { åpneModal: åpneForhåndsvisOpprettingAvPdfModal } = useModal(ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF);
@@ -34,10 +34,6 @@ export function ForhåndsvisBrevLenke() {
     });
 
     function forhåndsvisBrev() {
-        if (minimalFagsak === undefined) {
-            // TODO : Fjern når FagsakContext får innsendt en fagsak fra react-query. Dette skal aldri skje.
-            return;
-        }
         if (åpenBehandling.status !== RessursStatus.SUKSESS) {
             // TODO : Fjern når BehandlingContext får innsendt en behandling fra react-query. Dette skal aldri skje
             return;
@@ -45,7 +41,7 @@ export function ForhåndsvisBrevLenke() {
         if (!isPending) {
             mutate({
                 behandlingId: åpenBehandling.data.behandlingId,
-                payload: lagRequestPayload(minimalFagsak.søkerFødselsnummer),
+                payload: lagRequestPayload(fagsak.søkerFødselsnummer),
             });
         }
     }

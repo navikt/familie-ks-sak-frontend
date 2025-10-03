@@ -5,8 +5,7 @@ import { useHttp } from '@navikt/familie-http';
 import { hentKlagebehandlinger } from '../api/hentKlagebehandlinger';
 
 export const HentKlagebehandlingerQueryKeyFactory = {
-    // TODO : Fjern "undefined" når FagsakContext alltid inneholder en fagsak
-    klagebehandlinger: (fagsakId: number | undefined) => ['klagebehandlinger', fagsakId],
+    klagebehandlinger: (fagsakId: number) => ['klagebehandlinger', fagsakId],
 };
 
 export function useHentKlagebehandlinger(fagsakId: number) {

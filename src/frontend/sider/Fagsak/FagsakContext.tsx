@@ -1,79 +1,33 @@
-import React, { createContext, type PropsWithChildren, useContext } from 'react';
-
-import type { AxiosError } from 'axios';
-import deepEqual from 'deep-equal';
+import React, { createContext, type PropsWithChildren, useContext, useEffect } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
-import {
-    byggDataRessurs,
-    byggFeiletRessurs,
-    byggHenterRessurs,
-    byggTomRessurs,
-    hentDataFraRessurs,
-    RessursStatus,
-} from '@navikt/familie-typer';
+import { byggDataRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import useFagsakApi from '../../api/useFagsakApi';
 import { useAppContext } from '../../context/AppContext';
-import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from '../../context/fagsak/useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import type { IPersonInfo } from '../../typer/person';
 import { sjekkTilgangTilPerson } from '../../utils/commons';
-import { obfuskerFagsak, obfuskerPersonInfo } from '../../utils/obfuskerData';
+import { obfuskerPersonInfo } from '../../utils/obfuskerData';
 
-interface IFagsakContext {
+interface Context {
     bruker: Ressurs<IPersonInfo>;
-    hentMinimalFagsak: (fagsakId: string | number, påvirkerSystemLaster?: boolean) => void;
-    minimalFagsakRessurs: Ressurs<IMinimalFagsak>;
-    settMinimalFagsakRessurs: (fagsak: Ressurs<IMinimalFagsak>) => void;
-    minimalFagsak: IMinimalFagsak | undefined;
-    hentBruker: (personIdent: string) => void;
+    fagsak: IMinimalFagsak;
 }
 
-const FagsakContext = createContext<IFagsakContext | undefined>(undefined);
+const Context = createContext<Context | undefined>(undefined);
 
-export const FagsakProvider = (props: PropsWithChildren) => {
-    const [minimalFagsakRessurs, settMinimalFagsakRessurs] = React.useState<Ressurs<IMinimalFagsak>>(byggTomRessurs());
+interface Props extends PropsWithChildren {
+    fagsak: IMinimalFagsak;
+}
 
+export function FagsakProvider({ fagsak, children }: Props) {
     const [bruker, settBruker] = React.useState<Ressurs<IPersonInfo>>(byggTomRessurs());
 
     const { request } = useHttp();
     const { skalObfuskereData } = useAppContext();
     const { hentFagsakForPerson } = useFagsakApi();
-
-    const hentMinimalFagsak = (fagsakId: string | number, påvirkerSystemLaster = true): void => {
-        if (påvirkerSystemLaster) {
-            settMinimalFagsakRessurs(byggHenterRessurs());
-        }
-
-        request<void, IMinimalFagsak>({
-            method: 'GET',
-            url: `/familie-ks-sak/api/fagsaker/minimal/${fagsakId}`,
-            påvirkerSystemLaster,
-        })
-            .then((hentetFagsak: Ressurs<IMinimalFagsak>) => {
-                if (påvirkerSystemLaster || !deepEqual(hentetFagsak, minimalFagsakRessurs)) {
-                    if (skalObfuskereData) {
-                        obfuskerFagsak(hentetFagsak);
-                    }
-                    settMinimalFagsakRessurs(hentetFagsak);
-                }
-            })
-            .catch((_error: AxiosError) => {
-                settMinimalFagsakRessurs(byggFeiletRessurs('Ukjent ved innhenting av fagsak'));
-            });
-    };
-
-    const oppdaterBrukerHvisFagsakEndres = (bruker: Ressurs<IPersonInfo>, søkerFødselsnummer?: string): void => {
-        if (søkerFødselsnummer === undefined) {
-            return;
-        }
-
-        if (bruker.status !== RessursStatus.SUKSESS || søkerFødselsnummer !== bruker.data.personIdent) {
-            hentBruker(søkerFødselsnummer);
-        }
-    };
 
     const hentBruker = (personIdent: string): void => {
         settBruker(byggHenterRessurs());
@@ -103,35 +57,17 @@ export const FagsakProvider = (props: PropsWithChildren) => {
         });
     };
 
-    useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg({
-        minimalFagsakRessurs,
-        settBruker,
-        oppdaterBrukerHvisFagsakEndres,
-        bruker,
-    });
+    useEffect(() => {
+        hentBruker(fagsak.søkerFødselsnummer);
+    }, [fagsak.søkerFødselsnummer]);
 
-    return (
-        <FagsakContext.Provider
-            value={{
-                bruker,
-                hentMinimalFagsak,
-                minimalFagsakRessurs,
-                settMinimalFagsakRessurs,
-                minimalFagsak: hentDataFraRessurs(minimalFagsakRessurs),
-                hentBruker,
-            }}
-        >
-            {props.children}
-        </FagsakContext.Provider>
-    );
-};
+    return <Context.Provider value={{ bruker, fagsak }}>{children}</Context.Provider>;
+}
 
-export const useFagsakContext = () => {
-    const context = useContext(FagsakContext);
-
+export function useFagsakContext() {
+    const context = useContext(Context);
     if (context === undefined) {
         throw new Error('useFagsakContext må brukes innenfor en FagsakProvider');
     }
-
     return context;
-};
+}
