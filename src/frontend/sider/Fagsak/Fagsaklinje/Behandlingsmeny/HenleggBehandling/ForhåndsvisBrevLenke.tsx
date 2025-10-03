@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import { ModalType } from '../../../../../context/ModalContext';
 import { useModal } from '../../../../../hooks/useModal';
 import {
@@ -13,6 +12,7 @@ import {
 import { Brevmal } from '../../../../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IManueltBrevRequestPåBehandling } from '../../../../../typer/dokument';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useFagsakContext } from '../../../FagsakContext';
 
 function lagRequestPayload(mottakerIdent: string): IManueltBrevRequestPåBehandling {
     return {

@@ -7,7 +7,6 @@ import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie
 import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
 
 import { hentEnkeltInformasjonsbrevRequest } from './Informasjonsbrev/enkeltInformasjonsbrevUtils';
-import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import useDokument from '../../../hooks/useDokument';
 import { Informasjonsbrev } from '../../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IManueltBrevRequestPåFagsak } from '../../../typer/dokument';
@@ -15,6 +14,7 @@ import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../
 import { Målform, type IBarnMedOpplysninger } from '../../../typer/søknad';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
+import { useFagsakContext } from '../FagsakContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
 
 export enum DokumentÅrsak {

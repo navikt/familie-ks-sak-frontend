@@ -8,7 +8,6 @@ import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../../context/AppContext';
-import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import { HentFagsakQueryKeyFactory } from '../../../../../hooks/useHentFagsak';
 import { HentKlagebehandlingerQueryKeyFactory } from '../../../../../hooks/useHentKlagebehandlinger';
 import { HentKontantstøttebehandlingerQueryKeyFactory } from '../../../../../hooks/useHentKontantstøttebehandlinger';
@@ -22,6 +21,7 @@ import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrev
 import type { IsoDatoString } from '../../../../../utils/dato';
 import { dateTilIsoDatoString, dateTilIsoDatoStringEllerUndefined, validerGyldigDato } from '../../../../../utils/dato';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useFagsakContext } from '../../../FagsakContext';
 
 interface IOpprettBehandlingSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';

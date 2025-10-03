@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { BodyShort, CopyButton, Heading, HStack } from '@navikt/ds-react';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useFagsakContext } from '../../context/fagsak/FagsakContext';
+import { useFagsakContext } from '../../sider/Fagsak/FagsakContext';
 import { type IGrunnlagPerson, type IPersonInfo, personTypeMap } from '../../typer/person';
 import { formaterIdent, hentAlder } from '../../utils/formatter';
 import { erAdresseBeskyttet } from '../../utils/validators';

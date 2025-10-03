@@ -9,7 +9,6 @@ import useBehandlingApi from './useBehandlingApi';
 import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './utils';
 import { useAppContext } from '../../../../context/AppContext';
-import { useFagsakContext } from '../../../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
 import {
     BehandlerRolle,
@@ -26,6 +25,7 @@ import { PersonType } from '../../../../typer/person';
 import { Målform } from '../../../../typer/søknad';
 import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '../../../../utils/behandling';
 import { hentSideHref } from '../../../../utils/miljø';
+import { useFagsakContext } from '../../FagsakContext';
 import {
     erViPåUdefinertFagsakSide,
     erViPåUlovligSteg,
