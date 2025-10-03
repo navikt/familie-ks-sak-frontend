@@ -7,7 +7,6 @@ import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../../../typer/person';
@@ -18,6 +17,7 @@ import type {
     Målform,
 } from '../../../../../typer/søknad';
 import { hentBarnMedLøpendeUtbetaling } from '../../../../../utils/fagsak';
+import { useFagsakContext } from '../../../FagsakContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface Props extends React.PropsWithChildren {

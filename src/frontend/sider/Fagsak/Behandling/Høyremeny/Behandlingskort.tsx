@@ -16,7 +16,6 @@ import {
 } from '@navikt/ds-tokens/dist/tokens';
 
 import Informasjonsbolk from './Informasjonsbolk';
-import { useFagsakContext } from '../../../../context/fagsak/FagsakContext';
 import type { IBehandling } from '../../../../typer/behandling';
 import {
     BehandlingResultat,
@@ -27,6 +26,7 @@ import {
     erBehandlingHenlagt,
 } from '../../../../typer/behandling';
 import { Datoformat, isoStringTilFormatertString } from '../../../../utils/dato';
+import { useFagsakContext } from '../../FagsakContext';
 import { sakstype } from '../../Saksoversikt/Saksoversikt';
 
 interface IBehandlingskortProps {

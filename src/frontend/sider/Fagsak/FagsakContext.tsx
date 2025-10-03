@@ -14,13 +14,13 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from './useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import useFagsakApi from '../../api/useFagsakApi';
+import { useAppContext } from '../../context/AppContext';
+import { useOppdaterBrukerOgEksterneBehandlingerNårFagsakEndrerSeg } from '../../context/fagsak/useOppdaterBrukerOgKlagebehandlingerNårFagsakEndrerSeg';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import type { IPersonInfo } from '../../typer/person';
 import { sjekkTilgangTilPerson } from '../../utils/commons';
 import { obfuskerFagsak, obfuskerPersonInfo } from '../../utils/obfuskerData';
-import { useAppContext } from '../AppContext';
 
 interface IFagsakContext {
     bruker: Ressurs<IPersonInfo>;

@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
 
+import { useFagsakContext } from './FagsakContext';
 import type { VisningBehandling } from './Saksoversikt/visningBehandling';
 import type { IOpprettEllerHentFagsakData } from '../../api/fagsak';
 import useFagsakApi from '../../api/useFagsakApi';
-import { useFagsakContext } from '../../context/fagsak/FagsakContext';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../utils/fagsak';
 
