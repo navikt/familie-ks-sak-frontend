@@ -22,15 +22,6 @@ const Environment = () => {
             familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
             neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
         };
-    } else if (process.env.ENV === 'e2e') {
-        return {
-            buildPath: 'frontend_production',
-            namespace: 'e2e',
-            proxyUrl: 'http://familie-ks-sak:8089/api',
-            familieTilbakeUrl: 'http://tilbakekreving:8000',
-            familieKlageUrl: '',
-            neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
-        };
     } else if (process.env.ENV === 'preprod') {
         return {
             buildPath: 'frontend_production',
@@ -59,11 +50,7 @@ export const sessionConfig: ISessionKonfigurasjon = {
     redisFullUrl: process.env.REDIS_URI_SESSIONS,
     redisBrukernavn: process.env.REDIS_USERNAME_SESSIONS,
     redisPassord: process.env.REDIS_PASSWORD_SESSIONS,
-    secureCookie: !(
-        process.env.ENV === 'local' ||
-        process.env.ENV === 'lokalt-mot-preprod' ||
-        process.env.ENV === 'e2e'
-    ),
+    secureCookie: !(process.env.ENV === 'local' || process.env.ENV === 'lokalt-mot-preprod'),
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
 
