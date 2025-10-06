@@ -9,7 +9,7 @@ import styles from './Behandlinger.module.css';
 import type { Saksoversiktsbehandling } from './utils';
 import { hentBehandlingerTilSaksoversikten, hentBehandlingId, hentTidspunktForSortering, skalRadVises } from './utils';
 import { useHentKlagebehandlinger } from '../../../hooks/useHentKlagebehandlinger';
-import { useHentKontantstøtteBehandlinger } from '../../../hooks/useHentKontantstøtteBehandlinger';
+import { useHentKontantstøttebehandlinger } from '../../../hooks/useHentKontantstøttebehandlinger';
 import { useHentTilbakekrevingsbehandlinger } from '../../../hooks/useHentTilbakekrevingsbehandlinger';
 import { isoStringTilDate } from '../../../utils/dato';
 
@@ -37,10 +37,10 @@ export function Behandlinger({ fagsakId }: Props) {
     const [visHenlagteBehandlinger, setVisHenlagteBehandlinger] = useState(false);
 
     const {
-        data: kontantstøtteBehandlinger,
-        isPending: hentKontantstøtteBehandlingerLaster,
-        error: hentKontantstøtteBehandlingerError,
-    } = useHentKontantstøtteBehandlinger(fagsakId);
+        data: kontantstøttebehandlinger,
+        isPending: hentKontantstøttebehandlingerLaster,
+        error: hentKontantstøttebehandlingerError,
+    } = useHentKontantstøttebehandlinger(fagsakId);
 
     const {
         data: klagebehandlinger,
@@ -55,7 +55,7 @@ export function Behandlinger({ fagsakId }: Props) {
     } = useHentTilbakekrevingsbehandlinger(fagsakId);
 
     const behandlingerLaster =
-        hentKlagebehandlingLaster || hentTilbakekrevingsbehandlingerLaster || hentKontantstøtteBehandlingerLaster;
+        hentKlagebehandlingLaster || hentTilbakekrevingsbehandlingerLaster || hentKontantstøttebehandlingerLaster;
 
     if (behandlingerLaster) {
         return (
@@ -74,7 +74,7 @@ export function Behandlinger({ fagsakId }: Props) {
         );
     }
     const saksoversiktbehandlinger = hentBehandlingerTilSaksoversikten(
-        kontantstøtteBehandlinger ?? [],
+        kontantstøttebehandlinger ?? [],
         klagebehandlinger ?? [],
         tilbakekrevingsbehandlinger ?? []
     );
@@ -85,34 +85,46 @@ export function Behandlinger({ fagsakId }: Props) {
 
     return (
         <VStack gap="6">
-            {hentKontantstøtteBehandlingerError !== null && (
+            {hentKontantstøttebehandlingerError !== null && (
                 <Alert variant="warning">
-                    <BodyShort>Fagsaken er ikke tilgjengelig for øyeblikket.</BodyShort>
+                    <VStack gap={'4'}>
+                        <BodyShort>Kontantstøttebehandlinger er ikke tilgjengelig for øyeblikket.</BodyShort>
+                        {hentKontantstøttebehandlingerError.message && (
+                            <BodyShort>Feilmelding: {hentKontantstøttebehandlingerError.message}</BodyShort>
+                        )}
+                    </VStack>
                 </Alert>
             )}
             {hentKlagebehandlingError !== null && (
                 <Alert variant="warning">
-                    <BodyShort>Klagebehandlinger er ikke tilgjengelig for øyeblikket.</BodyShort>
+                    <VStack gap={'4'}>
+                        <BodyShort>Klagebehandlinger er ikke tilgjengelig for øyeblikket.</BodyShort>
+                        {hentKlagebehandlingError.message && (
+                            <BodyShort>Feilmelding: {hentKlagebehandlingError.message}</BodyShort>
+                        )}
+                    </VStack>
                 </Alert>
             )}
             {hentTilbakekrevingsbehandlingerError !== null && (
                 <Alert variant="warning">
-                    <BodyShort>Tilbakekreving er ikke tilgjengelig for øyeblikket.</BodyShort>
+                    <VStack gap={'4'}>
+                        <BodyShort>Tilbakekrevingsbehandlinger er ikke tilgjengelig for øyeblikket.</BodyShort>
+                        {hentTilbakekrevingsbehandlingerError.message && (
+                            <BodyShort>Feilmelding: {hentTilbakekrevingsbehandlingerError.message}</BodyShort>
+                        )}
+                    </VStack>
                 </Alert>
             )}
             <div>
-                <Heading level="2" size={'medium'} spacing>
+                <Heading level="2" size={'medium'} spacing={true}>
                     Behandlinger
                     {finnesRadSomKanFiltreresBort && (
                         <Switch
-                            size="small"
+                            size={'small'}
                             className={styles.switchHøyre}
-                            position="left"
-                            id={'vis-henlagte-behandlinger'}
+                            position={'left'}
                             checked={visHenlagteBehandlinger}
-                            onChange={() => {
-                                setVisHenlagteBehandlinger(!visHenlagteBehandlinger);
-                            }}
+                            onChange={() => setVisHenlagteBehandlinger(!visHenlagteBehandlinger)}
                         >
                             Vis henlagte behandlinger
                         </Switch>
@@ -140,11 +152,9 @@ export function Behandlinger({ fagsakId }: Props) {
                         </Table.Body>
                     </Table>
                 ) : (
-                    <BodyShort children={'Ingen tidligere behandlinger'} />
+                    <BodyShort>Ingen tidligere behandlinger</BodyShort>
                 )}
             </div>
         </VStack>
     );
 }
-
-export default Behandlinger;

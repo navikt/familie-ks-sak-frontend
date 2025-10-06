@@ -2,19 +2,17 @@ import type { PropsWithChildren } from 'react';
 import * as React from 'react';
 import { useEffect } from 'react';
 
-import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
-import { Alert, Button, ErrorMessage, Heading } from '@navikt/ds-react';
-import { ASpacing4, ASpacing6, ASpacing8, ASpacing10, ASpacing24 } from '@navikt/ds-tokens/dist/tokens';
+import { Box, Button, ErrorMessage, Heading, VStack } from '@navikt/ds-react';
+import { ASpacing4, ASpacing6, ASpacing24 } from '@navikt/ds-tokens/dist/tokens';
 import { hentDataFraRessurs } from '@navikt/familie-typer';
 
 import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
-import type { ISide } from '../../sider/Fagsak/Behandling/sider/sider';
-import { sider } from '../../sider/Fagsak/Behandling/sider/sider';
-import { BehandlingSteg, settPåVentÅrsaker } from '../../typer/behandling';
-import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
+import { BehandlingSteg } from '../../typer/behandling';
 import { behandlingErEtterSteg } from '../../utils/steg';
+import { BehandlingPåVentAlert } from '../Alert/BehandlingPåVentAlert';
+import { MidlertidigEnhetAlert } from '../Alert/MidlertidigEnhetAlert';
 
 interface IProps extends PropsWithChildren {
     className?: string;
@@ -31,19 +29,8 @@ interface IProps extends PropsWithChildren {
     steg: BehandlingSteg;
 }
 
-const Container = styled.div<{ $maxWidthStyle: string }>`
-    position: relative;
-    padding: ${ASpacing10};
-    max-width: ${({ $maxWidthStyle }) => $maxWidthStyle};
-`;
-
 const StyledErrorMessage = styled(ErrorMessage)`
     margin-top: ${ASpacing4};
-`;
-
-const StyledAlert = styled(Alert)`
-    margin: ${ASpacing8} ${ASpacing8} 0 ${ASpacing8};
-    width: fit-content;
 `;
 
 const Navigering = styled.div`
@@ -51,6 +38,7 @@ const Navigering = styled.div`
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
+
     button:not(:first-child) {
         margin-right: ${ASpacing6};
     }
@@ -59,9 +47,9 @@ const Navigering = styled.div`
 const Skjemasteg: React.FunctionComponent<IProps> = ({
     children,
     className,
-    forrigeKnappTittel,
+    forrigeKnappTittel = 'Forrige steg',
     forrigeOnClick,
-    nesteKnappTittel,
+    nesteKnappTittel = 'Neste steg',
     nesteOnClick,
     senderInn,
     tittel,
@@ -70,83 +58,56 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
     skalViseForrigeKnapp = true,
     feilmelding = '',
 }) => {
-    const location = useLocation();
-    const {
-        forrigeÅpneSide,
-        åpenBehandling,
-        vurderErLesevisning,
-        erBehandleneEnhetMidlertidig,
-        erBehandlingAvsluttet,
-    } = useBehandlingContext();
-    const erBehandlingSattPåVent = hentDataFraRessurs(åpenBehandling)?.behandlingPåVent;
+    const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
 
     useEffect(() => {
-        const element = document.getElementById('skjemasteg');
-
-        const index: number = Object.values(sider).findIndex((side: ISide) => location.pathname.includes(side.href));
-        const forrigeSide: ISide | undefined = Object.values(sider)[index - 1];
-
-        if (element && forrigeSide && forrigeÅpneSide?.href.includes(forrigeSide.href)) {
-            element.scrollIntoView({ block: 'start' });
+        const skjema = document.getElementById('skjemasteg');
+        if (skjema) {
+            skjema.scrollIntoView({ block: 'start' });
         }
-    }, [forrigeÅpneSide]);
+    }, []);
 
     const kanGåVidereILesevisning = behandlingErEtterSteg(
         BehandlingSteg.SIMULERING,
         hentDataFraRessurs(åpenBehandling)
     );
+
+    function onNesteClicked() {
+        if (!senderInn && nesteOnClick) {
+            nesteOnClick();
+        }
+    }
+
+    function onForrigeClicked() {
+        if (forrigeOnClick) {
+            forrigeOnClick();
+        }
+    }
+
     return (
-        <>
-            {erBehandlingSattPåVent && (
-                <StyledAlert variant="info">
-                    Behandlingen er satt på vent. Årsak: {settPåVentÅrsaker[erBehandlingSattPåVent.årsak]}. Frist:{' '}
-                    {isoStringTilFormatertString({
-                        isoString: erBehandlingSattPåVent.frist,
-                        tilFormat: Datoformat.DATO,
-                    })}
-                    . Fortsett behandling via menyen.
-                </StyledAlert>
-            )}
-
-            {erBehandleneEnhetMidlertidig && !erBehandlingAvsluttet && (
-                <StyledAlert variant="warning">
-                    Denne behandlingen er låst fordi vi ikke har klart å sette behandlende enhet. Du må endre dette i
-                    menyen før du kan fortsette.
-                </StyledAlert>
-            )}
-
-            <Container id={'skjemasteg'} className={className} $maxWidthStyle={maxWidthStyle}>
-                <Heading size={'large'} level={'1'} children={tittel} spacing />
-
+        <VStack id={'skjemasteg'} paddingInline={'space-32'} paddingBlock={'space-24'} gap={'space-16'}>
+            <BehandlingPåVentAlert />
+            <MidlertidigEnhetAlert />
+            <Box position={'relative'} marginBlock={'space-8'} className={className} maxWidth={maxWidthStyle}>
+                <Heading size={'large'} level={'1'} spacing={true}>
+                    {tittel}
+                </Heading>
                 {children}
-
                 {feilmelding !== '' && <StyledErrorMessage>{feilmelding}</StyledErrorMessage>}
-
                 <Navigering>
                     {nesteOnClick && skalViseNesteKnapp && (!vurderErLesevisning() || kanGåVidereILesevisning) && (
-                        <Button
-                            loading={senderInn}
-                            disabled={senderInn}
-                            onClick={() => {
-                                if (!senderInn) {
-                                    nesteOnClick();
-                                }
-                            }}
-                            children={nesteKnappTittel ?? 'Neste steg'}
-                        />
+                        <Button variant={'primary'} onClick={onNesteClicked} loading={senderInn} disabled={senderInn}>
+                            {nesteKnappTittel}
+                        </Button>
                     )}
                     {forrigeOnClick && skalViseForrigeKnapp && (
-                        <Button
-                            onClick={() => {
-                                forrigeOnClick();
-                            }}
-                            variant="secondary"
-                            children={forrigeKnappTittel ?? 'Forrige steg'}
-                        />
+                        <Button variant={'secondary'} onClick={onForrigeClicked}>
+                            {forrigeKnappTittel}
+                        </Button>
                     )}
                 </Navigering>
-            </Container>
-        </>
+            </Box>
+        </VStack>
     );
 };
 

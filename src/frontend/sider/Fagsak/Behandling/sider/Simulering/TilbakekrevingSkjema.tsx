@@ -25,7 +25,6 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useSimuleringContext } from './SimuleringContext';
-import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import { ModalType } from '../../../../../context/ModalContext';
 import { useModal } from '../../../../../hooks/useModal';
 import {
@@ -37,6 +36,7 @@ import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAler
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../../../typer/simulering';
 import type { Målform } from '../../../../../typer/søknad';
 import { målform } from '../../../../../typer/søknad';
+import { useFagsakContext } from '../../../FagsakContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const ForhåndsvisVarselKnappContainer = styled.div`

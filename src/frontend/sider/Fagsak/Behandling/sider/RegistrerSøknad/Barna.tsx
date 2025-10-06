@@ -8,14 +8,13 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnMedOpplysninger from './BarnMedOpplysninger';
 import { useSøknadContext } from './SøknadContext';
-import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import RødError from '../../../../../ikoner/RødError';
-import LeggTilBarn from '../../../../../komponenter/LeggTilBarn';
 import type { IForelderBarnRelasjonMaskert } from '../../../../../typer/person';
 import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '../../../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
 import { isoStringTilDate } from '../../../../../utils/dato';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useFagsakContext } from '../../../FagsakContext';
 
 const BarnMedDiskresjonskode = styled.div`
     display: flex;
@@ -40,11 +39,10 @@ const IngenBarnRegistrertInfo = styled(Alert)`
 `;
 
 const Barna: React.FunctionComponent = () => {
-    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
+    const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
     const { bruker } = useFagsakContext();
     const { skjema } = useSøknadContext();
-    const brevmottakere = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.brevmottakere : [];
 
     const sorterteBarnMedOpplysninger = skjema.felter.barnaMedOpplysninger.verdi.sort(
         (a: IBarnMedOpplysninger, b: IBarnMedOpplysninger) => {
@@ -113,13 +111,6 @@ const Barna: React.FunctionComponent = () => {
                     <IngenBarnRegistrertInfo
                         variant="info"
                         children={'Folkeregisteret har ikke registrerte barn på denne søkeren'}
-                    />
-                )}
-
-                {!lesevisning && (
-                    <LeggTilBarn
-                        barnaMedOpplysninger={skjema.felter.barnaMedOpplysninger}
-                        manuelleBrevmottakere={brevmottakere}
                     />
                 )}
             </StyledCheckboxGroup>

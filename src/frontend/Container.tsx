@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router';
 import styled from 'styled-components';
 
 import { useAppContext } from './context/AppContext';
-import { FagsakProvider } from './context/fagsak/FagsakContext';
 import { HeaderMedSøk } from './komponenter/HeaderMedSøk/HeaderMedSøk';
 import AppInfoModal from './komponenter/Modal/AppInfoModal';
 import OpprettFagsakModal from './komponenter/Modal/Fagsak/OpprettFagsakModal';
@@ -17,6 +16,7 @@ import Toasts from './komponenter/Toast/Toasts';
 import Barnehagelister from './sider/Barnehagelister/Barnehagelister';
 import { BehandlingProvider } from './sider/Fagsak/Behandling/context/BehandlingContext';
 import FagsakContainer from './sider/Fagsak/FagsakContainer';
+import { FagsakProvider } from './sider/Fagsak/FagsakContext';
 import Internstatistikk from './sider/Internstatistikk/Internstatistikk';
 import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';
 import { Oppgavebenk } from './sider/Oppgavebenk/Oppgavebenk';
