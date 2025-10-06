@@ -52,7 +52,7 @@ jobs:
         run: yarn --prefer-offline --frozen-lockfile
 
       - name: 🔬 Kjør sjekk med prettier
-        run: yarn prettier-check
+        run: yarn prettier
 
   build:
     name: Build
