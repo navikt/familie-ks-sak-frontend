@@ -1,13 +1,15 @@
+import fs from 'fs';
 import path from 'path';
 
 import type { Response, Request, Router, NextFunction } from 'express';
+import { type ViteDevServer, createServer } from 'vite';
 
 import type { Client } from '@navikt/familie-backend';
 import { ensureAuthenticated, logRequest, envVar } from '@navikt/familie-backend';
 import { LOG_LEVEL } from '@navikt/familie-logging';
 
-import { buildPath } from './config';
-import { prometheusTellere } from './metrikker';
+import { frontendPath } from './config.js';
+import { prometheusTellere } from './metrikker.js';
 
 const redirectHvisInternUrlIPreprod = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -19,7 +21,7 @@ const redirectHvisInternUrlIPreprod = () => {
     };
 };
 
-export default (authClient: Client, router: Router) => {
+export default async (authClient: Client, router: Router) => {
     router.get('/version', (_: Request, res: Response) => {
         res.status(200)
             .send({ status: 'SUKSESS', data: envVar('APP_VERSION') })
@@ -37,15 +39,32 @@ export default (authClient: Client, router: Router) => {
         res.status(200).send();
     });
 
+    let vite: ViteDevServer;
+    if (process.env.NODE_ENV === 'development') {
+        vite = await createServer({
+            root: path.join(process.cwd(), frontendPath),
+            server: { middlewareMode: true },
+            appType: 'custom',
+        });
+        router.use(vite.middlewares);
+    }
+
     // APP
     router.get(
         '*splat',
         redirectHvisInternUrlIPreprod(),
         ensureAuthenticated(authClient, false),
-        (_: Request, res: Response) => {
+        async (req: Request, res: Response) => {
             prometheusTellere.appLoad.inc();
 
-            res.sendFile('index.html', { root: path.join(process.cwd(), buildPath) });
+            const htmlPath = path.join(process.cwd(), frontendPath, 'index.html');
+            let htmlInnhold = fs.readFileSync(htmlPath, 'utf-8');
+
+            if (process.env.NODE_ENV === 'development') {
+                htmlInnhold = await vite.transformIndexHtml(req.url, htmlInnhold);
+            }
+
+            res.status(200).type('html').send(htmlInnhold);
         }
     );
 
