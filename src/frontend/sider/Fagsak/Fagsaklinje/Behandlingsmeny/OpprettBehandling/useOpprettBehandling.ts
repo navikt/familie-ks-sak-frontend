@@ -40,7 +40,7 @@ const useOpprettBehandling = ({
 }) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { settÅpenBehandling } = useBehandlingContext();
-    const { minimalFagsak, bruker: brukerRessurs } = useFagsakContext();
+    const { fagsak, bruker: brukerRessurs } = useFagsakContext();
     const { innloggetSaksbehandler } = useAppContext();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -139,7 +139,7 @@ const useOpprettBehandling = ({
                     lukkModal();
                     nullstillSkjema();
                     queryClient.invalidateQueries({
-                        queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(minimalFagsak?.id),
+                        queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(fagsak.id),
                     });
                 }
             }
@@ -158,9 +158,7 @@ const useOpprettBehandling = ({
                     nullstillSkjemaStatus();
                     onOpprettTilbakekrevingSuccess();
                     queryClient.invalidateQueries({
-                        queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(
-                            minimalFagsak?.id
-                        ),
+                        queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsak.id),
                     });
                 }
             }
@@ -187,13 +185,11 @@ const useOpprettBehandling = ({
                     nullstillSkjema();
 
                     queryClient.invalidateQueries({
-                        queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(
-                            minimalFagsak?.id
-                        ),
+                        queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsak.id),
                     });
 
                     queryClient.invalidateQueries({
-                        queryKey: HentFagsakQueryKeyFactory.fagsak(minimalFagsak?.id),
+                        queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id),
                     });
 
                     settÅpenBehandling(response);

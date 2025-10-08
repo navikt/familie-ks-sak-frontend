@@ -44,12 +44,9 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
     const { vurderErLesevisning, settÅpenBehandling } = useBehandlingContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
-    const { bruker, minimalFagsakRessurs } = useFagsakContext();
+    const { bruker, fagsak } = useFagsakContext();
 
-    const barnMedLøpendeUtbetaling =
-        minimalFagsakRessurs.status === RessursStatus.SUKSESS
-            ? hentBarnMedLøpendeUtbetaling(minimalFagsakRessurs.data)
-            : new Set<string>();
+    const barnMedLøpendeUtbetaling = hentBarnMedLøpendeUtbetaling(fagsak);
 
     const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<SøknadSkjema, IBehandling>({
         felter: {
