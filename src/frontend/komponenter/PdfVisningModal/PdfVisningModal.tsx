@@ -53,7 +53,7 @@ const IframePdfVisning = styled.iframe`
     width: 100%;
 `;
 
-const Dokument: React.FC<{ pdfdata: Ressurs<string> }> = ({ pdfdata }) => {
+const Dokument = ({ pdfdata }: { pdfdata: Ressurs<string> }) => {
     switch (pdfdata.status) {
         case RessursStatus.HENTER:
             return (

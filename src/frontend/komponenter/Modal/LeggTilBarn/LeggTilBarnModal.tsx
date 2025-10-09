@@ -1,3 +1,5 @@
+import type { UIEvent } from 'react';
+
 import { FormProvider } from 'react-hook-form';
 
 import { BodyLong, Button, Fieldset, Heading, HelpText, HStack, Modal, VStack } from '@navikt/ds-react';
@@ -20,7 +22,7 @@ export function LeggTilBarnModal() {
         form.reset();
     }
 
-    function åpneDrek(event: React.UIEvent) {
+    function åpneDrek(event: UIEvent) {
         event.preventDefault();
         window.open('/redirect/drek', '_new');
     }
