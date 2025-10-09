@@ -40,7 +40,7 @@ const FagsakDeltagerSøk: React.FC = () => {
     const navigate = useNavigate();
     const { skalObfuskereData } = useAppContext();
 
-    const [fagsakDeltagere, settFagsakDeltagere] = React.useState<Ressurs<IFagsakDeltager[]>>(byggTomRessurs());
+    const [fagsakDeltagere, settFagsakDeltagere] = useState<Ressurs<IFagsakDeltager[]>>(byggTomRessurs());
 
     const { åpneModal } = useModal(ModalType.OPPRETT_FAGSAK);
 

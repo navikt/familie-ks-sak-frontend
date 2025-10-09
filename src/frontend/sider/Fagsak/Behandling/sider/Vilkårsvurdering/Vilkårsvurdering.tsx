@@ -55,8 +55,8 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
 
     const registeropplysningerHentetTidpsunkt = vilkårsvurdering[0]?.person?.registerhistorikk?.hentetTidspunkt;
 
-    const [visFeilmeldinger, settVisFeilmeldinger] = React.useState(false);
-    const [hentOpplysningerRessurs, settHentOpplysningerRessurs] = React.useState(byggTomRessurs());
+    const [visFeilmeldinger, settVisFeilmeldinger] = useState(false);
+    const [hentOpplysningerRessurs, settHentOpplysningerRessurs] = useState(byggTomRessurs());
 
     const navigate = useNavigate();
 

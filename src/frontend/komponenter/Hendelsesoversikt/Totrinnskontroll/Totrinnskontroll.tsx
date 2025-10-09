@@ -50,16 +50,16 @@ const Totrinnskontroll: React.FunctionComponent<IProps> = ({ åpenBehandling }) 
     const { request } = useHttp();
     const navigate = useNavigate();
 
-    const [innsendtVedtak, settInnsendtVedtak] = React.useState<Ressurs<IBehandling>>(byggTomRessurs());
-    const [modalVerdi, settModalVerdi] = React.useState<IModalVerdier>(initiellModalVerdi);
-    React.useEffect(() => {
+    const [innsendtVedtak, settInnsendtVedtak] = useState<Ressurs<IBehandling>>(byggTomRessurs());
+    const [modalVerdi, settModalVerdi] = useState<IModalVerdier>(initiellModalVerdi);
+    useEffect(() => {
         settModalVerdi({
             ...modalVerdi,
             skalVises: innsendtVedtak.status === RessursStatus.SUKSESS,
         });
     }, [innsendtVedtak.status]);
 
-    const [forrigeState, settForrigeState] = React.useState(trinnPåBehandling);
+    const [forrigeState, settForrigeState] = useState(trinnPåBehandling);
     const nullstillFeilmelding = () => {
         const erFørsteSjekk = Object.entries(forrigeState).some(([sideId, trinn]) => {
             const oppdatertTrinn: ITrinn = Object.entries(trinnPåBehandling)
@@ -77,7 +77,7 @@ const Totrinnskontroll: React.FunctionComponent<IProps> = ({ åpenBehandling }) 
         settForrigeState(trinnPåBehandling);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         nullstillFeilmelding();
     }, [trinnPåBehandling]);
 

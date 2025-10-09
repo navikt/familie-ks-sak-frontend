@@ -29,10 +29,8 @@ const Totrinnskontrollskjema: React.FunctionComponent<IProps> = ({ innsendtVedta
     const { trinnPåBehandling } = useBehandlingContext();
     const { innloggetSaksbehandler } = useAppContext();
 
-    const [beslutning, settBeslutning] = React.useState<TotrinnskontrollBeslutning>(
-        TotrinnskontrollBeslutning.IKKE_VURDERT
-    );
-    const [begrunnelse, settBegrunnelse] = React.useState<string>('');
+    const [beslutning, settBeslutning] = useState<TotrinnskontrollBeslutning>(TotrinnskontrollBeslutning.IKKE_VURDERT);
+    const [begrunnelse, settBegrunnelse] = useState<string>('');
 
     const senderInn = innsendtVedtak.status === RessursStatus.HENTER;
 

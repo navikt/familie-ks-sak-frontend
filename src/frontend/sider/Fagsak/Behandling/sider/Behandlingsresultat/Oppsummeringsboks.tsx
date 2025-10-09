@@ -93,7 +93,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
 }) => {
     const { settAktivEtikett } = useTidslinjeContext();
 
-    const [utbetalingsBeløpStatusMap, setUtbetalingsBeløpStatusMap] = React.useState(new Map<string, boolean>());
+    const [utbetalingsBeløpStatusMap, setUtbetalingsBeløpStatusMap] = useState(new Map<string, boolean>());
 
     const månedNavnOgÅr = () => {
         const navn = dateTilFormatertString({
@@ -119,7 +119,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
 
     const utbetalingsperiode = finnUtbetalingsperiodeForAktivEtikett(åpenBehandling.utbetalingsperioder);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setUtbetalingsBeløpStatusMap(
             finnUtbetalingsBeløpStatusMap(utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser)
         );

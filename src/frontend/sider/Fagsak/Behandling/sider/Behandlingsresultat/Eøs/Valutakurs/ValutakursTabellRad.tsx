@@ -38,7 +38,7 @@ const ValutakursTabellRad: React.FC<IProps> = ({ valutakurs, åpenBehandling, vi
         barnIValutakurs: barn,
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (visFeilmeldinger && erValutakursEkspandert) {
             kanSendeSkjema();
         }

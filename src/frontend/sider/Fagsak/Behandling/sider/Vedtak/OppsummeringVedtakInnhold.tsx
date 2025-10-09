@@ -66,10 +66,8 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
 
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
-    const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = React.useState(
-        åpenBehandling.feilutbetaltValuta.length > 0
-    );
-    const [visRefusjonEøs, settVisRefusjonEøs] = React.useState(åpenBehandling.refusjonEøs.length > 0);
+    const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = useState(åpenBehandling.feilutbetaltValuta.length > 0);
+    const [visRefusjonEøs, settVisRefusjonEøs] = useState(åpenBehandling.refusjonEøs.length > 0);
 
     const hentVedtaksbrev = () => {
         const rolle = hentSaksbehandlerRolle();

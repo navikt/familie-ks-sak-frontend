@@ -111,8 +111,8 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const [forrigeÅpneSide, settForrigeÅpneSide] = React.useState<ISide | undefined>(undefined);
-    const [trinnPåBehandling, settTrinnPåBehandling] = React.useState<{
+    const [forrigeÅpneSide, settForrigeÅpneSide] = useState<ISide | undefined>(undefined);
+    const [trinnPåBehandling, settTrinnPåBehandling] = useState<{
         [sideId: string]: ITrinn;
     }>({});
 

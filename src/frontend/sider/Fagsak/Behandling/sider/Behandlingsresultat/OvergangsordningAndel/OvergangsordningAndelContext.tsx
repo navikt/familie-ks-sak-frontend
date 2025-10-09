@@ -135,7 +135,7 @@ export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children 
 };
 
 export const useOvergangsordningAndelContext = () => {
-    const context = React.useContext(OvergangsordningAndelContext);
+    const context = useContext(OvergangsordningAndelContext);
 
     if (context === undefined) {
         throw new Error('useOvergangsordningAndelContext må brukes innenfor en OvergangsordningAndelProvider');

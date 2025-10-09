@@ -22,11 +22,9 @@ const queryClient = new QueryClient({
 });
 
 const App: React.FC = () => {
-    const [autentisertSaksbehandler, settInnloggetSaksbehandler] = React.useState<ISaksbehandler | undefined>(
-        undefined
-    );
+    const [autentisertSaksbehandler, settInnloggetSaksbehandler] = useState<ISaksbehandler | undefined>(undefined);
 
-    React.useEffect(() => {
+    useEffect(() => {
         initGrafanaFaro();
         hentInnloggetBruker().then((innhentetInnloggetSaksbehandler: ISaksbehandler) => {
             settInnloggetSaksbehandler(innhentetInnloggetSaksbehandler);

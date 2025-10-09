@@ -40,7 +40,7 @@ export function VilkårsvurderingProvider({ åpenBehandling, children }: IProps)
 }
 
 export const useVilkårsvurderingContext = () => {
-    const context = React.useContext(VilkårsvurderingContext);
+    const context = useEffectContext(VilkårsvurderingContext);
 
     if (context === undefined) {
         throw new Error('useVilkårsvurderingContext må brukes innenfor en VilkårsvurderingProvider');

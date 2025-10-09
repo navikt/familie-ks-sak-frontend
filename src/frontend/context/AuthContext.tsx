@@ -17,8 +17,8 @@ interface AuthProviderExports {
 const AuthContext = createContext<AuthProviderExports | undefined>(undefined);
 
 const AuthProvider = ({ autentisertSaksbehandler, children }: IProps) => {
-    const [autentisert, settAutentisert] = React.useState(true);
-    const [innloggetSaksbehandler, settInnloggetSaksbehandler] = React.useState(autentisertSaksbehandler);
+    const [autentisert, settAutentisert] = useState(true);
+    const [innloggetSaksbehandler, settInnloggetSaksbehandler] = useState(autentisertSaksbehandler);
 
     useEffect(() => {
         if (autentisertSaksbehandler) {
@@ -34,7 +34,7 @@ const AuthProvider = ({ autentisertSaksbehandler, children }: IProps) => {
 };
 
 export const useAuthContext = () => {
-    const context = React.useContext(AuthContext);
+    const context = useContext(AuthContext);
     if (!context) {
         throw new Error('useAuth må brukes innenfor AuthProvider');
     }

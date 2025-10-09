@@ -38,14 +38,14 @@ const UtenlandskPeriodeBeløpRad: React.FC<IProps> = ({ utenlandskPeriodeBeløp,
         barnIUtenlandskPeriodeBeløp: barn,
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (åpenBehandling) {
             nullstillSkjema();
             settErUtenlandskPeriodeBeløpEkspandert(false);
         }
     }, [åpenBehandling]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (visFeilmeldinger && erUtenlandskPeriodeBeløpEkspandert) {
             kanSendeSkjema();
         }

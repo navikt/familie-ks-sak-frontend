@@ -72,7 +72,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
         skjemanavn: 'Registrer søknad',
     });
 
-    const [søknadErLastetFraBackend, settSøknadErLastetFraBackend] = React.useState(false);
+    const [søknadErLastetFraBackend, settSøknadErLastetFraBackend] = useState(false);
 
     const tilbakestillSøknad = () => {
         if (bruker.status === RessursStatus.SUKSESS) {
@@ -97,11 +97,11 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
         settSøknadErLastetFraBackend(false);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         tilbakestillSøknad();
     }, [bruker.status]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (åpenBehandling.søknadsgrunnlag) {
             settSøknadErLastetFraBackend(true);
             skjema.felter.barnaMedOpplysninger.validerOgSettFelt(

@@ -65,8 +65,8 @@ interface IProps {
 }
 
 const useValutakursSkjema = ({ barnIValutakurs, valutakurs }: IProps) => {
-    const [erValutakursEkspandert, settErValutakursEkspandert] = React.useState<boolean>(false);
-    const [sletterValutakurs, settSletterValutakurs] = React.useState<boolean>(false);
+    const [erValutakursEkspandert, settErValutakursEkspandert] = useState<boolean>(false);
+    const [sletterValutakurs, settSletterValutakurs] = useState<boolean>(false);
     const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
     const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
     const behandlingsÅrsakErOvergangsordning =

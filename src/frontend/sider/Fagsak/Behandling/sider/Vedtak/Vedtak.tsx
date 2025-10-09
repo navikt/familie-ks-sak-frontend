@@ -31,13 +31,13 @@ const Vedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehandling, bruker
 
     const navigate = useNavigate();
 
-    const [visModal, settVisModal] = React.useState<boolean>(false);
+    const [visModal, settVisModal] = useState<boolean>(false);
 
     const visSubmitKnapp = !vurderErLesevisning() && åpenBehandling?.status === BehandlingStatus.UTREDES;
 
-    const [erUlagretNyFeilutbetaltValutaPeriode, settErUlagretNyFeilutbetaltValutaPeriode] = React.useState(false);
+    const [erUlagretNyFeilutbetaltValutaPeriode, settErUlagretNyFeilutbetaltValutaPeriode] = useState(false);
 
-    const [erUlagretNyRefusjonEøsPeriode, settErUlagretNyRefusjonEøsPeriode] = React.useState(false);
+    const [erUlagretNyRefusjonEøsPeriode, settErUlagretNyRefusjonEøsPeriode] = useState(false);
 
     const foreslåVedtak = () => {
         foreslåVedtakNesteOnClick(

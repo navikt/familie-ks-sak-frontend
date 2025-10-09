@@ -41,7 +41,7 @@ const HøyremenyContainer = styled.div`
 const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
     const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } = useBehandlingContext();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (åpenBehandling && åpenBehandling.status === RessursStatus.SUKSESS) {
             hentLogg();
         }

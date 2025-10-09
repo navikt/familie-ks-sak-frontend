@@ -32,14 +32,14 @@ const KompetanseTabellRad: React.FC<IProps> = ({ kompetanse, åpenBehandling, vi
         erKompetanseSkjemaEndret,
     } = useKompetansePeriodeSkjema({ barnIKompetanse: barn, kompetanse });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (åpenBehandling) {
             nullstillSkjema();
             settErKompetanseEkspandert(false);
         }
     }, [åpenBehandling]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (visFeilmeldinger && erKompetanseEkspandert) {
             kanSendeSkjema();
         }
