@@ -28,7 +28,7 @@ const FlexRowDiv = styled.div`
     gap: 1rem;
 `;
 
-const RefusjonEøsPeriode: React.FC<IRefusjonEøsPeriode> = ({ refusjonEøs, behandlingId }) => {
+const RefusjonEøsPeriode = ({ refusjonEøs, behandlingId }: IRefusjonEøsPeriode) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 

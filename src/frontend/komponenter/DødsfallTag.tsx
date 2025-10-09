@@ -6,7 +6,7 @@ interface IDødsfallTagProps {
     dødsfallDato: string;
 }
 
-const DødsfallTag: React.FC<IDødsfallTagProps> = ({ dødsfallDato }) => {
+const DødsfallTag = ({ dødsfallDato }: IDødsfallTagProps) => {
     const formatertDato = isoStringTilFormatertString({
         isoString: dødsfallDato,
         tilFormat: Datoformat.DATO,

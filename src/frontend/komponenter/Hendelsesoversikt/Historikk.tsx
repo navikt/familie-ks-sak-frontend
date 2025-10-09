@@ -20,7 +20,7 @@ interface IProps {
     hendelser: Hendelse[];
 }
 
-const Historikk: React.FC<IProps> = ({ hendelser }) => (
+const Historikk = ({ hendelser }: IProps) => (
     <StyledPanel value={TabValg.Historikk}>
         <Liste>
             {hendelser?.map((hendelse: Hendelse) => (

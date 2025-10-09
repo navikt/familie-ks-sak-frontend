@@ -23,7 +23,7 @@ const FlexRowDiv = styled.div`
     display: flex;
 `;
 
-const NyFeilutbetaltValutaPeriode: React.FC<INyFeilutbetaltValutaPeriodeProps> = ({ lukkNyPeriode, behandlingId }) => {
+const NyFeilutbetaltValutaPeriode = ({ lukkNyPeriode, behandlingId }: INyFeilutbetaltValutaPeriodeProps) => {
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const { skjema, lagreNyPeriode, nullstillSkjema, valideringErOk } = useFeilutbetaltValuta({

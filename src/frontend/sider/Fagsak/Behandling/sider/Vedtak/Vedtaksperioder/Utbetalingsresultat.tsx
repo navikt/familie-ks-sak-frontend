@@ -18,7 +18,7 @@ const UtbetalingsperiodeDetalj = styled.div`
     }
 `;
 
-const Utbetalingsresultat: React.FC<IProps> = ({ utbetalingsperiodeDetaljer }) => {
+const Utbetalingsresultat = ({ utbetalingsperiodeDetaljer }: IProps) => {
     if (utbetalingsperiodeDetaljer.length === 0) return null;
 
     return (

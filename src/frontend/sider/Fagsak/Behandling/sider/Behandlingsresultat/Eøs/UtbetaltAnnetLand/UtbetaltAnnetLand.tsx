@@ -36,12 +36,12 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const UtbetaltAnnetLand: React.FC<IProps> = ({
+const UtbetaltAnnetLand = ({
     utbetaltAnnetLandBeløp,
     erUtbetaltAnnetLandBeløpGyldige,
     åpenBehandling,
     visFeilmeldinger,
-}) => {
+}: IProps) => {
     return (
         <UtenlandskPeriodeBeløperContainer>
             <Heading spacing size="medium" level="3">

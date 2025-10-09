@@ -4,7 +4,7 @@ interface IØyeGrønn {
     width?: number;
 }
 
-const ØyeGrønn: React.FC<IØyeGrønn> = ({ className, height, width }) => {
+const ØyeGrønn = ({ className, height, width }: IØyeGrønn) => {
     return (
         <svg
             aria-labelledby={'Øye grønn'}

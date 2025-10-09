@@ -14,7 +14,7 @@ interface IOppgavelisteSaksbehandler {
     innloggetSaksbehandler?: ISaksbehandler;
 }
 
-const OppgavelisteSaksbehandler: React.FC<IOppgavelisteSaksbehandler> = ({ oppgave, innloggetSaksbehandler }) => {
+const OppgavelisteSaksbehandler = ({ oppgave, innloggetSaksbehandler }: IOppgavelisteSaksbehandler) => {
     const { fordelOppgave, tilbakestillFordelingPåOppgave } = useOppgavebenkContext();
     const { sjekkTilgang } = useAppContext();
     const oppgaveRef = useRef<IOppgave | null>(null);

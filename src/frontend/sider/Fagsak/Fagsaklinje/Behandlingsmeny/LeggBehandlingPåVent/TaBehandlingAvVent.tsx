@@ -23,7 +23,7 @@ interface IProps {
     behandling: IBehandling;
 }
 
-const TaBehandlingAvVent: React.FC<IProps> = ({ behandling }) => {
+const TaBehandlingAvVent = ({ behandling }: IProps) => {
     const { request } = useHttp();
 
     const [visModal, settVisModal] = useState<boolean>(false);

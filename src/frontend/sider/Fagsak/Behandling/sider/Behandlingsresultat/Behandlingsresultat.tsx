@@ -62,7 +62,7 @@ interface IBehandlingsresultatProps {
     åpenBehandling: IBehandling;
 }
 
-const Behandlingsresultat: React.FC<IBehandlingsresultatProps> = ({ åpenBehandling }) => {
+const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => {
     const navigate = useNavigate();
     const { fagsakId } = useSakOgBehandlingParams();
 

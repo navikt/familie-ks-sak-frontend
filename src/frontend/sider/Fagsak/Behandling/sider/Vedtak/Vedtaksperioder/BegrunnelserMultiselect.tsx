@@ -25,7 +25,7 @@ const GroupLabel = styled.div`
     color: black;
 `;
 
-const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => {
+const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = tillatKunLesevisning || vurderErLesevisning();
 

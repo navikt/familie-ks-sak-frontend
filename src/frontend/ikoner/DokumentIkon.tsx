@@ -5,7 +5,7 @@ interface IDokumentIkon {
     width?: number;
 }
 
-export const DokumentIkon: React.FC<IDokumentIkon> = ({ className, filled = false, width = 48, height = 48 }) => {
+export const DokumentIkon = ({ className, filled = false, width = 48, height = 48 }: IDokumentIkon) => {
     return filled ? (
         <svg
             aria-labelledby={'dokument'}

@@ -28,10 +28,7 @@ const PersonCelle = styled.div`
     }
 `;
 
-const EndretUtbetalingAndelRad: React.FC<IEndretUtbetalingAndelRadProps> = ({
-    lagretEndretUtbetalingAndel,
-    åpenBehandling,
-}) => {
+const EndretUtbetalingAndelRad = ({ lagretEndretUtbetalingAndel, åpenBehandling }: IEndretUtbetalingAndelRadProps) => {
     const [erSkjemaEkspandert, settErSkjemaEkspandert] = useState<boolean>(
         lagretEndretUtbetalingAndel.personIdent === null
     );

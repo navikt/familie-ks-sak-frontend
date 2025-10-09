@@ -14,7 +14,7 @@ const OvergangsordningPerioder = styled.div`
     margin-top: 6rem;
 `;
 
-const OvergangsordningAndelTabell: React.FC<IOvergangsordningTabellProps> = ({ åpenBehandling }) => {
+const OvergangsordningAndelTabell = ({ åpenBehandling }: IOvergangsordningTabellProps) => {
     const overgangsordningAndeler = åpenBehandling.overgangsordningAndeler;
 
     return (

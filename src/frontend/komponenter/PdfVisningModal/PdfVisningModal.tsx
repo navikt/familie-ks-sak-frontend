@@ -26,7 +26,7 @@ const StyledModal = styled(Modal)`
 /**
  * @Deprecated - Erstattes av {@link ForhåndsvisPdfModal}.
  */
-const PdfVisningModal: React.FC<IPdfVisningModalProps> = ({ onRequestClose, onRequestOpen, pdfdata }) => {
+const PdfVisningModal = ({ onRequestClose, onRequestOpen, pdfdata }: IPdfVisningModalProps) => {
     useEffect(() => {
         if (onRequestOpen) {
             onRequestOpen();

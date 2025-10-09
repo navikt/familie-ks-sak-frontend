@@ -70,11 +70,7 @@ const sorterPerioderSynkende = (a: IRestRegisteropplysning, b: IRestRegisteroppl
 
 const GRENSE_FOR_EKSPANDERBAR_HISTORIKK = 3;
 
-const RegisteropplysningerTabell: React.FC<IRegisteropplysningerTabellProps> = ({
-    opplysningstype,
-    ikon,
-    historikk,
-}) => {
+const RegisteropplysningerTabell = ({ opplysningstype, ikon, historikk }: IRegisteropplysningerTabellProps) => {
     const [erEkspandert, settEkspandert] = useState<boolean>(false);
     const manglerOpplysninger = historikk.length === 0;
     const skalVæreEkspanderbar =

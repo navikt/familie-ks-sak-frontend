@@ -9,7 +9,7 @@ interface IKorrigerEtterbetaling {
     korrigertEtterbetaling?: IRestKorrigertEtterbetaling;
 }
 
-const KorrigerEtterbetaling: React.FC<IKorrigerEtterbetaling> = ({ korrigertEtterbetaling }) => {
+const KorrigerEtterbetaling = ({ korrigertEtterbetaling }: IKorrigerEtterbetaling) => {
     const { åpneModal } = useModal(ModalType.KORRIGER_ETTERBETALING);
 
     return (

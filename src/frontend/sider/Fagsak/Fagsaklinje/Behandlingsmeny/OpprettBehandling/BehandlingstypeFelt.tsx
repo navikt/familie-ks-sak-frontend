@@ -25,13 +25,13 @@ interface BehandlingstypeSelect extends HTMLSelectElement {
     value: Behandlingstype | '';
 }
 
-const BehandlingstypeFelt: React.FC<IProps> = ({
+const BehandlingstypeFelt = ({
     behandlingstype,
     visFeilmeldinger,
     minimalFagsak,
     erLesevisning = false,
     manuellJournalfør = false,
-}) => {
+}: IProps) => {
     const { toggles } = useAppContext();
 
     const aktivBehandling: VisningBehandling | undefined = minimalFagsak

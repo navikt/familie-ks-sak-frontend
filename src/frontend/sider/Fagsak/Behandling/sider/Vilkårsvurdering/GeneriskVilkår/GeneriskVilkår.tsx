@@ -31,7 +31,7 @@ const UtførKnapp = styled(Button)`
     margin-top: ${ASpacing5};
 `;
 
-const GeneriskVilkår: React.FC<IProps> = ({ person, vilkårFraConfig, vilkårResultater, generiskVilkårKey }) => {
+const GeneriskVilkår = ({ person, vilkårFraConfig, vilkårResultater, generiskVilkårKey }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const vilkårsvurderingApi = useVilkårsvurderingApi();
 

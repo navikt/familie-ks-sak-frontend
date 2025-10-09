@@ -10,7 +10,7 @@ interface IProps {
     behandling: IBehandling;
 }
 
-const SettEllerOppdaterVenting: React.FC<IProps> = ({ behandling }) => {
+const SettEllerOppdaterVenting = ({ behandling }: IProps) => {
     const [visModal, settVisModal] = useState<boolean>(!!behandling.behandlingPåVent);
 
     const erBehandlingAlleredePåVent = !!behandling.behandlingPåVent;

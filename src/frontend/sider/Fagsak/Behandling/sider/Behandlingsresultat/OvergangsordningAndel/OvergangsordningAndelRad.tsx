@@ -19,7 +19,7 @@ const PersonCelle = styled.div`
     }
 `;
 
-const OvergangsordningAndelRad: React.FC<IOvergangsordningRadProps> = ({ åpenBehandling }) => {
+const OvergangsordningAndelRad = ({ åpenBehandling }: IOvergangsordningRadProps) => {
     const {
         overgangsordningAndel,
         erOvergangsordningAndelForandret,

@@ -27,7 +27,7 @@ const BeskrivelseCelle = styled(BodyShort)`
     text-overflow: ellipsis;
 `;
 
-const AnnenVurderingTabellRad: React.FC<IProps> = ({ person, annenVurderingConfig, annenVurdering }) => {
+const AnnenVurderingTabellRad = ({ person, annenVurderingConfig, annenVurdering }: IProps) => {
     const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 

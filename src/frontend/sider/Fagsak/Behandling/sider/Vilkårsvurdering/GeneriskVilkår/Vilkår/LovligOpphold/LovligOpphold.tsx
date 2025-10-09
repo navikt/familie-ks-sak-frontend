@@ -16,7 +16,7 @@ const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-export const LovligOpphold: React.FC<LovligOppholdProps> = ({
+export const LovligOpphold = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,

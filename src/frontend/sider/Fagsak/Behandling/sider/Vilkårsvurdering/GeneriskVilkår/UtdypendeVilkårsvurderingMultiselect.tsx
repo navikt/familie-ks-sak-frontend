@@ -60,13 +60,13 @@ const mapUtdypendeVilkårsvurderingTilOption = (utdypendeVilkårsvurdering: Utdy
     label: utdypendeVilkårsvurderingTekst[utdypendeVilkårsvurdering],
 });
 
-export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
+export const UtdypendeVilkårsvurderingMultiselect = ({
     utdypendeVilkårsvurderinger,
     muligeUtdypendeVilkårsvurderinger,
     erLesevisning,
     feilhåndtering,
     children,
-}) => {
+}: Props) => {
     const håndterEndring = (action: ActionMeta<OptionType>) => {
         switch (action.action) {
             case 'select-option':

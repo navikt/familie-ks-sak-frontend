@@ -24,14 +24,7 @@ const lagÅrOptions = (år: number | undefined, antallÅrFrem: number, antallÅr
     });
 };
 
-const Årvelger: React.FC<ÅrProps> = ({
-    år,
-    settÅr,
-    antallÅrFrem,
-    antallÅrTilbake,
-    lesevisning = false,
-    feil = false,
-}) => {
+const Årvelger = ({ år, settÅr, antallÅrFrem, antallÅrTilbake, lesevisning = false, feil = false }: ÅrProps) => {
     const årOptions = lagÅrOptions(år, antallÅrFrem, antallÅrTilbake);
     return (
         <Select

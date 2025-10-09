@@ -24,7 +24,7 @@ const Divider = () => {
     return <div>|</div>;
 };
 
-const Personlinje: React.FC<IProps> = ({ bruker }) => {
+const Personlinje = ({ bruker }: IProps) => {
     if (bruker === undefined) {
         return (
             <InnholdContainer>

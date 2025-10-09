@@ -30,7 +30,7 @@ interface IProps {
     minimalFagsak: IMinimalFagsak;
 }
 
-const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
+const OpprettBehandling = ({ minimalFagsak }: IProps) => {
     const [visModal, settVisModal] = useState(false);
     const [visBekreftelseTilbakekrevingModal, settVisBekreftelseTilbakekrevingModal] = useState(false);
     const navigate = useNavigate();

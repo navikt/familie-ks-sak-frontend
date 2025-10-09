@@ -4,7 +4,7 @@ interface ISlett {
     width?: number;
 }
 
-const Slett: React.FC<ISlett> = ({ className, height = 24, width = 24 }) => {
+const Slett = ({ className, height = 24, width = 24 }: ISlett) => {
     return (
         <svg
             aria-labelledby={'Slett'}

@@ -4,7 +4,7 @@ interface IManuellVurdering {
     width?: number;
 }
 
-const ManuellVurdering: React.FC<IManuellVurdering> = ({ className, height = 24, width = 24 }) => {
+const ManuellVurdering = ({ className, height = 24, width = 24 }: IManuellVurdering) => {
     return (
         <svg
             aria-labelledby={'ManuellVurdering'}

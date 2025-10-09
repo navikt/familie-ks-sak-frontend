@@ -64,7 +64,7 @@ interface IProps {
     behandlingsÅrsakErOvergangsordning: boolean;
 }
 
-const ValutakursTabellRadEndre: React.FC<IProps> = ({
+const ValutakursTabellRadEndre = ({
     skjema,
     tilgjengeligeBarn,
     status,
@@ -75,7 +75,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
     sletterValutakurs,
     erManuellInputAvKurs,
     behandlingsÅrsakErOvergangsordning,
-}) => {
+}: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning(true);
 

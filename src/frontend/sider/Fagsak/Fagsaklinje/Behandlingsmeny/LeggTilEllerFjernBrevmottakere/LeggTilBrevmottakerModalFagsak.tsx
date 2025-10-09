@@ -7,7 +7,7 @@ interface IFagsakModalProps {
     lukkModal: () => void;
 }
 
-export const LeggTilBrevmottakerModalFagsak: React.FC<IFagsakModalProps> = ({ lukkModal }) => {
+export const LeggTilBrevmottakerModalFagsak = ({ lukkModal }: IFagsakModalProps) => {
     const { manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak } =
         useManuelleBrevmottakerePåFagsakContext();
 

@@ -28,11 +28,7 @@ const FlexRowDiv = styled.div`
     gap: 1rem;
 `;
 
-const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
-    feilutbetaltValuta,
-    erLesevisning,
-    behandlingId,
-}) => {
+const FeilutbetaltValutaPeriode = ({ feilutbetaltValuta, erLesevisning, behandlingId }: IFeilutbetaltValutaPeriode) => {
     const [erRadEkspandert, settErRadEkspandert] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
 

@@ -4,7 +4,7 @@ interface IRødError {
     width?: number;
 }
 
-const RødError: React.FC<IRødError> = ({ className, height, width }) => {
+const RødError = ({ className, height, width }: IRødError) => {
     return (
         <svg
             aria-labelledby={'Rød Error'}

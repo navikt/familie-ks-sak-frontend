@@ -30,12 +30,12 @@ const StyledDropdownMeny = styled(Dropdown.Menu)`
     width: 36ch;
 `;
 
-const Vedtaksmeny: React.FC<IVedtakmenyProps> = ({
+const Vedtaksmeny = ({
     åpenBehandling,
     erBehandlingMedVedtaksbrevutsending,
     visFeilutbetaltValuta,
     visRefusjonEøs,
-}) => {
+}: IVedtakmenyProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
 
     const {

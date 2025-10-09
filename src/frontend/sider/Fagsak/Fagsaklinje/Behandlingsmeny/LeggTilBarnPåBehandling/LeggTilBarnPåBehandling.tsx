@@ -17,7 +17,7 @@ interface IProps {
     behandling: IBehandling;
 }
 
-const LeggTiLBarnPåBehandling: React.FC<IProps> = ({ behandling }) => {
+const LeggTiLBarnPåBehandling = ({ behandling }: IProps) => {
     const { request } = useHttp();
     const { settÅpenBehandling } = useBehandlingContext();
 

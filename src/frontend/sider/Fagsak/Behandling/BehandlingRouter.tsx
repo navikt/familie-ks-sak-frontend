@@ -23,7 +23,7 @@ interface Props {
     åpenBehandling: IBehandling;
 }
 
-export const BehandlingRouter: React.FC<Props> = ({ bruker, åpenBehandling }) => {
+export const BehandlingRouter = ({ bruker, åpenBehandling }: Props) => {
     const location = useLocation();
     const { leggTilBesøktSide } = useBehandlingContext();
 

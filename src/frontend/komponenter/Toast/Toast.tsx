@@ -20,7 +20,7 @@ const Container = styled.div`
     }
 `;
 
-const Toast: React.FC<{ toastId: string; toast: IToast }> = ({ toastId, toast }) => {
+const Toast = ({ toastId, toast }: { toastId: string; toast: IToast }) => {
     const { toasts, settToasts } = useAppContext();
     const toastRef = useRef<HTMLDivElement>(null);
 

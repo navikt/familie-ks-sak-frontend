@@ -84,13 +84,13 @@ const erAllePerioderUtfyltForBarn = (eøsPeriodeStatus: IEøsPeriodeStatus[]) =>
     return eøsPeriodeStatus.every(eøsPeriode => eøsPeriode.status === EøsPeriodeStatus.OK);
 };
 
-const Oppsummeringsboks: React.FC<IProps> = ({
+const Oppsummeringsboks = ({
     åpenBehandling,
     aktivEtikett,
     kompetanser,
     utbetaltAnnetLandBeløp,
     valutakurser,
-}) => {
+}: IProps) => {
     const { settAktivEtikett } = useTidslinjeContext();
 
     const [utbetalingsBeløpStatusMap, setUtbetalingsBeløpStatusMap] = useState(new Map<string, boolean>());
@@ -131,7 +131,7 @@ const Oppsummeringsboks: React.FC<IProps> = ({
             upd => upd.ytelseType === YtelseType.OVERGANGSORDNING || upd.ytelseType === YtelseType.PRAKSISENDRING_2024
         );
 
-    const UtbetalingsbeløpRad: React.FC<PropsWithChildren> = ({ children }) => {
+    const UtbetalingsbeløpRad = ({ children }: PropsWithChildren) => {
         const columns = skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem';
 
         return (

@@ -43,12 +43,7 @@ const TabellHeader = styled(Table.HeaderCell)`
     }
 `;
 
-const VilkårTabell: React.FC<IProps> = ({
-    person,
-    vilkårFraConfig,
-    vilkårResultater,
-    settFokusPåLeggTilPeriodeKnapp,
-}) => {
+const VilkårTabell = ({ person, vilkårFraConfig, vilkårResultater, settFokusPåLeggTilPeriodeKnapp }: IProps) => {
     return (
         <Table>
             <Table.Header>

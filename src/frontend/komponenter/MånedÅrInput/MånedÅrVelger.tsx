@@ -33,7 +33,7 @@ const StyledErrorMessage = styled(ErrorMessage)`
     margin-bottom: 0.5rem;
 `;
 
-const MånedÅrVelger: React.FC<Props> = ({
+const MånedÅrVelger = ({
     feil,
     value,
     label,
@@ -41,7 +41,7 @@ const MånedÅrVelger: React.FC<Props> = ({
     antallÅrTilbake = 10,
     antallÅrFrem = 4,
     lesevisning = false,
-}) => {
+}: Props) => {
     const årFraVerdi = () => (value ? parseInt(value.split('-')[0], 10) : undefined);
     const månedFraVerdi = () => (value ? value.split('-')[1] : undefined);
 

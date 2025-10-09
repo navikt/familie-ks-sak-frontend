@@ -43,7 +43,7 @@ const Navigering = styled.div`
     }
 `;
 
-const Skjemasteg: React.FC<IProps> = ({
+const Skjemasteg = ({
     children,
     className,
     forrigeKnappTittel = 'Forrige steg',
@@ -56,7 +56,7 @@ const Skjemasteg: React.FC<IProps> = ({
     skalViseNesteKnapp = true,
     skalViseForrigeKnapp = true,
     feilmelding = '',
-}) => {
+}: IProps) => {
     const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
 
     useEffect(() => {

@@ -48,7 +48,7 @@ const Modaltekst = styled(BodyShort)`
     margin: 2rem 0;
 `;
 
-const OppsummeringVedtakInnhold: React.FC<IOppsummeringVedtakInnholdProps> = ({
+const OppsummeringVedtakInnhold = ({
     åpenBehandling,
     settErUlagretNyFeilutbetaltValutaPeriode,
     erBehandlingMedVedtaksbrevutsending,
@@ -56,7 +56,7 @@ const OppsummeringVedtakInnhold: React.FC<IOppsummeringVedtakInnholdProps> = ({
     settVisModal,
     settErUlagretNyRefusjonEøsPeriode,
     bruker,
-}) => {
+}: IOppsummeringVedtakInnholdProps) => {
     const { hentSaksbehandlerRolle } = useAppContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandlingContext();

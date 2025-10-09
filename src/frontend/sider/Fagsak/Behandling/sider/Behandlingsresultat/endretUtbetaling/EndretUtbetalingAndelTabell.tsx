@@ -13,7 +13,7 @@ const EndredePerioder = styled.div`
     margin-top: 6rem;
 `;
 
-const EndretUtbetalingAndelTabell: React.FC<IEndretUtbetalingAndelTabellProps> = ({ åpenBehandling }) => {
+const EndretUtbetalingAndelTabell = ({ åpenBehandling }: IEndretUtbetalingAndelTabellProps) => {
     const endretUtbetalingAndeler = åpenBehandling.endretUtbetalingAndeler;
 
     return (

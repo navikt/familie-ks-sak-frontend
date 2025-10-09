@@ -27,7 +27,7 @@ const StyledButton = styled(Button)`
     width: fit-content;
 `;
 
-const Totrinnskontrollskjema: React.FC<IProps> = ({ innsendtVedtak, sendInnVedtak, åpenBehandling }) => {
+const Totrinnskontrollskjema = ({ innsendtVedtak, sendInnVedtak, åpenBehandling }: IProps) => {
     const { trinnPåBehandling } = useBehandlingContext();
     const { innloggetSaksbehandler } = useAppContext();
 
@@ -157,10 +157,7 @@ const Trinn = styled.div`
     }
 `;
 
-const TrinnStatus: React.FC<{
-    kontrollertStatus: KontrollertStatus;
-    navn: string;
-}> = ({ kontrollertStatus, navn }) => {
+const TrinnStatus = ({ kontrollertStatus, navn }: { kontrollertStatus: KontrollertStatus; navn: string }) => {
     return (
         <Trinn>
             {kontrollertStatus === KontrollertStatus.IKKE_KONTROLLERT && <ØyeGrå height={24} width={24} />}

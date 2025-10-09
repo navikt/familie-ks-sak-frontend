@@ -23,7 +23,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-export const EndreDokumentInfoPanel: React.FC<IProps> = ({ dokument, visFeilmeldinger }) => {
+export const EndreDokumentInfoPanel = ({ dokument, visFeilmeldinger }: IProps) => {
     const { skjema, erLesevisning } = useManuellJournalføringContext();
 
     const dokumentFraSkjema: IDokumentInfo | undefined = skjema.felter.dokumenter.verdi.find(

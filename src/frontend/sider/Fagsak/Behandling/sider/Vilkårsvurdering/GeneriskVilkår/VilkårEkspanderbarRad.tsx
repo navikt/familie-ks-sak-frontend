@@ -64,12 +64,7 @@ const StyledPersonIcon = styled(PersonIcon)`
     min-width: 1.5rem;
 `;
 
-export const VilkårEkspanderbarRad: React.FC<IProps> = ({
-    toggleForm,
-    children,
-    lagretVilkårResultat,
-    erVilkårEkspandert,
-}) => {
+export const VilkårEkspanderbarRad = ({ toggleForm, children, lagretVilkårResultat, erVilkårEkspandert }: IProps) => {
     const { åpenBehandling } = useBehandlingContext();
 
     const periodeErTom = !lagretVilkårResultat.periode.fom && !lagretVilkårResultat.periode.tom;

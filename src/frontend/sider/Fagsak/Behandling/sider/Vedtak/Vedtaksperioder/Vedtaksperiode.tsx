@@ -14,7 +14,7 @@ interface IProps {
     sisteVedtaksperiodeFom?: string;
 }
 
-const Vedtaksperiode: React.FC<IProps> = ({ vedtaksperiodeMedBegrunnelser, sisteVedtaksperiodeFom }) => {
+const Vedtaksperiode = ({ vedtaksperiodeMedBegrunnelser, sisteVedtaksperiodeFom }: IProps) => {
     const { erPanelEkspandert, onPanelClose, genererteBrevbegrunnelser } = useVedtaksperiodeContext();
 
     const vedtaksperiodeInneholderFramtidigOpphørBegrunnelse =

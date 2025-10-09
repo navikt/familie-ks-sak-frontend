@@ -67,14 +67,14 @@ interface IEndretUtbetalingAndelSkjemaProps {
     slettEndretUtbetaling: () => void;
 }
 
-const EndretUtbetalingAndelSkjema: React.FC<IEndretUtbetalingAndelSkjemaProps> = ({
+const EndretUtbetalingAndelSkjema = ({
     åpenBehandling,
     lukkSkjema,
     skjema,
     settFelterTilLagredeVerdier,
     oppdaterEndretUtbetaling,
     slettEndretUtbetaling,
-}) => {
+}: IEndretUtbetalingAndelSkjemaProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
 
     const finnÅrTilbakeTilStønadFra = (): number => {

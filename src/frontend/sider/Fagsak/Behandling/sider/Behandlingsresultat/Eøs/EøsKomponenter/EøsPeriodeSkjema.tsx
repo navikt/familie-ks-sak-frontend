@@ -32,7 +32,7 @@ interface IProps {
     behandlingsÅrsakErOvergangsordning: boolean;
 }
 
-const EøsPeriodeSkjema: React.FC<IProps> = ({
+const EøsPeriodeSkjema = ({
     periode,
     periodeFeilmeldingId,
     initielFom,
@@ -40,7 +40,7 @@ const EøsPeriodeSkjema: React.FC<IProps> = ({
     lesevisning,
     className,
     behandlingsÅrsakErOvergangsordning,
-}) => {
+}: IProps) => {
     const finnÅrTilbakeTil = (): number => {
         return new Date().getFullYear() - new Date(initielFom.verdi).getFullYear();
     };

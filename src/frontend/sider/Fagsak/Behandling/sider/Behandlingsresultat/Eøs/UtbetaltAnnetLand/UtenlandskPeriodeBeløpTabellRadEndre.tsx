@@ -75,7 +75,7 @@ interface IProps {
     behandlingsÅrsakErOvergangsordning: boolean;
 }
 
-const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
+const UtenlandskPeriodeBeløpTabellRadEndre = ({
     skjema,
     tilgjengeligeBarn,
     status,
@@ -84,7 +84,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
     toggleForm,
     slettUtenlandskPeriodeBeløp,
     behandlingsÅrsakErOvergangsordning,
-}) => {
+}: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning(true);
 

@@ -26,7 +26,7 @@ const StyledSkjemaSteg = styled(Skjemasteg)`
     }
 `;
 
-const Vedtak: React.FC<IVedtakProps> = ({ åpenBehandling, bruker }) => {
+const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } = useBehandlingContext();
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();

@@ -28,7 +28,7 @@ const BodyTekst = styled(BodyShort)`
     font-size: ${AFontSizeHeadingMedium};
 `;
 
-const Innholdstabell: React.FC<IInnholdstabell> = ({ minimalFagsak }) => {
+const Innholdstabell = ({ minimalFagsak }: IInnholdstabell) => {
     const behandlingstema: IBehandlingstema | undefined =
         minimalFagsak.løpendeKategori && tilBehandlingstema(minimalFagsak.løpendeKategori);
 
@@ -64,7 +64,7 @@ const genererLinkTekst = (behandling: VisningBehandling) => {
     return behandling.status === BehandlingStatus.AVSLUTTET ? 'Gå til gjeldende vedtak' : 'Gå til åpen behandling';
 };
 
-const FagsakLenkepanel: React.FC<IFagsakLinkPanel> = ({ minimalFagsak }) => {
+const FagsakLenkepanel = ({ minimalFagsak }: IFagsakLinkPanel) => {
     const aktivBehandling: VisningBehandling | undefined = hentAktivBehandlingPåMinimalFagsak(minimalFagsak);
 
     return aktivBehandling ? (

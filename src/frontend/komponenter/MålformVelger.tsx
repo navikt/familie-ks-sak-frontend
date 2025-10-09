@@ -22,12 +22,12 @@ interface IProps {
     Legend?: ReactNode;
 }
 
-const MålformVelger: React.FC<IProps> = ({
+const MålformVelger = ({
     målformFelt,
     visFeilmeldinger,
     erLesevisning,
     Legend = <Heading size={'medium'} level={'2'} children={'Målform'} />,
-}) => {
+}: IProps) => {
     const radioOnChange = (målform: Målform) => {
         målformFelt.validerOgSettFelt(målform);
     };

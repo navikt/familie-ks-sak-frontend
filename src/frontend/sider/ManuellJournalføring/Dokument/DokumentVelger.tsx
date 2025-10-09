@@ -20,7 +20,7 @@ const StyledExpansionCard = styled(ExpansionCard)`
     width: 100%;
 `;
 
-export const DokumentVelger: React.FC<IDokumentVelgerProps> = ({ dokument, visFeilmeldinger }) => {
+export const DokumentVelger = ({ dokument, visFeilmeldinger }: IDokumentVelgerProps) => {
     const { dataForManuellJournalføring, valgtDokumentId, velgOgHentDokumentData } = useManuellJournalføringContext();
     const [åpen, settÅpen] = useState(false);
 

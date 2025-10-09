@@ -8,7 +8,7 @@ interface IProps {
     tekstFarge?: string;
 }
 
-const Informasjonsbolk: React.FC<IProps> = ({ label, tekst, tekstHover, tekstFarge }) => {
+const Informasjonsbolk = ({ label, tekst, tekstHover, tekstFarge }: IProps) => {
     return (
         <HGrid columns={2}>
             <BodyShort>{label}</BodyShort>

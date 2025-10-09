@@ -43,7 +43,7 @@ interface Props {
     minimalFagsak: IMinimalFagsak;
 }
 
-const BehandlingContainer: React.FC<Props> = ({ bruker, minimalFagsak }) => {
+const BehandlingContainer = ({ bruker, minimalFagsak }: Props) => {
     const { åpenBehandling } = useBehandlingContext();
 
     switch (åpenBehandling.status) {

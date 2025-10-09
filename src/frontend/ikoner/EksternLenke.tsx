@@ -4,7 +4,7 @@ interface IEksternLenke {
     width?: number;
 }
 
-export const EksternLenke: React.FC<IEksternLenke> = ({ className, width = 16, height = 16 }) => {
+export const EksternLenke = ({ className, width = 16, height = 16 }: IEksternLenke) => {
     //<!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
     return (
         <svg

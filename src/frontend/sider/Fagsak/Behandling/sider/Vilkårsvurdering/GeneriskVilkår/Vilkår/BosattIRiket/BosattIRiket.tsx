@@ -8,7 +8,7 @@ import { VilkårSkjema } from '../../VilkårSkjema';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
-export const BosattIRiket: React.FC<BosattIRiketProps> = ({
+export const BosattIRiket = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,

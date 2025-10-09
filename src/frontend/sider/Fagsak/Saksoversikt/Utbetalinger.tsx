@@ -24,7 +24,7 @@ interface IUtbetalingerProps {
     vedtaksperiode?: Vedtaksperiode;
 }
 
-const Utbetalinger: React.FC<IUtbetalingerProps> = ({ vedtaksperiode }) => {
+const Utbetalinger = ({ vedtaksperiode }: IUtbetalingerProps) => {
     if (vedtaksperiode?.vedtaksperiodetype !== Vedtaksperiodetype.UTBETALING) return null;
 
     const utbetalingsperiodeDetaljerGruppertPåPerson =

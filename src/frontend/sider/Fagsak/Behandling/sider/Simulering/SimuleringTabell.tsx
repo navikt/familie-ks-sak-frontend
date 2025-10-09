@@ -79,7 +79,7 @@ interface ISimuleringProps {
     simulering: ISimuleringDTO;
 }
 
-const SimuleringTabell: React.FC<ISimuleringProps> = ({ simulering }) => {
+const SimuleringTabell = ({ simulering }: ISimuleringProps) => {
     const {
         fomDatoNestePeriode,
         fom,

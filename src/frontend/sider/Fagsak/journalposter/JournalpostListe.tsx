@@ -122,7 +122,7 @@ const settRiktigDatoMottatForJournalpost = (journalpost: IJournalpost): IJournal
     };
 };
 
-const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
+const JournalpostListe = ({ bruker }: IProps) => {
     const { request } = useHttp();
     const [journalposterRessurs, settJournalposterRessurs] =
         useState<Ressurs<ITilgangsstyrtJournalpost[]>>(byggTomRessurs());

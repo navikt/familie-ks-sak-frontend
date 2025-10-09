@@ -7,11 +7,7 @@ interface IBehandlingModalProps {
     erLesevisning: boolean;
     lukkModal: () => void;
 }
-export const LeggTilBrevmottakerModalBehandling: React.FC<IBehandlingModalProps> = ({
-    lukkModal,
-    behandling,
-    erLesevisning,
-}) => {
+export const LeggTilBrevmottakerModalBehandling = ({ lukkModal, behandling, erLesevisning }: IBehandlingModalProps) => {
     const { lagreMottaker, fjernMottaker } = useLagreEllerFjernMottakerPåBehandling({
         behandlingId: behandling.behandlingId,
     });

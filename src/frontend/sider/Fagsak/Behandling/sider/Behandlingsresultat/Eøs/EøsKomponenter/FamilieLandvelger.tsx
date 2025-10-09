@@ -104,14 +104,14 @@ interface IBaseLandvelgerProps {
     feil?: string;
 }
 
-const BaseFamilieLandvelger: React.FC<IBaseLandvelgerProps> = ({
+const BaseFamilieLandvelger = ({
     countrySelectProps,
     label,
     className,
     utenMargin,
     kanNullstilles,
     feil,
-}) => {
+}: IBaseLandvelgerProps) => {
     return (
         <div className={classNames('skjemaelement', className)}>
             <Landvelger
@@ -149,7 +149,7 @@ interface IFamilieLandvelgerProps extends IBaseFamilieLandvelgerProps {
     eksluderLand?: string[];
 }
 
-const FamilieLandvelger: React.FC<IFamilieLandvelgerProps> = ({
+const FamilieLandvelger = ({
     className,
     value,
     feil,
@@ -166,7 +166,7 @@ const FamilieLandvelger: React.FC<IFamilieLandvelgerProps> = ({
     utenMargin = false,
     kanNullstilles = false,
     eksluderLand = undefined,
-}) => {
+}: IFamilieLandvelgerProps) => {
     const id = `country-select-${label}`;
 
     let landvelgerProps: CountrySelectProps<Country | Currency> = {
@@ -205,7 +205,7 @@ interface IFamilieValutavelgerProps extends IBaseFamilieLandvelgerProps {
     onChange: (value: Currency) => void;
 }
 
-const FamilieValutavelger: React.FC<IFamilieValutavelgerProps> = ({
+const FamilieValutavelger = ({
     className,
     value,
     feil,
@@ -221,7 +221,7 @@ const FamilieValutavelger: React.FC<IFamilieValutavelgerProps> = ({
     onChange,
     utenMargin = false,
     kanNullstilles = false,
-}) => {
+}: IFamilieValutavelgerProps) => {
     const id = `currency-select-${label}`;
 
     let landvelgerProps: CountrySelectProps<Country | Currency> = {

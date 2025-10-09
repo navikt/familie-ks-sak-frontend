@@ -41,7 +41,7 @@ const FjernBarnKnapp = styled(Button)`
     margin-left: 1rem;
 `;
 
-const BarnMedOpplysninger: React.FC<IProps> = ({ barn }) => {
+const BarnMedOpplysninger = ({ barn }: IProps) => {
     const { skjema, barnMedLøpendeUtbetaling } = useSøknadContext();
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();

@@ -41,7 +41,7 @@ const HøyremenyContainer = styled.div`
     }
 `;
 
-const Høyremeny: React.FC<Props> = ({ bruker }) => {
+const Høyremeny = ({ bruker }: Props) => {
     const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } = useBehandlingContext();
 
     useEffect(() => {

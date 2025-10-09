@@ -28,12 +28,7 @@ const StyledFieldset = styled(Fieldset)`
     }
 `;
 
-const AvslagSkjema: React.FC<IProps> = ({
-    erEksplisittAvslagPåSøknad,
-    lagretVilkår,
-    avslagBegrunnelser,
-    visFeilmeldinger,
-}) => {
+const AvslagSkjema = ({ erEksplisittAvslagPåSøknad, lagretVilkår, avslagBegrunnelser, visFeilmeldinger }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
 

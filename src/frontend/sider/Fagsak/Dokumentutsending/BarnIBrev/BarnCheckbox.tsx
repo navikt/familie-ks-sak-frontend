@@ -44,7 +44,7 @@ interface IProps {
     barnIBrevFelt: Felt<IBarnMedOpplysninger[]>;
 }
 
-const BarnCheckbox: React.FC<IProps> = ({ barn, barnIBrevFelt }) => {
+const BarnCheckbox = ({ barn, barnIBrevFelt }: IProps) => {
     const navnOgIdentTekst = lagBarnLabel(barn);
 
     return (

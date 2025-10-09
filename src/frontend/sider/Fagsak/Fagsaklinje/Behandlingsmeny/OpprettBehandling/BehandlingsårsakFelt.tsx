@@ -20,11 +20,7 @@ interface IProps {
     erLesevisning?: boolean;
 }
 
-export const BehandlingårsakFelt: React.FC<IProps> = ({
-    behandlingsårsak,
-    visFeilmeldinger,
-    erLesevisning = false,
-}) => {
+export const BehandlingårsakFelt = ({ behandlingsårsak, visFeilmeldinger, erLesevisning = false }: IProps) => {
     const { toggles } = useAppContext();
 
     return (

@@ -27,7 +27,7 @@ const GroupLabel = styled.div`
     color: black;
 `;
 
-const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnelser, regelverk }) => {
+const AvslagBegrunnelseMultiselect = ({ vilkårType, begrunnelser, regelverk }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
 

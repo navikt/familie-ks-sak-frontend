@@ -40,13 +40,13 @@ const KopierTilNøsKnapp = styled(CopyButton)`
     }
 `;
 
-const RefusjonEøs: React.FC<IRefusjonEøs> = ({
+const RefusjonEøs = ({
     refusjonEøsListe,
     settErUlagretNyRefusjonEøsPeriode,
     skjulRefusjonEøs,
     behandlingId,
     fagsakId,
-}) => {
+}: IRefusjonEøs) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 

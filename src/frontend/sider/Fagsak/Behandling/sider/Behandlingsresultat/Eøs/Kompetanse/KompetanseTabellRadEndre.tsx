@@ -61,7 +61,7 @@ const StyledEøsPeriodeSkjema = styled(EøsPeriodeSkjema)`
     margin-top: 1.5rem;
 `;
 
-const KompetanseTabellRadEndre: React.FC<IProps> = ({
+const KompetanseTabellRadEndre = ({
     skjema,
     tilgjengeligeBarn,
     status,
@@ -71,7 +71,7 @@ const KompetanseTabellRadEndre: React.FC<IProps> = ({
     slettKompetanse,
     behandlingsÅrsakErOvergangsordning,
     erAnnenForelderOmfattetAvNorskLovgivning,
-}) => {
+}: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning(true);
 

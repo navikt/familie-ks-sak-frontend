@@ -23,7 +23,7 @@ interface IProps {
     skjema: ISkjema<IEndretUtbetalingAndelSkjema, IBehandling>;
 }
 
-export const EndretUtbetalingAvslagBegrunnelse: React.FC<IProps> = ({ skjema }) => {
+export const EndretUtbetalingAvslagBegrunnelse = ({ skjema }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const { endretUtbetalingsbegrunnelser } = useHentEndretUtbetalingBegrunnelser();
 

@@ -26,7 +26,7 @@ interface IProps {
     behandling: IBehandling;
 }
 
-export const SettBehandlingPåVentModal: React.FC<IProps> = ({ lukkModal, behandling }) => {
+export const SettBehandlingPåVentModal = ({ lukkModal, behandling }: IProps) => {
     const årsaker = hentAlleÅrsaker();
     const { skjema, kanSendeSkjema, onSubmit } = useSettPåVentSkjema(behandling.behandlingPåVent);
     const { settÅpenBehandling } = useBehandlingContext();

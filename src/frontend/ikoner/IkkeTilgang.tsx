@@ -4,7 +4,7 @@ interface IIkkeTilgang {
     width?: number;
 }
 
-const IkkeTilgang: React.FC<IIkkeTilgang> = ({ className, height = 24, width = 24 }) => {
+const IkkeTilgang = ({ className, height = 24, width = 24 }: IIkkeTilgang) => {
     return (
         <svg
             aria-labelledby={'ikkeTilgang'}

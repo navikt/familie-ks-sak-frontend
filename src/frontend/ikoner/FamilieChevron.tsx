@@ -20,7 +20,7 @@ const getRotationTransform = (retning?: FamilieChevronRetning): string | undefin
 };
 
 // Default farge er @navBlå
-const FamilieChevron: React.FC<Props> = ({ retning, title = 'FamilieChevron' }) => {
+const FamilieChevron = ({ retning, title = 'FamilieChevron' }: Props) => {
     const rotation = getRotationTransform(retning);
     const style = rotation
         ? {

@@ -17,7 +17,7 @@ interface Props {
     saksoversiktsbehandling: Saksoversiktsbehandling;
 }
 
-export const Behandling: React.FC<Props> = ({ saksoversiktsbehandling, fagsakId }) => {
+export const Behandling = ({ saksoversiktsbehandling, fagsakId }: Props) => {
     return (
         <Table.Row key={hentBehandlingId(saksoversiktsbehandling)}>
             <Table.DataCell>

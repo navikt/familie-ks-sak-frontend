@@ -8,7 +8,7 @@ const Container = styled.div`
     margin-top: 1rem;
 `;
 
-const Knapperekke: React.FC<PropsWithChildren> = ({ children }) => {
+const Knapperekke = ({ children }: PropsWithChildren) => {
     return <Container>{children}</Container>;
 };
 

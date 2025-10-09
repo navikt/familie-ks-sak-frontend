@@ -15,7 +15,7 @@ interface IProps {
     lukkModal: () => void;
 }
 
-export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({ åpenBehandling, lukkModal }) => {
+export const OppdaterEndringstidspunktModal = ({ åpenBehandling, lukkModal }: IProps) => {
     const { settÅpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const { skjema, kanSendeSkjema, onSubmit } = useOppdaterEndringstidspunktSkjema(åpenBehandling.endringstidspunkt);
 

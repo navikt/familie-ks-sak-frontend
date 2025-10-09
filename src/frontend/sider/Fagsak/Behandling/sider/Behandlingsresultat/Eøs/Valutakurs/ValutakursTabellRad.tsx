@@ -17,7 +17,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const ValutakursTabellRad: React.FC<IProps> = ({ valutakurs, åpenBehandling, visFeilmeldinger }) => {
+const ValutakursTabellRad = ({ valutakurs, åpenBehandling, visFeilmeldinger }: IProps) => {
     const barn: OptionType[] = valutakurs.barnIdenter.map(barn => ({
         value: barn,
         label: lagPersonLabel(barn, åpenBehandling.personer),

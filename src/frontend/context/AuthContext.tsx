@@ -51,7 +51,7 @@ const HttpProviderWrapper = ({ children }: PropsWithChildren) => {
     );
 };
 
-export const AuthOgHttpProvider: React.FC<IProps> = ({ children, autentisertSaksbehandler }) => {
+export const AuthOgHttpProvider = ({ children, autentisertSaksbehandler }: IProps) => {
     return (
         <AuthProvider autentisertSaksbehandler={autentisertSaksbehandler}>
             <HttpProviderWrapper>{children}</HttpProviderWrapper>

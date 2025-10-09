@@ -62,14 +62,14 @@ const finnPresentertTomDato = (
     return periodeTom;
 };
 
-const EkspanderbarVedtaksperiode: React.FC<EkspanderbarVedtaksperiodeProps> = ({
+const EkspanderbarVedtaksperiode = ({
     vedtaksperiodeMedBegrunnelser,
     sisteVedtaksperiodeFom,
     vedtaksperiodeInneholderOvergangsordningBegrunnelse,
     åpen,
     onClick,
     children,
-}) => {
+}: EkspanderbarVedtaksperiodeProps) => {
     const periode = {
         fom: vedtaksperiodeMedBegrunnelser.fom,
         tom: vedtaksperiodeMedBegrunnelser.tom,

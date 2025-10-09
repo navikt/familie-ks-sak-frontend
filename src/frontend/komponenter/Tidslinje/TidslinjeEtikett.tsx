@@ -17,7 +17,7 @@ const EtikettKnapp = styled(Button)<{ $valgt: boolean }>`
     background-color: ${({ $valgt }) => $valgt && ASurfaceSelected};
 `;
 
-const TidslinjeEtikett: React.FC<IEtikettProp> = ({ etikett }) => {
+const TidslinjeEtikett = ({ etikett }: IEtikettProp) => {
     const {
         aktivEtikett,
         settAktivEtikett,

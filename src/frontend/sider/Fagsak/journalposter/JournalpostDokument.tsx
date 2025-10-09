@@ -21,7 +21,7 @@ interface IProps {
     tilgangsstyrtJournalpost: ITilgangsstyrtJournalpost;
 }
 
-export const JournalpostDokument: React.FC<IProps> = ({ dokument, hentForhåndsvisning, tilgangsstyrtJournalpost }) => {
+export const JournalpostDokument = ({ dokument, hentForhåndsvisning, tilgangsstyrtJournalpost }: IProps) => {
     const { journalpost, journalpostTilgang } = tilgangsstyrtJournalpost;
 
     const hentPdfDokument = (dokumentId: string | undefined) => {

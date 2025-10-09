@@ -25,7 +25,7 @@ const StyledAlert = styled(Alert)`
     margin-bottom: 2rem;
 `;
 
-const Simulering: React.FC<ISimuleringProps> = ({ åpenBehandling }) => {
+const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
     const {

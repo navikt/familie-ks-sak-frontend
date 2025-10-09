@@ -23,7 +23,7 @@ const FlexRowDiv = styled.div`
     display: flex;
 `;
 
-const NyRefusjonEøsPeriode: React.FC<INyRefusjonEøsPeriodeProps> = ({ lukkNyPeriode, behandlingId }) => {
+const NyRefusjonEøsPeriode = ({ lukkNyPeriode, behandlingId }: INyRefusjonEøsPeriodeProps) => {
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const { skjema, lagreNyPeriode, valideringErOk } = useRefusjonEøs({

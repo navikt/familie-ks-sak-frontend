@@ -39,9 +39,9 @@ interface ISimuleringProps {
     simulering: ISimuleringDTO;
 }
 
-const SimuleringPanel: React.FC<ISimuleringProps> = ({
+const SimuleringPanel = ({
     simulering: { feilutbetaling, fom, etterbetaling, fomDatoNestePeriode, perioder, tomSisteUtbetaling },
-}) => {
+}: ISimuleringProps) => {
     const kapitaliserTekst = (tekst: string): string => {
         return tekst.charAt(0).toUpperCase() + tekst.slice(1).toLowerCase();
     };

@@ -25,7 +25,7 @@ interface IProps {
     toggleForm: (visSkjema: boolean) => void;
 }
 
-export const AnnenVurderingSkjema: React.FC<IProps> = ({
+export const AnnenVurderingSkjema = ({
     annenVurdering,
     erLesevisning,
     annenVurderingConfig,

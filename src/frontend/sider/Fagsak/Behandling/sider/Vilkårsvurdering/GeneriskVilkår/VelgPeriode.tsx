@@ -39,14 +39,14 @@ const FlexDiv = styled.div`
     gap: 1.125rem;
 `;
 
-const VelgPeriode: React.FC<IProps> = ({
+const VelgPeriode = ({
     periode,
     erEksplisittAvslagPåSøknad,
     resultat,
     visFeilmeldinger,
     children,
     tomErPåkrevd,
-}) => {
+}: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
 

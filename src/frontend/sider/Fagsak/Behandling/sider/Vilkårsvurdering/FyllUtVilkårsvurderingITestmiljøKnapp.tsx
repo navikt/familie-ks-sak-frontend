@@ -15,7 +15,7 @@ interface IProps {
     behandlingId: number;
 }
 
-export const FyllUtVilkårsvurderingITestmiljøKnapp: React.FC<IProps> = ({ behandlingId }) => {
+export const FyllUtVilkårsvurderingITestmiljøKnapp = ({ behandlingId }: IProps) => {
     const { request } = useHttp();
 
     const fyllUtSatsendring = () => {

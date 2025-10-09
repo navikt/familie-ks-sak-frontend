@@ -16,7 +16,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const KompetanseTabellRad: React.FC<IProps> = ({ kompetanse, åpenBehandling, visFeilmeldinger }) => {
+const KompetanseTabellRad = ({ kompetanse, åpenBehandling, visFeilmeldinger }: IProps) => {
     const barn: OptionType[] = kompetanse.barnIdenter.map(barn => ({
         value: barn,
         label: lagPersonLabel(barn, åpenBehandling.personer),

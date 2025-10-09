@@ -60,7 +60,7 @@ enum BarnIBrevÅrsak {
     BARN_BOSATT_MED_SØKER,
 }
 
-const DokumentutsendingSkjema: React.FC<Props> = ({ bruker }) => {
+const DokumentutsendingSkjema = ({ bruker }: Props) => {
     const { harInnloggetSaksbehandlerSkrivetilgang } = useAppContext();
 
     const {

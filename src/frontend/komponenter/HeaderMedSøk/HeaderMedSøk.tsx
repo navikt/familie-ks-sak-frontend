@@ -7,7 +7,7 @@ interface IHeaderMedSøkProps {
     brukerEnhet?: string;
 }
 
-export const HeaderMedSøk: React.FC<IHeaderMedSøkProps> = ({ brukerNavn, brukerEnhet }) => {
+export const HeaderMedSøk = ({ brukerNavn, brukerEnhet }: IHeaderMedSøkProps) => {
     const genererEksterneLenker = () => {
         const eksterneLenker = [
             {

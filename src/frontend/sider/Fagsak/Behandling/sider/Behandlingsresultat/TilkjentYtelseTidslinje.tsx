@@ -58,7 +58,7 @@ interface IProps {
     tidslinjePersoner: IPersonMedAndelerTilkjentYtelse[];
 }
 
-const TilkjentYtelseTidslinje: React.FC<IProps> = ({ grunnlagPersoner, tidslinjePersoner }) => {
+const TilkjentYtelseTidslinje = ({ grunnlagPersoner, tidslinjePersoner }: IProps) => {
     const { genererFormatertÅrstall, genererRader, aktivEtikett, aktivtTidslinjeVindu, naviger } =
         useTidslinjeContext();
     const tidslinjeRader = genererRader(tidslinjePersoner);

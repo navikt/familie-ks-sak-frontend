@@ -16,7 +16,7 @@ const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = ({
+export const MedlemskapAnnenForelder = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,

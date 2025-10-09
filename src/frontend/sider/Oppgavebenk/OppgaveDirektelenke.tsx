@@ -16,7 +16,7 @@ interface IOppgaveDirektelenke {
     oppgave: IOppgave;
 }
 
-const OppgaveDirektelenke: React.FC<IOppgaveDirektelenke> = ({ oppgave }) => {
+const OppgaveDirektelenke = ({ oppgave }: IOppgaveDirektelenke) => {
     const { settToast } = useAppContext();
     const { hentFagsakForPerson } = useFagsakApi();
     const { sjekkTilgang } = useAppContext();
