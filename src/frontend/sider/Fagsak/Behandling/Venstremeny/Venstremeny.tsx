@@ -81,7 +81,7 @@ const Venstremeny = () => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { åpenBehandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } = useBehandlingContext();
 
-    const stansNavigeringDersomSidenIkkeErAktiv = (event: React.MouseEvent, sidenErAktiv: boolean) => {
+    const stansNavigeringDersomSidenIkkeErAktiv = (event: MouseEvent, sidenErAktiv: boolean) => {
         if (!sidenErAktiv) {
             event.preventDefault();
         }
@@ -143,7 +143,7 @@ const Venstremeny = () => {
                 <ToggleVisningVenstremeny
                     forwardedAs={Button}
                     variant="secondary"
-                    onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
+                    onMouseDown={(e: MouseEvent) => e.preventDefault()}
                     onClick={() => {
                         settÅpenVenstremeny(!åpenVenstremeny);
                     }}

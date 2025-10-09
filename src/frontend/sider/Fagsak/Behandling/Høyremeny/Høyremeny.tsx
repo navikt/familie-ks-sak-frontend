@@ -53,7 +53,7 @@ const Høyremeny: React.FC<Props> = ({ bruker }) => {
                 <ToggleVisningHøyremeny
                     forwardedAs={Button}
                     variant="secondary"
-                    onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
+                    onMouseDown={(e: MouseEvent) => e.preventDefault()}
                     onClick={() => {
                         settÅpenHøyremeny(!åpenHøyremeny);
                     }}
