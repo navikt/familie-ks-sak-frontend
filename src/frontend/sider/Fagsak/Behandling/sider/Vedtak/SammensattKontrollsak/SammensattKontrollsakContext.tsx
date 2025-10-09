@@ -29,7 +29,7 @@ interface SammensattKontrollsakContextValue {
     feilmelding: string | undefined;
     sammensattKontrollsak: SammensattKontrollsakDto | undefined;
     erSammensattKontrollsak: boolean;
-    settErSammensattKontrollsak: React.Dispatch<React.SetStateAction<boolean>>;
+    settErSammensattKontrollsak: Dispatch<SetStateAction<boolean>>;
     skalViseSammensattKontrollsakMenyvalg: boolean;
 }
 

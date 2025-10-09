@@ -47,8 +47,8 @@ interface AppContextValue {
     lukkModal: () => void;
     appInfoModal: IModal;
     settToast: (toastId: ToastTyper, toast: IToast) => void;
-    settToasts: React.Dispatch<
-        React.SetStateAction<{
+    settToasts: Dispatch<
+        SetStateAction<{
             [toastId: string]: IToast;
         }>
     >;

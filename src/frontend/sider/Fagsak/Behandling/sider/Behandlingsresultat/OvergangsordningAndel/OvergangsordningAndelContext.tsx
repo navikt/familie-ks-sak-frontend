@@ -22,7 +22,7 @@ interface OvergangsordningAndelContextValue {
     overgangsordningAndel: IRestOvergangsordningAndel;
     skjema: ISkjema<IOvergangsordningAndelSkjema, IBehandling>;
     erOvergangsordningAndelÅpen: boolean;
-    settErOvergangsordningAndelÅpen: React.Dispatch<React.SetStateAction<boolean>>;
+    settErOvergangsordningAndelÅpen: Dispatch<SetStateAction<boolean>>;
     erOvergangsordningAndelForandret: () => boolean;
     slettOvergangsordningAndel: () => void;
     oppdaterOvergangsordningAndel: () => void;
