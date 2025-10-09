@@ -14,7 +14,7 @@ import type {
 import { dateTilIsoMånedÅrString, validerGyldigDato } from '../../../../../../utils/dato';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
     overgangsordningAndel: IRestOvergangsordningAndel;
 }
 

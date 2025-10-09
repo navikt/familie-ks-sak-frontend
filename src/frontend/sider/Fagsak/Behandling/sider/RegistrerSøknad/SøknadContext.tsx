@@ -20,7 +20,7 @@ import { hentBarnMedLøpendeUtbetaling } from '../../../../../utils/fagsak';
 import { useFagsakContext } from '../../../FagsakContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
     åpenBehandling: IBehandling;
 }
 

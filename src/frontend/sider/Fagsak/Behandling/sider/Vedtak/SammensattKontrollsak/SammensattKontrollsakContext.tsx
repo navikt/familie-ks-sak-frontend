@@ -19,7 +19,7 @@ import type {
 import { ToggleNavn } from '../../../../../../typer/toggles';
 import { erDefinert } from '../../../../../../utils/commons';
 
-interface ISammensattKontrollsakProps extends React.PropsWithChildren {
+interface ISammensattKontrollsakProps extends PropsWithChildren {
     åpenBehandling: IBehandling;
 }
 

@@ -5,7 +5,7 @@ import { hentFeilIVilkårsvurdering } from '../../../../../context/Vilkårsvurde
 import type { IBehandling } from '../../../../../typer/behandling';
 import type { IPersonResultat, IRestPersonResultat } from '../../../../../typer/vilkår';
 
-interface IProps extends React.PropsWithChildren {
+interface IProps extends PropsWithChildren {
     åpenBehandling: IBehandling;
 }
 

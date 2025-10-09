@@ -10,7 +10,7 @@ interface IProps {
     bruker?: IPersonInfo;
 }
 
-const InnholdContainer = ({ children }: React.PropsWithChildren) => {
+const InnholdContainer = ({ children }: PropsWithChildren) => {
     return (
         <Box borderWidth="0 0 1 0" borderColor="border-subtle" paddingInline="4" paddingBlock="2">
             {children}

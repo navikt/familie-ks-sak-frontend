@@ -59,7 +59,7 @@ const hentBarnMedOpplysningerFraBruker = () => {
     } else return [];
 };
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
     fagsakId: number;
 }
 

@@ -18,7 +18,7 @@ import {
 } from '../../../../../typer/simulering';
 import { isoStringTilDateMedFallback, tidenesMorgen } from '../../../../../utils/dato';
 
-interface IProps extends React.PropsWithChildren {
+interface IProps extends PropsWithChildren {
     åpenBehandling: IBehandling;
 }
 

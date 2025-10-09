@@ -72,7 +72,7 @@ interface BehandlingContextValue {
 
 const BehandlingContext = createContext<BehandlingContextValue | undefined>(undefined);
 
-export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
+export const BehandlingProvider = ({ children }: PropsWithChildren) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const queryClient = useQueryClient();
     const [åpenBehandling, privatSettÅpenBehandling] = useState<Ressurs<IBehandling>>(byggTomRessurs());
