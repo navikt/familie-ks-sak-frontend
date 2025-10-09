@@ -22,7 +22,7 @@ function obfuskerFagsak(fagsak: IMinimalFagsak) {
 }
 
 export const HentFagsakQueryKeyFactory = {
-    fagsak: (fagsakId: number | undefined) => ['minimalfagsak', fagsakId],
+    fagsak: (fagsakId: number | undefined) => ['fagsak', fagsakId],
 };
 
 export function useHentFagsak(fagsakId: number | undefined, påvirkerSystemLaster: boolean = true) {

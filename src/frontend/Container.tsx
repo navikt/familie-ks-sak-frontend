@@ -15,8 +15,7 @@ import { TidslinjeProvider } from './komponenter/Tidslinje/TidslinjeContext';
 import Toasts from './komponenter/Toast/Toasts';
 import Barnehagelister from './sider/Barnehagelister/Barnehagelister';
 import { BehandlingProvider } from './sider/Fagsak/Behandling/context/BehandlingContext';
-import FagsakContainer from './sider/Fagsak/FagsakContainer';
-import { FagsakProvider } from './sider/Fagsak/FagsakContext';
+import { FagsakContainer } from './sider/Fagsak/FagsakContainer';
 import Internstatistikk from './sider/Internstatistikk/Internstatistikk';
 import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';
 import { Oppgavebenk } from './sider/Oppgavebenk/Oppgavebenk';
@@ -55,29 +54,24 @@ const Container: React.FC = () => {
                                 brukerNavn={innloggetSaksbehandler?.displayName}
                                 brukerEnhet={innloggetSaksbehandler?.enhet}
                             />
-                            <FagsakProvider>
-                                <BehandlingProvider>
-                                    <Routes>
-                                        <Route path="/fagsak/:fagsakId/*" element={<FagsakContainer />} />
-                                        <Route
-                                            path="/oppgaver/journalfor/:oppgaveId"
-                                            element={<ManuellJournalføring />}
-                                        />
-                                        <Route
-                                            path="/tidslinjer/:behandlingId"
-                                            element={
-                                                <TidslinjeProvider>
-                                                    <TidslinjeVisualisering />
-                                                </TidslinjeProvider>
-                                            }
-                                        />
-                                        <Route path="/internstatistikk" element={<Internstatistikk />} />
-                                        <Route path="/barnehagelister" element={<Barnehagelister />} />
-                                        <Route path="/oppgaver" element={<Oppgavebenk />} />
-                                        <Route path="/" element={<Navigate to="/oppgaver" />} />
-                                    </Routes>
-                                </BehandlingProvider>
-                            </FagsakProvider>
+                            <BehandlingProvider>
+                                <Routes>
+                                    <Route path="/fagsak/:fagsakId/*" element={<FagsakContainer />} />
+                                    <Route path="/oppgaver/journalfor/:oppgaveId" element={<ManuellJournalføring />} />
+                                    <Route
+                                        path="/tidslinjer/:behandlingId"
+                                        element={
+                                            <TidslinjeProvider>
+                                                <TidslinjeVisualisering />
+                                            </TidslinjeProvider>
+                                        }
+                                    />
+                                    <Route path="/internstatistikk" element={<Internstatistikk />} />
+                                    <Route path="/barnehagelister" element={<Barnehagelister />} />
+                                    <Route path="/oppgaver" element={<Oppgavebenk />} />
+                                    <Route path="/" element={<Navigate to="/oppgaver" />} />
+                                </Routes>
+                            </BehandlingProvider>
                         </Main>
                     </>
                 )
