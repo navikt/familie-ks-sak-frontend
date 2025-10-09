@@ -15,7 +15,7 @@ interface VilkårsvurderingContextValue {
     personResultater: IRestPersonResultat[];
 }
 
-const VilkårsvurderingContext = React.createContext<VilkårsvurderingContextValue | undefined>(undefined);
+const VilkårsvurderingContext = createContext<VilkårsvurderingContextValue | undefined>(undefined);
 
 export function VilkårsvurderingProvider({ åpenBehandling, children }: IProps) {
     const vilkårsvurdering = åpenBehandling
