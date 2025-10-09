@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
 import { useFelt, useSkjema } from '@navikt/familie-skjema';
-import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import {
     erAnnenForeldersAktivitetGyldig,
@@ -22,7 +22,7 @@ import type {
     KompetanseAktivitet,
     KompetanseResultat,
 } from '../../../../../../../typer/eøsPerioder';
-import { nyIsoMånedPeriode, type IIsoMånedPeriode } from '../../../../../../../utils/dato';
+import { type IIsoMånedPeriode, nyIsoMånedPeriode } from '../../../../../../../utils/dato';
 import { erBarnGyldig, erEøsPeriodeGyldig } from '../../../../../../../utils/eøsValidators';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 

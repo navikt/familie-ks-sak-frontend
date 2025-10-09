@@ -6,7 +6,7 @@ import { ABorderDanger, ABorderDefault, ABorderWarning, ASurfaceAction } from '@
 import StatusIkon from '../../../../../../../ikoner/StatusIkon';
 import { EøsPeriodeStatus } from '../../../../../../../typer/eøsPerioder';
 import type { IGrunnlagPerson } from '../../../../../../../typer/person';
-import { Datoformat, isoMånedPeriodeTilFormatertString, type IIsoMånedPeriode } from '../../../../../../../utils/dato';
+import { Datoformat, type IIsoMånedPeriode, isoMånedPeriodeTilFormatertString } from '../../../../../../../utils/dato';
 import { lagPersonLabel } from '../../../../../../../utils/formatter';
 import { mapEøsPeriodeStatusTilStatus } from '../utils';
 

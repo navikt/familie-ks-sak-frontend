@@ -1,3 +1,5 @@
+import type { ChangeEvent } from 'react';
+
 import styled from 'styled-components';
 
 import { FileTextIcon } from '@navikt/aksel-icons';

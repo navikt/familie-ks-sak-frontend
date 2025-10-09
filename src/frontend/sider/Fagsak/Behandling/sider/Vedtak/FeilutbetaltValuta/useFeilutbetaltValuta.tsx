@@ -8,8 +8,8 @@ import { validerFeilutbetaltBeløp } from './FeilutbetaltValutaUtil';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type {
     IFeilutbetaltValutaSkjemaFelter,
-    IRestNyFeilutbetaltValutaPeriode,
     IRestFeilutbetaltValuta,
+    IRestNyFeilutbetaltValutaPeriode,
 } from '../../../../../../typer/eøs-feilutbetalt-valuta';
 import { dateTilIsoDatoString, validerGyldigDato } from '../../../../../../utils/dato';
 import { useBehandlingContext } from '../../../context/BehandlingContext';

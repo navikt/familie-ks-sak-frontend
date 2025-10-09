@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 
-import { Button, Select, Textarea, Dropdown, Modal, Fieldset } from '@navikt/ds-react';
+import { Button, Dropdown, Fieldset, Modal, Select, Textarea } from '@navikt/ds-react';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlendeEnhet from './useEndreBehandlendeEnhet';

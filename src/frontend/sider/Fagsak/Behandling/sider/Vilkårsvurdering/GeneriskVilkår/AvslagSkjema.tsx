@@ -9,6 +9,7 @@ import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { VedtakBegrunnelserProvider } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
+
 interface IProps {
     lagretVilkår: IVilkårResultat;
     erEksplisittAvslagPåSøknad: Felt<boolean>;

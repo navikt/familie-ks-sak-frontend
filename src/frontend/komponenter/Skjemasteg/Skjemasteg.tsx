@@ -1,10 +1,10 @@
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import { useEffect } from 'react';
 
 import styled from 'styled-components';
 
 import { Box, Button, ErrorMessage, Heading, VStack } from '@navikt/ds-react';
-import { ASpacing4, ASpacing6, ASpacing24 } from '@navikt/ds-tokens/dist/tokens';
+import { ASpacing24, ASpacing4, ASpacing6 } from '@navikt/ds-tokens/dist/tokens';
 import { hentDataFraRessurs } from '@navikt/familie-typer';
 
 import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';

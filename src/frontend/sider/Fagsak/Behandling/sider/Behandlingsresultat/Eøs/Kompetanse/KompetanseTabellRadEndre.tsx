@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Alert, Button, Fieldset, Select } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
-import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
+import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Country } from '@navikt/land-verktoy';
 
@@ -13,12 +13,12 @@ import type { OptionType } from '../../../../../../../typer/common';
 import {
     AnnenForelderAktivitet,
     EøsPeriodeStatus,
+    type IKompetanse,
+    type KompetanseAktivitet,
     kompetanseAktiviteter,
     KompetanseResultat,
     kompetanseResultater,
     SøkersAktivitet,
-    type IKompetanse,
-    type KompetanseAktivitet,
 } from '../../../../../../../typer/eøsPerioder';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';

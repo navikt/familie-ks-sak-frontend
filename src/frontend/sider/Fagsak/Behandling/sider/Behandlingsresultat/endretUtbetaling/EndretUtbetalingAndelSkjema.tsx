@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { type ChangeEvent, useEffect } from 'react';
 
 import classNames from 'classnames';
 import styled from 'styled-components';
@@ -15,11 +15,12 @@ import Knapperekke from '../../../../../../komponenter/Knapperekke';
 import MånedÅrVelger from '../../../../../../komponenter/MånedÅrInput/MånedÅrVelger';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import {
-    IEndretUtbetalingAndelÅrsak,
-    AVSLAG_ALLEREDE_UTBETALT_SØKER,
     AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
+    AVSLAG_ALLEREDE_UTBETALT_SØKER,
+    IEndretUtbetalingAndelÅrsak,
+    årsaker,
+    årsakTekst,
 } from '../../../../../../typer/utbetalingAndel';
-import { årsaker, årsakTekst } from '../../../../../../typer/utbetalingAndel';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IsoMånedString } from '../../../../../../utils/dato';
 import { lagPersonLabel } from '../../../../../../utils/formatter';

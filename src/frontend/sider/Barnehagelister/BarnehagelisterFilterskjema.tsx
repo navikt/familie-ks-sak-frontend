@@ -1,7 +1,7 @@
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
-import { FunnelIcon, FileResetIcon } from '@navikt/aksel-icons';
+import { FileResetIcon, FunnelIcon } from '@navikt/aksel-icons';
 import { Button, Checkbox, Fieldset, HelpText, HStack, TextField, UNSAFE_Combobox, VStack } from '@navikt/ds-react';
 
 import type { BarnehagebarnFilter, BarnehagebarnRequestParams, Barnehagekommune } from '../../typer/barnehagebarn';

@@ -1,3 +1,5 @@
+import { createContext, type PropsWithChildren, useContext } from 'react';
+
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
 import { mapFraRestVilkårsvurderingTilUi } from './utils';
@@ -40,7 +42,7 @@ export function VilkårsvurderingProvider({ åpenBehandling, children }: IProps)
 }
 
 export const useVilkårsvurderingContext = () => {
-    const context = useEffectContext(VilkårsvurderingContext);
+    const context = useContext(VilkårsvurderingContext);
 
     if (context === undefined) {
         throw new Error('useVilkårsvurderingContext må brukes innenfor en VilkårsvurderingProvider');

@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import styled from 'styled-components';
 
 import { BodyShort, Heading } from '@navikt/ds-react';

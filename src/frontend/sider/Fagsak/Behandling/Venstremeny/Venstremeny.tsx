@@ -1,21 +1,23 @@
+import type { MouseEvent } from 'react';
+
 import { NavLink } from 'react-router';
 import styled from 'styled-components';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, Button, HStack, VStack } from '@navikt/ds-react';
 import {
-    ABorderWarning,
     ABorderFocus,
+    ABorderSelected,
+    ABorderWarning,
     AGrayalpha500,
-    ASurfaceDefault,
-    ASurfaceHover,
-    ASurfaceWarning,
     ASpacing2,
     ASpacing6,
     ASpacing8,
-    ATextDefault,
+    ASurfaceDefault,
+    ASurfaceHover,
     ASurfaceNeutralSubtle,
-    ABorderSelected,
+    ASurfaceWarning,
+    ATextDefault,
 } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 

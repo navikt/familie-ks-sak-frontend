@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from 'react';
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-import { byggTomRessurs } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggTomRessurs } from '@navikt/familie-typer';
 
 import { useBegrunnelseApi } from '../../../../../../api/useBegrunnelseApi';
 import type { AlleBegrunnelser } from '../../../../../../typer/vilkår';

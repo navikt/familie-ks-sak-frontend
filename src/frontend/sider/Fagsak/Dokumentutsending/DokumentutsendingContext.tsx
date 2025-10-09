@@ -1,17 +1,17 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import deepEqual from 'deep-equal';
 
 import type { FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
-import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
+import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import { hentEnkeltInformasjonsbrevRequest } from './Informasjonsbrev/enkeltInformasjonsbrevUtils';
 import useDokument from '../../../hooks/useDokument';
 import { Informasjonsbrev } from '../../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IManueltBrevRequestPåFagsak } from '../../../typer/dokument';
 import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../typer/person';
-import { Målform, type IBarnMedOpplysninger } from '../../../typer/søknad';
+import { type IBarnMedOpplysninger, Målform } from '../../../typer/søknad';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import { useFagsakContext } from '../FagsakContext';

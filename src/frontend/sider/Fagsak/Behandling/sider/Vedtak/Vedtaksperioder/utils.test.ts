@@ -2,8 +2,8 @@ import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
 
 import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
 import { BehandlingResultat, BehandlingStatus } from '../../../../../../typer/behandling';
-import { Vedtaksperiodetype, type IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
-import { hentDagensDato, dateTilIsoDatoString } from '../../../../../../utils/dato';
+import { type IVedtaksperiodeMedBegrunnelser, Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
+import { dateTilIsoDatoString, hentDagensDato } from '../../../../../../utils/dato';
 import {
     mockAvslagsperiode,
     mockOpphørsperiode,

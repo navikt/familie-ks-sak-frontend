@@ -11,8 +11,8 @@ import Totrinnskontroll from './Totrinnskontroll/Totrinnskontroll';
 import type { Hendelse } from './typer';
 import { TabValg } from './typer';
 import { useAppContext } from '../../context/AppContext';
-import { BehandlerRolle, BehandlingStatus } from '../../typer/behandling';
 import type { IBehandling } from '../../typer/behandling';
+import { BehandlerRolle, BehandlingStatus } from '../../typer/behandling';
 import type { IPersonInfo } from '../../typer/person';
 
 interface IHendelsesoversiktProps {

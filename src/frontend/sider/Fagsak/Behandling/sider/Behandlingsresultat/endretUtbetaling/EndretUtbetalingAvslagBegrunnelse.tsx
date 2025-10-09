@@ -11,8 +11,7 @@ import type { IBehandling } from '../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../typer/common';
 import type { IRestBegrunnelseTilknyttetEndretUtbetaling } from '../../../../../../typer/endretUtbetaling';
 import { IEndretUtbetalingAndelÅrsak } from '../../../../../../typer/utbetalingAndel';
-import { BegrunnelseType } from '../../../../../../typer/vedtak';
-import { begrunnelseTyper, type Begrunnelse } from '../../../../../../typer/vedtak';
+import { type Begrunnelse, BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { useHentEndretUtbetalingBegrunnelser } from '../useHentEndretUtbetalingBegrunnelser';
 

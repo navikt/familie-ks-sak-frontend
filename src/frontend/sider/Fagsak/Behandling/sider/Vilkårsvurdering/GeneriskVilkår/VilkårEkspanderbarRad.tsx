@@ -12,8 +12,8 @@ import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import { uiResultat } from '../../../../../../typer/vilkår';
 import {
     Datoformat,
-    isoStringTilFormatertString,
     isoDatoPeriodeTilFormatertString,
+    isoStringTilFormatertString,
 } from '../../../../../../utils/dato';
 import { alleRegelverk } from '../../../../../../utils/vilkår';
 import { useBehandlingContext } from '../../../context/BehandlingContext';

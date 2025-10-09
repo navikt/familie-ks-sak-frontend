@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button, Fieldset, Dropdown, Modal } from '@navikt/ds-react';
+import { Button, Dropdown, Fieldset, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlingstema from './useEndreBehandlingstema';

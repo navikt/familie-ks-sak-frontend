@@ -5,23 +5,22 @@ import { useFelt } from '@navikt/familie-skjema';
 import { erUtdypendeVilkårsvurderingerGyldig } from './BorMedSøkerValidering';
 import type { IGrunnlagPerson } from '../../../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../../../typer/vedtak';
-import type { UtdypendeVilkårsvurdering } from '../../../../../../../../typer/vilkår';
-import type { IVilkårResultat } from '../../../../../../../../typer/vilkår';
-import type { Resultat } from '../../../../../../../../typer/vilkår';
-import { Regelverk as RegelverkType, VilkårType } from '../../../../../../../../typer/vilkår';
+import type { IVilkårResultat, Resultat, UtdypendeVilkårsvurdering } from '../../../../../../../../typer/vilkår';
 import {
+    Regelverk as RegelverkType,
     UtdypendeVilkårsvurderingDeltBosted,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
     UtdypendeVilkårsvurderingGenerell,
+    VilkårType,
 } from '../../../../../../../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../../../../../../../utils/dato';
 import {
     erAvslagBegrunnelserGyldig,
+    erBegrunnelseGyldig,
     erPeriodeGyldig,
     erResultatGyldig,
-    erBegrunnelseGyldig,
 } from '../../../../../../../../utils/validators';
-import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { type IVilkårSkjemaContext, useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 export const useBorMedSøker = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {

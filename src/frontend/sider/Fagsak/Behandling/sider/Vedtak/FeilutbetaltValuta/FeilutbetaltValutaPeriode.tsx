@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Table, Button, Tooltip, Alert } from '@navikt/ds-react';
+import { Alert, Button, Table, Tooltip } from '@navikt/ds-react';
 
 import FeilutbetaltValutaSkjema from './FeilutbetaltValutaSkjema';
 import { useFeilutbetaltValuta } from './useFeilutbetaltValuta';

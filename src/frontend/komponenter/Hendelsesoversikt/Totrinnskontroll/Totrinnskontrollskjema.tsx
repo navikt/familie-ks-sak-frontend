@@ -1,8 +1,10 @@
+import { useState } from 'react';
+
 import styled from 'styled-components';
 
-import { BodyShort, Button, Detail, Heading, HStack, RadioGroup, Radio, Textarea, Fieldset } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { BodyShort, Button, Detail, Fieldset, Heading, HStack, Radio, RadioGroup, Textarea } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../context/AppContext';
 import ØyeGrå from '../../../ikoner/ØyeGrå';

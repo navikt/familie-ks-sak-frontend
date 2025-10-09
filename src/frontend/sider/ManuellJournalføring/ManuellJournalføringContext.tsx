@@ -25,21 +25,21 @@ import { Behandlingstype, BehandlingÅrsak } from '../../typer/behandling';
 import type { IBehandlingstema } from '../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import {
+    type Journalføringsbehandling,
     opprettJournalføringsbehandlingFraKlagebehandling,
     opprettJournalføringsbehandlingFraKontantstøttebehandling,
-    type Journalføringsbehandling,
 } from '../../typer/journalføringsbehandling';
-import { Klagebehandlingstype, type IKlagebehandling } from '../../typer/klage';
+import { type IKlagebehandling, Klagebehandlingstype } from '../../typer/klage';
 import {
-    JournalpostKanal,
     type IDataForManuellJournalføring,
     type IRestJournalføring,
+    JournalpostKanal,
     type TilknyttetBehandling,
 } from '../../typer/manuell-journalføring';
 import {
     finnBehandlingstemaFraOppgave,
-    OppgavetypeFilter,
     type IRestLukkOppgaveOgKnyttJournalpost,
+    OppgavetypeFilter,
 } from '../../typer/oppgave';
 import { Adressebeskyttelsegradering, type IPersonInfo } from '../../typer/person';
 import type { ISamhandlerInfo } from '../../typer/samhandler';

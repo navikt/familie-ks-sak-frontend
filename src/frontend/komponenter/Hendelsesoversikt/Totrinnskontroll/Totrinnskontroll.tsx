@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react';
+
 import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import { Button, Modal } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
+import type { Ressurs } from '@navikt/familie-typer';
 import {
     byggFeiletRessurs,
     byggFunksjonellFeilRessurs,
@@ -11,7 +14,6 @@ import {
     byggTomRessurs,
     RessursStatus,
 } from '@navikt/familie-typer';
-import type { Ressurs } from '@navikt/familie-typer';
 
 import TotrinnskontrollModalInnhold from './TotrinnskontrollModalInnhold';
 import Totrinnskontrollskjema from './Totrinnskontrollskjema';

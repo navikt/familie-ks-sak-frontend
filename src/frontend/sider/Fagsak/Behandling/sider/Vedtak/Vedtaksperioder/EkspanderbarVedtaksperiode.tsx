@@ -9,11 +9,11 @@ import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/ved
 import { hentVedtaksperiodeTittel, Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 import {
     hentDagensDato,
-    isoStringTilDateMedFallback,
-    tidenesEnde,
     isoDatoPeriodeTilFormatertString,
-    parseFraOgMedDato,
     type IsoDatoString,
+    isoStringTilDateMedFallback,
+    parseFraOgMedDato,
+    tidenesEnde,
 } from '../../../../../../utils/dato';
 import { formaterBeløp, summer } from '../../../../../../utils/formatter';
 

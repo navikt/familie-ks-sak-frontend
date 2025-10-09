@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { FeltState } from '@navikt/familie-skjema';
-import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
@@ -14,7 +14,7 @@ import type {
     IUtenlandskPeriodeBeløp,
     UtenlandskPeriodeBeløpIntervall,
 } from '../../../../../../../typer/eøsPerioder';
-import { nyIsoMånedPeriode, type IIsoMånedPeriode } from '../../../../../../../utils/dato';
+import { type IIsoMånedPeriode, nyIsoMånedPeriode } from '../../../../../../../utils/dato';
 import { erBarnGyldig, erEøsPeriodeGyldig, isEmpty, isNumeric } from '../../../../../../../utils/eøsValidators';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import { konverterDesimalverdiTilSkjemaVisning, konverterSkjemaverdiTilDesimal } from '../utils';

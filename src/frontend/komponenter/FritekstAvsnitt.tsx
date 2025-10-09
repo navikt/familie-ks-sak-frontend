@@ -1,3 +1,5 @@
+import type { ChangeEvent } from 'react';
+
 import { Textarea } from '@navikt/ds-react';
 
 import { useDokumentutsendingContext } from '../sider/Fagsak/Dokumentutsending/DokumentutsendingContext';

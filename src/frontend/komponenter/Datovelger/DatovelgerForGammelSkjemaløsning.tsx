@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { isValid, parseISO } from 'date-fns';
 
 import { DatePicker, useDatepicker } from '@navikt/ds-react';
 
 import { senesteRelevanteDato, tidligsteRelevanteDato } from './utils';
-import { hentDagensDato, dateTilFormatertString, Datoformat } from '../../utils/dato';
 import type { IsoDatoString } from '../../utils/dato';
+import { dateTilFormatertString, Datoformat, hentDagensDato } from '../../utils/dato';
 
 interface IProps {
     value: string | undefined;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Tabs } from '@navikt/ds-react';
 
 import HendelseItem from './komponenter/HendelseItem';
-import { TabValg, type Hendelse } from './typer';
+import { type Hendelse, TabValg } from './typer';
 
 const StyledPanel = styled(Tabs.Panel)`
     overflow: auto;

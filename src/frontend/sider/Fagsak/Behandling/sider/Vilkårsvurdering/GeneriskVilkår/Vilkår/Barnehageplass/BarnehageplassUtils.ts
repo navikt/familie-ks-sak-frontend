@@ -1,7 +1,7 @@
 import {
     Resultat,
-    UtdypendeVilkårsvurderingGenerell,
     type UtdypendeVilkårsvurdering,
+    UtdypendeVilkårsvurderingGenerell,
 } from '../../../../../../../../typer/vilkår';
 
 export const antallTimerKvalifiserer = (antallTimer: number) => antallTimer > 0 && antallTimer < 33;

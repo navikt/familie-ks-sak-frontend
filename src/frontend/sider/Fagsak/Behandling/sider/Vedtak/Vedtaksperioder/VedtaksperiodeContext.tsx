@@ -21,8 +21,8 @@ import type {
 import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     genererIdBasertPåAndreFritekster,
-    lagInitiellFritekst,
     type IFritekstFelt,
+    lagInitiellFritekst,
 } from '../../../../../../utils/fritekstfelter';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 

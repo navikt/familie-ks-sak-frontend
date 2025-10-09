@@ -1,3 +1,5 @@
+import type { ChangeEvent } from 'react';
+
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
 

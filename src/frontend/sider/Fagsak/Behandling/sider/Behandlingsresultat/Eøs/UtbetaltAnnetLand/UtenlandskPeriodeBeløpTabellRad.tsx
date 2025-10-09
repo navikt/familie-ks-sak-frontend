@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { Table } from '@navikt/ds-react';
 
 import {

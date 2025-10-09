@@ -1,27 +1,27 @@
 import { addMonths, differenceInMilliseconds, isAfter, isBefore, isSameMonth, startOfMonth } from 'date-fns';
 
 import type { GroupBase, OptionType } from '@navikt/familie-form-elements';
-import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
+import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingResultat, BehandlingStatus } from '../../../../../../typer/behandling';
 import {
+    type Begrunnelse,
     BegrunnelseType,
     begrunnelseTyper,
-    type Begrunnelse,
     type IRestBegrunnelseTilknyttetVilkår,
 } from '../../../../../../typer/vedtak';
 import {
-    Vedtaksperiodetype,
     type IRestVedtaksbegrunnelse,
     type IVedtaksperiodeMedBegrunnelser,
+    Vedtaksperiodetype,
 } from '../../../../../../typer/vedtaksperiode';
 import type { AlleBegrunnelser } from '../../../../../../typer/vilkår';
 import {
     hentDagensDato,
+    type IsoDatoString,
     isoStringTilDate,
     isoStringTilDateMedFallback,
     tidenesMorgen,
-    type IsoDatoString,
 } from '../../../../../../utils/dato';
 
 export function grupperteBegrunnelser(

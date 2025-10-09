@@ -4,7 +4,7 @@ import { isBefore, subDays } from 'date-fns';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
-import { Button, Fieldset, Dropdown, Modal, Alert } from '@navikt/ds-react';
+import { Alert, Button, Dropdown, Fieldset, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';

@@ -4,17 +4,17 @@ import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
 import { annenVurderingFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskAnnenVurdering/AnnenVurderingTabell';
 import { vilkårFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
-import type { IPersonResultat, IVilkårResultat, IAnnenVurdering } from '../../typer/vilkår';
+import type { IAnnenVurdering, IPersonResultat, IVilkårResultat } from '../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig, VilkårType } from '../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../utils/dato';
 import {
+    erEtterEllerSammeDato,
+    erFørEllerSammeDato,
     isoStringTilDateMedFallback,
-    parseTilOgMedDato,
     parseFraOgMedDato,
+    parseTilOgMedDato,
     tidenesEnde,
     tidenesMorgen,
-    erFørEllerSammeDato,
-    erEtterEllerSammeDato,
 } from '../../utils/dato';
 
 export const hentFeilIVilkårsvurdering = (personResultater: IPersonResultat[]): FeiloppsummeringFeil[] => {

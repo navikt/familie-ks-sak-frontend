@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { useSimuleringContext } from './SimuleringContext';
 import SimuleringPanel from './SimuleringPanel';

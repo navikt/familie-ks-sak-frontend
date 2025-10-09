@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Alert, Button, HelpText, Dropdown, Modal, Fieldset, Heading, HStack, TextField } from '@navikt/ds-react';
+import { Alert, Button, Dropdown, Fieldset, Heading, HelpText, HStack, Modal, TextField } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import { ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';

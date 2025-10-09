@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
-import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import type { IBehandling } from '../../../../../typer/behandling';
 import type { IRestEndreBehandlendeEnhet } from '../../../../../typer/enhet';

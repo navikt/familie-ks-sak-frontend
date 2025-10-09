@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import type { MouseEvent } from 'react';
+
 import styled from 'styled-components';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';

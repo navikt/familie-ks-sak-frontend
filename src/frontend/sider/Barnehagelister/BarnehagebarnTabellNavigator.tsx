@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-import { HStack, Select } from '@navikt/ds-react';
-import { Pagination } from '@navikt/ds-react';
+import { HStack, Pagination, Select } from '@navikt/ds-react';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type { Barnehagebarn, BarnehagebarnRequestParams, BarnehagebarnResponse } from '../../typer/barnehagebarn';

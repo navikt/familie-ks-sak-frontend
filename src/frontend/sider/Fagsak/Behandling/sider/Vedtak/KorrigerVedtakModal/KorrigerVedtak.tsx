@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
 import { Dropdown } from '@navikt/ds-react';
 

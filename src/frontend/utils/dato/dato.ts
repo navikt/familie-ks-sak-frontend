@@ -1,4 +1,4 @@
-import { format, isValid, parseISO, startOfDay, startOfToday, isBefore, isAfter, isSameDay } from 'date-fns';
+import { format, isAfter, isBefore, isSameDay, isValid, parseISO, startOfDay, startOfToday } from 'date-fns';
 
 import type { FeltState } from '@navikt/familie-skjema';
 import { feil, ok } from '@navikt/familie-skjema';

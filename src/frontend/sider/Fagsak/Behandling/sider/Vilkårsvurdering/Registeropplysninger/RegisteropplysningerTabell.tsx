@@ -11,9 +11,9 @@ import type { IRestRegisteropplysning } from '../../../../../../typer/person';
 import { Registeropplysning, registeropplysning } from '../../../../../../typer/registeropplysning';
 import {
     Datoformat,
+    isoDatoPeriodeTilFormatertString,
     isoStringTilDateMedFallback,
     isoStringTilFormatertString,
-    isoDatoPeriodeTilFormatertString,
     tidenesMorgen,
 } from '../../../../../../utils/dato';
 

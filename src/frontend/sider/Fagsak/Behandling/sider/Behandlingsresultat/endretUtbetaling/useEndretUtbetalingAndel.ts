@@ -4,11 +4,10 @@ import deepEqual from 'deep-equal';
 
 import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
-import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
+import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type { IBehandling } from '../../../../../../typer/behandling';
-import { type IRestEndretUtbetalingAndel } from '../../../../../../typer/utbetalingAndel';
-import { IEndretUtbetalingAndelÅrsak } from '../../../../../../typer/utbetalingAndel';
+import { IEndretUtbetalingAndelÅrsak, type IRestEndretUtbetalingAndel } from '../../../../../../typer/utbetalingAndel';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IsoMånedString } from '../../../../../../utils/dato';
 import { dateTilIsoDatoStringEllerUndefined, erIsoStringGyldig, validerGyldigDato } from '../../../../../../utils/dato';

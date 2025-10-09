@@ -7,6 +7,7 @@ import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 
 import type { OptionType } from '../../../../../../typer/common';
+import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import {
     UtdypendeVilkårsvurderingDeltBosted,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
@@ -14,7 +15,6 @@ import {
     UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
     UtdypendeVilkårsvurderingGenerell,
 } from '../../../../../../typer/vilkår';
-import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 
 interface Props {
     utdypendeVilkårsvurderinger: Felt<UtdypendeVilkårsvurdering[]>;

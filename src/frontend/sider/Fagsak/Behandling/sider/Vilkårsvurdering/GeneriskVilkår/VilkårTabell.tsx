@@ -10,7 +10,7 @@ import { LovligOpphold } from './Vilkår/LovligOpphold/LovligOpphold';
 import { Medlemskap } from './Vilkår/Medlemskap/Medlemskap';
 import { MedlemskapAnnenForelder } from './Vilkår/MedlemskapAnnenForelder/MedlemskapAnnenForelder';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import { VilkårType, type IVilkårConfig, type IVilkårResultat } from '../../../../../../typer/vilkår';
+import { type IVilkårConfig, type IVilkårResultat, VilkårType } from '../../../../../../typer/vilkår';
 
 export const vilkårFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
     `vilkår_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;

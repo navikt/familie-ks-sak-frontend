@@ -10,9 +10,9 @@ import type { UtdypendeVilkårsvurdering } from '../../../../../../../../typer/v
 import { Regelverk } from '../../../../../../../../typer/vilkår';
 import {
     datoForLovendringAugust24,
-    isoStringTilDate,
     type IIsoDatoPeriode,
     type IsoDatoString,
+    isoStringTilDate,
 } from '../../../../../../../../utils/dato';
 import { utledLovverk } from '../../../../../../../../utils/lovverk';
 

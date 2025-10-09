@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Heading, BodyShort, Table } from '@navikt/ds-react';
+import { BodyShort, Heading, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useInternstatistikk } from './useInternstatistikk';

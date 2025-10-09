@@ -4,19 +4,21 @@ import classNames from 'classnames';
 import styled from 'styled-components';
 
 import { Label } from '@navikt/ds-react';
-import { ABorderDefault, AFontLineHeightLarge, AFontSizeLarge } from '@navikt/ds-tokens/dist/tokens';
 import {
     ABorderDanger,
+    ABorderDefault,
     ABorderStrong,
+    AFontLineHeightLarge,
+    AFontSizeLarge,
     AGray100,
     AGray300,
     ASpacing2,
     ATextDanger,
 } from '@navikt/ds-tokens/dist/tokens';
-import { CountryFilter } from '@navikt/land-verktoy';
 import type { Country, Currency } from '@navikt/land-verktoy';
-import CountrySelect from '@navikt/landvelger';
+import { CountryFilter } from '@navikt/land-verktoy';
 import type { CountrySelectProps } from '@navikt/landvelger';
+import CountrySelect from '@navikt/landvelger';
 
 const EØS_CURRENCY: Array<string> = [
     'DKK',
