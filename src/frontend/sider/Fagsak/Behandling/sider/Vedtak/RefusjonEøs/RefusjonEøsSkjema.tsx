@@ -44,7 +44,7 @@ const StyledTextField = styled(TextField)`
     }
 `;
 
-const RefusjonEøsSkjema: React.FunctionComponent<IRefusjonEøsSkjemaProps> = ({ skjema }) => {
+const RefusjonEøsSkjema: React.FC<IRefusjonEøsSkjemaProps> = ({ skjema }) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 

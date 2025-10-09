@@ -12,7 +12,7 @@ const Container = styled.div`
     overflow: auto;
 `;
 
-const Internstatistikk: React.FC = () => {
+const Internstatistikk = () => {
     const { internstatistikk, hentInternstatistikk } = useInternstatistikk();
     if (internstatistikk.status === RessursStatus.IKKE_HENTET) {
         hentInternstatistikk();

@@ -11,7 +11,7 @@ const Container = styled.div`
     z-index: 1000;
 `;
 
-const Toasts: React.FC = () => {
+const Toasts = () => {
     const { toasts } = useAppContext();
 
     return (

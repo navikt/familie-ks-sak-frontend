@@ -7,7 +7,7 @@ interface IProps {
     beslutning: TotrinnskontrollBeslutning;
 }
 
-const TotrinnskontrollModalInnhold: React.FunctionComponent<IProps> = ({ beslutning }) => {
+const TotrinnskontrollModalInnhold: React.FC<IProps> = ({ beslutning }) => {
     if (beslutning === TotrinnskontrollBeslutning.IKKE_VURDERT) {
         return (
             <HStack wrap={false} align={'center'} gap="4">

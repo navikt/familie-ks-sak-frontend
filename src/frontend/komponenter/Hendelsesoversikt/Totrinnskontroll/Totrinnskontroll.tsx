@@ -43,7 +43,7 @@ const initiellModalVerdi = {
     beslutning: TotrinnskontrollBeslutning.IKKE_VURDERT,
 };
 
-const Totrinnskontroll: React.FunctionComponent<IProps> = ({ åpenBehandling }) => {
+const Totrinnskontroll: React.FC<IProps> = ({ åpenBehandling }) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { trinnPåBehandling, settIkkeKontrollerteSiderTilManglerKontroll, settÅpenBehandling } =
         useBehandlingContext();

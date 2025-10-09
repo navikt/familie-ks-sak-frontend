@@ -84,7 +84,7 @@ const erAllePerioderUtfyltForBarn = (eøsPeriodeStatus: IEøsPeriodeStatus[]) =>
     return eøsPeriodeStatus.every(eøsPeriode => eøsPeriode.status === EøsPeriodeStatus.OK);
 };
 
-const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
+const Oppsummeringsboks: React.FC<IProps> = ({
     åpenBehandling,
     aktivEtikett,
     kompetanser,

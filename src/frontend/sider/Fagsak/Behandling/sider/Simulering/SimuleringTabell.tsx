@@ -72,7 +72,7 @@ interface ISimuleringProps {
     simulering: ISimuleringDTO;
 }
 
-const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulering }) => {
+const SimuleringTabell: React.FC<ISimuleringProps> = ({ simulering }) => {
     const {
         fomDatoNestePeriode,
         fom,

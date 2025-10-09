@@ -28,7 +28,7 @@ const PersonCelle = styled.div`
     }
 `;
 
-const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRadProps> = ({
+const EndretUtbetalingAndelRad: React.FC<IEndretUtbetalingAndelRadProps> = ({
     lagretEndretUtbetalingAndel,
     åpenBehandling,
 }) => {

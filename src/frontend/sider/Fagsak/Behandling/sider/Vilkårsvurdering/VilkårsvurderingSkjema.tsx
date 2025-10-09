@@ -32,7 +32,7 @@ const IndentertInnhold = styled.div`
     padding-left: ${ASpacing14};
 `;
 
-const VilkårsvurderingSkjema: React.FunctionComponent = () => {
+const VilkårsvurderingSkjema = () => {
     const { vilkårsvurdering } = useVilkårsvurderingContext();
     const { vurderErLesevisning, behandlingPåVent } = useBehandlingContext();
 

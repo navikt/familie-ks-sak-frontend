@@ -36,7 +36,7 @@ const IngenBarnRegistrertInfo = styled(Alert)`
     margin-bottom: 1.25rem;
 `;
 
-const Barna: React.FunctionComponent = () => {
+const Barna = () => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
     const { bruker } = useFagsakContext();

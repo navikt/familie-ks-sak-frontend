@@ -30,7 +30,7 @@ const StyledDropdownMeny = styled(Dropdown.Menu)`
     width: 36ch;
 `;
 
-const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
+const Vedtaksmeny: React.FC<IVedtakmenyProps> = ({
     åpenBehandling,
     erBehandlingMedVedtaksbrevutsending,
     visFeilutbetaltValuta,

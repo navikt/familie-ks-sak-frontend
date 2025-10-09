@@ -39,7 +39,7 @@ interface ISimuleringProps {
     simulering: ISimuleringDTO;
 }
 
-const SimuleringPanel: React.FunctionComponent<ISimuleringProps> = ({
+const SimuleringPanel: React.FC<ISimuleringProps> = ({
     simulering: { feilutbetaling, fom, etterbetaling, fomDatoNestePeriode, perioder, tomSisteUtbetaling },
 }) => {
     const kapitaliserTekst = (tekst: string): string => {

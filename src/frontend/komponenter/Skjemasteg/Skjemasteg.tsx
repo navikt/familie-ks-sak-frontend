@@ -43,7 +43,7 @@ const Navigering = styled.div`
     }
 `;
 
-const Skjemasteg: React.FunctionComponent<IProps> = ({
+const Skjemasteg: React.FC<IProps> = ({
     children,
     className,
     forrigeKnappTittel = 'Forrige steg',

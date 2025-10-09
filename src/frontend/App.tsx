@@ -21,7 +21,7 @@ const queryClient = new QueryClient({
     },
 });
 
-const App: React.FC = () => {
+const App = () => {
     const [autentisertSaksbehandler, settInnloggetSaksbehandler] = useState<ISaksbehandler | undefined>(undefined);
 
     useEffect(() => {

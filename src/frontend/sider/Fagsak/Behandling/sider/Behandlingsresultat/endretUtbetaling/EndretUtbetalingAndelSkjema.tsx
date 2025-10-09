@@ -66,7 +66,7 @@ interface IEndretUtbetalingAndelSkjemaProps {
     slettEndretUtbetaling: () => void;
 }
 
-const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAndelSkjemaProps> = ({
+const EndretUtbetalingAndelSkjema: React.FC<IEndretUtbetalingAndelSkjemaProps> = ({
     åpenBehandling,
     lukkSkjema,
     skjema,

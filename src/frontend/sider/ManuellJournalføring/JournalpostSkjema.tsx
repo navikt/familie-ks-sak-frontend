@@ -24,7 +24,7 @@ const StyledSectionDiv = styled.div`
     margin-top: 2.5rem;
 `;
 
-export const JournalpostSkjema: React.FC = () => {
+export const JournalpostSkjema = () => {
     const {
         dataForManuellJournalføring,
         skjema,

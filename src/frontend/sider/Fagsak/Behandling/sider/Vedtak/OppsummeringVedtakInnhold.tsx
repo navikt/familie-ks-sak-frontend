@@ -46,7 +46,7 @@ const Modaltekst = styled(BodyShort)`
     margin: 2rem 0;
 `;
 
-const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnholdProps> = ({
+const OppsummeringVedtakInnhold: React.FC<IOppsummeringVedtakInnholdProps> = ({
     åpenBehandling,
     settErUlagretNyFeilutbetaltValutaPeriode,
     erBehandlingMedVedtaksbrevutsending,

@@ -19,7 +19,7 @@ const StyledSkjemasteg = styled(Skjemasteg)`
     max-width: 40rem;
 `;
 
-const RegistrerSøknad: React.FC = () => {
+const RegistrerSøknad = () => {
     const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 

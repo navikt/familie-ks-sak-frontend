@@ -41,7 +41,7 @@ interface IProps {
     åpenBehandling: IBehandling;
 }
 
-const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling }) => {
+const Vilkårsvurdering: React.FC<IProps> = ({ åpenBehandling }) => {
     const { fagsakId } = useSakOgBehandlingParams();
 
     const { vilkårsvurdering, feiloppsummeringFeil } = useVilkårsvurderingContext();

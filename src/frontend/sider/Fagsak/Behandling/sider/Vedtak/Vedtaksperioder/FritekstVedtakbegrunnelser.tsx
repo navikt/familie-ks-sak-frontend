@@ -65,7 +65,7 @@ const ItalicText = styled(BodyLong)`
     font-style: italic;
 `;
 
-const FritekstVedtakbegrunnelser: React.FC = () => {
+const FritekstVedtakbegrunnelser = () => {
     const { vurderErLesevisning, søkersMålform } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
     const {

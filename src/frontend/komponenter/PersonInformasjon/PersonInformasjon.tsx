@@ -50,7 +50,7 @@ const Skillelinje: React.FC<{ erHeading?: boolean }> = ({ erHeading = false }) =
     return <BodyShort>|</BodyShort>;
 };
 
-const PersonInformasjon: React.FunctionComponent<IProps> = ({ person, somOverskrift = false }) => {
+const PersonInformasjon: React.FC<IProps> = ({ person, somOverskrift = false }) => {
     const alder = hentAlder(person.fødselsdato);
     const navnOgAlder = `${person.navn} (${alder} år)`;
     const formatertIdent = formaterIdent(person.personIdent);

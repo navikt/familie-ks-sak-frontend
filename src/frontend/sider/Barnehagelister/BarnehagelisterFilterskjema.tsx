@@ -20,7 +20,7 @@ interface BarnehagebarnFilterSkjemaProps {
     barnehagebarnRequestParams: BarnehagebarnRequestParams;
 }
 
-const BarnehagelisterFilterskjema: React.FunctionComponent<BarnehagebarnFilterSkjemaProps> = (
+const BarnehagelisterFilterskjema: React.FC<BarnehagebarnFilterSkjemaProps> = (
     props: BarnehagebarnFilterSkjemaProps
 ) => {
     const { oppdaterFiltrering, barnehageKommuner } = props;

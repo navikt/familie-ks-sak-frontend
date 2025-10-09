@@ -16,7 +16,7 @@ const ToKolonnerDiv = styled.div<{ $viserAlert?: boolean }>`
     height: calc(100vh - ${props => (props.$viserAlert ? fagsakHeaderHøydeRem + 5.25 : fagsakHeaderHøydeRem)}rem);
 `;
 
-const ManuellJournalføringContent: React.FC = () => {
+const ManuellJournalføringContent = () => {
     const { dataForManuellJournalføring } = useManuellJournalføringContext();
 
     switch (dataForManuellJournalføring.status) {
@@ -59,7 +59,7 @@ const ManuellJournalføringContent: React.FC = () => {
     }
 };
 
-const ManuellJournalføring: React.FC = () => {
+const ManuellJournalføring = () => {
     return (
         <ManuellJournalføringProvider>
             <ManuellJournalføringContent />

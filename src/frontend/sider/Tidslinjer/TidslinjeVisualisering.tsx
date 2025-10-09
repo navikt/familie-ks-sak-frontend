@@ -91,7 +91,7 @@ const tidslinjerLabels = [
     'Regelverk',
 ];
 
-const TidslinjeVisualisering: React.FC = () => {
+const TidslinjeVisualisering = () => {
     const matchBehandlingId = useMatch('/tidslinjer/:behandlingId');
     const behandlingId = matchBehandlingId?.params.behandlingId;
 

@@ -32,7 +32,7 @@ const Main = styled.main<{ $systemetLaster: boolean }>`
     }};
 `;
 
-const Container: React.FC = () => {
+const Container = () => {
     const { autentisert, systemetLaster, innloggetSaksbehandler, appInfoModal, erTogglesHentet } = useAppContext();
 
     return (

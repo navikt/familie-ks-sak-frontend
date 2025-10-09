@@ -22,7 +22,7 @@ const StyledAlert = styled(Alert)`
     margin-top: ${ASpacing8};
 `;
 
-export const KnyttJournalpostTilBehandling: React.FC = () => {
+export const KnyttJournalpostTilBehandling = () => {
     const {
         skjema,
         hentSorterteJournalføringsbehandlinger,

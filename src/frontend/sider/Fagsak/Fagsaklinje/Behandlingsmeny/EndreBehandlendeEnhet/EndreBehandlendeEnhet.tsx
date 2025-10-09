@@ -11,7 +11,7 @@ import { behandendeEnheter } from '../../../../../typer/enhet';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
-const EndreBehandlendeEnhet: React.FC = () => {
+const EndreBehandlendeEnhet = () => {
     const { åpenBehandling, vurderErLesevisning, erBehandleneEnhetMidlertidig } = useBehandlingContext();
     const [visModal, settVisModal] = useState(erBehandleneEnhetMidlertidig);
     const { innloggetSaksbehandler } = useAppContext();

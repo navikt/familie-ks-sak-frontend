@@ -35,7 +35,7 @@ function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): React.ReactN
     );
 }
 
-const FagsakDeltagerSøk: React.FC = () => {
+const FagsakDeltagerSøk = () => {
     const { request } = useHttp();
     const navigate = useNavigate();
     const { skalObfuskereData } = useAppContext();

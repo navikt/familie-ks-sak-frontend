@@ -4,7 +4,7 @@ interface INavLogo {
     width?: number;
 }
 
-const NavLogo: React.FunctionComponent<INavLogo> = ({ className, height = 20, width = 65 }) => {
+const NavLogo: React.FC<INavLogo> = ({ className, height = 20, width = 65 }) => {
     return (
         <svg
             width={width}

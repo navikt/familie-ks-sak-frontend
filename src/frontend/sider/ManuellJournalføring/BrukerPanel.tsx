@@ -34,7 +34,7 @@ const StyledExpansionContent = styled(ExpansionCard.Content)`
     padding: 0.5rem 1rem 1rem;
 `;
 
-export const BrukerPanel: React.FC = () => {
+export const BrukerPanel = () => {
     const { skjema, endreBruker, erLesevisning } = useManuellJournalføringContext();
     const [åpen, settÅpen] = useState(false);
     const [feilMelding, settFeilMelding] = useState<string | undefined>('');

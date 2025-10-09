@@ -8,7 +8,7 @@ import { BehandlingstemaSelect } from '../../../../../komponenter/Behandlingstem
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
-const EndreBehandlingstema: React.FC = () => {
+const EndreBehandlingstema = () => {
     const [visModal, settVisModal] = useState(false);
     const { skjema, endreBehandlingstema, ressurs, nullstillSkjema } = useEndreBehandlingstema(() =>
         settVisModal(false)

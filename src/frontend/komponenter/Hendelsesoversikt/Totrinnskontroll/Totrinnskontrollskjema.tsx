@@ -25,7 +25,7 @@ const StyledButton = styled(Button)`
     width: fit-content;
 `;
 
-const Totrinnskontrollskjema: React.FunctionComponent<IProps> = ({ innsendtVedtak, sendInnVedtak, åpenBehandling }) => {
+const Totrinnskontrollskjema: React.FC<IProps> = ({ innsendtVedtak, sendInnVedtak, åpenBehandling }) => {
     const { trinnPåBehandling } = useBehandlingContext();
     const { innloggetSaksbehandler } = useAppContext();
 

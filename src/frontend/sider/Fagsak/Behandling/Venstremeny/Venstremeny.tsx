@@ -77,7 +77,7 @@ const UndersideSirkel = styled.span`
     width: ${ASpacing6};
 `;
 
-const Venstremeny: React.FunctionComponent = () => {
+const Venstremeny = () => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { åpenBehandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } = useBehandlingContext();
 

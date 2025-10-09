@@ -31,7 +31,7 @@ const StyledTextField = styled(TextField)`
     }
 `;
 
-const FeilutbetaltValutaSkjema: React.FunctionComponent<IFeilutbetaltValutaSkjemaProps> = ({ skjema }) => (
+const FeilutbetaltValutaSkjema: React.FC<IFeilutbetaltValutaSkjemaProps> = ({ skjema }) => (
     <>
         <FlexDatoInputWrapper>
             <Label size="small">Angi periode med feilutbetalt valuta</Label>
