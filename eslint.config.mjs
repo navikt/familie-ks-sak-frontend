@@ -1,9 +1,9 @@
-import prettier from 'eslint-plugin-prettier';
-import importPlugin from 'eslint-plugin-import';
-import globals from 'globals';
 import js from '@eslint/js';
 import eslintConfigPrittier from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import prettier from 'eslint-plugin-prettier';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default [
@@ -19,9 +19,7 @@ export default [
         },
 
         languageOptions: {
-            globals: {
-                ...globals.node,
-            },
+            globals: globals.browser,
 
             parser: tseslint.parser,
             ecmaVersion: 2020,

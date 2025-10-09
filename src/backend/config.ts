@@ -6,7 +6,7 @@ import { appConfig } from '@navikt/familie-backend';
 const Environment = () => {
     if (process.env.ENV === 'local') {
         return {
-            buildPath: 'frontend_development',
+            frontendPath: 'src/frontend',
             namespace: 'local',
             proxyUrl: 'http://localhost:8083/api',
             familieTilbakeUrl: 'http://localhost:8000',
@@ -15,25 +15,16 @@ const Environment = () => {
         };
     } else if (process.env.ENV === 'lokalt-mot-preprod') {
         return {
-            buildPath: 'frontend_development',
+            frontendPath: 'src/frontend',
             namespace: 'local',
             proxyUrl: 'https://familie-kontantstotte-sak.intern.dev.nav.no/api',
             familieTilbakeUrl: 'https://tilbakekreving.ansatt.dev.nav.no',
             familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
             neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
         };
-    } else if (process.env.ENV === 'e2e') {
-        return {
-            buildPath: 'frontend_production',
-            namespace: 'e2e',
-            proxyUrl: 'http://familie-ks-sak:8089/api',
-            familieTilbakeUrl: 'http://tilbakekreving:8000',
-            familieKlageUrl: '',
-            neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
-        };
     } else if (process.env.ENV === 'preprod') {
         return {
-            buildPath: 'frontend_production',
+            frontendPath: 'dist_frontend',
             namespace: 'preprod',
             proxyUrl: 'http://familie-ks-sak/api',
             familieTilbakeUrl: 'https://tilbakekreving.ansatt.dev.nav.no',
@@ -43,7 +34,7 @@ const Environment = () => {
     }
 
     return {
-        buildPath: 'frontend_production',
+        frontendPath: 'dist_frontend',
         namespace: 'production',
         proxyUrl: 'http://familie-ks-sak/api',
         familieTilbakeUrl: 'https://tilbakekreving.intern.nav.no',
@@ -59,11 +50,7 @@ export const sessionConfig: ISessionKonfigurasjon = {
     redisFullUrl: process.env.REDIS_URI_SESSIONS,
     redisBrukernavn: process.env.REDIS_USERNAME_SESSIONS,
     redisPassord: process.env.REDIS_PASSWORD_SESSIONS,
-    secureCookie: !(
-        process.env.ENV === 'local' ||
-        process.env.ENV === 'lokalt-mot-preprod' ||
-        process.env.ENV === 'e2e'
-    ),
+    secureCookie: !(process.env.ENV === 'local' || process.env.ENV === 'lokalt-mot-preprod'),
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
 
@@ -80,7 +67,7 @@ export const oboConfig: IApi = {
     scopes: [process.env.KS_SAK_SCOPE],
 };
 
-export const buildPath = env.buildPath;
+export const frontendPath = env.frontendPath;
 export const proxyUrl = env.proxyUrl;
 
 export const redirectRecords: Record<string, string> = {

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import axe from '@axe-core/react';
 import * as Sentry from '@sentry/browser';
 import { setDefaultOptions } from 'date-fns';
 import { nb } from 'date-fns/locale';
@@ -24,7 +23,9 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 if (process.env.NODE_ENV !== 'production') {
-    axe(React, ReactDOM, 1000);
+    import('@axe-core/react').then(({ default: axe }) => {
+        axe(React, ReactDOM, 1000);
+    });
 }
 
 const container = document.getElementById('app');
