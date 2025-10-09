@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
 import { useFelt, useSkjema } from '@navikt/familie-skjema';
@@ -35,7 +35,7 @@ interface IProps {
 }
 
 const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => {
-    const [erKompetanseEkspandert, settErKompetanseEkspandert] = React.useState<boolean>(false);
+    const [erKompetanseEkspandert, settErKompetanseEkspandert] = useState<boolean>(false);
     const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
     const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
     const behandlingsÅrsakErOvergangsordning =

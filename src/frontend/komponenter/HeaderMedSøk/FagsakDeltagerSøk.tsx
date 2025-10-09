@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useNavigate } from 'react-router';
 
 import type { ISøkeresultat } from '@navikt/familie-header';

@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { Table } from '@navikt/ds-react';
 
 import { useValutakursSkjema, valutakursFeilmeldingId } from './useValutakursSkjema';

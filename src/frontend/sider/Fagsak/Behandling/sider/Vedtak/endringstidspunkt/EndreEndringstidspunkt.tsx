@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { Dropdown } from '@navikt/ds-react';

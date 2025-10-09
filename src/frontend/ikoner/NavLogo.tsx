@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 interface INavLogo {
     className?: string;
     height?: number;

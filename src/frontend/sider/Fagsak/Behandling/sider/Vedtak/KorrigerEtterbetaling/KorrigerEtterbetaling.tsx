@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { DocPencilIcon } from '@navikt/aksel-icons';
 import { Dropdown } from '@navikt/ds-react';
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Alert, Button, HelpText, Dropdown, Modal, Fieldset, Heading, HStack, TextField } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';

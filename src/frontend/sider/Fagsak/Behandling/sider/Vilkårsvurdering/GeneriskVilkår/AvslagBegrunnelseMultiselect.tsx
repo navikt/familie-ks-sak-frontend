@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { GroupBase } from 'react-select';
 import styled from 'styled-components';
 

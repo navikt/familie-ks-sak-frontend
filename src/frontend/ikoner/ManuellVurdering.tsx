@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 interface IManuellVurdering {
     className?: string;
     height?: number;

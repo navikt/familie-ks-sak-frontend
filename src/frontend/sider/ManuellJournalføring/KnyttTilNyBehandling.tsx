@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Checkbox, Fieldset, Heading } from '@navikt/ds-react';

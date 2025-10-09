@@ -1,4 +1,5 @@
-import React, { createContext, type PropsWithChildren, useCallback, useContext, useReducer } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useCallback, useContext, useReducer } from 'react';
 
 import type { MutationKey } from '@tanstack/react-query';
 

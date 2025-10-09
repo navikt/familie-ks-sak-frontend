@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { isBefore } from 'date-fns';
 
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';

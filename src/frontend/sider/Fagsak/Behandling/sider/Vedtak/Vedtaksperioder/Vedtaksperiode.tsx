@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { BodyShort, ErrorMessage, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 

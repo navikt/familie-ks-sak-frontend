@@ -1,4 +1,5 @@
-import React, { createContext, type PropsWithChildren, useContext, useEffect } from 'react';
+import type { PropsWithChildren } from 'react';
+import { useState, createContext, useContext, useEffect } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -23,7 +24,7 @@ interface Props extends PropsWithChildren {
 }
 
 export function FagsakProvider({ fagsak, children }: Props) {
-    const [bruker, settBruker] = React.useState<Ressurs<IPersonInfo>>(byggTomRessurs());
+    const [bruker, settBruker] = useState<Ressurs<IPersonInfo>>(byggTomRessurs());
 
     const { request } = useHttp();
     const { skalObfuskereData } = useAppContext();

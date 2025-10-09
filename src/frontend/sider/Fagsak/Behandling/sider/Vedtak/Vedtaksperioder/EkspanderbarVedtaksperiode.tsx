@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react';
-import React from 'react';
 
 import { endOfMonth, isAfter, isSameDay } from 'date-fns';
 import styled from 'styled-components';

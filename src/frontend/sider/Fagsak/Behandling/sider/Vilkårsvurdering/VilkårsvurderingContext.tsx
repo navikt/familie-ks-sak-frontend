@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
 import { mapFraRestVilkårsvurderingTilUi } from './utils';

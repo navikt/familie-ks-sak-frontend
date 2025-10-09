@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { TeddyBearIcon } from '@navikt/aksel-icons';
 import { Tabs } from '@navikt/ds-react';
 

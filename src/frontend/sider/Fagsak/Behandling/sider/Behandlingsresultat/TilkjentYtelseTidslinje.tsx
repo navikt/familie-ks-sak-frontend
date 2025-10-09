@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { endOfMonth } from 'date-fns';
 import styled from 'styled-components';
 

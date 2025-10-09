@@ -1,4 +1,3 @@
-import * as React from 'react';
 import type { PropsWithChildren } from 'react';
 
 import * as Sentry from '@sentry/browser';

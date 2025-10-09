@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 interface IEksternLenke {
     className?: string;
     height?: number;

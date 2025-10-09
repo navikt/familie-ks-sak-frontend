@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -22,7 +22,7 @@ const Brev = ({ onIModalClick, bruker }: IProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
 
-    const [visInnsendtBrevModal, settVisInnsendtBrevModal] = React.useState(false);
+    const [visInnsendtBrevModal, settVisInnsendtBrevModal] = useState(false);
 
     return (
         <BoksMedMargin>

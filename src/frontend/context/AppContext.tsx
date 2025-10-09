@@ -1,5 +1,5 @@
 import type { JSX, PropsWithChildren, ReactNode } from 'react';
-import React, { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 import type { AxiosRequestConfig } from 'axios';
 

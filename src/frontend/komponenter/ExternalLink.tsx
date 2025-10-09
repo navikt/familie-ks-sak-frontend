@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { HStack, Link } from '@navikt/ds-react';
 

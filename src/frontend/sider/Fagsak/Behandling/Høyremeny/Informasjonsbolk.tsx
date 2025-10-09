@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { BodyShort, HGrid } from '@navikt/ds-react';
 import { ATextDefault } from '@navikt/ds-tokens/dist/tokens';
 

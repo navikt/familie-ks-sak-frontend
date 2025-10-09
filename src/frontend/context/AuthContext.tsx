@@ -1,4 +1,5 @@
-import React, { createContext, useEffect, type PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useEffect } from 'react';
 
 import { HttpProvider } from '@navikt/familie-http';
 import type { ISaksbehandler } from '@navikt/familie-typer';

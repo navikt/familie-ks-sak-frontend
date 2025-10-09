@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Alert, ErrorMessage } from '@navikt/ds-react';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 

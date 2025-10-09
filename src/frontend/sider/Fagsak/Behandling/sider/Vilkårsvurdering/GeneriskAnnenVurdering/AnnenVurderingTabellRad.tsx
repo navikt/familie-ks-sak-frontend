@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import deepEqual from 'deep-equal';
 import styled from 'styled-components';

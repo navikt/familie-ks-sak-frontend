@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { BodyShort, Button, Detail, Heading, HStack, RadioGroup, Radio, Textarea, Fieldset } from '@navikt/ds-react';

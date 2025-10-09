@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';

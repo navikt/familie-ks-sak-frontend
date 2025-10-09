@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår, useBosattIRiket } from './BosattIRiketContext';
 import type { Regelverk } from '../../../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';

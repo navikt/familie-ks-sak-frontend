@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Button, Radio, RadioGroup, Textarea } from '@navikt/ds-react';

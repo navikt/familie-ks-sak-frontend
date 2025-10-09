@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { LeggTilBrevmottakerModal } from './LeggTilBrevmottakerModal';
 import { useLagreEllerFjernMottakerPåBehandling } from './useLagreOgFjernMottakerPåBehandling';
 import type { IBehandling } from '../../../../../typer/behandling';

@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { isValid, parseISO } from 'date-fns';
 
@@ -52,7 +51,7 @@ const DatovelgerForGammelSkjemaløsning = ({
         );
     }, [inputProps.value]);
 
-    const [forrigeValue, settForrigeValue] = React.useState<string | undefined>();
+    const [forrigeValue, settForrigeValue] = useState<string | undefined>();
 
     // Oppdaterer verdien til datovelgeren hvis value har endret seg uten at det er datovelgeren som har trigget endringen
     if (value != forrigeValue) {

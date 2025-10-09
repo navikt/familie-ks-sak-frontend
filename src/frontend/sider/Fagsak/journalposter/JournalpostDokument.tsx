@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { ExternalLinkIcon, PadlockLockedIcon } from '@navikt/aksel-icons';

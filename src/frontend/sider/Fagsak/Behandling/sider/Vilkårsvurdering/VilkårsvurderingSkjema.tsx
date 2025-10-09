@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Collapse } from 'react-collapse';
 import styled from 'styled-components';

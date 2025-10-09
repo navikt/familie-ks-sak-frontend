@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { BodyShort, Label } from '@navikt/ds-react';

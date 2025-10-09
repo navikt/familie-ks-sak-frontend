@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { IDokumentInfo, ILogiskVedlegg } from '@navikt/familie-typer';
 

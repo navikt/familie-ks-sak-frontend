@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, BodyShort, Checkbox, Heading, Table, VStack } from '@navikt/ds-react';

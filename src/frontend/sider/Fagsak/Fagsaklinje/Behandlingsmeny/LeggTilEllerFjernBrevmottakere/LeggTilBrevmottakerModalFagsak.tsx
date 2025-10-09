@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { LeggTilBrevmottakerModal } from './LeggTilBrevmottakerModal';
 import type { BrevmottakerUseSkjema, SkjemaBrevmottaker } from './useBrevmottakerSkjema';
 import { felterTilSkjemaBrevmottaker } from './useBrevmottakerSkjema';

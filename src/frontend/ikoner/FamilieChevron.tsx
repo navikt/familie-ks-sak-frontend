@@ -1,5 +1,3 @@
-import React from 'react';
-
 type FamilieChevronRetning = 'opp' | 'ned' | 'høyre' | 'venstre';
 
 interface Props {

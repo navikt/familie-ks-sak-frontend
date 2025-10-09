@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 

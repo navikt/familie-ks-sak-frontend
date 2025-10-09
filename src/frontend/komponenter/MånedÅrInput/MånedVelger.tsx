@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Select } from '@navikt/ds-react';
 
 interface MånedProps {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Tag } from '@navikt/ds-react';
 
 import { Datoformat, isoStringTilFormatertString } from '../utils/dato';

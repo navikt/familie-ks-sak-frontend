@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Button, Fieldset, Modal } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';

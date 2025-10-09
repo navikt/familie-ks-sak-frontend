@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 interface IØyeGrønn {
     className?: string;
     height?: number;

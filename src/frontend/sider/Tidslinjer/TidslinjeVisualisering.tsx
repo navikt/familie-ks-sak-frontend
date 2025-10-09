@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { endOfMonth } from 'date-fns';
 import { useMatch } from 'react-router';

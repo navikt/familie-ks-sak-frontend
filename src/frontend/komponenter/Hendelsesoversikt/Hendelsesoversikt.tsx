@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import classNames from 'classnames';
 
@@ -29,7 +29,7 @@ const Hendelsesoversikt = ({ hendelser, className, åpenBehandling, bruker }: IH
         BehandlerRolle.BESLUTTER === hentSaksbehandlerRolle() &&
         åpenBehandling?.status === BehandlingStatus.FATTER_VEDTAK;
 
-    const [aktivTab, settAktivTab] = React.useState<TabValg>(
+    const [aktivTab, settAktivTab] = useState<TabValg>(
         skalViseTotrinnskontroll ? TabValg.Totrinnskontroll : TabValg.Historikk
     );
 

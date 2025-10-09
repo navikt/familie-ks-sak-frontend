@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, ErrorSummary } from '@navikt/ds-react';

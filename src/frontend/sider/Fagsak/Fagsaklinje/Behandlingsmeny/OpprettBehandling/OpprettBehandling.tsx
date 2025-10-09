@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { isBefore, subDays } from 'date-fns';
 import { useNavigate } from 'react-router';

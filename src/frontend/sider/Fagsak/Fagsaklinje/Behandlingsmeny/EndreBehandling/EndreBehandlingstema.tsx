@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Button, Fieldset, Dropdown, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';

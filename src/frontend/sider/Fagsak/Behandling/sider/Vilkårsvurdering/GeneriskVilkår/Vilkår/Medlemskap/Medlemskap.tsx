@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';

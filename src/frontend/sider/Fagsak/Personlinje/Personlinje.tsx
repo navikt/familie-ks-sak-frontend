@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { BodyShort, Box, CopyButton, HStack } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
 

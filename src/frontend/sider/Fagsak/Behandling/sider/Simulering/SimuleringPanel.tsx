@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { isBefore } from 'date-fns';
 import styled from 'styled-components';
 

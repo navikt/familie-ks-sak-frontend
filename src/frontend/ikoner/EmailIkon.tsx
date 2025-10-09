@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 interface IEmailIkon {
     filled?: boolean;
     className?: string;

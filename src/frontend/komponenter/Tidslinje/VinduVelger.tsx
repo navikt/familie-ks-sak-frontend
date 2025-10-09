@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ToggleGroup } from '@navikt/ds-react';
 
 import { useTidslinjeContext } from './TidslinjeContext';

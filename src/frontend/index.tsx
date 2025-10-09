@@ -1,5 +1,3 @@
-import React from 'react';
-
 import * as Sentry from '@sentry/browser';
 import { setDefaultOptions } from 'date-fns';
 import { nb } from 'date-fns/locale';

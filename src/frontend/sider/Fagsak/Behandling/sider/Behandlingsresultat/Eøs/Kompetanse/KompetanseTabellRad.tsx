@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { BodyShort, Table } from '@navikt/ds-react';
 
 import KompetanseTabellRadEndre from './KompetanseTabellRadEndre';

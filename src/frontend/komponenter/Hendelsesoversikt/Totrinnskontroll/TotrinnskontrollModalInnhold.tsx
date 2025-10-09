@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { HStack } from '@navikt/ds-react';
 
 import StatusIkon, { Status } from '../../../ikoner/StatusIkon';

@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 interface IRødError {
     className?: string;
     height?: number;

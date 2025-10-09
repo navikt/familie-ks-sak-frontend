@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { HStack, Select } from '@navikt/ds-react';
