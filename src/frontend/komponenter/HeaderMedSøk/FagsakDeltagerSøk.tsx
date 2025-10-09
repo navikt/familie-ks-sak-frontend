@@ -22,7 +22,7 @@ import { obfuskerFagsakDeltager } from '../../utils/obfuskerData';
 import { erAdresseBeskyttet } from '../../utils/validators';
 import { PersonIkon } from '../PersonIkon';
 
-function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): React.ReactNode {
+function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): ReactNode {
     return (
         <PersonIkon
             kjønn={fagsakDeltager.kjønn || kjønnType.UKJENT}

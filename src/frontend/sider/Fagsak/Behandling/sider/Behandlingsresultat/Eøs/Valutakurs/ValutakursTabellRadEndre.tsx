@@ -77,7 +77,7 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning(true);
 
-    const visKursGruppeFeilmelding = (): React.ReactNode => {
+    const visKursGruppeFeilmelding = (): ReactNode => {
         if (skjema.felter.valutakode?.valideringsstatus === Valideringsstatus.FEIL) {
             return skjema.felter.valutakode.feilmelding;
         } else if (skjema.felter.valutakursdato?.valideringsstatus === Valideringsstatus.FEIL) {

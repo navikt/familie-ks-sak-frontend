@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { BodyShort, Heading } from '@navikt/ds-react';
 
 interface DeltagerProps {
-    ikon: React.ReactNode;
+    ikon: ReactNode;
     navn: string;
     ident: string;
     undertittel: string;
-    children?: React.ReactNode | React.ReactNode[];
+    children?: ReactNode | ReactNode[];
 }
 
 const HSplit = styled.div`

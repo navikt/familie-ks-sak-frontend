@@ -49,7 +49,7 @@ class ErrorBoundary extends React.Component<IProps> {
         }
     }
 
-    render(): React.ReactNode {
+    render(): ReactNode {
         return this.props.children;
     }
 }

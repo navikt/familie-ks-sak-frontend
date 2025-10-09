@@ -86,7 +86,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning(true);
 
-    const visUtbetaltBeløpGruppeFeilmelding = (): React.ReactNode => {
+    const visUtbetaltBeløpGruppeFeilmelding = (): ReactNode => {
         if (skjema.felter.beløp?.valideringsstatus === Valideringsstatus.FEIL) {
             return skjema.felter.beløp.feilmelding;
         } else if (skjema.felter.valutakode?.valideringsstatus === Valideringsstatus.FEIL) {

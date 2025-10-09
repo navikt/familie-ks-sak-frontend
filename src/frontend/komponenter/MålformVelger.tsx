@@ -17,7 +17,7 @@ interface IProps {
     målformFelt: Felt<Målform | undefined>;
     visFeilmeldinger: boolean;
     erLesevisning: boolean;
-    Legend?: React.ReactNode;
+    Legend?: ReactNode;
 }
 
 const MålformVelger: React.FC<IProps> = ({

@@ -20,7 +20,7 @@ interface IProps extends PropsWithChildren {
     nesteKnappTittel?: string;
     nesteOnClick?: () => void;
     senderInn: boolean;
-    tittel: string | React.ReactNode;
+    tittel: string | ReactNode;
     maxWidthStyle?: string;
     skalViseNesteKnapp?: boolean;
     skalViseForrigeKnapp?: boolean;
