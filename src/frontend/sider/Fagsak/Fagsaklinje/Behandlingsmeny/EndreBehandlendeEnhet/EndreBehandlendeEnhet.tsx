@@ -69,7 +69,7 @@ const EndreBehandlendeEnhet = () => {
                                 name="enhet"
                                 value={enhetId}
                                 label={'Velg ny enhet'}
-                                onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
+                                onChange={(event: ChangeEvent<HTMLSelectElement>): void => {
                                     settEnhetId(event.target.value);
                                     settSubmitRessurs(byggTomRessurs());
                                 }}
@@ -97,7 +97,7 @@ const EndreBehandlendeEnhet = () => {
                                 label={'Begrunnelse'}
                                 value={begrunnelse}
                                 maxLength={4000}
-                                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
                                     settBegrunnelse(event.target.value);
                                     settSubmitRessurs(byggTomRessurs());
                                 }}

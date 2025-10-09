@@ -83,7 +83,7 @@ const FritekstVedtakbegrunnelser = () => {
 
     const fieldsetId = `Fritekster ${id}`;
 
-    const onChangeFritekst = (event: React.ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
+    const onChangeFritekst = (event: ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
         skjema.felter.fritekster.validerOgSettFelt([
             ...skjema.felter.fritekster.verdi.map(mapFritekst => {
                 if (mapFritekst.verdi.id === fritekstId) {

@@ -290,7 +290,7 @@ const EndretUtbetalingAndelSkjema: React.FC<IEndretUtbetalingAndelSkjemaProps> =
                                 ? skjema.felter.begrunnelse.verdi
                                 : ''
                         }
-                        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
                             skjema.felter.begrunnelse.validerOgSettFelt(event.target.value);
                         }}
                     />

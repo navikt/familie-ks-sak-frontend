@@ -41,7 +41,7 @@ const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) =
                         {...skjema.felter.mottaker.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
                         readOnly={erLesevisning}
                         label="Mottaker"
-                        onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
+                        onChange={(event: ChangeEvent<HTMLSelectElement>): void => {
                             skjema.felter.mottaker.validerOgSettFelt(event.target.value as Mottaker);
                         }}
                     >

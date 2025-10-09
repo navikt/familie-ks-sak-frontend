@@ -113,7 +113,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
 
     const behandlingSteg = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.steg : undefined;
 
-    const onChangeFritekst = (event: React.ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
+    const onChangeFritekst = (event: ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
         skjema.felter.friteksterKulepunkter.validerOgSettFelt([
             ...skjema.felter.friteksterKulepunkter.verdi.map(mapFritekst => {
                 if (mapFritekst.verdi.id === fritekstId) {
@@ -142,7 +142,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                 <Select
                     {...skjema.felter.mottakerIdent.hentNavInputProps(skjema.visFeilmeldinger)}
                     label={'Velg mottaker'}
-                    onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
+                    onChange={(event: ChangeEvent<HTMLSelectElement>): void => {
                         skjema.felter.mottakerIdent.onChange(event.target.value);
                     }}
                 >
@@ -164,7 +164,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                 <StyledSelect
                     {...skjema.felter.brevmal.hentNavInputProps(skjema.visFeilmeldinger)}
                     label={'Velg brevmal'}
-                    onChange={(event: React.ChangeEvent<BrevtypeSelect>): void => {
+                    onChange={(event: ChangeEvent<BrevtypeSelect>): void => {
                         skjema.felter.brevmal.onChange(event.target.value);
                         skjema.felter.dokumenter.nullstill();
                     }}
@@ -287,7 +287,7 @@ const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                                         size={'small'}
                                         value={skjema.felter.fritekstAvsnitt.verdi}
                                         maxLength={maksLengdeFritekstAvsnitt}
-                                        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                                             skjema.felter.fritekstAvsnitt.validerOgSettFelt(event.target.value)
                                         }
                                         error={skjema.visFeilmeldinger && skjema.felter.fritekstAvsnitt?.feilmelding}

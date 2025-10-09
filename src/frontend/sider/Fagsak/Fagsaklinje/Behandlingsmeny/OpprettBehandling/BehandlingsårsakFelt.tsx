@@ -31,7 +31,7 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
             readOnly={erLesevisning}
             name={'Behandlingsårsak'}
             label={'Velg årsak'}
-            onChange={(event: React.ChangeEvent<BehandlingÅrsakSelect>): void => {
+            onChange={(event: ChangeEvent<BehandlingÅrsakSelect>): void => {
                 behandlingsårsak.onChange(event.target.value);
             }}
         >

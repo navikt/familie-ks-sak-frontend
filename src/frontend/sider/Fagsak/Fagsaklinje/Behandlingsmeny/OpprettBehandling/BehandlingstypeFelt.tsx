@@ -47,7 +47,7 @@ const BehandlingstypeFelt: React.FC<IProps> = ({
             readOnly={erLesevisning}
             name={'Behandling'}
             label={'Velg type behandling'}
-            onChange={(event: React.ChangeEvent<BehandlingstypeSelect>): void => {
+            onChange={(event: ChangeEvent<BehandlingstypeSelect>): void => {
                 behandlingstype.onChange(event.target.value);
             }}
         >
