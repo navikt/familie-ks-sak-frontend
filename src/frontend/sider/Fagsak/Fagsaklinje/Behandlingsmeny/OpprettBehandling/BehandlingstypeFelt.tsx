@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ChangeEvent } from 'react';
 
 import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
@@ -25,13 +25,13 @@ interface BehandlingstypeSelect extends HTMLSelectElement {
     value: Behandlingstype | '';
 }
 
-const BehandlingstypeFelt: React.FC<IProps> = ({
+const BehandlingstypeFelt = ({
     behandlingstype,
     visFeilmeldinger,
     minimalFagsak,
     erLesevisning = false,
     manuellJournalfør = false,
-}) => {
+}: IProps) => {
     const { toggles } = useAppContext();
 
     const aktivBehandling: VisningBehandling | undefined = minimalFagsak
@@ -49,7 +49,7 @@ const BehandlingstypeFelt: React.FC<IProps> = ({
             readOnly={erLesevisning}
             name={'Behandling'}
             label={'Velg type behandling'}
-            onChange={(event: React.ChangeEvent<BehandlingstypeSelect>): void => {
+            onChange={(event: ChangeEvent<BehandlingstypeSelect>): void => {
                 behandlingstype.onChange(event.target.value);
             }}
         >

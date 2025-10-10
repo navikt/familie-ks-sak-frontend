@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useLocation, useNavigate } from 'react-router';
 
 import { Dropdown } from '@navikt/ds-react';

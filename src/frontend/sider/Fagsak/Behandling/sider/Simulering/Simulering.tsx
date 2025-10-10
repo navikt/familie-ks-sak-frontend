@@ -1,11 +1,9 @@
-import * as React from 'react';
-
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { useSimuleringContext } from './SimuleringContext';
 import SimuleringPanel from './SimuleringPanel';
@@ -27,7 +25,7 @@ const StyledAlert = styled(Alert)`
     margin-bottom: 2rem;
 `;
 
-const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling }) => {
+const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
     const {

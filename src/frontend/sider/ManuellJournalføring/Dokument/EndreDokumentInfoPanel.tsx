@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { IDokumentInfo, ILogiskVedlegg } from '@navikt/familie-typer';
 
@@ -25,7 +23,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-export const EndreDokumentInfoPanel: React.FC<IProps> = ({ dokument, visFeilmeldinger }) => {
+export const EndreDokumentInfoPanel = ({ dokument, visFeilmeldinger }: IProps) => {
     const { skjema, erLesevisning } = useManuellJournalføringContext();
 
     const dokumentFraSkjema: IDokumentInfo | undefined = skjema.felter.dokumenter.verdi.find(

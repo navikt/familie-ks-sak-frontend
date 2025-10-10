@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Route, Routes, useLocation } from 'react-router';
 
@@ -23,7 +23,7 @@ interface Props {
     åpenBehandling: IBehandling;
 }
 
-export const BehandlingRouter: React.FC<Props> = ({ bruker, åpenBehandling }) => {
+export const BehandlingRouter = ({ bruker, åpenBehandling }: Props) => {
     const location = useLocation();
     const { leggTilBesøktSide } = useBehandlingContext();
 

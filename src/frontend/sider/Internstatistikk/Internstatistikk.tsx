@@ -1,8 +1,6 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
-import { Heading, BodyShort, Table } from '@navikt/ds-react';
+import { BodyShort, Heading, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useInternstatistikk } from './useInternstatistikk';
@@ -14,7 +12,7 @@ const Container = styled.div`
     overflow: auto;
 `;
 
-const Internstatistikk: React.FC = () => {
+const Internstatistikk = () => {
     const { internstatistikk, hentInternstatistikk } = useInternstatistikk();
     if (internstatistikk.status === RessursStatus.IKKE_HENTET) {
         hentInternstatistikk();

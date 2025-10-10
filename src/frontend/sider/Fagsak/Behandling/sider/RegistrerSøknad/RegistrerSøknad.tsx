@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, ErrorSummary } from '@navikt/ds-react';
@@ -21,7 +19,7 @@ const StyledSkjemasteg = styled(Skjemasteg)`
     max-width: 40rem;
 `;
 
-const RegistrerSøknad: React.FC = () => {
+const RegistrerSøknad = () => {
     const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 

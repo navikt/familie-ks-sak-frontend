@@ -1,4 +1,4 @@
-import React from 'react';
+import { createContext, type PropsWithChildren, useContext } from 'react';
 
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
@@ -7,7 +7,7 @@ import { hentFeilIVilkårsvurdering } from '../../../../../context/Vilkårsvurde
 import type { IBehandling } from '../../../../../typer/behandling';
 import type { IPersonResultat, IRestPersonResultat } from '../../../../../typer/vilkår';
 
-interface IProps extends React.PropsWithChildren {
+interface IProps extends PropsWithChildren {
     åpenBehandling: IBehandling;
 }
 
@@ -17,7 +17,7 @@ interface VilkårsvurderingContextValue {
     personResultater: IRestPersonResultat[];
 }
 
-const VilkårsvurderingContext = React.createContext<VilkårsvurderingContextValue | undefined>(undefined);
+const VilkårsvurderingContext = createContext<VilkårsvurderingContextValue | undefined>(undefined);
 
 export function VilkårsvurderingProvider({ åpenBehandling, children }: IProps) {
     const vilkårsvurdering = åpenBehandling
@@ -42,7 +42,7 @@ export function VilkårsvurderingProvider({ åpenBehandling, children }: IProps)
 }
 
 export const useVilkårsvurderingContext = () => {
-    const context = React.useContext(VilkårsvurderingContext);
+    const context = useContext(VilkårsvurderingContext);
 
     if (context === undefined) {
         throw new Error('useVilkårsvurderingContext må brukes innenfor en VilkårsvurderingProvider');

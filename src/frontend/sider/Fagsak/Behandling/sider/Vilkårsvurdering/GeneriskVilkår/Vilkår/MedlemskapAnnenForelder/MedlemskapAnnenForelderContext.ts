@@ -3,15 +3,15 @@ import { useFelt } from '@navikt/familie-skjema';
 import { erPeriodeGyldig } from './MedlemskapAnnenForelderValidering';
 import type { IGrunnlagPerson } from '../../../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../../../typer/vedtak';
-import type { IVilkårResultat } from '../../../../../../../../typer/vilkår';
 import type {
+    IVilkårResultat,
     Regelverk as RegelverkType,
     Resultat,
     UtdypendeVilkårsvurdering,
 } from '../../../../../../../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../../../../../../../utils/dato';
 import { erAvslagBegrunnelserGyldig, erResultatGyldig } from '../../../../../../../../utils/validators';
-import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { type IVilkårSkjemaContext, useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 export const useMedlemskapAnnenForelder = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {

@@ -6,7 +6,7 @@ import { YtelseType } from '../../typer/beregning';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
 import { Vedtaksperiodetype } from '../../typer/vedtaksperiode';
-import { hentDagensDato, dateTilIsoDatoString } from '../../utils/dato';
+import { dateTilIsoDatoString, hentDagensDato } from '../../utils/dato';
 import { hentBarnMedLøpendeUtbetaling } from '../../utils/fagsak';
 import { mockMinimalFagsak } from '../../utils/test/minimalFagsak/minimalFagsak.mock';
 

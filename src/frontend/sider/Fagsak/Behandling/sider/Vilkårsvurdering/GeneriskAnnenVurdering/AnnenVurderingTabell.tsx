@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Table } from '@navikt/ds-react';
 
 import AnnenVurderingTabellRad from './AnnenVurderingTabellRad';
@@ -18,7 +16,7 @@ interface IProps {
     annenVurderingConfig: IAnnenVurderingConfig;
 }
 
-const AnnenVurderingTabell: React.FC<IProps> = ({ person, annenVurderingConfig, andreVurderinger }) => {
+const AnnenVurderingTabell = ({ person, annenVurderingConfig, andreVurderinger }: IProps) => {
     return (
         <Table>
             <Table.Header>

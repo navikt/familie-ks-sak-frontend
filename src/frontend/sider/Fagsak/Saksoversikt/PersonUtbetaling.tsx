@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { BodyShort, HStack } from '@navikt/ds-react';
@@ -22,7 +20,7 @@ interface IPersonUtbetalingProps {
     utbetalingsperiodeDetaljer: IUtbetalingsperiodeDetalj[];
 }
 
-const PersonUtbetaling: React.FC<IPersonUtbetalingProps> = ({ utbetalingsperiodeDetaljer }) => {
+const PersonUtbetaling = ({ utbetalingsperiodeDetaljer }: IPersonUtbetalingProps) => {
     return (
         <section>
             <PersonInformasjon person={utbetalingsperiodeDetaljer[0].person} />

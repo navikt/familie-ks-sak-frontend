@@ -1,4 +1,4 @@
-import React from 'react';
+import { StrictMode } from 'react';
 
 import * as Sentry from '@sentry/browser';
 import { setDefaultOptions } from 'date-fns';
@@ -23,16 +23,17 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 if (process.env.NODE_ENV !== 'production') {
-    import('@axe-core/react').then(({ default: axe }) => {
+    (async () => {
+        const [{ default: axe }, { default: React }] = await Promise.all([import('@axe-core/react'), import('react')]);
         axe(React, ReactDOM, 1000);
-    });
+    })();
 }
 
 const container = document.getElementById('app');
 const root = createRoot(container!);
 
 root.render(
-    <React.StrictMode>
+    <StrictMode>
         <App />
-    </React.StrictMode>
+    </StrictMode>
 );

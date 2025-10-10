@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { ExternalLinkIcon, FileTextIcon } from '@navikt/aksel-icons';
@@ -75,10 +73,13 @@ const StyledBrevmottakereAlert = styled(BrevmottakereAlert)<BrevmottakereAlertBe
     margin: 1rem 0 3rem 2rem;
 `;
 
-const TilbakekrevingSkjema: React.FC<{
+const TilbakekrevingSkjema = ({
+    søkerMålform,
+    harÅpenTilbakekrevingRessurs,
+}: {
     søkerMålform: Målform;
     harÅpenTilbakekrevingRessurs: Ressurs<boolean>;
-}> = ({ søkerMålform, harÅpenTilbakekrevingRessurs }) => {
+}) => {
     const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
     const { tilbakekrevingSkjema, hentFeilTilOppsummering, maksLengdeTekst } = useSimuleringContext();
     const { fritekstVarsel, begrunnelse, tilbakekrevingsvalg } = tilbakekrevingSkjema.felter;

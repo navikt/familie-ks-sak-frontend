@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
 import { byggTomRessurs, type Ressurs } from '@navikt/familie-typer';
@@ -10,7 +9,7 @@ export function useHentEndretUtbetalingBegrunnelser() {
     const { request } = useHttp();
 
     const [endretUtbetalingsbegrunnelser, settEndretUtbetalingsbegrunnelser] =
-        React.useState<Ressurs<EndringsårsakbegrunnelseTekster>>(byggTomRessurs());
+        useState<Ressurs<EndringsårsakbegrunnelseTekster>>(byggTomRessurs());
 
     useEffect(() => {
         request<void, EndringsårsakbegrunnelseTekster>({

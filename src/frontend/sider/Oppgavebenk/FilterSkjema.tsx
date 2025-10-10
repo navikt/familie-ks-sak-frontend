@@ -1,4 +1,4 @@
-import React, { type JSX } from 'react';
+import type { JSX } from 'react';
 
 import styled from 'styled-components';
 
@@ -17,7 +17,7 @@ const DatoVelgerContainer = styled.div`
     max-width: 12.5rem;
 `;
 
-const FilterSkjema: React.FunctionComponent = () => {
+const FilterSkjema = () => {
     const { innloggetSaksbehandler } = useAppContext();
     const { hentOppgaver, oppgaver, oppgaveFelter, settVerdiPåOppgaveFelt, tilbakestillOppgaveFelter, validerSkjema } =
         useOppgavebenkContext();

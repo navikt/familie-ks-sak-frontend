@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Label, TextField } from '@navikt/ds-react';
@@ -33,7 +31,7 @@ const StyledTextField = styled(TextField)`
     }
 `;
 
-const FeilutbetaltValutaSkjema: React.FunctionComponent<IFeilutbetaltValutaSkjemaProps> = ({ skjema }) => (
+const FeilutbetaltValutaSkjema = ({ skjema }: IFeilutbetaltValutaSkjemaProps) => (
     <>
         <FlexDatoInputWrapper>
             <Label size="small">Angi periode med feilutbetalt valuta</Label>

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Heading } from '@navikt/ds-react';
@@ -19,7 +17,7 @@ const Container = styled.div`
 
 const BARNEHAGELISTE_URL = '/familie-ks-sak/api/barnehagebarn/barnehagebarnliste';
 
-const BarnehagelisterInnhold: React.FunctionComponent = () => {
+const BarnehagelisterInnhold = () => {
     const barnehagelisterContext = useBarnehagelister<Barnehagebarn>(BARNEHAGELISTE_URL);
 
     return (

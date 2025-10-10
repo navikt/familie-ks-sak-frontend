@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import styled from 'styled-components';
 
@@ -19,7 +19,7 @@ const StyledTextField = styled(TextField)`
 
 type BarnehageplassProps = IVilkårSkjemaBaseProps;
 
-export const Barnehageplass: React.FC<BarnehageplassProps> = ({
+export const Barnehageplass = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,

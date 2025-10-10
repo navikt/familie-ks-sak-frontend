@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { Fieldset } from '@navikt/ds-react';
@@ -34,7 +32,7 @@ interface IProps {
     behandlingsÅrsakErOvergangsordning: boolean;
 }
 
-const EøsPeriodeSkjema: React.FC<IProps> = ({
+const EøsPeriodeSkjema = ({
     periode,
     periodeFeilmeldingId,
     initielFom,
@@ -42,7 +40,7 @@ const EøsPeriodeSkjema: React.FC<IProps> = ({
     lesevisning,
     className,
     behandlingsÅrsakErOvergangsordning,
-}) => {
+}: IProps) => {
     const finnÅrTilbakeTil = (): number => {
         return new Date().getFullYear() - new Date(initielFom.verdi).getFullYear();
     };

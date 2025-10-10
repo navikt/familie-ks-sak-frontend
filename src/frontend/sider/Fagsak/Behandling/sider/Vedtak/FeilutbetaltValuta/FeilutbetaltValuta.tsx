@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -39,14 +39,14 @@ const KopierTilNøsKnapp = styled(CopyButton)`
     }
 `;
 
-const FeilutbetaltValuta: React.FC<IFeilutbetaltValuta> = ({
+const FeilutbetaltValuta = ({
     feilutbetaltValutaListe,
     settErUlagretNyFeilutbetaltValutaPeriode,
     erLesevisning,
     skjulFeilutbetaltValuta,
     behandlingId,
     fagsakId,
-}) => {
+}: IFeilutbetaltValuta) => {
     const [ønskerÅLeggeTilNyPeriode, settØnskerÅLeggeTilNyPeriode] = useState(feilutbetaltValutaListe.length === 0);
 
     const oppdaterØnskerÅLeggeTilNyPeriode = (ønskerÅLeggeTilNyPeriode: boolean) => {

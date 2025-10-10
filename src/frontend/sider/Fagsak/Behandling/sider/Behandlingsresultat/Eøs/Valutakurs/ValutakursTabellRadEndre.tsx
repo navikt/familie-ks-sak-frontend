@@ -1,12 +1,12 @@
-import * as React from 'react';
+import type { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, Link, Heading, Button, Fieldset, TextField } from '@navikt/ds-react';
+import { Alert, Button, Fieldset, Heading, Link, TextField } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
-import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
+import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Currency } from '@navikt/land-verktoy';
 
@@ -64,7 +64,7 @@ interface IProps {
     behandlingsÅrsakErOvergangsordning: boolean;
 }
 
-const ValutakursTabellRadEndre: React.FC<IProps> = ({
+const ValutakursTabellRadEndre = ({
     skjema,
     tilgjengeligeBarn,
     status,
@@ -75,11 +75,11 @@ const ValutakursTabellRadEndre: React.FC<IProps> = ({
     sletterValutakurs,
     erManuellInputAvKurs,
     behandlingsÅrsakErOvergangsordning,
-}) => {
+}: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning(true);
 
-    const visKursGruppeFeilmelding = (): React.ReactNode => {
+    const visKursGruppeFeilmelding = (): ReactNode => {
         if (skjema.felter.valutakode?.valideringsstatus === Valideringsstatus.FEIL) {
             return skjema.felter.valutakode.feilmelding;
         } else if (skjema.felter.valutakursdato?.valideringsstatus === Valideringsstatus.FEIL) {

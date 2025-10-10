@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { isBefore } from 'date-fns';
 
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';
@@ -44,7 +42,7 @@ const hentSpørsmålForLovverk = (lovverk: Lovverk | undefined, periode: IIsoDat
 
 type BarnetsAlderProps = IVilkårSkjemaBaseProps;
 
-export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
+export const BarnetsAlder = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,

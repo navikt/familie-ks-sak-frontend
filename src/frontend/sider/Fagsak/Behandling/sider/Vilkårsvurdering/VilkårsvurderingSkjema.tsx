@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Collapse } from 'react-collapse';
 import styled from 'styled-components';
@@ -32,7 +32,7 @@ const IndentertInnhold = styled.div`
     padding-left: ${ASpacing14};
 `;
 
-const VilkårsvurderingSkjema: React.FunctionComponent = () => {
+const VilkårsvurderingSkjema = () => {
     const { vilkårsvurdering } = useVilkårsvurderingContext();
     const { vurderErLesevisning, behandlingPåVent } = useBehandlingContext();
 

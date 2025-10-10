@@ -1,24 +1,24 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { isAfter } from 'date-fns';
 
-import { useHttp, type FamilieRequestConfig } from '@navikt/familie-http';
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
+import { type FamilieRequestConfig, useHttp } from '@navikt/familie-http';
 import type { Avhengigheter, FeiloppsummeringFeil, ISkjema } from '@navikt/familie-skjema';
-import { RessursStatus } from '@navikt/familie-typer';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../../typer/behandling';
 import {
-    Tilbakekrevingsvalg,
     type ISimuleringDTO,
     type ISimuleringPeriode,
     type ITilbakekreving,
+    Tilbakekrevingsvalg,
 } from '../../../../../typer/simulering';
 import { isoStringTilDateMedFallback, tidenesMorgen } from '../../../../../utils/dato';
 
-interface IProps extends React.PropsWithChildren {
+interface IProps extends PropsWithChildren {
     åpenBehandling: IBehandling;
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Alert, BodyShort, Button, HGrid } from '@navikt/ds-react';
 import type { ISaksbehandler } from '@navikt/familie-typer';
@@ -14,10 +14,7 @@ interface IOppgavelisteSaksbehandler {
     innloggetSaksbehandler?: ISaksbehandler;
 }
 
-const OppgavelisteSaksbehandler: React.FunctionComponent<IOppgavelisteSaksbehandler> = ({
-    oppgave,
-    innloggetSaksbehandler,
-}) => {
+const OppgavelisteSaksbehandler = ({ oppgave, innloggetSaksbehandler }: IOppgavelisteSaksbehandler) => {
     const { fordelOppgave, tilbakestillFordelingPåOppgave } = useOppgavebenkContext();
     const { sjekkTilgang } = useAppContext();
     const oppgaveRef = useRef<IOppgave | null>(null);

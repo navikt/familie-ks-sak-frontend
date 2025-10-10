@@ -1,5 +1,5 @@
-import * as React from 'react';
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
+import { Component } from 'react';
 
 import * as Sentry from '@sentry/browser';
 
@@ -9,7 +9,7 @@ interface IProps extends PropsWithChildren {
     autentisertSaksbehandler?: ISaksbehandler;
 }
 
-class ErrorBoundary extends React.Component<IProps> {
+class ErrorBoundary extends Component<IProps> {
     public constructor(props: IProps) {
         super(props);
     }
@@ -50,7 +50,7 @@ class ErrorBoundary extends React.Component<IProps> {
         }
     }
 
-    render(): React.ReactNode {
+    render(): ReactNode {
         return this.props.children;
     }
 }

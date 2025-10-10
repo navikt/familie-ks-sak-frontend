@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { BodyShort, Heading } from '@navikt/ds-react';
@@ -94,7 +92,7 @@ const StyledHr = styled.hr`
     border-bottom: 1px solid ${ABorderSubtle};
 `;
 
-const Behandlingskort: React.FC<IBehandlingskortProps> = ({ åpenBehandling }) => {
+const Behandlingskort = ({ åpenBehandling }: IBehandlingskortProps) => {
     const { fagsak } = useFagsakContext();
     const behandlinger = fagsak.behandlinger ?? [];
 

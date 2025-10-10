@@ -1,8 +1,8 @@
 import { isAfter } from 'date-fns';
 
 import type { SortState } from '@navikt/ds-react';
-import { JournalpostDatotype } from '@navikt/familie-typer';
 import type { IJournalpostRelevantDato } from '@navikt/familie-typer';
+import { JournalpostDatotype } from '@navikt/familie-typer';
 
 import type { ITilgangsstyrtJournalpost } from '../../../typer/journalpost';
 import { isoStringTilDate } from '../../../utils/dato';

@@ -1,12 +1,11 @@
-import type { Felt } from '@navikt/familie-skjema';
-import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import type { Avhengigheter, Felt, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 
 import type { KompetanseResultat } from '../../../../../../../typer/eøsPerioder';
 import {
     AnnenForelderAktivitet,
-    SøkersAktivitet,
     type KompetanseAktivitet,
+    SøkersAktivitet,
 } from '../../../../../../../typer/eøsPerioder';
 import { isEmpty } from '../../../../../../../utils/eøsValidators';
 

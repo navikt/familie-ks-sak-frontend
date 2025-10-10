@@ -1,10 +1,9 @@
-import React from 'react';
-
 import { TeddyBearIcon } from '@navikt/aksel-icons';
 import { Tabs } from '@navikt/ds-react';
 
 import BarnehagelisterInnhold from './BarnehagelisterInnhold';
-const Barnehagelister: React.FunctionComponent = () => {
+
+const Barnehagelister = () => {
     return (
         <Tabs defaultValue="barnehageliste-ks-sak">
             <Tabs.List>

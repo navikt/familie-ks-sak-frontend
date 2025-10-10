@@ -1,5 +1,3 @@
-import React from 'react';
-
 import classNames from 'classnames';
 import styled from 'styled-components';
 
@@ -11,6 +9,7 @@ import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { VedtakBegrunnelserProvider } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
+
 interface IProps {
     lagretVilkår: IVilkårResultat;
     erEksplisittAvslagPåSøknad: Felt<boolean>;
@@ -29,12 +28,7 @@ const StyledFieldset = styled(Fieldset)`
     }
 `;
 
-const AvslagSkjema: React.FC<IProps> = ({
-    erEksplisittAvslagPåSøknad,
-    lagretVilkår,
-    avslagBegrunnelser,
-    visFeilmeldinger,
-}) => {
+const AvslagSkjema = ({ erEksplisittAvslagPåSøknad, lagretVilkår, avslagBegrunnelser, visFeilmeldinger }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
 

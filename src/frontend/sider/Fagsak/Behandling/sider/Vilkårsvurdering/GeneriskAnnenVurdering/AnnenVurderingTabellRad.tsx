@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import deepEqual from 'deep-equal';
 import styled from 'styled-components';
@@ -11,7 +11,7 @@ import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
 import ManuellVurdering from '../../../../../../ikoner/ManuellVurdering';
 import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import type { IAnnenVurderingConfig, IAnnenVurdering } from '../../../../../../typer/vilkår';
+import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../../../typer/vilkår';
 import { Resultat, uiResultat } from '../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
@@ -27,7 +27,7 @@ const BeskrivelseCelle = styled(BodyShort)`
     text-overflow: ellipsis;
 `;
 
-const AnnenVurderingTabellRad: React.FC<IProps> = ({ person, annenVurderingConfig, annenVurdering }) => {
+const AnnenVurderingTabellRad = ({ person, annenVurderingConfig, annenVurdering }: IProps) => {
     const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 

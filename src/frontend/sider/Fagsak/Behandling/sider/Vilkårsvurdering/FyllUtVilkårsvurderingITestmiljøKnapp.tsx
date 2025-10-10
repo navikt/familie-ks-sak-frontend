@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Button } from '@navikt/ds-react';
@@ -17,7 +15,7 @@ interface IProps {
     behandlingId: number;
 }
 
-export const FyllUtVilkårsvurderingITestmiljøKnapp: React.FunctionComponent<IProps> = ({ behandlingId }) => {
+export const FyllUtVilkårsvurderingITestmiljøKnapp = ({ behandlingId }: IProps) => {
     const { request } = useHttp();
 
     const fyllUtSatsendring = () => {

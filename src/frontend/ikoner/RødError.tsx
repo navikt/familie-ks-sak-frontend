@@ -1,12 +1,10 @@
-import * as React from 'react';
-
 interface IRødError {
     className?: string;
     height?: number;
     width?: number;
 }
 
-const RødError: React.FunctionComponent<IRødError> = ({ className, height, width }) => {
+const RødError = ({ className, height, width }: IRødError) => {
     return (
         <svg
             aria-labelledby={'Rød Error'}

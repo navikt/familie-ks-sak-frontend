@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { differenceInMilliseconds } from 'date-fns';
 import styled from 'styled-components';
 
@@ -38,7 +36,7 @@ const IngenBarnRegistrertInfo = styled(Alert)`
     margin-bottom: 1.25rem;
 `;
 
-const Barna: React.FunctionComponent = () => {
+const Barna = () => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
     const { bruker } = useFagsakContext();

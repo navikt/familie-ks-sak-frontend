@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react';
-import React from 'react';
 
 import styled from 'styled-components';
 
@@ -33,14 +32,14 @@ const DivMedHøyremargin = styled.div`
     align-items: center;
 `;
 
-const TidslinjeNavigering: React.FC<IProps> = ({
+const TidslinjeNavigering = ({
     naviger,
     kanNavigereTilHøyre = true,
     kanNavigereTilVenstre = true,
     navigerTilVenstreTittel,
     navigerTilHyøyreTittel,
     children,
-}) => {
+}: IProps) => {
     return (
         <StyledTidslinjenavigering className={'tidslinje-header__navigering'}>
             <Button

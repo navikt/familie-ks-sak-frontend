@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import classNames from 'classnames';
 
@@ -11,8 +11,8 @@ import Totrinnskontroll from './Totrinnskontroll/Totrinnskontroll';
 import type { Hendelse } from './typer';
 import { TabValg } from './typer';
 import { useAppContext } from '../../context/AppContext';
-import { BehandlerRolle, BehandlingStatus } from '../../typer/behandling';
 import type { IBehandling } from '../../typer/behandling';
+import { BehandlerRolle, BehandlingStatus } from '../../typer/behandling';
 import type { IPersonInfo } from '../../typer/person';
 
 interface IHendelsesoversiktProps {
@@ -29,7 +29,7 @@ const Hendelsesoversikt = ({ hendelser, className, åpenBehandling, bruker }: IH
         BehandlerRolle.BESLUTTER === hentSaksbehandlerRolle() &&
         åpenBehandling?.status === BehandlingStatus.FATTER_VEDTAK;
 
-    const [aktivTab, settAktivTab] = React.useState<TabValg>(
+    const [aktivTab, settAktivTab] = useState<TabValg>(
         skalViseTotrinnskontroll ? TabValg.Totrinnskontroll : TabValg.Historikk
     );
 

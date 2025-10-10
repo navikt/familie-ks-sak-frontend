@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Link as ReactRouterLink } from 'react-router';
 
 import { Alert, Box, Link, Table } from '@navikt/ds-react';

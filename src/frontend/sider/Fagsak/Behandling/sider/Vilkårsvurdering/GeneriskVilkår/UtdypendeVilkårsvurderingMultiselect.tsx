@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import React from 'react';
 
 import styled from 'styled-components';
 
@@ -8,6 +7,7 @@ import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
 
 import type { OptionType } from '../../../../../../typer/common';
+import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import {
     UtdypendeVilkårsvurderingDeltBosted,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
@@ -15,7 +15,6 @@ import {
     UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
     UtdypendeVilkårsvurderingGenerell,
 } from '../../../../../../typer/vilkår';
-import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 
 interface Props {
     utdypendeVilkårsvurderinger: Felt<UtdypendeVilkårsvurdering[]>;
@@ -61,13 +60,13 @@ const mapUtdypendeVilkårsvurderingTilOption = (utdypendeVilkårsvurdering: Utdy
     label: utdypendeVilkårsvurderingTekst[utdypendeVilkårsvurdering],
 });
 
-export const UtdypendeVilkårsvurderingMultiselect: React.FC<Props> = ({
+export const UtdypendeVilkårsvurderingMultiselect = ({
     utdypendeVilkårsvurderinger,
     muligeUtdypendeVilkårsvurderinger,
     erLesevisning,
     feilhåndtering,
     children,
-}) => {
+}: Props) => {
     const håndterEndring = (action: ActionMeta<OptionType>) => {
         switch (action.action) {
             case 'select-option':

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Button, Fieldset, Modal } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -17,7 +15,7 @@ interface IProps {
     lukkModal: () => void;
 }
 
-export const OppdaterEndringstidspunktModal: React.FC<IProps> = ({ åpenBehandling, lukkModal }) => {
+export const OppdaterEndringstidspunktModal = ({ åpenBehandling, lukkModal }: IProps) => {
     const { settÅpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const { skjema, kanSendeSkjema, onSubmit } = useOppdaterEndringstidspunktSkjema(åpenBehandling.endringstidspunkt);
 

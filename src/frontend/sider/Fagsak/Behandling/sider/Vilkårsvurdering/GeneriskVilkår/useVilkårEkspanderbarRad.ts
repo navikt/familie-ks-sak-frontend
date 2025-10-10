@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Resultat, type IVilkårResultat } from '../../../../../../typer/vilkår';
+import { type IVilkårResultat, Resultat } from '../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps {

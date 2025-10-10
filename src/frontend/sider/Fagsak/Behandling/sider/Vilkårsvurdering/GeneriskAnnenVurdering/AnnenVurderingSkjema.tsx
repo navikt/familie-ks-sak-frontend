@@ -1,4 +1,4 @@
-import React from 'react';
+import type { FocusEvent } from 'react';
 
 import styled from 'styled-components';
 
@@ -25,7 +25,7 @@ interface IProps {
     toggleForm: (visSkjema: boolean) => void;
 }
 
-export const AnnenVurderingSkjema: React.FC<IProps> = ({
+export const AnnenVurderingSkjema = ({
     annenVurdering,
     erLesevisning,
     annenVurderingConfig,
@@ -75,7 +75,7 @@ export const AnnenVurderingSkjema: React.FC<IProps> = ({
                 placeholder={'Begrunn hvorfor det er gjort endringer på annen vurdering'}
                 value={skjema.felter.begrunnelse.verdi}
                 error={skjema.visFeilmeldinger ? skjema.felter.begrunnelse.feilmelding : ''}
-                onChange={(event: React.FocusEvent<HTMLTextAreaElement>) => {
+                onChange={(event: FocusEvent<HTMLTextAreaElement>) => {
                     skjema.felter.begrunnelse.validerOgSettFelt(event.target.value);
                 }}
             />

@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 
-import { BodyShort, Button, Detail, Heading, HStack, RadioGroup, Radio, Textarea, Fieldset } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { BodyShort, Button, Detail, Fieldset, Heading, HStack, Radio, RadioGroup, Textarea } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../context/AppContext';
 import ØyeGrå from '../../../ikoner/ØyeGrå';
@@ -27,14 +27,12 @@ const StyledButton = styled(Button)`
     width: fit-content;
 `;
 
-const Totrinnskontrollskjema: React.FunctionComponent<IProps> = ({ innsendtVedtak, sendInnVedtak, åpenBehandling }) => {
+const Totrinnskontrollskjema = ({ innsendtVedtak, sendInnVedtak, åpenBehandling }: IProps) => {
     const { trinnPåBehandling } = useBehandlingContext();
     const { innloggetSaksbehandler } = useAppContext();
 
-    const [beslutning, settBeslutning] = React.useState<TotrinnskontrollBeslutning>(
-        TotrinnskontrollBeslutning.IKKE_VURDERT
-    );
-    const [begrunnelse, settBegrunnelse] = React.useState<string>('');
+    const [beslutning, settBeslutning] = useState<TotrinnskontrollBeslutning>(TotrinnskontrollBeslutning.IKKE_VURDERT);
+    const [begrunnelse, settBegrunnelse] = useState<string>('');
 
     const senderInn = innsendtVedtak.status === RessursStatus.HENTER;
 
@@ -159,10 +157,7 @@ const Trinn = styled.div`
     }
 `;
 
-const TrinnStatus: React.FC<{
-    kontrollertStatus: KontrollertStatus;
-    navn: string;
-}> = ({ kontrollertStatus, navn }) => {
+const TrinnStatus = ({ kontrollertStatus, navn }: { kontrollertStatus: KontrollertStatus; navn: string }) => {
     return (
         <Trinn>
             {kontrollertStatus === KontrollertStatus.IKKE_KONTROLLERT && <ØyeGrå height={24} width={24} />}

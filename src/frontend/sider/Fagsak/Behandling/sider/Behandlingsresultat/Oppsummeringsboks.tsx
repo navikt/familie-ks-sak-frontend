@@ -1,5 +1,4 @@
-import type { PropsWithChildren } from 'react';
-import * as React from 'react';
+import { type PropsWithChildren, useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -85,16 +84,16 @@ const erAllePerioderUtfyltForBarn = (eøsPeriodeStatus: IEøsPeriodeStatus[]) =>
     return eøsPeriodeStatus.every(eøsPeriode => eøsPeriode.status === EøsPeriodeStatus.OK);
 };
 
-const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
+const Oppsummeringsboks = ({
     åpenBehandling,
     aktivEtikett,
     kompetanser,
     utbetaltAnnetLandBeløp,
     valutakurser,
-}) => {
+}: IProps) => {
     const { settAktivEtikett } = useTidslinjeContext();
 
-    const [utbetalingsBeløpStatusMap, setUtbetalingsBeløpStatusMap] = React.useState(new Map<string, boolean>());
+    const [utbetalingsBeløpStatusMap, setUtbetalingsBeløpStatusMap] = useState(new Map<string, boolean>());
 
     const månedNavnOgÅr = () => {
         const navn = dateTilFormatertString({
@@ -120,7 +119,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
 
     const utbetalingsperiode = finnUtbetalingsperiodeForAktivEtikett(åpenBehandling.utbetalingsperioder);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setUtbetalingsBeløpStatusMap(
             finnUtbetalingsBeløpStatusMap(utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser)
         );
@@ -132,7 +131,7 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
             upd => upd.ytelseType === YtelseType.OVERGANGSORDNING || upd.ytelseType === YtelseType.PRAKSISENDRING_2024
         );
 
-    const UtbetalingsbeløpRad: React.FC<PropsWithChildren> = ({ children }) => {
+    const UtbetalingsbeløpRad = ({ children }: PropsWithChildren) => {
         const columns = skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem';
 
         return (

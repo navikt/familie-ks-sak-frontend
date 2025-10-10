@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { Heading, Table } from '@navikt/ds-react';
@@ -16,7 +14,7 @@ const OvergangsordningPerioder = styled.div`
     margin-top: 6rem;
 `;
 
-const OvergangsordningAndelTabell: React.FunctionComponent<IOvergangsordningTabellProps> = ({ åpenBehandling }) => {
+const OvergangsordningAndelTabell = ({ åpenBehandling }: IOvergangsordningTabellProps) => {
     const overgangsordningAndeler = åpenBehandling.overgangsordningAndeler;
 
     return (

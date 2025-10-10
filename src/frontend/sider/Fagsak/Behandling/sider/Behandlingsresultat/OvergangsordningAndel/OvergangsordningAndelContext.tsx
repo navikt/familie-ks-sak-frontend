@@ -1,9 +1,9 @@
-import React, { createContext, useState } from 'react';
+import { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext, useState } from 'react';
 
 import deepEqual from 'deep-equal';
 
 import { useHttp } from '@navikt/familie-http';
-import { feil, ok, useFelt, useSkjema, type ISkjema } from '@navikt/familie-skjema';
+import { feil, type ISkjema, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type { IBehandling } from '../../../../../../typer/behandling';
@@ -14,7 +14,7 @@ import type {
 import { dateTilIsoMånedÅrString, validerGyldigDato } from '../../../../../../utils/dato';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
     overgangsordningAndel: IRestOvergangsordningAndel;
 }
 
@@ -22,7 +22,7 @@ interface OvergangsordningAndelContextValue {
     overgangsordningAndel: IRestOvergangsordningAndel;
     skjema: ISkjema<IOvergangsordningAndelSkjema, IBehandling>;
     erOvergangsordningAndelÅpen: boolean;
-    settErOvergangsordningAndelÅpen: React.Dispatch<React.SetStateAction<boolean>>;
+    settErOvergangsordningAndelÅpen: Dispatch<SetStateAction<boolean>>;
     erOvergangsordningAndelForandret: () => boolean;
     slettOvergangsordningAndel: () => void;
     oppdaterOvergangsordningAndel: () => void;
@@ -135,7 +135,7 @@ export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children 
 };
 
 export const useOvergangsordningAndelContext = () => {
-    const context = React.useContext(OvergangsordningAndelContext);
+    const context = useContext(OvergangsordningAndelContext);
 
     if (context === undefined) {
         throw new Error('useOvergangsordningAndelContext må brukes innenfor en OvergangsordningAndelProvider');

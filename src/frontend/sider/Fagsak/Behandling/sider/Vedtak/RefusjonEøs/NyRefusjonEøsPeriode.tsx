@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Table, Button, Alert } from '@navikt/ds-react';
+import { Alert, Button, Table } from '@navikt/ds-react';
 
 import RefusjonEøsSkjema from './RefusjonEøsSkjema';
 import { useRefusjonEøs } from './useRefusjonEøs';
@@ -23,7 +23,7 @@ const FlexRowDiv = styled.div`
     display: flex;
 `;
 
-const NyRefusjonEøsPeriode: React.FC<INyRefusjonEøsPeriodeProps> = ({ lukkNyPeriode, behandlingId }) => {
+const NyRefusjonEøsPeriode = ({ lukkNyPeriode, behandlingId }: INyRefusjonEøsPeriodeProps) => {
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const { skjema, lagreNyPeriode, valideringErOk } = useRefusjonEøs({

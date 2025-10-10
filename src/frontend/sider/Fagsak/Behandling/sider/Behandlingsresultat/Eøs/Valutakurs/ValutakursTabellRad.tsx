@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect } from 'react';
 
 import { Table } from '@navikt/ds-react';
 
@@ -17,7 +17,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const ValutakursTabellRad: React.FC<IProps> = ({ valutakurs, åpenBehandling, visFeilmeldinger }) => {
+const ValutakursTabellRad = ({ valutakurs, åpenBehandling, visFeilmeldinger }: IProps) => {
     const barn: OptionType[] = valutakurs.barnIdenter.map(barn => ({
         value: barn,
         label: lagPersonLabel(barn, åpenBehandling.personer),
@@ -40,7 +40,7 @@ const ValutakursTabellRad: React.FC<IProps> = ({ valutakurs, åpenBehandling, vi
         barnIValutakurs: barn,
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (visFeilmeldinger && erValutakursEkspandert) {
             kanSendeSkjema();
         }

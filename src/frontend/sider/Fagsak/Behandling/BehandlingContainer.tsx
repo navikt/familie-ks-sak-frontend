@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
@@ -45,7 +43,7 @@ interface Props {
     minimalFagsak: IMinimalFagsak;
 }
 
-const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFagsak }) => {
+const BehandlingContainer = ({ bruker, minimalFagsak }: Props) => {
     const { åpenBehandling } = useBehandlingContext();
 
     switch (åpenBehandling.status) {
