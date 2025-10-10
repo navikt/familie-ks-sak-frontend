@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
 import { ASurfaceDefault } from '@navikt/ds-tokens/dist/tokens';
-import { hentDataFraRessursMedFallback, RessursStatus } from '@navikt/familie-typer';
+import { hentDataFraRessursMedFallback } from '@navikt/familie-typer';
 
 import Behandlingskort from './Behandlingskort';
 import Hendelsesoversikt from '../../../../komponenter/Hendelsesoversikt/Hendelsesoversikt';
@@ -42,15 +42,13 @@ const HøyremenyContainer = styled.div`
 `;
 
 const Høyremeny = ({ bruker }: Props) => {
-    const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } = useBehandlingContext();
+    const { behandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } = useBehandlingContext();
 
     useEffect(() => {
-        if (åpenBehandling && åpenBehandling.status === RessursStatus.SUKSESS) {
-            hentLogg();
-        }
-    }, [åpenBehandling]);
+        hentLogg();
+    }, [behandling]);
 
-    return åpenBehandling.status === RessursStatus.SUKSESS ? (
+    return (
         <>
             <HøyremenyContainer className={åpenHøyremeny ? 'høyremeny--åpen' : ''}>
                 <ToggleVisningHøyremeny
@@ -74,7 +72,7 @@ const Høyremeny = ({ bruker }: Props) => {
                 />
                 {åpenHøyremeny && (
                     <>
-                        <Behandlingskort åpenBehandling={åpenBehandling.data} />
+                        <Behandlingskort åpenBehandling={behandling} />
                         <Hendelsesoversikt
                             hendelser={hentDataFraRessursMedFallback(logg, []).map((loggElement: ILogg): Hendelse => {
                                 return {
@@ -89,14 +87,14 @@ const Høyremeny = ({ bruker }: Props) => {
                                     beskrivelse: loggElement.tekst,
                                 };
                             })}
-                            åpenBehandling={åpenBehandling.data}
+                            åpenBehandling={behandling}
                             bruker={bruker}
                         />
                     </>
                 )}
             </HøyremenyContainer>
         </>
-    ) : null;
+    );
 };
 
 export default Høyremeny;
