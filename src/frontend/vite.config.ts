@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => {
             sourcemap: true,
             emptyOutDir: true,
         },
+        envDir: '../../',
         define: {
             global: 'window',
         },
