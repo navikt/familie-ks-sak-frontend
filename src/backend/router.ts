@@ -9,11 +9,12 @@ import { ensureAuthenticated, logRequest, envVar } from '@navikt/familie-backend
 import { LOG_LEVEL } from '@navikt/familie-logging';
 
 import { frontendPath } from './config.js';
+import { erLokal, erPreprod } from './env.js';
 import { prometheusTellere } from './metrikker.js';
 
 const redirectHvisInternUrlIPreprod = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        if (process.env.ENV === 'preprod' && req.headers.host === 'kontantstotte.intern.dev.nav.no') {
+        if (erPreprod() && req.headers.host === 'kontantstotte.intern.dev.nav.no') {
             res.redirect(`https://kontantstotte.ansatt.dev.nav.no${req.url}`);
         } else {
             next();
@@ -40,7 +41,7 @@ export default async (authClient: Client, router: Router) => {
     });
 
     let vite: ViteDevServer;
-    if (process.env.NODE_ENV === 'development') {
+    if (erLokal()) {
         vite = await createServer({
             root: path.join(process.cwd(), frontendPath),
             server: { middlewareMode: true },
@@ -60,7 +61,7 @@ export default async (authClient: Client, router: Router) => {
             const htmlPath = path.join(process.cwd(), frontendPath, 'index.html');
             let htmlInnhold = fs.readFileSync(htmlPath, 'utf-8');
 
-            if (process.env.NODE_ENV === 'development') {
+            if (erLokal()) {
                 htmlInnhold = await vite.transformIndexHtml(req.url, htmlInnhold);
             }
 
