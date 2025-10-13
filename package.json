@@ -8,7 +8,11 @@
   "license": "MIT",
   "scripts": {
     "start": "yarn start:backend:prod",
-    "start:dev": "yarn build:backend && yarn start:backend:dev && vite dev src/frontend",
+    "start:dev": "yarn start:lokalt-mot-preprod",
+    "start-env": "yarn miljøvariabler && yarn build:backend && ENV=\"$ENV\" yarn start:backend:dev && vite dev src/frontend --mode \"$ENV\"",
+    "start:lokal": "ENV=lokal yarn start-env",
+    "start:hybrid": "ENV=hybrid yarn start-env",
+    "start:lokalt-mot-preprod": "ENV=lokalt-mot-preprod yarn start-env",
     "start:prod": "yarn build:prod && yarn start:backend:prod && vite preview dist_frontend",
     "start:backend:dev": "NODE_ENV=development node dist_backend/server.js",
     "start:backend:prod": "NODE_ENV=production node dist_backend/server.js",
