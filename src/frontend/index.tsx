@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 
 import App from './App';
-import { erLokal, erProd } from './utils/miljø';
+import { erLokal } from './utils/miljø';
 
 // Setter default locale til norsk bokmål for date-fns
 setDefaultOptions({ locale: nb });
@@ -23,7 +23,7 @@ if (!erLokal()) {
     });
 }
 
-if (!erProd()) {
+if (erLokal()) {
     import('@axe-core/react').then(({ default: axe }) => {
         axe(React, ReactDOM, 1000);
     });
