@@ -9,6 +9,7 @@ import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } f
 import type { IBehandling } from '../../../../../typer/behandling';
 import type { IPersonInfo, IRestTilgang } from '../../../../../typer/person';
 import { adressebeskyttelsestyper } from '../../../../../typer/person';
+import { erLokal } from '../../../../../utils/miljø';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { identValidator } from '../../../../../utils/validators';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
@@ -32,7 +33,7 @@ const LeggTiLBarnPåBehandling: React.FC<IProps> = ({ behandling }) => {
         felter: {
             ident: useFelt<string>({
                 verdi: '',
-                valideringsfunksjon: process.env.NODE_ENV === 'development' ? felt => ok(felt) : identValidator,
+                valideringsfunksjon: erLokal() ? felt => ok(felt) : identValidator,
             }),
         },
         skjemanavn: 'Legg til barn',
