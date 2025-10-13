@@ -12,6 +12,7 @@
     "start:prod": "yarn build:prod && yarn start:backend:prod && vite preview dist_frontend",
     "start:backend:dev": "NODE_ENV=development node dist_backend/server.js",
     "start:backend:prod": "NODE_ENV=production node dist_backend/server.js",
+    "miljøvariabler": "./hent-og-lagre-miljøvariabler.sh",
     "build": "yarn build:prod",
     "build:dev": "NODE_ENV=development yarn build:backend && yarn build:frontend --mode development",
     "build:prod": "NODE_ENV=production yarn build:backend && yarn build:frontend --mode production",
