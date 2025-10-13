@@ -8,9 +8,9 @@ export const proxyUrl = envVar('PROXY_URL');
 export const sessionConfig: ISessionKonfigurasjon = {
     cookieSecret: [`${envVar('COOKIE_KEY1')}`, `${envVar('COOKIE_KEY2')}`],
     navn: 'familie-ks-sak-v1',
-    redisFullUrl: envVar('VALKEY_URI_SESSIONS', false),
-    redisBrukernavn: envVar('VALKEY_USERNAME_SESSIONS', false),
-    redisPassord: envVar('VALKEY_PASSWORD_SESSIONS', false),
+    redisFullUrl: !erLokal() ? envVar('REDIS_URI_SESSIONS') : undefined,
+    redisBrukernavn: !erLokal() ? envVar('REDIS_USERNAME_SESSIONS') : undefined,
+    redisPassord: !erLokal() ? envVar('REDIS_PASSWORD_SESSIONS') : undefined,
     secureCookie: !erLokal(),
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
