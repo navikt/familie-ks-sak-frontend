@@ -5,7 +5,7 @@ SECRET_FILNAVN=".secrets.env"
 MAKS_ALDER_SEKUNDER=3600 # En time
 
 # Avbryt hvis forrige henting skjedde innen en time
-avbryt_hvis_nylig_hentet() {
+function avbryt_hvis_nylig_hentet() {
   # Sjekk om fil eksisterer
   [[ -f "$SECRET_FILNAVN" ]] || return 0
 
@@ -30,6 +30,11 @@ avbryt_hvis_nylig_hentet
 
 kubectl config use-context dev-gcp
 
+if ! kubectl auth can-i get pods >/dev/null 2>&1; then
+  echo "Du er ikke autentisert mot Kubernetes. Skru på Naisdevice og kjør: 'nais login'."
+  exit 1
+fi
+
 function get_secrets() {
   local repo=$1
   kubectl -n teamfamilie get secret "${repo}" -o json | jq '.data | map_values(@base64d)'
@@ -41,7 +46,7 @@ AZURE_APP_CLIENT_ID=$(echo "$LOKAL_SECRETS" | jq -r '.AZURE_APP_CLIENT_ID')
 AZURE_APP_CLIENT_SECRET=$(echo "$LOKAL_SECRETS" | jq -r '.AZURE_APP_CLIENT_SECRET')
 
 if [[ -z "$AZURE_APP_CLIENT_ID" || -z "$AZURE_APP_CLIENT_SECRET" ]]; then
-  echo "Klarte ikke å hente miljøvariabler. Er du pålogget Naisdevice og Google Cloud?"
+  echo "Noe gikk galt. Klarte ikke å hente miljøvariabler."
   exit 1
 fi
 
