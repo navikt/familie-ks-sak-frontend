@@ -42,6 +42,6 @@ backend(sessionConfig, prometheusTellere).then(async ({ app, azureAuthClient, ro
     app.use('/', await setupRouter(azureAuthClient, router));
 
     app.listen(port, '0.0.0.0', () => {
-        logInfo(`Server startet på port ${port}. Build version: ${envVar('VERSION')}.`);
+        logInfo(`Server startet på port ${port}. Build version: ${envVar('APP_VERSION')}.`);
     });
 });
