@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { Heading, Textarea } from '@navikt/ds-react';
@@ -11,7 +9,7 @@ const AnnetWrapper = styled.div`
     margin: 2rem 0;
 `;
 
-const Annet: React.FunctionComponent = () => {
+const Annet = () => {
     const { vurderErLesevisning } = useBehandlingContext();
     const { skjema } = useSøknadContext();
     const lesevisning = vurderErLesevisning();

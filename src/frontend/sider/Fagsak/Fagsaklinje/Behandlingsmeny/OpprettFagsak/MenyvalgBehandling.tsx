@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingStatus, Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';

@@ -10,8 +10,7 @@ import type { IGrunnlagPerson } from '../../typer/person';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
 import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../typer/vilkår';
-import { type IIsoDatoPeriode } from '../dato';
-import { nyIsoDatoPeriode } from '../dato';
+import { type IIsoDatoPeriode, nyIsoDatoPeriode } from '../dato';
 import { erPeriodeGyldig, erResultatGyldig, identValidator } from '../validators';
 
 describe('utils/validators', () => {

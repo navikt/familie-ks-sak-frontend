@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Label, Radio, RadioGroup, TextField } from '@navikt/ds-react';
@@ -46,7 +44,7 @@ const StyledTextField = styled(TextField)`
     }
 `;
 
-const RefusjonEøsSkjema: React.FunctionComponent<IRefusjonEøsSkjemaProps> = ({ skjema }) => {
+const RefusjonEøsSkjema = ({ skjema }: IRefusjonEøsSkjemaProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 

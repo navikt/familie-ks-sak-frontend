@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, Heading, Table } from '@navikt/ds-react';
@@ -38,7 +36,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const KompetanseSkjema: React.FC<IProps> = ({ kompetanser, åpenBehandling, visFeilmeldinger }) => {
+const KompetanseSkjema = ({ kompetanser, åpenBehandling, visFeilmeldinger }: IProps) => {
     const harUfullstendigeKompetanser =
         åpenBehandling.kompetanser?.filter(kompetanse => kompetanse.status !== EøsPeriodeStatus.OK).length > 0;
 

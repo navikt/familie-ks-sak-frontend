@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { BodyShort, ErrorMessage, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 
@@ -9,14 +7,14 @@ import FritekstVedtakbegrunnelser from './FritekstVedtakbegrunnelser';
 import Utbetalingsresultat from './Utbetalingsresultat';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
 import { Standardbegrunnelse } from '../../../../../../typer/vedtak';
-import { Vedtaksperiodetype, type IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
+import { type IVedtaksperiodeMedBegrunnelser, Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 
 interface IProps {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
     sisteVedtaksperiodeFom?: string;
 }
 
-const Vedtaksperiode: React.FC<IProps> = ({ vedtaksperiodeMedBegrunnelser, sisteVedtaksperiodeFom }) => {
+const Vedtaksperiode = ({ vedtaksperiodeMedBegrunnelser, sisteVedtaksperiodeFom }: IProps) => {
     const { erPanelEkspandert, onPanelClose, genererteBrevbegrunnelser } = useVedtaksperiodeContext();
 
     const vedtaksperiodeInneholderFramtidigOpphørBegrunnelse =

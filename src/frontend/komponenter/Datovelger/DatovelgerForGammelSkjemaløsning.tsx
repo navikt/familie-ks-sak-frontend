@@ -1,13 +1,12 @@
-import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { isValid, parseISO } from 'date-fns';
 
 import { DatePicker, useDatepicker } from '@navikt/ds-react';
 
 import { senesteRelevanteDato, tidligsteRelevanteDato } from './utils';
-import { hentDagensDato, dateTilFormatertString, Datoformat } from '../../utils/dato';
 import type { IsoDatoString } from '../../utils/dato';
+import { dateTilFormatertString, Datoformat, hentDagensDato } from '../../utils/dato';
 
 interface IProps {
     value: string | undefined;
@@ -52,7 +51,7 @@ const DatovelgerForGammelSkjemaløsning = ({
         );
     }, [inputProps.value]);
 
-    const [forrigeValue, settForrigeValue] = React.useState<string | undefined>();
+    const [forrigeValue, settForrigeValue] = useState<string | undefined>();
 
     // Oppdaterer verdien til datovelgeren hvis value har endret seg uten at det er datovelgeren som har trigget endringen
     if (value != forrigeValue) {

@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import React from 'react';
+import type { FocusEvent, ReactNode } from 'react';
 
 import styled from 'styled-components';
 
@@ -198,7 +197,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 placeholder={'Begrunn hvorfor det er gjort endringer på vilkåret.'}
                 value={skjema.felter.begrunnelse.verdi}
                 error={skjema.visFeilmeldinger ? skjema.felter.begrunnelse.feilmelding : ''}
-                onChange={(event: React.FocusEvent<HTMLTextAreaElement>) => {
+                onChange={(event: FocusEvent<HTMLTextAreaElement>) => {
                     skjema.felter.begrunnelse.validerOgSettFelt(event.target.value);
                 }}
             />

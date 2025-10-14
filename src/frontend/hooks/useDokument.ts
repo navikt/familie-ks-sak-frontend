@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import type { AxiosError } from 'axios';
 
@@ -19,7 +19,7 @@ const useDokument = () => {
 
     const [visDokumentModal, settVisDokumentModal] = useState<boolean>(false);
 
-    const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs());
+    const [hentetDokument, settHentetDokument] = useState<Ressurs<string>>(byggTomRessurs());
 
     const nullstillDokument = () => {
         settHentetDokument(byggTomRessurs);

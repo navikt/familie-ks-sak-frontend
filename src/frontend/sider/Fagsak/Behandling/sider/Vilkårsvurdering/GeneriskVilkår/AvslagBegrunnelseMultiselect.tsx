@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { GroupBase } from 'react-select';
 import styled from 'styled-components';
 
@@ -14,8 +12,7 @@ import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
 import type { OptionType } from '../../../../../../typer/common';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import { BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
-import type { VilkårType } from '../../../../../../typer/vilkår';
-import type { Regelverk } from '../../../../../../typer/vilkår';
+import type { Regelverk, VilkårType } from '../../../../../../typer/vilkår';
 import { finnBegrunnelseType, hentBakgrunnsfarge, hentBorderfarge } from '../../../../../../utils/vedtakUtils';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { useVedtakBegrunnelser } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
@@ -30,7 +27,7 @@ const GroupLabel = styled.div`
     color: black;
 `;
 
-const AvslagBegrunnelseMultiselect: React.FC<IProps> = ({ vilkårType, begrunnelser, regelverk }) => {
+const AvslagBegrunnelseMultiselect = ({ vilkårType, begrunnelser, regelverk }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
 

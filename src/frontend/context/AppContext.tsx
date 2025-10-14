@@ -1,5 +1,12 @@
-import type { JSX, PropsWithChildren, ReactNode } from 'react';
-import React, { createContext, useEffect, useState } from 'react';
+import {
+    type Dispatch,
+    type JSX,
+    type PropsWithChildren,
+    type ReactNode,
+    type SetStateAction,
+    useContext,
+} from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 import type { AxiosRequestConfig } from 'axios';
 
@@ -47,8 +54,8 @@ interface AppContextValue {
     lukkModal: () => void;
     appInfoModal: IModal;
     settToast: (toastId: ToastTyper, toast: IToast) => void;
-    settToasts: React.Dispatch<
-        React.SetStateAction<{
+    settToasts: Dispatch<
+        SetStateAction<{
             [toastId: string]: IToast;
         }>
     >;
@@ -71,7 +78,7 @@ const AppProvider = (props: PropsWithChildren) => {
     const [toggles, settToggles] = useState<IToggles>(alleTogglerAv());
     const [appVersjon, settAppVersjon] = useState('');
 
-    const [appInfoModal, settAppInfoModal] = React.useState<IModal>(initalState);
+    const [appInfoModal, settAppInfoModal] = useState<IModal>(initalState);
     const [toasts, settToasts] = useState<{ [toastId: string]: IToast }>({});
     const [erTogglesHentet, settErTogglesHentet] = useState(false);
 
@@ -250,7 +257,7 @@ const AppProvider = (props: PropsWithChildren) => {
 };
 
 const useAppContext = () => {
-    const context = React.useContext(AppContext);
+    const context = useContext(AppContext);
     if (!context) {
         throw new Error('useAppContext må brukes innenfor AppProvider');
     }

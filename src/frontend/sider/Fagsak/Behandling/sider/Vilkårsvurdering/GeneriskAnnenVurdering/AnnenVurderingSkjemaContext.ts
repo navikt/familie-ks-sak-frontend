@@ -1,4 +1,4 @@
-import { useSkjema, useFelt } from '@navikt/familie-skjema';
+import { useFelt, useSkjema } from '@navikt/familie-skjema';
 
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type { IAnnenVurdering, IRestAnnenVurdering, Resultat } from '../../../../../../typer/vilkår';

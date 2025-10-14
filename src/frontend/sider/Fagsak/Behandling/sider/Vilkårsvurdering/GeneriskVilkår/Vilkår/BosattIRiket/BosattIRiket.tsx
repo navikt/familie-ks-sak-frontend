@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår, useBosattIRiket } from './BosattIRiketContext';
 import type { Regelverk } from '../../../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';
@@ -10,7 +8,7 @@ import { VilkårSkjema } from '../../VilkårSkjema';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
-export const BosattIRiket: React.FC<BosattIRiketProps> = ({
+export const BosattIRiket = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,

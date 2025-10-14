@@ -1,4 +1,5 @@
-import React, { createContext, type PropsWithChildren, useContext, useMemo, useState } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 import type { SkjemaBrevmottaker } from './Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 

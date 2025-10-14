@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router';
 import styled from 'styled-components';
 
@@ -34,7 +32,7 @@ const Main = styled.main<{ $systemetLaster: boolean }>`
     }};
 `;
 
-const Container: React.FC = () => {
+const Container = () => {
     const { autentisert, systemetLaster, innloggetSaksbehandler, appInfoModal, erTogglesHentet } = useAppContext();
 
     return (

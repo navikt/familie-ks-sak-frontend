@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import {
@@ -33,7 +31,7 @@ interface IRegisteropplysningerProps {
     fødselsdato: string;
 }
 
-const Registeropplysninger: React.FC<IRegisteropplysningerProps> = ({ opplysninger, fødselsdato }) => {
+const Registeropplysninger = ({ opplysninger, fødselsdato }: IRegisteropplysningerProps) => {
     const { toggles } = useAppContext();
     const manglerRegisteropplysninger = opplysninger.statsborgerskap.length === 0;
 

@@ -1,4 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import {
+    createContext,
+    type Dispatch,
+    type PropsWithChildren,
+    type SetStateAction,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 
 import { useHttp } from '@navikt/familie-http';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
@@ -19,7 +27,7 @@ import type {
 import { ToggleNavn } from '../../../../../../typer/toggles';
 import { erDefinert } from '../../../../../../utils/commons';
 
-interface ISammensattKontrollsakProps extends React.PropsWithChildren {
+interface ISammensattKontrollsakProps extends PropsWithChildren {
     åpenBehandling: IBehandling;
 }
 
@@ -29,7 +37,7 @@ interface SammensattKontrollsakContextValue {
     feilmelding: string | undefined;
     sammensattKontrollsak: SammensattKontrollsakDto | undefined;
     erSammensattKontrollsak: boolean;
-    settErSammensattKontrollsak: React.Dispatch<React.SetStateAction<boolean>>;
+    settErSammensattKontrollsak: Dispatch<SetStateAction<boolean>>;
     skalViseSammensattKontrollsakMenyvalg: boolean;
 }
 

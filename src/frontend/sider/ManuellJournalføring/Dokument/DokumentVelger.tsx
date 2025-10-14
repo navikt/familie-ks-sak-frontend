@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { ExpansionCard } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 import type { IDokumentInfo } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { DokumentInfoStripe } from './DokumentInfoStripe';
 import { EndreDokumentInfoPanel } from './EndreDokumentInfoPanel';
@@ -20,7 +20,7 @@ const StyledExpansionCard = styled(ExpansionCard)`
     width: 100%;
 `;
 
-export const DokumentVelger: React.FC<IDokumentVelgerProps> = ({ dokument, visFeilmeldinger }) => {
+export const DokumentVelger = ({ dokument, visFeilmeldinger }: IDokumentVelgerProps) => {
     const { dataForManuellJournalføring, valgtDokumentId, velgOgHentDokumentData } = useManuellJournalføringContext();
     const [åpen, settÅpen] = useState(false);
 

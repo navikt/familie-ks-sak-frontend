@@ -1,11 +1,9 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Tabs } from '@navikt/ds-react';
 
 import HendelseItem from './komponenter/HendelseItem';
-import { TabValg, type Hendelse } from './typer';
+import { type Hendelse, TabValg } from './typer';
 
 const StyledPanel = styled(Tabs.Panel)`
     overflow: auto;
@@ -22,7 +20,7 @@ interface IProps {
     hendelser: Hendelse[];
 }
 
-const Historikk: React.FC<IProps> = ({ hendelser }) => (
+const Historikk = ({ hendelser }: IProps) => (
     <StyledPanel value={TabValg.Historikk}>
         <Liste>
             {hendelser?.map((hendelse: Hendelse) => (

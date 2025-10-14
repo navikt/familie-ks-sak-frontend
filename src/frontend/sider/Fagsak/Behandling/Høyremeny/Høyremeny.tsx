@@ -1,4 +1,5 @@
-import * as React from 'react';
+import { useEffect } from 'react';
+import type { MouseEvent } from 'react';
 
 import styled from 'styled-components';
 
@@ -40,10 +41,10 @@ const HøyremenyContainer = styled.div`
     }
 `;
 
-const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
+const Høyremeny = ({ bruker }: Props) => {
     const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } = useBehandlingContext();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (åpenBehandling && åpenBehandling.status === RessursStatus.SUKSESS) {
             hentLogg();
         }
@@ -55,7 +56,7 @@ const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
                 <ToggleVisningHøyremeny
                     forwardedAs={Button}
                     variant="secondary"
-                    onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
+                    onMouseDown={(e: MouseEvent) => e.preventDefault()}
                     onClick={() => {
                         settÅpenHøyremeny(!åpenHøyremeny);
                     }}

@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, type PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-import { byggTomRessurs } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggTomRessurs } from '@navikt/familie-typer';
 
 import { useBegrunnelseApi } from '../../../../../../api/useBegrunnelseApi';
 import type { AlleBegrunnelser } from '../../../../../../typer/vilkår';
@@ -10,13 +11,13 @@ interface VedtakBegrunnelserContextValue {
     alleBegrunnelserRessurs: Ressurs<AlleBegrunnelser>;
 }
 
-const VedtakBegrunnelserContext = React.createContext<VedtakBegrunnelserContextValue | undefined>(undefined);
+const VedtakBegrunnelserContext = createContext<VedtakBegrunnelserContextValue | undefined>(undefined);
 
 export function VedtakBegrunnelserProvider({ children }: PropsWithChildren) {
     const { hentAlleBegrunnelser } = useBegrunnelseApi();
 
     const [alleBegrunnelserRessurs, settAlleBegrunnelserRessurs] =
-        React.useState<Ressurs<AlleBegrunnelser>>(byggTomRessurs());
+        useState<Ressurs<AlleBegrunnelser>>(byggTomRessurs());
 
     useEffect(() => {
         hentAlleBegrunnelser().then((data: Ressurs<AlleBegrunnelser>) => {

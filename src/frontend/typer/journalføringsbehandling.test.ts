@@ -2,8 +2,8 @@ import { BehandlingStatus, Behandlingstype, behandlingÅrsak, BehandlingÅrsak }
 import { BehandlingKategori } from './behandlingstema';
 import {
     finnVisningstekstForJournalføringsbehandlingsårsak,
-    opprettJournalføringsbehandlingFraKontantstøttebehandling,
     opprettJournalføringsbehandlingFraKlagebehandling,
+    opprettJournalføringsbehandlingFraKontantstøttebehandling,
 } from './journalføringsbehandling';
 import { Klagebehandlingstype, KlageStatus, KlageÅrsak } from './klage';
 import { KlageTestdata } from '../testdata/KlageTestdata';

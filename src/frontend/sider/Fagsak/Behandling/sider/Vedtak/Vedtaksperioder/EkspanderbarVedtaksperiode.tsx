@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react';
-import React from 'react';
 
 import { endOfMonth, isAfter, isSameDay } from 'date-fns';
 import styled from 'styled-components';
@@ -10,11 +9,11 @@ import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/ved
 import { hentVedtaksperiodeTittel, Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 import {
     hentDagensDato,
-    isoStringTilDateMedFallback,
-    tidenesEnde,
     isoDatoPeriodeTilFormatertString,
-    parseFraOgMedDato,
     type IsoDatoString,
+    isoStringTilDateMedFallback,
+    parseFraOgMedDato,
+    tidenesEnde,
 } from '../../../../../../utils/dato';
 import { formaterBeløp, summer } from '../../../../../../utils/formatter';
 
@@ -63,14 +62,14 @@ const finnPresentertTomDato = (
     return periodeTom;
 };
 
-const EkspanderbarVedtaksperiode: React.FC<EkspanderbarVedtaksperiodeProps> = ({
+const EkspanderbarVedtaksperiode = ({
     vedtaksperiodeMedBegrunnelser,
     sisteVedtaksperiodeFom,
     vedtaksperiodeInneholderOvergangsordningBegrunnelse,
     åpen,
     onClick,
     children,
-}) => {
+}: EkspanderbarVedtaksperiodeProps) => {
     const periode = {
         fom: vedtaksperiodeMedBegrunnelser.fom,
         tom: vedtaksperiodeMedBegrunnelser.tom,

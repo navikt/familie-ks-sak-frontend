@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { isBefore, subDays } from 'date-fns';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
-import { Button, Fieldset, Dropdown, Modal, Alert } from '@navikt/ds-react';
+import { Alert, Button, Dropdown, Fieldset, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';
@@ -30,7 +30,7 @@ interface IProps {
     minimalFagsak: IMinimalFagsak;
 }
 
-const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
+const OpprettBehandling = ({ minimalFagsak }: IProps) => {
     const [visModal, settVisModal] = useState(false);
     const [visBekreftelseTilbakekrevingModal, settVisBekreftelseTilbakekrevingModal] = useState(false);
     const navigate = useNavigate();

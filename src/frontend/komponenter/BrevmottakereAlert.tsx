@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 
 import { useLocation } from 'react-router';
@@ -40,9 +39,7 @@ const StyledAlert = styled(Alert)`
     margin-bottom: 1.5rem;
 `;
 
-export const BrevmottakereAlert: React.FC<
-    BrevmottakereAlertBehandlingProps | BrevmottakereAlertFagsakProps
-> = props => {
+export const BrevmottakereAlert = (props: BrevmottakereAlertBehandlingProps | BrevmottakereAlertFagsakProps) => {
     const location = useLocation();
     const [visManuelleMottakereModal, settVisManuelleMottakereModal] = useState(false);
 

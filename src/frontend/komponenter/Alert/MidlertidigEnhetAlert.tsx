@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { Alert } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 

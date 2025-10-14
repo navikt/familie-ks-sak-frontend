@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { GroupBase } from 'react-select';
 import styled from 'styled-components';
 
 import { BodyShort, Label } from '@navikt/ds-react';
 import { AZIndexPopover } from '@navikt/ds-tokens/dist/tokens';
-import type { ActionMeta, FormatOptionLabelMeta } from '@navikt/familie-form-elements';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import { type ActionMeta, FamilieReactSelect, type FormatOptionLabelMeta } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { mapBegrunnelserTilSelectOptions } from './utils';
@@ -26,7 +25,7 @@ const GroupLabel = styled.div`
     color: black;
 `;
 
-const BegrunnelserMultiselect: React.FC<IProps> = ({ tillatKunLesevisning }) => {
+const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = tillatKunLesevisning || vurderErLesevisning();
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type { MouseEvent } from 'react';
 
 import { NavLink } from 'react-router';
 import styled from 'styled-components';
@@ -6,18 +6,18 @@ import styled from 'styled-components';
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, Button, HStack, VStack } from '@navikt/ds-react';
 import {
-    ABorderWarning,
     ABorderFocus,
+    ABorderSelected,
+    ABorderWarning,
     AGrayalpha500,
-    ASurfaceDefault,
-    ASurfaceHover,
-    ASurfaceWarning,
     ASpacing2,
     ASpacing6,
     ASpacing8,
-    ATextDefault,
+    ASurfaceDefault,
+    ASurfaceHover,
     ASurfaceNeutralSubtle,
-    ABorderSelected,
+    ASurfaceWarning,
+    ATextDefault,
 } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -79,11 +79,11 @@ const UndersideSirkel = styled.span`
     width: ${ASpacing6};
 `;
 
-const Venstremeny: React.FunctionComponent = () => {
+const Venstremeny = () => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { åpenBehandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } = useBehandlingContext();
 
-    const stansNavigeringDersomSidenIkkeErAktiv = (event: React.MouseEvent, sidenErAktiv: boolean) => {
+    const stansNavigeringDersomSidenIkkeErAktiv = (event: MouseEvent, sidenErAktiv: boolean) => {
         if (!sidenErAktiv) {
             event.preventDefault();
         }
@@ -145,7 +145,7 @@ const Venstremeny: React.FunctionComponent = () => {
                 <ToggleVisningVenstremeny
                     forwardedAs={Button}
                     variant="secondary"
-                    onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
+                    onMouseDown={(e: MouseEvent) => e.preventDefault()}
                     onClick={() => {
                         settÅpenVenstremeny(!åpenVenstremeny);
                     }}

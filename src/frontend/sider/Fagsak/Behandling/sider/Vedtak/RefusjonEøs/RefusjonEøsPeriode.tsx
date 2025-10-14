@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Table, Button, Tooltip, Alert } from '@navikt/ds-react';
+import { Alert, Button, Table, Tooltip } from '@navikt/ds-react';
 
 import RefusjonEøsSkjema from './RefusjonEøsSkjema';
 import { useRefusjonEøs } from './useRefusjonEøs';
@@ -28,7 +28,7 @@ const FlexRowDiv = styled.div`
     gap: 1rem;
 `;
 
-const RefusjonEøsPeriode: React.FC<IRefusjonEøsPeriode> = ({ refusjonEøs, behandlingId }) => {
+const RefusjonEøsPeriode = ({ refusjonEøs, behandlingId }: IRefusjonEøsPeriode) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 

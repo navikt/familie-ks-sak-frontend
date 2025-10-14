@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { endOfMonth } from 'date-fns';
 import { useMatch } from 'react-router';
@@ -7,10 +7,9 @@ import styled from 'styled-components';
 import { GlobeIcon as Eu, HouseIcon as NorwegianFlag } from '@navikt/aksel-icons';
 import { BodyShort, Heading } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
-import { Tidslinje } from '@navikt/familie-tidslinje';
-import type { Periode, Etikett } from '@navikt/familie-tidslinje';
-import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
+import { type Etikett, type Periode, Tidslinje } from '@navikt/familie-tidslinje';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useTidslinjeContext } from '../../komponenter/Tidslinje/TidslinjeContext';
 import TidslinjeEtikett from '../../komponenter/Tidslinje/TidslinjeEtikett';
@@ -24,8 +23,8 @@ import type {
     ITidslinjer,
     IVilkårRegelverkResultat,
 } from '../../typer/tidslinjer';
-import { Regelverk, Resultat, vilkårConfig } from '../../typer/vilkår';
 import type { IVilkårConfig } from '../../typer/vilkår';
+import { Regelverk, Resultat, vilkårConfig } from '../../typer/vilkår';
 import { isoStringTilDate } from '../../utils/dato';
 import { formaterIdent } from '../../utils/formatter';
 
@@ -91,7 +90,7 @@ const tidslinjerLabels = [
     'Regelverk',
 ];
 
-const TidslinjeVisualisering: React.FC = () => {
+const TidslinjeVisualisering = () => {
     const matchBehandlingId = useMatch('/tidslinjer/:behandlingId');
     const behandlingId = matchBehandlingId?.params.behandlingId;
 

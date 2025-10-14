@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { SkjemaBrevmottaker } from '../../../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import { Mottaker } from '../../../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IPersonInfo } from '../../../typer/person';
@@ -10,7 +8,7 @@ interface IProps {
     brevmottakere: SkjemaBrevmottaker[];
 }
 
-const BrevmottakerListe: React.FC<IProps> = ({ bruker, brevmottakere }) => {
+const BrevmottakerListe = ({ bruker, brevmottakere }: IProps) => {
     const harUtenlandskAdresse = brevmottakere.some(
         mottaker => mottaker.type === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE
     );

@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react';
-import React from 'react';
 
 import { renderHook } from '@testing-library/react';
 import { MemoryRouter as Router } from 'react-router';

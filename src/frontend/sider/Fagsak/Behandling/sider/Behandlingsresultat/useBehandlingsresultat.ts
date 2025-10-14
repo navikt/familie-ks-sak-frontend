@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
-import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
+import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type { IBehandling } from '../../../../../typer/behandling';
 import type { IRestEndretUtbetalingAndel } from '../../../../../typer/utbetalingAndel';

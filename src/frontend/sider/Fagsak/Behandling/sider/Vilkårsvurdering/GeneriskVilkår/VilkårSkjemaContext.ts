@@ -8,9 +8,13 @@ import { useSkjema } from '@navikt/familie-skjema';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import type { IEndreVilkårResultat, Regelverk } from '../../../../../../typer/vilkår';
-import type { Resultat, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
-import type { IVilkårResultat } from '../../../../../../typer/vilkår';
+import type {
+    IEndreVilkårResultat,
+    IVilkårResultat,
+    Regelverk,
+    Resultat,
+    UtdypendeVilkårsvurdering,
+} from '../../../../../../typer/vilkår';
 import { dateTilIsoDatoStringEllerUndefined, type IIsoDatoPeriode } from '../../../../../../utils/dato';
 import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
 

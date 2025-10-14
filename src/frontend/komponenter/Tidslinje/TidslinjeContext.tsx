@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useState, type PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 import { addMonths, endOfMonth, startOfMonth, subMonths } from 'date-fns';
 
-import type { Periode, Etikett } from '@navikt/familie-tidslinje';
+import type { Etikett, Periode } from '@navikt/familie-tidslinje';
 
-import { YtelseType, type IPersonMedAndelerTilkjentYtelse, type IYtelsePeriode } from '../../typer/beregning';
+import { type IPersonMedAndelerTilkjentYtelse, type IYtelsePeriode, YtelseType } from '../../typer/beregning';
 import type { IGrunnlagPerson } from '../../typer/person';
 import { hentDagensDato, isoStringTilDate } from '../../utils/dato';
 import { sorterPersonTypeOgFødselsdato } from '../../utils/formatter';

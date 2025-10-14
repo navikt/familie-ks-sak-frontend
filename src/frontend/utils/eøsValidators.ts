@@ -1,7 +1,7 @@
 import { addMonths, endOfMonth, isAfter } from 'date-fns';
 
-import { feil, ok } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import { feil, ok } from '@navikt/familie-skjema';
 
 import type { IIsoMånedPeriode, IsoMånedString } from './dato';
 import { hentDagensDato, isoStringTilDate } from './dato';

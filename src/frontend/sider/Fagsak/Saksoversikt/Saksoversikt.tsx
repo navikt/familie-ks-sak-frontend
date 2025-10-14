@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 
 import { addMonths, differenceInMilliseconds, startOfMonth } from 'date-fns';
 import { Link as ReactRouterLink } from 'react-router';
@@ -33,7 +33,7 @@ interface IProps {
 export function Saksoversikt({ minimalFagsak }: IProps) {
     const { settÅpenBehandling } = useBehandlingContext();
 
-    React.useEffect(() => {
+    useEffect(() => {
         settÅpenBehandling(byggTomRessurs(), false);
     }, [minimalFagsak.status]);
 

@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { HStack } from '@navikt/ds-react';
 
 import StatusIkon, { Status } from '../../../ikoner/StatusIkon';
@@ -9,7 +7,7 @@ interface IProps {
     beslutning: TotrinnskontrollBeslutning;
 }
 
-const TotrinnskontrollModalInnhold: React.FunctionComponent<IProps> = ({ beslutning }) => {
+const TotrinnskontrollModalInnhold = ({ beslutning }: IProps) => {
     if (beslutning === TotrinnskontrollBeslutning.IKKE_VURDERT) {
         return (
             <HStack wrap={false} align={'center'} gap="4">

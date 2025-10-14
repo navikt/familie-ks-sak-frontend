@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -48,7 +48,7 @@ const Modaltekst = styled(BodyShort)`
     margin: 2rem 0;
 `;
 
-const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnholdProps> = ({
+const OppsummeringVedtakInnhold = ({
     åpenBehandling,
     settErUlagretNyFeilutbetaltValutaPeriode,
     erBehandlingMedVedtaksbrevutsending,
@@ -56,7 +56,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
     settVisModal,
     settErUlagretNyRefusjonEøsPeriode,
     bruker,
-}) => {
+}: IOppsummeringVedtakInnholdProps) => {
     const { hentSaksbehandlerRolle } = useAppContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandlingContext();
@@ -68,10 +68,8 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
 
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
-    const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = React.useState(
-        åpenBehandling.feilutbetaltValuta.length > 0
-    );
-    const [visRefusjonEøs, settVisRefusjonEøs] = React.useState(åpenBehandling.refusjonEøs.length > 0);
+    const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = useState(åpenBehandling.feilutbetaltValuta.length > 0);
+    const [visRefusjonEøs, settVisRefusjonEøs] = useState(åpenBehandling.refusjonEøs.length > 0);
 
     const hentVedtaksbrev = () => {
         const rolle = hentSaksbehandlerRolle();

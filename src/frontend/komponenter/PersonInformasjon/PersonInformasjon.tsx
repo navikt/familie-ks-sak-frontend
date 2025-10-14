@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { BodyShort, CopyButton, Heading, HStack } from '@navikt/ds-react';
@@ -41,7 +39,7 @@ const hentAdresseBeskyttelseGradering = (
     }
 };
 
-const Skillelinje: React.FC<{ erHeading?: boolean }> = ({ erHeading = false }) => {
+const Skillelinje = ({ erHeading = false }: { erHeading?: boolean }) => {
     if (erHeading) {
         return (
             <Heading level="2" size="medium" as="span">
@@ -52,7 +50,7 @@ const Skillelinje: React.FC<{ erHeading?: boolean }> = ({ erHeading = false }) =
     return <BodyShort>|</BodyShort>;
 };
 
-const PersonInformasjon: React.FunctionComponent<IProps> = ({ person, somOverskrift = false }) => {
+const PersonInformasjon = ({ person, somOverskrift = false }: IProps) => {
     const alder = hentAlder(person.fødselsdato);
     const navnOgAlder = `${person.navn} (${alder} år)`;
     const formatertIdent = formaterIdent(person.personIdent);

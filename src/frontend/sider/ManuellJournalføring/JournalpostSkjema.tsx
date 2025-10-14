@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
@@ -14,8 +12,8 @@ import Journalpost from './Journalpost';
 import { KnyttJournalpostTilBehandling } from './KnyttJournalpostTilBehandling';
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 import Knapperekke from '../../komponenter/Knapperekke';
-import { oppgaveTypeFilter } from '../../typer/oppgave';
 import type { OppgavetypeFilter } from '../../typer/oppgave';
+import { oppgaveTypeFilter } from '../../typer/oppgave';
 
 const Container = styled.div`
     padding: 2rem;
@@ -26,7 +24,7 @@ const StyledSectionDiv = styled.div`
     margin-top: 2.5rem;
 `;
 
-export const JournalpostSkjema: React.FC = () => {
+export const JournalpostSkjema = () => {
     const {
         dataForManuellJournalføring,
         skjema,

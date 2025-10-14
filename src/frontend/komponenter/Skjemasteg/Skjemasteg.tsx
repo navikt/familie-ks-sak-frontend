@@ -1,11 +1,10 @@
-import type { PropsWithChildren } from 'react';
-import * as React from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import { useEffect } from 'react';
 
 import styled from 'styled-components';
 
 import { Box, Button, ErrorMessage, Heading, VStack } from '@navikt/ds-react';
-import { ASpacing4, ASpacing6, ASpacing24 } from '@navikt/ds-tokens/dist/tokens';
+import { ASpacing24, ASpacing4, ASpacing6 } from '@navikt/ds-tokens/dist/tokens';
 import { hentDataFraRessurs } from '@navikt/familie-typer';
 
 import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
@@ -21,7 +20,7 @@ interface IProps extends PropsWithChildren {
     nesteKnappTittel?: string;
     nesteOnClick?: () => void;
     senderInn: boolean;
-    tittel: string | React.ReactNode;
+    tittel: string | ReactNode;
     maxWidthStyle?: string;
     skalViseNesteKnapp?: boolean;
     skalViseForrigeKnapp?: boolean;
@@ -44,7 +43,7 @@ const Navigering = styled.div`
     }
 `;
 
-const Skjemasteg: React.FunctionComponent<IProps> = ({
+const Skjemasteg = ({
     children,
     className,
     forrigeKnappTittel = 'Forrige steg',
@@ -57,7 +56,7 @@ const Skjemasteg: React.FunctionComponent<IProps> = ({
     skalViseNesteKnapp = true,
     skalViseForrigeKnapp = true,
     feilmelding = '',
-}) => {
+}: IProps) => {
     const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
 
     useEffect(() => {

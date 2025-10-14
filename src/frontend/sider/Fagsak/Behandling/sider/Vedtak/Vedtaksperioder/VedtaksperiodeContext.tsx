@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useState, type PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 import deepEqual from 'deep-equal';
 
@@ -20,8 +21,8 @@ import type {
 import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     genererIdBasertPåAndreFritekster,
-    lagInitiellFritekst,
     type IFritekstFelt,
+    lagInitiellFritekst,
 } from '../../../../../../utils/fritekstfelter';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { Dropdown } from '@navikt/ds-react';
@@ -6,9 +6,7 @@ import { Dropdown } from '@navikt/ds-react';
 import { OppdaterEndringstidspunktModal } from './OppdaterEndringstidspunktModal';
 import type { IBehandling } from '../../../../../../typer/behandling';
 
-const EndreEndringstidspunkt: React.FC<{
-    åpenBehandling: IBehandling;
-}> = ({ åpenBehandling }) => {
+const EndreEndringstidspunkt = ({ åpenBehandling }: { åpenBehandling: IBehandling }) => {
     const [visModal, settVisModal] = useState(false);
 
     return (

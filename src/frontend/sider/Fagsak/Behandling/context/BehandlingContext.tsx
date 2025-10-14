@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router';
@@ -72,7 +72,7 @@ interface BehandlingContextValue {
 
 const BehandlingContext = createContext<BehandlingContextValue | undefined>(undefined);
 
-export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
+export const BehandlingProvider = ({ children }: PropsWithChildren) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const queryClient = useQueryClient();
     const [åpenBehandling, privatSettÅpenBehandling] = useState<Ressurs<IBehandling>>(byggTomRessurs());
@@ -111,8 +111,8 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const [forrigeÅpneSide, settForrigeÅpneSide] = React.useState<ISide | undefined>(undefined);
-    const [trinnPåBehandling, settTrinnPåBehandling] = React.useState<{
+    const [forrigeÅpneSide, settForrigeÅpneSide] = useState<ISide | undefined>(undefined);
+    const [trinnPåBehandling, settTrinnPåBehandling] = useState<{
         [sideId: string]: ITrinn;
     }>({});
 

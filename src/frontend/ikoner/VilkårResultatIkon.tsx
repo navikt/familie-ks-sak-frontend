@@ -1,5 +1,3 @@
-import React from 'react';
-
 import StatusIkon, { Status } from './StatusIkon';
 import { Resultat } from '../typer/vilkår';
 
@@ -9,7 +7,7 @@ interface IVilkårResultatIkon {
     width?: number;
 }
 
-const VilkårResultatIkon: React.FC<IVilkårResultatIkon> = ({ resultat }) => {
+const VilkårResultatIkon = ({ resultat }: IVilkårResultatIkon) => {
     switch (resultat) {
         case Resultat.OPPFYLT:
             return <StatusIkon status={Status.OK} />;

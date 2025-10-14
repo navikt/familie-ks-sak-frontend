@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { BodyShort, Dropdown, Loader } from '@navikt/ds-react';
 
 import { useHentAInntektUrl } from './useHentAInntektUrl';

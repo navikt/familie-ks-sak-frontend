@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import styled from 'styled-components';
 
@@ -17,7 +17,7 @@ const EtikettKnapp = styled(Button)<{ $valgt: boolean }>`
     background-color: ${({ $valgt }) => $valgt && ASurfaceSelected};
 `;
 
-const TidslinjeEtikett: React.FunctionComponent<IEtikettProp> = ({ etikett }) => {
+const TidslinjeEtikett = ({ etikett }: IEtikettProp) => {
     const {
         aktivEtikett,
         settAktivEtikett,

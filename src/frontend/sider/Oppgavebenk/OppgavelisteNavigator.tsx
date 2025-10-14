@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Pagination } from '@navikt/ds-react';
@@ -26,7 +24,7 @@ const StyledPagination = styled(Pagination)`
 
 const beregnAntallSider = (oppgaver: IOppgave[]): number => Math.ceil(oppgaver.length / oppgaveSideLimit);
 
-const OppgavelisteNavigator: React.FunctionComponent = () => {
+const OppgavelisteNavigator = () => {
     const { oppgaver, side, settSide } = useOppgavebenkContext();
 
     if (oppgaver.status !== RessursStatus.SUKSESS) {

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Table, Button, Alert } from '@navikt/ds-react';
+import { Alert, Button, Table } from '@navikt/ds-react';
 
 import FeilutbetaltValutaSkjema from './FeilutbetaltValutaSkjema';
 import { useFeilutbetaltValuta } from './useFeilutbetaltValuta';
@@ -23,7 +23,7 @@ const FlexRowDiv = styled.div`
     display: flex;
 `;
 
-const NyFeilutbetaltValutaPeriode: React.FC<INyFeilutbetaltValutaPeriodeProps> = ({ lukkNyPeriode, behandlingId }) => {
+const NyFeilutbetaltValutaPeriode = ({ lukkNyPeriode, behandlingId }: INyFeilutbetaltValutaPeriodeProps) => {
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const { skjema, lagreNyPeriode, nullstillSkjema, valideringErOk } = useFeilutbetaltValuta({

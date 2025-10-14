@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 
-import { Button, Select, Textarea, Dropdown, Modal, Fieldset } from '@navikt/ds-react';
+import { Button, Dropdown, Fieldset, Modal, Select, Textarea } from '@navikt/ds-react';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlendeEnhet from './useEndreBehandlendeEnhet';
@@ -11,7 +11,7 @@ import { behandendeEnheter } from '../../../../../typer/enhet';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
-const EndreBehandlendeEnhet: React.FC = () => {
+const EndreBehandlendeEnhet = () => {
     const { åpenBehandling, vurderErLesevisning, erBehandleneEnhetMidlertidig } = useBehandlingContext();
     const [visModal, settVisModal] = useState(erBehandleneEnhetMidlertidig);
     const { innloggetSaksbehandler } = useAppContext();
@@ -69,7 +69,7 @@ const EndreBehandlendeEnhet: React.FC = () => {
                                 name="enhet"
                                 value={enhetId}
                                 label={'Velg ny enhet'}
-                                onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
+                                onChange={(event: ChangeEvent<HTMLSelectElement>): void => {
                                     settEnhetId(event.target.value);
                                     settSubmitRessurs(byggTomRessurs());
                                 }}
@@ -97,7 +97,7 @@ const EndreBehandlendeEnhet: React.FC = () => {
                                 label={'Begrunnelse'}
                                 value={begrunnelse}
                                 maxLength={4000}
-                                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
                                     settBegrunnelse(event.target.value);
                                     settSubmitRessurs(byggTomRessurs());
                                 }}

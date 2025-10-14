@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ChangeEvent } from 'react';
 
 import styled from 'styled-components';
 
@@ -67,7 +67,7 @@ const ItalicText = styled(BodyLong)`
     font-style: italic;
 `;
 
-const FritekstVedtakbegrunnelser: React.FC = () => {
+const FritekstVedtakbegrunnelser = () => {
     const { vurderErLesevisning, søkersMålform } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
     const {
@@ -85,7 +85,7 @@ const FritekstVedtakbegrunnelser: React.FC = () => {
 
     const fieldsetId = `Fritekster ${id}`;
 
-    const onChangeFritekst = (event: React.ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
+    const onChangeFritekst = (event: ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
         skjema.felter.fritekster.validerOgSettFelt([
             ...skjema.felter.fritekster.verdi.map(mapFritekst => {
                 if (mapFritekst.verdi.id === fritekstId) {

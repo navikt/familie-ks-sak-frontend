@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ChangeEvent } from 'react';
 
 import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
@@ -20,11 +20,7 @@ interface IProps {
     erLesevisning?: boolean;
 }
 
-export const BehandlingårsakFelt: React.FC<IProps> = ({
-    behandlingsårsak,
-    visFeilmeldinger,
-    erLesevisning = false,
-}) => {
+export const BehandlingårsakFelt = ({ behandlingsårsak, visFeilmeldinger, erLesevisning = false }: IProps) => {
     const { toggles } = useAppContext();
 
     return (
@@ -33,7 +29,7 @@ export const BehandlingårsakFelt: React.FC<IProps> = ({
             readOnly={erLesevisning}
             name={'Behandlingsårsak'}
             label={'Velg årsak'}
-            onChange={(event: React.ChangeEvent<BehandlingÅrsakSelect>): void => {
+            onChange={(event: ChangeEvent<BehandlingÅrsakSelect>): void => {
                 behandlingsårsak.onChange(event.target.value);
             }}
         >

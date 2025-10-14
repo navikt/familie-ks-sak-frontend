@@ -1,20 +1,26 @@
-import * as React from 'react';
 import { useState } from 'react';
 
 import { isAfter } from 'date-fns';
 import styled from 'styled-components';
 
 import { Alert, BodyShort, Heading, Switch, Table } from '@navikt/ds-react';
-import { AFontWeightBold, AGreen700, ASpacing18, ATextDefault, ASurfaceSubtle } from '@navikt/ds-tokens/dist/tokens';
-import { AFontWeightRegular, ATextDanger } from '@navikt/ds-tokens/dist/tokens';
+import {
+    AFontWeightBold,
+    AFontWeightRegular,
+    AGreen700,
+    ASpacing18,
+    ASurfaceSubtle,
+    ATextDanger,
+    ATextDefault,
+} from '@navikt/ds-tokens/dist/tokens';
 
 import { NavigeringsRetning } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import TidslinjeNavigering from '../../../../../komponenter/Tidslinje/TidslinjeNavigering';
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../../../typer/simulering';
 import {
     Datoformat,
-    isoStringTilDate,
     isoDatoPeriodeTilFormatertString,
+    isoStringTilDate,
     isoStringTilFormatertString,
 } from '../../../../../utils/dato';
 import { formaterBeløp } from '../../../../../utils/formatter';
@@ -73,7 +79,7 @@ interface ISimuleringProps {
     simulering: ISimuleringDTO;
 }
 
-const SimuleringTabell: React.FunctionComponent<ISimuleringProps> = ({ simulering }) => {
+const SimuleringTabell = ({ simulering }: ISimuleringProps) => {
     const {
         fomDatoNestePeriode,
         fom,

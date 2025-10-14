@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -26,20 +26,20 @@ const StyledSkjemaSteg = styled(Skjemasteg)`
     }
 `;
 
-const Vedtak: React.FunctionComponent<IVedtakProps> = ({ åpenBehandling, bruker }) => {
+const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } = useBehandlingContext();
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
     const navigate = useNavigate();
 
-    const [visModal, settVisModal] = React.useState<boolean>(false);
+    const [visModal, settVisModal] = useState<boolean>(false);
 
     const visSubmitKnapp = !vurderErLesevisning() && åpenBehandling?.status === BehandlingStatus.UTREDES;
 
-    const [erUlagretNyFeilutbetaltValutaPeriode, settErUlagretNyFeilutbetaltValutaPeriode] = React.useState(false);
+    const [erUlagretNyFeilutbetaltValutaPeriode, settErUlagretNyFeilutbetaltValutaPeriode] = useState(false);
 
-    const [erUlagretNyRefusjonEøsPeriode, settErUlagretNyRefusjonEøsPeriode] = React.useState(false);
+    const [erUlagretNyRefusjonEøsPeriode, settErUlagretNyRefusjonEøsPeriode] = useState(false);
 
     const foreslåVedtak = () => {
         foreslåVedtakNesteOnClick(

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import classNames from 'classnames';
 import { useNavigate } from 'react-router';
@@ -43,7 +43,7 @@ interface IProps {
     åpenBehandling: IBehandling;
 }
 
-const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling }) => {
+const Vilkårsvurdering = ({ åpenBehandling }: IProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
 
     const { vilkårsvurdering, feiloppsummeringFeil } = useVilkårsvurderingContext();
@@ -57,8 +57,8 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
 
     const registeropplysningerHentetTidpsunkt = vilkårsvurdering[0]?.person?.registerhistorikk?.hentetTidspunkt;
 
-    const [visFeilmeldinger, settVisFeilmeldinger] = React.useState(false);
-    const [hentOpplysningerRessurs, settHentOpplysningerRessurs] = React.useState(byggTomRessurs());
+    const [visFeilmeldinger, settVisFeilmeldinger] = useState(false);
+    const [hentOpplysningerRessurs, settHentOpplysningerRessurs] = useState(byggTomRessurs());
 
     const navigate = useNavigate();
 

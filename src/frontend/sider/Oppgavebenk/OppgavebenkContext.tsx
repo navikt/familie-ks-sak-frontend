@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useMemo, useState, type PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
@@ -6,22 +7,22 @@ import { useNavigate } from 'react-router';
 import type { SortState } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import { Valideringsstatus } from '@navikt/familie-skjema';
-import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { initialOppgaveFelter, type IOppgaveFelt, type IOppgaveFelter } from './oppgavefelter';
-import { mapIOppgaverTilOppgaveRad, sorterEtterNøkkel, Sorteringsnøkkel, type IOppgaveRad } from './utils';
+import { type IOppgaveRad, mapIOppgaverTilOppgaveRad, sorterEtterNøkkel, Sorteringsnøkkel } from './utils';
 import { useAppContext } from '../../context/AppContext';
 import { AlertType, ToastTyper } from '../../komponenter/Toast/typer';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import {
     BehandlingstypeFilter,
     EnhetFilter,
-    OppgavetypeFilter,
-    SaksbehandlerFilter,
     type IFinnOppgaveRequest,
     type IHentOppgaveDto,
     type IOppgave,
+    OppgavetypeFilter,
+    SaksbehandlerFilter,
 } from '../../typer/oppgave';
 import { erIsoStringGyldig } from '../../utils/dato';
 import { hentFnrFraOppgaveIdenter } from '../../utils/oppgave';
@@ -61,7 +62,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
     const [hentOppgaverVedSidelast, settHentOppgaverVedSidelast] = useState(true);
     const [side, settSide] = useState<number>(1);
 
-    const [oppgaver, settOppgaver] = React.useState<Ressurs<IHentOppgaveDto>>(byggTomRessurs<IHentOppgaveDto>());
+    const [oppgaver, settOppgaver] = useState<Ressurs<IHentOppgaveDto>>(byggTomRessurs<IHentOppgaveDto>());
 
     const [oppgaveFelter, settOppgaveFelter] = useState<IOppgaveFelter>(initialOppgaveFelter(innloggetSaksbehandler));
 

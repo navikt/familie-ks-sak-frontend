@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { DocPencilIcon } from '@navikt/aksel-icons';
 import { Dropdown } from '@navikt/ds-react';
 
@@ -11,7 +9,7 @@ interface IKorrigerEtterbetaling {
     korrigertEtterbetaling?: IRestKorrigertEtterbetaling;
 }
 
-const KorrigerEtterbetaling: React.FC<IKorrigerEtterbetaling> = ({ korrigertEtterbetaling }) => {
+const KorrigerEtterbetaling = ({ korrigertEtterbetaling }: IKorrigerEtterbetaling) => {
     const { åpneModal } = useModal(ModalType.KORRIGER_ETTERBETALING);
 
     return (

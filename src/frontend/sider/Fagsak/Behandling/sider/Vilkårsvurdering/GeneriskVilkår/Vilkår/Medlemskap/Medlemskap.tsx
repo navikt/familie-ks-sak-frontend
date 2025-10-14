@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
@@ -18,7 +16,7 @@ const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-export const Medlemskap: React.FC<MedlemskapProps> = ({
+export const Medlemskap = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,

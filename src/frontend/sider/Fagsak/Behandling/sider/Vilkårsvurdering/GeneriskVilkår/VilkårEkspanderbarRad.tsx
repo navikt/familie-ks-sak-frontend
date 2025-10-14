@@ -1,4 +1,4 @@
-import React, { type JSX } from 'react';
+import type { JSX } from 'react';
 
 import styled from 'styled-components';
 
@@ -12,8 +12,8 @@ import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import { uiResultat } from '../../../../../../typer/vilkår';
 import {
     Datoformat,
-    isoStringTilFormatertString,
     isoDatoPeriodeTilFormatertString,
+    isoStringTilFormatertString,
 } from '../../../../../../utils/dato';
 import { alleRegelverk } from '../../../../../../utils/vilkår';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
@@ -64,12 +64,7 @@ const StyledPersonIcon = styled(PersonIcon)`
     min-width: 1.5rem;
 `;
 
-export const VilkårEkspanderbarRad: React.FC<IProps> = ({
-    toggleForm,
-    children,
-    lagretVilkårResultat,
-    erVilkårEkspandert,
-}) => {
+export const VilkårEkspanderbarRad = ({ toggleForm, children, lagretVilkårResultat, erVilkårEkspandert }: IProps) => {
     const { åpenBehandling } = useBehandlingContext();
 
     const periodeErTom = !lagretVilkårResultat.periode.fom && !lagretVilkårResultat.periode.tom;

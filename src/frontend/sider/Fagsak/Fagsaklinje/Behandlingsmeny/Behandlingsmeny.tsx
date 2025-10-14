@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { ChevronDownIcon } from '@navikt/aksel-icons';
@@ -24,7 +22,7 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
     width: 30ch;
 `;
 
-const Behandlingsmeny: React.FC<IProps> = ({ minimalFagsak }) => {
+const Behandlingsmeny = ({ minimalFagsak }: IProps) => {
     const { åpenBehandling } = useBehandlingContext();
 
     const skalViseMenyvalgForBehandling =

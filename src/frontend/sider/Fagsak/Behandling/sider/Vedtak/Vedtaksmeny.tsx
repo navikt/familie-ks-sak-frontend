@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { ArrowUndoIcon, CalculatorIcon, ChevronDownIcon, StarsEuIcon, TasklistStartIcon } from '@navikt/aksel-icons';
@@ -32,12 +30,12 @@ const StyledDropdownMeny = styled(Dropdown.Menu)`
     width: 36ch;
 `;
 
-const Vedtaksmeny: React.FunctionComponent<IVedtakmenyProps> = ({
+const Vedtaksmeny = ({
     åpenBehandling,
     erBehandlingMedVedtaksbrevutsending,
     visFeilutbetaltValuta,
     visRefusjonEøs,
-}) => {
+}: IVedtakmenyProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
 
     const {
