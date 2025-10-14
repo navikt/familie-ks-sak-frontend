@@ -5,7 +5,7 @@ import { logInfo } from '@navikt/familie-logging';
 import { envVar } from './env.js';
 
 const konfigurerApp = () => {
-    logInfo(`NODE_ENV=${process.env.NODE_ENV} ENV=${process.env.ENV}, CLUSTER=${process.env.CLUSTER}`);
+    logInfo(`NODE_ENV=${envVar('NODE_ENV')} ENV=${envVar('ENV')}`);
 
     dotenvx.config({
         path: ['.env', '.secrets.env', `.env.${envVar('ENV')}`],
