@@ -56,8 +56,6 @@ spec:
   envFrom:
     - secret: familie-ks-sak-frontend
   env:
-    - name: APP_VERSION
-      value: {{ VERSION }}
     - name: ENV
       value: production
   valkey:
