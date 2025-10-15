@@ -33,9 +33,6 @@ if (erLokal()) {
 const container = document.getElementById('app');
 const root = createRoot(container!);
 
-console.log(import.meta.env);
-console.log(import.meta.env.MODE);
-
 root.render(
     <StrictMode>
         <App />
