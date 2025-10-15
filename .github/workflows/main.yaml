@@ -17,8 +17,8 @@ on:
       - 'eslint.config.mjs'
 
 jobs:
-  build:
-    name: Build
+  build-dev:
+    name: Build dev
     if: github.ref == 'refs/heads/main' # Only deploy to prod from main branch
     permissions:
       contents: read
@@ -27,12 +27,25 @@ jobs:
     with:
       build-image: true
       push-image: true
+      build-profile: 'preprod'
+    secrets: inherit
+  build-prod:
+    name: Build prod
+    if: github.ref == 'refs/heads/main' # Only deploy to prod from main branch
+    permissions:
+      contents: read
+      id-token: write
+    uses: navikt/familie-baks-gha-workflows/.github/workflows/build-yarn-app.yaml@main # ratchet:exclude
+    with:
+      build-image: true
+      push-image: true
+      build-profile: 'prod'
     secrets: inherit
   deploy-dev:
     name: Deploy dev
     permissions:
       id-token: write
-    needs: [build]
+    needs: [build-dev]
     uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main # ratchet:exclude
     with:
       image: ${{ needs.build.outputs.image }}
@@ -43,7 +56,7 @@ jobs:
     name: Deploy prod
     permissions:
       id-token: write
-    needs: [build, deploy-dev]
+    needs: [build-prod]
     uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main # ratchet:exclude
     with:
       image: ${{ needs.build.outputs.image }}
