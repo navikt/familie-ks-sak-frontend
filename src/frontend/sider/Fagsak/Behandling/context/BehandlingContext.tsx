@@ -1,21 +1,21 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router';
 
-import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
-import { byggTomRessurs, hentDataFraRessurs } from '@navikt/familie-typer';
+import { byggTomRessurs, hentDataFraRessurs, type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import useBehandlingApi from './useBehandlingApi';
 import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './utils';
 import { useAppContext } from '../../../../context/AppContext';
-import { useFagsakContext } from '../../../../context/fagsak/FagsakContext';
+import { HentFagsakQueryKeyFactory } from '../../../../hooks/useHentFagsak';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
 import {
     BehandlerRolle,
     BehandlingStatus,
-    BehandlingÅrsak,
     type BehandlingSteg,
+    BehandlingÅrsak,
     type IBehandling,
     type IBehandlingPåVent,
     type IOpprettBehandlingData,
@@ -31,18 +31,15 @@ import {
     erViPåUlovligSteg,
     finnSideForBehandlingssteg,
     hentTrinnForBehandling,
-    KontrollertStatus,
-    sider,
     type ISide,
     type ITrinn,
+    KontrollertStatus,
     type SideId,
+    sider,
 } from '../sider/sider';
 
 interface BehandlingContextValue {
-    vurderErLesevisning: (
-        sjekkTilgangTilEnhet?: boolean,
-        skalIgnorereOmEnhetErMidlertidig?: boolean
-    ) => boolean;
+    vurderErLesevisning: (sjekkTilgangTilEnhet?: boolean, skalIgnorereOmEnhetErMidlertidig?: boolean) => boolean;
     forrigeÅpneSide: ISide | undefined;
     hentStegPåÅpenBehandling: () => BehandlingSteg | undefined;
     leggTilBesøktSide: (besøktSide: SideId) => void;
@@ -75,17 +72,18 @@ interface BehandlingContextValue {
 
 const BehandlingContext = createContext<BehandlingContextValue | undefined>(undefined);
 
-export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
+export const BehandlingProvider = ({ children }: PropsWithChildren) => {
     const { fagsakId } = useSakOgBehandlingParams();
-    const { hentMinimalFagsak } = useFagsakContext();
-    const [åpenBehandling, privatSettÅpenBehandling] =
-        useState<Ressurs<IBehandling>>(byggTomRessurs());
+    const queryClient = useQueryClient();
+    const [åpenBehandling, privatSettÅpenBehandling] = useState<Ressurs<IBehandling>>(byggTomRessurs());
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
     const [åpenVenstremeny, settÅpenVenstremeny] = useState(true);
 
     const settÅpenBehandling = (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak = true) => {
         if (oppdaterMinimalFagsak && fagsakId) {
-            hentMinimalFagsak(fagsakId, false);
+            queryClient.invalidateQueries({
+                queryKey: HentFagsakQueryKeyFactory.fagsak(Number(fagsakId)),
+            });
         }
         privatSettÅpenBehandling(behandling);
         settBehandlingsstegSubmitressurs(byggTomRessurs());
@@ -113,16 +111,14 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const [forrigeÅpneSide, settForrigeÅpneSide] = React.useState<ISide | undefined>(undefined);
-    const [trinnPåBehandling, settTrinnPåBehandling] = React.useState<{
+    const [forrigeÅpneSide, settForrigeÅpneSide] = useState<ISide | undefined>(undefined);
+    const [trinnPåBehandling, settTrinnPåBehandling] = useState<{
         [sideId: string]: ITrinn;
     }>({});
 
     useEffect(() => {
         const siderPåBehandling =
-            åpenBehandling.status === RessursStatus.SUKSESS
-                ? hentTrinnForBehandling(åpenBehandling.data)
-                : [];
+            åpenBehandling.status === RessursStatus.SUKSESS ? hentTrinnForBehandling(åpenBehandling.data) : [];
 
         const sideHref = hentSideHref(location.pathname);
         settTrinnPåBehandling(
@@ -132,9 +128,7 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
                     [sideId]: {
                         ...side,
                         kontrollert:
-                            sideHref === side.href
-                                ? KontrollertStatus.KONTROLLERT
-                                : KontrollertStatus.IKKE_KONTROLLERT,
+                            sideHref === side.href ? KontrollertStatus.KONTROLLERT : KontrollertStatus.IKKE_KONTROLLERT,
                     },
                 };
             }, {})
@@ -144,9 +138,7 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
     }, [åpenBehandling]);
 
     useEffect(() => {
-        settForrigeÅpneSide(
-            Object.values(sider).find((side: ISide) => location.pathname.includes(side.href))
-        );
+        settForrigeÅpneSide(Object.values(sider).find((side: ISide) => location.pathname.includes(side.href)));
     }, [location.pathname]);
 
     const leggTilBesøktSide = (besøktSide: SideId) => {
@@ -181,10 +173,7 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
         return hentDataFraRessurs(åpenBehandling)?.steg;
     };
 
-    const vurderErLesevisning = (
-        sjekkTilgangTilEnhet = true,
-        skalIgnorereOmEnhetErMidlertidig = false
-    ): boolean => {
+    const vurderErLesevisning = (sjekkTilgangTilEnhet = true, skalIgnorereOmEnhetErMidlertidig = false): boolean => {
         const åpenBehandlingData = hentDataFraRessurs(åpenBehandling);
         if (
             åpenBehandlingData?.behandlingPåVent ||
@@ -197,8 +186,7 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
         }
 
         const innloggetSaksbehandlerSkrivetilgang = harInnloggetSaksbehandlerSkrivetilgang();
-        const innloggetSaksbehandlerHarSuperbrukerTilgang =
-            harInnloggetSaksbehandlerSuperbrukerTilgang();
+        const innloggetSaksbehandlerHarSuperbrukerTilgang = harInnloggetSaksbehandlerSuperbrukerTilgang();
 
         const behandlingsårsak = åpenBehandlingData?.årsak;
         const behandlingsårsakErÅpenForAlleMedTilgangTilÅOppretteÅrsak =
@@ -229,21 +217,19 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
             const sideForSteg: ISide | undefined = finnSideForBehandlingssteg(åpenBehandling.data);
 
             if (
-                (erViPåUdefinertFagsakSide(location.pathname) ||
-                    erViPåUlovligSteg(location.pathname, sideForSteg)) &&
+                (erViPåUdefinertFagsakSide(location.pathname) || erViPåUlovligSteg(location.pathname, sideForSteg)) &&
                 sideForSteg
             ) {
-                navigate(
-                    `/fagsak/${fagsakId}/${åpenBehandling.data.behandlingId}/${sideForSteg.href}`
-                );
+                navigate(`/fagsak/${fagsakId}/${åpenBehandling.data.behandlingId}/${sideForSteg.href}`, {
+                    replace: true,
+                });
             }
         }
     };
 
     const søkersMålform: Målform =
         åpenBehandling.status === RessursStatus.SUKSESS
-            ? (åpenBehandling.data.personer.find(person => person.type === PersonType.SØKER)
-                  ?.målform ?? Målform.NB)
+            ? (åpenBehandling.data.personer.find(person => person.type === PersonType.SØKER)?.målform ?? Målform.NB)
             : Målform.NB;
 
     const kanBeslutteVedtak =
@@ -254,12 +240,10 @@ export const BehandlingProvider = ({ children }: React.PropsWithChildren) => {
 
     const erBehandleneEnhetMidlertidig =
         åpenBehandling.status === RessursStatus.SUKSESS &&
-        åpenBehandling.data.arbeidsfordelingPåBehandling.behandlendeEnhetId ===
-            MIDLERTIDIG_BEHANDLENDE_ENHET_ID;
+        åpenBehandling.data.arbeidsfordelingPåBehandling.behandlendeEnhetId === MIDLERTIDIG_BEHANDLENDE_ENHET_ID;
 
     const erBehandlingAvsluttet =
-        åpenBehandling.status === RessursStatus.SUKSESS &&
-        åpenBehandling.data.status === BehandlingStatus.AVSLUTTET;
+        åpenBehandling.status === RessursStatus.SUKSESS && åpenBehandling.data.status === BehandlingStatus.AVSLUTTET;
 
     return (
         <BehandlingContext.Provider

@@ -1,4 +1,4 @@
-import React from 'react';
+import type { PropsWithChildren } from 'react';
 
 import { BodyShort, Box, CopyButton, HStack } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
@@ -12,7 +12,7 @@ interface IProps {
     bruker?: IPersonInfo;
 }
 
-const InnholdContainer = ({ children }: React.PropsWithChildren) => {
+const InnholdContainer = ({ children }: PropsWithChildren) => {
     return (
         <Box borderWidth="0 0 1 0" borderColor="border-subtle" paddingInline="4" paddingBlock="2">
             {children}
@@ -24,7 +24,7 @@ const Divider = () => {
     return <div>|</div>;
 };
 
-const Personlinje: React.FC<IProps> = ({ bruker }) => {
+const Personlinje = ({ bruker }: IProps) => {
     if (bruker === undefined) {
         return (
             <InnholdContainer>
@@ -58,10 +58,7 @@ const Personlinje: React.FC<IProps> = ({ bruker }) => {
                         <Divider />
                         <HStack align="center" gap="1">
                             {bruker.personIdent}
-                            <CopyButton
-                                copyText={bruker.personIdent.replace(' ', '')}
-                                size="small"
-                            />
+                            <CopyButton copyText={bruker.personIdent.replace(' ', '')} size="small" />
                         </HStack>
                     </HStack>
                 </HStack>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Route, Routes, useLocation } from 'react-router';
 
@@ -23,16 +23,14 @@ interface Props {
     åpenBehandling: IBehandling;
 }
 
-export const BehandlingRouter: React.FC<Props> = ({ bruker, åpenBehandling }) => {
+export const BehandlingRouter = ({ bruker, åpenBehandling }: Props) => {
     const location = useLocation();
     const { leggTilBesøktSide } = useBehandlingContext();
 
     const sidevisning = hentSideHref(location.pathname);
     useEffect(() => {
         if (sidevisning) {
-            leggTilBesøktSide(
-                Object.entries(sider).find(([_, side]) => side.href === sidevisning)?.[0] as SideId
-            );
+            leggTilBesøktSide(Object.entries(sider).find(([_, side]) => side.href === sidevisning)?.[0] as SideId);
         }
     }, [sidevisning]);
 

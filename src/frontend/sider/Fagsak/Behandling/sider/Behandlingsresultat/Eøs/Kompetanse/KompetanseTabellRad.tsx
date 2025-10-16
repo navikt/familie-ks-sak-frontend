@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 
 import { BodyShort, Table } from '@navikt/ds-react';
 
@@ -6,7 +6,7 @@ import KompetanseTabellRadEndre from './KompetanseTabellRadEndre';
 import { kompetanseFeilmeldingId, useKompetansePeriodeSkjema } from './useKompetansePeriodeSkjema';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
-import { KompetanseResultat, type IRestKompetanse } from '../../../../../../../typer/eøsPerioder';
+import { type IRestKompetanse, KompetanseResultat } from '../../../../../../../typer/eøsPerioder';
 import { lagPersonLabel } from '../../../../../../../utils/formatter';
 import { StatusBarnCelleOgPeriodeCelle } from '../EøsKomponenter/EøsSkjemaKomponenter';
 
@@ -16,11 +16,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const KompetanseTabellRad: React.FC<IProps> = ({
-    kompetanse,
-    åpenBehandling,
-    visFeilmeldinger,
-}) => {
+const KompetanseTabellRad = ({ kompetanse, åpenBehandling, visFeilmeldinger }: IProps) => {
     const barn: OptionType[] = kompetanse.barnIdenter.map(barn => ({
         value: barn,
         label: lagPersonLabel(barn, åpenBehandling.personer),
@@ -38,14 +34,14 @@ const KompetanseTabellRad: React.FC<IProps> = ({
         erKompetanseSkjemaEndret,
     } = useKompetansePeriodeSkjema({ barnIKompetanse: barn, kompetanse });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (åpenBehandling) {
             nullstillSkjema();
             settErKompetanseEkspandert(false);
         }
     }, [åpenBehandling]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (visFeilmeldinger && erKompetanseEkspandert) {
             kanSendeSkjema();
         }
@@ -88,12 +84,8 @@ const KompetanseTabellRad: React.FC<IProps> = ({
                     toggleForm={toggleForm}
                     slettKompetanse={slettKompetanse}
                     status={kompetanse.status}
-                    behandlingsÅrsakErOvergangsordning={
-                        åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
-                    }
-                    erAnnenForelderOmfattetAvNorskLovgivning={
-                        kompetanse.erAnnenForelderOmfattetAvNorskLovgivning
-                    }
+                    behandlingsÅrsakErOvergangsordning={åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024}
+                    erAnnenForelderOmfattetAvNorskLovgivning={kompetanse.erAnnenForelderOmfattetAvNorskLovgivning}
                 />
             }
         >

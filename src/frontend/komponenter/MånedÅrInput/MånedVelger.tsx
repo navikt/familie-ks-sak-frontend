@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Select } from '@navikt/ds-react';
 
 interface MånedProps {
@@ -26,14 +24,7 @@ const månedValg = [
     { mndNr: '12', verdi: 'Desember' },
 ];
 
-const MånedVelger: React.FC<MånedProps> = ({
-    måned,
-    settMåned,
-    lesevisning = false,
-    feil = false,
-    label,
-    className,
-}) => {
+const MånedVelger = ({ måned, settMåned, lesevisning = false, feil = false, label, className }: MånedProps) => {
     return (
         <Select
             readOnly={lesevisning}

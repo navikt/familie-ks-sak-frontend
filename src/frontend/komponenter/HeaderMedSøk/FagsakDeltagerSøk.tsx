@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactNode, useState } from 'react';
 
 import { useNavigate } from 'react-router';
 
@@ -19,16 +19,13 @@ import { idnr } from '@navikt/fnrvalidator';
 import { useAppContext } from '../../context/AppContext';
 import { ModalType } from '../../context/ModalContext';
 import { useModal } from '../../hooks/useModal';
-import {
-    FagsakDeltagerRolle,
-    type IFagsakDeltager,
-    type ISøkParam,
-} from '../../typer/fagsakdeltager';
+import { FagsakDeltagerRolle, type IFagsakDeltager, type ISøkParam } from '../../typer/fagsakdeltager';
+import { erLokal } from '../../utils/miljø';
 import { obfuskerFagsakDeltager } from '../../utils/obfuskerData';
 import { erAdresseBeskyttet } from '../../utils/validators';
 import { PersonIkon } from '../PersonIkon';
 
-function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): React.ReactNode {
+function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): ReactNode {
     return (
         <PersonIkon
             kjønn={fagsakDeltager.kjønn || kjønnType.UKJENT}
@@ -41,13 +38,12 @@ function mapFagsakDeltagerTilIkon(fagsakDeltager: IFagsakDeltager): React.ReactN
     );
 }
 
-const FagsakDeltagerSøk: React.FC = () => {
+const FagsakDeltagerSøk = () => {
     const { request } = useHttp();
     const navigate = useNavigate();
     const { skalObfuskereData } = useAppContext();
 
-    const [fagsakDeltagere, settFagsakDeltagere] =
-        React.useState<Ressurs<IFagsakDeltager[]>>(byggTomRessurs());
+    const [fagsakDeltagere, settFagsakDeltagere] = useState<Ressurs<IFagsakDeltager[]>>(byggTomRessurs());
 
     const { åpneModal } = useModal(ModalType.OPPRETT_FAGSAK);
 
@@ -61,7 +57,7 @@ const FagsakDeltagerSøk: React.FC = () => {
             return;
         }
 
-        if (fnrValidator(personIdent) || process.env.NODE_ENV === 'development') {
+        if (fnrValidator(personIdent) || erLokal()) {
             settFagsakDeltagere(byggHenterRessurs());
             request<ISøkParam, IFagsakDeltager[]>({
                 method: 'POST',
@@ -88,9 +84,7 @@ const FagsakDeltagerSøk: React.FC = () => {
                     settFagsakDeltagere(byggFeiletRessurs('Søk feilet'));
                 });
         } else {
-            settFagsakDeltagere(
-                byggFunksjonellFeilRessurs('Ugyldig fødsels- eller d-nummer (11 siffer)')
-            );
+            settFagsakDeltagere(byggFunksjonellFeilRessurs('Ugyldig fødsels- eller d-nummer (11 siffer)'));
         }
     };
 

@@ -1,16 +1,10 @@
-import * as React from 'react';
-
 interface IManuellVurdering {
     className?: string;
     height?: number;
     width?: number;
 }
 
-const ManuellVurdering: React.FunctionComponent<IManuellVurdering> = ({
-    className,
-    height = 24,
-    width = 24,
-}) => {
+const ManuellVurdering = ({ className, height = 24, width = 24 }: IManuellVurdering) => {
     return (
         <svg
             aria-labelledby={'ManuellVurdering'}

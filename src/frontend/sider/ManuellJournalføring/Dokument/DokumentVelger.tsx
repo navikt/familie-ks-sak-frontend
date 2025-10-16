@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { ExpansionCard } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 import type { IDokumentInfo } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { DokumentInfoStripe } from './DokumentInfoStripe';
 import { EndreDokumentInfoPanel } from './EndreDokumentInfoPanel';
@@ -20,9 +20,8 @@ const StyledExpansionCard = styled(ExpansionCard)`
     width: 100%;
 `;
 
-export const DokumentVelger: React.FC<IDokumentVelgerProps> = ({ dokument, visFeilmeldinger }) => {
-    const { dataForManuellJournalføring, valgtDokumentId, velgOgHentDokumentData } =
-        useManuellJournalføringContext();
+export const DokumentVelger = ({ dokument, visFeilmeldinger }: IDokumentVelgerProps) => {
+    const { dataForManuellJournalføring, valgtDokumentId, velgOgHentDokumentData } = useManuellJournalføringContext();
     const [åpen, settÅpen] = useState(false);
 
     const valgt = dokument.dokumentInfoId === valgtDokumentId;
@@ -50,11 +49,7 @@ export const DokumentVelger: React.FC<IDokumentVelgerProps> = ({ dokument, visFe
         >
             <ExpansionCard.Header>
                 <ExpansionCard.Title>
-                    <DokumentInfoStripe
-                        valgt={valgt}
-                        journalpostId={journalpostId}
-                        dokument={dokument}
-                    />
+                    <DokumentInfoStripe valgt={valgt} journalpostId={journalpostId} dokument={dokument} />
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>

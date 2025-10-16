@@ -1,18 +1,14 @@
-import React from 'react';
-
 import { useNavigate } from 'react-router';
 
 import { Alert, BodyShort, Button, Modal } from '@navikt/ds-react';
 
-import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import { ModalType } from '../../../../../context/ModalContext';
 import { useModal } from '../../../../../hooks/useModal';
 import { HenleggÅrsak } from '../../../../../typer/behandling';
+import { useFagsakContext } from '../../../FagsakContext';
 
 export function HenleggBehandlingVeivalgModal() {
-    const { args, erModalÅpen, tittel, lukkModal, bredde } = useModal(
-        ModalType.HENLEGG_BEHANDLING_VEIVALG
-    );
+    const { args, erModalÅpen, tittel, lukkModal, bredde } = useModal(ModalType.HENLEGG_BEHANDLING_VEIVALG);
 
     return (
         <Modal
@@ -26,9 +22,7 @@ export function HenleggBehandlingVeivalgModal() {
                 <>
                     {args === undefined && (
                         <Modal.Body>
-                            <Alert variant={'error'}>
-                                En feil oppstod ved innlasting av modalen.
-                            </Alert>
+                            <Alert variant={'error'}>En feil oppstod ved innlasting av modalen.</Alert>
                         </Modal.Body>
                     )}
                     {args !== undefined && <Innhold årsak={args.årsak} />}
@@ -43,16 +37,13 @@ interface InnholdProps {
 }
 
 function Innhold({ årsak }: InnholdProps) {
-    const { minimalFagsak } = useFagsakContext();
+    const { fagsak } = useFagsakContext();
     const { lukkModal } = useModal(ModalType.HENLEGG_BEHANDLING_VEIVALG);
     const navigate = useNavigate();
 
     function gåTilSaksoversikt() {
-        if (minimalFagsak === undefined) {
-            return;
-        }
         lukkModal();
-        navigate(`/fagsak/${minimalFagsak.id}/saksoversikt`);
+        navigate(`/fagsak/${fagsak.id}/saksoversikt`);
     }
 
     function gåTilOppgaver() {

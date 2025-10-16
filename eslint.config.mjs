@@ -1,9 +1,9 @@
-import prettier from 'eslint-plugin-prettier';
-import importPlugin from 'eslint-plugin-import';
-import globals from 'globals';
 import js from '@eslint/js';
 import eslintConfigPrittier from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import prettier from 'eslint-plugin-prettier';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default [
@@ -19,9 +19,7 @@ export default [
         },
 
         languageOptions: {
-            globals: {
-                ...globals.node,
-            },
+            globals: globals.browser,
 
             parser: tseslint.parser,
             ecmaVersion: 2020,
@@ -68,6 +66,37 @@ export default [
                     vars: 'all',
                     args: 'all',
                     argsIgnorePattern: '^_',
+                },
+            ],
+            '@typescript-eslint/no-restricted-types': [
+                'error',
+                {
+                    types: {
+                        'React.FC':
+                            'Annotate the props on the parameter instead: (const X = ({ X, Y }: Props) => ...).',
+                        'React.FunctionComponent':
+                            'Annotate the props on the parameter instead: (const X = ({ X, Y }: Props) => ...).',
+                        'React.VFC':
+                            'Annotate the props on the parameter instead: (const X = ({ X, Y }: Props) => ...).',
+                    },
+                },
+            ],
+            'no-restricted-syntax': [
+                'error',
+                {
+                    // Ban default import: import React from 'react';
+                    selector: 'ImportDeclaration[source.value="react"] > ImportDefaultSpecifier[local.name="React"]',
+                    message: 'Do not default-import React; use named imports.',
+                },
+                {
+                    // Ban namespace import: import * as React from 'react';
+                    selector: 'ImportDeclaration[source.value="react"] > ImportNamespaceSpecifier',
+                    message: 'Do not namespace-import React; use named imports.',
+                },
+                {
+                    // Ban React.<member>
+                    selector: 'MemberExpression[object.name="React"]',
+                    message: 'Import this from react instead of using React.XYZ.',
                 },
             ],
 

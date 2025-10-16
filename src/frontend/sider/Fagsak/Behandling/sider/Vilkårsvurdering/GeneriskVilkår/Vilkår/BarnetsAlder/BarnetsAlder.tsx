@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { isBefore } from 'date-fns';
 
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';
@@ -23,8 +21,7 @@ import { VilkårSkjema } from '../../VilkårSkjema';
 
 const hentSpørsmålForLovverkFør2025 = (periode: IIsoDatoPeriode) => {
     const fraOgMedDato = isoStringTilDateEllerUndefinedHvisUgyldigDato(periode.fom);
-    const fraOgMedErFørLovendring =
-        fraOgMedDato && isBefore(fraOgMedDato, datoForLovendringAugust24);
+    const fraOgMedErFørLovendring = fraOgMedDato && isBefore(fraOgMedDato, datoForLovendringAugust24);
     if (fraOgMedErFørLovendring) {
         return 'Er barnet mellom 1 og 2 år eller adoptert?';
     } else {
@@ -45,7 +42,7 @@ const hentSpørsmålForLovverk = (lovverk: Lovverk | undefined, periode: IIsoDat
 
 type BarnetsAlderProps = IVilkårSkjemaBaseProps;
 
-export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
+export const BarnetsAlder = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
@@ -54,10 +51,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBarnetsAlder(
-        lagretVilkårResultat,
-        person
-    );
+    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBarnetsAlder(lagretVilkårResultat, person);
 
     const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
         vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
@@ -66,10 +60,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
 
     const skjema = vilkårSkjemaContext.skjema;
 
-    const lovverk = utledLovverk(
-        isoStringTilDate(person.fødselsdato),
-        skjema.felter.adopsjonsdato.verdi
-    );
+    const lovverk = utledLovverk(isoStringTilDate(person.fødselsdato), skjema.felter.adopsjonsdato.verdi);
     const spørsmål = hentSpørsmålForLovverk(lovverk, skjema.felter.periode.verdi);
 
     return (
@@ -121,9 +112,7 @@ export const BarnetsAlder: React.FC<BarnetsAlderProps> = ({
                     <Radio
                         name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.IKKE_OPPFYLT}
-                        onChange={() =>
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)
-                        }
+                        onChange={() => skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)}
                     >
                         Nei
                     </Radio>

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { type MutationKey, useMutationState } from '@tanstack/react-query';
 import styled from 'styled-components';
 
@@ -21,9 +19,7 @@ const StyledModal = styled(Modal)`
 `;
 
 export function ForhåndsvisOpprettingAvPdfModal() {
-    const { args, erModalÅpen, lukkModal, tittel, bredde } = useModal(
-        ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF
-    );
+    const { args, erModalÅpen, lukkModal, tittel, bredde } = useModal(ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF);
 
     const mutationKey = args?.mutationKey ?? [];
 
@@ -69,12 +65,5 @@ function Innhold({ mutationKey }: { mutationKey: MutationKey }) {
         );
     }
 
-    return (
-        <iframe
-            title={'Dokument'}
-            height={'100%'}
-            width={'100%'}
-            src={window.URL.createObjectURL(state.data)}
-        />
-    );
+    return <iframe title={'Dokument'} height={'100%'} width={'100%'} src={window.URL.createObjectURL(state.data)} />;
 }

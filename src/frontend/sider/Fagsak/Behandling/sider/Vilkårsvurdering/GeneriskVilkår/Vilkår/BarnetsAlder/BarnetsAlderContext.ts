@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { startOfDay } from 'date-fns';
 
-import { useFelt, type Avhengigheter } from '@navikt/familie-skjema';
+import { type Avhengigheter, useFelt } from '@navikt/familie-skjema';
 
 import {
     erAdopsjonsdatoGyldig,
@@ -11,15 +11,15 @@ import {
 } from './BarnetsAlderValidering';
 import type { IGrunnlagPerson } from '../../../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../../../typer/vedtak';
-import {
-    UtdypendeVilkårsvurderingGenerell,
-    VilkårType,
+import type {
+    IVilkårResultat,
+    Regelverk as RegelverkType,
+    Resultat,
+    UtdypendeVilkårsvurdering,
 } from '../../../../../../../../typer/vilkår';
-import type { UtdypendeVilkårsvurdering } from '../../../../../../../../typer/vilkår';
-import type { IVilkårResultat } from '../../../../../../../../typer/vilkår';
-import type { Regelverk as RegelverkType, Resultat } from '../../../../../../../../typer/vilkår';
+import { UtdypendeVilkårsvurderingGenerell, VilkårType } from '../../../../../../../../typer/vilkår';
 import type { IsoDatoString } from '../../../../../../../../utils/dato';
-import { isoStringTilDate, type IIsoDatoPeriode } from '../../../../../../../../utils/dato';
+import { type IIsoDatoPeriode, isoStringTilDate } from '../../../../../../../../utils/dato';
 import { sorterPåDato } from '../../../../../../../../utils/formatter';
 import {
     erAvslagBegrunnelserGyldig,
@@ -27,7 +27,7 @@ import {
     erResultatGyldig,
 } from '../../../../../../../../utils/validators';
 import { useVilkårsvurderingContext } from '../../../VilkårsvurderingContext';
-import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { type IVilkårSkjemaContext, useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 export const muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[] = [
     UtdypendeVilkårsvurderingGenerell.ADOPSJON,
@@ -42,9 +42,7 @@ export const useBarnetsAlder = (lagretVilkår: IVilkårResultat, person: IGrunnl
         begrunnelse: lagretVilkår.begrunnelse,
         erEksplisittAvslagPåSøknad: lagretVilkår.erEksplisittAvslagPåSøknad ?? false,
         avslagBegrunnelser: lagretVilkår.avslagBegrunnelser,
-        adopsjonsdato: person.adopsjonsdato
-            ? startOfDay(new Date(person.adopsjonsdato))
-            : undefined,
+        adopsjonsdato: person.adopsjonsdato ? startOfDay(new Date(person.adopsjonsdato)) : undefined,
     };
 
     const { personResultater } = useVilkårsvurderingContext();
@@ -52,9 +50,7 @@ export const useBarnetsAlder = (lagretVilkår: IVilkårResultat, person: IGrunnl
     const alleBarnetsAlderVilkårsResultaterSortert =
         personResultater
             .find(personResultat => person.personIdent === personResultat.personIdent)
-            ?.vilkårResultater.filter(
-                vilkårResultat => vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER
-            )
+            ?.vilkårResultater.filter(vilkårResultat => vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER)
             .sort((a, b) => {
                 if (!a.periodeFom || !b.periodeFom) {
                     return 1; //Perioder som ikke har fom skal sorteres sist i lista
@@ -85,14 +81,11 @@ export const useBarnetsAlder = (lagretVilkår: IVilkårResultat, person: IGrunnl
 
     const adopsjonsdato = useFelt<Date | undefined>({
         verdi: undefined,
-        valideringsfunksjon: felt =>
-            erAdopsjonsdatoGyldig(felt, isoStringTilDate(person.fødselsdato)),
+        valideringsfunksjon: felt => erAdopsjonsdatoGyldig(felt, isoStringTilDate(person.fødselsdato)),
         avhengigheter: { utdypendeVilkårsvurdering: utdypendeVilkårsvurdering.verdi },
         nullstillVedAvhengighetEndring: false,
         skalFeltetVises: (avhengigheter: Avhengigheter) =>
-            avhengigheter?.utdypendeVilkårsvurdering.includes(
-                UtdypendeVilkårsvurderingGenerell.ADOPSJON
-            ),
+            avhengigheter?.utdypendeVilkårsvurdering.includes(UtdypendeVilkårsvurderingGenerell.ADOPSJON),
     });
 
     const felter = {
@@ -182,7 +175,6 @@ export const useBarnetsAlder = (lagretVilkår: IVilkårResultat, person: IGrunnl
                 settAdopsjonsdatoFraBackend();
             },
         },
-        finnesEndringerSomIkkeErLagret: () =>
-            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        finnesEndringerSomIkkeErLagret: () => finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
     };
 };

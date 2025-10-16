@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react';
-import React from 'react';
 
 import styled from 'styled-components';
 
@@ -9,7 +8,7 @@ const Container = styled.div`
     margin-top: 1rem;
 `;
 
-const Knapperekke: React.FC<PropsWithChildren> = ({ children }) => {
+const Knapperekke = ({ children }: PropsWithChildren) => {
     return <Container>{children}</Container>;
 };
 

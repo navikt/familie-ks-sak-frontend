@@ -1,12 +1,10 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { ExternalLinkIcon, PadlockLockedIcon } from '@navikt/aksel-icons';
 import { BodyShort, HStack, Link } from '@navikt/ds-react';
 import type { IDokumentInfo } from '@navikt/familie-typer';
 
-import { Vedleggsliste, EllipsisBodyShort } from './JournalpostListe';
+import { EllipsisBodyShort, Vedleggsliste } from './JournalpostListe';
 import type { FamilieAxiosRequestConfig } from '../../../context/AppContext';
 import type { ITilgangsstyrtJournalpost } from '../../../typer/journalpost';
 
@@ -23,11 +21,7 @@ interface IProps {
     tilgangsstyrtJournalpost: ITilgangsstyrtJournalpost;
 }
 
-export const JournalpostDokument: React.FC<IProps> = ({
-    dokument,
-    hentForhåndsvisning,
-    tilgangsstyrtJournalpost,
-}) => {
+export const JournalpostDokument = ({ dokument, hentForhåndsvisning, tilgangsstyrtJournalpost }: IProps) => {
     const { journalpost, journalpostTilgang } = tilgangsstyrtJournalpost;
 
     const hentPdfDokument = (dokumentId: string | undefined) => {

@@ -1,13 +1,17 @@
 import { useEffect } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../../context/AppContext';
-import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
+import { HentFagsakQueryKeyFactory } from '../../../../../hooks/useHentFagsak';
+import { HentKlagebehandlingerQueryKeyFactory } from '../../../../../hooks/useHentKlagebehandlinger';
+import { HentKontantstøttebehandlingerQueryKeyFactory } from '../../../../../hooks/useHentKontantstøttebehandlinger';
+import { HentTilbakekrevingsbehandlingerQueryKeyFactory } from '../../../../../hooks/useHentTilbakekrevingsbehandlinger';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling, IRestNyBehandling } from '../../../../../typer/behandling';
 import { Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
@@ -15,12 +19,9 @@ import type { IBehandlingstema } from '../../../../../typer/behandlingstema';
 import { Klagebehandlingstype } from '../../../../../typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
 import type { IsoDatoString } from '../../../../../utils/dato';
-import {
-    dateTilIsoDatoString,
-    dateTilIsoDatoStringEllerUndefined,
-    validerGyldigDato,
-} from '../../../../../utils/dato';
+import { dateTilIsoDatoString, dateTilIsoDatoStringEllerUndefined, validerGyldigDato } from '../../../../../utils/dato';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useFagsakContext } from '../../../FagsakContext';
 
 interface IOpprettBehandlingSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
@@ -39,16 +40,14 @@ const useOpprettBehandling = ({
 }) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { settÅpenBehandling } = useBehandlingContext();
-    const { bruker: brukerRessurs } = useFagsakContext();
+    const { fagsak, bruker: brukerRessurs } = useFagsakContext();
     const { innloggetSaksbehandler } = useAppContext();
-    const { oppdaterKlagebehandlingerPåFagsak } = useFagsakContext();
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
     const bruker = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data : undefined;
 
-    const behandlingstype = useFelt<
-        Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''
-    >({
+    const behandlingstype = useFelt<Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''>({
         verdi: '',
         valideringsfunksjon: felt => {
             return felt.verdi !== ''
@@ -79,10 +78,7 @@ const useOpprettBehandling = ({
         skalFeltetVises: avhengigheter => {
             const { verdi: behandlingstypeVerdi } = avhengigheter.behandlingstype;
             const { verdi: behandlingsårsakVerdi } = avhengigheter.behandlingsårsak;
-            return (
-                behandlingstypeVerdi in Behandlingstype &&
-                behandlingsårsakVerdi === BehandlingÅrsak.SØKNAD
-            );
+            return behandlingstypeVerdi in Behandlingstype && behandlingsårsakVerdi === BehandlingÅrsak.SØKNAD;
         },
     });
 
@@ -106,8 +102,7 @@ const useOpprettBehandling = ({
         valideringsfunksjon: validerGyldigDato,
 
         avhengigheter: { behandlingstype },
-        skalFeltetVises: avhengigheter =>
-            avhengigheter.behandlingstype.verdi === Klagebehandlingstype.KLAGE,
+        skalFeltetVises: avhengigheter => avhengigheter.behandlingstype.verdi === Klagebehandlingstype.KLAGE,
     });
 
     const { skjema, nullstillSkjema, kanSendeSkjema, onSubmit, settSubmitRessurs } = useSkjema<
@@ -141,9 +136,11 @@ const useOpprettBehandling = ({
             },
             response => {
                 if (response.status === RessursStatus.SUKSESS) {
-                    oppdaterKlagebehandlingerPåFagsak();
                     lukkModal();
                     nullstillSkjema();
+                    queryClient.invalidateQueries({
+                        queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(fagsak.id),
+                    });
                 }
             }
         );
@@ -160,6 +157,9 @@ const useOpprettBehandling = ({
                 if (response.status === RessursStatus.SUKSESS) {
                     nullstillSkjemaStatus();
                     onOpprettTilbakekrevingSuccess();
+                    queryClient.invalidateQueries({
+                        queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsak.id),
+                    });
                 }
             }
         );
@@ -174,9 +174,7 @@ const useOpprettBehandling = ({
                     behandlingType: behandlingstype.verdi as Behandlingstype,
                     behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,
                     saksbehandlerIdent: innloggetSaksbehandler?.navIdent,
-                    søknadMottattDato: dateTilIsoDatoStringEllerUndefined(
-                        skjema.felter.søknadMottattDato.verdi
-                    ),
+                    søknadMottattDato: dateTilIsoDatoStringEllerUndefined(skjema.felter.søknadMottattDato.verdi),
                 },
                 method: 'POST',
                 url: '/familie-ks-sak/api/behandlinger',
@@ -186,17 +184,21 @@ const useOpprettBehandling = ({
                     lukkModal();
                     nullstillSkjema();
 
+                    queryClient.invalidateQueries({
+                        queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsak.id),
+                    });
+
+                    queryClient.invalidateQueries({
+                        queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id),
+                    });
+
                     settÅpenBehandling(response);
                     const behandling: IBehandling | undefined = hentDataFraRessurs(response);
 
                     if (behandling && behandling.årsak === BehandlingÅrsak.SØKNAD) {
-                        navigate(
-                            `/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`
-                        );
+                        navigate(`/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`);
                     } else {
-                        navigate(
-                            `/fagsak/${fagsakId}/${behandling?.behandlingId}/vilkaarsvurdering`
-                        );
+                        navigate(`/fagsak/${fagsakId}/${behandling?.behandlingId}/vilkaarsvurdering`);
                     }
                 }
             }

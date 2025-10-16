@@ -1,9 +1,4 @@
-import React from 'react';
-
-import {
-    bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår,
-    useBorMedSøker,
-} from './BorMedSøkerContext';
+import { bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår, useBorMedSøker } from './BorMedSøkerContext';
 import type { Regelverk } from '../../../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
@@ -13,7 +8,7 @@ import { VilkårSkjema } from '../../VilkårSkjema';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
-export const BorMedSøker: React.FC<BosattIRiketProps> = ({
+export const BorMedSøker = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,

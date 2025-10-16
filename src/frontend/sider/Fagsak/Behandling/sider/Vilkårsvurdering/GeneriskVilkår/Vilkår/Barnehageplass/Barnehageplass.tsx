@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import styled from 'styled-components';
 
@@ -19,7 +19,7 @@ const StyledTextField = styled(TextField)`
 
 type BarnehageplassProps = IVilkårSkjemaBaseProps;
 
-export const Barnehageplass: React.FC<BarnehageplassProps> = ({
+export const Barnehageplass = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
@@ -28,12 +28,8 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
-    const {
-        vilkårSkjemaContext,
-        finnesEndringerSomIkkeErLagret,
-        harBarnehageplass,
-        settHarBarnehageplass,
-    } = useBarnehageplass(lagretVilkårResultat, person);
+    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, harBarnehageplass, settHarBarnehageplass } =
+        useBarnehageplass(lagretVilkårResultat, person);
 
     const skjema = vilkårSkjemaContext.skjema;
 
@@ -85,9 +81,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                 vilkårSkjemaContext={vilkårSkjemaContext}
                 visVurderesEtter={false}
                 visSpørsmål={false}
-                muligeUtdypendeVilkårsvurderinger={
-                    harBarnehageplass ? [] : muligeUtdypendeVilkårsvurderinger
-                }
+                muligeUtdypendeVilkårsvurderinger={harBarnehageplass ? [] : muligeUtdypendeVilkårsvurderinger}
                 lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
                 toggleForm={toggleForm}
@@ -103,9 +97,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
                                 </BodyShort>
                             )}
                             <Checkbox
-                                defaultChecked={
-                                    skjema.felter.søkerHarMeldtFraOmBarnehageplass.verdi
-                                }
+                                defaultChecked={skjema.felter.søkerHarMeldtFraOmBarnehageplass.verdi}
                                 onChange={event => {
                                     skjema.felter.søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(
                                         event.target.checked
@@ -120,11 +112,7 @@ export const Barnehageplass: React.FC<BarnehageplassProps> = ({
             >
                 <RadioGroup
                     legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål() : ''}
-                    value={
-                        skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT
-                            ? harBarnehageplass
-                            : undefined
-                    }
+                    value={skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT ? harBarnehageplass : undefined}
                     error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
                     readOnly={erLesevisning}
                 >

@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react';
-import React from 'react';
 
 import styled from 'styled-components';
 
@@ -33,14 +32,14 @@ const DivMedHøyremargin = styled.div`
     align-items: center;
 `;
 
-const TidslinjeNavigering: React.FC<IProps> = ({
+const TidslinjeNavigering = ({
     naviger,
     kanNavigereTilHøyre = true,
     kanNavigereTilVenstre = true,
     navigerTilVenstreTittel,
     navigerTilHyøyreTittel,
     children,
-}) => {
+}: IProps) => {
     return (
         <StyledTidslinjenavigering className={'tidslinje-header__navigering'}>
             <Button
@@ -52,9 +51,7 @@ const TidslinjeNavigering: React.FC<IProps> = ({
             >
                 <FamilieChevron title={'Naviger til venstre'} retning={'venstre'} />
                 <span className="sr-only">
-                    {navigerTilVenstreTittel
-                        ? navigerTilVenstreTittel
-                        : 'Naviger til venstre i tidslinjen'}
+                    {navigerTilVenstreTittel ? navigerTilVenstreTittel : 'Naviger til venstre i tidslinjen'}
                 </span>
             </Button>
             {children && <DivMedHøyremargin>{children}</DivMedHøyremargin>}
@@ -67,9 +64,7 @@ const TidslinjeNavigering: React.FC<IProps> = ({
             >
                 <FamilieChevron title={'Naviger til høyre'} />
                 <span className="sr-only">
-                    {navigerTilHyøyreTittel
-                        ? navigerTilHyøyreTittel
-                        : 'Naviger til høyre i tidslinjen'}
+                    {navigerTilHyøyreTittel ? navigerTilHyøyreTittel : 'Naviger til høyre i tidslinjen'}
                 </span>
             </Button>
         </StyledTidslinjenavigering>

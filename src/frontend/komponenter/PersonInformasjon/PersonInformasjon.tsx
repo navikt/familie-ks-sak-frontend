@@ -1,11 +1,9 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { BodyShort, CopyButton, Heading, HStack } from '@navikt/ds-react';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useFagsakContext } from '../../context/fagsak/FagsakContext';
+import { useFagsakContext } from '../../sider/Fagsak/FagsakContext';
 import { type IGrunnlagPerson, type IPersonInfo, personTypeMap } from '../../typer/person';
 import { formaterIdent, hentAlder } from '../../utils/formatter';
 import { erAdresseBeskyttet } from '../../utils/validators';
@@ -31,9 +29,7 @@ const hentAdresseBeskyttelseGradering = (
     if (brukerRessurs.status === RessursStatus.SUKSESS) {
         const bruker = brukerRessurs.data;
         const forelderBarnRelasjoner = brukerRessurs.data.forelderBarnRelasjon;
-        const forelderBarnRelasjon = forelderBarnRelasjoner.find(
-            rel => rel.personIdent === personIdent
-        );
+        const forelderBarnRelasjon = forelderBarnRelasjoner.find(rel => rel.personIdent === personIdent);
 
         if (bruker.personIdent === personIdent) {
             return erAdresseBeskyttet(bruker.adressebeskyttelseGradering);
@@ -43,7 +39,7 @@ const hentAdresseBeskyttelseGradering = (
     }
 };
 
-const Skillelinje: React.FC<{ erHeading?: boolean }> = ({ erHeading = false }) => {
+const Skillelinje = ({ erHeading = false }: { erHeading?: boolean }) => {
     if (erHeading) {
         return (
             <Heading level="2" size="medium" as="span">
@@ -54,15 +50,14 @@ const Skillelinje: React.FC<{ erHeading?: boolean }> = ({ erHeading = false }) =
     return <BodyShort>|</BodyShort>;
 };
 
-const PersonInformasjon: React.FunctionComponent<IProps> = ({ person, somOverskrift = false }) => {
+const PersonInformasjon = ({ person, somOverskrift = false }: IProps) => {
     const alder = hentAlder(person.fødselsdato);
     const navnOgAlder = `${person.navn} (${alder} år)`;
     const formatertIdent = formaterIdent(person.personIdent);
     const { bruker: brukerRessurs } = useFagsakContext();
 
     const erAdresseBeskyttet = hentAdresseBeskyttelseGradering(brukerRessurs, person.personIdent);
-    const erEgenAnsatt =
-        brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data.erEgenAnsatt : false;
+    const erEgenAnsatt = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data.erEgenAnsatt : false;
 
     if (somOverskrift) {
         return (
@@ -86,12 +81,8 @@ const PersonInformasjon: React.FunctionComponent<IProps> = ({ person, somOverskr
                         <CopyButton size="small" copyText={person.personIdent} />
                     </HStack>
                     <Skillelinje erHeading />
-                    <Heading level="2" size="medium" as="span">{`${
-                        personTypeMap[person.type]
-                    } `}</Heading>
-                    {person.dødsfallDato?.length && (
-                        <DødsfallTag dødsfallDato={person.dødsfallDato} />
-                    )}
+                    <Heading level="2" size="medium" as="span">{`${personTypeMap[person.type]} `}</Heading>
+                    {person.dødsfallDato?.length && <DødsfallTag dødsfallDato={person.dødsfallDato} />}
                 </HStack>
             </HStack>
         );

@@ -10,10 +10,7 @@ const millisekunderIEttÅr = 3.15576e10;
 
 export const hentAlder = (fødselsdato: string): number => {
     return fødselsdato !== ''
-        ? Math.floor(
-              differenceInMilliseconds(hentDagensDato(), isoStringTilDate(fødselsdato)) /
-                  millisekunderIEttÅr
-          )
+        ? Math.floor(differenceInMilliseconds(hentDagensDato(), isoStringTilDate(fødselsdato)) / millisekunderIEttÅr)
         : 0;
 };
 
@@ -55,24 +52,19 @@ export const formaterIdent = (personIdent: string | undefined, ukjentTekst = 'Uk
           : ukjentTekst;
 };
 
-export const formaterIdenter = (personIdenter: string[]) =>
-    personIdenter.map(ident => formaterIdent(ident)).join(', ');
+export const formaterIdenter = (personIdenter: string[]) => personIdenter.map(ident => formaterIdent(ident)).join(', ');
 
 export const lagPersonLabel = (ident: string, personer: IGrunnlagPerson[]): string => {
     const person = personer.find(person => person.personIdent === ident);
     if (person) {
-        return `${person.navn} (${hentAlder(person.fødselsdato)} år) ${formaterIdent(
-            person.personIdent
-        )}`;
+        return `${person.navn} (${hentAlder(person.fødselsdato)} år) ${formaterIdent(person.personIdent)}`;
     } else {
         return ident;
     }
 };
 
 export const lagBarnLabel = (barn: IBarnMedOpplysninger): string => {
-    return `${barn.navn ?? 'Navn ukjent'} (${hentAlderSomString(
-        barn.fødselsdato
-    )}) | ${formaterIdent(barn.ident)}`;
+    return `${barn.navn ?? 'Navn ukjent'} (${hentAlderSomString(barn.fødselsdato)}) | ${formaterIdent(barn.ident)}`;
 };
 
 export const sorterPåDato = (datoStringA: string, datoStringB: string) => {
@@ -82,10 +74,7 @@ export const sorterPåDato = (datoStringA: string, datoStringB: string) => {
     return isBefore(datoA, datoB) ? 1 : -1;
 };
 
-export const sorterPersonTypeOgFødselsdato = (
-    personA: IGrunnlagPerson,
-    personB: IGrunnlagPerson
-) => {
+export const sorterPersonTypeOgFødselsdato = (personA: IGrunnlagPerson, personB: IGrunnlagPerson) => {
     if (personA.type === PersonType.SØKER) return -1;
     else if (personB.type === PersonType.SØKER) return 1;
     else return sorterPåDato(personA.fødselsdato, personB.fødselsdato);
@@ -95,10 +84,7 @@ export const sorterUtbetaling = (
     utbetalingsperiodeDetaljA: IUtbetalingsperiodeDetalj,
     utbetalingsperiodeDetaljB: IUtbetalingsperiodeDetalj
 ) => {
-    return sorterPåDato(
-        utbetalingsperiodeDetaljA.person.fødselsdato,
-        utbetalingsperiodeDetaljB.person.fødselsdato
-    );
+    return sorterPåDato(utbetalingsperiodeDetaljA.person.fødselsdato, utbetalingsperiodeDetaljB.person.fødselsdato);
 };
 
 export const slåSammenListeTilStreng = (liste: string[]) => {

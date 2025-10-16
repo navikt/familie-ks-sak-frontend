@@ -1,9 +1,4 @@
-import React from 'react';
-
-import {
-    bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår,
-    useBosattIRiket,
-} from './BosattIRiketContext';
+import { bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår, useBosattIRiket } from './BosattIRiketContext';
 import type { Regelverk } from '../../../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
@@ -13,7 +8,7 @@ import { VilkårSkjema } from '../../VilkårSkjema';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
-export const BosattIRiket: React.FC<BosattIRiketProps> = ({
+export const BosattIRiket = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
@@ -53,10 +48,7 @@ export const BosattIRiket: React.FC<BosattIRiketProps> = ({
                 settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                 oppdaterMuligeUtdypendeVilkårsvurderinger={(vurderesEtter: Regelverk): void => {
                     settMuligeUtdypendeVilkårsvurderinger(
-                        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
-                            vurderesEtter,
-                            person
-                        )
+                        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(vurderesEtter, person)
                     );
                 }}
             />

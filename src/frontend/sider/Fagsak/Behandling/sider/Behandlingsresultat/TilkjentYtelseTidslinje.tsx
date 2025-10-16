@@ -1,11 +1,8 @@
-import React from 'react';
-
 import { endOfMonth } from 'date-fns';
 import styled from 'styled-components';
 
 import { BodyShort, Heading } from '@navikt/ds-react';
-import { Tidslinje } from '@navikt/familie-tidslinje';
-import type { Etikett } from '@navikt/familie-tidslinje';
+import { type Etikett, Tidslinje } from '@navikt/familie-tidslinje';
 
 import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import TidslinjeEtikett from '../../../../../komponenter/Tidslinje/TidslinjeEtikett';
@@ -61,7 +58,7 @@ interface IProps {
     tidslinjePersoner: IPersonMedAndelerTilkjentYtelse[];
 }
 
-const TilkjentYtelseTidslinje: React.FC<IProps> = ({ grunnlagPersoner, tidslinjePersoner }) => {
+const TilkjentYtelseTidslinje = ({ grunnlagPersoner, tidslinjePersoner }: IProps) => {
     const { genererFormatertÅrstall, genererRader, aktivEtikett, aktivtTidslinjeVindu, naviger } =
         useTidslinjeContext();
     const tidslinjeRader = genererRader(tidslinjePersoner);

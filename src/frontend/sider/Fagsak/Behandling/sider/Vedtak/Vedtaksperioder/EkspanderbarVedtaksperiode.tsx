@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react';
-import React from 'react';
 
 import { endOfMonth, isAfter, isSameDay } from 'date-fns';
 import styled from 'styled-components';
@@ -7,17 +6,14 @@ import styled from 'styled-components';
 import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
 
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
-import {
-    hentVedtaksperiodeTittel,
-    Vedtaksperiodetype,
-} from '../../../../../../typer/vedtaksperiode';
+import { hentVedtaksperiodeTittel, Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 import {
     hentDagensDato,
-    isoStringTilDateMedFallback,
-    tidenesEnde,
     isoDatoPeriodeTilFormatertString,
-    parseFraOgMedDato,
     type IsoDatoString,
+    isoStringTilDateMedFallback,
+    parseFraOgMedDato,
+    tidenesEnde,
 } from '../../../../../../utils/dato';
 import { formaterBeløp, summer } from '../../../../../../utils/formatter';
 
@@ -48,10 +44,7 @@ const erSammeFom = (dato1?: IsoDatoString, dato2?: IsoDatoString): boolean =>
     isSameDay(parseFraOgMedDato(dato1), parseFraOgMedDato(dato2));
 
 const slutterSenereEnnInneværendeMåned = (tom?: string) =>
-    isAfter(
-        isoStringTilDateMedFallback({ isoString: tom, fallbackDate: tidenesEnde }),
-        endOfMonth(hentDagensDato())
-    );
+    isAfter(isoStringTilDateMedFallback({ isoString: tom, fallbackDate: tidenesEnde }), endOfMonth(hentDagensDato()));
 
 const finnPresentertTomDato = (
     vedtaksperiodeInneholderOvergangsordningBegrunnelse: boolean,
@@ -69,14 +62,14 @@ const finnPresentertTomDato = (
     return periodeTom;
 };
 
-const EkspanderbarVedtaksperiode: React.FC<EkspanderbarVedtaksperiodeProps> = ({
+const EkspanderbarVedtaksperiode = ({
     vedtaksperiodeMedBegrunnelser,
     sisteVedtaksperiodeFom,
     vedtaksperiodeInneholderOvergangsordningBegrunnelse,
     åpen,
     onClick,
     children,
-}) => {
+}: EkspanderbarVedtaksperiodeProps) => {
     const periode = {
         fom: vedtaksperiodeMedBegrunnelser.fom,
         tom: vedtaksperiodeMedBegrunnelser.tom,
@@ -113,8 +106,7 @@ const EkspanderbarVedtaksperiode: React.FC<EkspanderbarVedtaksperiodeProps> = ({
                                 {formaterBeløp(
                                     summer(
                                         vedtaksperiodeMedBegrunnelser.utbetalingsperiodeDetaljer.map(
-                                            utbetalingsperiodeDetalj =>
-                                                utbetalingsperiodeDetalj.utbetaltPerMnd
+                                            utbetalingsperiodeDetalj => utbetalingsperiodeDetalj.utbetaltPerMnd
                                         )
                                     )
                                 )}

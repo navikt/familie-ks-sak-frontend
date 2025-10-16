@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
@@ -22,11 +20,10 @@ const Container = styled.div`
     height: calc(100vh - ${fagsakHeaderHøydeRem}rem);
 `;
 
-const Dokumentutsending: React.FC<Props> = ({ bruker }) => {
+const Dokumentutsending = ({ bruker }: Props) => {
     const navigate = useNavigate();
 
-    const { fagsakId, hentetDokument, settVisInnsendtBrevModal, visInnsendtBrevModal } =
-        useDokumentutsendingContext();
+    const { fagsakId, hentetDokument, settVisInnsendtBrevModal, visInnsendtBrevModal } = useDokumentutsendingContext();
 
     return (
         <Container>

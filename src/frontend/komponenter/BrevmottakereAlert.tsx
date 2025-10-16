@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 
 import { useLocation } from 'react-router';
@@ -40,9 +39,7 @@ const StyledAlert = styled(Alert)`
     margin-bottom: 1.5rem;
 `;
 
-export const BrevmottakereAlert: React.FC<
-    BrevmottakereAlertBehandlingProps | BrevmottakereAlertFagsakProps
-> = props => {
+export const BrevmottakereAlert = (props: BrevmottakereAlertBehandlingProps | BrevmottakereAlertFagsakProps) => {
     const location = useLocation();
     const [visManuelleMottakereModal, settVisManuelleMottakereModal] = useState(false);
 
@@ -62,9 +59,7 @@ export const BrevmottakereAlert: React.FC<
         <>
             {brevmottakere && brevmottakere.length !== 0 && (
                 <StyledAlert variant="info" className={props.className}>
-                    {`Brevmottaker(e) er endret, og ${hentBrevtypetekst(
-                        location.pathname
-                    )} sendes til:`}
+                    {`Brevmottaker(e) er endret, og ${hentBrevtypetekst(location.pathname)} sendes til:`}
                     <BrevmottakerListe brevmottakere={brevmottakere} bruker={props.bruker} />
                     <Button
                         variant={'tertiary'}
@@ -85,9 +80,7 @@ export const BrevmottakereAlert: React.FC<
                         erLesevisning={props.erLesevisning}
                     />
                 ) : (
-                    <LeggTilBrevmottakerModalFagsak
-                        lukkModal={() => settVisManuelleMottakereModal(false)}
-                    />
+                    <LeggTilBrevmottakerModalFagsak lukkModal={() => settVisManuelleMottakereModal(false)} />
                 ))}
         </>
     );

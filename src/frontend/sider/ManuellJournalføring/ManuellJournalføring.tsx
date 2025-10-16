@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
@@ -7,10 +5,7 @@ import { Journalstatus, RessursStatus } from '@navikt/familie-typer';
 
 import { DokumentPanel } from './Dokument/DokumentPanel';
 import { JournalpostSkjema } from './JournalpostSkjema';
-import {
-    ManuellJournalføringProvider,
-    useManuellJournalføringContext,
-} from './ManuellJournalføringContext';
+import { ManuellJournalføringProvider, useManuellJournalføringContext } from './ManuellJournalføringContext';
 import { fagsakHeaderHøydeRem } from '../../typer/styling';
 import Personlinje from '../Fagsak/Personlinje/Personlinje';
 
@@ -18,26 +13,20 @@ const ToKolonnerDiv = styled.div<{ $viserAlert?: boolean }>`
     display: grid;
     grid-template-columns: 40rem 1fr;
     grid-template-rows: 1fr;
-    height: calc(
-        100vh -
-            ${props => (props.$viserAlert ? fagsakHeaderHøydeRem + 5.25 : fagsakHeaderHøydeRem)}rem
-    );
+    height: calc(100vh - ${props => (props.$viserAlert ? fagsakHeaderHøydeRem + 5.25 : fagsakHeaderHøydeRem)}rem);
 `;
 
-const ManuellJournalføringContent: React.FC = () => {
+const ManuellJournalføringContent = () => {
     const { dataForManuellJournalføring } = useManuellJournalføringContext();
 
     switch (dataForManuellJournalføring.status) {
         case RessursStatus.SUKSESS:
-            const viserAlert =
-                dataForManuellJournalføring.data.journalpost.journalstatus !==
-                Journalstatus.MOTTATT;
+            const viserAlert = dataForManuellJournalføring.data.journalpost.journalstatus !== Journalstatus.MOTTATT;
             return (
                 <>
                     <Personlinje bruker={dataForManuellJournalføring.data.person} />
 
-                    {dataForManuellJournalføring.data.journalpost.journalstatus !==
-                        Journalstatus.MOTTATT && (
+                    {dataForManuellJournalføring.data.journalpost.journalstatus !== Journalstatus.MOTTATT && (
                         <>
                             <Alert
                                 variant="warning"
@@ -55,9 +44,7 @@ const ManuellJournalføringContent: React.FC = () => {
             );
         case RessursStatus.FEILET:
         case RessursStatus.FUNKSJONELL_FEIL:
-            return (
-                <Alert variant="error" children={dataForManuellJournalføring.frontendFeilmelding} />
-            );
+            return <Alert variant="error" children={dataForManuellJournalføring.frontendFeilmelding} />;
         case RessursStatus.IKKE_TILGANG:
             return (
                 <Alert
@@ -72,7 +59,7 @@ const ManuellJournalføringContent: React.FC = () => {
     }
 };
 
-const ManuellJournalføring: React.FC = () => {
+const ManuellJournalføring = () => {
     return (
         <ManuellJournalføringProvider>
             <ManuellJournalføringContent />

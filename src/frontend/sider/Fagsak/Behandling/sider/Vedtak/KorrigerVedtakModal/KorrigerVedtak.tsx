@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
 import { Dropdown } from '@navikt/ds-react';
@@ -12,12 +12,8 @@ interface IKorrigerVedtak {
     erLesevisning: boolean;
 }
 
-const KorrigerVedtak: React.FC<IKorrigerVedtak> = ({
-    korrigertVedtak,
-    behandlingId,
-    erLesevisning,
-}) => {
-    const [visModal, settVisModal] = React.useState<boolean>(false);
+const KorrigerVedtak = ({ korrigertVedtak, behandlingId, erLesevisning }: IKorrigerVedtak) => {
+    const [visModal, settVisModal] = useState<boolean>(false);
 
     return (
         <>

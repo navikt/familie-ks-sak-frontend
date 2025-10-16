@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
@@ -18,7 +16,7 @@ const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-export const Medlemskap: React.FC<MedlemskapProps> = ({
+export const Medlemskap = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
@@ -27,8 +25,10 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } =
-        useMedlemskap(lagretVilkårResultat, person);
+    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } = useMedlemskap(
+        lagretVilkårResultat,
+        person
+    );
 
     const skjema = vilkårSkjemaContext.skjema;
 
@@ -79,9 +79,7 @@ export const Medlemskap: React.FC<MedlemskapProps> = ({
                 <RadioGroup
                     legend={
                         <Label>
-                            {vilkårFraConfig.spørsmål
-                                ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
-                                : ''}
+                            {vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
                         </Label>
                     }
                     value={skjema.felter.resultat.verdi}

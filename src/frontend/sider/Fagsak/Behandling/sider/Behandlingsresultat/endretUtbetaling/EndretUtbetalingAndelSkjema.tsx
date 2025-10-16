@@ -1,21 +1,10 @@
-import * as React from 'react';
-import { useEffect } from 'react';
+import { type ChangeEvent, useEffect } from 'react';
 
 import classNames from 'classnames';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import {
-    BodyShort,
-    Button,
-    Checkbox,
-    Fieldset,
-    Label,
-    Radio,
-    RadioGroup,
-    Select,
-    Textarea,
-} from '@navikt/ds-react';
+import { BodyShort, Button, Checkbox, Fieldset, Label, Radio, RadioGroup, Select, Textarea } from '@navikt/ds-react';
 import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
 import type { ISkjema } from '@navikt/familie-skjema';
 
@@ -26,11 +15,12 @@ import Knapperekke from '../../../../../../komponenter/Knapperekke';
 import MånedÅrVelger from '../../../../../../komponenter/MånedÅrInput/MånedÅrVelger';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import {
-    IEndretUtbetalingAndelÅrsak,
-    AVSLAG_ALLEREDE_UTBETALT_SØKER,
     AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
+    AVSLAG_ALLEREDE_UTBETALT_SØKER,
+    IEndretUtbetalingAndelÅrsak,
+    årsaker,
+    årsakTekst,
 } from '../../../../../../typer/utbetalingAndel';
-import { årsaker, årsakTekst } from '../../../../../../typer/utbetalingAndel';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IsoMånedString } from '../../../../../../utils/dato';
 import { lagPersonLabel } from '../../../../../../utils/formatter';
@@ -77,14 +67,14 @@ interface IEndretUtbetalingAndelSkjemaProps {
     slettEndretUtbetaling: () => void;
 }
 
-const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAndelSkjemaProps> = ({
+const EndretUtbetalingAndelSkjema = ({
     åpenBehandling,
     lukkSkjema,
     skjema,
     settFelterTilLagredeVerdier,
     oppdaterEndretUtbetaling,
     slettEndretUtbetaling,
-}) => {
+}: IEndretUtbetalingAndelSkjemaProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
 
     const finnÅrTilbakeTilStønadFra = (): number => {
@@ -166,10 +156,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                     .includes(person.personIdent)
                             )
                             .map((person, index) => (
-                                <option
-                                    value={person.personIdent}
-                                    key={`${index}_${person.fødselsdato}`}
-                                >
+                                <option value={person.personIdent} key={`${index}_${person.fødselsdato}`}>
                                     {lagPersonLabel(person.personIdent, åpenBehandling.personer)}
                                 </option>
                             ))}
@@ -218,9 +205,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         value={skjema.felter.årsak.verdi}
                         label={<Label>Årsak</Label>}
                         onChange={(event): void => {
-                            skjema.felter.årsak.validerOgSettFelt(
-                                event.target.value as IEndretUtbetalingAndelÅrsak
-                            );
+                            skjema.felter.årsak.validerOgSettFelt(event.target.value as IEndretUtbetalingAndelÅrsak);
                         }}
                         readOnly={erLesevisning}
                     >
@@ -237,9 +222,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                     {erLesevisning ? (
                         <>
                             <Label>Utbetaling</Label>
-                            <BodyShort>
-                                {skjema.felter.periodeSkalUtbetalesTilSøker.verdi ? 'Ja' : 'Nei'}
-                            </BodyShort>
+                            <BodyShort>{skjema.felter.periodeSkalUtbetalesTilSøker.verdi ? 'Ja' : 'Nei'}</BodyShort>
                         </>
                     ) : (
                         <RadioGroup
@@ -250,18 +233,10 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                 skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
                             }}
                         >
-                            <Radio
-                                name="utbetaling"
-                                value={true}
-                                id="ja-perioden-utbetales-til-søker"
-                            >
+                            <Radio name="utbetaling" value={true} id="ja-perioden-utbetales-til-søker">
                                 Perioden skal utbetales
                             </Radio>
-                            <Radio
-                                name="utbetaling"
-                                value={false}
-                                id="nei-perioden-skal-ikke-utbetales-til-søker"
-                            >
+                            <Radio name="utbetaling" value={false} id="nei-perioden-skal-ikke-utbetales-til-søker">
                                 Perioden skal ikke utbetales
                             </Radio>
                         </RadioGroup>
@@ -280,9 +255,7 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                                   value="Vurderingen er et avslag"
                                   checked={skjema.felter.erEksplisittAvslagPåSøknad.verdi}
                                   onChange={event =>
-                                      skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
-                                          event.target.checked
-                                      )
+                                      skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(event.target.checked)
                                   }
                               >
                                   Vurderingen er et avslag
@@ -314,12 +287,11 @@ const EndretUtbetalingAndelSkjema: React.FunctionComponent<IEndretUtbetalingAnde
                         placeholder="Begrunn hvorfor utbetalingsperioden er endret."
                         label="Begrunnelse"
                         value={
-                            skjema.felter.begrunnelse.verdi !== null &&
-                            skjema.felter.begrunnelse.verdi !== undefined
+                            skjema.felter.begrunnelse.verdi !== null && skjema.felter.begrunnelse.verdi !== undefined
                                 ? skjema.felter.begrunnelse.verdi
                                 : ''
                         }
-                        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
                             skjema.felter.begrunnelse.validerOgSettFelt(event.target.value);
                         }}
                     />

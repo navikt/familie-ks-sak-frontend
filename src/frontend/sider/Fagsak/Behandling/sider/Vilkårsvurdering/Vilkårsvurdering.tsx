@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import classNames from 'classnames';
 import { useNavigate } from 'react-router';
@@ -43,7 +43,7 @@ interface IProps {
     åpenBehandling: IBehandling;
 }
 
-const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling }) => {
+const Vilkårsvurdering = ({ åpenBehandling }: IProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
 
     const { vilkårsvurdering, feiloppsummeringFeil } = useVilkårsvurderingContext();
@@ -55,18 +55,15 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
     } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
-    const registeropplysningerHentetTidpsunkt =
-        vilkårsvurdering[0]?.person?.registerhistorikk?.hentetTidspunkt;
+    const registeropplysningerHentetTidpsunkt = vilkårsvurdering[0]?.person?.registerhistorikk?.hentetTidspunkt;
 
-    const [visFeilmeldinger, settVisFeilmeldinger] = React.useState(false);
-    const [hentOpplysningerRessurs, settHentOpplysningerRessurs] = React.useState(byggTomRessurs());
+    const [visFeilmeldinger, settVisFeilmeldinger] = useState(false);
+    const [hentOpplysningerRessurs, settHentOpplysningerRessurs] = useState(byggTomRessurs());
 
     const navigate = useNavigate();
 
     const uregistrerteBarn =
-        åpenBehandling.søknadsgrunnlag?.barnaMedOpplysninger.filter(
-            barn => !barn.erFolkeregistrert
-        ) ?? [];
+        åpenBehandling.søknadsgrunnlag?.barnaMedOpplysninger.filter(barn => !barn.erFolkeregistrert) ?? [];
 
     if (vilkårsvurdering.length === 0) {
         return <div>Finner ingen vilkår på behandlingen.</div>;
@@ -117,11 +114,9 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                             title={'Oppdater'}
                             onClick={() => {
                                 settHentOpplysningerRessurs(byggHenterRessurs());
-                                oppdaterRegisteropplysninger().then(
-                                    (response: Ressurs<IBehandling>) => {
-                                        settHentOpplysningerRessurs(response);
-                                    }
-                                );
+                                oppdaterRegisteropplysninger().then((response: Ressurs<IBehandling>) => {
+                                    settHentOpplysningerRessurs(response);
+                                });
                             }}
                             loading={hentOpplysningerRessurs.status === RessursStatus.HENTER}
                             variant="tertiary"
@@ -135,16 +130,12 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                 )}
             </>
 
-            {!erProd() && (
-                <FyllUtVilkårsvurderingITestmiljøKnapp behandlingId={åpenBehandling.behandlingId} />
-            )}
+            {!erProd() && <FyllUtVilkårsvurderingITestmiljøKnapp behandlingId={åpenBehandling.behandlingId} />}
 
             <VilkårsvurderingSkjema />
             {uregistrerteBarn.length > 0 && (
                 <Alert variant="info">
-                    <BodyShort>
-                        Du har registrert følgende barn som ikke er registrert i Folkeregisteret:
-                    </BodyShort>
+                    <BodyShort>Du har registrert følgende barn som ikke er registrert i Folkeregisteret:</BodyShort>
                     <UregistrerteBarnListe>
                         {uregistrerteBarn.map(uregistrertBarn => (
                             <li key={`${uregistrertBarn.navn}_${uregistrertBarn.fødselsdato}`}>
@@ -161,16 +152,11 @@ const Vilkårsvurdering: React.FunctionComponent<IProps> = ({ åpenBehandling })
                     <BodyShort>Dette vil føre til avslag for barna i listen.</BodyShort>
                 </Alert>
             )}
-            <ManglendeSvalbardmerkingVarsel
-                manglendeSvalbardmerking={åpenBehandling.manglendeSvalbardmerking}
-            />
+            <ManglendeSvalbardmerkingVarsel manglendeSvalbardmerking={åpenBehandling.manglendeSvalbardmerking} />
             {erFeilISkjema && visFeilmeldinger && (
                 <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
                     {feiloppsummeringFeil.map(item => (
-                        <ErrorSummary.Item
-                            href={`#${item.skjemaelementId}`}
-                            key={item.skjemaelementId}
-                        >
+                        <ErrorSummary.Item href={`#${item.skjemaelementId}`} key={item.skjemaelementId}>
                             {item.feilmelding}
                         </ErrorSummary.Item>
                     ))}

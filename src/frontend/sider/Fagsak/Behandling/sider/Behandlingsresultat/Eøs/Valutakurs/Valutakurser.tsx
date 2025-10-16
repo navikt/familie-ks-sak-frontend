@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, Heading, Table } from '@navikt/ds-react';
@@ -43,12 +41,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const Valutakurser: React.FC<IProps> = ({
-    valutakurser,
-    erValutakurserGyldige,
-    åpenBehandling,
-    visFeilmeldinger,
-}) => {
+const Valutakurser = ({ valutakurser, erValutakurserGyldige, åpenBehandling, visFeilmeldinger }: IProps) => {
     return (
         <ValutakurserContainer>
             <Heading spacing size="medium" level="3">
@@ -58,18 +51,14 @@ const Valutakurser: React.FC<IProps> = ({
                 <AlertWithBottomMargin
                     variant={'warning'}
                     fullWidth
-                    children={
-                        'For EØS-perioder med overgangsordning skal valutakursdato være 29.11.2024'
-                    }
+                    children={'For EØS-perioder med overgangsordning skal valutakursdato være 29.11.2024'}
                 />
             )}
             {!erValutakurserGyldige() && (
                 <Alert
                     variant={'warning'}
                     fullWidth
-                    children={
-                        'For perioder som skal differanseberegnes, må valutakursdato registeres'
-                    }
+                    children={'For perioder som skal differanseberegnes, må valutakursdato registeres'}
                 />
             )}
             <StyledTable>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { Button, Modal } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
+import type { Ressurs } from '@navikt/familie-typer';
 import {
     byggFeiletRessurs,
     byggFunksjonellFeilRessurs,
@@ -13,7 +14,6 @@ import {
     byggTomRessurs,
     RessursStatus,
 } from '@navikt/familie-typer';
-import type { Ressurs } from '@navikt/familie-typer';
 
 import TotrinnskontrollModalInnhold from './TotrinnskontrollModalInnhold';
 import Totrinnskontrollskjema from './Totrinnskontrollskjema';
@@ -45,24 +45,23 @@ const initiellModalVerdi = {
     beslutning: TotrinnskontrollBeslutning.IKKE_VURDERT,
 };
 
-const Totrinnskontroll: React.FunctionComponent<IProps> = ({ åpenBehandling }) => {
+const Totrinnskontroll = ({ åpenBehandling }: IProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { trinnPåBehandling, settIkkeKontrollerteSiderTilManglerKontroll, settÅpenBehandling } =
         useBehandlingContext();
     const { request } = useHttp();
     const navigate = useNavigate();
 
-    const [innsendtVedtak, settInnsendtVedtak] =
-        React.useState<Ressurs<IBehandling>>(byggTomRessurs());
-    const [modalVerdi, settModalVerdi] = React.useState<IModalVerdier>(initiellModalVerdi);
-    React.useEffect(() => {
+    const [innsendtVedtak, settInnsendtVedtak] = useState<Ressurs<IBehandling>>(byggTomRessurs());
+    const [modalVerdi, settModalVerdi] = useState<IModalVerdier>(initiellModalVerdi);
+    useEffect(() => {
         settModalVerdi({
             ...modalVerdi,
             skalVises: innsendtVedtak.status === RessursStatus.SUKSESS,
         });
     }, [innsendtVedtak.status]);
 
-    const [forrigeState, settForrigeState] = React.useState(trinnPåBehandling);
+    const [forrigeState, settForrigeState] = useState(trinnPåBehandling);
     const nullstillFeilmelding = () => {
         const erFørsteSjekk = Object.entries(forrigeState).some(([sideId, trinn]) => {
             const oppdatertTrinn: ITrinn = Object.entries(trinnPåBehandling)
@@ -80,32 +79,23 @@ const Totrinnskontroll: React.FunctionComponent<IProps> = ({ åpenBehandling }) 
         settForrigeState(trinnPåBehandling);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         nullstillFeilmelding();
     }, [trinnPåBehandling]);
 
-    const sendInnVedtak = (
-        beslutning: TotrinnskontrollBeslutning,
-        begrunnelse: string,
-        egetVedtak: boolean
-    ) => {
+    const sendInnVedtak = (beslutning: TotrinnskontrollBeslutning, begrunnelse: string, egetVedtak: boolean) => {
         if (
             !egetVedtak &&
-            Object.values(trinnPåBehandling).some(
-                trinn => trinn.kontrollert !== KontrollertStatus.KONTROLLERT
-            )
+            Object.values(trinnPåBehandling).some(trinn => trinn.kontrollert !== KontrollertStatus.KONTROLLERT)
         ) {
             settIkkeKontrollerteSiderTilManglerKontroll();
-            settInnsendtVedtak(
-                byggFunksjonellFeilRessurs('Du må kontrollere alle steg i løsningen.')
-            );
+            settInnsendtVedtak(byggFunksjonellFeilRessurs('Du må kontrollere alle steg i løsningen.'));
             return;
         }
 
         settInnsendtVedtak(byggHenterRessurs());
         settModalVerdi({ ...modalVerdi, beslutning });
-        const manglerBegrunnelse =
-            beslutning === TotrinnskontrollBeslutning.UNDERKJENT && !begrunnelse;
+        const manglerBegrunnelse = beslutning === TotrinnskontrollBeslutning.UNDERKJENT && !begrunnelse;
         if (beslutning === TotrinnskontrollBeslutning.IKKE_VURDERT) {
             settInnsendtVedtak(byggFeiletRessurs('Totrinnskontroll ikke vurdert ved innsending'));
         } else if (manglerBegrunnelse) {

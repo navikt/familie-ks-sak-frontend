@@ -1,4 +1,4 @@
-import React, { type JSX } from 'react';
+import type { JSX } from 'react';
 
 import styled from 'styled-components';
 
@@ -17,16 +17,10 @@ const DatoVelgerContainer = styled.div`
     max-width: 12.5rem;
 `;
 
-const FilterSkjema: React.FunctionComponent = () => {
+const FilterSkjema = () => {
     const { innloggetSaksbehandler } = useAppContext();
-    const {
-        hentOppgaver,
-        oppgaver,
-        oppgaveFelter,
-        settVerdiPåOppgaveFelt,
-        tilbakestillOppgaveFelter,
-        validerSkjema,
-    } = useOppgavebenkContext();
+    const { hentOppgaver, oppgaver, oppgaveFelter, settVerdiPåOppgaveFelt, tilbakestillOppgaveFelter, validerSkjema } =
+        useOppgavebenkContext();
 
     function tilOppgaveFeltKomponent(oppgaveFelt: IOppgaveFelt): JSX.Element | null {
         switch (oppgaveFelt.filter?.type) {
@@ -40,9 +34,7 @@ const FilterSkjema: React.FunctionComponent = () => {
                                 settVerdiPåOppgaveFelt(oppgaveFelt, dato ? dato : '');
                             }}
                             value={oppgaveFelt.filter.selectedValue}
-                            visFeilmeldinger={
-                                oppgaveFelt.valideringsstatus === Valideringsstatus.FEIL
-                            }
+                            visFeilmeldinger={oppgaveFelt.valideringsstatus === Valideringsstatus.FEIL}
                             feilmelding={oppgaveFelt.feilmelding}
                         />
                     </DatoVelgerContainer>
@@ -52,9 +44,7 @@ const FilterSkjema: React.FunctionComponent = () => {
                     <div key={oppgaveFelt.nøkkel}>
                         <Select
                             label={oppgaveFelt.label}
-                            onChange={event =>
-                                settVerdiPåOppgaveFelt(oppgaveFelt, event.target.value)
-                            }
+                            onChange={event => settVerdiPåOppgaveFelt(oppgaveFelt, event.target.value)}
                             value={oppgaveFelt.filter.selectedValue}
                             error={
                                 oppgaveFelt.valideringsstatus === Valideringsstatus.FEIL
@@ -66,16 +56,13 @@ const FilterSkjema: React.FunctionComponent = () => {
                             {oppgaveFelt.filter.nøkkelPar &&
                                 Object.values(oppgaveFelt.filter.nøkkelPar)
                                     .filter((par: IPar) =>
-                                        oppgaveFelt.erSynlig
-                                            ? oppgaveFelt.erSynlig(par, innloggetSaksbehandler)
-                                            : true
+                                        oppgaveFelt.erSynlig ? oppgaveFelt.erSynlig(par, innloggetSaksbehandler) : true
                                     )
                                     .map((par: IPar) => {
                                         return (
                                             <option
                                                 aria-selected={
-                                                    oppgaveFelt.filter &&
-                                                    oppgaveFelt.filter.selectedValue === par.id
+                                                    oppgaveFelt.filter && oppgaveFelt.filter.selectedValue === par.id
                                                 }
                                                 key={par.id}
                                                 value={par.id}

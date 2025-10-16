@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { SkjemaBrevmottaker } from '../../../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import { Mottaker } from '../../../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IPersonInfo } from '../../../typer/person';
@@ -10,15 +8,13 @@ interface IProps {
     brevmottakere: SkjemaBrevmottaker[];
 }
 
-const BrevmottakerListe: React.FC<IProps> = ({ bruker, brevmottakere }) => {
+const BrevmottakerListe = ({ bruker, brevmottakere }: IProps) => {
     const harUtenlandskAdresse = brevmottakere.some(
         mottaker => mottaker.type === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE
     );
     const harFullmektig = brevmottakere.some(mottaker => mottaker.type === Mottaker.FULLMEKTIG);
     const harVerge = brevmottakere.some(mottaker => mottaker.type === Mottaker.VERGE);
-    const harManuellDødsboadresse = brevmottakere.some(
-        mottaker => mottaker.type === Mottaker.DØDSBO
-    );
+    const harManuellDødsboadresse = brevmottakere.some(mottaker => mottaker.type === Mottaker.DØDSBO);
 
     const skalViseSøker = !harManuellDødsboadresse && !harUtenlandskAdresse;
 
@@ -37,15 +33,11 @@ const BrevmottakerListe: React.FC<IProps> = ({ bruker, brevmottakere }) => {
             {harFullmektig &&
                 brevmottakere
                     .filter(mottaker => mottaker.type === Mottaker.FULLMEKTIG)
-                    .map(mottaker => (
-                        <li key={`fullmektig-${mottaker.navn}`}>{mottaker.navn} | Fullmektig</li>
-                    ))}
+                    .map(mottaker => <li key={`fullmektig-${mottaker.navn}`}>{mottaker.navn} | Fullmektig</li>)}
             {harVerge &&
                 brevmottakere
                     .filter(mottaker => mottaker.type === Mottaker.VERGE)
-                    .map(mottaker => (
-                        <li key={`verge-${mottaker.navn}`}>{mottaker.navn} | Verge</li>
-                    ))}
+                    .map(mottaker => <li key={`verge-${mottaker.navn}`}>{mottaker.navn} | Verge</li>)}
         </ul>
     );
 };

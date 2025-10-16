@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { isBefore, subDays } from 'date-fns';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
-import { Button, Fieldset, Dropdown, Modal, Alert } from '@navikt/ds-react';
+import { Alert, Button, Dropdown, Fieldset, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';
@@ -30,10 +30,9 @@ interface IProps {
     minimalFagsak: IMinimalFagsak;
 }
 
-const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
+const OpprettBehandling = ({ minimalFagsak }: IProps) => {
     const [visModal, settVisModal] = useState(false);
-    const [visBekreftelseTilbakekrevingModal, settVisBekreftelseTilbakekrevingModal] =
-        useState(false);
+    const [visBekreftelseTilbakekrevingModal, settVisBekreftelseTilbakekrevingModal] = useState(false);
     const navigate = useNavigate();
 
     const { onBekreft, opprettBehandlingSkjema, nullstillSkjemaStatus } = useOpprettBehandling({
@@ -51,16 +50,11 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
 
     const søknadMottattDatoErMerEnn360DagerSiden =
         opprettBehandlingSkjema.felter.søknadMottattDato.verdi &&
-        isBefore(
-            opprettBehandlingSkjema.felter.søknadMottattDato.verdi,
-            subDays(hentDagensDato(), 360)
-        );
+        isBefore(opprettBehandlingSkjema.felter.søknadMottattDato.verdi, subDays(hentDagensDato(), 360));
 
     return (
         <>
-            <Dropdown.Menu.List.Item onClick={() => settVisModal(true)}>
-                Opprett behandling
-            </Dropdown.Menu.List.Item>
+            <Dropdown.Menu.List.Item onClick={() => settVisModal(true)}>Opprett behandling</Dropdown.Menu.List.Item>
 
             {visModal && (
                 <Modal
@@ -87,9 +81,7 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
 
                             {opprettBehandlingSkjema.felter.behandlingsårsak.erSynlig && (
                                 <BehandlingårsakFelt
-                                    behandlingsårsak={
-                                        opprettBehandlingSkjema.felter.behandlingsårsak
-                                    }
+                                    behandlingsårsak={opprettBehandlingSkjema.felter.behandlingsårsak}
                                     visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                                 />
                             )}
@@ -135,14 +127,8 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                             size="small"
                             onClick={() => onBekreft(minimalFagsak.søkerFødselsnummer)}
                             children={'Bekreft'}
-                            loading={
-                                opprettBehandlingSkjema.submitRessurs.status ===
-                                RessursStatus.HENTER
-                            }
-                            disabled={
-                                opprettBehandlingSkjema.submitRessurs.status ===
-                                RessursStatus.HENTER
-                            }
+                            loading={opprettBehandlingSkjema.submitRessurs.status === RessursStatus.HENTER}
+                            disabled={opprettBehandlingSkjema.submitRessurs.status === RessursStatus.HENTER}
                         />
                         <Button
                             key={'avbryt'}
@@ -168,8 +154,8 @@ const OpprettBehandling: React.FC<IProps> = ({ minimalFagsak }) => {
                     width={'35rem'}
                 >
                     <Modal.Body>
-                        Tilbakekrevingsbehandling opprettes, men det kan ta litt tid (ca 30
-                        sekunder) før den blir tilgjengelig i saksoversikten og oppgavebenken.
+                        Tilbakekrevingsbehandling opprettes, men det kan ta litt tid (ca 30 sekunder) før den blir
+                        tilgjengelig i saksoversikten og oppgavebenken.
                     </Modal.Body>
                     <Modal.Footer>
                         <Button

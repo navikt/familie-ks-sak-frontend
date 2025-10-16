@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import deepEqual from 'deep-equal';
 import styled from 'styled-components';
@@ -11,7 +11,7 @@ import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
 import ManuellVurdering from '../../../../../../ikoner/ManuellVurdering';
 import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import type { IAnnenVurderingConfig, IAnnenVurdering } from '../../../../../../typer/vilkår';
+import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../../../typer/vilkår';
 import { Resultat, uiResultat } from '../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
@@ -27,26 +27,17 @@ const BeskrivelseCelle = styled(BodyShort)`
     text-overflow: ellipsis;
 `;
 
-const AnnenVurderingTabellRad: React.FC<IProps> = ({
-    person,
-    annenVurderingConfig,
-    annenVurdering,
-}) => {
+const AnnenVurderingTabellRad = ({ person, annenVurderingConfig, annenVurdering }: IProps) => {
     const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const [ekspandertAnnenVurdering, settEkspandertAnnenVurdering] = useState(
         erLesevisning || false || annenVurdering.resultat === Resultat.IKKE_VURDERT
     );
-    const [redigerbartAnnenVurdering, settRedigerbartAnnenVurdering] =
-        useState<IAnnenVurdering>(annenVurdering);
+    const [redigerbartAnnenVurdering, settRedigerbartAnnenVurdering] = useState<IAnnenVurdering>(annenVurdering);
 
     const toggleForm = (visAlert: boolean) => {
-        if (
-            ekspandertAnnenVurdering &&
-            visAlert &&
-            !deepEqual(annenVurdering, redigerbartAnnenVurdering)
-        ) {
+        if (ekspandertAnnenVurdering && visAlert && !deepEqual(annenVurdering, redigerbartAnnenVurdering)) {
             alert('Vurderingen har endringer som ikke er lagret!');
         } else {
             settEkspandertAnnenVurdering(!ekspandertAnnenVurdering);

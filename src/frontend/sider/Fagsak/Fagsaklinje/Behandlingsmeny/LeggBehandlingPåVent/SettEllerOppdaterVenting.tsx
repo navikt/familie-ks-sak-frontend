@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Dropdown } from '@navikt/ds-react';
 
@@ -10,7 +10,7 @@ interface IProps {
     behandling: IBehandling;
 }
 
-const SettEllerOppdaterVenting: React.FC<IProps> = ({ behandling }) => {
+const SettEllerOppdaterVenting = ({ behandling }: IProps) => {
     const [visModal, settVisModal] = useState<boolean>(!!behandling.behandlingPåVent);
 
     const erBehandlingAlleredePåVent = !!behandling.behandlingPåVent;
@@ -21,17 +21,10 @@ const SettEllerOppdaterVenting: React.FC<IProps> = ({ behandling }) => {
                 onClick={() => settVisModal(true)}
                 disabled={behandling.status !== BehandlingStatus.UTREDES}
             >
-                {erBehandlingAlleredePåVent
-                    ? 'Endre ventende behandling'
-                    : 'Sett behandling på vent'}
+                {erBehandlingAlleredePåVent ? 'Endre ventende behandling' : 'Sett behandling på vent'}
             </Dropdown.Menu.List.Item>
 
-            {visModal && (
-                <SettBehandlingPåVentModal
-                    lukkModal={() => settVisModal(false)}
-                    behandling={behandling}
-                />
-            )}
+            {visModal && <SettBehandlingPåVentModal lukkModal={() => settVisModal(false)} behandling={behandling} />}
         </>
     );
 };

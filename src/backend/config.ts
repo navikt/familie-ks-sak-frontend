@@ -1,91 +1,28 @@
-// Konfigurer appen før backend prøver å sette opp konfigurasjon
-
 import type { IApi, ISessionKonfigurasjon } from '@navikt/familie-backend';
-import { appConfig } from '@navikt/familie-backend';
 
-const Environment = () => {
-    if (process.env.ENV === 'local') {
-        return {
-            buildPath: 'frontend_development',
-            namespace: 'local',
-            proxyUrl: 'http://localhost:8083/api',
-            familieTilbakeUrl: 'http://localhost:8000',
-            familieKlageUrl: 'http://localhost:8000',
-            neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
-        };
-    } else if (process.env.ENV === 'lokalt-mot-preprod') {
-        return {
-            buildPath: 'frontend_development',
-            namespace: 'local',
-            proxyUrl: 'https://familie-kontantstotte-sak.intern.dev.nav.no/api',
-            familieTilbakeUrl: 'https://tilbakekreving.ansatt.dev.nav.no',
-            familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
-            neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
-        };
-    } else if (process.env.ENV === 'e2e') {
-        return {
-            buildPath: 'frontend_production',
-            namespace: 'e2e',
-            proxyUrl: 'http://familie-ks-sak:8089/api',
-            familieTilbakeUrl: 'http://tilbakekreving:8000',
-            familieKlageUrl: '',
-            neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
-        };
-    } else if (process.env.ENV === 'preprod') {
-        return {
-            buildPath: 'frontend_production',
-            namespace: 'preprod',
-            proxyUrl: 'http://familie-ks-sak/api',
-            familieTilbakeUrl: 'https://tilbakekreving.ansatt.dev.nav.no',
-            familieKlageUrl: 'https://familie-klage.intern.dev.nav.no',
-            neessiUrl: 'https://eux-neessi-q1.intern.dev.nav.no',
-        };
-    }
+import { envVar, erLokal } from './env.js';
 
-    return {
-        buildPath: 'frontend_production',
-        namespace: 'production',
-        proxyUrl: 'http://familie-ks-sak/api',
-        familieTilbakeUrl: 'https://tilbakekreving.intern.nav.no',
-        familieKlageUrl: 'https://familie-klage.intern.nav.no',
-        neessiUrl: 'https://neessi.intern.nav.no/',
-    };
-};
-const env = Environment();
+export const frontendPath = envVar('FRONTEND_PATH');
+export const proxyUrl = envVar('PROXY_URL');
 
 export const sessionConfig: ISessionKonfigurasjon = {
-    cookieSecret: [`${process.env.COOKIE_KEY1}`, `${process.env.COOKIE_KEY2}`],
+    cookieSecret: [`${envVar('COOKIE_KEY1')}`, `${envVar('COOKIE_KEY2')}`],
     navn: 'familie-ks-sak-v1',
-    redisFullUrl: process.env.REDIS_URI_SESSIONS,
-    redisBrukernavn: process.env.REDIS_USERNAME_SESSIONS,
-    redisPassord: process.env.REDIS_PASSWORD_SESSIONS,
-    secureCookie: !(
-        process.env.ENV === 'local' ||
-        process.env.ENV === 'lokalt-mot-preprod' ||
-        process.env.ENV === 'e2e'
-    ),
+    redisFullUrl: !erLokal() ? envVar('REDIS_URI_SESSIONS') : undefined,
+    redisBrukernavn: !erLokal() ? envVar('REDIS_USERNAME_SESSIONS') : undefined,
+    redisPassord: !erLokal() ? envVar('REDIS_PASSWORD_SESSIONS') : undefined,
+    secureCookie: !erLokal(),
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
 
-if (!process.env.KS_SAK_SCOPE) {
-    throw new Error('Scope mot familie-ks-sak er ikke konfigurert');
-}
-
-if (!process.env.DREK_URL) {
-    throw new Error('URL til Drek er ikke konfigurert');
-}
-
 export const oboConfig: IApi = {
-    clientId: appConfig.clientId,
-    scopes: [process.env.KS_SAK_SCOPE],
+    clientId: envVar('AZURE_APP_CLIENT_ID'),
+    scopes: [envVar('KS_SAK_SCOPE')],
 };
 
-export const buildPath = env.buildPath;
-export const proxyUrl = env.proxyUrl;
-
 export const redirectRecords: Record<string, string> = {
-    '/redirect/familie-tilbake': env.familieTilbakeUrl,
-    '/redirect/familie-klage': env.familieKlageUrl,
-    '/redirect/drek': process.env.DREK_URL,
-    '/redirect/neessi': env.neessiUrl,
+    '/redirect/familie-tilbake': envVar('FAMILIE_TILBAKE_URL'),
+    '/redirect/familie-klage': envVar('FAMILIE_KLAGE_URL'),
+    '/redirect/neessi': envVar('NEESSI_URL'),
+    '/redirect/drek': envVar('DREK_URL'),
 };

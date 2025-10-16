@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Checkbox, Fieldset, Heading } from '@navikt/ds-react';
@@ -19,9 +17,8 @@ const StyledFieldset = styled(Fieldset)`
  * så kan man kanskje sjekke hvilken behandling
  * journalposten er journalført på slik at man kan klikke seg inn på behandlingen
  */
-export const KnyttTilNyBehandling: React.FC = () => {
-    const { skjema, minimalFagsak, kanKnytteJournalpostTilBehandling } =
-        useManuellJournalføringContext();
+export const KnyttTilNyBehandling = () => {
+    const { skjema, minimalFagsak, kanKnytteJournalpostTilBehandling } = useManuellJournalføringContext();
     const { knyttTilNyBehandling, behandlingstype, behandlingstema } = skjema.felter;
     return (
         <StyledFieldset legend="Knytt til ny behandling" hideLegend>

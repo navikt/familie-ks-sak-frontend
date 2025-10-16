@@ -1,10 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { IBehandling } from '../../../../../../../typer/behandling';
-import {
-    EøsPeriodeStatus,
-    type IRestUtenlandskPeriodeBeløp,
-} from '../../../../../../../typer/eøsPerioder';
+import { EøsPeriodeStatus, type IRestUtenlandskPeriodeBeløp } from '../../../../../../../typer/eøsPerioder';
 import { sorterEøsPerioder } from '../utils';
 
 interface IProps {
@@ -12,9 +9,7 @@ interface IProps {
 }
 
 const useUtenlandskPeriodeBeløp = ({ åpenBehandling }: IProps) => {
-    const [utbetaltAnnetLandBeløp, settUtbetaltAnnetLandBeløp] = useState<
-        IRestUtenlandskPeriodeBeløp[]
-    >([]);
+    const [utbetaltAnnetLandBeløp, settUtbetaltAnnetLandBeløp] = useState<IRestUtenlandskPeriodeBeløp[]>([]);
 
     useEffect(() => {
         if (åpenBehandling) {

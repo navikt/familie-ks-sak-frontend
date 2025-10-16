@@ -14,7 +14,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingResultat } from '../typer/behandling';
-import type { IRestBegrunnelseTilknyttetVilkår, Begrunnelse } from '../typer/vedtak';
+import type { Begrunnelse, IRestBegrunnelseTilknyttetVilkår } from '../typer/vedtak';
 import { BegrunnelseType } from '../typer/vedtak';
 import type { AlleBegrunnelser } from '../typer/vilkår';
 

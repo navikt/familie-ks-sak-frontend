@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { BodyShort, ExpansionCard, Heading } from '@navikt/ds-react';
@@ -22,7 +20,7 @@ const JournalpostMetadataDiv = styled.div`
     margin-bottom: 1.25rem;
 `;
 
-const EndreJournalpost: React.FC = () => {
+const EndreJournalpost = () => {
     const { skjema, erLesevisning } = useManuellJournalføringContext();
 
     return (
@@ -54,7 +52,7 @@ const EndreJournalpost: React.FC = () => {
     );
 };
 
-const Journalpost: React.FC = () => {
+const Journalpost = () => {
     const { dataForManuellJournalføring, skjema } = useManuellJournalføringContext();
     const datoMottatt =
         dataForManuellJournalføring.status === RessursStatus.SUKSESS
@@ -62,11 +60,7 @@ const Journalpost: React.FC = () => {
             : undefined;
 
     return (
-        <ExpansionCard
-            id={skjema.felter.journalpostTittel.id}
-            size={'small'}
-            aria-label={'journalpost'}
-        >
+        <ExpansionCard id={skjema.felter.journalpostTittel.id} size={'small'} aria-label={'journalpost'}>
             <ExpansionCard.Header>
                 <ExpansionCard.Title>
                     <Heading size={'small'} level={'2'}>

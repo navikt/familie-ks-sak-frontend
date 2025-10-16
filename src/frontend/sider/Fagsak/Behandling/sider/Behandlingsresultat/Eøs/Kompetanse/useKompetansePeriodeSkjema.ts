@@ -1,9 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
 import { useFelt, useSkjema } from '@navikt/familie-skjema';
-import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import {
     erAnnenForeldersAktivitetGyldig,
@@ -22,7 +22,7 @@ import type {
     KompetanseAktivitet,
     KompetanseResultat,
 } from '../../../../../../../typer/eøsPerioder';
-import { nyIsoMånedPeriode, type IIsoMånedPeriode } from '../../../../../../../utils/dato';
+import { type IIsoMånedPeriode, nyIsoMånedPeriode } from '../../../../../../../utils/dato';
 import { erBarnGyldig, erEøsPeriodeGyldig } from '../../../../../../../utils/eøsValidators';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 
@@ -35,10 +35,9 @@ interface IProps {
 }
 
 const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => {
-    const [erKompetanseEkspandert, settErKompetanseEkspandert] = React.useState<boolean>(false);
+    const [erKompetanseEkspandert, settErKompetanseEkspandert] = useState<boolean>(false);
     const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
     const behandlingsÅrsakErOvergangsordning =
         åpenBehandling.status === RessursStatus.SUKSESS
             ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
@@ -120,8 +119,7 @@ const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => 
                         søkersAktivitet: skjema.felter.søkersAktivitet.verdi,
                         søkersAktivitetsland: skjema.felter.søkersAktivitetsland.verdi,
                         annenForeldersAktivitet: skjema.felter.annenForeldersAktivitet.verdi,
-                        annenForeldersAktivitetsland:
-                            skjema.felter.annenForeldersAktivitetsland.verdi,
+                        annenForeldersAktivitetsland: skjema.felter.annenForeldersAktivitetsland.verdi,
                         barnetsBostedsland: skjema.felter.barnetsBostedsland.verdi,
                         resultat: skjema.felter.resultat.verdi,
                     },
@@ -169,8 +167,7 @@ const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => 
             erTomEndret ||
             skjema.felter.søkersAktivitet?.verdi !== kompetanse.søkersAktivitet ||
             skjema.felter.annenForeldersAktivitet?.verdi !== kompetanse.annenForeldersAktivitet ||
-            skjema.felter.annenForeldersAktivitetsland?.verdi !==
-                kompetanse.annenForeldersAktivitetsland ||
+            skjema.felter.annenForeldersAktivitetsland?.verdi !== kompetanse.annenForeldersAktivitetsland ||
             skjema.felter.barnetsBostedsland?.verdi !== kompetanse.barnetsBostedsland ||
             skjema.felter.søkersAktivitetsland?.verdi !== kompetanse.søkersAktivitetsland
         );

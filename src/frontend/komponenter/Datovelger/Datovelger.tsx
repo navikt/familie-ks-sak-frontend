@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 
 import { addDays, format, subDays } from 'date-fns';
@@ -7,7 +6,7 @@ import { DatePicker, useDatepicker } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { senesteRelevanteDato, tidligsteRelevanteDato } from './utils';
-import { hentDagensDato, Datoformat } from '../../utils/dato';
+import { Datoformat, hentDagensDato } from '../../utils/dato';
 
 interface IProps {
     felt: Felt<Date | undefined>;
@@ -87,7 +86,7 @@ const Datovelger = ({
         },
     });
 
-    const [forrigeFeltVerdi, settForrigeFeltVerdi] = React.useState<Date | undefined>();
+    const [forrigeFeltVerdi, settForrigeFeltVerdi] = useState<Date | undefined>();
 
     // Oppdaterer verdien til datovelgeren hvis feltet har endret seg uten at det er datovelgeren som har trigget endringen
     if (felt.verdi != forrigeFeltVerdi) {
@@ -101,18 +100,14 @@ const Datovelger = ({
         if (kanKunVelgeFremtid) {
             return 'Du kan ikke sette en dato som er tilbake i tid';
         }
-        const førsteUgyldigeDato = minDatoAvgrensning
-            ? format(subDays(minDatoAvgrensning, 1), Datoformat.DATO)
-            : '';
+        const førsteUgyldigeDato = minDatoAvgrensning ? format(subDays(minDatoAvgrensning, 1), Datoformat.DATO) : '';
         return `Du må velge en dato som er senere enn ${førsteUgyldigeDato}`;
     };
     const feilmeldingForDatoEtterMaksDato = () => {
         if (kanKunVelgeFortid) {
             return 'Du kan ikke sette en dato som er frem i tid';
         }
-        const førsteUgyldigeDato = maksDatoAvgrensning
-            ? format(addDays(maksDatoAvgrensning, 1), Datoformat.DATO)
-            : '';
+        const førsteUgyldigeDato = maksDatoAvgrensning ? format(addDays(maksDatoAvgrensning, 1), Datoformat.DATO) : '';
         return `Du må velge en dato som er tidligere enn ${førsteUgyldigeDato}`;
     };
 

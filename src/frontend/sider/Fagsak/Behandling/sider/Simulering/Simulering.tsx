@@ -1,24 +1,19 @@
-import * as React from 'react';
-
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { useSimuleringContext } from './SimuleringContext';
 import SimuleringPanel from './SimuleringPanel';
 import SimuleringTabell from './SimuleringTabell';
 import TilbakekrevingSkjema from './TilbakekrevingSkjema';
-import TilbakekrevingSkjemaGammel from './TilbakekrevingSkjemaGammel';
-import { useAppContext } from '../../../../../context/AppContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingResultat, BehandlingSteg } from '../../../../../typer/behandling';
 import type { ITilbakekreving } from '../../../../../typer/simulering';
-import { ToggleNavn } from '../../../../../typer/toggles';
 import { hentSøkersMålform } from '../../../../../utils/behandling';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
@@ -30,8 +25,7 @@ const StyledAlert = styled(Alert)`
     margin-bottom: 2rem;
 `;
 
-const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling }) => {
-    const { toggles } = useAppContext();
+const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
     const {
@@ -87,31 +81,21 @@ const Simulering: React.FunctionComponent<ISimuleringProps> = ({ åpenBehandling
         >
             {simuleringsresultat?.status === RessursStatus.SUKSESS ? (
                 simuleringsresultat.data.perioder.length === 0 ? (
-                    <Alert variant="info">
-                        Det er ingen etterbetaling, feilutbetaling eller neste utbetaling
-                    </Alert>
+                    <Alert variant="info">Det er ingen etterbetaling, feilutbetaling eller neste utbetaling</Alert>
                 ) : (
                     <>
                         <SimuleringPanel simulering={simuleringsresultat.data} />
                         <SimuleringTabell simulering={simuleringsresultat.data} />
-                        {erFeilutbetaling &&
-                            (toggles[ToggleNavn.brukNyPdfModal] ? (
-                                <TilbakekrevingSkjema
-                                    søkerMålform={hentSøkersMålform(åpenBehandling)}
-                                    harÅpenTilbakekrevingRessurs={harÅpenTilbakekrevingRessurs}
-                                />
-                            ) : (
-                                <TilbakekrevingSkjemaGammel
-                                    søkerMålform={hentSøkersMålform(åpenBehandling)}
-                                    harÅpenTilbakekrevingRessurs={harÅpenTilbakekrevingRessurs}
-                                />
-                            ))}
+                        {erFeilutbetaling && (
+                            <TilbakekrevingSkjema
+                                søkerMålform={hentSøkersMålform(åpenBehandling)}
+                                harÅpenTilbakekrevingRessurs={harÅpenTilbakekrevingRessurs}
+                            />
+                        )}
                     </>
                 )
             ) : (
-                <Alert variant="info">
-                    Det har skjedd en feil: {simuleringsresultat?.frontendFeilmelding}
-                </Alert>
+                <Alert variant="info">Det har skjedd en feil: {simuleringsresultat?.frontendFeilmelding}</Alert>
             )}
 
             {(tilbakekrevingSkjema.submitRessurs.status === RessursStatus.FEILET ||

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
@@ -26,27 +24,23 @@ interface IUtbetalingerProps {
     vedtaksperiode?: Vedtaksperiode;
 }
 
-const Utbetalinger: React.FC<IUtbetalingerProps> = ({ vedtaksperiode }) => {
+const Utbetalinger = ({ vedtaksperiode }: IUtbetalingerProps) => {
     if (vedtaksperiode?.vedtaksperiodetype !== Vedtaksperiodetype.UTBETALING) return null;
 
     const utbetalingsperiodeDetaljerGruppertPåPerson =
         vedtaksperiode?.utbetalingsperiodeDetaljer
             .sort(sorterUtbetaling)
-            .reduce(
-                (acc: { [key: string]: IUtbetalingsperiodeDetalj[] }, utbetalingsperiodeDetalj) => {
-                    const utbetalingsperiodeDetaljerForPerson =
-                        acc[utbetalingsperiodeDetalj.person.personIdent] ?? [];
+            .reduce((acc: { [key: string]: IUtbetalingsperiodeDetalj[] }, utbetalingsperiodeDetalj) => {
+                const utbetalingsperiodeDetaljerForPerson = acc[utbetalingsperiodeDetalj.person.personIdent] ?? [];
 
-                    return {
-                        ...acc,
-                        [utbetalingsperiodeDetalj.person.personIdent]: [
-                            ...utbetalingsperiodeDetaljerForPerson,
-                            utbetalingsperiodeDetalj,
-                        ],
-                    };
-                },
-                {}
-            ) ?? {};
+                return {
+                    ...acc,
+                    [utbetalingsperiodeDetalj.person.personIdent]: [
+                        ...utbetalingsperiodeDetaljerForPerson,
+                        utbetalingsperiodeDetalj,
+                    ],
+                };
+            }, {}) ?? {};
 
     return (
         <LøpendeUtbetalinger gap="4">

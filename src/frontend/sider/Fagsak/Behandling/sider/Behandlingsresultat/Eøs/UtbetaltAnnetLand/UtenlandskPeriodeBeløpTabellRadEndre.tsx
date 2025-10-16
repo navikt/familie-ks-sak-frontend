@@ -1,12 +1,12 @@
-import * as React from 'react';
+import type { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Alert, BodyShort, Button, Fieldset, Select, TextField } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
-import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { ISkjema } from '@navikt/familie-skjema';
+import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Currency } from '@navikt/land-verktoy';
 
@@ -14,9 +14,9 @@ import type { IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import {
     EøsPeriodeStatus,
+    type IUtenlandskPeriodeBeløp,
     UtenlandskPeriodeBeløpIntervall,
     utenlandskPeriodeBeløpIntervaller,
-    type IUtenlandskPeriodeBeløp,
 } from '../../../../../../../typer/eøsPerioder';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
@@ -75,7 +75,7 @@ interface IProps {
     behandlingsÅrsakErOvergangsordning: boolean;
 }
 
-const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
+const UtenlandskPeriodeBeløpTabellRadEndre = ({
     skjema,
     tilgjengeligeBarn,
     status,
@@ -84,11 +84,11 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
     toggleForm,
     slettUtenlandskPeriodeBeløp,
     behandlingsÅrsakErOvergangsordning,
-}) => {
+}: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning(true);
 
-    const visUtbetaltBeløpGruppeFeilmelding = (): React.ReactNode => {
+    const visUtbetaltBeløpGruppeFeilmelding = (): ReactNode => {
         if (skjema.felter.beløp?.valideringsstatus === Valideringsstatus.FEIL) {
             return skjema.felter.beløp.feilmelding;
         } else if (skjema.felter.valutakode?.valideringsstatus === Valideringsstatus.FEIL) {
@@ -119,8 +119,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
             <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
                 <UtbetaltBeløpInfo variant="info" inline>
                     <UtbetaltBeløpText size="small">
-                        Dersom det er ulike beløp per barn utbetalt i det andre landet, må barna
-                        registreres separat
+                        Dersom det er ulike beløp per barn utbetalt i det andre landet, må barna registreres separat
                     </UtbetaltBeløpText>
                 </UtbetaltBeløpInfo>
                 <FamilieReactSelect
@@ -130,9 +129,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                     isMulti
                     options={tilgjengeligeBarn}
                     value={skjema.felter.barnIdenter.verdi}
-                    onChange={options =>
-                        skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])
-                    }
+                    onChange={options => skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])}
                 />
                 <StyledEøsPeriodeSkjema
                     periode={skjema.felter.periode}
@@ -154,9 +151,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre: React.FC<IProps> = ({
                             label={'Beløp per barn'}
                             readOnly={lesevisning}
                             value={skjema.felter.beløp?.verdi}
-                            onChange={event =>
-                                skjema.felter.beløp?.validerOgSettFelt(event.target.value)
-                            }
+                            onChange={event => skjema.felter.beløp?.validerOgSettFelt(event.target.value)}
                             size={'medium'}
                         />
                         <StyledFamilieValutavelger

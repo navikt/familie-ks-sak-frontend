@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react';
-import React from 'react';
 
 import styled from 'styled-components';
 
@@ -40,14 +39,14 @@ const FlexDiv = styled.div`
     gap: 1.125rem;
 `;
 
-const VelgPeriode: React.FC<IProps> = ({
+const VelgPeriode = ({
     periode,
     erEksplisittAvslagPåSøknad,
     resultat,
     visFeilmeldinger,
     children,
     tomErPåkrevd,
-}) => {
+}: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
 
@@ -61,9 +60,8 @@ const VelgPeriode: React.FC<IProps> = ({
                 <StyledLegend>
                     <StyledLabel>Velg periode</StyledLabel>
                     <HelpText title="Hvordan fastsette periode">
-                        Oppgi startdato/periode hvor vilkåret er oppfylt/ikke oppfylt.
-                        Virkningstidspunktet vil bli beregnet ut fra dette. Dersom vurderingen
-                        gjelder et avslag er ikke periode påkrevd.
+                        Oppgi startdato/periode hvor vilkåret er oppfylt/ikke oppfylt. Virkningstidspunktet vil bli
+                        beregnet ut fra dette. Dersom vurderingen gjelder et avslag er ikke periode påkrevd.
                     </HelpText>
                 </StyledLegend>
             )}

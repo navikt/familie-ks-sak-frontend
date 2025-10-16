@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Link as ReactRouterLink, useLocation } from 'react-router';
 
 import { FileTextIcon, HouseIcon } from '@navikt/aksel-icons';
@@ -50,9 +48,7 @@ export const Fagsaklinje = ({ minimalFagsak }: FagsaklinjeProps) => {
                             </Button>
                         </HStack>
                     )}
-                    {harInnloggetSaksbehandlerSkrivetilgang() && (
-                        <Behandlingsmeny minimalFagsak={minimalFagsak} />
-                    )}
+                    {harInnloggetSaksbehandlerSkrivetilgang() && <Behandlingsmeny minimalFagsak={minimalFagsak} />}
                 </HStack>
             </Box>
         </>

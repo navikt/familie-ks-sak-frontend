@@ -3,21 +3,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { useHttp } from '@navikt/familie-http';
-import {
-    byggFeiletRessurs,
-    byggHenterRessurs,
-    byggTomRessurs,
-    RessursStatus,
-} from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../context/AppContext';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
-import {
-    BehandlingResultat,
-    BehandlingÅrsak,
-    type IBehandling,
-} from '../../../../typer/behandling';
+import { BehandlingResultat, BehandlingÅrsak, type IBehandling } from '../../../../typer/behandling';
 import { defaultFunksjonellFeil } from '../../../../typer/feilmeldinger';
 
 const useBehandlingssteg = (
@@ -79,8 +70,7 @@ const useBehandlingssteg = (
     };
 
     const minstEnPeriodeharBegrunnelseEllerFritekst = (): boolean => {
-        const vedtaksperioderMedBegrunnelser =
-            behandling?.vedtak?.vedtaksperioderMedBegrunnelser ?? [];
+        const vedtaksperioderMedBegrunnelser = behandling?.vedtak?.vedtaksperioderMedBegrunnelser ?? [];
         return vedtaksperioderMedBegrunnelser.some(
             vedtaksperioderMedBegrunnelse =>
                 vedtaksperioderMedBegrunnelse.begrunnelser.length !== 0 ||
@@ -118,9 +108,7 @@ const useBehandlingssteg = (
         }
         if (!kanForeslåVedtak() && !erSammensattKontrollsak) {
             return settSubmitRessurs(
-                byggFeiletRessurs(
-                    'Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.'
-                )
+                byggFeiletRessurs('Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.')
             );
         }
 

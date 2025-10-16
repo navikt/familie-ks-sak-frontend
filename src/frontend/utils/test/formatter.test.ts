@@ -1,7 +1,7 @@
 import { addDays, setDefaultOptions, subDays, subYears } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
-import { hentDagensDato, dateTilIsoDatoString } from '../dato';
+import { dateTilIsoDatoString, hentDagensDato } from '../dato';
 import { formaterIdent, formaterIdenter, hentAlder, kunSiffer } from '../formatter';
 
 describe('utils/formatter', () => {

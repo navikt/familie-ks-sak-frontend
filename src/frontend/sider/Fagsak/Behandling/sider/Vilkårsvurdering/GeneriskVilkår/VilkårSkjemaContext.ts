@@ -8,13 +8,14 @@ import { useSkjema } from '@navikt/familie-skjema';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import type { IEndreVilkårResultat, Regelverk } from '../../../../../../typer/vilkår';
-import type { Resultat, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
-import type { IVilkårResultat } from '../../../../../../typer/vilkår';
-import {
-    dateTilIsoDatoStringEllerUndefined,
-    type IIsoDatoPeriode,
-} from '../../../../../../utils/dato';
+import type {
+    IEndreVilkårResultat,
+    IVilkårResultat,
+    Regelverk,
+    Resultat,
+    UtdypendeVilkårsvurdering,
+} from '../../../../../../typer/vilkår';
+import { dateTilIsoDatoStringEllerUndefined, type IIsoDatoPeriode } from '../../../../../../utils/dato';
 import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
 
 export interface IVilkårSkjemaContext {
@@ -47,10 +48,7 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
 ) => {
     const vilkårsvurderingApi = useVilkårsvurderingApi();
 
-    const { skjema, kanSendeSkjema, settVisfeilmeldinger, nullstillSkjema } = useSkjema<
-        T,
-        IBehandling
-    >({
+    const { skjema, kanSendeSkjema, settVisfeilmeldinger, nullstillSkjema } = useSkjema<T, IBehandling>({
         felter,
         skjemanavn: 'Vilkårskjema',
     });
@@ -97,8 +95,7 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
                     skjemaContext.antallTimer && skjemaContext.antallTimer !== ''
                         ? Number(skjemaContext.antallTimer)
                         : undefined,
-                søkerHarMeldtFraOmBarnehageplass:
-                    skjemaContext.søkerHarMeldtFraOmBarnehageplass ?? undefined,
+                søkerHarMeldtFraOmBarnehageplass: skjemaContext.søkerHarMeldtFraOmBarnehageplass ?? undefined,
             },
         };
     };
@@ -107,10 +104,8 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
         if (kanSendeSkjema()) {
             settVisfeilmeldinger(false);
             const endreVilkårResultat: IEndreVilkårResultat = mapSkjemaTilIEndreVilkårResultat();
-            vilkårsvurderingApi.lagreVilkår(
-                endreVilkårResultat,
-                onSuccess,
-                lagreVilkårFeilmelding => settFeilmelding(lagreVilkårFeilmelding)
+            vilkårsvurderingApi.lagreVilkår(endreVilkårResultat, onSuccess, lagreVilkårFeilmelding =>
+                settFeilmelding(lagreVilkårFeilmelding)
             );
         }
     };
@@ -122,9 +117,7 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
         );
     };
 
-    const finnesEndringerSomIkkeErLagret = (
-        vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext
-    ) => {
+    const finnesEndringerSomIkkeErLagret = (vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext) => {
         const endretVilkår: IVilkårSkjemaContext = mapSkjemaTilVilkårSkjemaContext();
 
         // Sjekker på likhet uten felter som er undefined for å ikke få true hvis det ene objektet har felt=undefined og den andre mangler feltet

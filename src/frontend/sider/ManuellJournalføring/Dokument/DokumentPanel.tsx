@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
@@ -17,17 +15,12 @@ const DokumentDataAlert = styled(Alert)`
     width: 100%;
 `;
 
-export const DokumentPanel: React.FC = () => {
+export const DokumentPanel = () => {
     const { hentetDokument } = useManuellJournalføringContext();
     return (
         <DokumentDiv>
             {hentetDokument.status === RessursStatus.SUKSESS && (
-                <iframe
-                    title={'dokument'}
-                    src={hentetDokument.data}
-                    width={'100%'}
-                    height={'100%'}
-                />
+                <iframe title={'dokument'} src={hentetDokument.data} width={'100%'} height={'100%'} />
             )}
             {(hentetDokument.status === RessursStatus.FEILET ||
                 hentetDokument.status === RessursStatus.FUNKSJONELL_FEIL) && (

@@ -1,20 +1,10 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 
-import {
-    BodyShort,
-    Button,
-    Detail,
-    Heading,
-    HStack,
-    RadioGroup,
-    Radio,
-    Textarea,
-    Fieldset,
-} from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { BodyShort, Button, Detail, Fieldset, Heading, HStack, Radio, RadioGroup, Textarea } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../context/AppContext';
 import ØyeGrå from '../../../ikoner/ØyeGrå';
@@ -29,11 +19,7 @@ import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 
 interface IProps {
     innsendtVedtak: Ressurs<IBehandling>;
-    sendInnVedtak: (
-        beslutning: TotrinnskontrollBeslutning,
-        begrunnelse: string,
-        egetVedtak: boolean
-    ) => void;
+    sendInnVedtak: (beslutning: TotrinnskontrollBeslutning, begrunnelse: string, egetVedtak: boolean) => void;
     åpenBehandling: IBehandling;
 }
 
@@ -41,18 +27,12 @@ const StyledButton = styled(Button)`
     width: fit-content;
 `;
 
-const Totrinnskontrollskjema: React.FunctionComponent<IProps> = ({
-    innsendtVedtak,
-    sendInnVedtak,
-    åpenBehandling,
-}) => {
+const Totrinnskontrollskjema = ({ innsendtVedtak, sendInnVedtak, åpenBehandling }: IProps) => {
     const { trinnPåBehandling } = useBehandlingContext();
     const { innloggetSaksbehandler } = useAppContext();
 
-    const [beslutning, settBeslutning] = React.useState<TotrinnskontrollBeslutning>(
-        TotrinnskontrollBeslutning.IKKE_VURDERT
-    );
-    const [begrunnelse, settBegrunnelse] = React.useState<string>('');
+    const [beslutning, settBeslutning] = useState<TotrinnskontrollBeslutning>(TotrinnskontrollBeslutning.IKKE_VURDERT);
+    const [begrunnelse, settBegrunnelse] = useState<string>('');
 
     const senderInn = innsendtVedtak.status === RessursStatus.HENTER;
 
@@ -71,9 +51,7 @@ const Totrinnskontrollskjema: React.FunctionComponent<IProps> = ({
                         Totrinnskontroll
                     </Heading>
                 ) : (
-                    <BodyShort>
-                        Kontrollér opplysninger og faglige vurderinger som er gjort
-                    </BodyShort>
+                    <BodyShort>Kontrollér opplysninger og faglige vurderinger som er gjort</BodyShort>
                 )
             }
         >
@@ -96,10 +74,7 @@ const Totrinnskontrollskjema: React.FunctionComponent<IProps> = ({
 
                     {Object.entries(trinnPåBehandling).map(([_, trinn], index) => {
                         return (
-                            <TrinnStatus
-                                kontrollertStatus={trinn.kontrollert}
-                                navn={`${index + 1}. ${trinn.navn}`}
-                            />
+                            <TrinnStatus kontrollertStatus={trinn.kontrollert} navn={`${index + 1}. ${trinn.navn}`} />
                         );
                     })}
                 </div>
@@ -182,23 +157,14 @@ const Trinn = styled.div`
     }
 `;
 
-const TrinnStatus: React.FC<{
-    kontrollertStatus: KontrollertStatus;
-    navn: string;
-}> = ({ kontrollertStatus, navn }) => {
+const TrinnStatus = ({ kontrollertStatus, navn }: { kontrollertStatus: KontrollertStatus; navn: string }) => {
     return (
         <Trinn>
-            {kontrollertStatus === KontrollertStatus.IKKE_KONTROLLERT && (
-                <ØyeGrå height={24} width={24} />
-            )}
+            {kontrollertStatus === KontrollertStatus.IKKE_KONTROLLERT && <ØyeGrå height={24} width={24} />}
 
-            {kontrollertStatus === KontrollertStatus.KONTROLLERT && (
-                <ØyeGrønn height={24} width={24} />
-            )}
+            {kontrollertStatus === KontrollertStatus.KONTROLLERT && <ØyeGrønn height={24} width={24} />}
 
-            {kontrollertStatus === KontrollertStatus.MANGLER_KONTROLL && (
-                <ØyeRød height={24} width={24} />
-            )}
+            {kontrollertStatus === KontrollertStatus.MANGLER_KONTROLL && <ØyeRød height={24} width={24} />}
             <span>{navn}</span>
         </Trinn>
     );

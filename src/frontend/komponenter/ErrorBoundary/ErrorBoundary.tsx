@@ -1,15 +1,17 @@
-import * as React from 'react';
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
+import { Component } from 'react';
 
 import * as Sentry from '@sentry/browser';
 
 import type { ISaksbehandler } from '@navikt/familie-typer';
 
+import { erLokal } from '../../utils/miljø';
+
 interface IProps extends PropsWithChildren {
     autentisertSaksbehandler?: ISaksbehandler;
 }
 
-class ErrorBoundary extends React.Component<IProps> {
+class ErrorBoundary extends Component<IProps> {
     public constructor(props: IProps) {
         super(props);
     }
@@ -18,14 +20,12 @@ class ErrorBoundary extends React.Component<IProps> {
     public componentDidCatch(error: any, info: any): void {
         // eslint-disable-next-line: no-console
         console.log(error, info);
-        if (process.env.NODE_ENV !== 'development') {
+        if (!erLokal()) {
             Sentry.setUser({
                 username: this.props.autentisertSaksbehandler
                     ? this.props.autentisertSaksbehandler.displayName
                     : 'Ukjent bruker',
-                email: this.props.autentisertSaksbehandler
-                    ? this.props.autentisertSaksbehandler.email
-                    : 'Ukjent email',
+                email: this.props.autentisertSaksbehandler ? this.props.autentisertSaksbehandler.email : 'Ukjent email',
             });
 
             Sentry.withScope(scope => {
@@ -38,8 +38,7 @@ class ErrorBoundary extends React.Component<IProps> {
             Sentry.showReportDialog({
                 title: 'En feil har oppstått i vedtaksløsningen',
                 subtitle: '',
-                subtitle2:
-                    'Teamet har fått beskjed. Dersom du ønsker å hjelpe oss, si litt om hva som skjedde.',
+                subtitle2: 'Teamet har fått beskjed. Dersom du ønsker å hjelpe oss, si litt om hva som skjedde.',
                 user: {
                     name: this.props.autentisertSaksbehandler?.displayName,
                     email: this.props.autentisertSaksbehandler?.email,
@@ -53,7 +52,7 @@ class ErrorBoundary extends React.Component<IProps> {
         }
     }
 
-    render(): React.ReactNode {
+    render(): ReactNode {
         return this.props.children;
     }
 }

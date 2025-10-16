@@ -14,7 +14,7 @@ import {
     erPeriodeGyldig,
     erResultatGyldig,
 } from '../../../../../../../../utils/validators';
-import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { type IVilkårSkjemaContext, useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 export const useMedlemskap = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
@@ -57,8 +57,7 @@ export const useMedlemskap = (lagretVilkår: IVilkårResultat, person: IGrunnlag
                 person,
                 erEksplisittAvslagPåSøknad: erEksplisittAvslagPåSøknad.verdi,
             },
-            valideringsfunksjon: (felt, avhengigheter) =>
-                erPeriodeGyldig(felt, VilkårType.MEDLEMSKAP, avhengigheter),
+            valideringsfunksjon: (felt, avhengigheter) => erPeriodeGyldig(felt, VilkårType.MEDLEMSKAP, avhengigheter),
         }),
         begrunnelse: useFelt<string>({
             verdi: vilkårSkjemaMedLagredeVerdier.begrunnelse,
@@ -94,8 +93,7 @@ export const useMedlemskap = (lagretVilkår: IVilkårResultat, person: IGrunnlag
             feilmelding,
             nullstillSkjema,
         },
-        finnesEndringerSomIkkeErLagret: () =>
-            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        finnesEndringerSomIkkeErLagret: () => finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
         skalViseDatoVarsel,
     };
 };

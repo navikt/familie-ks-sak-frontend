@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Fieldset, Heading } from '@navikt/ds-react';
@@ -19,11 +17,7 @@ const StyledFieldset = styled(Fieldset)`
     margin-top: ${ASpacing16};
 `;
 
-const GeneriskAnnenVurdering: React.FC<IProps> = ({
-    person,
-    annenVurderingConfig,
-    andreVurderinger,
-}) => {
+const GeneriskAnnenVurdering = ({ person, annenVurderingConfig, andreVurderinger }: IProps) => {
     return (
         <StyledFieldset legend={annenVurderingConfig.tittel} hideLegend>
             <Heading size="medium" level="3">

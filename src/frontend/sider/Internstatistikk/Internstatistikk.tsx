@@ -1,8 +1,6 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
-import { Heading, BodyShort, Table } from '@navikt/ds-react';
+import { BodyShort, Heading, Table } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useInternstatistikk } from './useInternstatistikk';
@@ -14,7 +12,7 @@ const Container = styled.div`
     overflow: auto;
 `;
 
-const Internstatistikk: React.FC = () => {
+const Internstatistikk = () => {
     const { internstatistikk, hentInternstatistikk } = useInternstatistikk();
     if (internstatistikk.status === RessursStatus.IKKE_HENTET) {
         hentInternstatistikk();
@@ -25,13 +23,9 @@ const Internstatistikk: React.FC = () => {
             {internstatistikk.status === RessursStatus.SUKSESS && (
                 <>
                     <Heading level="2" size="large" children={'Internstatistikk ks-sak'} />
-                    <BodyShort>
-                        {`Antall fagsaker totalt: ${internstatistikk.data.antallFagsakerTotalt}`}
-                    </BodyShort>
+                    <BodyShort>{`Antall fagsaker totalt: ${internstatistikk.data.antallFagsakerTotalt}`}</BodyShort>
 
-                    <BodyShort>
-                        {`Antall løpende saker: ${internstatistikk.data.antallFagsakerLøpende}`}
-                    </BodyShort>
+                    <BodyShort>{`Antall løpende saker: ${internstatistikk.data.antallFagsakerLøpende}`}</BodyShort>
 
                     <BodyShort spacing>
                         {`Antall behandlinger som ikke er ferdigstilt: ${internstatistikk.data.antallBehandlingerIkkeFerdigstilt}`}

@@ -1,4 +1,5 @@
-import * as React from 'react';
+import { useEffect } from 'react';
+import type { MouseEvent } from 'react';
 
 import styled from 'styled-components';
 
@@ -40,11 +41,10 @@ const HøyremenyContainer = styled.div`
     }
 `;
 
-const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
-    const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } =
-        useBehandlingContext();
+const Høyremeny = ({ bruker }: Props) => {
+    const { åpenBehandling, logg, hentLogg, åpenHøyremeny, settÅpenHøyremeny } = useBehandlingContext();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (åpenBehandling && åpenBehandling.status === RessursStatus.SUKSESS) {
             hentLogg();
         }
@@ -56,7 +56,7 @@ const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
                 <ToggleVisningHøyremeny
                     forwardedAs={Button}
                     variant="secondary"
-                    onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
+                    onMouseDown={(e: MouseEvent) => e.preventDefault()}
                     onClick={() => {
                         settÅpenHøyremeny(!åpenHøyremeny);
                     }}
@@ -76,21 +76,19 @@ const Høyremeny: React.FunctionComponent<Props> = ({ bruker }) => {
                     <>
                         <Behandlingskort åpenBehandling={åpenBehandling.data} />
                         <Hendelsesoversikt
-                            hendelser={hentDataFraRessursMedFallback(logg, []).map(
-                                (loggElement: ILogg): Hendelse => {
-                                    return {
-                                        id: loggElement.id.toString(),
-                                        dato: isoStringTilFormatertString({
-                                            isoString: loggElement.opprettetTidspunkt,
-                                            tilFormat: Datoformat.DATO_TID,
-                                        }),
-                                        utførtAv: loggElement.opprettetAv,
-                                        rolle: loggElement.rolle,
-                                        tittel: loggElement.tittel,
-                                        beskrivelse: loggElement.tekst,
-                                    };
-                                }
-                            )}
+                            hendelser={hentDataFraRessursMedFallback(logg, []).map((loggElement: ILogg): Hendelse => {
+                                return {
+                                    id: loggElement.id.toString(),
+                                    dato: isoStringTilFormatertString({
+                                        isoString: loggElement.opprettetTidspunkt,
+                                        tilFormat: Datoformat.DATO_TID,
+                                    }),
+                                    utførtAv: loggElement.opprettetAv,
+                                    rolle: loggElement.rolle,
+                                    tittel: loggElement.tittel,
+                                    beskrivelse: loggElement.tekst,
+                                };
+                            })}
                             åpenBehandling={åpenBehandling.data}
                             bruker={bruker}
                         />

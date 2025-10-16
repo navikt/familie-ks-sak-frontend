@@ -5,13 +5,13 @@ import { useHttp } from '@navikt/familie-http';
 import { hentTilbakekrevingsbehandlinger } from '../api/hentTilbakekrevingsbehandlinger';
 
 export const HentTilbakekrevingsbehandlingerQueryKeyFactory = {
-    fagsak: (fagsakId: number) => ['tilbakekrevingsbehandlinger', fagsakId],
+    tilbakekrevingsbehandlinger: (fagsakId: number) => ['tilbakekrevingsbehandlinger', fagsakId],
 };
 
 export function useHentTilbakekrevingsbehandlinger(fagsakId: number) {
     const { request } = useHttp();
     return useQuery({
-        queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.fagsak(fagsakId),
+        queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsakId),
         queryFn: () => hentTilbakekrevingsbehandlinger(request, fagsakId),
     });
 }

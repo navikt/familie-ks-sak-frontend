@@ -1,24 +1,24 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { isAfter } from 'date-fns';
 
-import { useHttp, type FamilieRequestConfig } from '@navikt/familie-http';
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
+import { type FamilieRequestConfig, useHttp } from '@navikt/familie-http';
 import type { Avhengigheter, FeiloppsummeringFeil, ISkjema } from '@navikt/familie-skjema';
-import { RessursStatus } from '@navikt/familie-typer';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../../typer/behandling';
 import {
-    Tilbakekrevingsvalg,
     type ISimuleringDTO,
     type ISimuleringPeriode,
     type ITilbakekreving,
+    Tilbakekrevingsvalg,
 } from '../../../../../typer/simulering';
 import { isoStringTilDateMedFallback, tidenesMorgen } from '../../../../../utils/dato';
 
-interface IProps extends React.PropsWithChildren {
+interface IProps extends PropsWithChildren {
     åpenBehandling: IBehandling;
 }
 
@@ -52,9 +52,7 @@ export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
     const [simuleringsresultat, settSimuleringresultat] = useState<Ressurs<ISimuleringDTO>>({
         status: RessursStatus.HENTER,
     });
-    const [harÅpenTilbakekrevingRessurs, settHarÅpentTilbakekrevingRessurs] = useState<
-        Ressurs<boolean>
-    >({
+    const [harÅpenTilbakekrevingRessurs, settHarÅpentTilbakekrevingRessurs] = useState<Ressurs<boolean>>({
         status: RessursStatus.HENTER,
     });
     const maksLengdeTekst = 1500;
@@ -95,11 +93,9 @@ export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
     }, [fagsakId, simuleringsresultat]);
 
     const harÅpenTilbakekreving: boolean =
-        harÅpenTilbakekrevingRessurs.status === RessursStatus.SUKSESS &&
-        harÅpenTilbakekrevingRessurs.data;
+        harÅpenTilbakekrevingRessurs.status === RessursStatus.SUKSESS && harÅpenTilbakekrevingRessurs.data;
 
-    const simResultat =
-        simuleringsresultat.status === RessursStatus.SUKSESS ? simuleringsresultat.data : undefined;
+    const simResultat = simuleringsresultat.status === RessursStatus.SUKSESS ? simuleringsresultat.data : undefined;
     const erFeilutbetaling = simResultat && simResultat.feilutbetaling > 0;
 
     const tilbakekrevingsvalg = useFelt<Tilbakekrevingsvalg | undefined>({
@@ -108,8 +104,7 @@ export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
             erFeilutbetaling,
             harÅpenTilbakekreving,
         },
-        skalFeltetVises: avhengigheter =>
-            avhengigheter?.erFeilutbetaling && !avhengigheter?.harÅpenTilbakekreving,
+        skalFeltetVises: avhengigheter => avhengigheter?.erFeilutbetaling && !avhengigheter?.harÅpenTilbakekreving,
         valideringsfunksjon: felt =>
             felt.verdi === undefined
                 ? feil(
@@ -127,20 +122,15 @@ export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
         },
         valideringsfunksjon: (felt, avhengigheter) =>
             avhengigheter?.erFeilutbetaling &&
-            avhengigheter?.tilbakekreving?.verdi ===
-                Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL &&
+            avhengigheter?.tilbakekreving?.verdi === Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL &&
             felt.verdi === ''
                 ? feil(felt, 'Du må skrive en fritekst for varselet til tilbakekrevingen.')
                 : avhengigheter && felt.verdi.length > avhengigheter.maksLengdeTekst
-                  ? feil(
-                        felt,
-                        `Du har nådd maks antall tegn i varselbrevet: 1 500. Prøv å forkorte/forenkle teksten.`
-                    )
+                  ? feil(felt, `Du har nådd maks antall tegn i varselbrevet: 1 500. Prøv å forkorte/forenkle teksten.`)
                   : ok(felt),
         skalFeltetVises: (avhengigheter: Avhengigheter) =>
             avhengigheter?.erFeilutbetaling &&
-            avhengigheter?.tilbakekreving?.verdi ===
-                Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL,
+            avhengigheter?.tilbakekreving?.verdi === Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL,
     });
     const begrunnelse = useFelt<string>({
         verdi: åpenBehandling.tilbakekreving?.begrunnelse ?? '',
@@ -149,16 +139,12 @@ export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
             maksLengdeTekst: maksLengdeTekst,
             harÅpenTilbakekreving,
         },
-        skalFeltetVises: avhengigheter =>
-            avhengigheter?.erFeilutbetaling && !avhengigheter?.harÅpenTilbakekreving,
+        skalFeltetVises: avhengigheter => avhengigheter?.erFeilutbetaling && !avhengigheter?.harÅpenTilbakekreving,
         valideringsfunksjon: (felt, avhengigheter) =>
             felt.verdi === ''
                 ? feil(felt, 'Du må skrive en begrunnelse for valget om tilbakekreving.')
                 : avhengigheter && felt.verdi.length > avhengigheter.maksLengdeTekst
-                  ? feil(
-                        felt,
-                        `Du har nådd maks antall tegn i begrunnelsen: 1 500. Prøv å forkorte/forenkle teksten.`
-                    )
+                  ? feil(felt, `Du har nådd maks antall tegn i begrunnelsen: 1 500. Prøv å forkorte/forenkle teksten.`)
                   : ok(felt),
     });
 

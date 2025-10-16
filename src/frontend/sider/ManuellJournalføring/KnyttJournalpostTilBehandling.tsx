@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, BodyShort, Checkbox, Heading, Table, VStack } from '@navikt/ds-react';
@@ -24,7 +22,7 @@ const StyledAlert = styled(Alert)`
     margin-top: ${ASpacing8};
 `;
 
-export const KnyttJournalpostTilBehandling: React.FC = () => {
+export const KnyttJournalpostTilBehandling = () => {
     const {
         skjema,
         hentSorterteJournalføringsbehandlinger,
@@ -46,9 +44,7 @@ export const KnyttJournalpostTilBehandling: React.FC = () => {
                 <VStack gap="6">
                     {ressursHarFeilet(klageStatus) && (
                         <Alert variant="warning">
-                            <BodyShort>
-                                Klagebehandlinger er ikke tilgjengelig for øyeblikket.
-                            </BodyShort>
+                            <BodyShort>Klagebehandlinger er ikke tilgjengelig for øyeblikket.</BodyShort>
                         </Alert>
                     )}
                     <div>
@@ -82,29 +78,21 @@ export const KnyttJournalpostTilBehandling: React.FC = () => {
                                                         it => it.behandlingId === behandling.id
                                                     )}
                                                     onChange={() => {
-                                                        skjema.felter.tilknyttedeBehandlinger.validerOgSettFelt(
-                                                            [
-                                                                ...skjema.felter.tilknyttedeBehandlinger.verdi.filter(
-                                                                    it =>
-                                                                        it.behandlingId !==
-                                                                        behandling.id
-                                                                ),
-                                                                ...(skjema.felter.tilknyttedeBehandlinger.verdi.some(
-                                                                    it =>
-                                                                        it.behandlingId ===
-                                                                        behandling.id
-                                                                )
-                                                                    ? []
-                                                                    : [
-                                                                          {
-                                                                              behandlingstype:
-                                                                                  behandling.type,
-                                                                              behandlingId:
-                                                                                  behandling.id,
-                                                                          },
-                                                                      ]),
-                                                            ]
-                                                        );
+                                                        skjema.felter.tilknyttedeBehandlinger.validerOgSettFelt([
+                                                            ...skjema.felter.tilknyttedeBehandlinger.verdi.filter(
+                                                                it => it.behandlingId !== behandling.id
+                                                            ),
+                                                            ...(skjema.felter.tilknyttedeBehandlinger.verdi.some(
+                                                                it => it.behandlingId === behandling.id
+                                                            )
+                                                                ? []
+                                                                : [
+                                                                      {
+                                                                          behandlingstype: behandling.type,
+                                                                          behandlingId: behandling.id,
+                                                                      },
+                                                                  ]),
+                                                        ]);
                                                     }}
                                                     readOnly={!kanKnytteJournalpostTilBehandling()}
                                                     hideLabel={true}
@@ -119,16 +107,10 @@ export const KnyttJournalpostTilBehandling: React.FC = () => {
                                                 })}
                                             </Table.DataCell>
                                             <Table.DataCell>
-                                                {finnVisningstekstForJournalføringsbehandlingsårsak(
-                                                    behandling.årsak
-                                                )}
+                                                {finnVisningstekstForJournalføringsbehandlingsårsak(behandling.årsak)}
                                             </Table.DataCell>
-                                            <Table.DataCell>
-                                                {behandlingstyper[behandling.type].navn}
-                                            </Table.DataCell>
-                                            <Table.DataCell>
-                                                {behandlingsstatuser[behandling.status]}
-                                            </Table.DataCell>
+                                            <Table.DataCell>{behandlingstyper[behandling.type].navn}</Table.DataCell>
+                                            <Table.DataCell>{behandlingsstatuser[behandling.status]}</Table.DataCell>
                                         </Table.Row>
                                     );
                                 })}

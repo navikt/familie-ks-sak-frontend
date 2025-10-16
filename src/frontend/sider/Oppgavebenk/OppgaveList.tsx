@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, Heading, Table, Tooltip } from '@navikt/ds-react';
@@ -41,14 +39,10 @@ const StyledColumnHeader = styled(Table.ColumnHeader)`
     white-space: nowrap;
 `;
 
-const OppgaveList: React.FunctionComponent = () => {
-    const { oppgaver, sorterteOppgaverader, sortering, settOgLagreSortering, side } =
-        useOppgavebenkContext();
+const OppgaveList = () => {
+    const { oppgaver, sorterteOppgaverader, sortering, settOgLagreSortering, side } = useOppgavebenkContext();
 
-    const oppgaverPåDenneSiden = sorterteOppgaverader.slice(
-        (side - 1) * oppgaveSideLimit,
-        side * oppgaveSideLimit
-    );
+    const oppgaverPåDenneSiden = sorterteOppgaverader.slice((side - 1) * oppgaveSideLimit, side * oppgaveSideLimit);
 
     return (
         <section>
@@ -60,9 +54,7 @@ const OppgaveList: React.FunctionComponent = () => {
             </HeaderMedPaginering>
             <Table
                 sort={sortering}
-                onSortChange={(nøkkel?: string) =>
-                    nøkkel && settOgLagreSortering(nøkkel as Sorteringsnøkkel)
-                }
+                onSortChange={(nøkkel?: string) => nøkkel && settOgLagreSortering(nøkkel as Sorteringsnøkkel)}
             >
                 <Table.Header>
                     <Table.Row>
@@ -75,10 +67,7 @@ const OppgaveList: React.FunctionComponent = () => {
                         <StyledColumnHeader sortKey={Sorteringsnøkkel.BEHANDLINGSTYPE} sortable>
                             Behandlingstype
                         </StyledColumnHeader>
-                        <StyledColumnHeader
-                            sortKey={Sorteringsnøkkel.FRIST_FERDIGSTILLELSE}
-                            sortable
-                        >
+                        <StyledColumnHeader sortKey={Sorteringsnøkkel.FRIST_FERDIGSTILLELSE} sortable>
                             Frist
                         </StyledColumnHeader>
                         <StyledColumnHeader sortKey={Sorteringsnøkkel.PRIORITET} sortable>
@@ -111,24 +100,20 @@ const OppgaveList: React.FunctionComponent = () => {
                                 })}
                             >
                                 <Table.DataCell>
-                                    {rad.opprettetTidspunkt
-                                        ? intDatoTilNorskDato(rad.opprettetTidspunkt)
-                                        : 'Ukjent'}
+                                    {rad.opprettetTidspunkt ? intDatoTilNorskDato(rad.opprettetTidspunkt) : 'Ukjent'}
                                 </Table.DataCell>
                             </Tooltip>
                             <Tooltip content={rad.oppgavetype || 'Ukjent'}>
                                 <Table.DataCell>
                                     {rad.oppgavetype
-                                        ? (oppgaveTypeFilter[rad.oppgavetype as OppgavetypeFilter]
-                                              ?.navn ?? rad.oppgavetype)
+                                        ? (oppgaveTypeFilter[rad.oppgavetype as OppgavetypeFilter]?.navn ??
+                                          rad.oppgavetype)
                                         : 'Ukjent'}
                                 </Table.DataCell>
                             </Tooltip>
                             <Table.DataCell>{rad.behandlingstype}</Table.DataCell>
                             <Table.DataCell>
-                                {rad.fristFerdigstillelse
-                                    ? intDatoTilNorskDato(rad.fristFerdigstillelse)
-                                    : 'Ukjent'}
+                                {rad.fristFerdigstillelse ? intDatoTilNorskDato(rad.fristFerdigstillelse) : 'Ukjent'}
                             </Table.DataCell>
                             <Table.DataCell>
                                 {PrioritetFilter[rad.prioritet as keyof typeof PrioritetFilter]}
@@ -136,16 +121,12 @@ const OppgaveList: React.FunctionComponent = () => {
                             <ForkortetTooltip content={rad.beskrivelse}>
                                 <Beskrivelse>{rad.beskrivelse}</Beskrivelse>
                             </ForkortetTooltip>
-                            <Table.DataCell>
-                                {hentFnrFraOppgaveIdenter(rad.ident) || 'Ukjent'}
-                            </Table.DataCell>
+                            <Table.DataCell>{hentFnrFraOppgaveIdenter(rad.ident) || 'Ukjent'}</Table.DataCell>
                             <Table.DataCell>{rad.tildeltEnhetsnr}</Table.DataCell>
                             <Table.DataCell>
                                 <OppgavelisteSaksbehandler
                                     oppgave={rad.tilordnetRessurs.oppg}
-                                    innloggetSaksbehandler={
-                                        rad.tilordnetRessurs.innloggetSaksbehandler
-                                    }
+                                    innloggetSaksbehandler={rad.tilordnetRessurs.innloggetSaksbehandler}
                                 />
                             </Table.DataCell>
                             <Table.DataCell>
@@ -164,9 +145,7 @@ const OppgaveList: React.FunctionComponent = () => {
                 oppgaver.status === RessursStatus.IKKE_TILGANG) && (
                 <StyledAlert variant="error">{oppgaver.frontendFeilmelding}</StyledAlert>
             )}
-            {oppgaver.status === RessursStatus.HENTER && (
-                <StyledAlert variant="info">Henter...</StyledAlert>
-            )}
+            {oppgaver.status === RessursStatus.HENTER && <StyledAlert variant="info">Henter...</StyledAlert>}
         </section>
     );
 };

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 
 import styled from 'styled-components';
 
@@ -34,7 +34,7 @@ interface VedtaksperioderProps {
     åpenBehandling: IBehandling;
 }
 
-const Vedtaksperioder: React.FC<VedtaksperioderProps> = ({ åpenBehandling }) => {
+const Vedtaksperioder = ({ åpenBehandling }: VedtaksperioderProps) => {
     const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
     const { toggles } = useAppContext();
 
@@ -63,18 +63,14 @@ const Vedtaksperioder: React.FC<VedtaksperioderProps> = ({ åpenBehandling }) =>
             <GrupperteVedtaksperioder
                 sorterteVedtaksperioderMedBegrunnelser={sorterteAndreVedtaksperioder}
                 overskrift={'Begrunnelser i vedtaksbrev'}
-                hjelpetekst={
-                    'Her skal du sette begrunnelsestekster for innvilgelse, reduksjon og opphør.'
-                }
+                hjelpetekst={'Her skal du sette begrunnelsestekster for innvilgelse, reduksjon og opphør.'}
                 åpenBehandling={åpenBehandling}
             />
 
             <GrupperteVedtaksperioder
                 sorterteVedtaksperioderMedBegrunnelser={sorterteAvslagsperioder}
                 overskrift={'Begrunnelser for avslag i vedtaksbrev'}
-                hjelpetekst={
-                    'Her har vi hentet begrunnelser for avslag som er satt tidligere i behandlingen.'
-                }
+                hjelpetekst={'Her har vi hentet begrunnelser for avslag som er satt tidligere i behandlingen.'}
                 åpenBehandling={åpenBehandling}
             />
         </>
@@ -83,19 +79,23 @@ const Vedtaksperioder: React.FC<VedtaksperioderProps> = ({ åpenBehandling }) =>
     );
 };
 
-const GrupperteVedtaksperioder: React.FC<{
+const GrupperteVedtaksperioder = ({
+    sorterteVedtaksperioderMedBegrunnelser,
+    overskrift,
+    hjelpetekst,
+    åpenBehandling,
+}: {
     sorterteVedtaksperioderMedBegrunnelser: IVedtaksperiodeMedBegrunnelser[];
     overskrift: string;
     hjelpetekst: string;
     åpenBehandling: IBehandling;
-}> = ({ sorterteVedtaksperioderMedBegrunnelser, overskrift, hjelpetekst, åpenBehandling }) => {
+}) => {
     if (sorterteVedtaksperioderMedBegrunnelser.length === 0) {
         return null;
     }
 
     const sisteVedtaksperiodeFom =
-        sorterteVedtaksperioderMedBegrunnelser[sorterteVedtaksperioderMedBegrunnelser.length - 1]
-            .fom;
+        sorterteVedtaksperioderMedBegrunnelser[sorterteVedtaksperioderMedBegrunnelser.length - 1].fom;
 
     return (
         <>

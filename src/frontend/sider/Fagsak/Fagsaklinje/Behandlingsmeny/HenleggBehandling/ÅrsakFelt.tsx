@@ -1,14 +1,9 @@
-import React from 'react';
-
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import {
-    HenleggBehandlingFormFields,
-    type HenleggBehandlingFormValues,
-} from './useHenleggBehandlingForm';
+import { HenleggBehandlingFormFields, type HenleggBehandlingFormValues } from './useHenleggBehandlingForm';
 import { useAppContext } from '../../../../../context/AppContext';
 import { erPåHenleggbartSteg, henleggÅrsak, HenleggÅrsak } from '../../../../../typer/behandling';
 import { ToggleNavn } from '../../../../../typer/toggles';
@@ -17,8 +12,7 @@ import { useBehandlingContext } from '../../../Behandling/context/BehandlingCont
 export function ÅrsakFelt() {
     const { åpenBehandling } = useBehandlingContext();
 
-    const behandling =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data : undefined;
+    const behandling = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data : undefined;
 
     const { toggles } = useAppContext();
 
@@ -30,18 +24,15 @@ export function ÅrsakFelt() {
         rules: { required: 'Årsak er påkrevd.' },
     });
 
-    const harTilgangTilTekniskVedlikeholdHenleggelse =
-        toggles[ToggleNavn.tekniskVedlikeholdHenleggelse];
+    const harTilgangTilTekniskVedlikeholdHenleggelse = toggles[ToggleNavn.tekniskVedlikeholdHenleggelse];
 
     const valgmuligheter =
         behandling !== undefined
             ? Object.values(HenleggÅrsak)
                   .filter(
                       årsak =>
-                          (årsak !== HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&
-                              erPåHenleggbartSteg(behandling.steg)) ||
-                          (årsak === HenleggÅrsak.TEKNISK_VEDLIKEHOLD &&
-                              harTilgangTilTekniskVedlikeholdHenleggelse)
+                          (årsak !== HenleggÅrsak.TEKNISK_VEDLIKEHOLD && erPåHenleggbartSteg(behandling.steg)) ||
+                          (årsak === HenleggÅrsak.TEKNISK_VEDLIKEHOLD && harTilgangTilTekniskVedlikeholdHenleggelse)
                   )
                   .map(årsak => {
                       return (

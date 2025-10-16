@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
@@ -67,8 +65,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
         tilbakestillOgLukkOvergangsordningAndel,
     } = useOvergangsordningAndelContext();
 
-    const erLesevisning =
-        vurderErLesevisning() || åpenBehandling.årsak !== BehandlingÅrsak.OVERGANGSORDNING_2024;
+    const erLesevisning = vurderErLesevisning() || åpenBehandling.årsak !== BehandlingÅrsak.OVERGANGSORDNING_2024;
 
     return (
         <StyledFieldset
@@ -147,18 +144,10 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
             {!erLesevisning && (
                 <Knapperekke>
                     <KnapperekkeVenstre>
-                        <StyledButton
-                            size={'small'}
-                            variant={'secondary'}
-                            onClick={oppdaterOvergangsordningAndel}
-                        >
+                        <StyledButton size={'small'} variant={'secondary'} onClick={oppdaterOvergangsordningAndel}>
                             Bekreft
                         </StyledButton>
-                        <Button
-                            variant="tertiary"
-                            size="small"
-                            onClick={tilbakestillOgLukkOvergangsordningAndel}
-                        >
+                        <Button variant="tertiary" size="small" onClick={tilbakestillOgLukkOvergangsordningAndel}>
                             Avbryt
                         </Button>
                     </KnapperekkeVenstre>

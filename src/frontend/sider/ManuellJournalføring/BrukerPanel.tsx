@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -34,7 +34,7 @@ const StyledExpansionContent = styled(ExpansionCard.Content)`
     padding: 0.5rem 1rem 1rem;
 `;
 
-export const BrukerPanel: React.FC = () => {
+export const BrukerPanel = () => {
     const { skjema, endreBruker, erLesevisning } = useManuellJournalføringContext();
     const [åpen, settÅpen] = useState(false);
     const [feilMelding, settFeilMelding] = useState<string | undefined>('');
@@ -48,10 +48,7 @@ export const BrukerPanel: React.FC = () => {
     }, [nyIdent.verdi]);
 
     useEffect(() => {
-        if (
-            skjema.visFeilmeldinger &&
-            skjema.felter.bruker.valideringsstatus === Valideringsstatus.FEIL
-        ) {
+        if (skjema.visFeilmeldinger && skjema.felter.bruker.valideringsstatus === Valideringsstatus.FEIL) {
             settÅpen(true);
         }
     }, [skjema.visFeilmeldinger, skjema.felter.bruker.valideringsstatus]);

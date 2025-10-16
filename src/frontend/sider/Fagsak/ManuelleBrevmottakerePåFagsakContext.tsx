@@ -1,4 +1,5 @@
-import React, { createContext, type PropsWithChildren, useContext, useMemo, useState } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 import type { SkjemaBrevmottaker } from './Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 
@@ -7,14 +8,10 @@ interface ManuelleBrevmottakerePåFagsakContext {
     settManuelleBrevmottakerePåFagsak: (brevmottakere: SkjemaBrevmottaker[]) => void;
 }
 
-const ManuelleBrevmottakerePåFagsakContext = createContext<
-    ManuelleBrevmottakerePåFagsakContext | undefined
->(undefined);
+const ManuelleBrevmottakerePåFagsakContext = createContext<ManuelleBrevmottakerePåFagsakContext | undefined>(undefined);
 
 export function ManuelleBrevmottakerePåFagsakProvider({ children }: PropsWithChildren) {
-    const [manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak] = useState<
-        SkjemaBrevmottaker[]
-    >([]);
+    const [manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak] = useState<SkjemaBrevmottaker[]>([]);
 
     const value = useMemo(
         () => ({

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Collapse } from 'react-collapse';
 import styled from 'styled-components';
@@ -32,7 +32,7 @@ const IndentertInnhold = styled.div`
     padding-left: ${ASpacing14};
 `;
 
-const VilkårsvurderingSkjema: React.FunctionComponent = () => {
+const VilkårsvurderingSkjema = () => {
     const { vilkårsvurdering } = useVilkårsvurderingContext();
     const { vurderErLesevisning, behandlingPåVent } = useBehandlingContext();
 
@@ -45,8 +45,7 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
         vilkårsvurdering.reduce(
             (personMapEkspandert, personResultat) => ({
                 ...personMapEkspandert,
-                [personResultat.personIdent]:
-                    vurderErLesevisning() || personHarIkkevurdertVilkår(personResultat),
+                [personResultat.personIdent]: vurderErLesevisning() || personHarIkkevurdertVilkår(personResultat),
             }),
             {}
         );
@@ -76,8 +75,7 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
                                 onClick={() =>
                                     settPersonErEkspandert({
                                         ...personErEkspandert,
-                                        [personResultat.personIdent]:
-                                            !personErEkspandert[personResultat.personIdent],
+                                        [personResultat.personIdent]: !personErEkspandert[personResultat.personIdent],
                                     })
                                 }
                                 icon={
@@ -104,17 +102,12 @@ const VilkårsvurderingSkjema: React.FunctionComponent = () => {
                                             fødselsdato={personResultat.person.fødselsdato}
                                         />
                                     ) : (
-                                        <Alert
-                                            variant="warning"
-                                            children={'Klarte ikke hente registeropplysninger'}
-                                        />
+                                        <Alert variant="warning" children={'Klarte ikke hente registeropplysninger'} />
                                     )}
                                 </>
                                 {Object.values(vilkårConfig)
                                     .filter((vc: IVilkårConfig) =>
-                                        vc.parterDetteGjelderFor.includes(
-                                            personResultat.person.type
-                                        )
+                                        vc.parterDetteGjelderFor.includes(personResultat.person.type)
                                     )
                                     .map((vc: IVilkårConfig) => {
                                         const vilkårResultater: IVilkårResultat[] =

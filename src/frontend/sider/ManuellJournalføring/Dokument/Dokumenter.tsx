@@ -1,12 +1,10 @@
-import React from 'react';
-
 import { Alert, ErrorMessage } from '@navikt/ds-react';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
 import { DokumentVelger } from './DokumentVelger';
 import { useManuellJournalføringContext } from '../ManuellJournalføringContext';
 
-export const Dokumenter: React.FC = () => {
+export const Dokumenter = () => {
     const { skjema } = useManuellJournalføringContext();
 
     return skjema.felter.dokumenter.verdi.length === 0 ? (
@@ -18,19 +16,17 @@ export const Dokumenter: React.FC = () => {
                     dokument={dokument}
                     key={index}
                     visFeilmeldinger={
-                        skjema.visFeilmeldinger &&
-                        skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL
+                        skjema.visFeilmeldinger && skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL
                     }
                 />
             ))}
 
-            {skjema.visFeilmeldinger &&
-                skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL && (
-                    <>
-                        <br />
-                        <ErrorMessage>{skjema.felter.dokumenter.feilmelding}</ErrorMessage>
-                    </>
-                )}
+            {skjema.visFeilmeldinger && skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL && (
+                <>
+                    <br />
+                    <ErrorMessage>{skjema.felter.dokumenter.feilmelding}</ErrorMessage>
+                </>
+            )}
         </div>
     );
 };

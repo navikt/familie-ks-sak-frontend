@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { differenceInMilliseconds } from 'date-fns';
 import styled from 'styled-components';
@@ -11,9 +11,9 @@ import type { IRestRegisteropplysning } from '../../../../../../typer/person';
 import { Registeropplysning, registeropplysning } from '../../../../../../typer/registeropplysning';
 import {
     Datoformat,
+    isoDatoPeriodeTilFormatertString,
     isoStringTilDateMedFallback,
     isoStringTilFormatertString,
-    isoDatoPeriodeTilFormatertString,
     tidenesMorgen,
 } from '../../../../../../utils/dato';
 
@@ -70,11 +70,7 @@ const sorterPerioderSynkende = (a: IRestRegisteropplysning, b: IRestRegisteroppl
 
 const GRENSE_FOR_EKSPANDERBAR_HISTORIKK = 3;
 
-const RegisteropplysningerTabell: React.FC<IRegisteropplysningerTabellProps> = ({
-    opplysningstype,
-    ikon,
-    historikk,
-}) => {
+const RegisteropplysningerTabell = ({ opplysningstype, ikon, historikk }: IRegisteropplysningerTabellProps) => {
     const [erEkspandert, settEkspandert] = useState<boolean>(false);
     const manglerOpplysninger = historikk.length === 0;
     const skalVæreEkspanderbar =
@@ -141,9 +137,7 @@ const RegisteropplysningerTabell: React.FC<IRegisteropplysningerTabellProps> = (
                         icon={erEkspandert ? <ChevronUpIcon /> : <ChevronDownIcon />}
                         iconPosition="right"
                     >
-                        {erEkspandert
-                            ? 'Skjul'
-                            : `Vis ${historikk.length - GRENSE_FOR_EKSPANDERBAR_HISTORIKK} flere`}
+                        {erEkspandert ? 'Skjul' : `Vis ${historikk.length - GRENSE_FOR_EKSPANDERBAR_HISTORIKK} flere`}
                     </Button>
                 </HøyrejustertKnapperad>
             )}

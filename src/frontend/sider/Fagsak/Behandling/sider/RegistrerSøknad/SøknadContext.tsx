@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router';
 
@@ -7,7 +7,6 @@ import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useFagsakContext } from '../../../../../context/fagsak/FagsakContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../../../typer/person';
@@ -18,9 +17,10 @@ import type {
     Målform,
 } from '../../../../../typer/søknad';
 import { hentBarnMedLøpendeUtbetaling } from '../../../../../utils/fagsak';
+import { useFagsakContext } from '../../../FagsakContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
     åpenBehandling: IBehandling;
 }
 
@@ -44,17 +44,11 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
     const { vurderErLesevisning, settÅpenBehandling } = useBehandlingContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
-    const { bruker, minimalFagsakRessurs } = useFagsakContext();
+    const { bruker, fagsak } = useFagsakContext();
 
-    const barnMedLøpendeUtbetaling =
-        minimalFagsakRessurs.status === RessursStatus.SUKSESS
-            ? hentBarnMedLøpendeUtbetaling(minimalFagsakRessurs.data)
-            : new Set<string>();
+    const barnMedLøpendeUtbetaling = hentBarnMedLøpendeUtbetaling(fagsak);
 
-    const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<
-        SøknadSkjema,
-        IBehandling
-    >({
+    const { skjema, nullstillSkjema, onSubmit, hentFeilTilOppsummering } = useSkjema<SøknadSkjema, IBehandling>({
         felter: {
             barnaMedOpplysninger: useFelt<IBarnMedOpplysninger[]>({
                 verdi: [],
@@ -78,7 +72,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
         skjemanavn: 'Registrer søknad',
     });
 
-    const [søknadErLastetFraBackend, settSøknadErLastetFraBackend] = React.useState(false);
+    const [søknadErLastetFraBackend, settSøknadErLastetFraBackend] = useState(false);
 
     const tilbakestillSøknad = () => {
         if (bruker.status === RessursStatus.SUKSESS) {
@@ -86,8 +80,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
             skjema.felter.barnaMedOpplysninger.validerOgSettFelt(
                 bruker.data.forelderBarnRelasjon
                     .filter(
-                        (relasjon: IForelderBarnRelasjon) =>
-                            relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN
+                        (relasjon: IForelderBarnRelasjon) => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN
                     )
                     .map(
                         (relasjon: IForelderBarnRelasjon): IBarnMedOpplysninger => ({
@@ -104,11 +97,11 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
         settSøknadErLastetFraBackend(false);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         tilbakestillSøknad();
     }, [bruker.status]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (åpenBehandling.søknadsgrunnlag) {
             settSøknadErLastetFraBackend(true);
             skjema.felter.barnaMedOpplysninger.validerOgSettFelt(
@@ -120,9 +113,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
                 )
             );
 
-            skjema.felter.målform.validerOgSettFelt(
-                åpenBehandling.søknadsgrunnlag.søkerMedOpplysninger.målform
-            );
+            skjema.felter.målform.validerOgSettFelt(åpenBehandling.søknadsgrunnlag.søkerMedOpplysninger.målform);
             skjema.felter.endringAvOpplysningerBegrunnelse.validerOgSettFelt(
                 åpenBehandling.søknadsgrunnlag.endringAvOpplysningerBegrunnelse
             );
@@ -153,8 +144,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
                                         ident: barn.ident ?? '',
                                     })
                                 ),
-                                endringAvOpplysningerBegrunnelse:
-                                    skjema.felter.endringAvOpplysningerBegrunnelse.verdi,
+                                endringAvOpplysningerBegrunnelse: skjema.felter.endringAvOpplysningerBegrunnelse.verdi,
                             },
                             bekreftEndringerViaFrontend,
                         },
@@ -163,9 +153,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
                     (response: Ressurs<IBehandling>) => {
                         if (response.status === RessursStatus.SUKSESS) {
                             settÅpenBehandling(response);
-                            navigate(
-                                `/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`
-                            );
+                            navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`);
                         }
                     }
                 );

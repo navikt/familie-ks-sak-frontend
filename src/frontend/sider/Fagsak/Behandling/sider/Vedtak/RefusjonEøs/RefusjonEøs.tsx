@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -40,19 +40,17 @@ const KopierTilNøsKnapp = styled(CopyButton)`
     }
 `;
 
-const RefusjonEøs: React.FC<IRefusjonEøs> = ({
+const RefusjonEøs = ({
     refusjonEøsListe,
     settErUlagretNyRefusjonEøsPeriode,
     skjulRefusjonEøs,
     behandlingId,
     fagsakId,
-}) => {
+}: IRefusjonEøs) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
-    const [ønskerÅLeggeTilNyPeriode, settØnskerÅLeggeTilNyPeriode] = useState(
-        refusjonEøsListe.length === 0
-    );
+    const [ønskerÅLeggeTilNyPeriode, settØnskerÅLeggeTilNyPeriode] = useState(refusjonEøsListe.length === 0);
 
     useEffect(() => {
         settErUlagretNyRefusjonEøsPeriode(ønskerÅLeggeTilNyPeriode);

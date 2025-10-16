@@ -1,5 +1,3 @@
-import React from 'react';
-
 type FamilieChevronRetning = 'opp' | 'ned' | 'høyre' | 'venstre';
 
 interface Props {
@@ -22,7 +20,7 @@ const getRotationTransform = (retning?: FamilieChevronRetning): string | undefin
 };
 
 // Default farge er @navBlå
-const FamilieChevron: React.FC<Props> = ({ retning, title = 'FamilieChevron' }) => {
+const FamilieChevron = ({ retning, title = 'FamilieChevron' }: Props) => {
     const rotation = getRotationTransform(retning);
     const style = rotation
         ? {
@@ -30,14 +28,7 @@ const FamilieChevron: React.FC<Props> = ({ retning, title = 'FamilieChevron' }) 
           }
         : undefined;
     return (
-        <svg
-            style={style}
-            width={16}
-            height={16}
-            viewBox="0 0 16 24"
-            role="presentation"
-            aria-hidden="true"
-        >
+        <svg style={style} width={16} height={16} viewBox="0 0 16 24" role="presentation" aria-hidden="true">
             <title>{title}</title>
             <path
                 d="M1.5 24a1 1 0 0 1-.646-1.764L12.953 12 .853 1.764A1 1 0 1 1 2.146.236l13 11a1.005 1.005 0 0 1 0 1.528l-13 11a1.003 1.003 0 0 1-.645.236"

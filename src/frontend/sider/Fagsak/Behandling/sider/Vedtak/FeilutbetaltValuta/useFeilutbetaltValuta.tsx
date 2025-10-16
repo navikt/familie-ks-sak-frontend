@@ -8,8 +8,8 @@ import { validerFeilutbetaltBeløp } from './FeilutbetaltValutaUtil';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type {
     IFeilutbetaltValutaSkjemaFelter,
-    IRestNyFeilutbetaltValutaPeriode,
     IRestFeilutbetaltValuta,
+    IRestNyFeilutbetaltValutaPeriode,
 } from '../../../../../../typer/eøs-feilutbetalt-valuta';
 import { dateTilIsoDatoString, validerGyldigDato } from '../../../../../../utils/dato';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
@@ -57,8 +57,7 @@ const useFeilutbetaltValuta = ({ feilutbetaltValuta, settFeilmelding, behandling
         skjema.felter.feilutbetaltBeløp.nullstill();
     };
 
-    const [forrigeFeilutbetaltValuta, settForrigeFeilutbetaltValuta] =
-        useState<IRestFeilutbetaltValuta>();
+    const [forrigeFeilutbetaltValuta, settForrigeFeilutbetaltValuta] = useState<IRestFeilutbetaltValuta>();
 
     if (forrigeFeilutbetaltValuta !== feilutbetaltValuta) {
         settForrigeFeilutbetaltValuta(feilutbetaltValuta);

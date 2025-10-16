@@ -1,16 +1,10 @@
-import * as React from 'react';
-
 interface IIkkeTilgang {
     className?: string;
     height?: number;
     width?: number;
 }
 
-const IkkeTilgang: React.FunctionComponent<IIkkeTilgang> = ({
-    className,
-    height = 24,
-    width = 24,
-}) => {
+const IkkeTilgang = ({ className, height = 24, width = 24 }: IIkkeTilgang) => {
     return (
         <svg
             aria-labelledby={'ikkeTilgang'}

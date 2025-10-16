@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type { MouseEvent } from 'react';
 
 import { NavLink } from 'react-router';
 import styled from 'styled-components';
@@ -6,18 +6,18 @@ import styled from 'styled-components';
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, Button, HStack, VStack } from '@navikt/ds-react';
 import {
-    ABorderWarning,
     ABorderFocus,
+    ABorderSelected,
+    ABorderWarning,
     AGrayalpha500,
-    ASurfaceDefault,
-    ASurfaceHover,
-    ASurfaceWarning,
     ASpacing2,
     ASpacing6,
     ASpacing8,
-    ATextDefault,
+    ASurfaceDefault,
+    ASurfaceHover,
     ASurfaceNeutralSubtle,
-    ABorderSelected,
+    ASurfaceWarning,
+    ATextDefault,
 } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -79,15 +79,11 @@ const UndersideSirkel = styled.span`
     width: ${ASpacing6};
 `;
 
-const Venstremeny: React.FunctionComponent = () => {
+const Venstremeny = () => {
     const { fagsakId } = useSakOgBehandlingParams();
-    const { åpenBehandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } =
-        useBehandlingContext();
+    const { åpenBehandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } = useBehandlingContext();
 
-    const stansNavigeringDersomSidenIkkeErAktiv = (
-        event: React.MouseEvent,
-        sidenErAktiv: boolean
-    ) => {
+    const stansNavigeringDersomSidenIkkeErAktiv = (event: MouseEvent, sidenErAktiv: boolean) => {
         if (!sidenErAktiv) {
             event.preventDefault();
         }
@@ -113,18 +109,12 @@ const Venstremeny: React.FunctionComponent = () => {
                                         id={sideId}
                                         to={tilPath}
                                         $erLenkenAktiv={sidenErAktiv}
-                                        onClick={event =>
-                                            stansNavigeringDersomSidenIkkeErAktiv(
-                                                event,
-                                                sidenErAktiv
-                                            )
-                                        }
+                                        onClick={event => stansNavigeringDersomSidenIkkeErAktiv(event, sidenErAktiv)}
                                     >
                                         {`${side.steg ? `${index + 1}. ` : ''}${side.navn}`}
                                     </MenyLenke>
                                     {undersider.map((underside: IUnderside) => {
-                                        const antallAksjonspunkter =
-                                            underside.antallAksjonspunkter();
+                                        const antallAksjonspunkter = underside.antallAksjonspunkter();
                                         return (
                                             <MenyLenke
                                                 key={`${sideId}_${underside.hash}`}
@@ -132,23 +122,16 @@ const Venstremeny: React.FunctionComponent = () => {
                                                 to={`${tilPath}#${underside.hash}`}
                                                 $erLenkenAktiv={sidenErAktiv}
                                                 onClick={event =>
-                                                    stansNavigeringDersomSidenIkkeErAktiv(
-                                                        event,
-                                                        sidenErAktiv
-                                                    )
+                                                    stansNavigeringDersomSidenIkkeErAktiv(event, sidenErAktiv)
                                                 }
                                             >
                                                 <HStack align="center" gap="1">
                                                     {antallAksjonspunkter > 0 ? (
-                                                        <UndersideSirkel>
-                                                            {antallAksjonspunkter}
-                                                        </UndersideSirkel>
+                                                        <UndersideSirkel>{antallAksjonspunkter}</UndersideSirkel>
                                                     ) : (
                                                         <Box padding="3" />
                                                     )}
-                                                    <BodyShort size="small">
-                                                        {underside.navn}
-                                                    </BodyShort>
+                                                    <BodyShort size="small">{underside.navn}</BodyShort>
                                                 </HStack>
                                             </MenyLenke>
                                         );
@@ -162,7 +145,7 @@ const Venstremeny: React.FunctionComponent = () => {
                 <ToggleVisningVenstremeny
                     forwardedAs={Button}
                     variant="secondary"
-                    onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
+                    onMouseDown={(e: MouseEvent) => e.preventDefault()}
                     onClick={() => {
                         settÅpenVenstremeny(!åpenVenstremeny);
                     }}

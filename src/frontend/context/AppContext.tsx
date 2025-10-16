@@ -1,5 +1,12 @@
-import type { JSX, PropsWithChildren, ReactNode } from 'react';
-import React, { createContext, useEffect, useState } from 'react';
+import {
+    type Dispatch,
+    type JSX,
+    type PropsWithChildren,
+    type ReactNode,
+    type SetStateAction,
+    useContext,
+} from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 import type { AxiosRequestConfig } from 'axios';
 
@@ -47,8 +54,8 @@ interface AppContextValue {
     lukkModal: () => void;
     appInfoModal: IModal;
     settToast: (toastId: ToastTyper, toast: IToast) => void;
-    settToasts: React.Dispatch<
-        React.SetStateAction<{
+    settToasts: Dispatch<
+        SetStateAction<{
             [toastId: string]: IToast;
         }>
     >;
@@ -71,7 +78,7 @@ const AppProvider = (props: PropsWithChildren) => {
     const [toggles, settToggles] = useState<IToggles>(alleTogglerAv());
     const [appVersjon, settAppVersjon] = useState('');
 
-    const [appInfoModal, settAppInfoModal] = React.useState<IModal>(initalState);
+    const [appInfoModal, settAppInfoModal] = useState<IModal>(initalState);
     const [toasts, settToasts] = useState<{ [toastId: string]: IToast }>({});
     const [erTogglesHentet, settErTogglesHentet] = useState(false);
 
@@ -89,8 +96,8 @@ const AppProvider = (props: PropsWithChildren) => {
                                 <div className={'utdatert-losning'}>
                                     <Alert variant={'info'} inline>
                                         <BodyShort>
-                                            Det finnes en oppdatert versjon av løsningen. Det
-                                            anbefales at du oppdaterer med en gang.
+                                            Det finnes en oppdatert versjon av løsningen. Det anbefales at du oppdaterer
+                                            med en gang.
                                         </BodyShort>
                                     </Alert>
                                 </div>
@@ -149,10 +156,7 @@ const AppProvider = (props: PropsWithChildren) => {
         settAppInfoModal(initalState);
     };
 
-    const sjekkTilgang = async (
-        brukerIdent: string,
-        visSystemetLaster = true
-    ): Promise<boolean> => {
+    const sjekkTilgang = async (brukerIdent: string, visSystemetLaster = true): Promise<boolean> => {
         return request<{ brukerIdent: string }, IRestTilgang>({
             method: 'POST',
             url: '/familie-ks-sak/api/tilgang',
@@ -169,9 +173,7 @@ const AppProvider = (props: PropsWithChildren) => {
                             <Alert variant={'error'} inline>
                                 <BodyShort>
                                     {`Bruker har diskresjonskode ${
-                                        adressebeskyttelsestyper[
-                                            ressurs.data.adressebeskyttelsegradering
-                                        ]
+                                        adressebeskyttelsestyper[ressurs.data.adressebeskyttelsegradering]
                                     }`}
                                 </BodyShort>
                             </Alert>
@@ -223,8 +225,7 @@ const AppProvider = (props: PropsWithChildren) => {
         return rolle >= BehandlerRolle.SAKSBEHANDLER;
     };
 
-    const skalObfuskereData =
-        toggles[ToggleNavn.skalObfuskereData] && !harInnloggetSaksbehandlerSkrivetilgang();
+    const skalObfuskereData = toggles[ToggleNavn.skalObfuskereData] && !harInnloggetSaksbehandlerSkrivetilgang();
 
     return (
         <AppContext.Provider
@@ -256,7 +257,7 @@ const AppProvider = (props: PropsWithChildren) => {
 };
 
 const useAppContext = () => {
-    const context = React.useContext(AppContext);
+    const context = useContext(AppContext);
     if (!context) {
         throw new Error('useAppContext må brukes innenfor AppProvider');
     }

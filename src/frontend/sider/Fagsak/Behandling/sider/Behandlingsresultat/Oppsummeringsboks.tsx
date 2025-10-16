@@ -1,5 +1,4 @@
-import type { PropsWithChildren } from 'react';
-import * as React from 'react';
+import { type PropsWithChildren, useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -21,17 +20,8 @@ import type {
 } from '../../../../../typer/eøsPerioder';
 import { EøsPeriodeStatus, KompetanseResultat } from '../../../../../typer/eøsPerioder';
 import type { Utbetalingsperiode } from '../../../../../typer/utbetalingsperiode';
-import {
-    dateTilFormatertString,
-    Datoformat,
-    periodeOverlapperMedValgtDato,
-} from '../../../../../utils/dato';
-import {
-    formaterBeløp,
-    formaterIdent,
-    hentAlderSomString,
-    sorterUtbetaling,
-} from '../../../../../utils/formatter';
+import { dateTilFormatertString, Datoformat, periodeOverlapperMedValgtDato } from '../../../../../utils/dato';
+import { formaterBeløp, formaterIdent, hentAlderSomString, sorterUtbetaling } from '../../../../../utils/formatter';
 
 const AlertAlignedRight = styled(Alert)`
     float: right;
@@ -65,8 +55,7 @@ const finnUtbetalingsBeløpStatusMap = (
         const barnIdent = upd.person.personIdent;
         const kompetanserForBarn = finnKompetanserForBarn(kompetanser, barnIdent);
         const norgeErSekundærland = kompetanserForBarn.some(
-            kompetanseForBarn =>
-                kompetanseForBarn.resultat === KompetanseResultat.NORGE_ER_SEKUNDÆRLAND
+            kompetanseForBarn => kompetanseForBarn.resultat === KompetanseResultat.NORGE_ER_SEKUNDÆRLAND
         );
         let skalViseUtbetalingsBeløp = !norgeErSekundærland;
 
@@ -75,53 +64,36 @@ const finnUtbetalingsBeløpStatusMap = (
             const utbetaltAnnetLandStatusOk = erAllePerioderUtfyltForBarn(
                 finnEøsPerioderForBarn(utbetaltAnnetLandBeløp, barnIdent)
             );
-            const valutakursStatusOk = erAllePerioderUtfyltForBarn(
-                finnEøsPerioderForBarn(valutakurser, barnIdent)
-            );
-            skalViseUtbetalingsBeløp =
-                kompetanseStatusOk && utbetaltAnnetLandStatusOk && valutakursStatusOk;
+            const valutakursStatusOk = erAllePerioderUtfyltForBarn(finnEøsPerioderForBarn(valutakurser, barnIdent));
+            skalViseUtbetalingsBeløp = kompetanseStatusOk && utbetaltAnnetLandStatusOk && valutakursStatusOk;
         }
         utbetalingsMap.set(barnIdent, skalViseUtbetalingsBeløp);
     });
     return utbetalingsMap;
 };
 
-const finnEøsPerioderForBarn = (
-    restEøsPerioder: IRestEøsPeriode[],
-    barnIdent: string
-): IRestEøsPeriode[] => {
-    return (
-        restEøsPerioder.filter(restEøsPeriode => restEøsPeriode.barnIdenter.includes(barnIdent)) ??
-        []
-    );
+const finnEøsPerioderForBarn = (restEøsPerioder: IRestEøsPeriode[], barnIdent: string): IRestEøsPeriode[] => {
+    return restEøsPerioder.filter(restEøsPeriode => restEøsPeriode.barnIdenter.includes(barnIdent)) ?? [];
 };
 
-const finnKompetanserForBarn = (
-    kompetanseFelter: IRestKompetanse[],
-    barnIdent: string
-): IRestKompetanse[] => {
-    return (
-        kompetanseFelter.filter(kompetanseFelt => kompetanseFelt.barnIdenter.includes(barnIdent)) ??
-        []
-    );
+const finnKompetanserForBarn = (kompetanseFelter: IRestKompetanse[], barnIdent: string): IRestKompetanse[] => {
+    return kompetanseFelter.filter(kompetanseFelt => kompetanseFelt.barnIdenter.includes(barnIdent)) ?? [];
 };
 
 const erAllePerioderUtfyltForBarn = (eøsPeriodeStatus: IEøsPeriodeStatus[]) => {
     return eøsPeriodeStatus.every(eøsPeriode => eøsPeriode.status === EøsPeriodeStatus.OK);
 };
 
-const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
+const Oppsummeringsboks = ({
     åpenBehandling,
     aktivEtikett,
     kompetanser,
     utbetaltAnnetLandBeløp,
     valutakurser,
-}) => {
+}: IProps) => {
     const { settAktivEtikett } = useTidslinjeContext();
 
-    const [utbetalingsBeløpStatusMap, setUtbetalingsBeløpStatusMap] = React.useState(
-        new Map<string, boolean>()
-    );
+    const [utbetalingsBeløpStatusMap, setUtbetalingsBeløpStatusMap] = useState(new Map<string, boolean>());
 
     const månedNavnOgÅr = () => {
         const navn = dateTilFormatertString({
@@ -145,30 +117,21 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
             : undefined;
     };
 
-    const utbetalingsperiode = finnUtbetalingsperiodeForAktivEtikett(
-        åpenBehandling.utbetalingsperioder
-    );
+    const utbetalingsperiode = finnUtbetalingsperiodeForAktivEtikett(åpenBehandling.utbetalingsperioder);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setUtbetalingsBeløpStatusMap(
-            finnUtbetalingsBeløpStatusMap(
-                utbetalingsperiode,
-                kompetanser,
-                utbetaltAnnetLandBeløp,
-                valutakurser
-            )
+            finnUtbetalingsBeløpStatusMap(utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser)
         );
     }, [utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser]);
 
     const skalViseYtelseType =
         utbetalingsperiode &&
         utbetalingsperiode.utbetalingsperiodeDetaljer.some(
-            upd =>
-                upd.ytelseType === YtelseType.OVERGANGSORDNING ||
-                upd.ytelseType === YtelseType.PRAKSISENDRING_2024
+            upd => upd.ytelseType === YtelseType.OVERGANGSORDNING || upd.ytelseType === YtelseType.PRAKSISENDRING_2024
         );
 
-    const UtbetalingsbeløpRad: React.FC<PropsWithChildren> = ({ children }) => {
+    const UtbetalingsbeløpRad = ({ children }: PropsWithChildren) => {
         const columns = skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem';
 
         return (
@@ -208,48 +171,35 @@ const Oppsummeringsboks: React.FunctionComponent<IProps> = ({
                             {skalViseYtelseType && <BodyShort>Ytelsetype</BodyShort>}
                             <BodyShort>Beløp</BodyShort>
                         </UtbetalingsbeløpRad>
-                        {utbetalingsperiode.utbetalingsperiodeDetaljer
-                            .sort(sorterUtbetaling)
-                            .map(detalj => (
-                                <UtbetalingsbeløpRad key={detalj.person.navn}>
-                                    <BodyShort>{`${detalj.person.navn} (${hentAlderSomString(
-                                        detalj.person.fødselsdato
-                                    )}) | ${formaterIdent(detalj.person.personIdent)}`}</BodyShort>
-                                    <BodyShort>
-                                        {hentBarnehageplassBeskrivelse(
-                                            detalj.prosent,
-                                            detalj.erPåvirketAvEndring
-                                        )}
-                                    </BodyShort>
-                                    <BodyShort>{detalj.prosent + '% '}</BodyShort>
-                                    {skalViseYtelseType && (
-                                        <BodyShort>{ytelsetype[detalj.ytelseType].navn}</BodyShort>
-                                    )}
-                                    {utbetalingsBeløpStatusMap.get(detalj.person.personIdent) ? (
-                                        <BodyShort>
-                                            {formaterBeløp(detalj.utbetaltPerMnd)}
-                                        </BodyShort>
-                                    ) : (
-                                        <AlertAlignedRight
-                                            variant="warning"
-                                            children={'Må beregnes'}
-                                            size={'small'}
-                                            inline
-                                        />
-                                    )}
-                                </UtbetalingsbeløpRad>
-                            ))}
+                        {utbetalingsperiode.utbetalingsperiodeDetaljer.sort(sorterUtbetaling).map(detalj => (
+                            <UtbetalingsbeløpRad key={detalj.person.navn}>
+                                <BodyShort>{`${detalj.person.navn} (${hentAlderSomString(
+                                    detalj.person.fødselsdato
+                                )}) | ${formaterIdent(detalj.person.personIdent)}`}</BodyShort>
+                                <BodyShort>
+                                    {hentBarnehageplassBeskrivelse(detalj.prosent, detalj.erPåvirketAvEndring)}
+                                </BodyShort>
+                                <BodyShort>{detalj.prosent + '% '}</BodyShort>
+                                {skalViseYtelseType && <BodyShort>{ytelsetype[detalj.ytelseType].navn}</BodyShort>}
+                                {utbetalingsBeløpStatusMap.get(detalj.person.personIdent) ? (
+                                    <BodyShort>{formaterBeløp(detalj.utbetaltPerMnd)}</BodyShort>
+                                ) : (
+                                    <AlertAlignedRight
+                                        variant="warning"
+                                        children={'Må beregnes'}
+                                        size={'small'}
+                                        inline
+                                    />
+                                )}
+                            </UtbetalingsbeløpRad>
+                        ))}
                         <TotaltUtbetaltRad columns="1fr 5rem">
                             <BodyShort weight="semibold">Totalt utbetalt per mnd</BodyShort>
-                            <BodyShort weight="semibold">
-                                {formaterBeløp(utbetalingsperiode.utbetaltPerMnd)}
-                            </BodyShort>
+                            <BodyShort weight="semibold">{formaterBeløp(utbetalingsperiode.utbetaltPerMnd)}</BodyShort>
                         </TotaltUtbetaltRad>
                         {erAndelForPraksisendring && (
                             <Alert variant={'info'} size={'small'}>
-                                <BodyShort>
-                                    Utbetaling i tråd med fastsatt praksis ifm lovendring 2024.
-                                </BodyShort>
+                                <BodyShort>Utbetaling i tråd med fastsatt praksis ifm lovendring 2024.</BodyShort>
                             </Alert>
                         )}
                     </UtbetalingsbeløpStack>

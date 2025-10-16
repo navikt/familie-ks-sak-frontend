@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { BodyShort, ErrorMessage, Label } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 
@@ -9,22 +7,15 @@ import FritekstVedtakbegrunnelser from './FritekstVedtakbegrunnelser';
 import Utbetalingsresultat from './Utbetalingsresultat';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
 import { Standardbegrunnelse } from '../../../../../../typer/vedtak';
-import {
-    Vedtaksperiodetype,
-    type IVedtaksperiodeMedBegrunnelser,
-} from '../../../../../../typer/vedtaksperiode';
+import { type IVedtaksperiodeMedBegrunnelser, Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 
 interface IProps {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
     sisteVedtaksperiodeFom?: string;
 }
 
-const Vedtaksperiode: React.FC<IProps> = ({
-    vedtaksperiodeMedBegrunnelser,
-    sisteVedtaksperiodeFom,
-}) => {
-    const { erPanelEkspandert, onPanelClose, genererteBrevbegrunnelser } =
-        useVedtaksperiodeContext();
+const Vedtaksperiode = ({ vedtaksperiodeMedBegrunnelser, sisteVedtaksperiodeFom }: IProps) => {
+    const { erPanelEkspandert, onPanelClose, genererteBrevbegrunnelser } = useVedtaksperiodeContext();
 
     const vedtaksperiodeInneholderFramtidigOpphørBegrunnelse =
         vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
@@ -45,41 +36,32 @@ const Vedtaksperiode: React.FC<IProps> = ({
         ).length > 0;
 
     const vedtaksperiodeStøtterFritekst =
-        vedtaksperiodeMedBegrunnelser.støtterFritekst ||
-        vedtaksperiodeMedBegrunnelser.fritekster.length > 0;
+        vedtaksperiodeMedBegrunnelser.støtterFritekst || vedtaksperiodeMedBegrunnelser.fritekster.length > 0;
 
     return (
         <EkspanderbarVedtaksperiode
             vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
             sisteVedtaksperiodeFom={sisteVedtaksperiodeFom}
-            vedtaksperiodeInneholderOvergangsordningBegrunnelse={
-                vedtaksperiodeInneholderOvergangsordningBegrunnelse
-            }
+            vedtaksperiodeInneholderOvergangsordningBegrunnelse={vedtaksperiodeInneholderOvergangsordningBegrunnelse}
             åpen={erPanelEkspandert}
             onClick={() => onPanelClose(true)}
         >
             <Utbetalingsresultat
-                utbetalingsperiodeDetaljer={
-                    vedtaksperiodeMedBegrunnelser.utbetalingsperiodeDetaljer
-                }
+                utbetalingsperiodeDetaljer={vedtaksperiodeMedBegrunnelser.utbetalingsperiodeDetaljer}
             />
             {vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.AVSLAG && (
-                <BegrunnelserMultiselect
-                    tillatKunLesevisning={vedtaksperiodeInneholderFramtidigOpphørBegrunnelse}
-                />
+                <BegrunnelserMultiselect tillatKunLesevisning={vedtaksperiodeInneholderFramtidigOpphørBegrunnelse} />
             )}
             {genererteBrevbegrunnelser.status === RessursStatus.SUKSESS &&
                 genererteBrevbegrunnelser.data.length > 0 && (
                     <>
                         <Label>Begrunnelse(r)</Label>
                         <ul>
-                            {genererteBrevbegrunnelser.data.map(
-                                (begrunnelse: string, index: number) => (
-                                    <li key={`begrunnelse-${index}`}>
-                                        <BodyShort children={begrunnelse} />
-                                    </li>
-                                )
-                            )}
+                            {genererteBrevbegrunnelser.data.map((begrunnelse: string, index: number) => (
+                                <li key={`begrunnelse-${index}`}>
+                                    <BodyShort children={begrunnelse} />
+                                </li>
+                            ))}
                         </ul>
                     </>
                 )}

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
@@ -18,7 +16,7 @@ const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = ({
+export const MedlemskapAnnenForelder = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
@@ -66,8 +64,8 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                 {skjema.felter.vurderesEtter.verdi === Regelverk.EØS_FORORDNINGEN && (
                     <>
                         <StyledAlert variant="info" inline>
-                            Du må vurdere dette vilkåret når den andre forelderen er omfattet av
-                            norsk lovgivning og søker har selvstendig rett
+                            Du må vurdere dette vilkåret når den andre forelderen er omfattet av norsk lovgivning og
+                            søker har selvstendig rett
                         </StyledAlert>
                         <br />
                     </>
@@ -76,9 +74,7 @@ export const MedlemskapAnnenForelder: React.FC<MedlemskapAnnenForelderProps> = (
                 <RadioGroup
                     legend={
                         <Label>
-                            {vilkårFraConfig.spørsmål
-                                ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
-                                : ''}
+                            {vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
                         </Label>
                     }
                     value={skjema.felter.resultat.verdi}

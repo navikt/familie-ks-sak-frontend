@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import React from 'react';
+import type { FocusEvent, ReactNode } from 'react';
 
 import styled from 'styled-components';
 
@@ -16,11 +15,7 @@ import { vilkårBegrunnelseFeilmeldingId, vilkårFeilmeldingId } from './Vilkår
 import { BehandlingÅrsak } from '../../../../../../typer/behandling';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
 import { PersonType } from '../../../../../../typer/person';
-import type {
-    IVilkårConfig,
-    IVilkårResultat,
-    UtdypendeVilkårsvurdering,
-} from '../../../../../../typer/vilkår';
+import type { IVilkårConfig, IVilkårResultat, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
 import { Regelverk, Resultat, VilkårType } from '../../../../../../typer/vilkår';
 import { alleRegelverk } from '../../../../../../utils/vilkår';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
@@ -83,17 +78,9 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
 }: IVilkårSkjema<T>) => {
     const { åpenBehandling } = useBehandlingContext();
     const årsakErSøknad =
-        åpenBehandling.status !== RessursStatus.SUKSESS ||
-        åpenBehandling.data.årsak === BehandlingÅrsak.SØKNAD;
-    const {
-        skjema,
-        lagreVilkår,
-        lagrerVilkår,
-        slettVilkår,
-        sletterVilkår,
-        feilmelding,
-        nullstillSkjema,
-    } = vilkårSkjemaContext;
+        åpenBehandling.status !== RessursStatus.SUKSESS || åpenBehandling.data.årsak === BehandlingÅrsak.SØKNAD;
+    const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding, nullstillSkjema } =
+        vilkårSkjemaContext;
 
     return (
         <FieldsetForVilkårSkjema
@@ -109,13 +96,9 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     value={skjema.felter.vurderesEtter.verdi}
                     label={'Vurderes etter'}
                     onChange={event => {
-                        skjema.felter.vurderesEtter.validerOgSettFelt(
-                            event.target.value as Regelverk
-                        );
+                        skjema.felter.vurderesEtter.validerOgSettFelt(event.target.value as Regelverk);
                         if (oppdaterMuligeUtdypendeVilkårsvurderinger) {
-                            oppdaterMuligeUtdypendeVilkårsvurderinger(
-                                event.target.value as Regelverk
-                            );
+                            oppdaterMuligeUtdypendeVilkårsvurderinger(event.target.value as Regelverk);
                         }
 
                         if (
@@ -127,10 +110,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     }}
                 >
                     {Object.entries(alleRegelverk).map(
-                        ([regelverk, { tekst }]: [
-                            string,
-                            { tekst: string; symbol: ReactNode },
-                        ]) => {
+                        ([regelverk, { tekst }]: [string, { tekst: string; symbol: ReactNode }]) => {
                             return (
                                 <option
                                     key={regelverk}
@@ -150,9 +130,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     value={skjema.felter.resultat.verdi}
                     legend={
                         <Label>
-                            {vilkårFraConfig.spørsmål
-                                ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
-                                : ''}
+                            {vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
                         </Label>
                     }
                     error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
@@ -162,12 +140,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         value={Resultat.OPPFYLT}
                         onChange={() => {
                             skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
-                            vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(
-                                false
-                            );
-                            vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt(
-                                []
-                            );
+                            vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
+                            vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
                         }}
                     >
                         Ja
@@ -175,9 +149,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                     <Radio
                         name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
                         value={Resultat.IKKE_OPPFYLT}
-                        onChange={() =>
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)
-                        }
+                        onChange={() => skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)}
                     >
                         Nei
                     </Radio>
@@ -188,11 +160,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 utdypendeVilkårsvurderinger={skjema.felter.utdypendeVilkårsvurdering}
                 muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
                 erLesevisning={lesevisning}
-                feilhåndtering={
-                    skjema.visFeilmeldinger
-                        ? skjema.felter.utdypendeVilkårsvurdering.feilmelding
-                        : ''
-                }
+                feilhåndtering={skjema.visFeilmeldinger ? skjema.felter.utdypendeVilkårsvurdering.feilmelding : ''}
                 children={utdypendeVilkårsvurderingChildren}
             />
             {skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT && årsakErSøknad && (
@@ -229,7 +197,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                 placeholder={'Begrunn hvorfor det er gjort endringer på vilkåret.'}
                 value={skjema.felter.begrunnelse.verdi}
                 error={skjema.visFeilmeldinger ? skjema.felter.begrunnelse.feilmelding : ''}
-                onChange={(event: React.FocusEvent<HTMLTextAreaElement>) => {
+                onChange={(event: FocusEvent<HTMLTextAreaElement>) => {
                     skjema.felter.begrunnelse.validerOgSettFelt(event.target.value);
                 }}
             />

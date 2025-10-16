@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, Heading, Table } from '@navikt/ds-react';
@@ -38,12 +36,12 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const UtbetaltAnnetLand: React.FC<IProps> = ({
+const UtbetaltAnnetLand = ({
     utbetaltAnnetLandBeløp,
     erUtbetaltAnnetLandBeløpGyldige,
     åpenBehandling,
     visFeilmeldinger,
-}) => {
+}: IProps) => {
     return (
         <UtenlandskPeriodeBeløperContainer>
             <Heading spacing size="medium" level="3">
@@ -53,9 +51,7 @@ const UtbetaltAnnetLand: React.FC<IProps> = ({
                 <Alert
                     variant={'warning'}
                     fullWidth
-                    children={
-                        'I periodene Norge er sekundærland må beløpene fra det andre medlemslandet registreres'
-                    }
+                    children={'I periodene Norge er sekundærland må beløpene fra det andre medlemslandet registreres'}
                 />
             )}
             <StyledTable>

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, Heading } from '@navikt/ds-react';
-import { ASpacing5, ASpacing8, ASpacing16 } from '@navikt/ds-tokens/dist/tokens';
+import { ASpacing16, ASpacing5, ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
 
 import VilkårTabell from './VilkårTabell';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
@@ -31,12 +31,7 @@ const UtførKnapp = styled(Button)`
     margin-top: ${ASpacing5};
 `;
 
-const GeneriskVilkår: React.FC<IProps> = ({
-    person,
-    vilkårFraConfig,
-    vilkårResultater,
-    generiskVilkårKey,
-}) => {
+const GeneriskVilkår = ({ person, vilkårFraConfig, vilkårResultater, generiskVilkårKey }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const vilkårsvurderingApi = useVilkårsvurderingApi();
 
@@ -52,9 +47,7 @@ const GeneriskVilkår: React.FC<IProps> = ({
         if (vurderErLesevisning()) {
             return false;
         }
-        const uvurdertPeriodePåVilkår = vilkårResultater.find(
-            vilkår => vilkår.resultat === Resultat.IKKE_VURDERT
-        );
+        const uvurdertPeriodePåVilkår = vilkårResultater.find(vilkår => vilkår.resultat === Resultat.IKKE_VURDERT);
         return uvurdertPeriodePåVilkår === undefined;
     };
 
@@ -63,11 +56,7 @@ const GeneriskVilkår: React.FC<IProps> = ({
             <Fieldset
                 legend={vilkårFraConfig.tittel}
                 hideLegend
-                error={
-                    visFeilmeldingerForVilkår
-                        ? vilkårsvurderingApi.opprettVilkårFeilmelding
-                        : undefined
-                }
+                error={visFeilmeldingerForVilkår ? vilkårsvurderingApi.opprettVilkårFeilmelding : undefined}
             >
                 <Heading size="medium" level="3">
                     {vilkårFraConfig.tittel}

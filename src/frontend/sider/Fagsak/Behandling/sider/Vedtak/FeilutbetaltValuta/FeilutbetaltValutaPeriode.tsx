@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Table, Button, Tooltip, Alert } from '@navikt/ds-react';
+import { Alert, Button, Table, Tooltip } from '@navikt/ds-react';
 
 import FeilutbetaltValutaSkjema from './FeilutbetaltValutaSkjema';
 import { useFeilutbetaltValuta } from './useFeilutbetaltValuta';
@@ -28,25 +28,16 @@ const FlexRowDiv = styled.div`
     gap: 1rem;
 `;
 
-const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
-    feilutbetaltValuta,
-    erLesevisning,
-    behandlingId,
-}) => {
+const FeilutbetaltValutaPeriode = ({ feilutbetaltValuta, erLesevisning, behandlingId }: IFeilutbetaltValutaPeriode) => {
     const [erRadEkspandert, settErRadEkspandert] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
 
-    const {
-        skjema,
-        oppdaterEksisterendePeriode,
-        fjernPeriode,
-        valideringErOk,
-        tilbakestillSkjemafelterTilDefault,
-    } = useFeilutbetaltValuta({
-        behandlingId,
-        feilutbetaltValuta,
-        settFeilmelding,
-    });
+    const { skjema, oppdaterEksisterendePeriode, fjernPeriode, valideringErOk, tilbakestillSkjemafelterTilDefault } =
+        useFeilutbetaltValuta({
+            behandlingId,
+            feilutbetaltValuta,
+            settFeilmelding,
+        });
 
     const tilbakestillOgLukkSkjema = () => {
         settErRadEkspandert(false);
@@ -71,9 +62,7 @@ const FeilutbetaltValutaPeriode: React.FC<IFeilutbetaltValutaPeriode> = ({
                 <FlexColumnDiv>
                     <FeilutbetaltValutaSkjema
                         skjema={skjema}
-                        key={`${feilutbetaltValuta.id}-$${
-                            erRadEkspandert ? 'ekspandert' : 'lukket'
-                        }`}
+                        key={`${feilutbetaltValuta.id}-$${erRadEkspandert ? 'ekspandert' : 'lukket'}`}
                     />
                     <FlexRowDiv>
                         <Button

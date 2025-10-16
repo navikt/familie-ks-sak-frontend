@@ -4,27 +4,24 @@ import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
 import { annenVurderingFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskAnnenVurdering/AnnenVurderingTabell';
 import { vilkårFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
-import type { IPersonResultat, IVilkårResultat, IAnnenVurdering } from '../../typer/vilkår';
+import type { IAnnenVurdering, IPersonResultat, IVilkårResultat } from '../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig, VilkårType } from '../../typer/vilkår';
 import type { IIsoDatoPeriode } from '../../utils/dato';
 import {
+    erEtterEllerSammeDato,
+    erFørEllerSammeDato,
     isoStringTilDateMedFallback,
-    parseTilOgMedDato,
     parseFraOgMedDato,
+    parseTilOgMedDato,
     tidenesEnde,
     tidenesMorgen,
-    erFørEllerSammeDato,
-    erEtterEllerSammeDato,
 } from '../../utils/dato';
 
-export const hentFeilIVilkårsvurdering = (
-    personResultater: IPersonResultat[]
-): FeiloppsummeringFeil[] => {
+export const hentFeilIVilkårsvurdering = (personResultater: IPersonResultat[]): FeiloppsummeringFeil[] => {
     return personResultater.flatMap(personResultat => {
         const oppfylteBarnetsAlderVilkårResultater = personResultat.vilkårResultater.filter(
             vilkårResultat =>
-                vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER &&
-                vilkårResultat.resultat === Resultat.OPPFYLT
+                vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER && vilkårResultat.resultat === Resultat.OPPFYLT
         );
 
         const barnehageplassVilkårResultater = personResultat.vilkårResultater.filter(
@@ -46,29 +43,19 @@ export const hentFeilIVilkårsvurdering = (
     });
 };
 
-const hentIkkeVurderteAndreVurderingerFeil = (
-    personResultat: IPersonResultat
-): FeiloppsummeringFeil[] =>
+const hentIkkeVurderteAndreVurderingerFeil = (personResultat: IPersonResultat): FeiloppsummeringFeil[] =>
     personResultat.andreVurderinger
-        .filter(
-            (annenVurdering: IAnnenVurdering) => annenVurdering.resultat === Resultat.IKKE_VURDERT
-        )
+        .filter((annenVurdering: IAnnenVurdering) => annenVurdering.resultat === Resultat.IKKE_VURDERT)
         .map(annenVurdering => ({
             skjemaelementId: annenVurderingFeilmeldingId(annenVurdering),
-            feilmelding: `Et vilkår av typen '${
-                annenVurderingConfig[annenVurdering.type].tittel
-            }' er ikke fullstendig`,
+            feilmelding: `Et vilkår av typen '${annenVurderingConfig[annenVurdering.type].tittel}' er ikke fullstendig`,
         }));
 
 const hentIkkeVurderteVilkårFeil = (personResultat: IPersonResultat): FeiloppsummeringFeil[] =>
     personResultat.vilkårResultater
-        .filter(
-            (vilkårResultat: IVilkårResultat) => vilkårResultat.resultat === Resultat.IKKE_VURDERT
-        )
+        .filter((vilkårResultat: IVilkårResultat) => vilkårResultat.resultat === Resultat.IKKE_VURDERT)
         .map(vilkårResultat => ({
-            feilmelding: `Et vilkår av typen '${
-                vilkårConfig[vilkårResultat.vilkårType].tittel
-            }' er ikke fullstendig`,
+            feilmelding: `Et vilkår av typen '${vilkårConfig[vilkårResultat.vilkårType].tittel}' er ikke fullstendig`,
             skjemaelementId: vilkårFeilmeldingId(vilkårResultat),
         }));
 
@@ -90,10 +77,7 @@ const hentBarnehageplassPeriodeStarterForSentFeil = (
 
     return barnehageplassVilkårResultater
         .filter(barnehageplassVilkårResultat =>
-            starterEtter(
-                barnehageplassVilkårResultat.periode,
-                sisteOppfylteBarnetsAlderVilkårResultat?.periode
-            )
+            starterEtter(barnehageplassVilkårResultat.periode, sisteOppfylteBarnetsAlderVilkårResultat?.periode)
         )
         .map(vilkårResultat => ({
             skjemaelementId: vilkårFeilmeldingId(vilkårResultat),
@@ -108,14 +92,9 @@ const hentBarnetsalderVilkårManglerBarnehagePeriodeFeil = (
     oppfylteBarnetsAlderVilkårResultater: IVilkårResultat[],
     barnehageplassVilkårResultater: IVilkårResultat[]
 ): FeiloppsummeringFeil[] => {
-    const feiledeVilkårResultater = oppfylteBarnetsAlderVilkårResultater.filter(
-        barnetsAlderPeriode => {
-            return barnetsAlderPeriodeManglerBarnehagePeriode(
-                barnetsAlderPeriode.periode,
-                barnehageplassVilkårResultater
-            );
-        }
-    );
+    const feiledeVilkårResultater = oppfylteBarnetsAlderVilkårResultater.filter(barnetsAlderPeriode => {
+        return barnetsAlderPeriodeManglerBarnehagePeriode(barnetsAlderPeriode.periode, barnehageplassVilkårResultater);
+    });
 
     return feiledeVilkårResultater.length > 0
         ? [
@@ -133,11 +112,8 @@ const barnetsAlderPeriodeManglerBarnehagePeriode = (
     barnetsAlderPeriode: IIsoDatoPeriode,
     barnehageplassVilkårResultater: IVilkårResultat[]
 ): boolean => {
-    const barnehagePerioder = barnehageplassVilkårResultater.map(
-        vilkårResultat => vilkårResultat.periode
-    );
-    const sammenSlåtteBarnehageperioder =
-        slåSammenPerioderSomLiggerInntilHverandre(barnehagePerioder);
+    const barnehagePerioder = barnehageplassVilkårResultater.map(vilkårResultat => vilkårResultat.periode);
+    const sammenSlåtteBarnehageperioder = slåSammenPerioderSomLiggerInntilHverandre(barnehagePerioder);
 
     if (sammenSlåtteBarnehageperioder.length !== 1) {
         return true;
@@ -165,8 +141,7 @@ const barnetsAlderPeriodeManglerBarnehagePeriode = (
     );
     return !(
         barnehageperiodeOverlapperFraStartenAvBarnetsAlderPeriode &&
-        (sistePeriodeHarFramtidigOpphørPgaBarnehageplass ||
-            barnehageperiodeOverlapperTilSluttenAvBarnetsAlderPeriode)
+        (sistePeriodeHarFramtidigOpphørPgaBarnehageplass || barnehageperiodeOverlapperTilSluttenAvBarnetsAlderPeriode)
     );
 };
 
@@ -186,9 +161,7 @@ function starterEtter(
     );
 }
 
-const slåSammenPerioderSomLiggerInntilHverandre = (
-    perioder: IIsoDatoPeriode[]
-): IIsoDatoPeriode[] => {
+const slåSammenPerioderSomLiggerInntilHverandre = (perioder: IIsoDatoPeriode[]): IIsoDatoPeriode[] => {
     return perioder.reduce((acc: IIsoDatoPeriode[], periode) => {
         const forrigePeriode: IIsoDatoPeriode | undefined = acc[acc.length - 1];
 

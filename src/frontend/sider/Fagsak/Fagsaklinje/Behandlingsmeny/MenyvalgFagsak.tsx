@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useLocation, useNavigate } from 'react-router';
 
 import { Dropdown } from '@navikt/ds-react';
@@ -23,14 +21,9 @@ const MenyvalgFagsak = ({ minimalFagsak }: IProps) => {
         <>
             <OpprettBehandling minimalFagsak={minimalFagsak} />
             {erPåDokumentutsending ? (
-                <LeggTilEllerFjernBrevmottakere
-                    erPåBehandling={false}
-                    brevmottakere={manuelleBrevmottakerePåFagsak}
-                />
+                <LeggTilEllerFjernBrevmottakere erPåBehandling={false} brevmottakere={manuelleBrevmottakerePåFagsak} />
             ) : (
-                <Dropdown.Menu.List.Item
-                    onClick={() => navigate(`/fagsak/${minimalFagsak.id}/dokumentutsending`)}
-                >
+                <Dropdown.Menu.List.Item onClick={() => navigate(`/fagsak/${minimalFagsak.id}/dokumentutsending`)}>
                     Send informasjonsbrev
                 </Dropdown.Menu.List.Item>
             )}

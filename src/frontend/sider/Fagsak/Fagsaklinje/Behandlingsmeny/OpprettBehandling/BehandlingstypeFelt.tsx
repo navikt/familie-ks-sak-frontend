@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ChangeEvent } from 'react';
 
 import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
@@ -14,9 +14,7 @@ import { hentAktivBehandlingPåMinimalFagsak } from '../../../../../utils/fagsak
 import type { VisningBehandling } from '../../../Saksoversikt/visningBehandling';
 
 interface IProps {
-    behandlingstype: Felt<
-        Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''
-    >;
+    behandlingstype: Felt<Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''>;
     visFeilmeldinger: boolean;
     minimalFagsak?: IMinimalFagsak;
     erLesevisning?: boolean;
@@ -27,13 +25,13 @@ interface BehandlingstypeSelect extends HTMLSelectElement {
     value: Behandlingstype | '';
 }
 
-const BehandlingstypeFelt: React.FC<IProps> = ({
+const BehandlingstypeFelt = ({
     behandlingstype,
     visFeilmeldinger,
     minimalFagsak,
     erLesevisning = false,
     manuellJournalfør = false,
-}) => {
+}: IProps) => {
     const { toggles } = useAppContext();
 
     const aktivBehandling: VisningBehandling | undefined = minimalFagsak
@@ -41,8 +39,7 @@ const BehandlingstypeFelt: React.FC<IProps> = ({
         : undefined;
 
     const kanOppretteTekniskEndring =
-        kanOppretteRevurdering(minimalFagsak, aktivBehandling) &&
-        toggles[ToggleNavn.kanBehandleTekniskEndring];
+        kanOppretteRevurdering(minimalFagsak, aktivBehandling) && toggles[ToggleNavn.kanBehandleTekniskEndring];
 
     const kanOppretteTilbakekreving = !manuellJournalfør;
 
@@ -52,7 +49,7 @@ const BehandlingstypeFelt: React.FC<IProps> = ({
             readOnly={erLesevisning}
             name={'Behandling'}
             label={'Velg type behandling'}
-            onChange={(event: React.ChangeEvent<BehandlingstypeSelect>): void => {
+            onChange={(event: ChangeEvent<BehandlingstypeSelect>): void => {
                 behandlingstype.onChange(event.target.value);
             }}
         >
@@ -87,9 +84,7 @@ const BehandlingstypeFelt: React.FC<IProps> = ({
 
             {kanOppretteTilbakekreving && (
                 <option
-                    aria-selected={
-                        behandlingstype.verdi === Tilbakekrevingsbehandlingstype.TILBAKEKREVING
-                    }
+                    aria-selected={behandlingstype.verdi === Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
                     value={Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
                 >
                     Tilbakekreving

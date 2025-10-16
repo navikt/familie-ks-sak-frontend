@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 
 import styled from 'styled-components';
@@ -29,10 +28,7 @@ const PersonCelle = styled.div`
     }
 `;
 
-const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRadProps> = ({
-    lagretEndretUtbetalingAndel,
-    åpenBehandling,
-}) => {
+const EndretUtbetalingAndelRad = ({ lagretEndretUtbetalingAndel, åpenBehandling }: IEndretUtbetalingAndelRadProps) => {
     const [erSkjemaEkspandert, settErSkjemaEkspandert] = useState<boolean>(
         lagretEndretUtbetalingAndel.personIdent === null
     );
@@ -98,17 +94,10 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
             <Table.DataCell>
                 <PersonCelle>
                     <StatusIkon
-                        status={
-                            lagretEndretUtbetalingAndel.erTilknyttetAndeler
-                                ? Status.OK
-                                : Status.ADVARSEL
-                        }
+                        status={lagretEndretUtbetalingAndel.erTilknyttetAndeler ? Status.OK : Status.ADVARSEL}
                     />
                     {lagretEndretUtbetalingAndel.personIdent
-                        ? lagPersonLabel(
-                              lagretEndretUtbetalingAndel.personIdent,
-                              åpenBehandling.personer
-                          )
+                        ? lagPersonLabel(lagretEndretUtbetalingAndel.personIdent, åpenBehandling.personer)
                         : 'Ikke satt'}
                 </PersonCelle>
             </Table.DataCell>
@@ -124,17 +113,11 @@ const EndretUtbetalingAndelRad: React.FunctionComponent<IEndretUtbetalingAndelRa
                     : ''}
             </Table.DataCell>
             <Table.DataCell>
-                {lagretEndretUtbetalingAndel.årsak
-                    ? årsakTekst[lagretEndretUtbetalingAndel.årsak]
-                    : ''}
+                {lagretEndretUtbetalingAndel.årsak ? årsakTekst[lagretEndretUtbetalingAndel.årsak] : ''}
             </Table.DataCell>
             <Table.DataCell>
-                {typeof lagretEndretUtbetalingAndel.prosent === 'number' &&
-                lagretEndretUtbetalingAndel.årsak
-                    ? fraProsentTilTekst(
-                          lagretEndretUtbetalingAndel.prosent,
-                          lagretEndretUtbetalingAndel.årsak
-                      )
+                {typeof lagretEndretUtbetalingAndel.prosent === 'number' && lagretEndretUtbetalingAndel.årsak
+                    ? fraProsentTilTekst(lagretEndretUtbetalingAndel.prosent, lagretEndretUtbetalingAndel.årsak)
                     : ''}
             </Table.DataCell>
         </Table.ExpandableRow>

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
@@ -39,10 +37,9 @@ export function FulltidBarnehageplassAugust2024Alert({ utbetalingsperioder }: Pr
 
     return (
         <StyledAlert variant={'warning'}>
-            Det er perioder som kan føre til utbetaling for barn {formaterIdenter(identerForBarn)}.
-            Kontroller om barnet hører inn under regelverk før lovendring 1. august 24. Bruk «Endret
-            utbetalingsperiode» for å stoppe etterbetalingen hvis barnet hadde fulltidsplass i
-            barnehage i august 24.
+            Det er perioder som kan føre til utbetaling for barn {formaterIdenter(identerForBarn)}. Kontroller om barnet
+            hører inn under regelverk før lovendring 1. august 24. Bruk «Endret utbetalingsperiode» for å stoppe
+            etterbetalingen hvis barnet hadde fulltidsplass i barnehage i august 24.
         </StyledAlert>
     );
 }

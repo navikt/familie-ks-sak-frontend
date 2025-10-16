@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { useHttp } from '@navikt/familie-http';
-import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
+import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type { IBehandling } from '../../../../../typer/behandling';
 import type { IRestEndretUtbetalingAndel } from '../../../../../typer/utbetalingAndel';
@@ -12,10 +12,10 @@ export const useBehandlingContextsresultat = (åpenBehandling: IBehandling) => {
     const { settÅpenBehandling } = useBehandlingContext();
 
     const [visFeilmeldinger, settVisFeilmeldinger] = useState(false);
-    const [opprettEndretUtbetalingFeilmelding, settOpprettEndretUtbetalingFeilmelding] =
-        useState('');
-    const [personerMedUgyldigEtterbetalingsperiode, settPersonerMedUgyldigEtterbetalingsperiode] =
-        useState<string[]>([]);
+    const [opprettEndretUtbetalingFeilmelding, settOpprettEndretUtbetalingFeilmelding] = useState('');
+    const [personerMedUgyldigEtterbetalingsperiode, settPersonerMedUgyldigEtterbetalingsperiode] = useState<string[]>(
+        []
+    );
 
     const opprettEndretUtbetaling = () => {
         request<IRestEndretUtbetalingAndel, IBehandling>({
@@ -27,10 +27,7 @@ export const useBehandlingContextsresultat = (åpenBehandling: IBehandling) => {
             if (response.status === RessursStatus.SUKSESS) {
                 settVisFeilmeldinger(false);
                 settÅpenBehandling(response);
-            } else if (
-                response.status === RessursStatus.FUNKSJONELL_FEIL ||
-                response.status === RessursStatus.FEILET
-            ) {
+            } else if (response.status === RessursStatus.FUNKSJONELL_FEIL || response.status === RessursStatus.FEILET) {
                 settVisFeilmeldinger(true);
                 settOpprettEndretUtbetalingFeilmelding(response.frontendFeilmelding);
             }
@@ -47,10 +44,7 @@ export const useBehandlingContextsresultat = (åpenBehandling: IBehandling) => {
             if (response.status === RessursStatus.SUKSESS) {
                 settVisFeilmeldinger(false);
                 settÅpenBehandling(response);
-            } else if (
-                response.status === RessursStatus.FUNKSJONELL_FEIL ||
-                response.status === RessursStatus.FEILET
-            ) {
+            } else if (response.status === RessursStatus.FUNKSJONELL_FEIL || response.status === RessursStatus.FEILET) {
                 settVisFeilmeldinger(true);
                 settOpprettEndretUtbetalingFeilmelding(response.frontendFeilmelding);
             }

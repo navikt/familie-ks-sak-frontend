@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -39,17 +39,15 @@ const KopierTilNøsKnapp = styled(CopyButton)`
     }
 `;
 
-const FeilutbetaltValuta: React.FC<IFeilutbetaltValuta> = ({
+const FeilutbetaltValuta = ({
     feilutbetaltValutaListe,
     settErUlagretNyFeilutbetaltValutaPeriode,
     erLesevisning,
     skjulFeilutbetaltValuta,
     behandlingId,
     fagsakId,
-}) => {
-    const [ønskerÅLeggeTilNyPeriode, settØnskerÅLeggeTilNyPeriode] = useState(
-        feilutbetaltValutaListe.length === 0
-    );
+}: IFeilutbetaltValuta) => {
+    const [ønskerÅLeggeTilNyPeriode, settØnskerÅLeggeTilNyPeriode] = useState(feilutbetaltValutaListe.length === 0);
 
     const oppdaterØnskerÅLeggeTilNyPeriode = (ønskerÅLeggeTilNyPeriode: boolean) => {
         settØnskerÅLeggeTilNyPeriode(ønskerÅLeggeTilNyPeriode);
@@ -60,10 +58,7 @@ const FeilutbetaltValuta: React.FC<IFeilutbetaltValuta> = ({
         skjulFeilutbetaltValuta();
     }
 
-    const totaltFeilutbetaltBeløp = feilutbetaltValutaListe.reduce(
-        (acc, val) => acc + val.feilutbetaltBeløp,
-        0
-    );
+    const totaltFeilutbetaltBeløp = feilutbetaltValutaListe.reduce((acc, val) => acc + val.feilutbetaltBeløp, 0);
 
     const tekstTilNØS = `Viser til følgende vedtak \nhttps://kontantstotte.intern.nav.no/fagsak/${fagsakId}/${behandlingId}/vedtak
     \nBer om at feilutbetalingsbeløpet på grunn av valuta- og satsendringer trekkes i fremtidige utbetalinger.

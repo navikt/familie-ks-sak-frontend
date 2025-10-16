@@ -1,11 +1,5 @@
-import React, {
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-    type PropsWithChildren,
-} from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
@@ -13,41 +7,27 @@ import { useNavigate } from 'react-router';
 import type { SortState } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import { Valideringsstatus } from '@navikt/familie-skjema';
-import {
-    byggFeiletRessurs,
-    byggHenterRessurs,
-    byggTomRessurs,
-    RessursStatus,
-} from '@navikt/familie-typer';
 import type { Ressurs } from '@navikt/familie-typer';
+import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { initialOppgaveFelter, type IOppgaveFelt, type IOppgaveFelter } from './oppgavefelter';
-import {
-    mapIOppgaverTilOppgaveRad,
-    sorterEtterNøkkel,
-    Sorteringsnøkkel,
-    type IOppgaveRad,
-} from './utils';
+import { type IOppgaveRad, mapIOppgaverTilOppgaveRad, sorterEtterNøkkel, Sorteringsnøkkel } from './utils';
 import { useAppContext } from '../../context/AppContext';
 import { AlertType, ToastTyper } from '../../komponenter/Toast/typer';
 import type { IMinimalFagsak } from '../../typer/fagsak';
 import {
     BehandlingstypeFilter,
     EnhetFilter,
-    OppgavetypeFilter,
-    SaksbehandlerFilter,
     type IFinnOppgaveRequest,
     type IHentOppgaveDto,
     type IOppgave,
+    OppgavetypeFilter,
+    SaksbehandlerFilter,
 } from '../../typer/oppgave';
 import { erIsoStringGyldig } from '../../utils/dato';
 import { hentFnrFraOppgaveIdenter } from '../../utils/oppgave';
 import { hentFrontendFeilmelding } from '../../utils/ressursUtils';
-import {
-    hentNesteSorteringsrekkefølge,
-    hentSortState,
-    Sorteringsrekkefølge,
-} from '../../utils/tabell';
+import { hentNesteSorteringsrekkefølge, hentSortState, Sorteringsrekkefølge } from '../../utils/tabell';
 import { useOpprettEllerHentFagsak } from '../Fagsak/useOpprettEllerHentFagsak';
 
 const OPPGAVEBENK_SORTERINGSNØKKEL = 'OPPGAVEBENK_SORTERINGSNØKKEL';
@@ -82,12 +62,9 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
     const [hentOppgaverVedSidelast, settHentOppgaverVedSidelast] = useState(true);
     const [side, settSide] = useState<number>(1);
 
-    const [oppgaver, settOppgaver] =
-        React.useState<Ressurs<IHentOppgaveDto>>(byggTomRessurs<IHentOppgaveDto>());
+    const [oppgaver, settOppgaver] = useState<Ressurs<IHentOppgaveDto>>(byggTomRessurs<IHentOppgaveDto>());
 
-    const [oppgaveFelter, settOppgaveFelter] = useState<IOppgaveFelter>(
-        initialOppgaveFelter(innloggetSaksbehandler)
-    );
+    const [oppgaveFelter, settOppgaveFelter] = useState<IOppgaveFelter>(initialOppgaveFelter(innloggetSaksbehandler));
 
     const oppgaverader: IOppgaveRad[] = useMemo(() => {
         return oppgaver.status === RessursStatus.SUKSESS && oppgaver.data.oppgaver.length > 0
@@ -150,9 +127,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
     };
 
     const oppdaterOppgaveFeltILocalStorage = (oppgaveFelt: IOppgaveFelt, nyVerdi: string) => {
-        const oppgaveFelterLocalStorage = JSON.parse(
-            localStorage.getItem('oppgaveFeltVerdier') || '{}'
-        );
+        const oppgaveFelterLocalStorage = JSON.parse(localStorage.getItem('oppgaveFeltVerdier') || '{}');
         oppgaveFelterLocalStorage[oppgaveFelt.nøkkel] = nyVerdi;
         localStorage.setItem('oppgaveFeltVerdier', JSON.stringify(oppgaveFelterLocalStorage));
     };
@@ -200,8 +175,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
                 search: Object.values(oppdaterteOppgaveFelter)
                     .filter(
                         (mapOppgaveFelt: IOppgaveFelt) =>
-                            mapOppgaveFelt.filter?.selectedValue !==
-                            mapOppgaveFelt.filter?.initialValue
+                            mapOppgaveFelt.filter?.selectedValue !== mapOppgaveFelt.filter?.initialValue
                     )
                     .map((mapOppgaveFelt: IOppgaveFelt) => {
                         return `${mapOppgaveFelt.nøkkel}=${mapOppgaveFelt?.filter?.selectedValue}`;
@@ -224,8 +198,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
         })
             .then((oppgaveId: Ressurs<string>) => {
                 if (oppgaveId.status === RessursStatus.SUKSESS) {
-                    const oppgavetypeFilter =
-                        OppgavetypeFilter[oppgave.oppgavetype as keyof typeof OppgavetypeFilter];
+                    const oppgavetypeFilter = OppgavetypeFilter[oppgave.oppgavetype as keyof typeof OppgavetypeFilter];
                     if (
                         oppgavetypeFilter === OppgavetypeFilter.JFR ||
                         oppgavetypeFilter === OppgavetypeFilter.BEH_SED
@@ -273,9 +246,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
                 } else {
                     settToast(ToastTyper.OPPGAVE_TILBAKESTILT, {
                         alertType: AlertType.ERROR,
-                        tekst:
-                            hentFrontendFeilmelding(oppgaverRes) ??
-                            'Tilbakestilling av oppgave feilet',
+                        tekst: hentFrontendFeilmelding(oppgaverRes) ?? 'Tilbakestilling av oppgave feilet',
                     });
                 }
             })
@@ -296,16 +267,13 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
             oppgaveFelter.fristFerdigstillelse.filter?.selectedValue === '' ||
             erIsoStringGyldig(oppgaveFelter.fristFerdigstillelse.filter?.selectedValue);
 
-        const enhetGyldig =
-            oppgaveFelter.tildeltEnhetsnr.filter?.selectedValue !== EnhetFilter.VELG;
+        const enhetGyldig = oppgaveFelter.tildeltEnhetsnr.filter?.selectedValue !== EnhetFilter.VELG;
 
         const oppdaterteOppgaveFelter = {
             ...oppgaveFelter,
             opprettetTidspunkt: {
                 ...oppgaveFelter.opprettetTidspunkt,
-                valideringsstatus: opprettetTidspunktGyldig
-                    ? Valideringsstatus.OK
-                    : Valideringsstatus.FEIL,
+                valideringsstatus: opprettetTidspunktGyldig ? Valideringsstatus.OK : Valideringsstatus.FEIL,
                 feilmelding: opprettetTidspunktGyldig ? '' : 'Dato må skrives på format ddmmåå',
             },
             fristFerdigstillelse: {
@@ -348,9 +316,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
             hentOppgaveFelt('tildeltEnhetsnr').filter?.selectedValue,
             hentOppgaveFelt('fristFerdigstillelse').filter?.selectedValue,
             hentOppgaveFelt('opprettetTidspunkt').filter?.selectedValue,
-            saksbehandlerFilter === SaksbehandlerFilter.INNLOGGET
-                ? innloggetSaksbehandler?.navIdent
-                : undefined,
+            saksbehandlerFilter === SaksbehandlerFilter.INNLOGGET ? innloggetSaksbehandler?.navIdent : undefined,
             tildeltRessurs
         ).then((oppgaverRessurs: Ressurs<IHentOppgaveDto>) => {
             settOppgaver(oppgaverRessurs);
@@ -366,8 +332,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
         tilordnetRessurs?: string,
         tildeltRessurs?: boolean
     ): Promise<Ressurs<IHentOppgaveDto>> => {
-        const erstattAlleMedUndefined = (filter: string | undefined) =>
-            filter === 'ALLE' ? undefined : filter;
+        const erstattAlleMedUndefined = (filter: string | undefined) => (filter === 'ALLE' ? undefined : filter);
 
         const finnOppgaveRequest: IFinnOppgaveRequest = {
             behandlingstype: erstattAlleMedUndefined(behandlingstype),
@@ -376,13 +341,9 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
             tilordnetRessurs,
             tildeltRessurs,
             opprettetFomTidspunkt:
-                registrertDato && registrertDato !== ''
-                    ? `${registrertDato}T00:00:00.000`
-                    : undefined,
+                registrertDato && registrertDato !== '' ? `${registrertDato}T00:00:00.000` : undefined,
             opprettetTomTidspunkt:
-                registrertDato && registrertDato !== ''
-                    ? `${registrertDato}T23:59:59.999`
-                    : undefined,
+                registrertDato && registrertDato !== '' ? `${registrertDato}T23:59:59.999` : undefined,
             fristFomDato: frist && frist !== '' ? frist : undefined,
             fristTomDato: frist && frist !== '' ? frist : undefined,
             limit: maksAntallOppgaver,

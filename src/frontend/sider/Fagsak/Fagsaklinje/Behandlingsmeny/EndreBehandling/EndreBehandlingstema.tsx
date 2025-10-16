@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import { Button, Fieldset, Dropdown, Modal } from '@navikt/ds-react';
+import { Button, Dropdown, Fieldset, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import useEndreBehandlingstema from './useEndreBehandlingstema';
@@ -8,7 +8,7 @@ import { BehandlingstemaSelect } from '../../../../../komponenter/Behandlingstem
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
-const EndreBehandlingstema: React.FC = () => {
+const EndreBehandlingstema = () => {
     const [visModal, settVisModal] = useState(false);
     const { skjema, endreBehandlingstema, ressurs, nullstillSkjema } = useEndreBehandlingstema(() =>
         settVisModal(false)
@@ -39,11 +39,7 @@ const EndreBehandlingstema: React.FC = () => {
                     portal
                 >
                     <Modal.Body>
-                        <Fieldset
-                            error={hentFrontendFeilmelding(ressurs)}
-                            legend={'Endre behandlingstema'}
-                            hideLegend
-                        >
+                        <Fieldset error={hentFrontendFeilmelding(ressurs)} legend={'Endre behandlingstema'} hideLegend>
                             <BehandlingstemaSelect
                                 behandlingstema={skjema.felter.behandlingstema}
                                 readOnly={vurderErLesevisning()}

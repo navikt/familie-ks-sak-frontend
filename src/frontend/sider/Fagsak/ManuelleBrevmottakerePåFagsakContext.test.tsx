@@ -1,4 +1,4 @@
-import React, { type PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 import { act, renderHook } from '@testing-library/react';
 
@@ -9,9 +9,7 @@ import {
 import { lagBrevmottaker } from '../../testdata/brevmottakerTestdata';
 
 function Provider({ children }: PropsWithChildren) {
-    return (
-        <ManuelleBrevmottakerePåFagsakProvider>{children}</ManuelleBrevmottakerePåFagsakProvider>
-    );
+    return <ManuelleBrevmottakerePåFagsakProvider>{children}</ManuelleBrevmottakerePåFagsakProvider>;
 }
 
 describe('ManuelleBrevmottakerePåFagsakContext', () => {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -48,7 +48,7 @@ const Modaltekst = styled(BodyShort)`
     margin: 2rem 0;
 `;
 
-const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnholdProps> = ({
+const OppsummeringVedtakInnhold = ({
     åpenBehandling,
     settErUlagretNyFeilutbetaltValutaPeriode,
     erBehandlingMedVedtaksbrevutsending,
@@ -56,29 +56,20 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
     settVisModal,
     settErUlagretNyRefusjonEøsPeriode,
     bruker,
-}) => {
+}: IOppsummeringVedtakInnholdProps) => {
     const { hentSaksbehandlerRolle } = useAppContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
     const navigate = useNavigate();
 
-    const {
-        hentForhåndsvisning,
-        nullstillDokument,
-        visDokumentModal,
-        hentetDokument,
-        settVisDokumentModal,
-    } = useDokument();
+    const { hentForhåndsvisning, nullstillDokument, visDokumentModal, hentetDokument, settVisDokumentModal } =
+        useDokument();
 
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
-    const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = React.useState(
-        åpenBehandling.feilutbetaltValuta.length > 0
-    );
-    const [visRefusjonEøs, settVisRefusjonEøs] = React.useState(
-        åpenBehandling.refusjonEøs.length > 0
-    );
+    const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = useState(åpenBehandling.feilutbetaltValuta.length > 0);
+    const [visRefusjonEøs, settVisRefusjonEøs] = useState(åpenBehandling.refusjonEøs.length > 0);
 
     const hentVedtaksbrev = () => {
         const rolle = hentSaksbehandlerRolle();
@@ -111,18 +102,14 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
     };
 
     if (!erBehandlingMedVedtaksbrevutsending) {
-        return (
-            <Alert variant="info">
-                {`Du er inne på en teknisk behandling og det finnes ingen vedtaksbrev.`}
-            </Alert>
-        );
+        return <Alert variant="info">{`Du er inne på en teknisk behandling og det finnes ingen vedtaksbrev.`}</Alert>;
     }
 
     if (åpenBehandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK) {
         return (
             <Alert variant="info">
-                Du er i en iverksette KA-vedtak behandling. Det skal ikke sendes vedtaksbrev. Bruk
-                "Send brev" hvis du skal informere bruker om:
+                Du er i en iverksette KA-vedtak behandling. Det skal ikke sendes vedtaksbrev. Bruk "Send brev" hvis du
+                skal informere bruker om:
                 <ul>
                     <li>Utbetaling</li>
                     <li>EØS-kompetanse</li>
@@ -155,9 +142,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                     </BehandlingKorrigertAlert>
                 )}
                 {åpenBehandling.korrigertVedtak && (
-                    <BehandlingKorrigertAlert variant="info">
-                        Vedtaket er korrigert etter § 35
-                    </BehandlingKorrigertAlert>
+                    <BehandlingKorrigertAlert variant="info">Vedtaket er korrigert etter § 35</BehandlingKorrigertAlert>
                 )}
                 <BrevmottakereAlert
                     bruker={bruker}
@@ -190,9 +175,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                                             settErUlagretNyFeilutbetaltValutaPeriode
                                         }
                                         erLesevisning={erLesevisning}
-                                        skjulFeilutbetaltValuta={() =>
-                                            settVisFeilutbetaltValuta(false)
-                                        }
+                                        skjulFeilutbetaltValuta={() => settVisFeilutbetaltValuta(false)}
                                     />
                                 )}
                                 {visRefusjonEøs && (
@@ -200,9 +183,7 @@ const OppsummeringVedtakInnhold: React.FunctionComponent<IOppsummeringVedtakInnh
                                         refusjonEøsListe={åpenBehandling.refusjonEøs ?? []}
                                         behandlingId={åpenBehandling.behandlingId}
                                         fagsakId={fagsakId}
-                                        settErUlagretNyRefusjonEøsPeriode={
-                                            settErUlagretNyRefusjonEøsPeriode
-                                        }
+                                        settErUlagretNyRefusjonEøsPeriode={settErUlagretNyRefusjonEøsPeriode}
                                         skjulRefusjonEøs={() => settVisRefusjonEøs(false)}
                                     />
                                 )}

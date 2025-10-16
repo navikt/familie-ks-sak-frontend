@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Table } from '@navikt/ds-react';
 
 import type { Saksoversiktsbehandling } from './utils';
@@ -19,7 +17,7 @@ interface Props {
     saksoversiktsbehandling: Saksoversiktsbehandling;
 }
 
-export const Behandling: React.FC<Props> = ({ saksoversiktsbehandling, fagsakId }) => {
+export const Behandling = ({ saksoversiktsbehandling, fagsakId }: Props) => {
     return (
         <Table.Row key={hentBehandlingId(saksoversiktsbehandling)}>
             <Table.DataCell>
@@ -30,9 +28,7 @@ export const Behandling: React.FC<Props> = ({ saksoversiktsbehandling, fagsakId 
             </Table.DataCell>
             <Table.DataCell>{finnÅrsak(saksoversiktsbehandling)}</Table.DataCell>
             <Table.DataCell>{lagLenkePåType(fagsakId, saksoversiktsbehandling)}</Table.DataCell>
-            <Table.DataCell>
-                {hentBehandlingstema(saksoversiktsbehandling)?.navn ?? '-'}
-            </Table.DataCell>
+            <Table.DataCell>{hentBehandlingstema(saksoversiktsbehandling)?.navn ?? '-'}</Table.DataCell>
             <Table.DataCell>{behandlingsstatuser[saksoversiktsbehandling.status]}</Table.DataCell>
             <Table.DataCell>
                 {isoStringTilFormatertString({

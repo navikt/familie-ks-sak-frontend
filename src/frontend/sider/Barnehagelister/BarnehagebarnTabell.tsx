@@ -1,15 +1,9 @@
-import React from 'react';
-
 import { Link as ReactRouterLink } from 'react-router';
 
 import { Alert, Box, Link, Table } from '@navikt/ds-react';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import type {
-    Barnehagebarn,
-    BarnehagebarnRequestParams,
-    BarnehagebarnResponse,
-} from '../../typer/barnehagebarn';
+import type { Barnehagebarn, BarnehagebarnRequestParams, BarnehagebarnResponse } from '../../typer/barnehagebarn';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 
 interface BarnehagebarnTabellProps<T> {
@@ -98,19 +92,13 @@ export const BarnehagebarnTabell = (props: BarnehagebarnTabellProps<Barnehagebar
                                         tilFormat: Datoformat.DATO_FORKORTTET,
                                     })}
                                 </Table.DataCell>
-                                <Table.DataCell align="center">
-                                    {barnehagebarn.antallTimerIBarnehage}
-                                </Table.DataCell>
+                                <Table.DataCell align="center">{barnehagebarn.antallTimerIBarnehage}</Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.endringstype}</Table.DataCell>
-                                <Table.DataCell>
-                                    {visAvvikstekst(barnehagebarn.avvik)}
-                                </Table.DataCell>
+                                <Table.DataCell>{visAvvikstekst(barnehagebarn.avvik)}</Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.kommuneNavn}</Table.DataCell>
                                 <Table.DataCell>{barnehagebarn.kommuneNr}</Table.DataCell>
                                 <Table.DataCell>
-                                    {barnehagebarn.fagsakstatus
-                                        ? barnehagebarn.fagsakstatus
-                                        : 'Ingen fagsak'}
+                                    {barnehagebarn.fagsakstatus ? barnehagebarn.fagsakstatus : 'Ingen fagsak'}
                                 </Table.DataCell>
                                 <Table.DataCell>
                                     {barnehagebarn.fagsakId ? (

@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import React from 'react';
 
 import { Link as ReactRouterLink } from 'react-router';
 
@@ -26,10 +25,7 @@ import {
     utledKlagebehandlingResultattekst,
 } from '../../../typer/klage';
 import type { ITilbakekrevingsbehandling } from '../../../typer/tilbakekrevingsbehandling';
-import {
-    Behandlingsresultatstype,
-    Tilbakekrevingsbehandlingstype,
-} from '../../../typer/tilbakekrevingsbehandling';
+import { Behandlingsresultatstype, Tilbakekrevingsbehandlingstype } from '../../../typer/tilbakekrevingsbehandling';
 
 enum Saksoversiktstype {
     KONTANTSTØTTE = 'KONTANTSTØTTE',
@@ -48,10 +44,7 @@ export type Saksoversiktsbehandling =
           saksoversiktstype: Saksoversiktstype.KLAGE;
       });
 
-export const skalRadVises = (
-    behandling: Saksoversiktsbehandling,
-    visHenlagteBehandlinger: boolean
-): boolean => {
+export const skalRadVises = (behandling: Saksoversiktsbehandling, visHenlagteBehandlinger: boolean): boolean => {
     if (visHenlagteBehandlinger) return true;
     if (!behandling.resultat) return true;
     if (behandling.saksoversiktstype === Saksoversiktstype.KONTANTSTØTTE) {
@@ -102,22 +95,17 @@ export const hentBehandlingerTilSaksoversiktenOld = (
             saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE,
         })) || [];
 
-    const saksoversiktTilbakekrevingsbehandlinger: Saksoversiktsbehandling[] =
-        tilbakekrevingsbehandlinger.map(behandling => ({
-            ...behandling,
-            saksoversiktstype: Saksoversiktstype.TILBAKEBETALING,
-        }));
-    const saksoversiktKlagebehandlinger: Saksoversiktsbehandling[] = klagebehandlinger.map(
+    const saksoversiktTilbakekrevingsbehandlinger: Saksoversiktsbehandling[] = tilbakekrevingsbehandlinger.map(
         behandling => ({
             ...behandling,
-            saksoversiktstype: Saksoversiktstype.KLAGE,
+            saksoversiktstype: Saksoversiktstype.TILBAKEBETALING,
         })
     );
-    return [
-        ...kontantstøtteBehandlinger,
-        ...saksoversiktTilbakekrevingsbehandlinger,
-        ...saksoversiktKlagebehandlinger,
-    ];
+    const saksoversiktKlagebehandlinger: Saksoversiktsbehandling[] = klagebehandlinger.map(behandling => ({
+        ...behandling,
+        saksoversiktstype: Saksoversiktstype.KLAGE,
+    }));
+    return [...kontantstøtteBehandlinger, ...saksoversiktTilbakekrevingsbehandlinger, ...saksoversiktKlagebehandlinger];
 };
 export const hentBehandlingerTilSaksoversikten = (
     kontantstøttebehandlinger: VisningBehandling[],
@@ -130,28 +118,20 @@ export const hentBehandlingerTilSaksoversikten = (
             saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE,
         })) || [];
 
-    const saksoversiktTilbakekrevingsbehandlinger: Saksoversiktsbehandling[] =
-        tilbakekrevingsbehandlinger.map(behandling => ({
-            ...behandling,
-            saksoversiktstype: Saksoversiktstype.TILBAKEBETALING,
-        }));
-    const saksoversiktKlagebehandlinger: Saksoversiktsbehandling[] = klagebehandlinger.map(
+    const saksoversiktTilbakekrevingsbehandlinger: Saksoversiktsbehandling[] = tilbakekrevingsbehandlinger.map(
         behandling => ({
             ...behandling,
-            saksoversiktstype: Saksoversiktstype.KLAGE,
+            saksoversiktstype: Saksoversiktstype.TILBAKEBETALING,
         })
     );
-    return [
-        ...kontantstøtteBehandlinger,
-        ...saksoversiktTilbakekrevingsbehandlinger,
-        ...saksoversiktKlagebehandlinger,
-    ];
+    const saksoversiktKlagebehandlinger: Saksoversiktsbehandling[] = klagebehandlinger.map(behandling => ({
+        ...behandling,
+        saksoversiktstype: Saksoversiktstype.KLAGE,
+    }));
+    return [...kontantstøtteBehandlinger, ...saksoversiktTilbakekrevingsbehandlinger, ...saksoversiktKlagebehandlinger];
 };
 
-export const lagLenkePåType = (
-    fagsakId: number,
-    behandling: Saksoversiktsbehandling
-): ReactNode => {
+export const lagLenkePåType = (fagsakId: number, behandling: Saksoversiktsbehandling): ReactNode => {
     switch (behandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
             if (behandling.status === BehandlingStatus.AVSLUTTET) {
@@ -187,10 +167,7 @@ export const lagLenkePåType = (
     }
 };
 
-export const lagLenkePåResultat = (
-    fagsakId: number,
-    behandling: Saksoversiktsbehandling
-): ReactNode => {
+export const lagLenkePåResultat = (fagsakId: number, behandling: Saksoversiktsbehandling): ReactNode => {
     if (!behandling.resultat) {
         return '-';
     }
@@ -198,10 +175,7 @@ export const lagLenkePåResultat = (
         case Saksoversiktstype.KONTANTSTØTTE:
             if (behandling.status === BehandlingStatus.AVSLUTTET) {
                 return (
-                    <Link
-                        as={ReactRouterLink}
-                        to={`/fagsak/${fagsakId}/${behandling.behandlingId}`}
-                    >
+                    <Link as={ReactRouterLink} to={`/fagsak/${fagsakId}/${behandling.behandlingId}`}>
                         {behandling ? behandlingsresultater[behandling.resultat] : '-'}
                     </Link>
                 );
@@ -267,9 +241,7 @@ export const finnÅrsak = (saksoversiktsbehandling: Saksoversiktsbehandling): Re
     return saksoversiktsbehandling.årsak ? behandlingÅrsak[saksoversiktsbehandling.årsak] : '-';
 };
 
-export const hentBehandlingstema = (
-    saksoversiktsbehandling: Saksoversiktsbehandling
-): IBehandlingstema | undefined => {
+export const hentBehandlingstema = (saksoversiktsbehandling: Saksoversiktsbehandling): IBehandlingstema | undefined => {
     switch (saksoversiktsbehandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
             return tilBehandlingstema(saksoversiktsbehandling.kategori);

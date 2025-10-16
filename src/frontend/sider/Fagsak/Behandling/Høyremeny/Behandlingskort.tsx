@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { BodyShort, Heading } from '@navikt/ds-react';
@@ -16,7 +14,6 @@ import {
 } from '@navikt/ds-tokens/dist/tokens';
 
 import Informasjonsbolk from './Informasjonsbolk';
-import { useFagsakContext } from '../../../../context/fagsak/FagsakContext';
 import type { IBehandling } from '../../../../typer/behandling';
 import {
     BehandlingResultat,
@@ -27,6 +24,7 @@ import {
     erBehandlingHenlagt,
 } from '../../../../typer/behandling';
 import { Datoformat, isoStringTilFormatertString } from '../../../../utils/dato';
+import { useFagsakContext } from '../../FagsakContext';
 import { sakstype } from '../../Saksoversikt/Saksoversikt';
 
 interface IBehandlingskortProps {
@@ -94,15 +92,13 @@ const StyledHr = styled.hr`
     border-bottom: 1px solid ${ABorderSubtle};
 `;
 
-const Behandlingskort: React.FC<IBehandlingskortProps> = ({ åpenBehandling }) => {
-    const { minimalFagsak } = useFagsakContext();
-    const behandlinger = minimalFagsak?.behandlinger ?? [];
+const Behandlingskort = ({ åpenBehandling }: IBehandlingskortProps) => {
+    const { fagsak } = useFagsakContext();
+    const behandlinger = fagsak.behandlinger ?? [];
 
     const antallBehandlinger = behandlinger.length;
     const åpenBehandlingIndex =
-        behandlinger.findIndex(
-            behandling => behandling.behandlingId === åpenBehandling.behandlingId
-        ) + 1;
+        behandlinger.findIndex(behandling => behandling.behandlingId === åpenBehandling.behandlingId) + 1;
 
     const tittel = `${
         åpenBehandling ? behandlingstyper[åpenBehandling.type].navn : 'ukjent'
@@ -115,10 +111,7 @@ const Behandlingskort: React.FC<IBehandlingskortProps> = ({ åpenBehandling }) =
             </StyledHeading>
             <BodyShort>{behandlingÅrsak[åpenBehandling.årsak]}</BodyShort>
             <StyledHr />
-            <Informasjonsbolk
-                label="Behandlingsstatus"
-                tekst={behandlingsstatuser[åpenBehandling.status]}
-            />
+            <Informasjonsbolk label="Behandlingsstatus" tekst={behandlingsstatuser[åpenBehandling.status]} />
             <Informasjonsbolk
                 label="Resultat"
                 tekst={behandlingsresultater[åpenBehandling.resultat]}

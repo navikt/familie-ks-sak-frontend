@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
@@ -45,7 +43,7 @@ interface Props {
     minimalFagsak: IMinimalFagsak;
 }
 
-const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFagsak }) => {
+const BehandlingContainer = ({ bruker, minimalFagsak }: Props) => {
     const { åpenBehandling } = useBehandlingContext();
 
     switch (åpenBehandling.status) {
@@ -61,10 +59,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFa
                             <Venstremeny />
                         </VenstremenyContainer>
                         <HovedinnholdContainer>
-                            <BehandlingRouter
-                                åpenBehandling={åpenBehandling.data}
-                                bruker={bruker}
-                            />
+                            <BehandlingRouter åpenBehandling={åpenBehandling.data} bruker={bruker} />
                         </HovedinnholdContainer>
                         <HøyremenyContainer>
                             <Høyremeny bruker={bruker} />
@@ -73,12 +68,7 @@ const BehandlingContainer: React.FunctionComponent<Props> = ({ bruker, minimalFa
                 </>
             );
         case RessursStatus.IKKE_TILGANG:
-            return (
-                <Alert
-                    variant="warning"
-                    children={`Du har ikke tilgang til å se denne behandlingen.`}
-                />
-            );
+            return <Alert variant="warning" children={`Du har ikke tilgang til å se denne behandlingen.`} />;
         case RessursStatus.FEILET:
         case RessursStatus.FUNKSJONELL_FEIL:
             return <Alert children={åpenBehandling.frontendFeilmelding} variant="error" />;

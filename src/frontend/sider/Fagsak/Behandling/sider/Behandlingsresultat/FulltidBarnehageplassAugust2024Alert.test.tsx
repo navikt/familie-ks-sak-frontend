@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { render, screen } from '@testing-library/react';
 
 import { kjønnType } from '@navikt/familie-typer';
@@ -9,10 +7,7 @@ import { YtelseType } from '../../../../../typer/beregning';
 import { type IGrunnlagPerson, PersonType } from '../../../../../typer/person';
 import { Målform } from '../../../../../typer/søknad';
 import type { Utbetalingsperiode } from '../../../../../typer/utbetalingsperiode';
-import {
-    type IUtbetalingsperiodeDetalj,
-    Vedtaksperiodetype,
-} from '../../../../../typer/vedtaksperiode';
+import { type IUtbetalingsperiodeDetalj, Vedtaksperiodetype } from '../../../../../typer/vedtaksperiode';
 
 describe('FulltidBarnehageplassAugust2024Alert', () => {
     test('skal ikke rendre komponent om ingen utbetalingsperioder har tom i august 2024', () => {

@@ -1,20 +1,20 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import deepEqual from 'deep-equal';
 
 import type { FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
-import { RessursStatus, type Ressurs } from '@navikt/familie-typer';
+import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import { hentEnkeltInformasjonsbrevRequest } from './Informasjonsbrev/enkeltInformasjonsbrevUtils';
-import { useFagsakContext } from '../../../context/fagsak/FagsakContext';
 import useDokument from '../../../hooks/useDokument';
 import { Informasjonsbrev } from '../../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IManueltBrevRequestPåFagsak } from '../../../typer/dokument';
 import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../typer/person';
-import { Målform, type IBarnMedOpplysninger } from '../../../typer/søknad';
+import { type IBarnMedOpplysninger, Målform } from '../../../typer/søknad';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
+import { useFagsakContext } from '../FagsakContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
 
 export enum DokumentÅrsak {
@@ -44,10 +44,7 @@ const hentBarnMedOpplysningerFraBruker = () => {
     if (brukerRessurs.status === RessursStatus.SUKSESS) {
         return (
             brukerRessurs.data.forelderBarnRelasjon
-                .filter(
-                    (relasjon: IForelderBarnRelasjon) =>
-                        relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN
-                )
+                .filter((relasjon: IForelderBarnRelasjon) => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN)
                 .map(
                     (relasjon: IForelderBarnRelasjon): IBarnMedOpplysninger => ({
                         merket: false,
@@ -62,7 +59,7 @@ const hentBarnMedOpplysningerFraBruker = () => {
     } else return [];
 };
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
     fagsakId: number;
 }
 
@@ -90,9 +87,7 @@ interface DokumentutsendingContextValue {
     nullstillSkjema: () => void;
 }
 
-const DokumentutsendingContext = createContext<DokumentutsendingContextValue | undefined>(
-    undefined
-);
+const DokumentutsendingContext = createContext<DokumentutsendingContextValue | undefined>(undefined);
 
 export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
     const { bruker } = useFagsakContext();
@@ -219,8 +214,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
     };
 
     const skjemaErLåst = () =>
-        skjema.submitRessurs.status === RessursStatus.HENTER ||
-        hentetDokument.status === RessursStatus.HENTER;
+        skjema.submitRessurs.status === RessursStatus.HENTER || hentetDokument.status === RessursStatus.HENTER;
 
     const senderBrev = () => skjema.submitRessurs.status === RessursStatus.HENTER;
 
@@ -251,10 +245,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
         }
     };
 
-    const hentBarnIBrevSkjemaData = (
-        brevmal: Informasjonsbrev,
-        målform: Målform
-    ): IManueltBrevRequestPåFagsak => {
+    const hentBarnIBrevSkjemaData = (brevmal: Informasjonsbrev, målform: Målform): IManueltBrevRequestPåFagsak => {
         if (bruker.status === RessursStatus.SUKSESS) {
             const barnIBrev = skjema.felter.barnIBrev.verdi.filter(barn => barn.merket);
 
@@ -280,9 +271,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
         }
     };
 
-    const hentInnhenteOpplysningerKlageSkjemaData = (
-        målform: Målform
-    ): IManueltBrevRequestPåFagsak => {
+    const hentInnhenteOpplysningerKlageSkjemaData = (målform: Målform): IManueltBrevRequestPåFagsak => {
         if (bruker.status === RessursStatus.SUKSESS) {
             return {
                 mottakerIdent: bruker.data.personIdent,
@@ -315,8 +304,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
                 settVisInnsendtBrevModal,
                 settVisfeilmeldinger,
                 skjemaErLåst,
-                visForhåndsvisningBeskjed: () =>
-                    !deepEqual(hentSkjemaData(), sistBrukteDataVedForhåndsvisning),
+                visForhåndsvisningBeskjed: () => !deepEqual(hentSkjemaData(), sistBrukteDataVedForhåndsvisning),
                 visInnsendtBrevModal,
                 skjema,
                 nullstillSkjema,
@@ -330,9 +318,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
 export const useDokumentutsendingContext = () => {
     const context = useContext(DokumentutsendingContext);
     if (context === undefined) {
-        throw new Error(
-            'useDokumentutsendingContext må brukes innenfor en DokumentutsendingProvider'
-        );
+        throw new Error('useDokumentutsendingContext må brukes innenfor en DokumentutsendingProvider');
     }
     return context;
 };

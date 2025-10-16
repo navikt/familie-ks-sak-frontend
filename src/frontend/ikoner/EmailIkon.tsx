@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 interface IEmailIkon {
     filled?: boolean;
     className?: string;
@@ -7,12 +5,7 @@ interface IEmailIkon {
     width?: number;
 }
 
-export const EmailIkon: React.FC<IEmailIkon> = ({
-    className,
-    filled = false,
-    width = 48,
-    height = 48,
-}) => {
+export const EmailIkon = ({ className, filled = false, width = 48, height = 48 }: IEmailIkon) => {
     return filled ? (
         <svg
             aria-labelledby={'email'}
@@ -44,13 +37,7 @@ export const EmailIkon: React.FC<IEmailIkon> = ({
             className={className}
         >
             <title id={'email'}>Email ikon</title>
-            <g
-                stroke="#0067c5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeMiterlimit="10"
-                fill="none"
-            >
+            <g stroke="#0067c5" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" fill="none">
                 <path d="M22.5 17.012c0 .828-.672 1.5-1.5 1.5h-18c-.828 0-1.5-.672-1.5-1.5v-11c0-.829.672-1.5 1.5-1.5h18c.828 0 1.5.671 1.5 1.5v11zM22 5.012l-10 8-10-8" />
             </g>
         </svg>

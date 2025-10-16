@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
@@ -18,7 +16,7 @@ const StyledAlert = styled(Alert)`
     margin-top: 1rem;
 `;
 
-export const LovligOpphold: React.FC<LovligOppholdProps> = ({
+export const LovligOpphold = ({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
@@ -27,8 +25,10 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } =
-        useLovligOpphold(lagretVilkårResultat, person);
+    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } = useLovligOpphold(
+        lagretVilkårResultat,
+        person
+    );
 
     const skjema = vilkårSkjemaContext.skjema;
 
@@ -70,9 +70,7 @@ export const LovligOpphold: React.FC<LovligOppholdProps> = ({
                 <RadioGroup
                     legend={
                         <Label>
-                            {vilkårFraConfig.spørsmål
-                                ? vilkårFraConfig.spørsmål(person.type.toLowerCase())
-                                : ''}
+                            {vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
                         </Label>
                     }
                     value={skjema.felter.resultat.verdi}

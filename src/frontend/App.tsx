@@ -1,6 +1,6 @@
-import * as React from 'react';
-
 import '@navikt/ds-css';
+
+import { useEffect, useState } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -23,12 +23,10 @@ const queryClient = new QueryClient({
     },
 });
 
-const App: React.FC = () => {
-    const [autentisertSaksbehandler, settInnloggetSaksbehandler] = React.useState<
-        ISaksbehandler | undefined
-    >(undefined);
+const App = () => {
+    const [autentisertSaksbehandler, settInnloggetSaksbehandler] = useState<ISaksbehandler | undefined>(undefined);
 
-    React.useEffect(() => {
+    useEffect(() => {
         initGrafanaFaro();
         hentInnloggetBruker().then((innhentetInnloggetSaksbehandler: ISaksbehandler) => {
             settInnloggetSaksbehandler(innhentetInnloggetSaksbehandler);

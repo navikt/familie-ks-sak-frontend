@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect } from 'react';
 
 import { Table } from '@navikt/ds-react';
 
@@ -19,11 +19,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-const UtenlandskPeriodeBeløpRad: React.FC<IProps> = ({
-    utenlandskPeriodeBeløp,
-    åpenBehandling,
-    visFeilmeldinger,
-}) => {
+const UtenlandskPeriodeBeløpRad = ({ utenlandskPeriodeBeløp, åpenBehandling, visFeilmeldinger }: IProps) => {
     const barn: OptionType[] = utenlandskPeriodeBeløp.barnIdenter.map(barn => ({
         value: barn,
         label: lagPersonLabel(barn, åpenBehandling.personer),
@@ -44,25 +40,21 @@ const UtenlandskPeriodeBeløpRad: React.FC<IProps> = ({
         barnIUtenlandskPeriodeBeløp: barn,
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (åpenBehandling) {
             nullstillSkjema();
             settErUtenlandskPeriodeBeløpEkspandert(false);
         }
     }, [åpenBehandling]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (visFeilmeldinger && erUtenlandskPeriodeBeløpEkspandert) {
             kanSendeSkjema();
         }
     }, [visFeilmeldinger, erUtenlandskPeriodeBeløpEkspandert]);
 
     const toggleForm = (visAlert: boolean) => {
-        if (
-            erUtenlandskPeriodeBeløpEkspandert &&
-            visAlert &&
-            erUtenlandskPeriodeBeløpSkjemaEndret()
-        ) {
+        if (erUtenlandskPeriodeBeløpEkspandert && visAlert && erUtenlandskPeriodeBeløpSkjemaEndret()) {
             alert('Utenlandsk beløp har endringer som ikke er lagret!');
         } else {
             settErUtenlandskPeriodeBeløpEkspandert(!erUtenlandskPeriodeBeløpEkspandert);
@@ -93,9 +85,7 @@ const UtenlandskPeriodeBeløpRad: React.FC<IProps> = ({
                     toggleForm={toggleForm}
                     slettUtenlandskPeriodeBeløp={slettUtenlandskPeriodeBeløp}
                     status={utenlandskPeriodeBeløp.status}
-                    behandlingsÅrsakErOvergangsordning={
-                        åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
-                    }
+                    behandlingsÅrsakErOvergangsordning={åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024}
                 />
             }
         >

@@ -14,7 +14,7 @@ import {
     erPeriodeGyldig,
     erResultatGyldig,
 } from '../../../../../../../../utils/validators';
-import { useVilkårSkjema, type IVilkårSkjemaContext } from '../../VilkårSkjemaContext';
+import { type IVilkårSkjemaContext, useVilkårSkjema } from '../../VilkårSkjemaContext';
 
 export const useLovligOpphold = (lagretVilkår: IVilkårResultat, person: IGrunnlagPerson) => {
     const vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext = {
@@ -94,8 +94,7 @@ export const useLovligOpphold = (lagretVilkår: IVilkårResultat, person: IGrunn
             feilmelding,
             nullstillSkjema,
         },
-        finnesEndringerSomIkkeErLagret: () =>
-            finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
+        finnesEndringerSomIkkeErLagret: () => finnesEndringerSomIkkeErLagret(vilkårSkjemaMedLagredeVerdier),
         skalViseDatoVarsel,
     };
 };

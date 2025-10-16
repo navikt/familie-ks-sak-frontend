@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled from 'styled-components';
 
 import { Table } from '@navikt/ds-react';
@@ -21,9 +19,7 @@ const PersonCelle = styled.div`
     }
 `;
 
-const OvergangsordningAndelRad: React.FunctionComponent<IOvergangsordningRadProps> = ({
-    åpenBehandling,
-}) => {
+const OvergangsordningAndelRad = ({ åpenBehandling }: IOvergangsordningRadProps) => {
     const {
         overgangsordningAndel,
         erOvergangsordningAndelForandret,

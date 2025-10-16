@@ -1,9 +1,9 @@
-import React, { createContext, useState } from 'react';
+import { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext, useState } from 'react';
 
 import deepEqual from 'deep-equal';
 
 import { useHttp } from '@navikt/familie-http';
-import { feil, ok, useFelt, useSkjema, type ISkjema } from '@navikt/familie-skjema';
+import { feil, type ISkjema, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import type { IBehandling } from '../../../../../../typer/behandling';
@@ -14,7 +14,7 @@ import type {
 import { dateTilIsoMånedÅrString, validerGyldigDato } from '../../../../../../utils/dato';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
     overgangsordningAndel: IRestOvergangsordningAndel;
 }
 
@@ -22,33 +22,26 @@ interface OvergangsordningAndelContextValue {
     overgangsordningAndel: IRestOvergangsordningAndel;
     skjema: ISkjema<IOvergangsordningAndelSkjema, IBehandling>;
     erOvergangsordningAndelÅpen: boolean;
-    settErOvergangsordningAndelÅpen: React.Dispatch<React.SetStateAction<boolean>>;
+    settErOvergangsordningAndelÅpen: Dispatch<SetStateAction<boolean>>;
     erOvergangsordningAndelForandret: () => boolean;
     slettOvergangsordningAndel: () => void;
     oppdaterOvergangsordningAndel: () => void;
     tilbakestillOgLukkOvergangsordningAndel: () => void;
 }
 
-const OvergangsordningAndelContext = createContext<OvergangsordningAndelContextValue | undefined>(
-    undefined
-);
+const OvergangsordningAndelContext = createContext<OvergangsordningAndelContextValue | undefined>(undefined);
 
 export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children }: Props) => {
     const { request } = useHttp();
     const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
 
-    const behandlingId =
-        åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
+    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
 
-    const { skjema, kanSendeSkjema, onSubmit, nullstillSkjema } = useSkjema<
-        IOvergangsordningAndelSkjema,
-        IBehandling
-    >({
+    const { skjema, kanSendeSkjema, onSubmit, nullstillSkjema } = useSkjema<IOvergangsordningAndelSkjema, IBehandling>({
         felter: {
             personIdent: useFelt<string | undefined>({
                 verdi: overgangsordningAndel.personIdent,
-                valideringsfunksjon: felt =>
-                    felt.verdi ? ok(felt) : feil(felt, 'Du må velge en person'),
+                valideringsfunksjon: felt => (felt.verdi ? ok(felt) : feil(felt, 'Du må velge en person')),
             }),
             antallTimer: useFelt<string | undefined>({
                 verdi: overgangsordningAndel.antallTimer?.toString(),
@@ -121,8 +114,7 @@ export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children 
         }).then((behandling: Ressurs<IBehandling>) => settÅpenBehandling(behandling));
     };
 
-    const erOvergangsordningAndelForandret = () =>
-        !deepEqual(overgangsordningAndel, hentSkjemaData());
+    const erOvergangsordningAndelForandret = () => !deepEqual(overgangsordningAndel, hentSkjemaData());
 
     return (
         <OvergangsordningAndelContext.Provider
@@ -143,12 +135,10 @@ export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children 
 };
 
 export const useOvergangsordningAndelContext = () => {
-    const context = React.useContext(OvergangsordningAndelContext);
+    const context = useContext(OvergangsordningAndelContext);
 
     if (context === undefined) {
-        throw new Error(
-            'useOvergangsordningAndelContext må brukes innenfor en OvergangsordningAndelProvider'
-        );
+        throw new Error('useOvergangsordningAndelContext må brukes innenfor en OvergangsordningAndelProvider');
     }
 
     return context;

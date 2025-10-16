@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
-import { BodyShort, Heading, Alert, Table } from '@navikt/ds-react';
+import { Alert, BodyShort, Heading, Table } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import type { IJournalpost, Ressurs } from '@navikt/familie-typer';
 import {
@@ -122,15 +122,12 @@ const settRiktigDatoMottatForJournalpost = (journalpost: IJournalpost): IJournal
     };
 };
 
-const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
+const JournalpostListe = ({ bruker }: IProps) => {
     const { request } = useHttp();
     const [journalposterRessurs, settJournalposterRessurs] =
         useState<Ressurs<ITilgangsstyrtJournalpost[]>>(byggTomRessurs());
-    const [sortering, settSortering] = useState<Sorteringsrekkefølge>(
-        Sorteringsrekkefølge.INGEN_SORTERING
-    );
-    const { visDokumentModal, hentetDokument, settVisDokumentModal, hentForhåndsvisning } =
-        useDokument();
+    const [sortering, settSortering] = useState<Sorteringsrekkefølge>(Sorteringsrekkefølge.INGEN_SORTERING);
+    const { visDokumentModal, hentetDokument, settVisDokumentModal, hentForhåndsvisning } = useDokument();
 
     useEffect(() => {
         settJournalposterRessurs(byggHenterRessurs());
@@ -175,19 +172,14 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
     }
 
     if (journalposterRessurs.status === RessursStatus.SUKSESS) {
-        const journalposterMedOverstyrtDato = journalposterRessurs.data?.map(
-            tilgangsstyrtJournalpost => {
-                const { journalpostTilgang, journalpost } = tilgangsstyrtJournalpost;
-                return {
-                    journalpostTilgang,
-                    journalpost: settRiktigDatoMottatForJournalpost(journalpost),
-                };
-            }
-        );
-        const sorterteJournalPoster = hentSorterteJournalposter(
-            journalposterMedOverstyrtDato,
-            sortering
-        );
+        const journalposterMedOverstyrtDato = journalposterRessurs.data?.map(tilgangsstyrtJournalpost => {
+            const { journalpostTilgang, journalpost } = tilgangsstyrtJournalpost;
+            return {
+                journalpostTilgang,
+                journalpost: settRiktigDatoMottatForJournalpost(journalpost),
+            };
+        });
+        const sorterteJournalPoster = hentSorterteJournalposter(journalposterMedOverstyrtDato, sortering);
         return (
             <Container>
                 <Heading level="2" size="large" spacing>
@@ -236,21 +228,16 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
                                 </StyledDataCell>
 
                                 <StyledDataCell>
-                                    {(tilgangsstyrtJournalpost.journalpost.dokumenter?.length ??
-                                        0) > 0 ? (
+                                    {(tilgangsstyrtJournalpost.journalpost.dokumenter?.length ?? 0) > 0 ? (
                                         <Vedleggsliste>
-                                            {tilgangsstyrtJournalpost.journalpost.dokumenter?.map(
-                                                dokument => (
-                                                    <JournalpostDokument
-                                                        dokument={dokument}
-                                                        key={dokument.dokumentInfoId}
-                                                        hentForhåndsvisning={hentForhåndsvisning}
-                                                        tilgangsstyrtJournalpost={
-                                                            tilgangsstyrtJournalpost
-                                                        }
-                                                    />
-                                                )
-                                            )}
+                                            {tilgangsstyrtJournalpost.journalpost.dokumenter?.map(dokument => (
+                                                <JournalpostDokument
+                                                    dokument={dokument}
+                                                    key={dokument.dokumentInfoId}
+                                                    hentForhåndsvisning={hentForhåndsvisning}
+                                                    tilgangsstyrtJournalpost={tilgangsstyrtJournalpost}
+                                                />
+                                            ))}
                                         </Vedleggsliste>
                                     ) : (
                                         <BodyShort>Ingen dokumenter</BodyShort>
@@ -274,39 +261,22 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
                                 <StyledDataCell>
                                     <EllipsisBodyShort
                                         size="small"
-                                        title={
-                                            tilgangsstyrtJournalpost.journalpost.avsenderMottaker
-                                                ?.navn
-                                        }
+                                        title={tilgangsstyrtJournalpost.journalpost.avsenderMottaker?.navn}
                                     >
-                                        {
-                                            tilgangsstyrtJournalpost.journalpost.avsenderMottaker
-                                                ?.navn
-                                        }
+                                        {tilgangsstyrtJournalpost.journalpost.avsenderMottaker?.navn}
                                     </EllipsisBodyShort>
                                 </StyledDataCell>
                                 <StyledDataCell>
-                                    <EllipsisBodyShort
-                                        size="small"
-                                        title={tilgangsstyrtJournalpost.journalpost.tittel}
-                                    >
+                                    <EllipsisBodyShort size="small" title={tilgangsstyrtJournalpost.journalpost.tittel}>
                                         {tilgangsstyrtJournalpost.journalpost.tittel}
                                     </EllipsisBodyShort>
                                 </StyledDataCell>
                                 <StyledDataCell>
                                     <EllipsisBodyShort
                                         size="small"
-                                        title={
-                                            journalpoststatus[
-                                                tilgangsstyrtJournalpost.journalpost.journalstatus
-                                            ]
-                                        }
+                                        title={journalpoststatus[tilgangsstyrtJournalpost.journalpost.journalstatus]}
                                     >
-                                        {
-                                            journalpoststatus[
-                                                tilgangsstyrtJournalpost.journalpost.journalstatus
-                                            ]
-                                        }
+                                        {journalpoststatus[tilgangsstyrtJournalpost.journalpost.journalstatus]}
                                     </EllipsisBodyShort>
                                 </StyledDataCell>
                             </Table.Row>
@@ -314,10 +284,7 @@ const JournalpostListe: React.FC<IProps> = ({ bruker }) => {
                     </Table.Body>
                 </StyledTable>
                 {visDokumentModal && (
-                    <PdfVisningModal
-                        onRequestClose={() => settVisDokumentModal(false)}
-                        pdfdata={hentetDokument}
-                    />
+                    <PdfVisningModal onRequestClose={() => settVisDokumentModal(false)} pdfdata={hentetDokument} />
                 )}
             </Container>
         );
