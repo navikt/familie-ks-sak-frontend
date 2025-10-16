@@ -7,13 +7,14 @@ import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 
 import App from './App';
+import { erLokal } from './utils/miljø';
 
 // Setter default locale til norsk bokmål for date-fns
 setDefaultOptions({ locale: nb });
 
 const environment = window.location.hostname;
 
-if (process.env.NODE_ENV !== 'development') {
+if (!erLokal()) {
     Sentry.init({
         dsn: 'https://e15fa1f00e3e445887790956a0d8bbe2@sentry.gc.nav.no/146',
         environment,
@@ -22,7 +23,7 @@ if (process.env.NODE_ENV !== 'development') {
     });
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (erLokal()) {
     (async () => {
         const [{ default: axe }, { default: React }] = await Promise.all([import('@axe-core/react'), import('react')]);
         axe(React, ReactDOM, 1000);

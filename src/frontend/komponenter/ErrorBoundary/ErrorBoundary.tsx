@@ -5,6 +5,8 @@ import * as Sentry from '@sentry/browser';
 
 import type { ISaksbehandler } from '@navikt/familie-typer';
 
+import { erLokal } from '../../utils/miljø';
+
 interface IProps extends PropsWithChildren {
     autentisertSaksbehandler?: ISaksbehandler;
 }
@@ -18,7 +20,7 @@ class ErrorBoundary extends Component<IProps> {
     public componentDidCatch(error: any, info: any): void {
         // eslint-disable-next-line: no-console
         console.log(error, info);
-        if (process.env.NODE_ENV !== 'development') {
+        if (!erLokal()) {
             Sentry.setUser({
                 username: this.props.autentisertSaksbehandler
                     ? this.props.autentisertSaksbehandler.displayName

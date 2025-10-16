@@ -1,4 +1,4 @@
-import './konfigurerApp.js';
+import './konfigurerApp.js'; // Må importeres først
 
 import path from 'path';
 
@@ -8,11 +8,12 @@ import expressStaticGzip from 'express-static-gzip';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { IApp } from '@navikt/familie-backend';
-import { default as backend, ensureAuthenticated, envVar } from '@navikt/familie-backend';
+import { default as backend, ensureAuthenticated } from '@navikt/familie-backend';
 import { logInfo } from '@navikt/familie-logging';
 
 import { frontendPath } from './config.js';
 import { sessionConfig } from './config.js';
+import { envVar, erLokal } from './env.js';
 import { prometheusTellere } from './metrikker.js';
 import { attachToken, doProxy, doRedirectProxy } from './proxy.js';
 import setupRouter from './router.js';
@@ -26,7 +27,7 @@ backend(sessionConfig, prometheusTellere).then(async ({ app, azureAuthClient, ro
         next();
     });
 
-    if (process.env.NODE_ENV === 'production') {
+    if (!erLokal()) {
         app.use('/assets', expressStaticGzip(path.join(process.cwd(), frontendPath, '/assets'), {}));
     }
     app.use('/favicon.svg', express.static(path.join(process.cwd(), frontendPath, '/favicon.svg'), {}));

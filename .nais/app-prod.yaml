@@ -54,7 +54,7 @@ spec:
       rules:
         - application: familie-ks-sak
   envFrom:
-    - secret: ks-sak-frontend
+    - secret: familie-ks-sak-frontend
   env:
     - name: APP_VERSION
       value: {{ VERSION }}
