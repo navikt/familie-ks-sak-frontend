@@ -48,7 +48,7 @@ jobs:
     needs: [build-dev]
     uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main # ratchet:exclude
     with:
-      image: ${{ needs.build.outputs.image }}
+      image: ${{ needs.build-dev.outputs.image }}
       cluster: dev-gcp
       resource: .nais/app-dev.yaml
     secrets: inherit
@@ -59,7 +59,7 @@ jobs:
     needs: [build-prod]
     uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main # ratchet:exclude
     with:
-      image: ${{ needs.build.outputs.image }}
+      image: ${{ needs.build-prod.outputs.image }}
       cluster: prod-gcp
       resource: .nais/app-prod.yaml
     secrets: inherit
