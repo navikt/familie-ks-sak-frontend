@@ -829,15 +829,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@navikt/aksel-icons@7.31.0":
-  version "7.31.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/7.31.0/5d0ea15a5f0ba53bf9e0c38a0b45612235d6b332#5d0ea15a5f0ba53bf9e0c38a0b45612235d6b332"
-  integrity sha512-6rtyFhDDBOkyG815trxe9pnaJrvSnwLEpkJ7qh0qZm1B8g59a4bf2IJGVtKDPg9thVOrxNtA/H9G4N6n0v9Kkg==
-
-"@navikt/aksel-icons@^7.32.0":
-  version "7.32.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/7.32.0/e69fa5b5f512060535f161f58b766597de5041c0#e69fa5b5f512060535f161f58b766597de5041c0"
-  integrity sha512-JKVu93z0Hl2kHm5CXUtP2Prnpn+KnYcDKRN5qlOLdY1FJXf5nh0V1XuB+eyulxgOTHIdkozi9wl+jbq1gSgl6g==
+"@navikt/aksel-icons@7.32.2", "@navikt/aksel-icons@^7.32.0":
+  version "7.32.2"
+  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/7.32.2/03f96bab5119fd9b89f836dd6716bd3e15e5c684#03f96bab5119fd9b89f836dd6716bd3e15e5c684"
+  integrity sha512-6bmfbHlb4rSwVECALx7kldnWoXBITPyr7GDIpRrbALcdEoMlL3qfapMZID2GkmExX5A5G1FrbRqbB4fjpmmCiw==
 
 "@navikt/ds-css@^7.31.0":
   version "7.32.0"
