@@ -1,5 +1,3 @@
-import styled from 'styled-components';
-
 import { Alert, ErrorSummary } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -13,11 +11,7 @@ import MålformVelger from '../../../../../komponenter/MålformVelger';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { BehandlingSteg } from '../../../../../typer/behandling';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
-
-const StyledSkjemasteg = styled(Skjemasteg)`
-    max-width: 40rem;
-`;
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const RegistrerSøknad = () => {
     const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
@@ -39,7 +33,7 @@ const RegistrerSøknad = () => {
             harBrevmottaker={harBrevmottaker}
         >
             {!erLesevisning && <LeggTilBarnModal />}
-            <StyledSkjemasteg
+            <Skjemasteg
                 className={'søknad'}
                 tittel={'Registrer opplysninger fra søknaden'}
                 nesteOnClick={() => {
@@ -87,7 +81,7 @@ const RegistrerSøknad = () => {
                         ))}
                     </ErrorSummary>
                 )}
-            </StyledSkjemasteg>
+            </Skjemasteg>
         </LeggTilBarnModalContextProvider>
     );
 };

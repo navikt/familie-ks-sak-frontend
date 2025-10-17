@@ -1,0 +1,7 @@
+.tabsListe {
+    width: 100%;
+
+    > button {
+        flex: 1;
+    }
+}
