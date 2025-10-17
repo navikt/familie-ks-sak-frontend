@@ -18,7 +18,7 @@ import { initGrafanaFaro } from './utils/grafanaFaro';
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            retry: false, // Fungerer ikke så bra med global "Systemet laster" spinner, på sikt kan vi kanskje enable retries
+            retry: false, // Fungerer ikke så bra med global "Systemet laster" spinner, på sikt kan vi kanskje enable retries.
         },
     },
 });
