@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
         },
         plugins: [
             reactPlugin(),
-            mode === 'production' ? sentryPlugin() : undefined, // Sentry må være siste plugin
+            mode === 'prod' ? sentryPlugin() : undefined, // Sentry må være siste plugin
         ],
     };
 });
