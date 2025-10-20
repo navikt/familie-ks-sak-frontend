@@ -13,7 +13,7 @@
     "start:lokal": "ENV=lokal yarn start-env",
     "start:hybrid": "ENV=hybrid yarn start-env",
     "start:lokalt-mot-preprod": "ENV=lokalt-mot-preprod yarn start-env",
-    "start:backend:dev": "NODE_ENV=development ENV=lokalt-mot-preprod node dist_backend/server.js",
+    "start:backend:dev": "NODE_ENV=development node dist_backend/server.js",
     "start:backend:prod": "NODE_ENV=production ENV=prod node dist_backend/server.js",
     "miljøvariabler": "./hent-og-lagre-miljøvariabler.sh",
     "build": "yarn build:prod",
