@@ -26,21 +26,26 @@ export default defineConfig(({ mode }) => {
     };
 });
 
-const sentryPlugin = () =>
-    sentryVitePlugin({
-        org: 'nav',
-        project: 'familie-ks-sak-frontend',
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-        url: 'https://sentry.gc.nav.no/',
-        release: {
-            name: process.env.SENTRY_RELEASE,
-            uploadLegacySourcemaps: {
-                paths: ['./dist_frontend'],
-                ignore: ['./node_modules'],
-                urlPrefix: `~/assets`,
+const sentryPlugin = () => {
+    try {
+        return sentryVitePlugin({
+            org: 'nav',
+            project: 'familie-ks-sak-frontend',
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+            url: 'https://sentry.gc.nav.no/',
+            release: {
+                name: process.env.SENTRY_RELEASE,
+                uploadLegacySourcemaps: {
+                    paths: ['./dist_frontend'],
+                    ignore: ['./node_modules'],
+                    urlPrefix: `~/assets`,
+                },
             },
-        },
-        errorHandler: err => {
-            console.warn('Sentry CLI Plugin: ' + err.message);
-        },
-    });
+            errorHandler: err => {
+                console.warn('Sentry CLI Plugin: ' + err.message);
+            },
+        });
+    } catch (e) {
+        console.error('Klarte ikke starte Sentry', e);
+    }
+};
