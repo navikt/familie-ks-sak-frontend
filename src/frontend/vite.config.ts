@@ -5,9 +5,7 @@ import { sentryVitePlugin } from '@sentry/vite-plugin';
 import reactPlugin from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-import { erLokal } from './utils/miljø';
-
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
     return {
         build: {
             outDir: '../../dist_frontend/',
@@ -23,7 +21,7 @@ export default defineConfig(() => {
         },
         plugins: [
             reactPlugin(),
-            !erLokal() ? sentryPlugin() : undefined, // Sentry må være siste plugin
+            mode === 'prod' || mode === 'preprod' ? sentryPlugin() : undefined, // Sentry må være siste plugin
         ],
     };
 });
