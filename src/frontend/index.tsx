@@ -14,13 +14,19 @@ setDefaultOptions({ locale: nb });
 
 const environment = window.location.hostname;
 
+console.log(import.meta.env);
+
 if (!erLokal()) {
-    Sentry.init({
-        dsn: 'https://e15fa1f00e3e445887790956a0d8bbe2@sentry.gc.nav.no/146',
-        environment,
-        integrations: [Sentry.browserTracingIntegration()],
-        tracesSampleRate: 0.2,
-    });
+    try {
+        Sentry.init({
+            dsn: 'https://e15fa1f00e3e445887790956a0d8bbe2@sentry.gc.nav.no/146',
+            environment,
+            integrations: [Sentry.browserTracingIntegration()],
+            tracesSampleRate: 0.2,
+        });
+    } catch (e) {
+        console.error('Sentry init feilet', e);
+    }
 }
 
 if (erLokal()) {

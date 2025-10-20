@@ -20,18 +20,22 @@ const getTelemetryCollectorURL = (): TelemetryCollectorURL => {
 };
 
 export function initGrafanaFaro() {
-    if (erPreprod() || erProd()) {
-        initializeFaro({
-            isolate: true,
-            url: getTelemetryCollectorURL(),
-            app: {
-                name: 'familie-ks-sak-frontend',
-            },
-            instrumentations: [
-                ...getWebInstrumentations({
-                    captureConsole: false,
-                }),
-            ],
-        });
+    try {
+        if (erPreprod() || erProd()) {
+            initializeFaro({
+                isolate: true,
+                url: getTelemetryCollectorURL(),
+                app: {
+                    name: 'familie-ks-sak-frontend',
+                },
+                instrumentations: [
+                    ...getWebInstrumentations({
+                        captureConsole: false,
+                    }),
+                ],
+            });
+        }
+    } catch (e) {
+        console.error('initializeFaro feilet', e);
     }
 }
