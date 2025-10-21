@@ -43,7 +43,7 @@ const Personlinje = ({ bruker }: IProps) => {
     return (
         <InnholdContainer>
             <HStack align="center" gap="3 4">
-                <HStack gap="3 4">
+                <HStack align="center" gap="3 4">
                     <PersonIkon
                         kjønn={bruker.kjønn}
                         erBarn={hentAlder(bruker.fødselsdato) < 18}
