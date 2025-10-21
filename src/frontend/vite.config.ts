@@ -12,6 +12,8 @@ export default defineConfig(({ mode }) => {
                 outDir: '../../dist_frontend/',
                 sourcemap: true,
                 emptyOutDir: true,
+                minify: false,
+                cssMinify: false,
             },
             envDir: '../../',
             define: {
