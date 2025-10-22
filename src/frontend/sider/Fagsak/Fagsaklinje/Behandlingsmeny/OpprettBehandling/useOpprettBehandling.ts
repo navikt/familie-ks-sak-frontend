@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
-import { byggTomRessurs, hentDataFraRessurs, RessursStatus } from '@navikt/familie-typer';
+import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../../context/AppContext';
 import { HentFagsakQueryKeyFactory } from '../../../../../hooks/useHentFagsak';
@@ -190,12 +190,12 @@ const useOpprettBehandling = ({
                         queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id),
                     });
 
-                    const behandling: IBehandling | undefined = hentDataFraRessurs(response);
+                    const behandling = response.data;
 
-                    if (behandling && behandling.årsak === BehandlingÅrsak.SØKNAD) {
-                        navigate(`/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`);
+                    if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
+                        navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/registrer-soknad`);
                     } else {
-                        navigate(`/fagsak/${fagsakId}/${behandling?.behandlingId}/vilkaarsvurdering`);
+                        navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/vilkaarsvurdering`);
                     }
                 }
             }
