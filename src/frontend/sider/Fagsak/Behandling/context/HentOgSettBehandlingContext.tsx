@@ -39,12 +39,14 @@ export function HentOgSettBehandlingProvider({ fagsak, children }: Props) {
         behandling => behandling.behandlingId.toString() === behandlingId
     );
 
-    if (behandlingId !== undefined && !erBehandlingDelAvFagsak) {
-        navigate(`/fagsak/${fagsak.id}`);
-    }
+    useEffect(() => {
+        if (behandlingId !== undefined && !erBehandlingDelAvFagsak) {
+            navigate(`/fagsak/${fagsak.id}`);
+        }
+    }, [behandlingId, erBehandlingDelAvFagsak]);
 
     const settBehandlingRessurs = async (behandling: Ressurs<IBehandling>) => {
-        queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
+        await queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
         if (skalObfuskereData) {
             obfuskerBehandling(behandling);
         }
@@ -59,15 +61,10 @@ export function HentOgSettBehandlingProvider({ fagsak, children }: Props) {
                 url: `/familie-ks-sak/api/behandlinger/${behandlingId}`,
                 påvirkerSystemLaster: true,
             })
-                .then((response: Ressurs<IBehandling>) => {
-                    if (skalObfuskereData) {
-                        obfuskerBehandling(response);
-                    }
-                    privatSettBehandlingRessurs(response);
-                })
-                .catch((_error: AxiosError) => {
-                    privatSettBehandlingRessurs(byggFeiletRessurs('Ukjent ved innhenting av behandling'));
-                });
+                .then(response => settBehandlingRessurs(response))
+                .catch((_error: AxiosError) =>
+                    privatSettBehandlingRessurs(byggFeiletRessurs('Ukjent ved innhenting av behandling'))
+                );
         }
     }, [behandlingId]);
 
