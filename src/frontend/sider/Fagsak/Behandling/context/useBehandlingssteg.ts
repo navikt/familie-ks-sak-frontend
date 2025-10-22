@@ -133,7 +133,6 @@ const useBehandlingssteg = (
         vilkårsvurderingNesteOnClick,
         behandlingresultatNesteOnClick,
         foreslåVedtakNesteOnClick: foreslåVedtakNesteOnClick,
-        settSubmitRessurs,
     };
 };
 
