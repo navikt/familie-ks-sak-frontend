@@ -177,7 +177,7 @@ const useOpprettBehandling = ({
                 method: 'POST',
                 url: '/familie-ks-sak/api/behandlinger',
             },
-            response => {
+            async response => {
                 if (response.status === RessursStatus.SUKSESS) {
                     lukkModal();
                     nullstillSkjema();
@@ -186,9 +186,7 @@ const useOpprettBehandling = ({
                         queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsak.id),
                     });
 
-                    queryClient.invalidateQueries({
-                        queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id),
-                    });
+                    await queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
 
                     const behandling = response.data;
 
