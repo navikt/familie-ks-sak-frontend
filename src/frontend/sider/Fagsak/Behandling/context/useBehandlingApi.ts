@@ -36,9 +36,9 @@ const useBehandlingApi = (
                     const behandling = response.data;
 
                     if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
-                        navigate(`/fagsak/${fagsakId}/${behandling?.behandlingId}/registrer-soknad`);
+                        navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/registrer-soknad`);
                     } else {
-                        navigate(`/fagsak/${fagsakId}/${behandling?.behandlingId}/vilkaarsvurdering`);
+                        navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/vilkaarsvurdering`);
                     }
                 }
             })
