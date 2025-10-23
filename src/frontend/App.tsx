@@ -12,7 +12,7 @@ import Container from './Container';
 import { AppProvider } from './context/AppContext';
 import { AuthOgHttpProvider } from './context/AuthContext';
 import { ModalProvider } from './context/ModalContext';
-import ErrorBoundary from './komponenter/ErrorBoundary/ErrorBoundary';
+import { ErrorBoundary } from './komponenter/ErrorBoundary/ErrorBoundary';
 import { initGrafanaFaro } from './utils/grafanaFaro';
 
 const queryClient = new QueryClient({
