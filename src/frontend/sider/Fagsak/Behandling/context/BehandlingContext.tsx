@@ -63,10 +63,6 @@ interface BehandlingContextValue {
     ) => void;
     behandlingPåVent: IBehandlingPåVent | undefined;
     erBehandleneEnhetMidlertidig?: boolean;
-    åpenHøyremeny: boolean;
-    settÅpenHøyremeny: (åpenHøyremeny: boolean) => void;
-    åpenVenstremeny: boolean;
-    settÅpenVenstremeny: (åpenVenstremeny: boolean) => void;
     erBehandlingAvsluttet: boolean;
 }
 
@@ -76,8 +72,6 @@ export const BehandlingProvider = ({ children }: PropsWithChildren) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const queryClient = useQueryClient();
     const [åpenBehandling, privatSettÅpenBehandling] = useState<Ressurs<IBehandling>>(byggTomRessurs());
-    const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
-    const [åpenVenstremeny, settÅpenVenstremeny] = useState(true);
 
     const settÅpenBehandling = (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak = true) => {
         if (oppdaterMinimalFagsak && fagsakId) {
@@ -267,10 +261,6 @@ export const BehandlingProvider = ({ children }: PropsWithChildren) => {
                 foreslåVedtakNesteOnClick,
                 behandlingPåVent: hentDataFraRessurs(åpenBehandling)?.behandlingPåVent,
                 erBehandleneEnhetMidlertidig,
-                åpenHøyremeny,
-                settÅpenHøyremeny,
-                åpenVenstremeny,
-                settÅpenVenstremeny,
                 erBehandlingAvsluttet,
             }}
         >
