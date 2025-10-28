@@ -3,7 +3,7 @@ import type { ChangeEvent } from 'react';
 import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
-import { useAppContext } from '../../../../context/AppContext';
+import { useFeatureToggles } from '../../../../hooks/useFeatureToggles';
 import {
     behandlingÅrsak,
     BehandlingÅrsak,
@@ -21,7 +21,7 @@ interface IProps {
 }
 
 export const BehandlingårsakFelt = ({ behandlingsårsak, visFeilmeldinger, erLesevisning = false }: IProps) => {
-    const { toggles } = useAppContext();
+    const toggles = useFeatureToggles();
 
     return (
         <Select
