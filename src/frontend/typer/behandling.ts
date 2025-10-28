@@ -15,7 +15,7 @@ import type {
     TilbakekrevingsbehandlingResultat,
     TilbakekrevingsbehandlingÅrsak,
 } from './tilbakekrevingsbehandling';
-import { type IToggles, ToggleNavn } from './toggles';
+import { type Toggles, Toggle } from './toggles';
 import type { ITotrinnskontroll } from './totrinnskontroll';
 import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
 import type { Utbetalingsperiode } from './utbetalingsperiode';
@@ -60,15 +60,13 @@ export enum BehandlingÅrsak {
     IVERKSETTE_KA_VEDTAK = 'IVERKSETTE_KA_VEDTAK',
 }
 
-export const behandlingÅrsakerSomIkkeSkalSettesManuelt = (toggles: IToggles): BehandlingÅrsak[] =>
+export const behandlingÅrsakerSomIkkeSkalSettesManuelt = (toggles: Toggles): BehandlingÅrsak[] =>
     [
         BehandlingÅrsak.KLAGE,
         BehandlingÅrsak.LOVENDRING_2024,
         BehandlingÅrsak.SATSENDRING,
-        toggles[ToggleNavn.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
-            ? null
-            : BehandlingÅrsak.IVERKSETTE_KA_VEDTAK,
-        toggles[ToggleNavn.kanManueltKorrigereMedVedtaksbrev] ? null : BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
+        toggles[Toggle.kanOppretteRevurderingMedAarsakIverksetteKaVedtak] ? null : BehandlingÅrsak.IVERKSETTE_KA_VEDTAK,
+        toggles[Toggle.kanManueltKorrigereMedVedtaksbrev] ? null : BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
     ].filter(behandlingsårsak => behandlingsårsak !== null);
 
 export const behandlingÅrsak: Record<BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak | KlageÅrsak, string> = {
