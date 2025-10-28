@@ -1,21 +1,21 @@
 import { Dropdown } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useAppContext } from '../../../../../context/AppContext';
 import { ModalType } from '../../../../../context/ModalContext';
 import { useModal } from '../../../../../hooks/useModal';
+import { useToggles } from '../../../../../hooks/useToggles';
 import { erPåHenleggbartSteg } from '../../../../../typer/behandling';
-import { ToggleNavn } from '../../../../../typer/toggles';
+import { Toggle } from '../../../../../typer/toggles';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 export function HenleggBehandling() {
-    const { toggles } = useAppContext();
+    const toggles = useToggles();
     const { åpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const { åpneModal } = useModal(ModalType.HENLEGG_BEHANDLING);
 
     const behandling = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data : undefined;
 
-    const harTilgangTilTekniskVedlikeholdHenleggelse = toggles[ToggleNavn.tekniskVedlikeholdHenleggelse];
+    const harTilgangTilTekniskVedlikeholdHenleggelse = toggles[Toggle.tekniskVedlikeholdHenleggelse];
 
     const kanHenlegge =
         harTilgangTilTekniskVedlikeholdHenleggelse ||

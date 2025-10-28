@@ -4,9 +4,9 @@ import { Select } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { HenleggBehandlingFormFields, type HenleggBehandlingFormValues } from './useHenleggBehandlingForm';
-import { useAppContext } from '../../../../../context/AppContext';
+import { useToggles } from '../../../../../hooks/useToggles';
 import { erPåHenleggbartSteg, henleggÅrsak, HenleggÅrsak } from '../../../../../typer/behandling';
-import { ToggleNavn } from '../../../../../typer/toggles';
+import { Toggle } from '../../../../../typer/toggles';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
 export function ÅrsakFelt() {
@@ -14,7 +14,7 @@ export function ÅrsakFelt() {
 
     const behandling = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data : undefined;
 
-    const { toggles } = useAppContext();
+    const toggles = useToggles();
 
     const { control } = useFormContext<HenleggBehandlingFormValues>();
 
@@ -24,7 +24,7 @@ export function ÅrsakFelt() {
         rules: { required: 'Årsak er påkrevd.' },
     });
 
-    const harTilgangTilTekniskVedlikeholdHenleggelse = toggles[ToggleNavn.tekniskVedlikeholdHenleggelse];
+    const harTilgangTilTekniskVedlikeholdHenleggelse = toggles[Toggle.tekniskVedlikeholdHenleggelse];
 
     const valgmuligheter =
         behandling !== undefined
