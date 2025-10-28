@@ -5,6 +5,7 @@ import { Heading } from '@navikt/ds-react';
 import { BarnehagebarnTabell } from './BarnehagebarnTabell';
 import BarnehagebarnTabellNavigator from './BarnehagebarnTabellNavigator';
 import BarnehagelisterFilterskjema from './BarnehagelisterFilterskjema';
+import { LasterNyttTabellInnholdSpinner } from './LasterNyttTabellInnholdSpinner';
 import { useBarnehagelister } from './useBarnehagelister';
 
 const Container = styled.div`
@@ -24,6 +25,9 @@ const BarnehagelisterInnhold = () => {
             </Heading>
             <BarnehagelisterFilterskjema {...barnehagelisterContext} />
             <BarnehagebarnTabellNavigator {...barnehagelisterContext} />
+            <LasterNyttTabellInnholdSpinner
+                barnehagebarnRequestParams={barnehagelisterContext.barnehagebarnRequestParams}
+            />
             <BarnehagebarnTabell {...barnehagelisterContext} />
         </Container>
     );
