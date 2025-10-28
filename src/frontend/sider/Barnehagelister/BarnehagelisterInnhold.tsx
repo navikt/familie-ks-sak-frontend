@@ -6,7 +6,6 @@ import { BarnehagebarnTabell } from './BarnehagebarnTabell';
 import BarnehagebarnTabellNavigator from './BarnehagebarnTabellNavigator';
 import BarnehagelisterFilterskjema from './BarnehagelisterFilterskjema';
 import { useBarnehagelister } from './useBarnehagelister';
-import type { Barnehagebarn } from '../../typer/barnehagebarn';
 
 const Container = styled.div`
     padding: 0.5rem;
@@ -15,10 +14,8 @@ const Container = styled.div`
     height: calc(100vh - 116px - 1.1rem);
 `;
 
-const BARNEHAGELISTE_URL = '/familie-ks-sak/api/barnehagebarn/barnehagebarnliste';
-
 const BarnehagelisterInnhold = () => {
-    const barnehagelisterContext = useBarnehagelister<Barnehagebarn>(BARNEHAGELISTE_URL);
+    const barnehagelisterContext = useBarnehagelister();
 
     return (
         <Container>
