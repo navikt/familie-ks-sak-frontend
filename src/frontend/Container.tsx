@@ -33,46 +33,44 @@ const Main = styled.main<{ $systemetLaster: boolean }>`
 `;
 
 const Container = () => {
-    const { autentisert, systemetLaster, innloggetSaksbehandler, appInfoModal, erTogglesHentet } = useAppContext();
+    const { autentisert, systemetLaster, innloggetSaksbehandler, appInfoModal } = useAppContext();
 
     return (
         <Router>
             {appInfoModal.visModal && <AppInfoModal modal={appInfoModal} />}
             {autentisert ? (
-                erTogglesHentet && (
-                    <>
-                        {systemetLaster() && <SystemetLaster />}
-                        <Toasts />
+                <>
+                    {systemetLaster() && <SystemetLaster />}
+                    <Toasts />
 
-                        <Main $systemetLaster={systemetLaster()}>
-                            <OpprettFagsakModal />
-                            <FeilmeldingModal />
-                            <ForhåndsvisOpprettingAvPdfModal />
-                            <HeaderMedSøk
-                                brukerNavn={innloggetSaksbehandler?.displayName}
-                                brukerEnhet={innloggetSaksbehandler?.enhet}
-                            />
-                            <BehandlingProvider>
-                                <Routes>
-                                    <Route path="/fagsak/:fagsakId/*" element={<FagsakContainer />} />
-                                    <Route path="/oppgaver/journalfor/:oppgaveId" element={<ManuellJournalføring />} />
-                                    <Route
-                                        path="/tidslinjer/:behandlingId"
-                                        element={
-                                            <TidslinjeProvider>
-                                                <TidslinjeVisualisering />
-                                            </TidslinjeProvider>
-                                        }
-                                    />
-                                    <Route path="/internstatistikk" element={<Internstatistikk />} />
-                                    <Route path="/barnehagelister" element={<Barnehagelister />} />
-                                    <Route path="/oppgaver" element={<Oppgavebenk />} />
-                                    <Route path="/" element={<Navigate to="/oppgaver" />} />
-                                </Routes>
-                            </BehandlingProvider>
-                        </Main>
-                    </>
-                )
+                    <Main $systemetLaster={systemetLaster()}>
+                        <OpprettFagsakModal />
+                        <FeilmeldingModal />
+                        <ForhåndsvisOpprettingAvPdfModal />
+                        <HeaderMedSøk
+                            brukerNavn={innloggetSaksbehandler?.displayName}
+                            brukerEnhet={innloggetSaksbehandler?.enhet}
+                        />
+                        <BehandlingProvider>
+                            <Routes>
+                                <Route path="/fagsak/:fagsakId/*" element={<FagsakContainer />} />
+                                <Route path="/oppgaver/journalfor/:oppgaveId" element={<ManuellJournalføring />} />
+                                <Route
+                                    path="/tidslinjer/:behandlingId"
+                                    element={
+                                        <TidslinjeProvider>
+                                            <TidslinjeVisualisering />
+                                        </TidslinjeProvider>
+                                    }
+                                />
+                                <Route path="/internstatistikk" element={<Internstatistikk />} />
+                                <Route path="/barnehagelister" element={<Barnehagelister />} />
+                                <Route path="/oppgaver" element={<Oppgavebenk />} />
+                                <Route path="/" element={<Navigate to="/oppgaver" />} />
+                            </Routes>
+                        </BehandlingProvider>
+                    </Main>
+                </>
             ) : (
                 <UgyldigSesjon />
             )}
