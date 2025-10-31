@@ -1,9 +1,15 @@
-import type { IApi, ISessionKonfigurasjon } from '@navikt/familie-backend';
+import type { IApi, IAppConfig, ISessionKonfigurasjon } from '@navikt/familie-backend';
 
 import { envVar, erLokal } from './env.js';
 
-export const frontendPath = envVar('FRONTEND_PATH');
-export const proxyUrl = envVar('PROXY_URL');
+export const appConfig: IAppConfig = {
+    clientId: envVar('AZURE_APP_CLIENT_ID'),
+    clientSecret: envVar('AZURE_APP_CLIENT_SECRET'),
+    sessionSecret: envVar('SESSION_SECRET'),
+    discoveryUrl: envVar('AZURE_APP_WELL_KNOWN_URL'),
+    redirectUri: envVar('AAD_REDIRECT_URL'),
+    logoutRedirectUri: envVar('AAD_LOGOUT_REDIRECT_URL'),
+};
 
 export const sessionConfig: ISessionKonfigurasjon = {
     cookieSecret: [`${envVar('COOKIE_KEY1')}`, `${envVar('COOKIE_KEY2')}`],
@@ -26,3 +32,6 @@ export const redirectRecords: Record<string, string> = {
     '/redirect/neessi': envVar('NEESSI_URL'),
     '/redirect/drek': envVar('DREK_URL'),
 };
+
+export const frontendPath: string = envVar('FRONTEND_PATH');
+export const proxyUrl: string = envVar('PROXY_URL');

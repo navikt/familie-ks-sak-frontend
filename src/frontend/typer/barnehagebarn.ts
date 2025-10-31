@@ -1,7 +1,4 @@
 export interface BarnehagebarnRequestParams extends BarnehagebarnFilter {
-    ident?: string;
-    kommuneNavn?: string;
-    kunLøpendeAndel: boolean;
     limit?: number;
     offset?: number;
     sortBy: string;
@@ -41,8 +38,8 @@ interface IPageable {
     paged: boolean;
     unpaged: false;
 }
-export interface BarnehagebarnResponse<T> {
-    content: T[];
+export interface BarnehagebarnResponse {
+    content: Barnehagebarn[];
     pageable: IPageable;
     sort: ISort;
     last: boolean;

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import type { AxiosError } from 'axios';
 
@@ -11,13 +11,7 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import type {
-    Barnehagebarn,
-    BarnehagebarnFilter,
-    BarnehagebarnRequestParams,
-    BarnehagebarnResponse,
-    Barnehagekommune,
-} from '../../typer/barnehagebarn';
+import type { BarnehagebarnFilter, BarnehagebarnRequestParams, Barnehagekommune } from '../../typer/barnehagebarn';
 
 const defaultBarnehagebarnRequestParams: BarnehagebarnRequestParams = {
     ident: '',
@@ -29,10 +23,8 @@ const defaultBarnehagebarnRequestParams: BarnehagebarnRequestParams = {
     sortAsc: false,
 };
 
-export interface BarnehagebarnContext<T> {
+export interface BarnehagebarnContext {
     barnehagebarnRequestParams: BarnehagebarnRequestParams;
-    barnehagebarnResponse: Ressurs<BarnehagebarnResponse<T>>;
-    data: readonly T[];
     updateOffset: (offset: number) => void;
     updateLimit: (limit: number) => void;
     updateSortByAscDesc: (fieldName: string) => void;
@@ -42,39 +34,15 @@ export interface BarnehagebarnContext<T> {
 
 const BARNEHAGEKOMMUNER_URL = '/familie-ks-sak/api/barnehagebarn/barnehagekommuner';
 
-export const useBarnehagelister = <T = Barnehagebarn>(barnehagebarn_url: string): BarnehagebarnContext<T> => {
+export const useBarnehagelister = (): BarnehagebarnContext => {
     const { request } = useHttp();
 
     const [barnehagebarnRequestParams, settBarnehagebarnRequestParams] = useState<BarnehagebarnRequestParams>({
         ...defaultBarnehagebarnRequestParams,
     });
 
-    const [barnehagebarnResponse, settBarnehagebarnResponse] =
-        useState<Ressurs<BarnehagebarnResponse<T>>>(byggTomRessurs<BarnehagebarnResponse<T>>());
-
     const [barnehagekommunerRessurs, settBarnehagekommunerRessurs] =
         useState<Ressurs<Barnehagekommune[]>>(byggTomRessurs<Barnehagekommune[]>());
-
-    const data: ReadonlyArray<T> = useMemo(() => {
-        return barnehagebarnResponse.status === RessursStatus.SUKSESS && barnehagebarnResponse.data.content.length > 0
-            ? barnehagebarnResponse.data.content
-            : [];
-    }, [barnehagebarnResponse]);
-
-    const hentBarnehagebarnResponseRessurs = () => {
-        settBarnehagebarnResponse(byggHenterRessurs());
-        request<BarnehagebarnRequestParams, BarnehagebarnResponse<T>>({
-            data: barnehagebarnRequestParams,
-            method: 'POST',
-            url: `${barnehagebarn_url}`,
-        })
-            .then((barnehagebarnResponseRessurs: Ressurs<BarnehagebarnResponse<T>>) => {
-                settBarnehagebarnResponse(barnehagebarnResponseRessurs);
-            })
-            .catch((_error: AxiosError) => {
-                return byggFeiletRessurs('Ukjent feil ved innhenting av barnehageliste ks-sak');
-            });
-    };
 
     const hentAlleKommuner = () => {
         settBarnehagekommunerRessurs(byggHenterRessurs());
@@ -152,14 +120,9 @@ export const useBarnehagelister = <T = Barnehagebarn>(barnehagebarn_url: string)
         };
         return JSON.stringify(barnehagebarnFilter) !== JSON.stringify(oppdatertBarnehagebarnFilter);
     };
-    useEffect(() => {
-        hentBarnehagebarnResponseRessurs();
-    }, [barnehagebarnRequestParams]);
 
     return {
         barnehagebarnRequestParams,
-        barnehagebarnResponse,
-        data,
         updateOffset,
         updateLimit,
         updateSortByAscDesc,

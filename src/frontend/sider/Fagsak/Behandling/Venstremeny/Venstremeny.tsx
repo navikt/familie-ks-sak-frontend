@@ -1,10 +1,10 @@
-import type { MouseEvent } from 'react';
+import { Activity, type MouseEvent } from 'react';
 
 import { NavLink } from 'react-router';
 import styled from 'styled-components';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
-import { BodyShort, Box, Button, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Stack, VStack } from '@navikt/ds-react';
 import {
     ABorderFocus,
     ABorderSelected,
@@ -21,26 +21,23 @@ import {
 } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
-import { useBehandlingContext } from '../../Behandling/context/BehandlingContext';
+import { useVenstremeny } from './useVenstremeny';
+import { useFagsakId } from '../../../../hooks/useFagsakId';
+import { useBehandlingContext } from '../context/BehandlingContext';
 import type { IUnderside } from '../sider/sider';
 import { erSidenAktiv } from '../sider/sider';
 
-const ToggleVisningVenstremeny = styled(Button)<{ $åpenvenstremeny: boolean }>`
-    position: fixed;
-    margin-left: ${props => (props.$åpenvenstremeny ? '-17px' : '0px')};
+const ToggleVisningVenstremeny = styled(Button)`
+    position: absolute;
+    margin-right: -20px;
     top: 370px;
     width: 34px;
     min-width: 34px;
     height: 34px;
-    padding: 0;
     border-radius: 50%;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     background-color: ${ASurfaceDefault};
-`;
-
-const Meny = styled(VStack)`
-    padding: ${ASpacing8} 0;
+    z-index: 10;
 `;
 
 const MenyLenke = styled(NavLink)<{ $erLenkenAktiv: boolean }>`
@@ -79,9 +76,11 @@ const UndersideSirkel = styled.span`
     width: ${ASpacing6};
 `;
 
-const Venstremeny = () => {
-    const { fagsakId } = useSakOgBehandlingParams();
-    const { åpenBehandling, trinnPåBehandling, åpenVenstremeny, settÅpenVenstremeny } = useBehandlingContext();
+export function Venstremeny() {
+    const { åpenBehandling, trinnPåBehandling } = useBehandlingContext();
+
+    const fagsakId = useFagsakId();
+    const [erÅpen, settErÅpen] = useVenstremeny();
 
     const stansNavigeringDersomSidenIkkeErAktiv = (event: MouseEvent, sidenErAktiv: boolean) => {
         if (!sidenErAktiv) {
@@ -89,81 +88,71 @@ const Venstremeny = () => {
         }
     };
 
-    return (
-        <HStack justify="start">
-            {åpenVenstremeny && (
-                <Meny as="nav">
-                    {åpenBehandling.status === RessursStatus.SUKSESS &&
-                        Object.entries(trinnPåBehandling).map(([sideId, side], index: number) => {
-                            const tilPath = `/fagsak/${fagsakId}/${åpenBehandling.data.behandlingId}/${side.href}`;
-
-                            const undersider: IUnderside[] = side.undersider
-                                ? side.undersider(åpenBehandling.data)
-                                : [];
-
-                            const sidenErAktiv = erSidenAktiv(side, åpenBehandling.data);
-
-                            return (
-                                <VStack key={sideId}>
-                                    <MenyLenke
-                                        id={sideId}
-                                        to={tilPath}
-                                        $erLenkenAktiv={sidenErAktiv}
-                                        onClick={event => stansNavigeringDersomSidenIkkeErAktiv(event, sidenErAktiv)}
-                                    >
-                                        {`${side.steg ? `${index + 1}. ` : ''}${side.navn}`}
-                                    </MenyLenke>
-                                    {undersider.map((underside: IUnderside) => {
-                                        const antallAksjonspunkter = underside.antallAksjonspunkter();
-                                        return (
-                                            <MenyLenke
-                                                key={`${sideId}_${underside.hash}`}
-                                                id={`${sideId}_${underside.hash}`}
-                                                to={`${tilPath}#${underside.hash}`}
-                                                $erLenkenAktiv={sidenErAktiv}
-                                                onClick={event =>
-                                                    stansNavigeringDersomSidenIkkeErAktiv(event, sidenErAktiv)
-                                                }
-                                            >
-                                                <HStack align="center" gap="1">
-                                                    {antallAksjonspunkter > 0 ? (
-                                                        <UndersideSirkel>{antallAksjonspunkter}</UndersideSirkel>
-                                                    ) : (
-                                                        <Box padding="3" />
-                                                    )}
-                                                    <BodyShort size="small">{underside.navn}</BodyShort>
-                                                </HStack>
-                                            </MenyLenke>
-                                        );
-                                    })}
-                                </VStack>
-                            );
-                        })}
-                </Meny>
-            )}
-            <div>
-                <ToggleVisningVenstremeny
-                    forwardedAs={Button}
-                    variant="secondary"
-                    onMouseDown={(e: MouseEvent) => e.preventDefault()}
-                    onClick={() => {
-                        settÅpenVenstremeny(!åpenVenstremeny);
-                    }}
-                    size="small"
-                    aria-label="Skjul venstremeny"
-                    $åpenvenstremeny={åpenVenstremeny ? 1 : 0}
-                    title={åpenVenstremeny ? 'Skjul venstremeny' : 'Vis venstremeny'}
-                    icon={
-                        åpenVenstremeny ? (
-                            <ChevronLeftIcon aria-label="Vis venstremeny" />
-                        ) : (
-                            <ChevronRightIcon aria-label="Skjul venstremeny" />
-                        )
-                    }
-                />
-            </div>
-        </HStack>
+    const icon = erÅpen ? (
+        <ChevronLeftIcon aria-label={'Vis venstremeny'} />
+    ) : (
+        <ChevronRightIcon aria-label={'Skjul venstremeny'} />
     );
-};
 
-export default Venstremeny;
+    if (åpenBehandling.status !== RessursStatus.SUKSESS) {
+        return null;
+    }
+
+    return (
+        <Stack direction={'row-reverse'}>
+            <ToggleVisningVenstremeny
+                title={erÅpen ? 'Skjul venstremeny' : 'Vis venstremeny'}
+                aria-label={erÅpen ? 'Skjul venstremeny' : 'Vis venstremeny'}
+                variant={'secondary'}
+                size={'small'}
+                icon={icon}
+                onMouseDown={e => e.preventDefault()}
+                onClick={() => settErÅpen(prev => !prev)}
+            />
+            <Activity mode={erÅpen ? 'visible' : 'hidden'}>
+                <Box as={'nav'} paddingBlock={'space-8'}>
+                    {Object.entries(trinnPåBehandling).map(([sideId, side], index) => {
+                        const tilPath = `/fagsak/${fagsakId}/${åpenBehandling.data.behandlingId}/${side.href}`;
+                        const undersider = side.undersider ? side.undersider(åpenBehandling.data) : [];
+                        const sidenErAktiv = erSidenAktiv(side, åpenBehandling.data);
+                        return (
+                            <VStack key={sideId}>
+                                <MenyLenke
+                                    id={sideId}
+                                    to={tilPath}
+                                    $erLenkenAktiv={sidenErAktiv}
+                                    onClick={event => stansNavigeringDersomSidenIkkeErAktiv(event, sidenErAktiv)}
+                                >
+                                    {`${side.steg ? `${index + 1}. ` : ''}${side.navn}`}
+                                </MenyLenke>
+                                {undersider.map((underside: IUnderside) => {
+                                    const antallAksjonspunkter = underside.antallAksjonspunkter();
+                                    return (
+                                        <MenyLenke
+                                            key={`${sideId}_${underside.hash}`}
+                                            id={`${sideId}_${underside.hash}`}
+                                            to={`${tilPath}#${underside.hash}`}
+                                            $erLenkenAktiv={sidenErAktiv}
+                                            onClick={event =>
+                                                stansNavigeringDersomSidenIkkeErAktiv(event, sidenErAktiv)
+                                            }
+                                        >
+                                            <HStack align={'center'} gap={'1'}>
+                                                {antallAksjonspunkter > 0 ? (
+                                                    <UndersideSirkel>{antallAksjonspunkter}</UndersideSirkel>
+                                                ) : (
+                                                    <Box padding={'3'} />
+                                                )}
+                                                <BodyShort size={'small'}>{underside.navn}</BodyShort>
+                                            </HStack>
+                                        </MenyLenke>
+                                    );
+                                })}
+                            </VStack>
+                        );
+                    })}
+                </Box>
+            </Activity>
+        </Stack>
+    );
+}
