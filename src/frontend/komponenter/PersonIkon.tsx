@@ -60,6 +60,7 @@ export const PersonIkon = ({
             />
         );
     }
+
     if (kjønn === kjønnType.MANN) {
         return erBarn ? (
             <GuttIkon
