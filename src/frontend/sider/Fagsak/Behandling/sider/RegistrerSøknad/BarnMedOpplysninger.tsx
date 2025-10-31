@@ -1,45 +1,17 @@
 import classNames from 'classnames';
-import styled from 'styled-components';
 
-import { BodyShort, Button, Checkbox } from '@navikt/ds-react';
+import { BodyShort, Button, Checkbox, HStack } from '@navikt/ds-react';
 
+import styles from './BarnMedOpplysninger.module.css';
 import { useSøknadContext } from './SøknadContext';
 import Slett from '../../../../../ikoner/Slett';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
 import { formaterIdent, hentAlderSomString } from '../../../../../utils/formatter';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface IProps {
     barn: IBarnMedOpplysninger;
 }
-
-const CheckboxOgSlettknapp = styled.div`
-    display: flex;
-    text-align: center;
-`;
-
-const StyledCheckbox = styled(Checkbox)`
-    margin-left: 1rem;
-
-    > label {
-        width: 100%;
-    }
-`;
-
-const LabelContent = styled.div`
-    display: flex;
-    white-space: nowrap;
-`;
-
-const LabelTekst = styled.p`
-    margin: 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-`;
-
-const FjernBarnKnapp = styled(Button)`
-    margin-left: 1rem;
-`;
 
 const BarnMedOpplysninger = ({ barn }: IProps) => {
     const { skjema, barnMedLøpendeUtbetaling } = useSøknadContext();
@@ -52,7 +24,7 @@ const BarnMedOpplysninger = ({ barn }: IProps) => {
     )}) | ${formaterIdent(barn.ident)} ${barnetHarLøpendeUtbetaling ? '(løpende)' : ''}`;
 
     return (
-        <CheckboxOgSlettknapp>
+        <HStack gap={'space-16'}>
             {erLesevisning ? (
                 barn.merket ? (
                     <BodyShort
@@ -62,14 +34,14 @@ const BarnMedOpplysninger = ({ barn }: IProps) => {
                     />
                 ) : null
             ) : (
-                <StyledCheckbox value={barn.ident}>
-                    <LabelContent>
-                        <LabelTekst title={navnOgIdentTekst}>{navnOgIdentTekst}</LabelTekst>
-                    </LabelContent>
-                </StyledCheckbox>
+                <Checkbox className={styles.checkbox} value={barn.ident}>
+                    <HStack className={styles.labelContent}>
+                        <p title={navnOgIdentTekst}>{navnOgIdentTekst}</p>
+                    </HStack>
+                </Checkbox>
             )}
             {barn.manueltRegistrert && !erLesevisning && (
-                <FjernBarnKnapp
+                <Button
                     variant={'tertiary'}
                     id={`fjern__${barn.ident}`}
                     size={'small'}
@@ -86,9 +58,9 @@ const BarnMedOpplysninger = ({ barn }: IProps) => {
                     }}
                 >
                     {'Fjern barn'}
-                </FjernBarnKnapp>
+                </Button>
             )}
-        </CheckboxOgSlettknapp>
+        </HStack>
     );
 };
 export default BarnMedOpplysninger;

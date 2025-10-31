@@ -1,13 +1,7 @@
-import styled from 'styled-components';
-
-import { Heading, Textarea } from '@navikt/ds-react';
+import { Heading, Textarea, VStack } from '@navikt/ds-react';
 
 import { useSøknadContext } from './SøknadContext';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
-
-const AnnetWrapper = styled.div`
-    margin: 2rem 0;
-`;
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const Annet = () => {
     const { vurderErLesevisning } = useBehandlingContext();
@@ -15,7 +9,7 @@ const Annet = () => {
     const lesevisning = vurderErLesevisning();
 
     return (
-        <AnnetWrapper>
+        <VStack marginBlock={'space-32'}>
             <Heading size={'medium'} level={'2'} children={'Annet'} />
             <br />
             <Textarea
@@ -24,7 +18,7 @@ const Annet = () => {
                 label={!lesevisning && 'Ved endring av opplysningene er begrunnelse obligatorisk'}
                 maxLength={2000}
             />
-        </AnnetWrapper>
+        </VStack>
     );
 };
 
