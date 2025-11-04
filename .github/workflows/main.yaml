@@ -23,7 +23,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/build-yarn-app.yaml@main # ratchet:exclude
+    uses: navikt/familie-baks-gha-workflows/.github/workflows/build-yarn-app.yaml@bruk-build-profile-for-image-navn # ratchet:exclude
     with:
       build-image: true
       push-image: true
@@ -42,12 +42,11 @@ jobs:
     secrets: inherit
   build-prod:
     name: Build prod
-    needs: [deploy-dev]
     if: github.ref == 'refs/heads/main' # Only deploy to prod from main branch
     permissions:
       contents: read
       id-token: write
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/build-yarn-app.yaml@main # ratchet:exclude
+    uses: navikt/familie-baks-gha-workflows/.github/workflows/build-yarn-app.yaml@bruk-build-profile-for-image-navn # ratchet:exclude
     with:
       build-image: true
       push-image: true
