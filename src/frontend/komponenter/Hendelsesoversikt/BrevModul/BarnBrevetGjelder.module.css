@@ -1,0 +1,10 @@
+.checkbox {
+    margin-left: var(--ax-space-16);
+}
+
+.labelTekst {
+    margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
