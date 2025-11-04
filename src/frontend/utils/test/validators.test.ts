@@ -5,7 +5,7 @@ import type { FeltState } from '@navikt/familie-skjema';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
 import { kjønnType } from '@navikt/familie-typer';
 
-import generator from '../../testverktøy/fnr/fnr-generator';
+import generator from '../../testutils/testverktøy/fnr/fnr-generator';
 import type { IGrunnlagPerson } from '../../typer/person';
 import { PersonType } from '../../typer/person';
 import { Målform } from '../../typer/søknad';
@@ -164,7 +164,8 @@ describe('utils/validators', () => {
     });
 
     test('Fom som settes til senere enn inneværende måned på barnehageplass vilkår skal gi OK', () => {
-        const nesteMåned = addMonths(new Date(), 1);
+        const inneværendeMåned = new Date().setDate(1);
+        const nesteMåned = addMonths(inneværendeMåned, 1);
         const nesteMånedOgEnDag = addDays(nesteMåned, 1);
 
         const periode: FeltState<IIsoDatoPeriode> = nyFeltState(

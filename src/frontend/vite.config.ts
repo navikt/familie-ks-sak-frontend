@@ -6,24 +6,29 @@ import reactPlugin from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig(({ mode }) => {
-    return {
-        build: {
-            outDir: '../../dist_frontend/',
-            sourcemap: true,
-            emptyOutDir: true,
-        },
-        envDir: '../../',
-        define: {
-            global: 'window',
-        },
-        server: {
-            port: 8000,
-        },
-        plugins: [
-            reactPlugin(),
-            mode === 'production' ? sentryPlugin() : undefined, // Sentry må være siste plugin
-        ],
-    };
+    try {
+        return {
+            build: {
+                outDir: '../../dist_frontend/',
+                sourcemap: true,
+                emptyOutDir: true,
+            },
+            envDir: '../../',
+            define: {
+                global: 'window',
+            },
+            server: {
+                port: 8000,
+            },
+            plugins: [
+                reactPlugin(),
+                mode === 'prod' || mode === 'preprod' ? sentryPlugin() : undefined, // Sentry må være siste plugin
+            ],
+        };
+    } catch (e) {
+        console.error('Vite define config feilet', e);
+        throw e;
+    }
 });
 
 const sentryPlugin = () =>

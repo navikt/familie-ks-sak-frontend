@@ -23,7 +23,9 @@ interface BarnehagebarnFilterSkjemaProps {
 const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
     const { oppdaterFiltrering, barnehageKommuner } = props;
 
-    const { register, handleSubmit, reset, control, watch, setValue } = useForm<BarnehagebarnFilter>();
+    const { register, handleSubmit, reset, control, watch, setValue } = useForm<BarnehagebarnFilter>({
+        defaultValues: { ident: '', kommuneNavn: '', kunLøpendeAndel: false },
+    });
 
     const onSubmit: SubmitHandler<BarnehagebarnFilter> = barnehagebarnFilter => {
         oppdaterFiltrering(barnehagebarnFilter);

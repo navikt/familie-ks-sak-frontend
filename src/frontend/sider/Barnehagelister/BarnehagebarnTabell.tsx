@@ -1,20 +1,20 @@
 import { Link as ReactRouterLink } from 'react-router';
 
-import { Alert, Box, Link, Table } from '@navikt/ds-react';
-import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
+import { Alert, Box, HStack, Link, Loader, Table } from '@navikt/ds-react';
 
-import type { Barnehagebarn, BarnehagebarnRequestParams, BarnehagebarnResponse } from '../../typer/barnehagebarn';
+import { useHentBarnehagebarn } from '../../hooks/useHentBarnehagebarn';
+import type { BarnehagebarnRequestParams } from '../../typer/barnehagebarn';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 
-interface BarnehagebarnTabellProps<T> {
+interface BarnehagebarnTabellProps {
     barnehagebarnRequestParams: BarnehagebarnRequestParams;
-    barnehagebarnResponse: Ressurs<BarnehagebarnResponse<T>>;
-    data: readonly T[];
     updateSortByAscDesc: (fieldName: string) => void;
 }
 
-export const BarnehagebarnTabell = (props: BarnehagebarnTabellProps<Barnehagebarn>) => {
-    const { barnehagebarnRequestParams, barnehagebarnResponse, data, updateSortByAscDesc } = props;
+export const BarnehagebarnTabell = (props: BarnehagebarnTabellProps) => {
+    const { barnehagebarnRequestParams, updateSortByAscDesc } = props;
+
+    const { data, isPending, error } = useHentBarnehagebarn(barnehagebarnRequestParams);
 
     function visAvvikstekst(avvik?: boolean) {
         if (avvik === true) {
@@ -70,71 +70,73 @@ export const BarnehagebarnTabell = (props: BarnehagebarnTabellProps<Barnehagebar
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {data.map((barnehagebarn, i) => {
-                        return (
-                            <Table.Row key={i + barnehagebarn.ident}>
-                                <Table.DataCell>{barnehagebarn.ident}</Table.DataCell>
-                                <Table.DataCell>
-                                    {isoStringTilFormatertString({
-                                        isoString: barnehagebarn.endretTid,
-                                        tilFormat: Datoformat.DATO_TID,
-                                    })}
-                                </Table.DataCell>
-                                <Table.DataCell>
-                                    {isoStringTilFormatertString({
-                                        isoString: barnehagebarn.fom,
-                                        tilFormat: Datoformat.DATO_FORKORTTET,
-                                    })}
-                                </Table.DataCell>
-                                <Table.DataCell>
-                                    {isoStringTilFormatertString({
-                                        isoString: barnehagebarn.tom,
-                                        tilFormat: Datoformat.DATO_FORKORTTET,
-                                    })}
-                                </Table.DataCell>
-                                <Table.DataCell align="center">{barnehagebarn.antallTimerIBarnehage}</Table.DataCell>
-                                <Table.DataCell>{barnehagebarn.endringstype}</Table.DataCell>
-                                <Table.DataCell>{visAvvikstekst(barnehagebarn.avvik)}</Table.DataCell>
-                                <Table.DataCell>{barnehagebarn.kommuneNavn}</Table.DataCell>
-                                <Table.DataCell>{barnehagebarn.kommuneNr}</Table.DataCell>
-                                <Table.DataCell>
-                                    {barnehagebarn.fagsakstatus ? barnehagebarn.fagsakstatus : 'Ingen fagsak'}
-                                </Table.DataCell>
-                                <Table.DataCell>
-                                    {barnehagebarn.fagsakId ? (
-                                        <Link
-                                            as={ReactRouterLink}
-                                            title={`FagsakId: ${barnehagebarn.fagsakId}`}
-                                            to={`/fagsak/${barnehagebarn.fagsakId}/saksoversikt`}
-                                        >
-                                            Gå til saksoversikt
-                                        </Link>
-                                    ) : (
-                                        'Ingen fagsak'
-                                    )}
-                                </Table.DataCell>
-                            </Table.Row>
-                        );
-                    })}
+                    {!error &&
+                        data?.content.map((barnehagebarn, i) => {
+                            return (
+                                <Table.Row key={i + barnehagebarn.ident}>
+                                    <Table.DataCell>{barnehagebarn.ident}</Table.DataCell>
+                                    <Table.DataCell>
+                                        {isoStringTilFormatertString({
+                                            isoString: barnehagebarn.endretTid,
+                                            tilFormat: Datoformat.DATO_TID,
+                                        })}
+                                    </Table.DataCell>
+                                    <Table.DataCell>
+                                        {isoStringTilFormatertString({
+                                            isoString: barnehagebarn.fom,
+                                            tilFormat: Datoformat.DATO_FORKORTTET,
+                                        })}
+                                    </Table.DataCell>
+                                    <Table.DataCell>
+                                        {isoStringTilFormatertString({
+                                            isoString: barnehagebarn.tom,
+                                            tilFormat: Datoformat.DATO_FORKORTTET,
+                                        })}
+                                    </Table.DataCell>
+                                    <Table.DataCell align="center">
+                                        {barnehagebarn.antallTimerIBarnehage}
+                                    </Table.DataCell>
+                                    <Table.DataCell>{barnehagebarn.endringstype}</Table.DataCell>
+                                    <Table.DataCell>{visAvvikstekst(barnehagebarn.avvik)}</Table.DataCell>
+                                    <Table.DataCell>{barnehagebarn.kommuneNavn}</Table.DataCell>
+                                    <Table.DataCell>{barnehagebarn.kommuneNr}</Table.DataCell>
+                                    <Table.DataCell>
+                                        {barnehagebarn.fagsakstatus ? barnehagebarn.fagsakstatus : 'Ingen fagsak'}
+                                    </Table.DataCell>
+                                    <Table.DataCell>
+                                        {barnehagebarn.fagsakId ? (
+                                            <Link
+                                                as={ReactRouterLink}
+                                                title={`FagsakId: ${barnehagebarn.fagsakId}`}
+                                                to={`/fagsak/${barnehagebarn.fagsakId}/saksoversikt`}
+                                            >
+                                                Gå til saksoversikt
+                                            </Link>
+                                        ) : (
+                                            'Ingen fagsak'
+                                        )}
+                                    </Table.DataCell>
+                                </Table.Row>
+                            );
+                        })}
                 </Table.Body>
             </Table>
 
-            {barnehagebarnResponse.status === RessursStatus.SUKSESS &&
-                barnehagebarnResponse.data.content.length === 0 && (
-                    <Box marginBlock="space-16 0">
-                        <Alert variant="warning">Ingen barnehagebarn (ev tøm filter)</Alert>
-                    </Box>
-                )}
-            {(barnehagebarnResponse.status === RessursStatus.FEILET ||
-                barnehagebarnResponse.status === RessursStatus.FUNKSJONELL_FEIL ||
-                barnehagebarnResponse.status === RessursStatus.IKKE_TILGANG) && (
-                <Box marginBlock="space-16 0">
-                    <Alert variant="error">{barnehagebarnResponse.frontendFeilmelding}</Alert>
+            {isPending && (
+                <HStack width={'100%'} justify={'center'} align={'center'} margin={'space-16'} gap={'space-6'}>
+                    <Loader /> Laster barnehagebarn
+                </HStack>
+            )}
+
+            {error && (
+                <Box margin={'space-8'}>
+                    <Alert variant={'error'}>{error.message}</Alert>
                 </Box>
             )}
-            {barnehagebarnResponse.status === RessursStatus.HENTER && (
+
+            {!error && data?.content.length === 0 && (
                 <Box marginBlock="space-16 0">
-                    <Alert variant="info">Henter...</Alert>
+                    <Alert variant="warning">Ingen barnehagebarn (ev tøm filter)</Alert>
                 </Box>
             )}
         </>

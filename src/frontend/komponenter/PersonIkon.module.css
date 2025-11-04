@@ -47,7 +47,9 @@
 .ansattIkon {
     border-radius: 100%;
     padding: 2px;
-    place-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     min-height: 24px;
     min-width: 24px;

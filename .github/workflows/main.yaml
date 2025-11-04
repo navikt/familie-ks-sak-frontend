@@ -29,6 +29,17 @@ jobs:
       push-image: true
       build-profile: 'preprod'
     secrets: inherit
+  deploy-dev:
+    name: Deploy dev
+    permissions:
+      id-token: write
+    needs: [build-dev]
+    uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main # ratchet:exclude
+    with:
+      image: ${{ needs.build-dev.outputs.image }}
+      cluster: dev-gcp
+      resource: .nais/app-dev.yaml
+    secrets: inherit
   build-prod:
     name: Build prod
     if: github.ref == 'refs/heads/main' # Only deploy to prod from main branch
@@ -41,17 +52,6 @@ jobs:
       push-image: true
       build-profile: 'prod'
     secrets: inherit
-  deploy-dev:
-    name: Deploy dev
-    permissions:
-      id-token: write
-    needs: [build-dev]
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main # ratchet:exclude
-    with:
-      image: ${{ needs.build.outputs.image }}
-      cluster: dev-gcp
-      resource: .nais/app-dev.yaml
-    secrets: inherit
   deploy-prod:
     name: Deploy prod
     permissions:
@@ -59,7 +59,7 @@ jobs:
     needs: [build-prod]
     uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main # ratchet:exclude
     with:
-      image: ${{ needs.build.outputs.image }}
+      image: ${{ needs.build-prod.outputs.image }}
       cluster: prod-gcp
       resource: .nais/app-prod.yaml
     secrets: inherit

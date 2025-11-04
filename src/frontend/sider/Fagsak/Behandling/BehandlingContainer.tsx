@@ -6,11 +6,11 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingRouter } from './BehandlingRouter';
 import { useBehandlingContext } from './context/BehandlingContext';
-import Høyremeny from './Høyremeny/Høyremeny';
+import { Høyremeny } from './Høyremeny/Høyremeny';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import type { IPersonInfo } from '../../../typer/person';
 import { Fagsaklinje } from '../Fagsaklinje/Fagsaklinje';
-import Venstremeny from './Venstremeny/Venstremeny';
+import { Venstremeny } from './Venstremeny/Venstremeny';
 import { HenleggBehandlingModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingModal';
 import { HenleggBehandlingVeivalgModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingVeivalgModal';
 import { KorrigerEtterbetalingModal } from './sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetalingModal';
@@ -22,7 +22,9 @@ const FlexContainer = styled.div`
 const VenstremenyContainer = styled.div`
     min-width: 1rem;
     border-right: 1px solid ${ABorderDivider};
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: calc(100vh - 146px);
 `;
 
 const HovedinnholdContainer = styled.div`
@@ -32,6 +34,7 @@ const HovedinnholdContainer = styled.div`
 `;
 
 const HøyremenyContainer = styled.div`
+    min-width: 1rem;
     border-left: 1px solid ${ABorderDivider};
     overflow-x: hidden;
     overflow-y: scroll;
