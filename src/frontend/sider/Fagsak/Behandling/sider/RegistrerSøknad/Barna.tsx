@@ -1,7 +1,6 @@
 import { differenceInMilliseconds } from 'date-fns';
-import styled from 'styled-components';
 
-import { Alert, CheckboxGroup, Heading, Label } from '@navikt/ds-react';
+import { Alert, CheckboxGroup, Heading, HStack, Label, VStack } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnMedOpplysninger from './BarnMedOpplysninger';
@@ -11,30 +10,8 @@ import type { IForelderBarnRelasjonMaskert } from '../../../../../typer/person';
 import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '../../../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
 import { isoStringTilDate } from '../../../../../utils/dato';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 import { useFagsakContext } from '../../../FagsakContext';
-
-const BarnMedDiskresjonskode = styled.div`
-    display: flex;
-    align-items: center;
-    margin: 0.5rem;
-`;
-
-const StyledRødError = styled(RødError)`
-    margin-right: 1rem;
-`;
-
-const BarnaWrapper = styled.div`
-    margin: 1rem 0;
-`;
-
-const StyledCheckboxGroup = styled(CheckboxGroup)`
-    min-width: 0;
-`;
-
-const IngenBarnRegistrertInfo = styled(Alert)`
-    margin-bottom: 1.25rem;
-`;
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const Barna = () => {
     const { vurderErLesevisning } = useBehandlingContext();
@@ -76,22 +53,28 @@ const Barna = () => {
     };
 
     return (
-        <BarnaWrapper className={'søknad__barna'}>
+        <VStack marginBlock={'space-16'}>
             <Heading size={'medium'} level={'2'} children={'Opplysninger om barn'} />
             {maskerteRelasjoner.map((forelderBarnRelasjonMaskert: IForelderBarnRelasjonMaskert, index: number) => {
                 return (
-                    <BarnMedDiskresjonskode key={`${index}_${forelderBarnRelasjonMaskert.relasjonRolle}`}>
-                        <StyledRødError height={24} width={24} />
+                    <HStack
+                        margin={'space-8'}
+                        align="center"
+                        wrap={false}
+                        key={`${index}_${forelderBarnRelasjonMaskert.relasjonRolle}`}
+                    >
+                        <HStack marginInline={'space-0 space-16'}>
+                            <RødError height={24} width={24} />
+                        </HStack>
                         {`Bruker har barn med diskresjonskode ${
                             adressebeskyttelsestyper[forelderBarnRelasjonMaskert.adressebeskyttelseGradering] ??
                             'ukjent'
                         }`}
-                    </BarnMedDiskresjonskode>
+                    </HStack>
                 );
             })}
-
             <br />
-            <StyledCheckboxGroup
+            <CheckboxGroup
                 {...skjema.felter.barnaMedOpplysninger.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
                 legend={
                     !lesevisning ? <Label>Velg hvilke barn det er søkt om</Label> : <Label>Barn det er søkt om</Label>
@@ -104,15 +87,13 @@ const Barna = () => {
                 {sorterteBarnMedOpplysninger.map((barnMedOpplysninger: IBarnMedOpplysninger) => (
                     <BarnMedOpplysninger key={barnMedOpplysninger.ident} barn={barnMedOpplysninger} />
                 ))}
-
                 {sorterteBarnMedOpplysninger.length === 0 && maskerteRelasjoner.length === 0 && (
-                    <IngenBarnRegistrertInfo
-                        variant="info"
-                        children={'Folkeregisteret har ikke registrerte barn på denne søkeren'}
-                    />
+                    <VStack marginBlock={'space-0 space-20'}>
+                        <Alert variant="info" children={'Folkeregisteret har ikke registrerte barn på denne søkeren'} />
+                    </VStack>
                 )}
-            </StyledCheckboxGroup>
-        </BarnaWrapper>
+            </CheckboxGroup>
+        </VStack>
     );
 };
 
