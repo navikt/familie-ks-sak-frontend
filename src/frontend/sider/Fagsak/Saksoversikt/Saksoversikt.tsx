@@ -151,7 +151,7 @@ export function Saksoversikt({ minimalFagsak }: IProps) {
                         {løpendeMånedligUtbetaling()}
                     </div>
                 )}
-                <Behandlinger fagsakId={minimalFagsak.id} />
+                <Behandlinger />
             </VStack>
         </Box>
     );
