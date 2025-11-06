@@ -4,12 +4,12 @@ import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opprettBehandlingUtils';
-import { useToggles } from '../../../../../hooks/useToggles';
+import { useFeatureToggles } from '../../../../../hooks/useFeatureToggles';
 import { Behandlingstype } from '../../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../../typer/fagsak';
+import { FeatureToggle } from '../../../../../typer/featureToggles';
 import { Klagebehandlingstype } from '../../../../../typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
-import { Toggle } from '../../../../../typer/toggles';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../../../utils/fagsak';
 import type { VisningBehandling } from '../../../Saksoversikt/visningBehandling';
 
@@ -32,14 +32,14 @@ const BehandlingstypeFelt = ({
     erLesevisning = false,
     manuellJournalfør = false,
 }: IProps) => {
-    const toggles = useToggles();
+    const toggles = useFeatureToggles();
 
     const aktivBehandling: VisningBehandling | undefined = minimalFagsak
         ? hentAktivBehandlingPåMinimalFagsak(minimalFagsak)
         : undefined;
 
     const kanOppretteTekniskEndring =
-        kanOppretteRevurdering(minimalFagsak, aktivBehandling) && toggles[Toggle.kanBehandleTekniskEndring];
+        kanOppretteRevurdering(minimalFagsak, aktivBehandling) && toggles[FeatureToggle.kanBehandleTekniskEndring];
 
     const kanOppretteTilbakekreving = !manuellJournalfør;
 

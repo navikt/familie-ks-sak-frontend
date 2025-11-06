@@ -11,20 +11,20 @@ import {
 import { useHttp } from '@navikt/familie-http';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useToggles } from '../../../../../../hooks/useToggles';
+import { useFeatureToggles } from '../../../../../../hooks/useFeatureToggles';
 import {
     Behandlingstype,
     erBehandlingAvslått,
     erBehandlingFortsattInnvilget,
     type IBehandling,
 } from '../../../../../../typer/behandling';
+import { FeatureToggle } from '../../../../../../typer/featureToggles';
 import type {
     OppdaterSammensattKontrollsakDto,
     OpprettSammensattKontrollsakDto,
     SammensattKontrollsakDto,
     SlettSammensattKontrollsakDto,
 } from '../../../../../../typer/sammensatt-kontrollsak';
-import { Toggle } from '../../../../../../typer/toggles';
 import { erDefinert } from '../../../../../../utils/commons';
 
 interface ISammensattKontrollsakProps extends PropsWithChildren {
@@ -46,7 +46,7 @@ const SammensattKontrollsakContext = createContext<SammensattKontrollsakContextV
 export const SammensattKontrollsakProvider = ({ åpenBehandling, children }: ISammensattKontrollsakProps) => {
     const { behandlingId, type, resultat } = åpenBehandling;
     const { request } = useHttp();
-    const toggles = useToggles();
+    const toggles = useFeatureToggles();
     const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
     const [erSammensattKontrollsak, settErSammensattKontrollsak] = useState<boolean>(false);
     const [sammensattKontrollsak, settSammensattKontrollsak] = useState<SammensattKontrollsakDto | undefined>();
@@ -56,7 +56,7 @@ export const SammensattKontrollsakProvider = ({ åpenBehandling, children }: ISa
     }, [behandlingId]);
 
     const skalViseSammensattKontrollsakMenyvalg =
-        toggles[Toggle.kanOppretteOgEndreSammensatteKontrollsaker] &&
+        toggles[FeatureToggle.kanOppretteOgEndreSammensatteKontrollsaker] &&
         type !== Behandlingstype.FØRSTEGANGSBEHANDLING &&
         !erBehandlingAvslått(resultat) &&
         !erBehandlingFortsattInnvilget(resultat);

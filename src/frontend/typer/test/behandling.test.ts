@@ -4,7 +4,7 @@ import {
     behandlingÅrsakerSomIkkeSkalSettesManuelt,
     erBehandlingHenlagt,
 } from '../behandling';
-import { type Toggles } from '../toggles';
+import { type FeatureToggles } from '../featureToggles';
 
 describe('Behandlingstester', () => {
     test('Alle henleggelsesresultater skal trigge erHenlagt', () => {
@@ -21,7 +21,7 @@ describe('Behandlingstester', () => {
 describe('behandlingÅrsakerSomIkkeSkalSettesManuelt inneholde alle behandlingsårsaker som ikke skal kunne velges manuelt', () => {
     test('Alle relevante toggles er skrudd på', () => {
         // Arrange
-        const toggles: Toggles = {
+        const toggles: FeatureToggles = {
             kanOppretteRevurderingMedAarsakIverksetteKaVedtak: true,
             kanManueltKorrigereMedVedtaksbrev: true,
         };
@@ -47,7 +47,7 @@ describe('behandlingÅrsakerSomIkkeSkalSettesManuelt inneholde alle behandlings�
     });
     test('Alle relevante toggles er skrudd av', () => {
         // Arrange
-        const toggles: Toggles = {
+        const toggles: FeatureToggles = {
             kanOppretteRevurderingMedAarsakIverksetteKaVedtak: false,
             kanManueltKorrigereMedVedtaksbrev: false,
         };
@@ -75,7 +75,7 @@ describe('behandlingÅrsakerSomIkkeSkalSettesManuelt inneholde alle behandlings�
     });
     test('Toggelen kanOppretteRevurderingMedAarsakIverksetteKaVedtak er skrudd på', () => {
         // Arrange
-        const toggles: Toggles = {
+        const toggles: FeatureToggles = {
             kanOppretteRevurderingMedAarsakIverksetteKaVedtak: true,
             kanManueltKorrigereMedVedtaksbrev: false,
         };
@@ -101,7 +101,7 @@ describe('behandlingÅrsakerSomIkkeSkalSettesManuelt inneholde alle behandlings�
     });
     test('Toggelen kanManueltKorrigereMedVedtaksbrev er skrudd på', () => {
         // Arrange
-        const toggles: Toggles = {
+        const toggles: FeatureToggles = {
             kanOppretteRevurderingMedAarsakIverksetteKaVedtak: false,
             kanManueltKorrigereMedVedtaksbrev: true,
         };

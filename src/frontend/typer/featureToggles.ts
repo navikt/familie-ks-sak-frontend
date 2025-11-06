@@ -1,8 +1,8 @@
-export interface Toggles {
+export interface FeatureToggles {
     [name: string]: boolean;
 }
 
-export enum Toggle {
+export enum FeatureToggle {
     kanBehandleTekniskEndring = 'familie-ks-sak.behandling.teknisk-endring',
     kanManueltKorrigereMedVedtaksbrev = 'familie-ks-sak.behandling.korreksjon-vedtaksbrev',
     tekniskVedlikeholdHenleggelse = 'familie-ks-sak.teknisk-vedlikehold-henleggelse.tilgangsstyring',
