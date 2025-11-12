@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 
 import { Button, Modal, VStack } from '@navikt/ds-react';
 
-import Brevskjema from './Brevskjema';
+import { Brevskjema } from './Brevskjema';
 import useSakOgBehandlingParams from '../../../hooks/useSakOgBehandlingParams';
 import type { IPersonInfo } from '../../../typer/person';
 
