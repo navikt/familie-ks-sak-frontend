@@ -5,10 +5,12 @@ import { Box, Button, HStack } from '@navikt/ds-react';
 
 import Behandlingsmeny from './Behandlingsmeny/Behandlingsmeny';
 import { useAppContext } from '../../../context/AppContext';
+import type { IBehandling } from '../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 
 interface FagsaklinjeProps {
     minimalFagsak: IMinimalFagsak;
+    behandling?: IBehandling;
 }
 
 const aktivFaneStyle = (fanenavn: string, pathname: string) => {
@@ -17,7 +19,7 @@ const aktivFaneStyle = (fanenavn: string, pathname: string) => {
     return sluttenPåUrl === fanenavn ? { textDecoration: 'underline' } : {};
 };
 
-export const Fagsaklinje = ({ minimalFagsak }: FagsaklinjeProps) => {
+export const Fagsaklinje = ({ minimalFagsak, behandling }: FagsaklinjeProps) => {
     const { pathname } = useLocation();
     const { harInnloggetSaksbehandlerSkrivetilgang } = useAppContext();
     return (
@@ -48,7 +50,9 @@ export const Fagsaklinje = ({ minimalFagsak }: FagsaklinjeProps) => {
                             </Button>
                         </HStack>
                     )}
-                    {harInnloggetSaksbehandlerSkrivetilgang() && <Behandlingsmeny minimalFagsak={minimalFagsak} />}
+                    {harInnloggetSaksbehandlerSkrivetilgang() && (
+                        <Behandlingsmeny minimalFagsak={minimalFagsak} behandling={behandling} />
+                    )}
                 </HStack>
             </Box>
         </>

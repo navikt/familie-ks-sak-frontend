@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { CogIcon, CogRotationIcon, PersonIcon } from '@navikt/aksel-icons';
 import { BodyShort, Table } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import { vilkårFeilmeldingId } from './VilkårTabell';
 import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
@@ -34,6 +33,7 @@ const BeskrivelseCelle = styled(BodyShort)`
 
 const VurderingCelle = styled.div`
     display: flex;
+
     svg {
         margin-right: 1rem;
     }
@@ -44,6 +44,7 @@ const FlexDiv = styled.div`
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
+
     > div:nth-child(n + 2) {
         padding-left: 0.5rem;
     }
@@ -65,7 +66,7 @@ const StyledPersonIcon = styled(PersonIcon)`
 `;
 
 export const VilkårEkspanderbarRad = ({ toggleForm, children, lagretVilkårResultat, erVilkårEkspandert }: IProps) => {
-    const { åpenBehandling } = useBehandlingContext();
+    const { behandling } = useBehandlingContext();
 
     const periodeErTom = !lagretVilkårResultat.periode.fom && !lagretVilkårResultat.periode.tom;
 
@@ -112,8 +113,8 @@ export const VilkårEkspanderbarRad = ({ toggleForm, children, lagretVilkårResu
                         <StyledPersonIcon title={'Manuell vurdering'} />
                     )}
                     <div>
-                        {åpenBehandling.status === RessursStatus.SUKSESS && lagretVilkårResultat.erVurdert
-                            ? lagretVilkårResultat.behandlingId === åpenBehandling.data.behandlingId
+                        {lagretVilkårResultat.erVurdert
+                            ? lagretVilkårResultat.behandlingId === behandling.behandlingId
                                 ? 'Vurdert i denne behandlingen'
                                 : `Vurdert ${isoStringTilFormatertString({
                                       isoString: lagretVilkårResultat.endretTidspunkt,

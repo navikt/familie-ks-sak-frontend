@@ -7,6 +7,7 @@ import {
     KlageStatus,
     KlageÅrsak,
 } from '../../typer/klage';
+import { randomUUID } from '../../utils/commons';
 
 export function lagAnkeKlageinstansEventTyper(): KlageinstansEventType[] {
     return Object.keys(KlageinstansEventType)
@@ -61,16 +62,16 @@ export function lagKlageinstansResultat(klageinstansResultat: Partial<Klageinsta
     };
 }
 
-export function lagKlagebehandling(klagebehandling: Partial<IKlagebehandling>): IKlagebehandling {
+export function lagKlagebehandling(klagebehandling?: Partial<IKlagebehandling>): IKlagebehandling {
     return {
-        id: '123',
-        fagsakId: '321',
+        id: randomUUID(),
+        fagsakId: randomUUID(),
         status: KlageStatus.FERDIGSTILT,
-        opprettet: '2025-01-15',
-        mottattDato: '2025-01-15',
+        opprettet: '2025-09-29T15:00:00.00',
+        mottattDato: '2025-09-29',
         resultat: KlageResultat.MEDHOLD,
         årsak: KlageÅrsak.ANNET,
-        vedtaksdato: '2025-01-16',
+        vedtaksdato: '2025-10-01T15:00:00.000',
         klageinstansResultat: [],
         ...klagebehandling,
     };

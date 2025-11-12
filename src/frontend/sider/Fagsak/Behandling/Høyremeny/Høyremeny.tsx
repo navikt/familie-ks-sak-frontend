@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { Button, Stack, VStack } from '@navikt/ds-react';
 import { ASurfaceDefault } from '@navikt/ds-tokens/dist/tokens';
-import { hentDataFraRessursMedFallback, RessursStatus } from '@navikt/familie-typer';
+import { hentDataFraRessursMedFallback } from '@navikt/familie-typer';
 
 import Behandlingskort from './Behandlingskort';
 import { useHøyremeny } from './useHøyremeny';
@@ -34,19 +34,13 @@ const ToggleVisningHøyremeny = styled(Button)`
 `;
 
 export function Høyremeny({ bruker }: Props) {
-    const { åpenBehandling, logg, hentLogg } = useBehandlingContext();
+    const { behandling, logg, hentLogg } = useBehandlingContext();
 
     const [erÅpen, settErÅpen] = useHøyremeny();
 
     useEffect(() => {
-        if (åpenBehandling && åpenBehandling.status === RessursStatus.SUKSESS) {
-            hentLogg();
-        }
-    }, [åpenBehandling]);
-
-    if (åpenBehandling.status !== RessursStatus.SUKSESS) {
-        return null;
-    }
+        hentLogg();
+    }, [behandling]);
 
     const icon = erÅpen ? (
         <ChevronRightIcon aria-label={'Skjul høyremeny'} />
@@ -67,7 +61,7 @@ export function Høyremeny({ bruker }: Props) {
             />
             <Activity mode={erÅpen ? 'visible' : 'hidden'}>
                 <VStack width={'25rem'}>
-                    <Behandlingskort åpenBehandling={åpenBehandling.data} />
+                    <Behandlingskort åpenBehandling={behandling} />
                     <Hendelsesoversikt
                         hendelser={hentDataFraRessursMedFallback(logg, []).map((loggElement: ILogg): Hendelse => {
                             return {
@@ -82,7 +76,7 @@ export function Høyremeny({ bruker }: Props) {
                                 beskrivelse: loggElement.tekst,
                             };
                         })}
-                        åpenBehandling={åpenBehandling.data}
+                        åpenBehandling={behandling}
                         bruker={bruker}
                     />
                 </VStack>
