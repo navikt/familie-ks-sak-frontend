@@ -53,12 +53,9 @@ interface IProps {
 
 const useUtenlandskPeriodeBeløpSkjema = ({ barnIUtenlandskPeriodeBeløp, utenlandskPeriodeBeløp }: IProps) => {
     const [erUtenlandskPeriodeBeløpEkspandert, settErUtenlandskPeriodeBeløpEkspandert] = useState<boolean>(false);
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
-    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
-    const behandlingsÅrsakErOvergangsordning =
-        åpenBehandling.status === RessursStatus.SUKSESS
-            ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
-            : false;
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
+    const behandlingId = behandling.behandlingId;
+    const behandlingsÅrsakErOvergangsordning = behandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024;
     const initelFom = useFelt<string>({ verdi: utenlandskPeriodeBeløp.fom });
     const { request } = useHttp();
 

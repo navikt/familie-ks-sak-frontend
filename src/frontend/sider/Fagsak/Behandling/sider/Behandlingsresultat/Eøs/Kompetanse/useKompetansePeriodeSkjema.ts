@@ -36,12 +36,9 @@ interface IProps {
 
 const useKompetansePeriodeSkjema = ({ barnIKompetanse, kompetanse }: IProps) => {
     const [erKompetanseEkspandert, settErKompetanseEkspandert] = useState<boolean>(false);
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
-    const behandlingId = åpenBehandling.status === RessursStatus.SUKSESS ? åpenBehandling.data.behandlingId : null;
-    const behandlingsÅrsakErOvergangsordning =
-        åpenBehandling.status === RessursStatus.SUKSESS
-            ? åpenBehandling.data.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024
-            : false;
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
+    const behandlingId = behandling.behandlingId;
+    const behandlingsÅrsakErOvergangsordning = behandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024;
     const { request } = useHttp();
 
     const initelFom = useFelt<string>({ verdi: kompetanse.fom });

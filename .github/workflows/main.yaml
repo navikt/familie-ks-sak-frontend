@@ -42,7 +42,6 @@ jobs:
     secrets: inherit
   build-prod:
     name: Build prod
-    needs: [deploy-dev]
     if: github.ref == 'refs/heads/main' # Only deploy to prod from main branch
     permissions:
       contents: read

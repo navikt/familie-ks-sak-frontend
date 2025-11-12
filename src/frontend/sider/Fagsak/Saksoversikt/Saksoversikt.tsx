@@ -1,10 +1,7 @@
-import { useEffect } from 'react';
-
 import { addMonths, differenceInMilliseconds, startOfMonth } from 'date-fns';
 import { Link as ReactRouterLink } from 'react-router';
 
 import { Alert, Box, Heading, Link, VStack } from '@navikt/ds-react';
-import { byggTomRessurs } from '@navikt/familie-typer';
 
 import { Behandlinger } from './Behandlinger';
 import FagsakLenkepanel, { SaksoversiktPanelBredde } from './FagsakLenkepanel';
@@ -24,19 +21,12 @@ import {
     periodeOverlapperMedValgtDato,
 } from '../../../utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '../../../utils/fagsak';
-import { useBehandlingContext } from '../Behandling/context/BehandlingContext';
 
 interface IProps {
     minimalFagsak: IMinimalFagsak;
 }
 
 export function Saksoversikt({ minimalFagsak }: IProps) {
-    const { settÅpenBehandling } = useBehandlingContext();
-
-    useEffect(() => {
-        settÅpenBehandling(byggTomRessurs(), false);
-    }, [minimalFagsak.status]);
-
     const iverksatteBehandlinger = minimalFagsak.behandlinger.filter(
         (behandling: VisningBehandling) =>
             behandling.status === BehandlingStatus.AVSLUTTET && !erBehandlingHenlagt(behandling.resultat)
@@ -151,7 +141,7 @@ export function Saksoversikt({ minimalFagsak }: IProps) {
                         {løpendeMånedligUtbetaling()}
                     </div>
                 )}
-                <Behandlinger fagsakId={minimalFagsak.id} />
+                <Behandlinger />
             </VStack>
         </Box>
     );

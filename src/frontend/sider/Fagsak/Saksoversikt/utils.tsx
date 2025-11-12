@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { differenceInMilliseconds } from 'date-fns';
 import { Link as ReactRouterLink } from 'react-router';
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
@@ -16,7 +17,6 @@ import {
 } from '../../../typer/behandling';
 import type { IBehandlingstema } from '../../../typer/behandlingstema';
 import { tilBehandlingstema } from '../../../typer/behandlingstema';
-import type { IMinimalFagsak } from '../../../typer/fagsak';
 import {
     erKlageFeilregistrertAvKA,
     harAnkeEksistertPåKlagebehandling,
@@ -26,6 +26,7 @@ import {
 } from '../../../typer/klage';
 import type { ITilbakekrevingsbehandling } from '../../../typer/tilbakekrevingsbehandling';
 import { Behandlingsresultatstype, Tilbakekrevingsbehandlingstype } from '../../../typer/tilbakekrevingsbehandling';
+import { isoStringTilDate } from '../../../utils/dato';
 
 enum Saksoversiktstype {
     KONTANTSTØTTE = 'KONTANTSTØTTE',
@@ -84,39 +85,15 @@ export const hentBehandlingId = (saksoversiktsbehandling: Saksoversiktsbehandlin
     }
 };
 
-export const hentBehandlingerTilSaksoversiktenOld = (
-    minimalFagsak: IMinimalFagsak | undefined,
-    klagebehandlinger: IKlagebehandling[],
-    tilbakekrevingsbehandlinger: ITilbakekrevingsbehandling[]
-): Saksoversiktsbehandling[] => {
-    const kontantstøtteBehandlinger: Saksoversiktsbehandling[] =
-        minimalFagsak?.behandlinger.map(behandling => ({
-            ...behandling,
-            saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE,
-        })) || [];
-
-    const saksoversiktTilbakekrevingsbehandlinger: Saksoversiktsbehandling[] = tilbakekrevingsbehandlinger.map(
-        behandling => ({
-            ...behandling,
-            saksoversiktstype: Saksoversiktstype.TILBAKEBETALING,
-        })
-    );
-    const saksoversiktKlagebehandlinger: Saksoversiktsbehandling[] = klagebehandlinger.map(behandling => ({
-        ...behandling,
-        saksoversiktstype: Saksoversiktstype.KLAGE,
-    }));
-    return [...kontantstøtteBehandlinger, ...saksoversiktTilbakekrevingsbehandlinger, ...saksoversiktKlagebehandlinger];
-};
 export const hentBehandlingerTilSaksoversikten = (
     kontantstøttebehandlinger: VisningBehandling[],
     klagebehandlinger: IKlagebehandling[],
     tilbakekrevingsbehandlinger: ITilbakekrevingsbehandling[]
 ): Saksoversiktsbehandling[] => {
-    const kontantstøtteBehandlinger: Saksoversiktsbehandling[] =
-        kontantstøttebehandlinger.map(behandling => ({
-            ...behandling,
-            saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE,
-        })) || [];
+    const kontantstøtteBehandlinger: Saksoversiktsbehandling[] = kontantstøttebehandlinger.map(behandling => ({
+        ...behandling,
+        saksoversiktstype: Saksoversiktstype.KONTANTSTØTTE,
+    }));
 
     const saksoversiktTilbakekrevingsbehandlinger: Saksoversiktsbehandling[] = tilbakekrevingsbehandlinger.map(
         behandling => ({
@@ -124,11 +101,22 @@ export const hentBehandlingerTilSaksoversikten = (
             saksoversiktstype: Saksoversiktstype.TILBAKEBETALING,
         })
     );
+
     const saksoversiktKlagebehandlinger: Saksoversiktsbehandling[] = klagebehandlinger.map(behandling => ({
         ...behandling,
         saksoversiktstype: Saksoversiktstype.KLAGE,
     }));
-    return [...kontantstøtteBehandlinger, ...saksoversiktTilbakekrevingsbehandlinger, ...saksoversiktKlagebehandlinger];
+
+    return [
+        ...kontantstøtteBehandlinger,
+        ...saksoversiktTilbakekrevingsbehandlinger,
+        ...saksoversiktKlagebehandlinger,
+    ].sort((behandling1, behandling2) =>
+        differenceInMilliseconds(
+            isoStringTilDate(hentTidspunktForSortering(behandling2)),
+            isoStringTilDate(hentTidspunktForSortering(behandling1))
+        )
+    );
 };
 
 export const lagLenkePåType = (fagsakId: number, behandling: Saksoversiktsbehandling): ReactNode => {

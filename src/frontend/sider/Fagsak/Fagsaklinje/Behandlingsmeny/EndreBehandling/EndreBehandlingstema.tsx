@@ -14,7 +14,7 @@ const EndreBehandlingstema = () => {
         settVisModal(false)
     );
 
-    const { vurderErLesevisning, åpenBehandling } = useBehandlingContext();
+    const { vurderErLesevisning, behandling } = useBehandlingContext();
 
     const lukkEndreBehandlingModal = () => {
         nullstillSkjema();
@@ -52,11 +52,7 @@ const EndreBehandlingstema = () => {
                             key={'bekreft'}
                             variant="primary"
                             size="small"
-                            onClick={() => {
-                                if (åpenBehandling.status === RessursStatus.SUKSESS) {
-                                    endreBehandlingstema(åpenBehandling.data.behandlingId);
-                                }
-                            }}
+                            onClick={() => endreBehandlingstema(behandling.behandlingId)}
                             children={'Bekreft'}
                             loading={ressurs.status === RessursStatus.HENTER}
                         />

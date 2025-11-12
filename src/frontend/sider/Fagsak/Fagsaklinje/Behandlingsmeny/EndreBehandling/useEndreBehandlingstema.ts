@@ -13,7 +13,7 @@ import { useBehandlingContext } from '../../../Behandling/context/BehandlingCont
 
 const useEndreBehandling = (lukkModal: () => void) => {
     const { request } = useHttp();
-    const { åpenBehandling, settÅpenBehandling } = useBehandlingContext();
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const [ressurs, settRessurs] = useState(byggTomRessurs());
 
@@ -30,7 +30,7 @@ const useEndreBehandling = (lukkModal: () => void) => {
 
     useEffect(() => {
         nullstillSkjema();
-    }, [åpenBehandling]);
+    }, [behandling]);
 
     const endreBehandlingstema = (behandlingId: number) => {
         const { behandlingstema } = skjema.felter;
@@ -53,10 +53,8 @@ const useEndreBehandling = (lukkModal: () => void) => {
     };
 
     const nullstillSkjema = () => {
-        if (åpenBehandling.status === RessursStatus.SUKSESS) {
-            const { kategori } = åpenBehandling.data;
-            skjema.felter.behandlingstema.validerOgSettFelt(tilBehandlingstema(kategori));
-        }
+        const { kategori } = behandling;
+        skjema.felter.behandlingstema.validerOgSettFelt(tilBehandlingstema(kategori));
     };
 
     return {
