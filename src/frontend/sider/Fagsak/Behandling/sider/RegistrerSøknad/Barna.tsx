@@ -1,7 +1,6 @@
 import { differenceInMilliseconds } from 'date-fns';
 
 import { Alert, CheckboxGroup, Heading, HStack, Label, VStack } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnMedOpplysninger from './BarnMedOpplysninger';
 import { useSøknadContext } from './SøknadContext';
@@ -10,13 +9,13 @@ import type { IForelderBarnRelasjonMaskert } from '../../../../../typer/person';
 import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '../../../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
 import { isoStringTilDate } from '../../../../../utils/dato';
-import { useFagsakContext } from '../../../FagsakContext';
+import { useBrukerContext } from '../../../BrukerContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const Barna = () => {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning();
-    const { bruker } = useFagsakContext();
+    const { bruker } = useBrukerContext();
     const { skjema } = useSøknadContext();
 
     const sorterteBarnMedOpplysninger = skjema.felter.barnaMedOpplysninger.verdi.sort(
@@ -35,13 +34,10 @@ const Barna = () => {
         }
     );
 
-    const maskerteRelasjoner =
-        bruker.status === RessursStatus.SUKSESS
-            ? bruker.data.forelderBarnRelasjonMaskert.filter(
-                  (forelderBarnRelasjonMaskert: IForelderBarnRelasjonMaskert) =>
-                      forelderBarnRelasjonMaskert.relasjonRolle === ForelderBarnRelasjonRolle.BARN
-              )
-            : [];
+    const maskerteRelasjoner = bruker.forelderBarnRelasjonMaskert.filter(
+        (forelderBarnRelasjonMaskert: IForelderBarnRelasjonMaskert) =>
+            forelderBarnRelasjonMaskert.relasjonRolle === ForelderBarnRelasjonRolle.BARN
+    );
 
     const oppdaterBarnMedMerketStatus = (barnaSomErSjekketAv: string[]) => {
         skjema.felter.barnaMedOpplysninger.validerOgSettFelt(

@@ -17,6 +17,7 @@ import type {
     Målform,
 } from '../../../../../typer/søknad';
 import { hentBarnMedLøpendeUtbetaling } from '../../../../../utils/fagsak';
+import { useBrukerContext } from '../../../BrukerContext';
 import { useFagsakContext } from '../../../FagsakContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
@@ -44,7 +45,8 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
     const { vurderErLesevisning, settÅpenBehandling } = useBehandlingContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
-    const { bruker, fagsak } = useFagsakContext();
+    const { fagsak } = useFagsakContext();
+    const { bruker } = useBrukerContext();
 
     const barnMedLøpendeUtbetaling = hentBarnMedLøpendeUtbetaling(fagsak);
 
@@ -75,31 +77,23 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
     const [søknadErLastetFraBackend, settSøknadErLastetFraBackend] = useState(false);
 
     const tilbakestillSøknad = () => {
-        if (bruker.status === RessursStatus.SUKSESS) {
-            nullstillSkjema();
-            skjema.felter.barnaMedOpplysninger.validerOgSettFelt(
-                bruker.data.forelderBarnRelasjon
-                    .filter(
-                        (relasjon: IForelderBarnRelasjon) => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN
-                    )
-                    .map(
-                        (relasjon: IForelderBarnRelasjon): IBarnMedOpplysninger => ({
-                            merket: false,
-                            ident: relasjon.personIdent,
-                            navn: relasjon.navn,
-                            fødselsdato: relasjon.fødselsdato,
-                            manueltRegistrert: false,
-                            erFolkeregistrert: true,
-                        })
-                    ) ?? []
-            );
-        }
+        nullstillSkjema();
+        skjema.felter.barnaMedOpplysninger.validerOgSettFelt(
+            bruker.forelderBarnRelasjon
+                .filter((relasjon: IForelderBarnRelasjon) => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN)
+                .map(
+                    (relasjon: IForelderBarnRelasjon): IBarnMedOpplysninger => ({
+                        merket: false,
+                        ident: relasjon.personIdent,
+                        navn: relasjon.navn,
+                        fødselsdato: relasjon.fødselsdato,
+                        manueltRegistrert: false,
+                        erFolkeregistrert: true,
+                    })
+                ) ?? []
+        );
         settSøknadErLastetFraBackend(false);
     };
-
-    useEffect(() => {
-        tilbakestillSøknad();
-    }, [bruker.status]);
 
     useEffect(() => {
         if (åpenBehandling.søknadsgrunnlag) {
@@ -124,40 +118,38 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
     }, [åpenBehandling]);
 
     const nesteAction = (bekreftEndringerViaFrontend: boolean) => {
-        if (bruker.status === RessursStatus.SUKSESS) {
-            if (vurderErLesevisning()) {
-                navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/vilkaarsvurdering`);
-            } else {
-                onSubmit<IRestRegistrerSøknad>(
-                    {
-                        method: 'POST',
-                        data: {
-                            søknad: {
-                                søkerMedOpplysninger: {
-                                    ident: bruker.data.personIdent,
-                                    målform: skjema.felter.målform.verdi,
-                                },
-                                barnaMedOpplysninger: skjema.felter.barnaMedOpplysninger.verdi.map(
-                                    (barn: IBarnMedOpplysninger): IBarnMedOpplysningerBackend => ({
-                                        ...barn,
-                                        inkludertISøknaden: barn.merket,
-                                        ident: barn.ident ?? '',
-                                    })
-                                ),
-                                endringAvOpplysningerBegrunnelse: skjema.felter.endringAvOpplysningerBegrunnelse.verdi,
+        if (vurderErLesevisning()) {
+            navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/vilkaarsvurdering`);
+        } else {
+            onSubmit<IRestRegistrerSøknad>(
+                {
+                    method: 'POST',
+                    data: {
+                        søknad: {
+                            søkerMedOpplysninger: {
+                                ident: bruker.personIdent,
+                                målform: skjema.felter.målform.verdi,
                             },
-                            bekreftEndringerViaFrontend,
+                            barnaMedOpplysninger: skjema.felter.barnaMedOpplysninger.verdi.map(
+                                (barn: IBarnMedOpplysninger): IBarnMedOpplysningerBackend => ({
+                                    ...barn,
+                                    inkludertISøknaden: barn.merket,
+                                    ident: barn.ident ?? '',
+                                })
+                            ),
+                            endringAvOpplysningerBegrunnelse: skjema.felter.endringAvOpplysningerBegrunnelse.verdi,
                         },
-                        url: `/familie-ks-sak/api/behandlinger/${åpenBehandling.behandlingId}/steg/registrer-søknad`,
+                        bekreftEndringerViaFrontend,
                     },
-                    (response: Ressurs<IBehandling>) => {
-                        if (response.status === RessursStatus.SUKSESS) {
-                            settÅpenBehandling(response);
-                            navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`);
-                        }
+                    url: `/familie-ks-sak/api/behandlinger/${åpenBehandling.behandlingId}/steg/registrer-søknad`,
+                },
+                (response: Ressurs<IBehandling>) => {
+                    if (response.status === RessursStatus.SUKSESS) {
+                        settÅpenBehandling(response);
+                        navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`);
                     }
-                );
-            }
+                }
+            );
         }
     };
 
