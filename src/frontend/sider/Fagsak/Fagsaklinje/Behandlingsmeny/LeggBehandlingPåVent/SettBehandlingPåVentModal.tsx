@@ -16,6 +16,7 @@ import { useBehandlingContext } from '../../../Behandling/context/BehandlingCont
 const Feltmargin = styled.div`
     margin-bottom: 2rem;
 `;
+
 const StyledBodyShort = styled(BodyShort)`
     margin-bottom: 2.5rem;
     margin-top: 0.5rem;
@@ -23,10 +24,10 @@ const StyledBodyShort = styled(BodyShort)`
 
 interface IProps {
     lukkModal: () => void;
-    behandling: IBehandling;
 }
 
-export const SettBehandlingPåVentModal = ({ lukkModal, behandling }: IProps) => {
+export const SettBehandlingPåVentModal = ({ lukkModal }: IProps) => {
+    const { behandling } = useBehandlingContext();
     const årsaker = hentAlleÅrsaker();
     const { skjema, kanSendeSkjema, onSubmit } = useSettPåVentSkjema(behandling.behandlingPåVent);
     const { settÅpenBehandling } = useBehandlingContext();

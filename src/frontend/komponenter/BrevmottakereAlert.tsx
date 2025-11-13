@@ -74,11 +74,7 @@ export const BrevmottakereAlert = (props: BrevmottakereAlertBehandlingProps | Br
 
             {visManuelleMottakereModal &&
                 (props.erPåBehandling ? (
-                    <LeggTilBrevmottakerModalBehandling
-                        lukkModal={() => settVisManuelleMottakereModal(false)}
-                        behandling={props.åpenBehandling}
-                        erLesevisning={props.erLesevisning}
-                    />
+                    <LeggTilBrevmottakerModalBehandling lukkModal={() => settVisManuelleMottakereModal(false)} />
                 ) : (
                     <LeggTilBrevmottakerModalFagsak lukkModal={() => settVisManuelleMottakereModal(false)} />
                 ))}
