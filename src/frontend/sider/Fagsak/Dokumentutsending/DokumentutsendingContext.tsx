@@ -14,7 +14,7 @@ import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../
 import { type IBarnMedOpplysninger, Målform } from '../../../typer/søknad';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
-import { useFagsakContext } from '../FagsakContext';
+import { useBrukerContext } from '../BrukerContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
 
 export enum DokumentÅrsak {
@@ -39,24 +39,22 @@ export const dokumentÅrsak: Record<DokumentÅrsak, string> = {
 };
 
 const hentBarnMedOpplysningerFraBruker = () => {
-    const { bruker: brukerRessurs } = useFagsakContext();
+    const { bruker } = useBrukerContext();
 
-    if (brukerRessurs.status === RessursStatus.SUKSESS) {
-        return (
-            brukerRessurs.data.forelderBarnRelasjon
-                .filter((relasjon: IForelderBarnRelasjon) => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN)
-                .map(
-                    (relasjon: IForelderBarnRelasjon): IBarnMedOpplysninger => ({
-                        merket: false,
-                        ident: relasjon.personIdent,
-                        navn: relasjon.navn,
-                        fødselsdato: relasjon.fødselsdato,
-                        manueltRegistrert: false,
-                        erFolkeregistrert: true,
-                    })
-                ) ?? []
-        );
-    } else return [];
+    return (
+        bruker.forelderBarnRelasjon
+            .filter((relasjon: IForelderBarnRelasjon) => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN)
+            .map(
+                (relasjon: IForelderBarnRelasjon): IBarnMedOpplysninger => ({
+                    merket: false,
+                    ident: relasjon.personIdent,
+                    navn: relasjon.navn,
+                    fødselsdato: relasjon.fødselsdato,
+                    manueltRegistrert: false,
+                    erFolkeregistrert: true,
+                })
+            ) ?? []
+    );
 };
 
 interface Props extends PropsWithChildren {
@@ -90,7 +88,7 @@ interface DokumentutsendingContextValue {
 const DokumentutsendingContext = createContext<DokumentutsendingContextValue | undefined>(undefined);
 
 export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
-    const { bruker } = useFagsakContext();
+    const { bruker } = useBrukerContext();
     const { manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak } =
         useManuelleBrevmottakerePåFagsakContext();
     const [visInnsendtBrevModal, settVisInnsendtBrevModal] = useState(false);
@@ -172,44 +170,43 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
 
     useEffect(() => {
         nullstillSkjemaUtenomÅrsak();
-    }, [årsak.verdi, bruker.status]);
+    }, [årsak.verdi]);
 
     const hentSkjemaData = (): IManueltBrevRequestPåFagsak => {
         const dokumentÅrsak = skjema.felter.årsak.verdi;
-        if (bruker.status === RessursStatus.SUKSESS && dokumentÅrsak) {
-            switch (dokumentÅrsak) {
-                case DokumentÅrsak.KAN_SØKE_EØS:
-                    return hentEnkeltInformasjonsbrevRequest({
-                        bruker: bruker,
-                        målform: målform.verdi ?? Målform.NB,
-                        brevmal: Informasjonsbrev.INFORMASJONSBREV_KAN_SØKE_EØS,
-                        manuelleBrevmottakerePåFagsak,
-                    });
-                case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING:
-                    return hentBarnIBrevSkjemaData(
-                        Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING,
-                        målform.verdi ?? Målform.NB
-                    );
-                case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER:
-                    return hentBarnIBrevSkjemaData(
-                        Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
-                        målform.verdi ?? Målform.NB
-                    );
-                case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER:
-                    return hentBarnIBrevSkjemaData(
-                        Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER,
-                        målform.verdi ?? Målform.NB
-                    );
-                case DokumentÅrsak.KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV:
-                    return hentBarnIBrevSkjemaData(
-                        Informasjonsbrev.INFORMASJONSBREV_KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV,
-                        målform.verdi ?? Målform.NB
-                    );
-                case DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE:
-                    return hentInnhenteOpplysningerKlageSkjemaData(målform.verdi ?? Målform.NB);
-            }
-        } else {
-            throw Error('Bruker ikke hentet inn og vi kan ikke sende inn skjema');
+
+        switch (dokumentÅrsak) {
+            case DokumentÅrsak.KAN_SØKE_EØS:
+                return hentEnkeltInformasjonsbrevRequest({
+                    bruker: bruker,
+                    målform: målform.verdi ?? Målform.NB,
+                    brevmal: Informasjonsbrev.INFORMASJONSBREV_KAN_SØKE_EØS,
+                    manuelleBrevmottakerePåFagsak,
+                });
+            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING:
+                return hentBarnIBrevSkjemaData(
+                    Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING,
+                    målform.verdi ?? Målform.NB
+                );
+            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER:
+                return hentBarnIBrevSkjemaData(
+                    Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
+                    målform.verdi ?? Målform.NB
+                );
+            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER:
+                return hentBarnIBrevSkjemaData(
+                    Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER,
+                    målform.verdi ?? Målform.NB
+                );
+            case DokumentÅrsak.KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV:
+                return hentBarnIBrevSkjemaData(
+                    Informasjonsbrev.INFORMASJONSBREV_KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV,
+                    målform.verdi ?? Målform.NB
+                );
+            case DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE:
+                return hentInnhenteOpplysningerKlageSkjemaData(målform.verdi ?? Målform.NB);
+            case undefined:
+                throw Error('Bruker ikke hentet inn og vi kan ikke sende inn skjema');
         }
     };
 
@@ -246,46 +243,38 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
     };
 
     const hentBarnIBrevSkjemaData = (brevmal: Informasjonsbrev, målform: Målform): IManueltBrevRequestPåFagsak => {
-        if (bruker.status === RessursStatus.SUKSESS) {
-            const barnIBrev = skjema.felter.barnIBrev.verdi.filter(barn => barn.merket);
+        const barnIBrev = skjema.felter.barnIBrev.verdi.filter(barn => barn.merket);
 
-            return {
-                mottakerIdent: bruker.data.personIdent,
-                multiselectVerdier: barnIBrev.map(
-                    barn =>
-                        `Barn født ${isoStringTilFormatertString({
-                            isoString: barn.fødselsdato,
-                            tilFormat: Datoformat.DATO,
-                        })}.`
-                ),
-                barnIBrev: barnIBrev
-                    .map(barn => barn.ident)
-                    .filter((ident): ident is string => ident !== undefined && ident !== null),
-                mottakerMålform: målform,
-                mottakerNavn: bruker.data.navn,
-                brevmal: brevmal,
-                manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
-            };
-        } else {
-            throw Error('Bruker ikke hentet inn og vi kan ikke sende inn skjema');
-        }
+        return {
+            mottakerIdent: bruker.personIdent,
+            multiselectVerdier: barnIBrev.map(
+                barn =>
+                    `Barn født ${isoStringTilFormatertString({
+                        isoString: barn.fødselsdato,
+                        tilFormat: Datoformat.DATO,
+                    })}.`
+            ),
+            barnIBrev: barnIBrev
+                .map(barn => barn.ident)
+                .filter((ident): ident is string => ident !== undefined && ident !== null),
+            mottakerMålform: målform,
+            mottakerNavn: bruker.navn,
+            brevmal: brevmal,
+            manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
+        };
     };
 
     const hentInnhenteOpplysningerKlageSkjemaData = (målform: Målform): IManueltBrevRequestPåFagsak => {
-        if (bruker.status === RessursStatus.SUKSESS) {
-            return {
-                mottakerIdent: bruker.data.personIdent,
-                mottakerNavn: bruker.data.navn,
-                mottakerMålform: målform,
-                multiselectVerdier: [],
-                barnIBrev: [],
-                brevmal: Informasjonsbrev.INFORMASJONSBREV_INNHENTE_OPPLYSNINGER_KLAGE,
-                manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
-                fritekstAvsnitt: fritekstAvsnitt.verdi,
-            };
-        } else {
-            throw Error('Bruker ikke hentet inn og vi kan ikke sende inn skjema');
-        }
+        return {
+            mottakerIdent: bruker.personIdent,
+            mottakerNavn: bruker.navn,
+            mottakerMålform: målform,
+            multiselectVerdier: [],
+            barnIBrev: [],
+            brevmal: Informasjonsbrev.INFORMASJONSBREV_INNHENTE_OPPLYSNINGER_KLAGE,
+            manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
+            fritekstAvsnitt: fritekstAvsnitt.verdi,
+        };
     };
 
     const hentSkjemaFeilmelding = () =>

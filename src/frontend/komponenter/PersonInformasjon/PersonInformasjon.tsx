@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 import { BodyShort, CopyButton, Heading, HStack } from '@navikt/ds-react';
-import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useFagsakContext } from '../../sider/Fagsak/FagsakContext';
+import { useBrukerContext } from '../../sider/Fagsak/BrukerContext';
 import { type IGrunnlagPerson, type IPersonInfo, personTypeMap } from '../../typer/person';
 import { formaterIdent, hentAlder } from '../../utils/formatter';
 import { erAdresseBeskyttet } from '../../utils/validators';
@@ -22,20 +21,14 @@ const HeadingUtenOverflow = styled(Heading)`
     text-overflow: ellipsis;
 `;
 
-const hentAdresseBeskyttelseGradering = (
-    brukerRessurs: Ressurs<IPersonInfo>,
-    personIdent: string
-): boolean | undefined => {
-    if (brukerRessurs.status === RessursStatus.SUKSESS) {
-        const bruker = brukerRessurs.data;
-        const forelderBarnRelasjoner = brukerRessurs.data.forelderBarnRelasjon;
-        const forelderBarnRelasjon = forelderBarnRelasjoner.find(rel => rel.personIdent === personIdent);
+const hentAdresseBeskyttelseGradering = (bruker: IPersonInfo, personIdent: string): boolean | undefined => {
+    const forelderBarnRelasjoner = bruker.forelderBarnRelasjon;
+    const forelderBarnRelasjon = forelderBarnRelasjoner.find(rel => rel.personIdent === personIdent);
 
-        if (bruker.personIdent === personIdent) {
-            return erAdresseBeskyttet(bruker.adressebeskyttelseGradering);
-        } else if (forelderBarnRelasjon?.personIdent === personIdent) {
-            return erAdresseBeskyttet(forelderBarnRelasjon.adressebeskyttelseGradering);
-        }
+    if (bruker.personIdent === personIdent) {
+        return erAdresseBeskyttet(bruker.adressebeskyttelseGradering);
+    } else if (forelderBarnRelasjon?.personIdent === personIdent) {
+        return erAdresseBeskyttet(forelderBarnRelasjon.adressebeskyttelseGradering);
     }
 };
 
@@ -54,10 +47,10 @@ const PersonInformasjon = ({ person, somOverskrift = false }: IProps) => {
     const alder = hentAlder(person.fødselsdato);
     const navnOgAlder = `${person.navn} (${alder} år)`;
     const formatertIdent = formaterIdent(person.personIdent);
-    const { bruker: brukerRessurs } = useFagsakContext();
+    const { bruker } = useBrukerContext();
 
-    const erAdresseBeskyttet = hentAdresseBeskyttelseGradering(brukerRessurs, person.personIdent);
-    const erEgenAnsatt = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data.erEgenAnsatt : false;
+    const erAdresseBeskyttet = hentAdresseBeskyttelseGradering(bruker, person.personIdent);
+    const erEgenAnsatt = bruker.erEgenAnsatt;
 
     if (somOverskrift) {
         return (

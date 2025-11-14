@@ -20,6 +20,7 @@ import { Klagebehandlingstype } from '../../../../../typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '../../../../../typer/tilbakekrevingsbehandling';
 import type { IsoDatoString } from '../../../../../utils/dato';
 import { dateTilIsoDatoString, dateTilIsoDatoStringEllerUndefined, validerGyldigDato } from '../../../../../utils/dato';
+import { useBrukerContext } from '../../../BrukerContext';
 import { useFagsakContext } from '../../../FagsakContext';
 
 interface IOpprettBehandlingSkjemaFelter {
@@ -38,12 +39,11 @@ const useOpprettBehandling = ({
     onOpprettTilbakekrevingSuccess: () => void;
 }) => {
     const { fagsakId } = useSakOgBehandlingParams();
-    const { fagsak, bruker: brukerRessurs } = useFagsakContext();
+    const { fagsak } = useFagsakContext();
+    const { bruker } = useBrukerContext();
     const { innloggetSaksbehandler } = useAppContext();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-
-    const bruker = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data : undefined;
 
     const behandlingstype = useFelt<Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''>({
         verdi: '',
