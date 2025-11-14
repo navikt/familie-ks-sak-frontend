@@ -45,11 +45,11 @@ const useEndreBehandling = (lukkModal: () => void) => {
                 if (oppdatertFagsak.status === RessursStatus.SUKSESS) {
                     settÅpenBehandling(oppdatertFagsak);
                     settRessurs(byggTomRessurs());
+                    lukkModal();
                 }
                 settRessurs(oppdatertFagsak);
             });
         }
-        lukkModal();
     };
 
     const nullstillSkjema = () => {

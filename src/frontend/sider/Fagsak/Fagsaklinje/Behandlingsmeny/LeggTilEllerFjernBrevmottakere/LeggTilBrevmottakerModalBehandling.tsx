@@ -1,16 +1,18 @@
 import { LeggTilBrevmottakerModal } from './LeggTilBrevmottakerModal';
 import { useLagreEllerFjernMottakerPåBehandling } from './useLagreOgFjernMottakerPåBehandling';
-import type { IBehandling } from '../../../../../typer/behandling';
+import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
-interface IBehandlingModalProps {
-    behandling: IBehandling;
-    erLesevisning: boolean;
+interface Props {
     lukkModal: () => void;
 }
-export const LeggTilBrevmottakerModalBehandling = ({ lukkModal, behandling, erLesevisning }: IBehandlingModalProps) => {
+
+export const LeggTilBrevmottakerModalBehandling = ({ lukkModal }: Props) => {
+    const { behandling, vurderErLesevisning } = useBehandlingContext();
     const { lagreMottaker, fjernMottaker } = useLagreEllerFjernMottakerPåBehandling({
         behandlingId: behandling.behandlingId,
     });
+
+    const erLesevisning = vurderErLesevisning();
 
     return (
         <LeggTilBrevmottakerModal

@@ -1,0 +1,9 @@
+import { ActionMenu } from '@navikt/ds-react/ActionMenu';
+
+interface Props {
+    åpneModal: () => void;
+}
+
+export function EndreBehandlendeEnhetNy({ åpneModal }: Props) {
+    return <ActionMenu.Item onSelect={åpneModal}>Endre behandlende enhet</ActionMenu.Item>;
+}

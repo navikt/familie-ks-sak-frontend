@@ -4,9 +4,12 @@ import { FileTextIcon, HouseIcon } from '@navikt/aksel-icons';
 import { Box, Button, HStack } from '@navikt/ds-react';
 
 import Behandlingsmeny from './Behandlingsmeny/Behandlingsmeny';
+import { BehandlingsmenyNy } from './Behandlingsmeny/BehandlingsmenyNy';
+import { Fagsakmeny } from './Behandlingsmeny/Fagsakmeny';
 import { useAppContext } from '../../../context/AppContext';
 import type { IBehandling } from '../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
+import { ToggleNavn } from '../../../typer/toggles';
 
 interface FagsaklinjeProps {
     minimalFagsak: IMinimalFagsak;
@@ -21,7 +24,14 @@ const aktivFaneStyle = (fanenavn: string, pathname: string) => {
 
 export const Fagsaklinje = ({ minimalFagsak, behandling }: FagsaklinjeProps) => {
     const { pathname } = useLocation();
-    const { harInnloggetSaksbehandlerSkrivetilgang } = useAppContext();
+    const { harInnloggetSaksbehandlerSkrivetilgang, toggles } = useAppContext();
+
+    const harSkrivetilgang = harInnloggetSaksbehandlerSkrivetilgang();
+    const skalViseFagsakmeny = harSkrivetilgang && behandling === undefined && toggles[ToggleNavn.brukNyActionMeny];
+    const skalViseNyBehandlingsmeny =
+        harSkrivetilgang && behandling !== undefined && toggles[ToggleNavn.brukNyActionMeny];
+    const skalViseGammelBehandlingsmeny = harSkrivetilgang && !toggles[ToggleNavn.brukNyActionMeny];
+
     return (
         <>
             <Box borderWidth="0 0 1 0" borderColor="border-subtle">
@@ -50,7 +60,9 @@ export const Fagsaklinje = ({ minimalFagsak, behandling }: FagsaklinjeProps) => 
                             </Button>
                         </HStack>
                     )}
-                    {harInnloggetSaksbehandlerSkrivetilgang() && (
+                    {skalViseFagsakmeny && <Fagsakmeny />}
+                    {skalViseNyBehandlingsmeny && <BehandlingsmenyNy />}
+                    {skalViseGammelBehandlingsmeny && (
                         <Behandlingsmeny minimalFagsak={minimalFagsak} behandling={behandling} />
                     )}
                 </HStack>

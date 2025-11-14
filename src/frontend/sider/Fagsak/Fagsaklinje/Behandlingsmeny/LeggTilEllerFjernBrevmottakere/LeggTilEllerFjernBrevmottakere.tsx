@@ -44,11 +44,7 @@ export const LeggTilEllerFjernBrevmottakere = (props: BehandlingProps | FagsakPr
 
             {visModal &&
                 (props.erPåBehandling ? (
-                    <LeggTilBrevmottakerModalBehandling
-                        lukkModal={() => settVisModal(false)}
-                        behandling={props.behandling}
-                        erLesevisning={props.erLesevisning}
-                    />
+                    <LeggTilBrevmottakerModalBehandling lukkModal={() => settVisModal(false)} />
                 ) : (
                     <LeggTilBrevmottakerModalFagsak lukkModal={() => settVisModal(false)} />
                 ))}

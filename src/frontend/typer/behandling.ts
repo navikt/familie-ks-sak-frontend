@@ -22,6 +22,7 @@ import type { Utbetalingsperiode } from './utbetalingsperiode';
 import type { IRestKorrigertEtterbetaling, IRestKorrigertVedtak, IVedtakForBehandling } from './vedtak';
 import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 import type { IRestBrevmottaker } from '../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '../utils/behandling';
 import type { IsoDatoString } from '../utils/dato';
 
 export interface IRestNyBehandling {
@@ -385,3 +386,7 @@ export const erBehandlingAvslått = (behandlingsResultat?: BehandlingResultat): 
 export const erBehandlingFortsattInnvilget = (behandlingsResultat?: BehandlingResultat): boolean => {
     return behandlingsResultat === BehandlingResultat.FORTSATT_INNVILGET;
 };
+
+export function sjekkErBehandleneEnhetMidlertidig(behandling: IBehandling) {
+    return behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId === MIDLERTIDIG_BEHANDLENDE_ENHET_ID;
+}
