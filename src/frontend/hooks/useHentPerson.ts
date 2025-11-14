@@ -52,8 +52,7 @@ export function useHentPerson({ ident, ...rest }: Parameters) {
             if (ident === undefined) {
                 return Promise.reject(new Error('Kan ikke hente person uten ident.'));
             }
-            const person = await hentPerson(request, ident);
-            return Promise.resolve(person);
+            return hentPerson(request, ident);
         },
         select: person => {
             const nyPerson = skalObfuskereData ? obfuskertPersonInfo(person) : person;
