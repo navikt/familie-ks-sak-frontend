@@ -96,6 +96,10 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
     };
 
     useEffect(() => {
+        tilbakestillSøknad();
+    }, [bruker]);
+
+    useEffect(() => {
         if (åpenBehandling.søknadsgrunnlag) {
             settSøknadErLastetFraBackend(true);
             skjema.felter.barnaMedOpplysninger.validerOgSettFelt(

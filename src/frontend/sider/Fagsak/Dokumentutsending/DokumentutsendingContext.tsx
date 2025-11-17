@@ -170,7 +170,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
 
     useEffect(() => {
         nullstillSkjemaUtenomÅrsak();
-    }, [årsak.verdi]);
+    }, [årsak.verdi, bruker]);
 
     const hentSkjemaData = (): IManueltBrevRequestPåFagsak => {
         const dokumentÅrsak = skjema.felter.årsak.verdi;
