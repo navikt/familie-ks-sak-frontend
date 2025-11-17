@@ -34,7 +34,7 @@ import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAler
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../../../typer/simulering';
 import type { Målform } from '../../../../../typer/søknad';
 import { målform } from '../../../../../typer/søknad';
-import { useFagsakContext } from '../../../FagsakContext';
+import { useBrukerContext } from '../../../BrukerContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const ForhåndsvisVarselKnappContainer = styled.div`
@@ -91,8 +91,7 @@ const TilbakekrevingSkjema = ({
             onMutate: () => åpneForhåndsvisOpprettingAvPdfModal({ mutationKey }),
         });
 
-    const { bruker: brukerRessurs } = useFagsakContext();
-    const bruker = brukerRessurs.status === RessursStatus.SUKSESS ? brukerRessurs.data : undefined;
+    const { bruker } = useBrukerContext();
 
     const erLesevisning = vurderErLesevisning();
 
