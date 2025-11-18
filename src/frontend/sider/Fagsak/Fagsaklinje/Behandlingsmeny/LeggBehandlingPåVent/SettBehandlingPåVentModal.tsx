@@ -23,13 +23,12 @@ const StyledBodyShort = styled(BodyShort)`
 
 interface IProps {
     lukkModal: () => void;
-    behandling: IBehandling;
 }
 
-export const SettBehandlingPåVentModal = ({ lukkModal, behandling }: IProps) => {
+export const SettBehandlingPåVentModal = ({ lukkModal }: IProps) => {
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
     const årsaker = hentAlleÅrsaker();
     const { skjema, kanSendeSkjema, onSubmit } = useSettPåVentSkjema(behandling.behandlingPåVent);
-    const { settÅpenBehandling } = useBehandlingContext();
 
     const { årsak, frist } = skjema.felter;
 

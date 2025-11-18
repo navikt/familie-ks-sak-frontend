@@ -24,7 +24,7 @@ const SettEllerOppdaterVenting = ({ behandling }: IProps) => {
                 {erBehandlingAlleredePåVent ? 'Endre ventende behandling' : 'Sett behandling på vent'}
             </Dropdown.Menu.List.Item>
 
-            {visModal && <SettBehandlingPåVentModal lukkModal={() => settVisModal(false)} behandling={behandling} />}
+            {visModal && <SettBehandlingPåVentModal lukkModal={() => settVisModal(false)} />}
         </>
     );
 };
