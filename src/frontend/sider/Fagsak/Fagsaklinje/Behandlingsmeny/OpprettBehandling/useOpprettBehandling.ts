@@ -36,7 +36,7 @@ const useOpprettBehandling = ({
     onOpprettTilbakekrevingSuccess,
 }: {
     lukkModal: () => void;
-    onOpprettTilbakekrevingSuccess: () => void;
+    onOpprettTilbakekrevingSuccess?: () => void;
 }) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { fagsak } = useFagsakContext();
@@ -154,7 +154,7 @@ const useOpprettBehandling = ({
             response => {
                 if (response.status === RessursStatus.SUKSESS) {
                     nullstillSkjemaStatus();
-                    onOpprettTilbakekrevingSuccess();
+                    onOpprettTilbakekrevingSuccess?.();
                     queryClient.invalidateQueries({
                         queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsak.id),
                     });
