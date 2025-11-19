@@ -15,6 +15,9 @@ import { Venstremeny } from './Venstremeny/Venstremeny';
 import { HenleggBehandlingModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingModal';
 import { HenleggBehandlingVeivalgModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingVeivalgModal';
 import { KorrigerEtterbetalingModal } from './sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetalingModal';
+import { useAppContext } from '../../../context/AppContext';
+import { ToggleNavn } from '../../../typer/toggles';
+import { Behandlingslinje } from '../Fagsaklinje/Behandlingslinje';
 
 const FlexContainer = styled.div`
     display: flex;
@@ -48,6 +51,7 @@ interface Props {
 }
 
 const BehandlingContainer = ({ bruker, minimalFagsak }: Props) => {
+    const { toggles } = useAppContext();
     const { behandlingRessurs } = useHentOgSettBehandlingContext();
 
     switch (behandlingRessurs.status) {
@@ -57,7 +61,11 @@ const BehandlingContainer = ({ bruker, minimalFagsak }: Props) => {
                     <HenleggBehandlingModal />
                     <HenleggBehandlingVeivalgModal />
                     <KorrigerEtterbetalingModal behandling={behandlingRessurs.data} />
-                    <Fagsaklinje minimalFagsak={minimalFagsak} behandling={behandlingRessurs.data} />
+                    {toggles[ToggleNavn.brukNyActionMenu] ? (
+                        <Behandlingslinje />
+                    ) : (
+                        <Fagsaklinje minimalFagsak={minimalFagsak} behandling={behandlingRessurs.data} />
+                    )}
                     <FlexContainer>
                         <VenstremenyContainer>
                             <Venstremeny />
