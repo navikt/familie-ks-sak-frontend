@@ -24,6 +24,8 @@ import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 import type { IRestBrevmottaker } from '../sider/Fagsak/Fagsaklinje/Behandlingsmeny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IsoDatoString } from '../utils/dato';
 
+export const MIDLERTIDIG_BEHANDLENDE_ENHET_ID = '4863';
+
 export interface IRestNyBehandling {
     kategori: BehandlingKategori | null;
     søkersIdent: string;
@@ -385,3 +387,7 @@ export const erBehandlingAvslått = (behandlingsResultat?: BehandlingResultat): 
 export const erBehandlingFortsattInnvilget = (behandlingsResultat?: BehandlingResultat): boolean => {
     return behandlingsResultat === BehandlingResultat.FORTSATT_INNVILGET;
 };
+
+export function sjekkErBehandleneEnhetMidlertidig(behandling: IBehandling) {
+    return behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId === MIDLERTIDIG_BEHANDLENDE_ENHET_ID;
+}
