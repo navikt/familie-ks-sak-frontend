@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ChevronDownIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button } from '@navikt/ds-react';
 
+import Styles from './Fagsakmeny.module.css';
 import { LeggTilBrevmottakerModalFagsak } from './LeggTilEllerFjernBrevmottakere/LeggTilBrevmottakerModalFagsak';
 import { LeggTilEllerFjernBrevmottakerePåFagsak } from './LeggTilEllerFjernBrevmottakere/LeggTilEllerFjernBrevmottakerePåFagsak';
 import { OpprettBehandlingModal } from './OpprettBehandling/OpprettBehandlingModal';
@@ -28,7 +29,7 @@ export function Fagsakmeny() {
                     </Button>
                 </ActionMenu.Trigger>
                 <ActionMenu.Content>
-                    <ActionMenu.Group aria-label={'Fagsak'}>
+                    <ActionMenu.Group className={Styles.group} aria-label={'Fagsak'}>
                         <OpprettBehandlingNy åpneModal={() => settVisOpprettBehandlingModal(true)} />
                         <LeggTilEllerFjernBrevmottakerePåFagsak
                             åpneModal={() => settVisLeggTilBrevmottakerModal(true)}
