@@ -52,7 +52,7 @@ describe('Fagsakmeny', () => {
         expect(screen.queryByRole('menuitem', { name: 'Send informasjonsbrev' })).not.toBeInTheDocument();
     });
 
-    test('skal vise de korrekt knappene når man trykker på menyen når man ikke er på dokumentsiden', async () => {
+    test('skal vise de korrekte knappene når man trykker på menyen når man ikke er på dokumentsiden', async () => {
         const { screen, user } = render(<Fagsakmeny />, {
             wrapper: props => <Wrapper {...props} initialEntries={[{ pathname: '/fagsak/1' }]} />,
         });
