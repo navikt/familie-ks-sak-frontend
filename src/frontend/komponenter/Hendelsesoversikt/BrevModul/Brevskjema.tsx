@@ -230,6 +230,7 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                                         size={'small'}
                                         variant={'tertiary'}
                                         icon={<PlusCircleIcon />}
+                                        className={styles.addButton}
                                     >
                                         {'Legg til kulepunkt'}
                                     </Button>
@@ -283,6 +284,7 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                                         onClick={() => settVisFritekstAvsnittTekstboks(true)}
                                         id={`legg-til-fritekst-avsnitt`}
                                         size={'small'}
+                                        className={styles.addButton}
                                         icon={<PlusCircleIcon />}
                                     >
                                         {'Legg til fritekst avsnitt'}

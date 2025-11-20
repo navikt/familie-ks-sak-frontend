@@ -13,6 +13,10 @@
     height: fit-content;
 }
 
+.addButton {
+    justify-content: flex-start;
+}
+
 .textField {
     width: fit-content;
 }
