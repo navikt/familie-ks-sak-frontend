@@ -1,32 +1,13 @@
 import { differenceInMilliseconds } from 'date-fns';
-import styled from 'styled-components';
 
 import { Alert, Checkbox, CheckboxGroup } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
+import styles from './BarnBrevetGjelder.module.css';
 import { BehandlingSteg, hentStegNummer } from '../../../typer/behandling';
 import type { IBarnMedOpplysninger } from '../../../typer/søknad';
 import { isoStringTilDate } from '../../../utils/dato';
 import { lagBarnLabel } from '../../../utils/formatter';
-
-const StyledCheckbox = styled(Checkbox)`
-    margin-left: 1rem;
-
-    > label {
-        width: 100%;
-    }
-`;
-
-const LabelContent = styled.div`
-    display: flex;
-    white-space: nowrap;
-`;
-
-const LabelTekst = styled.p`
-    margin: 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-`;
 
 interface IProps {
     barnBrevetGjelderFelt: Felt<IBarnMedOpplysninger[]>;
@@ -35,7 +16,7 @@ interface IProps {
     settVisFeilmeldinger: (visFeilmeldinger: boolean) => void;
 }
 
-const BarnBrevetGjelder = (props: IProps) => {
+export const BarnBrevetGjelder = (props: IProps) => {
     const { barnBrevetGjelderFelt, behandlingsSteg, visFeilmeldinger, settVisFeilmeldinger } = props;
 
     const skalViseVarselOmManglendeBarn =
@@ -85,11 +66,11 @@ const BarnBrevetGjelder = (props: IProps) => {
             {sorterteBarn.map((barn: IBarnMedOpplysninger, index: number) => {
                 const barnLabel = lagBarnLabel(barn);
                 return (
-                    <StyledCheckbox value={barn.ident} key={'barn-' + index}>
-                        <LabelContent>
-                            <LabelTekst title={barnLabel}>{barnLabel}</LabelTekst>
-                        </LabelContent>
-                    </StyledCheckbox>
+                    <Checkbox value={barn.ident} key={'barn-' + index} className={styles.checkbox}>
+                        <p title={barnLabel} className={styles.labelTekst}>
+                            {barnLabel}
+                        </p>
+                    </Checkbox>
                 );
             })}
             {skalViseVarselOmManglendeBarn && (
@@ -103,5 +84,3 @@ const BarnBrevetGjelder = (props: IProps) => {
         </CheckboxGroup>
     );
 };
-
-export default BarnBrevetGjelder;
