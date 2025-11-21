@@ -9,15 +9,18 @@ import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
 import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
 import { FagsakProvider } from './FagsakContext';
 import { Fagsaklinje } from './Fagsaklinje/Fagsaklinje';
+import { FagsaklinjeNy } from './Fagsaklinje/FagsaklinjeNy';
 import JournalpostListe from './journalposter/JournalpostListe';
 import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
 import Personlinje from './Personlinje/Personlinje';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
+import { useAppContext } from '../../context/AppContext';
 import { useFagsakId } from '../../hooks/useFagsakId';
 import { useHentFagsak } from '../../hooks/useHentFagsak';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
 import { HentOgSettBehandlingProvider } from './Behandling/context/HentOgSettBehandlingContext';
 import { useHentPerson } from '../../hooks/useHentPerson';
+import { ToggleNavn } from '../../typer/toggles';
 
 const Innhold = styled.div`
     height: calc(100vh - 3rem);
@@ -29,7 +32,9 @@ const Hovedinnhold = styled.div`
     overflow: auto;
 `;
 
-export const FagsakContainer = () => {
+export function FagsakContainer() {
+    const { toggles } = useAppContext();
+
     const fagsakId = useFagsakId();
 
     const { data: fagsak, isPending: isPendingFagsak, error: fagsakError } = useHentFagsak(fagsakId);
@@ -80,7 +85,11 @@ export const FagsakContainer = () => {
                                     path="/saksoversikt"
                                     element={
                                         <>
-                                            <Fagsaklinje minimalFagsak={fagsak} />
+                                            {toggles[ToggleNavn.brukNyActionMenu] ? (
+                                                <FagsaklinjeNy />
+                                            ) : (
+                                                <Fagsaklinje minimalFagsak={fagsak} />
+                                            )}
                                             <Saksoversikt minimalFagsak={fagsak} />
                                         </>
                                     }
@@ -90,7 +99,11 @@ export const FagsakContainer = () => {
                                     path="/dokumentutsending"
                                     element={
                                         <>
-                                            <Fagsaklinje minimalFagsak={fagsak} />
+                                            {toggles[ToggleNavn.brukNyActionMenu] ? (
+                                                <FagsaklinjeNy />
+                                            ) : (
+                                                <Fagsaklinje minimalFagsak={fagsak} />
+                                            )}
                                             <DokumentutsendingProvider fagsakId={fagsak.id}>
                                                 <Dokumentutsending bruker={bruker} />
                                             </DokumentutsendingProvider>
@@ -102,7 +115,11 @@ export const FagsakContainer = () => {
                                     path="/dokumenter"
                                     element={
                                         <>
-                                            <Fagsaklinje minimalFagsak={fagsak} />
+                                            {toggles[ToggleNavn.brukNyActionMenu] ? (
+                                                <FagsaklinjeNy />
+                                            ) : (
+                                                <Fagsaklinje minimalFagsak={fagsak} />
+                                            )}
                                             <JournalpostListe bruker={bruker} />
                                         </>
                                     }
@@ -124,4 +141,4 @@ export const FagsakContainer = () => {
             </BrukerProvider>
         </FagsakProvider>
     );
-};
+}
