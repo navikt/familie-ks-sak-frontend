@@ -25,12 +25,19 @@ const StyledAlert = styled(Alert)`
 
 interface Props {
     lukkModal: () => void;
+    onTilbakekrevingsbehandlingOpprettet: () => void;
 }
 
-export function OpprettBehandlingModal({ lukkModal }: Props) {
+export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingOpprettet }: Props) {
     const { fagsak } = useFagsakContext();
 
-    const { onBekreft, opprettBehandlingSkjema, nullstillSkjemaStatus } = useOpprettBehandling({ lukkModal });
+    const { onBekreft, opprettBehandlingSkjema, nullstillSkjemaStatus } = useOpprettBehandling({
+        lukkModal,
+        onOpprettTilbakekrevingSuccess: () => {
+            lukkModal();
+            onTilbakekrevingsbehandlingOpprettet();
+        },
+    });
 
     const lukkOpprettBehandlingModal = () => {
         nullstillSkjemaStatus();
