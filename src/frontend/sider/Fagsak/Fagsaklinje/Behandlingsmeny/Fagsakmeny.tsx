@@ -8,16 +8,27 @@ import { LeggTilBrevmottakerModalFagsak } from './LeggTilEllerFjernBrevmottakere
 import { LeggTilEllerFjernBrevmottakerePåFagsak } from './LeggTilEllerFjernBrevmottakere/LeggTilEllerFjernBrevmottakerePåFagsak';
 import { OpprettBehandlingModal } from './OpprettBehandling/OpprettBehandlingModal';
 import { OpprettBehandlingNy } from './OpprettBehandling/OpprettBehandlingNy';
+import { TilbakekrevingsbehandlingOpprettetModal } from './OpprettBehandling/TilbakekrevingsbehandlingOpprettetModal';
 import { SendInformasjonsbrev } from './SendInformasjonsbrev/SendInformasjonsbrev';
 
 export function Fagsakmeny() {
     const [visOpprettBehandlingModal, settVisOpprettBehandlingModal] = useState(false);
+    const [visTilbakekrevingsbehandlingOpprettetModal, settVisTilbakekrevingsbehandlingOpprettetModal] =
+        useState(false);
     const [visLeggTilBrevmottakerModal, settVisLeggTilBrevmottakerModal] = useState(false);
 
     return (
         <>
             {visOpprettBehandlingModal && (
-                <OpprettBehandlingModal lukkModal={() => settVisOpprettBehandlingModal(false)} />
+                <OpprettBehandlingModal
+                    lukkModal={() => settVisOpprettBehandlingModal(false)}
+                    onTilbakekrevingsbehandlingOpprettet={() => settVisTilbakekrevingsbehandlingOpprettetModal(true)}
+                />
+            )}
+            {visTilbakekrevingsbehandlingOpprettetModal && (
+                <TilbakekrevingsbehandlingOpprettetModal
+                    lukkModal={() => settVisTilbakekrevingsbehandlingOpprettetModal(false)}
+                />
             )}
             {visLeggTilBrevmottakerModal && (
                 <LeggTilBrevmottakerModalFagsak lukkModal={() => settVisLeggTilBrevmottakerModal(false)} />
