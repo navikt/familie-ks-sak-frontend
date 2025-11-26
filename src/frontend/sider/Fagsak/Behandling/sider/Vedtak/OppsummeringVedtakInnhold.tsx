@@ -9,6 +9,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
 import RefusjonEøs from './RefusjonEøs/RefusjonEøs';
+import { RefusjonEøsTabell } from './RefusjonEøsNy/RefusjonEøsTabell';
 import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrollsak';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import Vedtaksmeny from './Vedtaksmeny';
@@ -28,6 +29,7 @@ import {
     type IBehandling,
 } from '../../../../../typer/behandling';
 import type { IPersonInfo } from '../../../../../typer/person';
+import { ToggleNavn } from '../../../../../typer/toggles';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface IOppsummeringVedtakInnholdProps {
@@ -57,7 +59,7 @@ const OppsummeringVedtakInnhold = ({
     settErUlagretNyRefusjonEøsPeriode,
     bruker,
 }: IOppsummeringVedtakInnholdProps) => {
-    const { hentSaksbehandlerRolle } = useAppContext();
+    const { hentSaksbehandlerRolle, toggles } = useAppContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
@@ -178,7 +180,14 @@ const OppsummeringVedtakInnhold = ({
                                         skjulFeilutbetaltValuta={() => settVisFeilutbetaltValuta(false)}
                                     />
                                 )}
-                                {visRefusjonEøs && (
+                                {(visRefusjonEøs || åpenBehandling.refusjonEøs.length > 0) &&
+                                    toggles[ToggleNavn.brukNyRefusjonEøsForm] && (
+                                        <RefusjonEøsTabell
+                                            settErUlagretNyRefusjonEøsPeriode={settErUlagretNyRefusjonEøsPeriode}
+                                            skjulRefusjonEøs={() => settVisRefusjonEøs(false)}
+                                        />
+                                    )}
+                                {visRefusjonEøs && !toggles[ToggleNavn.brukNyRefusjonEøsForm] && (
                                     <RefusjonEøs
                                         refusjonEøsListe={åpenBehandling.refusjonEøs ?? []}
                                         behandlingId={åpenBehandling.behandlingId}

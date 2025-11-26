@@ -45,8 +45,10 @@ export function HentOgSettBehandlingProvider({ fagsak, children }: Props) {
         }
     }, [behandlingId, erBehandlingDelAvFagsak]);
 
-    const settBehandlingRessurs = async (behandling: Ressurs<IBehandling>) => {
-        await queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
+    const settBehandlingRessurs = async (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak: boolean = true) => {
+        if (oppdaterMinimalFagsak) {
+            await queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
+        }
         if (skalObfuskereData) {
             obfuskerBehandling(behandling);
         }
