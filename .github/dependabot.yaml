@@ -11,6 +11,8 @@ updates:
     schedule:
       interval: daily
       time: "18:00"
+    cooldown:
+      default-days: 4
     open-pull-requests-limit: 10
     registries: "*"
     ignore:
@@ -35,3 +37,5 @@ updates:
     schedule:
       # Check for updates to GitHub Actions every week
       interval: "weekly"
+    cooldown:
+      default-days: 4
