@@ -9,7 +9,7 @@ import { lagBehandling } from '../../../../../testutils/testdata/behandlingTestd
 import { lagRestBrevmottaker } from '../../../../../testutils/testdata/brevmottakerTestdata';
 import { lagFagsak } from '../../../../../testutils/testdata/fagsakTestdata';
 import { render, TestProviders } from '../../../../../testutils/testrender';
-import { type IBehandling } from '../../../../../typer/behandling';
+import { Behandlingstype, type IBehandling, SettPåVentÅrsak } from '../../../../../typer/behandling';
 import { type IMinimalFagsak } from '../../../../../typer/fagsak';
 import { BehandlingProvider } from '../../../Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '../../../Behandling/context/HentOgSettBehandlingContext';
@@ -76,5 +76,79 @@ describe('LeggTilEllerFjernBrevmottakerePåBehandling', () => {
         const knapp = screen.getByRole('menuitem', { name: 'Legg til brevmottaker' });
         await user.click(knapp);
         expect(åpneModal).toHaveBeenCalledOnce();
+    });
+
+    test('skal ikke vise komponent hvis man befinner seg i lesevisning og ingen brevmottakere er lagt til og behandlingstypen er relevant', () => {
+        const åpneModal = vi.fn();
+        const { screen } = render(<LeggTilEllerFjernBrevmottakerePåBehandling åpneModal={åpneModal} />, {
+            wrapper: props => (
+                <Wrapper
+                    {...props}
+                    behandling={lagBehandling({
+                        type: Behandlingstype.FØRSTEGANGSBEHANDLING,
+                        brevmottakere: [],
+                        behandlingPåVent: {
+                            frist: '2025-10-10',
+                            årsak: SettPåVentÅrsak.AVVENTER_DOKUMENTASJON,
+                        },
+                    })}
+                />
+            ),
+        });
+        expect(screen.queryByRole('menuitem')).not.toBeInTheDocument();
+    });
+
+    test('skal vise komponent hvis man befinner seg i lesevisning og minst en brevmottaker er lagt til og behandlingstypen er relevant', () => {
+        const åpneModal = vi.fn();
+        const { screen } = render(<LeggTilEllerFjernBrevmottakerePåBehandling åpneModal={åpneModal} />, {
+            wrapper: props => (
+                <Wrapper
+                    {...props}
+                    behandling={lagBehandling({
+                        type: Behandlingstype.REVURDERING,
+                        brevmottakere: [lagRestBrevmottaker()],
+                        behandlingPåVent: {
+                            frist: '2025-10-10',
+                            årsak: SettPåVentÅrsak.AVVENTER_DOKUMENTASJON,
+                        },
+                    })}
+                />
+            ),
+        });
+        expect(screen.getByRole('menuitem', { name: 'Se brevmottaker' })).toBeInTheDocument();
+    });
+
+    test('skal ikke vise komponenten hvis behandlingstypen ikke er relevant selv om man ikke befinner seg i en lesevisning', () => {
+        const åpneModal = vi.fn();
+        const { screen } = render(<LeggTilEllerFjernBrevmottakerePåBehandling åpneModal={åpneModal} />, {
+            wrapper: props => (
+                <Wrapper
+                    {...props}
+                    behandling={lagBehandling({
+                        type: Behandlingstype.TEKNISK_ENDRING,
+                        brevmottakere: [],
+                        behandlingPåVent: undefined,
+                    })}
+                />
+            ),
+        });
+        expect(screen.queryByRole('menuitem')).not.toBeInTheDocument();
+    });
+
+    test('skal ikke vise komponenten hvis behandlingstypen ikke er relevant selv om man har lagt til brevmottakere', () => {
+        const åpneModal = vi.fn();
+        const { screen } = render(<LeggTilEllerFjernBrevmottakerePåBehandling åpneModal={åpneModal} />, {
+            wrapper: props => (
+                <Wrapper
+                    {...props}
+                    behandling={lagBehandling({
+                        type: Behandlingstype.TEKNISK_ENDRING,
+                        brevmottakere: [lagRestBrevmottaker()],
+                        behandlingPåVent: undefined,
+                    })}
+                />
+            ),
+        });
+        expect(screen.queryByRole('menuitem')).not.toBeInTheDocument();
     });
 });
