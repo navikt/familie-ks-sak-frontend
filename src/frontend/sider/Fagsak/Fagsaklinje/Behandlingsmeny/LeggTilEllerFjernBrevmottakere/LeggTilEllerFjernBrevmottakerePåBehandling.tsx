@@ -1,17 +1,23 @@
 import { ActionMenu } from '@navikt/ds-react';
 
 import type { SkjemaBrevmottaker } from './useBrevmottakerSkjema';
+import { Behandlingstype } from '../../../../../typer/behandling';
 import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
-const utledLabel = (brevmottakere: SkjemaBrevmottaker[], erLesevisning: boolean) => {
+function utledLabel(brevmottakere: SkjemaBrevmottaker[], erLesevisning: boolean) {
     if (erLesevisning) {
         return brevmottakere.length === 1 ? 'Se brevmottaker' : 'Se brevmottakere';
     }
     if (brevmottakere.length === 0) {
         return 'Legg til brevmottaker';
     }
-    return brevmottakere.length === 1 ? 'Legg til eller fjern brevmottaker' : 'Se eller fjern brevmottakere';
-};
+    if (brevmottakere.length === 1) {
+        return 'Legg til eller fjern brevmottaker';
+    }
+    return 'Se eller fjern brevmottakere';
+}
+
+const relevanteBehandlingstyper = [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING];
 
 interface Props {
     åpneModal: () => void;
@@ -20,10 +26,20 @@ interface Props {
 export function LeggTilEllerFjernBrevmottakerePåBehandling({ åpneModal }: Props) {
     const { behandling, vurderErLesevisning } = useBehandlingContext();
 
-    const brevmottakere = behandling.brevmottakere;
-    const erLesevising = vurderErLesevisning();
+    const erRelevantBehandlingstype = relevanteBehandlingstyper.includes(behandling.type);
 
-    const label = utledLabel(brevmottakere, erLesevising);
+    if (!erRelevantBehandlingstype) {
+        return null;
+    }
+
+    const erLesevisning = vurderErLesevisning();
+    const harBrevmottaker = behandling.brevmottakere.length > 0;
+
+    if (erLesevisning && !harBrevmottaker) {
+        return null;
+    }
+
+    const label = utledLabel(behandling.brevmottakere, erLesevisning);
 
     return <ActionMenu.Item onSelect={åpneModal}>{label}</ActionMenu.Item>;
 }
