@@ -205,9 +205,8 @@ const FritekstVedtakbegrunnelser = () => {
                                     putVedtaksperiodeMedFritekster();
                                 }}
                                 size="small"
-                                variant="secondary"
+                                variant="primary"
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                             >
                                 Lagre
                             </Button>

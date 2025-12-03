@@ -32,7 +32,7 @@ const FeilutbetaltValutaPeriode = ({ feilutbetaltValuta, erLesevisning, behandli
     const [erRadEkspandert, settErRadEkspandert] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
 
-    const { skjema, oppdaterEksisterendePeriode, fjernPeriode, valideringErOk, tilbakestillSkjemafelterTilDefault } =
+    const { skjema, oppdaterEksisterendePeriode, fjernPeriode, tilbakestillSkjemafelterTilDefault } =
         useFeilutbetaltValuta({
             behandlingId,
             feilutbetaltValuta,
@@ -65,11 +65,7 @@ const FeilutbetaltValutaPeriode = ({ feilutbetaltValuta, erLesevisning, behandli
                         key={`${feilutbetaltValuta.id}-$${erRadEkspandert ? 'ekspandert' : 'lukket'}`}
                     />
                     <FlexRowDiv>
-                        <Button
-                            size="small"
-                            onClick={oppdaterEksisterendePeriode}
-                            variant={valideringErOk() ? 'primary' : 'secondary'}
-                        >
+                        <Button size="small" onClick={oppdaterEksisterendePeriode} variant={'primary'}>
                             Lagre periode
                         </Button>
                         <Button size="small" variant="tertiary" onClick={tilbakestillOgLukkSkjema}>

@@ -314,7 +314,7 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
             <Knapperekke>
                 <Button
                     id={'forhandsvis-vedtaksbrev'}
-                    variant={'tertiary'}
+                    variant={'secondary'}
                     size={'medium'}
                     disabled={skjemaErLåst}
                     onClick={() => {
@@ -333,7 +333,7 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                     Forhåndsvis
                 </Button>
                 <Button
-                    variant={'secondary'}
+                    variant={'primary'}
                     size={'medium'}
                     loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                     disabled={skjemaErLåst}

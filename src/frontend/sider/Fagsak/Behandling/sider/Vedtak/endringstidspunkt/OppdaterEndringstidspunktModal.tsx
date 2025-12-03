@@ -76,7 +76,6 @@ export const OppdaterEndringstidspunktModal = ({ åpenBehandling, lukkModal }: I
                     onClick={oppdaterEndringstidspunkt}
                     children={'Oppdater'}
                     loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                    disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                 />
                 <Button variant={'tertiary'} key={'Avbryt'} size={'small'} onClick={lukkModal} children={'Avbryt'} />
             </Modal.Footer>
