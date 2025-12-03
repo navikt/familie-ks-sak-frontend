@@ -6,7 +6,7 @@ interface Props {
     åpneModal: () => void;
 }
 
-export function TaBehandlingAvVentNy({ åpneModal }: Props) {
+export function TaBehandlingAvVent({ åpneModal }: Props) {
     const { behandling } = useBehandlingContext();
 
     if (behandling.behandlingPåVent === undefined || behandling.behandlingPåVent === null) {

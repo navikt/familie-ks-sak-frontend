@@ -6,8 +6,8 @@ import { ActionMenu, Button } from '@navikt/ds-react';
 import Styles from './Fagsakmeny.module.css';
 import { LeggTilBrevmottakerModalFagsak } from './LeggTilEllerFjernBrevmottakere/LeggTilBrevmottakerModalFagsak';
 import { LeggTilEllerFjernBrevmottakerePåFagsak } from './LeggTilEllerFjernBrevmottakere/LeggTilEllerFjernBrevmottakerePåFagsak';
+import { OpprettBehandling } from './OpprettBehandling/OpprettBehandling';
 import { OpprettBehandlingModal } from './OpprettBehandling/OpprettBehandlingModal';
-import { OpprettBehandlingNy } from './OpprettBehandling/OpprettBehandlingNy';
 import { TilbakekrevingsbehandlingOpprettetModal } from './OpprettBehandling/TilbakekrevingsbehandlingOpprettetModal';
 import { SendInformasjonsbrev } from './SendInformasjonsbrev/SendInformasjonsbrev';
 
@@ -41,7 +41,7 @@ export function Fagsakmeny() {
                 </ActionMenu.Trigger>
                 <ActionMenu.Content>
                     <ActionMenu.Group className={Styles.group} aria-label={'Fagsak'}>
-                        <OpprettBehandlingNy åpneModal={() => settVisOpprettBehandlingModal(true)} />
+                        <OpprettBehandling åpneModal={() => settVisOpprettBehandlingModal(true)} />
                         <LeggTilEllerFjernBrevmottakerePåFagsak
                             åpneModal={() => settVisLeggTilBrevmottakerModal(true)}
                         />

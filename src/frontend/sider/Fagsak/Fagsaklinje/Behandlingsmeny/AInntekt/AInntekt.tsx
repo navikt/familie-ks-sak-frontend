@@ -14,7 +14,7 @@ function Feilmelding({ error }: { error: Error }) {
     );
 }
 
-export function AInntektNy() {
+export function AInntekt() {
     const { fagsak } = useFagsakContext();
     const { åpneModal } = useModal(ModalType.FEILMELDING);
 

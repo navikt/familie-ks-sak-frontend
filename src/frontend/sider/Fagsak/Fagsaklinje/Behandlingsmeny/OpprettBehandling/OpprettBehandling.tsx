@@ -4,6 +4,6 @@ interface Props {
     åpneModal: () => void;
 }
 
-export function OpprettBehandlingNy({ åpneModal }: Props) {
+export function OpprettBehandling({ åpneModal }: Props) {
     return <ActionMenu.Item onSelect={åpneModal}>Opprett behandling</ActionMenu.Item>;
 }

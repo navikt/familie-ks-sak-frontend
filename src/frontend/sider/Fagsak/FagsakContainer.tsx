@@ -8,7 +8,7 @@ import { BrukerProvider } from './BrukerContext';
 import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
 import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
 import { FagsakProvider } from './FagsakContext';
-import { FagsaklinjeNy } from './Fagsaklinje/FagsaklinjeNy';
+import { Fagsaklinje } from './Fagsaklinje/Fagsaklinje';
 import JournalpostListe from './journalposter/JournalpostListe';
 import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
 import Personlinje from './Personlinje/Personlinje';
@@ -80,7 +80,7 @@ export function FagsakContainer() {
                                     path="/saksoversikt"
                                     element={
                                         <>
-                                            <FagsaklinjeNy />
+                                            <Fagsaklinje />
                                             <Saksoversikt minimalFagsak={fagsak} />
                                         </>
                                     }
@@ -90,7 +90,7 @@ export function FagsakContainer() {
                                     path="/dokumentutsending"
                                     element={
                                         <>
-                                            <FagsaklinjeNy />
+                                            <Fagsaklinje />
                                             <DokumentutsendingProvider fagsakId={fagsak.id}>
                                                 <Dokumentutsending bruker={bruker} />
                                             </DokumentutsendingProvider>
@@ -102,7 +102,7 @@ export function FagsakContainer() {
                                     path="/dokumenter"
                                     element={
                                         <>
-                                            <FagsaklinjeNy />
+                                            <Fagsaklinje />
                                             <JournalpostListe bruker={bruker} />
                                         </>
                                     }

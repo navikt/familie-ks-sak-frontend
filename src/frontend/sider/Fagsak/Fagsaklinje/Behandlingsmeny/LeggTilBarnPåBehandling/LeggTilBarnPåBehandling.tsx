@@ -14,7 +14,7 @@ interface Props {
     åpneModal: () => void;
 }
 
-export function LeggTiLBarnPåBehandlingNy({ åpneModal }: Props) {
+export function LeggTilBarnPåBehandling({ åpneModal }: Props) {
     const { behandling, vurderErLesevisning } = useBehandlingContext();
 
     const erLesevisning = vurderErLesevisning();
