@@ -39,7 +39,6 @@ const RefusjonEøsPeriode = ({ refusjonEøs, behandlingId }: IRefusjonEøsPeriod
         skjema,
         oppdaterEksisterendePeriode,
         fjernPeriode,
-        valideringErOk,
         validerAlleSynligeFelter,
         tilbakestillSkjemafelterTilDefault,
     } = useRefusjonEøs({
@@ -77,7 +76,7 @@ const RefusjonEøsPeriode = ({ refusjonEøs, behandlingId }: IRefusjonEøsPeriod
                             <Button
                                 size="small"
                                 onClick={() => oppdaterEksisterendePeriode(() => settErRadEkspandert(false))}
-                                variant={valideringErOk() ? 'primary' : 'secondary'}
+                                variant={'primary'}
                             >
                                 Lagre periode
                             </Button>

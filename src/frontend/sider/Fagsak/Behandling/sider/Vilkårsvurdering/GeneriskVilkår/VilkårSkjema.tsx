@@ -211,7 +211,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                                 });
                             }}
                             size="medium"
-                            variant="secondary"
+                            variant="primary"
                             loading={lagrerVilkår}
                             disabled={lagrerVilkår}
                         >
