@@ -7,17 +7,13 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { BehandlingRouter } from './BehandlingRouter';
 import { BehandlingProvider } from './context/BehandlingContext';
 import { Høyremeny } from './Høyremeny/Høyremeny';
-import type { IMinimalFagsak } from '../../../typer/fagsak';
 import type { IPersonInfo } from '../../../typer/person';
-import { Fagsaklinje } from '../Fagsaklinje/Fagsaklinje';
+import { Behandlingslinje } from '../Fagsaklinje/Behandlingslinje';
 import { useHentOgSettBehandlingContext } from './context/HentOgSettBehandlingContext';
 import { Venstremeny } from './Venstremeny/Venstremeny';
 import { HenleggBehandlingModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingModal';
 import { HenleggBehandlingVeivalgModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingVeivalgModal';
 import { KorrigerEtterbetalingModal } from './sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetalingModal';
-import { useAppContext } from '../../../context/AppContext';
-import { ToggleNavn } from '../../../typer/toggles';
-import { Behandlingslinje } from '../Fagsaklinje/Behandlingslinje';
 
 const FlexContainer = styled.div`
     display: flex;
@@ -47,11 +43,9 @@ const HøyremenyContainer = styled.div`
 
 interface Props {
     bruker: IPersonInfo;
-    minimalFagsak: IMinimalFagsak;
 }
 
-const BehandlingContainer = ({ bruker, minimalFagsak }: Props) => {
-    const { toggles } = useAppContext();
+const BehandlingContainer = ({ bruker }: Props) => {
     const { behandlingRessurs } = useHentOgSettBehandlingContext();
 
     switch (behandlingRessurs.status) {
@@ -61,11 +55,7 @@ const BehandlingContainer = ({ bruker, minimalFagsak }: Props) => {
                     <HenleggBehandlingModal />
                     <HenleggBehandlingVeivalgModal />
                     <KorrigerEtterbetalingModal behandling={behandlingRessurs.data} />
-                    {toggles[ToggleNavn.brukNyActionMenu] ? (
-                        <Behandlingslinje />
-                    ) : (
-                        <Fagsaklinje minimalFagsak={minimalFagsak} behandling={behandlingRessurs.data} />
-                    )}
+                    <Behandlingslinje />
                     <FlexContainer>
                         <VenstremenyContainer>
                             <Venstremeny />
