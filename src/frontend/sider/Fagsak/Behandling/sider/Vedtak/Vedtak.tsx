@@ -5,7 +5,9 @@ import styled from 'styled-components';
 
 import { RessursStatus } from '@navikt/familie-typer';
 
+import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
+import { useRefusjonEøsTabellContext } from './RefusjonEøsNy/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
@@ -13,7 +15,7 @@ import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingStatus, BehandlingSteg, Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
 import type { IPersonInfo } from '../../../../../typer/person';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface IVedtakProps {
     åpenBehandling: IBehandling;
@@ -29,6 +31,9 @@ const StyledSkjemaSteg = styled(Skjemasteg)`
 const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } = useBehandlingContext();
+
+    const { erUlagretNyFeilutbetaltValutaPeriode } = useFeilutbetaltValutaTabellContext();
+    const { erUlagretNyRefusjonEøsPeriode } = useRefusjonEøsTabellContext();
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
     const navigate = useNavigate();
@@ -36,10 +41,6 @@ const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
     const [visModal, settVisModal] = useState<boolean>(false);
 
     const visSubmitKnapp = !vurderErLesevisning() && åpenBehandling?.status === BehandlingStatus.UTREDES;
-
-    const [erUlagretNyFeilutbetaltValutaPeriode, settErUlagretNyFeilutbetaltValutaPeriode] = useState(false);
-
-    const [erUlagretNyRefusjonEøsPeriode, settErUlagretNyRefusjonEøsPeriode] = useState(false);
 
     const foreslåVedtak = () => {
         foreslåVedtakNesteOnClick(
@@ -67,13 +68,11 @@ const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
         >
             <OppsummeringVedtakInnhold
                 åpenBehandling={åpenBehandling}
-                settErUlagretNyFeilutbetaltValutaPeriode={settErUlagretNyFeilutbetaltValutaPeriode}
                 erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending}
                 visModal={visModal}
                 settVisModal={settVisModal}
-                settErUlagretNyRefusjonEøsPeriode={settErUlagretNyRefusjonEøsPeriode}
                 bruker={bruker}
-            ></OppsummeringVedtakInnhold>
+            />
         </StyledSkjemaSteg>
     );
 };

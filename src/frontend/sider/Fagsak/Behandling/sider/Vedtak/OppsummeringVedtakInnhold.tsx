@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
@@ -8,11 +6,13 @@ import { Alert, BodyShort, Button, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
+import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import RefusjonEøs from './RefusjonEøs/RefusjonEøs';
 import { RefusjonEøsTabell } from './RefusjonEøsNy/RefusjonEøsTabell';
+import { useRefusjonEøsTabellContext } from './RefusjonEøsNy/RefusjonEøsTabellContext';
 import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrollsak';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
-import Vedtaksmeny from './Vedtaksmeny';
+import { Vedtaksmeny } from './Vedtaksmeny/Vedtaksmeny';
 import { VedtakBegrunnelserProvider } from './Vedtaksperioder/VedtakBegrunnelserContext';
 import Vedtaksperioder from './Vedtaksperioder/Vedtaksperioder';
 import { useAppContext } from '../../../../../context/AppContext';
@@ -36,8 +36,6 @@ interface IOppsummeringVedtakInnholdProps {
     åpenBehandling: IBehandling;
     visModal: boolean;
     settVisModal: (erUlagretNyFeilutbetaltValuta: boolean) => void;
-    settErUlagretNyFeilutbetaltValutaPeriode: (erUlagretNyFeilutbetaltValuta: boolean) => void;
-    settErUlagretNyRefusjonEøsPeriode: (erUlagretNyRefusjonEøsPeriode: boolean) => void;
     erBehandlingMedVedtaksbrevutsending: boolean;
     bruker: IPersonInfo;
 }
@@ -52,11 +50,9 @@ const Modaltekst = styled(BodyShort)`
 
 const OppsummeringVedtakInnhold = ({
     åpenBehandling,
-    settErUlagretNyFeilutbetaltValutaPeriode,
     erBehandlingMedVedtaksbrevutsending,
     visModal,
     settVisModal,
-    settErUlagretNyRefusjonEøsPeriode,
     bruker,
 }: IOppsummeringVedtakInnholdProps) => {
     const { hentSaksbehandlerRolle, toggles } = useAppContext();
@@ -70,8 +66,8 @@ const OppsummeringVedtakInnhold = ({
 
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
-    const [visFeilutbetaltValuta, settVisFeilutbetaltValuta] = useState(åpenBehandling.feilutbetaltValuta.length > 0);
-    const [visRefusjonEøs, settVisRefusjonEøs] = useState(åpenBehandling.refusjonEøs.length > 0);
+    const { erFeilutbetaltValutaTabellSynlig } = useFeilutbetaltValutaTabellContext();
+    const { erRefusjonEøsTabellSynlig } = useRefusjonEøsTabellContext();
 
     const hentVedtaksbrev = () => {
         const rolle = hentSaksbehandlerRolle();
@@ -122,12 +118,7 @@ const OppsummeringVedtakInnhold = ({
 
     return (
         <>
-            <Vedtaksmeny
-                åpenBehandling={åpenBehandling}
-                erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending}
-                visFeilutbetaltValuta={() => settVisFeilutbetaltValuta(true)}
-                visRefusjonEøs={() => settVisRefusjonEøs(true)}
-            />
+            <Vedtaksmeny erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending} />
             {visDokumentModal && (
                 <PdfVisningModal
                     onRequestClose={() => {
@@ -168,32 +159,22 @@ const OppsummeringVedtakInnhold = ({
                                 <VedtakBegrunnelserProvider>
                                     <Vedtaksperioder åpenBehandling={åpenBehandling} />
                                 </VedtakBegrunnelserProvider>
-                                {visFeilutbetaltValuta && (
+                                {erFeilutbetaltValutaTabellSynlig && (
                                     <FeilutbetaltValuta
                                         feilutbetaltValutaListe={åpenBehandling.feilutbetaltValuta}
                                         behandlingId={åpenBehandling.behandlingId}
                                         fagsakId={fagsakId}
-                                        settErUlagretNyFeilutbetaltValutaPeriode={
-                                            settErUlagretNyFeilutbetaltValutaPeriode
-                                        }
                                         erLesevisning={erLesevisning}
-                                        skjulFeilutbetaltValuta={() => settVisFeilutbetaltValuta(false)}
                                     />
                                 )}
-                                {(visRefusjonEøs || åpenBehandling.refusjonEøs.length > 0) &&
-                                    toggles[ToggleNavn.brukNyRefusjonEøsForm] && (
-                                        <RefusjonEøsTabell
-                                            settErUlagretNyRefusjonEøsPeriode={settErUlagretNyRefusjonEøsPeriode}
-                                            skjulRefusjonEøs={() => settVisRefusjonEøs(false)}
-                                        />
-                                    )}
-                                {visRefusjonEøs && !toggles[ToggleNavn.brukNyRefusjonEøsForm] && (
+                                {erRefusjonEøsTabellSynlig && toggles[ToggleNavn.brukNyRefusjonEøsForm] && (
+                                    <RefusjonEøsTabell />
+                                )}
+                                {erRefusjonEøsTabellSynlig && !toggles[ToggleNavn.brukNyRefusjonEøsForm] && (
                                     <RefusjonEøs
                                         refusjonEøsListe={åpenBehandling.refusjonEøs ?? []}
                                         behandlingId={åpenBehandling.behandlingId}
                                         fagsakId={fagsakId}
-                                        settErUlagretNyRefusjonEøsPeriode={settErUlagretNyRefusjonEøsPeriode}
-                                        skjulRefusjonEøs={() => settVisRefusjonEøs(false)}
                                     />
                                 )}
                             </>

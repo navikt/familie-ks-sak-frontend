@@ -17,6 +17,8 @@ import { TidslinjeProvider } from '../../../komponenter/Tidslinje/TidslinjeConte
 import type { IBehandling } from '../../../typer/behandling';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
+import { FeilutbetaltValutaTabellProvider } from './sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
+import { RefusjonEøsTabellProvider } from './sider/Vedtak/RefusjonEøsNy/RefusjonEøsTabellContext';
 
 interface Props {
     bruker: IPersonInfo;
@@ -71,9 +73,13 @@ export const BehandlingRouter = ({ bruker, åpenBehandling }: Props) => {
             <Route
                 path="/vedtak"
                 element={
-                    <SammensattKontrollsakProvider åpenBehandling={åpenBehandling}>
-                        <Vedtak åpenBehandling={åpenBehandling} bruker={bruker} />
-                    </SammensattKontrollsakProvider>
+                    <FeilutbetaltValutaTabellProvider>
+                        <RefusjonEøsTabellProvider>
+                            <SammensattKontrollsakProvider åpenBehandling={åpenBehandling}>
+                                <Vedtak åpenBehandling={åpenBehandling} bruker={bruker} />
+                            </SammensattKontrollsakProvider>
+                        </RefusjonEøsTabellProvider>
+                    </FeilutbetaltValutaTabellProvider>
                 }
             />
         </Routes>
