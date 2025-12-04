@@ -7,6 +7,7 @@ import { Button, CopyButton, Heading, Table } from '@navikt/ds-react';
 import { ATextAction } from '@navikt/ds-tokens/dist/tokens';
 
 import FeilutbetaltValutaPeriode from './FeilutbetaltValutaPeriode';
+import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValutaTabellContext';
 import NyFeilutbetaltValutaPeriode from './NyFeilutbetaltValutaPeriode';
 import type { IRestFeilutbetaltValuta } from '../../../../../../typer/eøs-feilutbetalt-valuta';
 import { isoDatoPeriodeTilFormatertString } from '../../../../../../utils/dato';
@@ -15,9 +16,7 @@ interface IFeilutbetaltValuta {
     behandlingId: number;
     fagsakId: string | undefined;
     feilutbetaltValutaListe: IRestFeilutbetaltValuta[];
-    settErUlagretNyFeilutbetaltValutaPeriode: (erUlagretNyFeilutbetaltValuta: boolean) => void;
     erLesevisning: boolean;
-    skjulFeilutbetaltValuta: () => void;
 }
 
 const FlexColumnDiv = styled.div`
@@ -41,12 +40,13 @@ const KopierTilNøsKnapp = styled(CopyButton)`
 
 const FeilutbetaltValuta = ({
     feilutbetaltValutaListe,
-    settErUlagretNyFeilutbetaltValutaPeriode,
     erLesevisning,
-    skjulFeilutbetaltValuta,
     behandlingId,
     fagsakId,
 }: IFeilutbetaltValuta) => {
+    const { skjulFeilutbetaltValutaTabell, settErUlagretNyFeilutbetaltValutaPeriode } =
+        useFeilutbetaltValutaTabellContext();
+
     const [ønskerÅLeggeTilNyPeriode, settØnskerÅLeggeTilNyPeriode] = useState(feilutbetaltValutaListe.length === 0);
 
     const oppdaterØnskerÅLeggeTilNyPeriode = (ønskerÅLeggeTilNyPeriode: boolean) => {
@@ -55,7 +55,7 @@ const FeilutbetaltValuta = ({
     };
 
     if (feilutbetaltValutaListe.length === 0 && !ønskerÅLeggeTilNyPeriode) {
-        skjulFeilutbetaltValuta();
+        skjulFeilutbetaltValutaTabell();
     }
 
     const totaltFeilutbetaltBeløp = feilutbetaltValutaListe.reduce((acc, val) => acc + val.feilutbetaltBeløp, 0);

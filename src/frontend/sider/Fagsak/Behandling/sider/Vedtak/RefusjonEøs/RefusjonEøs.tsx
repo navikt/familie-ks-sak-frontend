@@ -11,14 +11,13 @@ import RefusjonEøsPeriode from './RefusjonEøsPeriode';
 import type { IRestRefusjonEøs } from '../../../../../../typer/refusjon-eøs';
 import { isoDatoPeriodeTilFormatertString } from '../../../../../../utils/dato';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
+import { useRefusjonEøsTabellContext } from '../RefusjonEøsNy/RefusjonEøsTabellContext';
 import { summerBeløpForPerioder } from '../utils';
 
 interface IRefusjonEøs {
     behandlingId: number;
     fagsakId: string | undefined;
     refusjonEøsListe: IRestRefusjonEøs[];
-    settErUlagretNyRefusjonEøsPeriode: (erUlagretNyRefusjonEøs: boolean) => void;
-    skjulRefusjonEøs: () => void;
 }
 
 const FlexColumnDiv = styled.div`
@@ -40,14 +39,10 @@ const KopierTilNøsKnapp = styled(CopyButton)`
     }
 `;
 
-const RefusjonEøs = ({
-    refusjonEøsListe,
-    settErUlagretNyRefusjonEøsPeriode,
-    skjulRefusjonEøs,
-    behandlingId,
-    fagsakId,
-}: IRefusjonEøs) => {
+const RefusjonEøs = ({ refusjonEøsListe, behandlingId, fagsakId }: IRefusjonEøs) => {
     const { vurderErLesevisning } = useBehandlingContext();
+    const { skjulRefusjonEøsTabell, settErUlagretNyRefusjonEøsPeriode } = useRefusjonEøsTabellContext();
+
     const erLesevisning = vurderErLesevisning();
 
     const [ønskerÅLeggeTilNyPeriode, settØnskerÅLeggeTilNyPeriode] = useState(refusjonEøsListe.length === 0);
@@ -57,7 +52,7 @@ const RefusjonEøs = ({
     }, [ønskerÅLeggeTilNyPeriode]);
 
     if (refusjonEøsListe.length === 0 && !ønskerÅLeggeTilNyPeriode) {
-        skjulRefusjonEøs();
+        skjulRefusjonEøsTabell();
     }
 
     const totaltRefusjonsbeløp = summerBeløpForPerioder(
