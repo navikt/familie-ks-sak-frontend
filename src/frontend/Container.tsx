@@ -7,6 +7,7 @@ import AppInfoModal from './komponenter/Modal/AppInfoModal';
 import OpprettFagsakModal from './komponenter/Modal/Fagsak/OpprettFagsakModal';
 import { FeilmeldingModal } from './komponenter/Modal/FeilmeldingModal';
 import UgyldigSesjon from './komponenter/Modal/SesjonUtløpt';
+import { UtdatertAppVersjonModal } from './komponenter/Modal/UtdatertAppVersjonModal/UtdatertAppVersjonModal';
 import { ForhåndsvisOpprettingAvPdfModal } from './komponenter/PdfVisningModal/ForhåndsvisOpprettingAvPdfModal';
 import SystemetLaster from './komponenter/SystemetLaster/SystemetLaster';
 import { TidslinjeProvider } from './komponenter/Tidslinje/TidslinjeContext';
@@ -44,6 +45,7 @@ const Container = () => {
                         <Toasts />
 
                         <Main $systemetLaster={systemetLaster()}>
+                            <UtdatertAppVersjonModal />
                             <OpprettFagsakModal />
                             <FeilmeldingModal />
                             <ForhåndsvisOpprettingAvPdfModal />

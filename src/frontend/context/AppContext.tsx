@@ -25,8 +25,6 @@ import { alleTogglerAv, ToggleNavn } from '../typer/toggles';
 import { gruppeIdTilRolle, gruppeIdTilSuperbrukerRolle } from '../utils/behandling';
 import { tilFeilside } from '../utils/commons';
 
-const FEM_MINUTTER = 300000;
-
 export type FamilieAxiosRequestConfig<D> = AxiosRequestConfig & {
     data?: D;
     påvirkerSystemLaster?: boolean;
@@ -76,66 +74,10 @@ const AppProvider = (props: PropsWithChildren) => {
     const { request, systemetLaster } = useHttp();
 
     const [toggles, settToggles] = useState<IToggles>(alleTogglerAv());
-    const [appVersjon, settAppVersjon] = useState('');
 
     const [appInfoModal, settAppInfoModal] = useState<IModal>(initalState);
     const [toasts, settToasts] = useState<{ [toastId: string]: IToast }>({});
     const [erTogglesHentet, settErTogglesHentet] = useState(false);
-
-    const verifiserVersjon = () => {
-        request<void, string>({
-            url: '/version',
-            method: 'GET',
-        }).then((versjon: Ressurs<string>) => {
-            if (versjon.status === RessursStatus.SUKSESS) {
-                if (appVersjon !== '' && appVersjon !== versjon.data) {
-                    settAppInfoModal({
-                        tittel: 'Løsningen er utdatert',
-                        innhold: () => {
-                            return (
-                                <div className={'utdatert-losning'}>
-                                    <Alert variant={'info'} inline>
-                                        <BodyShort>
-                                            Det finnes en oppdatert versjon av løsningen. Det anbefales at du oppdaterer
-                                            med en gang.
-                                        </BodyShort>
-                                    </Alert>
-                                </div>
-                            );
-                        },
-                        visModal: true,
-                        onClose: () => lukkModal(),
-                        actions: [
-                            <Button
-                                key={'oppdater'}
-                                variant={'primary'}
-                                size={'small'}
-                                onClick={() => {
-                                    window.location.reload();
-                                }}
-                                children={'Ok, oppdater'}
-                            />,
-                            <Button
-                                key={'avbryt'}
-                                size={'small'}
-                                variant={'tertiary'}
-                                onClick={() => lukkModal()}
-                                children={'Avbryt'}
-                            />,
-                        ],
-                    });
-                }
-
-                settAppVersjon(versjon.data);
-            }
-        });
-
-        setTimeout(() => {
-            verifiserVersjon();
-        }, FEM_MINUTTER);
-    };
-
-    useEffect(() => verifiserVersjon(), []);
 
     useEffect(() => {
         request<string[], IToggles>({
