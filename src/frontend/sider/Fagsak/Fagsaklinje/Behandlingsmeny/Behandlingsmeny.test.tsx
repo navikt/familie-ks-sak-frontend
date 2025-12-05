@@ -5,7 +5,7 @@ import { describe, expect, type MockInstance, vi } from 'vitest';
 
 import { Heading } from '@navikt/ds-react';
 
-import { BehandlingsmenyNy } from './BehandlingsmenyNy';
+import { Behandlingsmeny } from './Behandlingsmeny';
 import { lagBehandling, lagVisningBehandling } from '../../../../testutils/testdata/behandlingTestdata';
 import { lagFagsak } from '../../../../testutils/testdata/fagsakTestdata';
 import { lagPerson } from '../../../../testutils/testdata/personTestdata';
@@ -71,9 +71,9 @@ function Wrapper({
     );
 }
 
-describe('BehandlingsmenyNy', () => {
+describe('Behandlingsmeny', () => {
     test('skal vise en uåpnet behandlingsmeny', () => {
-        const { screen } = render(<BehandlingsmenyNy />, { wrapper: Wrapper });
+        const { screen } = render(<Behandlingsmeny />, { wrapper: Wrapper });
         expect(screen.getByRole('button', { name: 'Meny' })).toBeInTheDocument();
         expect(screen.queryByRole('menuitem', { name: 'Opprett behandling' })).not.toBeInTheDocument();
         expect(screen.queryByRole('menuitem', { name: 'Send informasjonsbrev' })).not.toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal kunne åpne behandlingsmenyen', async () => {
-        const { screen, user } = render(<BehandlingsmenyNy />, { wrapper: Wrapper });
+        const { screen, user } = render(<Behandlingsmeny />, { wrapper: Wrapper });
 
         await user.click(screen.getByRole('button', { name: 'Meny' }));
 
@@ -105,7 +105,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal kunne åpne opprett behandling modal', async () => {
-        const { screen, user } = render(<BehandlingsmenyNy />, { wrapper: Wrapper });
+        const { screen, user } = render(<Behandlingsmeny />, { wrapper: Wrapper });
 
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
@@ -117,7 +117,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal kunne navigere til dokumentutsending', async () => {
-        const { screen, user } = render(<BehandlingsmenyNy />, {
+        const { screen, user } = render(<Behandlingsmeny />, {
             wrapper: props => <Wrapper {...props} initialEntries={[{ pathname: '/fagsak/1/1/registrer-soknad' }]} />,
         });
 
@@ -131,7 +131,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal kunne åpne henlegg behandling modal', async () => {
-        const { screen, user } = render(<BehandlingsmenyNy />, { wrapper: Wrapper });
+        const { screen, user } = render(<Behandlingsmeny />, { wrapper: Wrapper });
 
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
@@ -143,7 +143,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal kunne åpne endre behandlede enhet modal', async () => {
-        const { screen, user } = render(<BehandlingsmenyNy />, { wrapper: Wrapper });
+        const { screen, user } = render(<Behandlingsmeny />, { wrapper: Wrapper });
 
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
@@ -155,7 +155,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal kunne åpne endre behandlingstema modal', async () => {
-        const { screen, user } = render(<BehandlingsmenyNy />, { wrapper: Wrapper });
+        const { screen, user } = render(<Behandlingsmeny />, { wrapper: Wrapper });
 
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
@@ -167,7 +167,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal kunne åpne legg til barn på behandling modal', async () => {
-        const { screen, user } = render(<BehandlingsmenyNy />, { wrapper: Wrapper });
+        const { screen, user } = render(<Behandlingsmeny />, { wrapper: Wrapper });
 
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
@@ -179,7 +179,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal kunne åpne sett behandling på vent modal', async () => {
-        const { screen, user } = render(<BehandlingsmenyNy />, { wrapper: Wrapper });
+        const { screen, user } = render(<Behandlingsmeny />, { wrapper: Wrapper });
 
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
@@ -191,7 +191,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal kunne åpne ta behandling av vent modal', async () => {
-        const { screen, user } = render(<BehandlingsmenyNy />, {
+        const { screen, user } = render(<Behandlingsmeny />, {
             wrapper: props => (
                 <Wrapper
                     {...props}
@@ -215,7 +215,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal kunne åpne legg til brevmottakere modal', async () => {
-        const { screen, user } = render(<BehandlingsmenyNy />, { wrapper: Wrapper });
+        const { screen, user } = render(<Behandlingsmeny />, { wrapper: Wrapper });
 
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
@@ -229,7 +229,7 @@ describe('BehandlingsmenyNy', () => {
     test('skal kunne åpne a-inntekt', async () => {
         const windowOpenSpy: MockInstance = vi.spyOn(window, 'open').mockImplementation(() => null);
 
-        const { screen, user } = render(<BehandlingsmenyNy />, { wrapper: Wrapper });
+        const { screen, user } = render(<Behandlingsmeny />, { wrapper: Wrapper });
 
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
@@ -243,7 +243,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal vise endre behandlede enhet modal med en gang hvis behandlingen er på midlertidig enhet', () => {
-        const { screen } = render(<BehandlingsmenyNy />, {
+        const { screen } = render(<Behandlingsmeny />, {
             wrapper: props => (
                 <Wrapper
                     {...props}
@@ -261,7 +261,7 @@ describe('BehandlingsmenyNy', () => {
     });
 
     test('skal vise behandling på vent modal med en gang hvis behandlingen er på vent', () => {
-        const { screen } = render(<BehandlingsmenyNy />, {
+        const { screen } = render(<Behandlingsmeny />, {
             wrapper: props => (
                 <Wrapper
                     {...props}

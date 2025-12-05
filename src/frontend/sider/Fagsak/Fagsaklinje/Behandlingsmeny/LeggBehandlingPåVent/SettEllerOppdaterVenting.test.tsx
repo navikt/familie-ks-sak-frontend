@@ -1,15 +1,15 @@
 import type { PropsWithChildren } from 'react';
 
-import { describe, expect } from 'vitest';
+import { describe } from 'vitest';
 
 import { ActionMenu } from '@navikt/ds-react';
 
-import { LeggTiLBarnPåBehandlingNy } from './LeggTilBarnPåBehandlingNy';
+import { SettEllerOppdaterVenting } from './SettEllerOppdaterVenting';
 import { lagBehandling } from '../../../../../testutils/testdata/behandlingTestdata';
 import { lagFagsak } from '../../../../../testutils/testdata/fagsakTestdata';
 import { render, TestProviders } from '../../../../../testutils/testrender';
-import { BehandlingÅrsak, type IBehandling, SettPåVentÅrsak } from '../../../../../typer/behandling';
-import type { IMinimalFagsak } from '../../../../../typer/fagsak';
+import { BehandlingStatus, type IBehandling, SettPåVentÅrsak } from '../../../../../typer/behandling';
+import { type IMinimalFagsak } from '../../../../../typer/fagsak';
 import { BehandlingProvider } from '../../../Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '../../../Behandling/context/HentOgSettBehandlingContext';
 import { FagsakProvider } from '../../../FagsakContext';
@@ -19,14 +19,7 @@ interface WrapperProps extends PropsWithChildren {
     behandling?: IBehandling;
 }
 
-function Wrapper({
-    fagsak = lagFagsak(),
-    behandling = lagBehandling({
-        behandlingPåVent: undefined,
-        årsak: BehandlingÅrsak.NYE_OPPLYSNINGER,
-    }),
-    children,
-}: WrapperProps) {
+function Wrapper({ fagsak = lagFagsak(), behandling = lagBehandling(), children }: WrapperProps) {
     return (
         <TestProviders>
             <FagsakProvider fagsak={fagsak}>
@@ -42,53 +35,53 @@ function Wrapper({
     );
 }
 
-describe('LeggTilBarnPåBehandlingNy', () => {
-    test('skal rendre komponenten', () => {
+describe('SettEllerOppdaterVenting', () => {
+    test('skal rendre komponent når behandlingen ikke er satt på vent', () => {
         const åpneModal = vi.fn();
-        const { screen } = render(<LeggTiLBarnPåBehandlingNy åpneModal={åpneModal} />, { wrapper: Wrapper });
-        expect(screen.getByRole('menuitem', { name: 'Legg til barn' })).toBeInTheDocument();
+        const { screen } = render(<SettEllerOppdaterVenting åpneModal={åpneModal} />, {
+            wrapper: props => (
+                <Wrapper
+                    {...props}
+                    behandling={lagBehandling({
+                        behandlingPåVent: undefined,
+                    })}
+                />
+            ),
+        });
+        expect(screen.getByRole('menuitem', { name: 'Sett behandling på vent' })).toBeInTheDocument();
     });
 
-    test('skal ikke rendre komponenten i lesevisning', () => {
+    test('skal rendre komponent når behandlingen ikke er satt på vent', () => {
         const åpneModal = vi.fn();
-        const { screen } = render(<LeggTiLBarnPåBehandlingNy åpneModal={åpneModal} />, {
+        const { screen } = render(<SettEllerOppdaterVenting åpneModal={åpneModal} />, {
             wrapper: props => (
                 <Wrapper
                     {...props}
                     behandling={lagBehandling({
                         behandlingPåVent: {
                             frist: '2025-10-10',
-                            årsak: SettPåVentÅrsak.AVVENTER_BEHANDLING,
+                            årsak: SettPåVentÅrsak.AVVENTER_DOKUMENTASJON,
                         },
-                        årsak: BehandlingÅrsak.NYE_OPPLYSNINGER,
                     })}
                 />
             ),
         });
-        expect(screen.queryByRole('menuitem', { name: 'Legg til barn' })).not.toBeInTheDocument();
+        expect(screen.getByRole('menuitem', { name: 'Endre ventende behandling' })).toBeInTheDocument();
     });
 
-    test('skal ikke rendre komponenten hvis behandlingsårsaken er urelevant', () => {
+    test('skal ikke rendre komponent når behandlingenstatus er noe annet enn UTREDES', () => {
         const åpneModal = vi.fn();
-        const { screen } = render(<LeggTiLBarnPåBehandlingNy åpneModal={åpneModal} />, {
+        const { screen } = render(<SettEllerOppdaterVenting åpneModal={åpneModal} />, {
             wrapper: props => (
                 <Wrapper
                     {...props}
                     behandling={lagBehandling({
+                        status: BehandlingStatus.AVSLUTTET,
                         behandlingPåVent: undefined,
-                        årsak: BehandlingÅrsak.SØKNAD,
                     })}
                 />
             ),
         });
-        expect(screen.queryByRole('menuitem', { name: 'Legg til barn' })).not.toBeInTheDocument();
-    });
-
-    test('skal kunne åpne modal', async () => {
-        const åpneModal = vi.fn();
-        const { screen, user } = render(<LeggTiLBarnPåBehandlingNy åpneModal={åpneModal} />, { wrapper: Wrapper });
-        const knapp = screen.getByRole('menuitem', { name: 'Legg til barn' });
-        await user.click(knapp);
-        expect(åpneModal).toHaveBeenCalledOnce();
+        expect(screen.queryByRole('menuitem')).not.toBeInTheDocument();
     });
 });

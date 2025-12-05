@@ -11,7 +11,6 @@ export enum ToggleNavn {
     kanOppretteRevurderingMedAarsakIverksetteKaVedtak = 'familie-ks-sak.kan-opprette-revurdering-med-aarsak-iverksette-ka-vedtak',
     skalAlltidViseAlleVedtaksperioder = 'familie-ks-sak-frontend.alltid-vis-alle-vedtaksperioder',
     skalViseOppholdsadresse = 'familie-ks-sak.skal-vise-oppholdsadresse',
-    brukNyActionMenu = 'familie-ks-sak.bruk-ny-action-meny',
     brukNyRefusjonEøsForm = 'familie-ks-sak.bruk-ny-refusjon-eos-skjema',
 }
 

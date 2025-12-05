@@ -6,8 +6,8 @@ import { describe, expect } from 'vitest';
 import { ActionMenu } from '@navikt/ds-react';
 import { byggSuksessRessurs } from '@navikt/familie-typer';
 
+import { HenleggBehandling } from './HenleggBehandling';
 import { HenleggBehandlingModal } from './HenleggBehandlingModal';
-import { HenleggBehandlingNy } from './HenleggBehandlingNy';
 import { ModalType } from '../../../../../context/ModalContext';
 import { useModal } from '../../../../../hooks/useModal';
 import { server } from '../../../../../testutils/mocks/node';
@@ -51,14 +51,14 @@ function Wrapper({ fagsak = lagFagsak(), behandling = lagBehandling(), children 
     );
 }
 
-describe('HenleggBehandlingNy', () => {
+describe('HenleggBehandling', () => {
     test('skal rendre knapp', () => {
-        const { screen } = render(<HenleggBehandlingNy />, { wrapper: Wrapper });
+        const { screen } = render(<HenleggBehandling />, { wrapper: Wrapper });
         expect(screen.getByRole('menuitem', { name: 'Henlegg behandling' })).toBeInTheDocument();
     });
 
     test('skal ikke vise knapp hvis man befinner seg i lesevisning', () => {
-        const { screen } = render(<HenleggBehandlingNy />, {
+        const { screen } = render(<HenleggBehandling />, {
             wrapper: props => (
                 <Wrapper
                     {...props}
@@ -76,7 +76,7 @@ describe('HenleggBehandlingNy', () => {
     });
 
     test('skal ikke vise knapp hvis man befinner på et steg som ikke er henlegtbart', () => {
-        const { screen } = render(<HenleggBehandlingNy />, {
+        const { screen } = render(<HenleggBehandling />, {
             wrapper: props => (
                 <Wrapper
                     {...props}
@@ -97,7 +97,7 @@ describe('HenleggBehandlingNy', () => {
             })
         );
 
-        const { screen } = render(<HenleggBehandlingNy />, {
+        const { screen } = render(<HenleggBehandling />, {
             wrapper: props => (
                 <Wrapper
                     {...props}
@@ -115,7 +115,7 @@ describe('HenleggBehandlingNy', () => {
     });
 
     test('skal kunne åpne modal', async () => {
-        const { screen, user } = render(<HenleggBehandlingNy />, { wrapper: Wrapper });
+        const { screen, user } = render(<HenleggBehandling />, { wrapper: Wrapper });
 
         const knapp = screen.getByRole('menuitem', { name: 'Henlegg behandling' });
         await user.click(knapp);

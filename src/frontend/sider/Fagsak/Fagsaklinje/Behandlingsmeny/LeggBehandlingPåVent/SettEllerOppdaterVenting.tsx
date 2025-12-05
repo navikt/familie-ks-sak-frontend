@@ -1,32 +1,24 @@
-import { useState } from 'react';
+import { ActionMenu } from '@navikt/ds-react';
 
-import { Dropdown } from '@navikt/ds-react';
-
-import { SettBehandlingPåVentModal } from './SettBehandlingPåVentModal';
-import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingStatus } from '../../../../../typer/behandling';
+import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
 
-interface IProps {
-    behandling: IBehandling;
+interface Props {
+    åpneModal: () => void;
 }
 
-const SettEllerOppdaterVenting = ({ behandling }: IProps) => {
-    const [visModal, settVisModal] = useState<boolean>(!!behandling.behandlingPåVent);
+export function SettEllerOppdaterVenting({ åpneModal }: Props) {
+    const { behandling } = useBehandlingContext();
+
+    if (behandling.status !== BehandlingStatus.UTREDES) {
+        return null;
+    }
 
     const erBehandlingAlleredePåVent = !!behandling.behandlingPåVent;
 
     return (
-        <>
-            <Dropdown.Menu.List.Item
-                onClick={() => settVisModal(true)}
-                disabled={behandling.status !== BehandlingStatus.UTREDES}
-            >
-                {erBehandlingAlleredePåVent ? 'Endre ventende behandling' : 'Sett behandling på vent'}
-            </Dropdown.Menu.List.Item>
-
-            {visModal && <SettBehandlingPåVentModal lukkModal={() => settVisModal(false)} />}
-        </>
+        <ActionMenu.Item onSelect={åpneModal}>
+            {erBehandlingAlleredePåVent ? 'Endre ventende behandling' : 'Sett behandling på vent'}
+        </ActionMenu.Item>
     );
-};
-
-export default SettEllerOppdaterVenting;
+}

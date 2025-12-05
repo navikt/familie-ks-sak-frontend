@@ -9,18 +9,15 @@ import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
 import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
 import { FagsakProvider } from './FagsakContext';
 import { Fagsaklinje } from './Fagsaklinje/Fagsaklinje';
-import { FagsaklinjeNy } from './Fagsaklinje/FagsaklinjeNy';
 import JournalpostListe from './journalposter/JournalpostListe';
 import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
 import Personlinje from './Personlinje/Personlinje';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
-import { useAppContext } from '../../context/AppContext';
 import { useFagsakId } from '../../hooks/useFagsakId';
 import { useHentFagsak } from '../../hooks/useHentFagsak';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
 import { HentOgSettBehandlingProvider } from './Behandling/context/HentOgSettBehandlingContext';
 import { useHentPerson } from '../../hooks/useHentPerson';
-import { ToggleNavn } from '../../typer/toggles';
 
 const Innhold = styled.div`
     height: calc(100vh - 3rem);
@@ -33,8 +30,6 @@ const Hovedinnhold = styled.div`
 `;
 
 export function FagsakContainer() {
-    const { toggles } = useAppContext();
-
     const fagsakId = useFagsakId();
 
     const { data: fagsak, isPending: isPendingFagsak, error: fagsakError } = useHentFagsak(fagsakId);
@@ -85,11 +80,7 @@ export function FagsakContainer() {
                                     path="/saksoversikt"
                                     element={
                                         <>
-                                            {toggles[ToggleNavn.brukNyActionMenu] ? (
-                                                <FagsaklinjeNy />
-                                            ) : (
-                                                <Fagsaklinje minimalFagsak={fagsak} />
-                                            )}
+                                            <Fagsaklinje />
                                             <Saksoversikt minimalFagsak={fagsak} />
                                         </>
                                     }
@@ -99,11 +90,7 @@ export function FagsakContainer() {
                                     path="/dokumentutsending"
                                     element={
                                         <>
-                                            {toggles[ToggleNavn.brukNyActionMenu] ? (
-                                                <FagsaklinjeNy />
-                                            ) : (
-                                                <Fagsaklinje minimalFagsak={fagsak} />
-                                            )}
+                                            <Fagsaklinje />
                                             <DokumentutsendingProvider fagsakId={fagsak.id}>
                                                 <Dokumentutsending bruker={bruker} />
                                             </DokumentutsendingProvider>
@@ -115,11 +102,7 @@ export function FagsakContainer() {
                                     path="/dokumenter"
                                     element={
                                         <>
-                                            {toggles[ToggleNavn.brukNyActionMenu] ? (
-                                                <FagsaklinjeNy />
-                                            ) : (
-                                                <Fagsaklinje minimalFagsak={fagsak} />
-                                            )}
+                                            <Fagsaklinje />
                                             <JournalpostListe bruker={bruker} />
                                         </>
                                     }
@@ -129,7 +112,7 @@ export function FagsakContainer() {
                                     path="/:behandlingId/*"
                                     element={
                                         <HentOgSettBehandlingProvider fagsak={fagsak}>
-                                            <BehandlingContainer bruker={bruker} minimalFagsak={fagsak} />
+                                            <BehandlingContainer bruker={bruker} />
                                         </HentOgSettBehandlingProvider>
                                     }
                                 />
