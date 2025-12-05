@@ -11,12 +11,12 @@ import { DokumentutsendingProvider } from './Dokumentutsending/Dokumentutsending
 import { FagsakProvider } from './FagsakContext';
 import JournalpostListe from './journalposter/JournalpostListe';
 import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
-import Personlinje from './Personlinje/Personlinje';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
 import { useFagsakId } from '../../hooks/useFagsakId';
 import { useHentFagsak } from '../../hooks/useHentFagsak';
 import { useHentPerson } from '../../hooks/useHentPerson';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
+import { Personlinje } from '../../komponenter/Personlinje/Personlinje';
 import { Fagsaklinje } from '../../komponenter/Saklinje/Fagsaklinje';
 
 const Innhold = styled.div`

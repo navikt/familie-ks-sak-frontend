@@ -6,8 +6,8 @@ import { Journalstatus, RessursStatus } from '@navikt/familie-typer';
 import { DokumentPanel } from './Dokument/DokumentPanel';
 import { JournalpostSkjema } from './JournalpostSkjema';
 import { ManuellJournalføringProvider, useManuellJournalføringContext } from './ManuellJournalføringContext';
+import { Personlinje } from '../../komponenter/Personlinje/Personlinje';
 import { fagsakHeaderHøydeRem } from '../../typer/styling';
-import Personlinje from '../Fagsak/Personlinje/Personlinje';
 
 const ToKolonnerDiv = styled.div<{ $viserAlert?: boolean }>`
     display: grid;
