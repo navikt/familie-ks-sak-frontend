@@ -18,7 +18,7 @@ import type { IBehandling } from '../../../typer/behandling';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
 import { FeilutbetaltValutaTabellProvider } from './sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
-import { RefusjonEøsTabellProvider } from './sider/Vedtak/RefusjonEøsNy/RefusjonEøsTabellContext';
+import { RefusjonEøsTabellProvider } from './sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
 
 interface Props {
     bruker: IPersonInfo;
