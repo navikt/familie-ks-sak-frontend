@@ -6,14 +6,14 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingRouter } from './BehandlingRouter';
 import { BehandlingProvider } from './context/BehandlingContext';
-import { Høyremeny } from './Høyremeny/Høyremeny';
-import type { IPersonInfo } from '../../../typer/person';
-import { Behandlingslinje } from '../Fagsaklinje/Behandlingslinje';
 import { useHentOgSettBehandlingContext } from './context/HentOgSettBehandlingContext';
+import { Høyremeny } from './Høyremeny/Høyremeny';
 import { Venstremeny } from './Venstremeny/Venstremeny';
-import { HenleggBehandlingModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingModal';
-import { HenleggBehandlingVeivalgModal } from '../Fagsaklinje/Behandlingsmeny/HenleggBehandling/HenleggBehandlingVeivalgModal';
+import type { IPersonInfo } from '../../../typer/person';
 import { KorrigerEtterbetalingModal } from './sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetalingModal';
+import { Behandlingslinje } from '../../../komponenter/Saklinje/Behandlingslinje';
+import { HenleggBehandlingModal } from '../../../komponenter/Saklinje/Meny/HenleggBehandling/HenleggBehandlingModal';
+import { HenleggBehandlingVeivalgModal } from '../../../komponenter/Saklinje/Meny/HenleggBehandling/HenleggBehandlingVeivalgModal';
 
 const FlexContainer = styled.div`
     display: flex;
