@@ -4,20 +4,20 @@ import styled from 'styled-components';
 import { Alert, HStack, Loader } from '@navikt/ds-react';
 
 import BehandlingContainer from './Behandling/BehandlingContainer';
+import { HentOgSettBehandlingProvider } from './Behandling/context/HentOgSettBehandlingContext';
 import { BrukerProvider } from './BrukerContext';
 import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
 import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
 import { FagsakProvider } from './FagsakContext';
-import { Fagsaklinje } from './Fagsaklinje/Fagsaklinje';
 import JournalpostListe from './journalposter/JournalpostListe';
 import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
 import Personlinje from './Personlinje/Personlinje';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
 import { useFagsakId } from '../../hooks/useFagsakId';
 import { useHentFagsak } from '../../hooks/useHentFagsak';
-import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
-import { HentOgSettBehandlingProvider } from './Behandling/context/HentOgSettBehandlingContext';
 import { useHentPerson } from '../../hooks/useHentPerson';
+import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
+import { Fagsaklinje } from '../../komponenter/Saklinje/Fagsaklinje';
 
 const Innhold = styled.div`
     height: calc(100vh - 3rem);
