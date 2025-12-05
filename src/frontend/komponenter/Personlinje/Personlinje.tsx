@@ -3,36 +3,36 @@ import type { PropsWithChildren } from 'react';
 import { BodyShort, Box, CopyButton, HStack } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
 
-import { PersonIkon } from '../../../komponenter/PersonIkon';
-import { type IPersonInfo } from '../../../typer/person';
-import { hentAlder } from '../../../utils/formatter';
-import { erAdresseBeskyttet } from '../../../utils/validators';
+import { type IPersonInfo } from '../../typer/person';
+import { hentAlder } from '../../utils/formatter';
+import { erAdresseBeskyttet } from '../../utils/validators';
+import { PersonIkon } from '../PersonIkon';
 
-interface IProps {
+interface Props {
     bruker?: IPersonInfo;
 }
 
-const InnholdContainer = ({ children }: PropsWithChildren) => {
+function InnholdContainer({ children }: PropsWithChildren) {
     return (
-        <Box borderWidth="0 0 1 0" borderColor="border-subtle" paddingInline="4" paddingBlock="2">
+        <Box borderWidth={'0 0 1 0'} borderColor={'border-subtle'} paddingInline={'4'} paddingBlock={'2'}>
             {children}
         </Box>
     );
-};
+}
 
-const Divider = () => {
+function Divider() {
     return <div>|</div>;
-};
+}
 
-const Personlinje = ({ bruker }: IProps) => {
+export function Personlinje({ bruker }: Props) {
     if (bruker === undefined) {
         return (
             <InnholdContainer>
-                <HStack align="center" gap="3 4">
-                    <HStack align="center" gap="3 4">
+                <HStack align={'center'} gap={'3 4'}>
+                    <HStack align={'center'} gap={'3 4'}>
                         <PersonIkon kjønn={kjønnType.UKJENT} erBarn={false} />
                         <Divider />
-                        <HStack align="center" gap="1">
+                        <HStack align={'center'} gap={'1'}>
                             Personen er ikke identifisert
                         </HStack>
                     </HStack>
@@ -40,10 +40,11 @@ const Personlinje = ({ bruker }: IProps) => {
             </InnholdContainer>
         );
     }
+
     return (
         <InnholdContainer>
-            <HStack align="center" gap="3 4">
-                <HStack align="center" gap="3 4">
+            <HStack align={'center'} gap={'3 4'}>
+                <HStack align={'center'} gap={'3 4'}>
                     <PersonIkon
                         kjønn={bruker.kjønn}
                         erBarn={hentAlder(bruker.fødselsdato) < 18}
@@ -51,14 +52,14 @@ const Personlinje = ({ bruker }: IProps) => {
                         harTilgang={bruker.harTilgang}
                         erEgenAnsatt={bruker.erEgenAnsatt}
                     />
-                    <HStack align="center" gap="3 4">
-                        <BodyShort as="span" weight="semibold">
+                    <HStack align={'center'} gap={'3 4'}>
+                        <BodyShort as={'span'} weight={'semibold'}>
                             {bruker.navn} ({hentAlder(bruker.fødselsdato ?? '')} år)
                         </BodyShort>
                         <Divider />
-                        <HStack align="center" gap="1">
+                        <HStack align={'center'} gap={'1'}>
                             {bruker.personIdent}
-                            <CopyButton copyText={bruker.personIdent.replace(' ', '')} size="small" />
+                            <CopyButton copyText={bruker.personIdent.replace(' ', '')} size={'small'} />
                         </HStack>
                     </HStack>
                 </HStack>
@@ -67,6 +68,4 @@ const Personlinje = ({ bruker }: IProps) => {
             </HStack>
         </InnholdContainer>
     );
-};
-
-export default Personlinje;
+}
