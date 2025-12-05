@@ -17,7 +17,6 @@ export enum SøkersAktivitet {
     MOTTAR_UTBETALING_FRA_NAV_UNDER_OPPHOLD_I_UTLANDET = 'MOTTAR_UTBETALING_FRA_NAV_UNDER_OPPHOLD_I_UTLANDET',
     MOTTAR_UFØRETRYGD_FRA_NAV_UNDER_OPPHOLD_I_UTLANDET = 'MOTTAR_UFØRETRYGD_FRA_NAV_UNDER_OPPHOLD_I_UTLANDET',
     MOTTAR_PENSJON_FRA_NAV_UNDER_OPPHOLD_I_UTLANDET = 'MOTTAR_PENSJON_FRA_NAV_UNDER_OPPHOLD_I_UTLANDET',
-    NASJONAL_RETT_DIFFERANSEBEREGNING = 'NASJONAL_RETT_DIFFERANSEBEREGNING',
     INAKTIV = 'INAKTIV',
 }
 
@@ -35,7 +34,6 @@ export const kompetanseAktiviteter: Record<KompetanseAktivitet, string> = {
     MOTTAR_UTBETALING_FRA_NAV_UNDER_OPPHOLD_I_UTLANDET: 'Mottar utbetaling fra NAV under opphold i utlandet',
     MOTTAR_UFØRETRYGD_FRA_NAV_UNDER_OPPHOLD_I_UTLANDET: 'Mottar uføretrygd fra Norge under opphold i utlandet',
     MOTTAR_PENSJON_FRA_NAV_UNDER_OPPHOLD_I_UTLANDET: 'Mottar pensjon fra Norge under opphold i utlandet',
-    NASJONAL_RETT_DIFFERANSEBEREGNING: 'Nasjonal rett-differanseberegning',
     INAKTIV: 'Inaktiv',
 
     I_ARBEID: 'I arbeid',
@@ -52,19 +50,20 @@ export enum AnnenForelderAktivitet {
     INAKTIV = 'INAKTIV',
     IKKE_AKTUELT = 'IKKE_AKTUELT',
     UTSENDT_ARBEIDSTAKER = 'UTSENDT_ARBEIDSTAKER',
-    NASJONAL_RETT_DIFFERANSEBEREGNING = 'NASJONAL_RETT_DIFFERANSEBEREGNING',
 }
 
 export enum KompetanseResultat {
     NORGE_ER_PRIMÆRLAND = 'NORGE_ER_PRIMÆRLAND',
     NORGE_ER_SEKUNDÆRLAND = 'NORGE_ER_SEKUNDÆRLAND',
     TO_PRIMÆRLAND = 'TO_PRIMÆRLAND',
+    NASJONAL_RETT_DIFFERANSEBEREGNING = 'NASJONAL_RETT_DIFFERANSEBEREGNING',
 }
 
 export const kompetanseResultater: Record<KompetanseResultat, string> = {
     NORGE_ER_PRIMÆRLAND: 'Norge er Primærland',
     NORGE_ER_SEKUNDÆRLAND: 'Norge er Sekundærland',
     TO_PRIMÆRLAND: 'To primærland',
+    NASJONAL_RETT_DIFFERANSEBEREGNING: 'Nasjonal rett-differanseberegning',
 };
 
 export enum EøsPeriodeStatus {
