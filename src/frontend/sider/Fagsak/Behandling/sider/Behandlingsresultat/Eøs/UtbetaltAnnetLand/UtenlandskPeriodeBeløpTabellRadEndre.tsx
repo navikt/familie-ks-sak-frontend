@@ -203,7 +203,6 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                                 size="small"
                                 variant={valideringErOk() ? 'primary' : 'secondary'}
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                             >
                                 Ferdig
                             </Button>
@@ -225,7 +224,6 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                                     barn => `${barn}-`
                                 )}_${skjema.felter.initielFom.verdi}`}
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                                 size={'small'}
                                 icon={<TrashIcon />}
                             >

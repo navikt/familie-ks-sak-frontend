@@ -22,6 +22,7 @@ interface IProps {
 
 const Container = styled.div`
     margin-top: ${ASpacing16};
+
     &:last-child {
         margin-bottom: ${ASpacing8};
     }
@@ -80,7 +81,6 @@ const GeneriskVilkår = ({ person, vilkårFraConfig, vilkårResultater, generisk
                         }}
                         id={leggTilPeriodeKnappId}
                         loading={vilkårsvurderingApi.oppretterVilkår}
-                        disabled={vilkårsvurderingApi.oppretterVilkår}
                         variant="tertiary"
                         size="medium"
                         icon={<PlusCircleIcon />}

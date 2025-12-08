@@ -184,7 +184,6 @@ const ValutakursTabellRadEndre = ({
                                 size="small"
                                 variant={valideringErOk() ? 'primary' : 'secondary'}
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                             >
                                 Ferdig
                             </Button>
@@ -206,7 +205,6 @@ const ValutakursTabellRadEndre = ({
                                     barn => `${barn}-`
                                 )}_${skjema.felter.initielFom.verdi}`}
                                 loading={sletterValutakurs}
-                                disabled={sletterValutakurs}
                                 size={'small'}
                                 icon={<TrashIcon />}
                             >

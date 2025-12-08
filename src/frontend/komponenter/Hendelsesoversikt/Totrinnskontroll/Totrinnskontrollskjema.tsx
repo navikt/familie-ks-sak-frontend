@@ -126,7 +126,6 @@ const Totrinnskontrollskjema = ({ innsendtVedtak, sendInnVedtak, åpenBehandling
             <StyledButton
                 variant={'primary'}
                 loading={senderInn}
-                disabled={senderInn}
                 size={'small'}
                 onClick={() => {
                     if (!senderInn) {
