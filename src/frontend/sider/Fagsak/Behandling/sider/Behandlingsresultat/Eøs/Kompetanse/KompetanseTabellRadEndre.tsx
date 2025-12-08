@@ -66,7 +66,6 @@ const KompetanseTabellRadEndre = ({
     skjema,
     tilgjengeligeBarn,
     status,
-    valideringErOk,
     sendInnSkjema,
     toggleForm,
     slettKompetanse,
@@ -269,7 +268,7 @@ const KompetanseTabellRadEndre = ({
                             <Button
                                 onClick={() => sendInnSkjema()}
                                 size="small"
-                                variant={valideringErOk() ? 'primary' : 'secondary'}
+                                variant={'primary'}
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                             >
                                 Ferdig

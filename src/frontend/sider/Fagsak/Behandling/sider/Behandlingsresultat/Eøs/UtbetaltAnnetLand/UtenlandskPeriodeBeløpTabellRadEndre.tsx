@@ -79,7 +79,6 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
     skjema,
     tilgjengeligeBarn,
     status,
-    valideringErOk,
     sendInnSkjema,
     toggleForm,
     slettUtenlandskPeriodeBeløp,
@@ -194,14 +193,13 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                         </Select>
                     </UtbetaltBeløpRad>
                 </StyledFieldset>
-
                 {!lesevisning && (
                     <Knapperad>
                         <div>
                             <Button
                                 onClick={() => sendInnSkjema()}
                                 size="small"
-                                variant={valideringErOk() ? 'primary' : 'secondary'}
+                                variant={'primary'}
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                             >
                                 Ferdig
@@ -215,7 +213,6 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                                 Avbryt
                             </Button>
                         </div>
-
                         {skjema.felter.status?.verdi !== EøsPeriodeStatus.IKKE_UTFYLT && (
                             <Button
                                 variant={'tertiary'}

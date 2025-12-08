@@ -55,7 +55,7 @@ export const LeggTilBrevmottakerModal = <T extends SkjemaBrevmottaker | IRestBre
 
     const [visSkjemaNårDetErÉnBrevmottaker, settVisSkjemaNårDetErÉnBrevmottaker] = useState(false);
 
-    const { skjema, valideringErOk } = verdierFraBrevmottakerUseSkjema;
+    const { skjema } = verdierFraBrevmottakerUseSkjema;
     const heading = utledHeading(brevmottakere.length, erLesevisning);
 
     const erSkjemaSynlig =
@@ -112,7 +112,7 @@ export const LeggTilBrevmottakerModal = <T extends SkjemaBrevmottaker | IRestBre
                 {!erLesevisning && erSkjemaSynlig ? (
                     <>
                         <Button
-                            variant={valideringErOk() ? 'primary' : 'secondary'}
+                            variant={'primary'}
                             loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                             disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                             onClick={() => lagreMottaker(verdierFraBrevmottakerUseSkjema)}

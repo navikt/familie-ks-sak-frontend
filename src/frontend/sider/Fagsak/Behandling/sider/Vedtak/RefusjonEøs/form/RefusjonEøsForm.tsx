@@ -75,8 +75,7 @@ export function RefusjonEøsForm({ type, refusjonEøs, skjulForm, readOnly }: Pr
                                     variant={'tertiary'}
                                     size={'small'}
                                     onClick={onAvbyrt}
-                                    loading={isSubmitting}
-                                    disabled={readOnly}
+                                    disabled={readOnly || isSubmitting}
                                 >
                                     Avbryt
                                 </Button>

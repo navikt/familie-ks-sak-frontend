@@ -114,7 +114,6 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                     />
                 </FlexDiv>
             </Feltmargin>
-
             <Feltmargin>
                 <Checkbox
                     checked={skjema.felter.deltBosted.verdi}
@@ -127,7 +126,6 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                     {'Barnet har delt bosted'}
                 </Checkbox>
             </Feltmargin>
-
             <Feltmargin>
                 <StyledTextField
                     {...skjema.felter.antallTimer.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
@@ -144,7 +142,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
             {!erLesevisning && (
                 <Knapperekke>
                     <KnapperekkeVenstre>
-                        <StyledButton size={'small'} variant={'secondary'} onClick={oppdaterOvergangsordningAndel}>
+                        <StyledButton size={'small'} variant={'primary'} onClick={oppdaterOvergangsordningAndel}>
                             Bekreft
                         </StyledButton>
                         <Button variant="tertiary" size="small" onClick={tilbakestillOgLukkOvergangsordningAndel}>

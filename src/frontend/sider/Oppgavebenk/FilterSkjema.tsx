@@ -95,7 +95,6 @@ const FilterSkjema = () => {
                             if (validerSkjema()) hentOppgaver();
                         }}
                         loading={oppgaver.status === RessursStatus.HENTER}
-                        disabled={oppgaver.status === RessursStatus.HENTER}
                         children={'Hent oppgaver'}
                     />
                     <Button
