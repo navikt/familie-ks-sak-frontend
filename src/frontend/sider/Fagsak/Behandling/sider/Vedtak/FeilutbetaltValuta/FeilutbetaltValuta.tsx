@@ -7,10 +7,10 @@ import { Button, CopyButton, Heading, Table } from '@navikt/ds-react';
 import { ATextAction } from '@navikt/ds-tokens/dist/tokens';
 
 import FeilutbetaltValutaPeriode from './FeilutbetaltValutaPeriode';
-import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValutaTabellContext';
 import NyFeilutbetaltValutaPeriode from './NyFeilutbetaltValutaPeriode';
 import type { IRestFeilutbetaltValuta } from '../../../../../../typer/eøs-feilutbetalt-valuta';
 import { isoDatoPeriodeTilFormatertString } from '../../../../../../utils/dato';
+import { useFeilutbetaltValutaTabellContext } from '../FeilutbetaltValutaNy/FeilutbetaltValutaTabellContext';
 
 interface IFeilutbetaltValuta {
     behandlingId: number;

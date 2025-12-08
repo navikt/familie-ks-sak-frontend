@@ -6,7 +6,7 @@ import { BehandlingKategori } from '../../../../../../typer/behandlingstema';
 import { vedtakHarFortsattUtbetaling } from '../../../../../../utils/vedtakUtils';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 import EndreEndringstidspunkt from '../endringstidspunkt/EndreEndringstidspunkt';
-import { useFeilutbetaltValutaTabellContext } from '../FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
+import { useFeilutbetaltValutaTabellContext } from '../FeilutbetaltValutaNy/FeilutbetaltValutaTabellContext';
 import KorrigerEtterbetaling from '../KorrigerEtterbetaling/KorrigerEtterbetaling';
 import KorrigerVedtak from '../KorrigerVedtakModal/KorrigerVedtak';
 import { useRefusjonEøsTabellContext } from '../RefusjonEøs/RefusjonEøsTabellContext';

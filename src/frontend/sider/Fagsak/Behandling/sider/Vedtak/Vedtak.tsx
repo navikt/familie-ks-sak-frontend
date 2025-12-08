@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
+import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValutaNy/FeilutbetaltValutaTabellContext';
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
 import { useRefusjonEøsTabellContext } from './RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
