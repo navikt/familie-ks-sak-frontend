@@ -218,7 +218,7 @@ const OppsummeringVedtakInnhold = ({
                         />
                         <Button
                             key={'oppgavebenk'}
-                            variant={'secondary'}
+                            variant={'primary'}
                             size={'medium'}
                             onClick={() => {
                                 settVisModal(false);

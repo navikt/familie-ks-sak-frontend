@@ -24,10 +24,14 @@ import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingPar
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';
-import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from '../../../../../typer/eøsPerioder';
+import {
+    type IRestKompetanse,
+    type IRestUtenlandskPeriodeBeløp,
+    type IRestValutakurs,
+} from '../../../../../typer/eøsPerioder';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../../../utils/formatter';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const EndretUtbetalingAndel = styled.div`
     display: flex;
@@ -180,7 +184,7 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
                     {åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 && !erLesevisning && (
                         <OvergangsordningAndel>
                             <Button
-                                variant="primary"
+                                variant="secondary"
                                 size="medium"
                                 onClick={opprettOvergangsordningAndel}
                                 icon={<StyledPlusIkon />}

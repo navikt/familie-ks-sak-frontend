@@ -76,7 +76,7 @@ const RefusjonEøsPeriode = ({ refusjonEøs, behandlingId }: IRefusjonEøsPeriod
                             <Button
                                 size="small"
                                 onClick={() => oppdaterEksisterendePeriode(() => settErRadEkspandert(false))}
-                                variant={'primary'}
+                                variant={'secondary'}
                             >
                                 Lagre periode
                             </Button>

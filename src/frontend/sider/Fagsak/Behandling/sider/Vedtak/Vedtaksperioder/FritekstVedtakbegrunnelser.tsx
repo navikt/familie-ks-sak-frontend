@@ -132,7 +132,6 @@ const FritekstVedtakbegrunnelser = () => {
                     Skriv {målform[søkersMålform].toLowerCase()}
                 </StyledTag>
             </InfoBoks>
-
             {erLesevisning ? (
                 <StyledList id={fieldsetId}>
                     {skjema.felter.fritekster.verdi.map((fritekst: FeltState<IFritekstFelt>) => (
@@ -205,7 +204,7 @@ const FritekstVedtakbegrunnelser = () => {
                                     putVedtaksperiodeMedFritekster();
                                 }}
                                 size="small"
-                                variant="primary"
+                                variant="secondary"
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                             >
                                 Lagre

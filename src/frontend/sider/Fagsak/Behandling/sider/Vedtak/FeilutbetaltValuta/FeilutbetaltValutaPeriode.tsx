@@ -65,7 +65,7 @@ const FeilutbetaltValutaPeriode = ({ feilutbetaltValuta, erLesevisning, behandli
                         key={`${feilutbetaltValuta.id}-$${erRadEkspandert ? 'ekspandert' : 'lukket'}`}
                     />
                     <FlexRowDiv>
-                        <Button size="small" onClick={oppdaterEksisterendePeriode} variant={'primary'}>
+                        <Button size="small" onClick={oppdaterEksisterendePeriode} variant={'secondary'}>
                             Lagre periode
                         </Button>
                         <Button size="small" variant="tertiary" onClick={tilbakestillOgLukkSkjema}>

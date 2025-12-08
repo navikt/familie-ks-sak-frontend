@@ -46,7 +46,7 @@ const NyRefusjonEøsPeriode = ({ lukkNyPeriode, behandlingId }: INyRefusjonEøsP
                 <FlexColumnDiv>
                     <RefusjonEøsSkjema skjema={skjema} />
                     <FlexRowDiv style={{ gap: '1rem' }}>
-                        <Button size="small" onClick={lagre} variant={'primary'}>
+                        <Button size="small" onClick={lagre} variant={'secondary'}>
                             Lagre periode
                         </Button>
                         <Button size="small" variant="tertiary" onClick={avbrytLeggTilNy}>

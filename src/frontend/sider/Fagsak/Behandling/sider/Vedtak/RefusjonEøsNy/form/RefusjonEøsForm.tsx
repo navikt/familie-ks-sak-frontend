@@ -63,7 +63,7 @@ export function RefusjonEøsForm({ type, refusjonEøs, skjulForm, readOnly }: Pr
                             <Stack direction={'row'} gap={'space-16'}>
                                 <Button
                                     type={'submit'}
-                                    variant={'primary'}
+                                    variant={'secondary'}
                                     size={'small'}
                                     loading={isSubmitting}
                                     disabled={readOnly}
