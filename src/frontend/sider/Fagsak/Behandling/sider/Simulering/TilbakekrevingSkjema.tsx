@@ -302,7 +302,7 @@ const TilbakekrevingSkjema = ({
                                                 }}
                                                 size={'small'}
                                                 icon={<FileTextIcon />}
-                                                disabled={isOpprettTilbakekrevingVarselBrevPdfPending}
+                                                loading={isOpprettTilbakekrevingVarselBrevPdfPending}
                                             >
                                                 Forhåndsvis varsel
                                             </Button>

@@ -213,7 +213,6 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                             size="medium"
                             variant="primary"
                             loading={lagrerVilkår}
-                            disabled={lagrerVilkår}
                         >
                             Ferdig
                         </Button>
@@ -239,7 +238,6 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                         }
                         id={vilkårFeilmeldingId(lagretVilkårResultat)}
                         loading={sletterVilkår}
-                        disabled={sletterVilkår}
                         size={'medium'}
                         variant={'tertiary'}
                         icon={<TrashIcon />}

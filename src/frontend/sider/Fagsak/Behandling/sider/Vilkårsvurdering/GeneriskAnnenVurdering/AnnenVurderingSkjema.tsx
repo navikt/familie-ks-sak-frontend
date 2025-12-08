@@ -88,7 +88,6 @@ export const AnnenVurderingSkjema = ({
                             size="small"
                             variant="secondary"
                             loading={lagrerAnnenVurdering}
-                            disabled={lagrerAnnenVurdering}
                         >
                             Ferdig
                         </Button>

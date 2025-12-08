@@ -66,7 +66,7 @@ export function RefusjonEøsForm({ type, refusjonEøs, skjulForm, readOnly }: Pr
                                     variant={'primary'}
                                     size={'small'}
                                     loading={isSubmitting}
-                                    disabled={readOnly || isSubmitting}
+                                    disabled={readOnly}
                                 >
                                     Lagre periode
                                 </Button>
@@ -75,7 +75,8 @@ export function RefusjonEøsForm({ type, refusjonEøs, skjulForm, readOnly }: Pr
                                     variant={'tertiary'}
                                     size={'small'}
                                     onClick={onAvbyrt}
-                                    disabled={readOnly || isSubmitting}
+                                    loading={isSubmitting}
+                                    disabled={readOnly}
                                 >
                                     Avbryt
                                 </Button>

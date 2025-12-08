@@ -43,12 +43,7 @@ export function OpprettFagsakModalInnhold({ personIdent, personNavn }: Props) {
                 </VStack>
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    variant={'primary'}
-                    onClick={() => mutate({ personIdent })}
-                    disabled={isPending}
-                    loading={isPending}
-                >
+                <Button variant={'primary'} onClick={() => mutate({ personIdent })} loading={isPending}>
                     Opprett fagsak
                 </Button>
                 <Button type={'button'} variant={'tertiary'} onClick={lukkModal}>
