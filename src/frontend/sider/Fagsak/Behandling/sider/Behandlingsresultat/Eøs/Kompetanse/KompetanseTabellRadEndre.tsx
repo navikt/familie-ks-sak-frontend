@@ -29,6 +29,7 @@ const kompetansePeriodeFeilmeldingId = (kompetanse: ISkjema<IKompetanse, IBehand
     `kompetanse-periode_${kompetanse.felter.barnIdenter.verdi.map(barn => `${barn}-`)}_${
         kompetanse.felter.periode.verdi.fom
     }`;
+
 interface IProps {
     skjema: ISkjema<IKompetanse, IBehandling>;
     tilgjengeligeBarn: OptionType[];
@@ -65,7 +66,6 @@ const KompetanseTabellRadEndre = ({
     skjema,
     tilgjengeligeBarn,
     status,
-    valideringErOk,
     sendInnSkjema,
     toggleForm,
     slettKompetanse,
@@ -268,9 +268,8 @@ const KompetanseTabellRadEndre = ({
                             <Button
                                 onClick={() => sendInnSkjema()}
                                 size="small"
-                                variant={valideringErOk() ? 'primary' : 'secondary'}
+                                variant={'secondary'}
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                             >
                                 Ferdig
                             </Button>
@@ -292,7 +291,6 @@ const KompetanseTabellRadEndre = ({
                                     barn => `${barn}-`
                                 )}_${skjema.felter.initielFom.verdi}`}
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                                 size={'small'}
                                 icon={<TrashIcon />}
                             >

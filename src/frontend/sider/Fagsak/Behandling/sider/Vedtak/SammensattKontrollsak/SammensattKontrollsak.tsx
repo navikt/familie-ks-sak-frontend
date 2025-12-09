@@ -46,7 +46,7 @@ export function SammensattKontrollsak() {
             {!erLesevisning && (
                 <StyledButton
                     onClick={() => opprettEllerOppdaterSammensattKontrollsak(fritekst)}
-                    variant="primary"
+                    variant="secondary"
                     size="small"
                     loading={false}
                 >

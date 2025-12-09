@@ -26,7 +26,7 @@ const FlexRowDiv = styled.div`
 const NyRefusjonEøsPeriode = ({ lukkNyPeriode, behandlingId }: INyRefusjonEøsPeriodeProps) => {
     const [feilmelding, settFeilmelding] = useState<string>();
 
-    const { skjema, lagreNyPeriode, valideringErOk } = useRefusjonEøs({
+    const { skjema, lagreNyPeriode } = useRefusjonEøs({
         behandlingId,
         settFeilmelding: settFeilmelding,
     });
@@ -46,7 +46,7 @@ const NyRefusjonEøsPeriode = ({ lukkNyPeriode, behandlingId }: INyRefusjonEøsP
                 <FlexColumnDiv>
                     <RefusjonEøsSkjema skjema={skjema} />
                     <FlexRowDiv style={{ gap: '1rem' }}>
-                        <Button size="small" onClick={lagre} variant={valideringErOk() ? 'primary' : 'secondary'}>
+                        <Button size="small" onClick={lagre} variant={'secondary'}>
                             Lagre periode
                         </Button>
                         <Button size="small" variant="tertiary" onClick={avbrytLeggTilNy}>

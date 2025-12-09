@@ -91,7 +91,7 @@ const Skjemasteg = ({
                 {feilmelding !== '' && <StyledErrorMessage>{feilmelding}</StyledErrorMessage>}
                 <Navigering>
                     {nesteOnClick && skalViseNesteKnapp && (!vurderErLesevisning() || kanGåVidereILesevisning) && (
-                        <Button variant={'primary'} onClick={onNesteClicked} loading={senderInn} disabled={senderInn}>
+                        <Button variant={'primary'} onClick={onNesteClicked} loading={senderInn}>
                             {nesteKnappTittel}
                         </Button>
                     )}

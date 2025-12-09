@@ -79,7 +79,6 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
     skjema,
     tilgjengeligeBarn,
     status,
-    valideringErOk,
     sendInnSkjema,
     toggleForm,
     slettUtenlandskPeriodeBeløp,
@@ -201,9 +200,8 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                             <Button
                                 onClick={() => sendInnSkjema()}
                                 size="small"
-                                variant={valideringErOk() ? 'primary' : 'secondary'}
+                                variant={'secondary'}
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                             >
                                 Ferdig
                             </Button>
@@ -225,7 +223,6 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                                     barn => `${barn}-`
                                 )}_${skjema.felter.initielFom.verdi}`}
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                                 size={'small'}
                                 icon={<TrashIcon />}
                             >
