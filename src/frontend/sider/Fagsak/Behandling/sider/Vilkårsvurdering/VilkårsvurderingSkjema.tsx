@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { Activity, useEffect, useState } from 'react';
 
-import { Collapse } from 'react-collapse';
 import styled from 'styled-components';
 
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
@@ -15,7 +14,7 @@ import PersonInformasjon from '../../../../../komponenter/PersonInformasjon/Pers
 import { PersonType } from '../../../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig } from '../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const PersonLinje = styled.div`
     display: flex;
@@ -92,8 +91,7 @@ const VilkårsvurderingSkjema = () => {
                                     : 'Vis vilkårsvurdering'}
                             </Button>
                         </PersonLinje>
-
-                        <Collapse isOpened={personErEkspandert[personResultat.personIdent]}>
+                        <Activity mode={personErEkspandert[personResultat.personIdent] ? 'visible' : 'hidden'}>
                             <IndentertInnhold>
                                 <>
                                     {personResultat.person.registerhistorikk ? (
@@ -149,7 +147,7 @@ const VilkårsvurderingSkjema = () => {
                                             />
                                         ))}
                             </IndentertInnhold>
-                        </Collapse>
+                        </Activity>
                     </div>
                 );
             })}
