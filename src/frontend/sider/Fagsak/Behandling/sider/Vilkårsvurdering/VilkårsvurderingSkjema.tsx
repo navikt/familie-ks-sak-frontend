@@ -1,35 +1,18 @@
 import { Activity, useEffect, useState } from 'react';
 
-import styled from 'styled-components';
-
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
-import { Alert, Button } from '@navikt/ds-react';
-import { ASpacing14, ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
+import { Alert, Box, Button, HStack } from '@navikt/ds-react';
 
 import GeneriskAnnenVurdering from './GeneriskAnnenVurdering/GeneriskAnnenVurdering';
 import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
+import styles from './VilkårsvurderingSkjema.module.css';
 import PersonInformasjon from '../../../../../komponenter/PersonInformasjon/PersonInformasjon';
 import { PersonType } from '../../../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig } from '../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../context/BehandlingContext';
-
-const PersonLinje = styled.div`
-    display: flex;
-    justify-content: space-between;
-    position: -webkit-sticky;
-    position: sticky;
-    top: -1px;
-    z-index: 3;
-    background-color: white;
-    padding: ${ASpacing8} 0;
-`;
-
-const IndentertInnhold = styled.div`
-    padding-left: ${ASpacing14};
-`;
 
 const VilkårsvurderingSkjema = () => {
     const { vilkårsvurdering } = useVilkårsvurderingContext();
@@ -66,7 +49,12 @@ const VilkårsvurderingSkjema = () => {
                         key={`${index}_${personResultat.person.fødselsdato}`}
                         id={`${index}_${personResultat.person.fødselsdato}`}
                     >
-                        <PersonLinje>
+                        <HStack
+                            paddingBlock={'space-32'}
+                            className={styles.personlinje}
+                            justify={'space-between'}
+                            wrap={false}
+                        >
                             <PersonInformasjon person={personResultat.person} somOverskrift />
                             <Button
                                 id={`vis-skjul-vilkårsvurdering-${index}_${personResultat.person.fødselsdato}}`}
@@ -90,9 +78,9 @@ const VilkårsvurderingSkjema = () => {
                                     ? 'Skjul vilkårsvurdering'
                                     : 'Vis vilkårsvurdering'}
                             </Button>
-                        </PersonLinje>
+                        </HStack>
                         <Activity mode={personErEkspandert[personResultat.personIdent] ? 'visible' : 'hidden'}>
-                            <IndentertInnhold>
+                            <Box paddingInline={'space-56 space-0'}>
                                 <>
                                     {personResultat.person.registerhistorikk ? (
                                         <Registeropplysninger
@@ -146,7 +134,7 @@ const VilkårsvurderingSkjema = () => {
                                                 annenVurderingConfig={annenVurderingConfig}
                                             />
                                         ))}
-                            </IndentertInnhold>
+                            </Box>
                         </Activity>
                     </div>
                 );
