@@ -9,8 +9,11 @@ import type { ISaksbehandler } from '@navikt/familie-typer';
 
 import { AppProvider } from '../context/AppContext';
 import { AuthOgHttpProvider } from '../context/AuthContext';
+import { FeatureTogglesProvider } from '../context/FeatureTogglesContext';
 import { ModalProvider } from '../context/ModalContext';
+import { skruPåAlleToggles } from './mocks/handlers/featureToggleHandlers';
 import { lagSaksbehandler } from './testdata/saksbehandlerTestdata';
+import type { FeatureToggles } from '../typer/featureToggles';
 
 function lagQueryClient() {
     return new QueryClient({
@@ -26,22 +29,26 @@ interface Props extends PropsWithChildren {
     queryClient?: QueryClient;
     initialEntries?: [{ pathname: string }];
     saksbehandler?: ISaksbehandler;
+    featureToggles?: FeatureToggles;
 }
 
 export function TestProviders({
     queryClient = lagQueryClient(), // Ny instans for hver test
     initialEntries = [{ pathname: '/' }],
     saksbehandler = lagSaksbehandler(),
+    featureToggles = skruPåAlleToggles(),
     children,
 }: Props) {
     return (
         <AuthOgHttpProvider autentisertSaksbehandler={saksbehandler}>
             <QueryClientProvider client={queryClient}>
-                <AppProvider>
-                    <ModalProvider>
-                        <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
-                    </ModalProvider>
-                </AppProvider>
+                <FeatureTogglesProvider featureToggles={featureToggles}>
+                    <AppProvider>
+                        <ModalProvider>
+                            <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
+                        </ModalProvider>
+                    </AppProvider>
+                </FeatureTogglesProvider>
             </QueryClientProvider>
         </AuthOgHttpProvider>
     );

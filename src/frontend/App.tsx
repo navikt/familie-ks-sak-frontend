@@ -11,9 +11,11 @@ import { hentInnloggetBruker } from './api/saksbehandler';
 import Container from './Container';
 import { AppProvider } from './context/AppContext';
 import { AuthOgHttpProvider } from './context/AuthContext';
+import { FeatureTogglesProvider } from './context/FeatureTogglesContext';
 import { ModalProvider } from './context/ModalContext';
 import { ErrorBoundary } from './komponenter/ErrorBoundary/ErrorBoundary';
 import { initGrafanaFaro } from './utils/grafanaFaro';
+import { erProd } from './utils/miljø';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -37,12 +39,14 @@ const App = () => {
         <ErrorBoundary autentisertSaksbehandler={autentisertSaksbehandler}>
             <AuthOgHttpProvider autentisertSaksbehandler={autentisertSaksbehandler}>
                 <QueryClientProvider client={queryClient}>
-                    <ReactQueryDevtools position={'right'} initialIsOpen={false} />
-                    <AppProvider>
-                        <ModalProvider>
-                            <Container />
-                        </ModalProvider>
-                    </AppProvider>
+                    {!erProd() && <ReactQueryDevtools position={'right'} initialIsOpen={false} />}
+                    <FeatureTogglesProvider>
+                        <AppProvider>
+                            <ModalProvider>
+                                <Container />
+                            </ModalProvider>
+                        </AppProvider>
+                    </FeatureTogglesProvider>
                 </QueryClientProvider>
             </AuthOgHttpProvider>
         </ErrorBoundary>

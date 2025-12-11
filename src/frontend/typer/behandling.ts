@@ -3,6 +3,7 @@ import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
 import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
+import { type FeatureToggles, FeatureToggle } from './featureToggles';
 import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { ManglendeSvalbardmerking } from './ManglendeSvalbardmerking';
 import type { IRestOvergangsordningAndel } from './overgangsordningAndel';
@@ -15,7 +16,6 @@ import type {
     TilbakekrevingsbehandlingResultat,
     TilbakekrevingsbehandlingÅrsak,
 } from './tilbakekrevingsbehandling';
-import { type IToggles, ToggleNavn } from './toggles';
 import type { ITotrinnskontroll } from './totrinnskontroll';
 import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
 import type { Utbetalingsperiode } from './utbetalingsperiode';
@@ -62,15 +62,15 @@ export enum BehandlingÅrsak {
     IVERKSETTE_KA_VEDTAK = 'IVERKSETTE_KA_VEDTAK',
 }
 
-export const behandlingÅrsakerSomIkkeSkalSettesManuelt = (toggles: IToggles): BehandlingÅrsak[] =>
+export const behandlingÅrsakerSomIkkeSkalSettesManuelt = (toggles: FeatureToggles): BehandlingÅrsak[] =>
     [
         BehandlingÅrsak.KLAGE,
         BehandlingÅrsak.LOVENDRING_2024,
         BehandlingÅrsak.SATSENDRING,
-        toggles[ToggleNavn.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
+        toggles[FeatureToggle.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
             ? null
             : BehandlingÅrsak.IVERKSETTE_KA_VEDTAK,
-        toggles[ToggleNavn.kanManueltKorrigereMedVedtaksbrev] ? null : BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
+        toggles[FeatureToggle.kanManueltKorrigereMedVedtaksbrev] ? null : BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
     ].filter(behandlingsårsak => behandlingsårsak !== null);
 
 export const behandlingÅrsak: Record<BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak | KlageÅrsak, string> = {
