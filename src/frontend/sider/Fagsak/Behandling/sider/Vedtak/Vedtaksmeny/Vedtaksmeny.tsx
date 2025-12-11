@@ -9,7 +9,7 @@ import EndreEndringstidspunkt from '../endringstidspunkt/EndreEndringstidspunkt'
 import { useFeilutbetaltValutaTabellContext } from '../FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import KorrigerEtterbetaling from '../KorrigerEtterbetaling/KorrigerEtterbetaling';
 import KorrigerVedtak from '../KorrigerVedtakModal/KorrigerVedtak';
-import { useRefusjonEøsTabellContext } from '../RefusjonEøsNy/RefusjonEøsTabellContext';
+import { useRefusjonEøsTabellContext } from '../RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from '../SammensattKontrollsak/SammensattKontrollsakContext';
 
 interface Props {
