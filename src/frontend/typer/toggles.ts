@@ -11,6 +11,7 @@ export enum ToggleNavn {
     kanOppretteRevurderingMedAarsakIverksetteKaVedtak = 'familie-ks-sak.kan-opprette-revurdering-med-aarsak-iverksette-ka-vedtak',
     skalAlltidViseAlleVedtaksperioder = 'familie-ks-sak-frontend.alltid-vis-alle-vedtaksperioder',
     skalViseOppholdsadresse = 'familie-ks-sak.skal-vise-oppholdsadresse',
+    brukNyFeilutbetaltValutaSkjema = 'familie-ks-sak.bruk-ny-feilutbetalt-valuta-skjema',
 }
 
 export const alleTogglerAv = (): IToggles => {

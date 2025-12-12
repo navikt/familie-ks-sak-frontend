@@ -9,6 +9,7 @@ import { SøknadProvider } from './sider/RegistrerSøknad/SøknadContext';
 import { type SideId, sider } from './sider/sider';
 import Simulering from './sider/Simulering/Simulering';
 import { SimuleringProvider } from './sider/Simulering/SimuleringContext';
+import { FeilutbetaltValutaTabellProvider } from './sider/Vedtak/FeilutbetaltValutaNy/FeilutbetaltValutaTabellContext';
 import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/SammensattKontrollsakContext';
 import Vedtak from './sider/Vedtak/Vedtak';
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
@@ -17,7 +18,6 @@ import { TidslinjeProvider } from '../../../komponenter/Tidslinje/TidslinjeConte
 import type { IBehandling } from '../../../typer/behandling';
 import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
-import { FeilutbetaltValutaTabellProvider } from './sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import { RefusjonEøsTabellProvider } from './sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
 
 interface Props {
