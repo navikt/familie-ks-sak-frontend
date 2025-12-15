@@ -66,7 +66,7 @@ export function RefusjonEøsForm({ type, refusjonEøs, skjulForm, readOnly }: Pr
                                     variant={'primary'}
                                     size={'small'}
                                     loading={isSubmitting}
-                                    disabled={readOnly || isSubmitting}
+                                    disabled={readOnly}
                                 >
                                     Lagre periode
                                 </Button>

@@ -69,7 +69,6 @@ const ValutakursTabellRadEndre = ({
     tilgjengeligeBarn,
     status,
     sendInnSkjema,
-    valideringErOk,
     toggleForm,
     slettValutakurs,
     sletterValutakurs,
@@ -182,9 +181,8 @@ const ValutakursTabellRadEndre = ({
                             <Button
                                 onClick={() => sendInnSkjema()}
                                 size="small"
-                                variant={valideringErOk() ? 'primary' : 'secondary'}
+                                variant={'primary'}
                                 loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                                disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
                             >
                                 Ferdig
                             </Button>
@@ -206,7 +204,6 @@ const ValutakursTabellRadEndre = ({
                                     barn => `${barn}-`
                                 )}_${skjema.felter.initielFom.verdi}`}
                                 loading={sletterValutakurs}
-                                disabled={sletterValutakurs}
                                 size={'small'}
                                 icon={<TrashIcon />}
                             >
