@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, Button, Fieldset, Select } from '@navikt/ds-react';
+import { Alert, Box, Button, Fieldset, Select } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
@@ -88,6 +88,11 @@ const KompetanseTabellRadEndre = ({
     };
 
     const toPrimærland = skjema.felter.resultat?.verdi === KompetanseResultat.TO_PRIMÆRLAND;
+    const nasjonalRettDifferanseberegningMedUlikeAktivitetsland =
+        skjema.felter.resultat?.verdi === KompetanseResultat.NASJONAL_RETT_DIFFERANSEBEREGNING &&
+        skjema.felter.søkersAktivitetsland.verdi &&
+        skjema.felter.annenForeldersAktivitetsland.verdi &&
+        skjema.felter.søkersAktivitetsland.verdi !== skjema.felter.annenForeldersAktivitetsland.verdi;
 
     return (
         <Fieldset error={skjema.visFeilmeldinger && visSubmitFeilmelding()} legend={'Kompetanseskjema'} hideLegend>
@@ -252,16 +257,28 @@ const KompetanseTabellRadEndre = ({
                         {kompetanseResultater[KompetanseResultat.TO_PRIMÆRLAND]}
                     </option>
                 </Select>
-                {toPrimærland && (
-                    <Alert
-                        variant={'warning'}
-                        inline
-                        size={'small'}
-                        children={
-                            'Norge og annen forelders aktivitetsland er primærland. Saksbehandler må manuelt vurdere om Norge skal utbetale kontantstøtten.'
-                        }
-                    />
-                )}
+                <Box marginBlock={'6 0'}>
+                    {toPrimærland && (
+                        <Alert
+                            variant={'warning'}
+                            inline
+                            size={'small'}
+                            children={
+                                'Norge og annen forelders aktivitetsland er primærland. Saksbehandler må manuelt vurdere om Norge skal utbetale kontantstøtten.'
+                            }
+                        />
+                    )}
+                    {nasjonalRettDifferanseberegningMedUlikeAktivitetsland && (
+                        <Alert
+                            variant={'warning'}
+                            inline
+                            size={'small'}
+                            children={
+                                'To andre EØS-land er primærland. Saksbehandler må manuelt vurdere hvilket av EØS-landene som utbetaler den høyeste barnetrygden og som Norge skal differanseberegne mot.'
+                            }
+                        />
+                    )}
+                </Box>
                 {!lesevisning && (
                     <Knapperad>
                         <div>
