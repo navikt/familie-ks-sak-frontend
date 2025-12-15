@@ -274,7 +274,7 @@ const KompetanseTabellRadEndre = ({
                             inline
                             size={'small'}
                             children={
-                                'To andre EØS-land er primærland. Saksbehandler må manuelt vurdere hvilket av EØS-landene som utbetaler den høyeste barnetrygden og som Norge skal differanseberegne mot.'
+                                'To andre EØS-land er primærland. Saksbehandler må manuelt beregne hvilket av EØS-landene som utbetaler den høyeste kontantstøtten og som Norge skal differanseberegne mot.'
                             }
                         />
                     )}
