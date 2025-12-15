@@ -88,6 +88,11 @@ const KompetanseTabellRadEndre = ({
     };
 
     const toPrimærland = skjema.felter.resultat?.verdi === KompetanseResultat.TO_PRIMÆRLAND;
+    const nasjonalRettDifferanseberegningMedUlikeAktivitetsland =
+        skjema.felter.resultat?.verdi === KompetanseResultat.NASJONAL_RETT_DIFFERANSEBEREGNING &&
+        skjema.felter.søkersAktivitetsland.verdi &&
+        skjema.felter.annenForeldersAktivitetsland.verdi &&
+        skjema.felter.søkersAktivitetsland.verdi !== skjema.felter.annenForeldersAktivitetsland.verdi;
 
     return (
         <Fieldset error={skjema.visFeilmeldinger && visSubmitFeilmelding()} legend={'Kompetanseskjema'} hideLegend>
@@ -259,6 +264,16 @@ const KompetanseTabellRadEndre = ({
                         size={'small'}
                         children={
                             'Norge og annen forelders aktivitetsland er primærland. Saksbehandler må manuelt vurdere om Norge skal utbetale kontantstøtten.'
+                        }
+                    />
+                )}
+                {nasjonalRettDifferanseberegningMedUlikeAktivitetsland && (
+                    <Alert
+                        variant={'warning'}
+                        inline
+                        size={'small'}
+                        children={
+                            'To andre EØS-land er primærland. Saksbehandler må manuelt vurdere hvilket av EØS-landene som utbetaler den høyeste barnetrygden og som Norge skal differanseberegne mot.'
                         }
                     />
                 )}
