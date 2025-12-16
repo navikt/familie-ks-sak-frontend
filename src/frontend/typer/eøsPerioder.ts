@@ -90,7 +90,7 @@ export interface IRestKompetanse extends IRestEøsPeriode {
     annenForeldersAktivitetsland?: string;
     barnetsBostedsland?: string;
     resultat?: KompetanseResultat;
-    erAnnenForelderOmfattetAvNorskLovgivning?: boolean;
+    erAnnenForelderOmfattetAvNorskLovgivning: boolean;
 }
 
 export interface IKompetanse extends IEøsPeriodeStatus {
