@@ -90,8 +90,9 @@ const KompetanseTabellRadEndre = ({
     const toPrimærland = skjema.felter.resultat?.verdi === KompetanseResultat.TO_PRIMÆRLAND;
     const nasjonalRettDifferanseberegningMedUlikeAktivitetsland =
         skjema.felter.resultat?.verdi === KompetanseResultat.NASJONAL_RETT_DIFFERANSEBEREGNING &&
-        skjema.felter.søkersAktivitetsland.verdi &&
-        skjema.felter.annenForeldersAktivitetsland.verdi &&
+        skjema.felter.barnetsBostedsland.verdi === 'NO' &&
+        skjema.felter.søkersAktivitetsland.verdi != null &&
+        skjema.felter.annenForeldersAktivitetsland.verdi != null &&
         skjema.felter.søkersAktivitetsland.verdi !== skjema.felter.annenForeldersAktivitetsland.verdi;
 
     return (
