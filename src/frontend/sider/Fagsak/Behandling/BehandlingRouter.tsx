@@ -9,7 +9,7 @@ import { SøknadProvider } from './sider/RegistrerSøknad/SøknadContext';
 import { type SideId, sider } from './sider/sider';
 import Simulering from './sider/Simulering/Simulering';
 import { SimuleringProvider } from './sider/Simulering/SimuleringContext';
-import { FeilutbetaltValutaTabellProvider } from './sider/Vedtak/FeilutbetaltValutaNy/FeilutbetaltValutaTabellContext';
+import { FeilutbetaltValutaTabellProvider } from './sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/SammensattKontrollsakContext';
 import Vedtak from './sider/Vedtak/Vedtak';
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
