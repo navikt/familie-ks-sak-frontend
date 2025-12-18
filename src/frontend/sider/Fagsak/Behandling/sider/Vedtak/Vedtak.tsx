@@ -32,7 +32,7 @@ const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } = useBehandlingContext();
 
-    const { erUlagretNyFeilutbetaltValutaPeriode } = useFeilutbetaltValutaTabellContext();
+    const { erLeggTilFeilutbetaltValutaFormÅpen } = useFeilutbetaltValutaTabellContext();
     const { erLeggTilRefusjonEøsFormÅpen } = useRefusjonEøsTabellContext();
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
@@ -45,7 +45,7 @@ const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
     const foreslåVedtak = () => {
         foreslåVedtakNesteOnClick(
             (visModal: boolean) => settVisModal(visModal),
-            erUlagretNyFeilutbetaltValutaPeriode,
+            erLeggTilFeilutbetaltValutaFormÅpen,
             erLeggTilRefusjonEøsFormÅpen,
             erSammensattKontrollsak
         );
