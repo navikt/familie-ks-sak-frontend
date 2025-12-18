@@ -5,7 +5,6 @@ import { FileTextIcon } from '@navikt/aksel-icons';
 import { Alert, BodyShort, Button, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import FeilutbetaltValuta from './FeilutbetaltValuta/FeilutbetaltValuta';
 import { FeilutbetaltValutaTabell } from './FeilutbetaltValutaNy/FeilutbetaltValutaTabell';
 import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValutaNy/FeilutbetaltValutaTabellContext';
 import { RefusjonEøsTabell } from './RefusjonEøs/RefusjonEøsTabell';
@@ -29,7 +28,6 @@ import {
     type IBehandling,
 } from '../../../../../typer/behandling';
 import type { IPersonInfo } from '../../../../../typer/person';
-import { ToggleNavn } from '../../../../../typer/toggles';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface IOppsummeringVedtakInnholdProps {
@@ -55,7 +53,7 @@ const OppsummeringVedtakInnhold = ({
     settVisModal,
     bruker,
 }: IOppsummeringVedtakInnholdProps) => {
-    const { hentSaksbehandlerRolle, toggles } = useAppContext();
+    const { hentSaksbehandlerRolle } = useAppContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
@@ -159,18 +157,7 @@ const OppsummeringVedtakInnhold = ({
                                 <VedtakBegrunnelserProvider>
                                     <Vedtaksperioder åpenBehandling={åpenBehandling} />
                                 </VedtakBegrunnelserProvider>
-
-                                {erFeilutbetaltValutaTabellSynlig &&
-                                    !toggles[ToggleNavn.brukNyFeilutbetaltValutaSkjema] && (
-                                        <FeilutbetaltValuta
-                                            feilutbetaltValutaListe={åpenBehandling.feilutbetaltValuta}
-                                            behandlingId={åpenBehandling.behandlingId}
-                                            fagsakId={fagsakId}
-                                            erLesevisning={erLesevisning}
-                                        />
-                                    )}
-                                {erFeilutbetaltValutaTabellSynlig &&
-                                    toggles[ToggleNavn.brukNyFeilutbetaltValutaSkjema] && <FeilutbetaltValutaTabell />}
+                                {erFeilutbetaltValutaTabellSynlig && <FeilutbetaltValutaTabell />}
                                 {erRefusjonEøsTabellSynlig && <RefusjonEøsTabell />}
                             </>
                         )}
