@@ -1,5 +1,3 @@
-import styled from 'styled-components';
-
 import {
     CalendarIcon,
     FlowerPetalFallingIcon,
@@ -8,23 +6,16 @@ import {
     HouseIcon,
     PassportIcon,
 } from '@navikt/aksel-icons';
-import { Alert, Detail, Heading } from '@navikt/ds-react';
-import { AFontWeightRegular, ASpacing4 } from '@navikt/ds-tokens/dist/tokens';
+import { Alert, Box, Detail, Heading } from '@navikt/ds-react';
+import { ASpacing4 } from '@navikt/ds-tokens/dist/tokens';
 
+import styles from './Registeropplysninger.module.css';
 import RegisteropplysningerTabell from './RegisteropplysningerTabell';
 import { useAppContext } from '../../../../../../context/AppContext';
 import type { IRestRegisterhistorikk } from '../../../../../../typer/person';
 import { Registeropplysning } from '../../../../../../typer/registeropplysning';
 import { ToggleNavn } from '../../../../../../typer/toggles';
 import { Datoformat, isoStringTilFormatertString } from '../../../../../../utils/dato';
-
-const Container = styled.div`
-    width: 32rem;
-`;
-
-const SemiBoldHeading = styled(Heading)`
-    font-weight: ${AFontWeightRegular};
-`;
 
 interface IRegisteropplysningerProps {
     opplysninger: IRestRegisterhistorikk;
@@ -39,15 +30,15 @@ const Registeropplysninger = ({ opplysninger, fødselsdato }: IRegisteropplysnin
 
     return (
         <>
-            <SemiBoldHeading level={'3'} size="medium">
+            <Heading level={'3'} className={styles.regularHeading} size="medium">
                 Registeropplysninger
-            </SemiBoldHeading>
+            </Heading>
             {manglerRegisteropplysninger ? (
                 <Alert variant="info" style={{ marginTop: ASpacing4 }}>
                     Det ble ikke hentet inn registeropplysninger på denne behandlingen.
                 </Alert>
             ) : (
-                <Container>
+                <Box width={'32rem'}>
                     <Detail
                         textColor="subtle"
                         style={{ marginBottom: ASpacing4 }}
@@ -105,7 +96,7 @@ const Registeropplysninger = ({ opplysninger, fødselsdato }: IRegisteropplysnin
                             historikk={opplysninger.oppholdsadresse}
                         />
                     )}
-                </Container>
+                </Box>
             )}
         </>
     );
