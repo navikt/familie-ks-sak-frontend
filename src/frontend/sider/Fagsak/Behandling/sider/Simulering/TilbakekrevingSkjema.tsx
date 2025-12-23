@@ -1,10 +1,9 @@
-import styled from 'styled-components';
-
 import { ExternalLinkIcon, FileTextIcon } from '@navikt/aksel-icons';
 import {
     Alert,
     BodyLong,
     BodyShort,
+    Box,
     Button,
     ErrorSummary,
     Fieldset,
@@ -18,6 +17,7 @@ import {
     Spacer,
     Tag,
     Textarea,
+    VStack,
 } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -30,49 +30,12 @@ import {
     mutationKey,
     useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf,
 } from '../../../../../hooks/useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf';
-import type { BrevmottakereAlertBehandlingProps } from '../../../../../komponenter/BrevmottakereAlert';
 import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAlert';
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../../../typer/simulering';
 import type { Målform } from '../../../../../typer/søknad';
 import { målform } from '../../../../../typer/søknad';
 import { useBrukerContext } from '../../../BrukerContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
-
-const ForhåndsvisVarselKnappContainer = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-`;
-
-const FritekstVarsel = styled.div`
-    margin-left: 2rem;
-`;
-
-const StyledHelpText = styled(HelpText)`
-    margin-left: 1rem;
-`;
-
-const StyledHelpTextContainer = styled.div`
-    max-width: 20rem;
-`;
-
-const StyledFieldset = styled(Fieldset)`
-    margin-top: 4rem;
-    width: 90%;
-    max-width: 40rem;
-`;
-
-const StyledAlert = styled(Alert)`
-    margin-top: 1.5rem;
-`;
-
-const StyledLabel = styled(Label)`
-    margin-top: 4rem;
-`;
-
-const StyledBrevmottakereAlert = styled(BrevmottakereAlert)<BrevmottakereAlertBehandlingProps>`
-    margin: 1rem 0 3rem 2rem;
-`;
 
 const TilbakekrevingSkjema = ({
     søkerMålform,
@@ -106,10 +69,12 @@ const TilbakekrevingSkjema = ({
         harÅpenTilbakekrevingRessurs.status === RessursStatus.IKKE_TILGANG
     ) {
         return (
-            <StyledAlert variant="error">
-                Det har skjedd er feil:
-                {harÅpenTilbakekrevingRessurs.frontendFeilmelding}
-            </StyledAlert>
+            <Box marginBlock={'space-24 space-0'}>
+                <Alert variant="error">
+                    Det har skjedd en feil:
+                    {harÅpenTilbakekrevingRessurs.frontendFeilmelding}
+                </Alert>
+            </Box>
         );
     }
 
@@ -119,37 +84,37 @@ const TilbakekrevingSkjema = ({
         !vurderErLesevisning()
     ) {
         return (
-            <>
-                <StyledLabel>Tilbakekrevingsvalg</StyledLabel>
-                <StyledAlert variant="warning">
+            <VStack marginBlock={'space-64 space-0'} gap={'space-24'}>
+                <Label>Tilbakekrevingsvalg</Label>
+                <Alert variant="warning">
                     Det foreligger en åpen tilbakekrevingsbehandling. Endringer i vedtaket vil automatisk oppdatere
                     eksisterende feilutbetalte perioder og beløp.
-                </StyledAlert>
-            </>
+                </Alert>
+            </VStack>
         );
     }
 
     if (vurderErLesevisning() && !tilbakekrevingSkjema.felter.tilbakekrevingsvalg.verdi) {
         return (
-            <>
-                <StyledLabel>Tilbakekrevingsvalg</StyledLabel>
-                <StyledAlert variant="warning">
+            <VStack marginBlock={'space-64 space-0'} gap={'space-24'}>
+                <Label>Tilbakekrevingsvalg</Label>
+                <Alert variant="warning">
                     Tilbakekreving uten varsel er valgt automatisk, da feilutbetailngen ble avdekket etter at saken ble
                     sendt til beslutter.
-                </StyledAlert>
-            </>
+                </Alert>
+            </VStack>
         );
     }
 
     return (
         <>
-            <StyledFieldset legend="Tilbakekreving">
+            <Fieldset legend="Tilbakekreving" className={styles.fieldset}>
                 <Textarea
                     label={
-                        <HStack>
+                        <HStack gap={'space-16'}>
                             Årsak til feilutbetaling og videre behandling
-                            <StyledHelpText title="Hvordan skal feltet fylles ut?" placement="right">
-                                <StyledHelpTextContainer>
+                            <HelpText title="Hvordan skal feltet fylles ut?" placement="right">
+                                <Box maxWidth={'20rem'}>
                                     <Heading size="xsmall">Hvordan skal feltet fylles ut?</Heading>
                                     <BodyLong size="small">
                                         Pass på at teksten besvarer dette:
@@ -171,8 +136,8 @@ const TilbakekrevingSkjema = ({
                                     <BodyLong size="small">
                                         Feilutbetaling gjelder kun inneværende måned, og utbetalingen stoppes antakelig.
                                     </BodyLong>
-                                </StyledHelpTextContainer>
-                            </StyledHelpText>
+                                </Box>
+                            </HelpText>
                         </HStack>
                     }
                     {...begrunnelse.hentNavInputProps(
@@ -197,10 +162,10 @@ const TilbakekrevingSkjema = ({
                         value={tilbakekrevingsvalg.verdi}
                         onChange={(val: Tilbakekrevingsvalg) => radioOnChange(val)}
                         legend={
-                            <HStack>
+                            <HStack gap={'space-16'}>
                                 Fastsett videre behandling
-                                <StyledHelpText placement="right">
-                                    <StyledHelpTextContainer>
+                                <HelpText placement="right">
+                                    <Box maxWidth={'20rem'}>
                                         <Heading size="small">Hvordan fastsette videre behandling?</Heading>
                                         <Heading size="xsmall">Opprett tilbakekreving, send varsel</Heading>
                                         <BodyLong size="small" spacing={true}>
@@ -217,8 +182,8 @@ const TilbakekrevingSkjema = ({
                                         <BodyLong size="small" spacing={true}>
                                             Velges når man er rimelig sikker på at det ikke blir feilutbetaling.
                                         </BodyLong>
-                                    </StyledHelpTextContainer>
-                                </StyledHelpText>
+                                    </Box>
+                                </HelpText>
                             </HStack>
                         }
                     >
@@ -233,7 +198,8 @@ const TilbakekrevingSkjema = ({
                                 </Radio>
                                 {tilbakekrevingsvalg.verdi ===
                                     Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL && (
-                                    <StyledBrevmottakereAlert
+                                    <BrevmottakereAlert
+                                        className={styles.brevmottakereAlert}
                                         bruker={bruker}
                                         erPåBehandling={true}
                                         erLesevisning={erLesevisning}
@@ -242,7 +208,7 @@ const TilbakekrevingSkjema = ({
                                     />
                                 )}
                                 {fritekstVarsel.erSynlig && (
-                                    <FritekstVarsel>
+                                    <Box marginInline={'space-32 space-0'}>
                                         <Textarea
                                             className={styles.fritekstVarsel}
                                             label={
@@ -252,10 +218,10 @@ const TilbakekrevingSkjema = ({
                                                     wrap={false}
                                                     width={'100%'}
                                                 >
-                                                    <HStack align="center" wrap={false}>
+                                                    <HStack align="center" wrap={false} gap={'space-16'}>
                                                         Fritekst i varselet
-                                                        <StyledHelpText placement="right">
-                                                            <StyledHelpTextContainer>
+                                                        <HelpText placement="right">
+                                                            <Box maxWidth={'20rem'}>
                                                                 <BodyLong size="small" spacing={true}>
                                                                     Her skal du oppgi hvorfor brukeren ikke skulle fått
                                                                     utbetalt ytelsen i perioden(e). Du må også oppgi
@@ -280,8 +246,8 @@ const TilbakekrevingSkjema = ({
                                                                     <span>Se retningslinjer for klarspråk:</span>
                                                                     <ExternalLinkIcon fontSize={'1.3rem'} />
                                                                 </Link>
-                                                            </StyledHelpTextContainer>
-                                                        </StyledHelpText>
+                                                            </Box>
+                                                        </HelpText>
                                                     </HStack>
                                                     <Spacer />
                                                     <Tag variant="neutral" size="small">
@@ -296,8 +262,7 @@ const TilbakekrevingSkjema = ({
                                             readOnly={vurderErLesevisning()}
                                             maxLength={maksLengdeTekst}
                                         />
-
-                                        <ForhåndsvisVarselKnappContainer>
+                                        <HStack justify={'end'} marginBlock={'space-0 space-16'}>
                                             <Button
                                                 variant={'tertiary'}
                                                 id={'forhandsvis-varsel'}
@@ -313,8 +278,8 @@ const TilbakekrevingSkjema = ({
                                             >
                                                 Forhåndsvis varsel
                                             </Button>
-                                        </ForhåndsvisVarselKnappContainer>
-                                    </FritekstVarsel>
+                                        </HStack>
+                                    </Box>
                                 )}
                             </>
                         )}
@@ -351,7 +316,7 @@ const TilbakekrevingSkjema = ({
                         ))}
                     </ErrorSummary>
                 )}
-            </StyledFieldset>
+            </Fieldset>
         </>
     );
 };
