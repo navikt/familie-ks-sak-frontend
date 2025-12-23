@@ -23,6 +23,7 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useSimuleringContext } from './SimuleringContext';
+import styles from './TilbakekrevingSkjema.module.css';
 import { ModalType } from '../../../../../context/ModalContext';
 import { useModal } from '../../../../../hooks/useModal';
 import {
@@ -243,10 +244,16 @@ const TilbakekrevingSkjema = ({
                                 {fritekstVarsel.erSynlig && (
                                     <FritekstVarsel>
                                         <Textarea
+                                            className={styles.fritekstVarsel}
                                             label={
-                                                <HStack align="center" justify="space-between" wrap={false}>
+                                                <HStack
+                                                    align="center"
+                                                    justify="space-between"
+                                                    wrap={false}
+                                                    width={'100%'}
+                                                >
                                                     <HStack align="center" wrap={false}>
-                                                        <Label>Fritekst i varselet</Label>
+                                                        Fritekst i varselet
                                                         <StyledHelpText placement="right">
                                                             <StyledHelpTextContainer>
                                                                 <BodyLong size="small" spacing={true}>
