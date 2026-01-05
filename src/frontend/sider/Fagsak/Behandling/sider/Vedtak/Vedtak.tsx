@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValutaNy/FeilutbetaltValutaTabellContext';
+import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
 import { useRefusjonEøsTabellContext } from './RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
@@ -32,7 +32,7 @@ const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } = useBehandlingContext();
 
-    const { erUlagretNyFeilutbetaltValutaPeriode } = useFeilutbetaltValutaTabellContext();
+    const { erLeggTilFeilutbetaltValutaFormÅpen } = useFeilutbetaltValutaTabellContext();
     const { erLeggTilRefusjonEøsFormÅpen } = useRefusjonEøsTabellContext();
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
@@ -45,7 +45,7 @@ const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
     const foreslåVedtak = () => {
         foreslåVedtakNesteOnClick(
             (visModal: boolean) => settVisModal(visModal),
-            erUlagretNyFeilutbetaltValutaPeriode,
+            erLeggTilFeilutbetaltValutaFormÅpen,
             erLeggTilRefusjonEøsFormÅpen,
             erSammensattKontrollsak
         );
