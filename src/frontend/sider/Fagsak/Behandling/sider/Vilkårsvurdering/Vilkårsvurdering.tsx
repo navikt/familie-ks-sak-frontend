@@ -2,11 +2,9 @@ import { useState } from 'react';
 
 import classNames from 'classnames';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 
 import { ArrowsSquarepathIcon } from '@navikt/aksel-icons';
-import { Alert, BodyShort, Button, Detail, ErrorMessage, ErrorSummary } from '@navikt/ds-react';
-import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
+import { Alert, BodyShort, Button, Detail, ErrorMessage, ErrorSummary, HStack, List } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
@@ -22,22 +20,6 @@ import { Datoformat, isoStringTilFormatertString } from '../../../../../utils/da
 import { erProd } from '../../../../../utils/miljø';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { useBehandlingContext } from '../../context/BehandlingContext';
-
-const UregistrerteBarnListe = styled.ol`
-    margin: ${ASpacing2} 0;
-`;
-
-const HentetLabelOgKnappDiv = styled.div`
-    display: flex;
-    justify-content: left;
-    align-items: center;
-
-    .knapp__spinner {
-        margin: 0 !important;
-    }
-
-    margin-bottom: ${ASpacing2};
-`;
 
 interface IProps {
     åpenBehandling: IBehandling;
@@ -94,7 +76,7 @@ const Vilkårsvurdering = ({ åpenBehandling }: IProps) => {
             steg={BehandlingSteg.VILKÅRSVURDERING}
         >
             <>
-                <HentetLabelOgKnappDiv>
+                <HStack align={'center'} wrap={false} marginBlock={'space-0 space-8'}>
                     <Detail
                         textColor="subtle"
                         children={
@@ -124,7 +106,7 @@ const Vilkårsvurdering = ({ åpenBehandling }: IProps) => {
                             icon={<ArrowsSquarepathIcon fontSize={'1.5rem'} focusable="false" />}
                         />
                     )}
-                </HentetLabelOgKnappDiv>
+                </HStack>
                 {hentOpplysningerRessurs.status === RessursStatus.FEILET && (
                     <ErrorMessage>{hentOpplysningerRessurs.frontendFeilmelding}</ErrorMessage>
                 )}
@@ -136,18 +118,18 @@ const Vilkårsvurdering = ({ åpenBehandling }: IProps) => {
             {uregistrerteBarn.length > 0 && (
                 <Alert variant="info">
                     <BodyShort>Du har registrert følgende barn som ikke er registrert i Folkeregisteret:</BodyShort>
-                    <UregistrerteBarnListe>
+                    <List as={'ol'}>
                         {uregistrerteBarn.map(uregistrertBarn => (
-                            <li key={`${uregistrertBarn.navn}_${uregistrertBarn.fødselsdato}`}>
+                            <List.Item key={`${uregistrertBarn.navn}_${uregistrertBarn.fødselsdato}`}>
                                 <BodyShort>
                                     {`${uregistrertBarn.navn} - ${isoStringTilFormatertString({
                                         isoString: uregistrertBarn.fødselsdato,
                                         tilFormat: Datoformat.DATO,
                                     })}`}
                                 </BodyShort>
-                            </li>
+                            </List.Item>
                         ))}
-                    </UregistrerteBarnListe>
+                    </List>
 
                     <BodyShort>Dette vil føre til avslag for barna i listen.</BodyShort>
                 </Alert>
