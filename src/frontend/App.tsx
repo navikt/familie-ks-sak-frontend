@@ -11,6 +11,7 @@ import { hentInnloggetBruker } from './api/saksbehandler';
 import Container from './Container';
 import { AppProvider } from './context/AppContext';
 import { AuthContextProvider } from './context/AuthContext';
+import { FeatureTogglesProvider } from './context/FeatureTogglesContext';
 import { HttpContextProvider } from './context/HttpContext';
 import { ModalProvider } from './context/ModalContext';
 import { ErrorBoundary } from './komponenter/ErrorBoundary/ErrorBoundary';
@@ -41,11 +42,13 @@ const App = () => {
                 <HttpContextProvider>
                     <QueryClientProvider client={queryClient}>
                         {!erProd() && <ReactQueryDevtools position={'right'} initialIsOpen={false} />}
-                        <AppProvider>
-                            <ModalProvider>
-                                <Container />
-                            </ModalProvider>
-                        </AppProvider>
+                        <FeatureTogglesProvider>
+                            <AppProvider>
+                                <ModalProvider>
+                                    <Container />
+                                </ModalProvider>
+                            </AppProvider>
+                        </FeatureTogglesProvider>
                     </QueryClientProvider>
                 </HttpContextProvider>
             </AuthContextProvider>

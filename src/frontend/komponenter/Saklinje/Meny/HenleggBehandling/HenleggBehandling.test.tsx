@@ -1,10 +1,8 @@
 import type { PropsWithChildren } from 'react';
 
-import { http, HttpResponse } from 'msw';
 import { describe, expect } from 'vitest';
 
 import { ActionMenu } from '@navikt/ds-react';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { HenleggBehandling } from './HenleggBehandling';
 import { HenleggBehandlingModal } from './HenleggBehandlingModal';
@@ -13,13 +11,13 @@ import { useModal } from '../../../../hooks/useModal';
 import { BehandlingProvider } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '../../../../sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { FagsakProvider } from '../../../../sider/Fagsak/FagsakContext';
-import { server } from '../../../../testutils/mocks/node';
+import { skruPåAlleToggles } from '../../../../testutils/mocks/handlers/featureToggleHandlers';
 import { lagBehandling } from '../../../../testutils/testdata/behandlingTestdata';
 import { lagFagsak } from '../../../../testutils/testdata/fagsakTestdata';
 import { render, TestProviders } from '../../../../testutils/testrender';
 import { BehandlingStatus, BehandlingSteg, type IBehandling, SettPåVentÅrsak } from '../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
-import { ToggleNavn } from '../../../../typer/toggles';
+import { FeatureToggle, type FeatureToggles } from '../../../../typer/featureToggles';
 
 function ModalWrapper() {
     const { erModalÅpen } = useModal(ModalType.HENLEGG_BEHANDLING);
@@ -32,11 +30,17 @@ function ModalWrapper() {
 interface WrapperProps extends PropsWithChildren {
     fagsak?: IMinimalFagsak;
     behandling?: IBehandling;
+    featureToggles?: FeatureToggles;
 }
 
-function Wrapper({ fagsak = lagFagsak(), behandling = lagBehandling(), children }: WrapperProps) {
+function Wrapper({
+    fagsak = lagFagsak(),
+    behandling = lagBehandling(),
+    featureToggles = skruPåAlleToggles(),
+    children,
+}: WrapperProps) {
     return (
-        <TestProviders>
+        <TestProviders featureToggles={featureToggles}>
             <FagsakProvider fagsak={fagsak}>
                 <HentOgSettBehandlingProvider fagsak={fagsak}>
                     <BehandlingProvider behandling={behandling}>
@@ -69,6 +73,7 @@ describe('HenleggBehandling', () => {
                         },
                         steg: BehandlingSteg.REGISTRERE_SØKNAD,
                     })}
+                    featureToggles={{ [FeatureToggle.tekniskVedlikeholdHenleggelse]: false }}
                 />
             ),
         });
@@ -84,6 +89,7 @@ describe('HenleggBehandling', () => {
                         status: BehandlingStatus.UTREDES,
                         steg: BehandlingSteg.BESLUTTE_VEDTAK,
                     })}
+                    featureToggles={{ [FeatureToggle.tekniskVedlikeholdHenleggelse]: false }}
                 />
             ),
         });
@@ -91,12 +97,6 @@ describe('HenleggBehandling', () => {
     });
 
     test('skal vise knapp selv om det er lesevisning og på et steg som ikke er henlegtbart', async () => {
-        server.use(
-            http.post('/familie-ks-sak/api/featuretoggles', () => {
-                return HttpResponse.json(byggSuksessRessurs({ [ToggleNavn.tekniskVedlikeholdHenleggelse]: true }));
-            })
-        );
-
         const { screen } = render(<HenleggBehandling />, {
             wrapper: props => (
                 <Wrapper
@@ -105,6 +105,7 @@ describe('HenleggBehandling', () => {
                         status: BehandlingStatus.UTREDES,
                         steg: BehandlingSteg.BESLUTTE_VEDTAK,
                     })}
+                    featureToggles={{ [FeatureToggle.tekniskVedlikeholdHenleggelse]: true }}
                 />
             ),
         });

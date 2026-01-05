@@ -9,9 +9,9 @@ import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
 import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import Vedtaksperiode from './Vedtaksperiode';
 import { VedtaksperiodeProvider } from './VedtaksperiodeContext';
-import { useAppContext } from '../../../../../../context/AppContext';
+import { useFeatureToggles } from '../../../../../../hooks/useFeatureToggles';
 import type { IBehandling } from '../../../../../../typer/behandling';
-import { ToggleNavn } from '../../../../../../typer/toggles';
+import { FeatureToggle } from '../../../../../../typer/featureToggles';
 import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 import { partition } from '../../../../../../utils/commons';
@@ -36,14 +36,14 @@ interface VedtaksperioderProps {
 
 const Vedtaksperioder = ({ åpenBehandling }: VedtaksperioderProps) => {
     const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
-    const { toggles } = useAppContext();
+    const toggles = useFeatureToggles();
 
     const sorterteVedtaksperioderSomSkalvises = filtrerOgSorterPerioderMedBegrunnelseBehov(
         åpenBehandling.vedtak?.vedtaksperioderMedBegrunnelser ?? [],
         åpenBehandling.resultat,
         åpenBehandling.status,
         åpenBehandling.sisteVedtaksperiodeVisningDato,
-        toggles[ToggleNavn.skalAlltidViseAlleVedtaksperioder]
+        toggles[FeatureToggle.skalAlltidViseAlleVedtaksperioder]
     );
 
     if (
