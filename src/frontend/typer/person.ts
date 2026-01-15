@@ -58,6 +58,7 @@ export interface IPersonInfo {
     fagsakId?: number;
     bostedsadresse?: IBostedsadresse;
     erEgenAnsatt?: boolean;
+    harFalskIdentitet: boolean;
 }
 
 export interface IForelderBarnRelasjon {
