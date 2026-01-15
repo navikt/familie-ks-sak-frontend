@@ -4,9 +4,10 @@ import { BodyShort, Box, CopyButton, HStack } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
 
 import { type IPersonInfo } from '../../typer/person';
-import { hentAlder } from '../../utils/formatter';
+import { formaterIdent, hentAlder } from '../../utils/formatter';
 import { erAdresseBeskyttet } from '../../utils/validators';
 import { PersonIkon } from '../PersonIkon';
+import styles from './Personlinje.module.css';
 
 interface Props {
     bruker?: IPersonInfo;
@@ -47,7 +48,7 @@ export function Personlinje({ bruker }: Props) {
                 <HStack align={'center'} gap={'3 4'}>
                     <PersonIkon
                         kjønn={bruker.kjønn}
-                        erBarn={hentAlder(bruker.fødselsdato) < 18}
+                        erBarn={hentAlder(bruker.fødselsdato ?? '') < 18}
                         erAdresseBeskyttet={erAdresseBeskyttet(bruker.adressebeskyttelseGradering)}
                         harTilgang={bruker.harTilgang}
                         erEgenAnsatt={bruker.erEgenAnsatt}
@@ -55,10 +56,16 @@ export function Personlinje({ bruker }: Props) {
                     <HStack align={'center'} gap={'3 4'}>
                         <BodyShort as={'span'} weight={'semibold'}>
                             {bruker.navn} ({hentAlder(bruker.fødselsdato ?? '')} år)
+                            {bruker.harFalskIdentitet && (
+                                <BodyShort as={'span'} weight={'semibold'}>
+                                    {' '}
+                                    - <mark className={styles.falskIdentitet}>Falsk identitet</mark>
+                                </BodyShort>
+                            )}
                         </BodyShort>
                         <Divider />
                         <HStack align={'center'} gap={'1'}>
-                            {bruker.personIdent}
+                            {formaterIdent(bruker.personIdent)}
                             <CopyButton copyText={bruker.personIdent.replace(' ', '')} size={'small'} />
                         </HStack>
                     </HStack>
