@@ -140,7 +140,6 @@ export function Behandlinger() {
                                     <Behandling
                                         key={hentBehandlingId(behandling)}
                                         saksoversiktsbehandling={behandling}
-                                        fagsakId={fagsak.id}
                                     />
                                 ))}
                         </Table.Body>

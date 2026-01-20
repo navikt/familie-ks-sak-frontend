@@ -11,13 +11,15 @@ import {
 } from './utils';
 import { behandlingsstatuser } from '../../../typer/behandling';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
+import { useFagsakContext } from '../FagsakContext';
 
 interface Props {
-    fagsakId: number;
     saksoversiktsbehandling: Saksoversiktsbehandling;
 }
 
-export const Behandling = ({ saksoversiktsbehandling, fagsakId }: Props) => {
+export function Behandling({ saksoversiktsbehandling }: Props) {
+    const { fagsak } = useFagsakContext();
+
     return (
         <Table.Row key={hentBehandlingId(saksoversiktsbehandling)}>
             <Table.DataCell>
@@ -27,7 +29,7 @@ export const Behandling = ({ saksoversiktsbehandling, fagsakId }: Props) => {
                 })}
             </Table.DataCell>
             <Table.DataCell>{finnÅrsak(saksoversiktsbehandling)}</Table.DataCell>
-            <Table.DataCell>{lagLenkePåType(fagsakId, saksoversiktsbehandling)}</Table.DataCell>
+            <Table.DataCell>{lagLenkePåType(fagsak.id, saksoversiktsbehandling)}</Table.DataCell>
             <Table.DataCell>{hentBehandlingstema(saksoversiktsbehandling)?.navn ?? '-'}</Table.DataCell>
             <Table.DataCell>{behandlingsstatuser[saksoversiktsbehandling.status]}</Table.DataCell>
             <Table.DataCell>
@@ -37,7 +39,7 @@ export const Behandling = ({ saksoversiktsbehandling, fagsakId }: Props) => {
                     defaultString: '-',
                 })}
             </Table.DataCell>
-            <Table.DataCell>{lagLenkePåResultat(fagsakId, saksoversiktsbehandling)}</Table.DataCell>
+            <Table.DataCell>{lagLenkePåResultat(fagsak.id, saksoversiktsbehandling)}</Table.DataCell>
         </Table.Row>
     );
-};
+}
