@@ -8,17 +8,8 @@ import type { VisningBehandling } from './visningBehandling';
 import { BehandlingStatus } from '../../../typer/behandling';
 import type { IBehandlingstema } from '../../../typer/behandlingstema';
 import { tilBehandlingstema } from '../../../typer/behandlingstema';
-import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { hentAktivBehandlingPåMinimalFagsak, hentFagsakStatusVisning } from '../../../utils/fagsak';
-
-interface IFagsakLinkPanel {
-    minimalFagsak: IMinimalFagsak;
-}
-
-interface IInnholdstabell {
-    minimalFagsak: IMinimalFagsak;
-    behandling?: VisningBehandling;
-}
+import { useFagsakContext } from '../FagsakContext';
 
 const HeaderTekst = styled(BodyShort)`
     font-size: ${AFontSizeXlarge};
@@ -28,9 +19,10 @@ const BodyTekst = styled(BodyShort)`
     font-size: ${AFontSizeHeadingMedium};
 `;
 
-const Innholdstabell = ({ minimalFagsak }: IInnholdstabell) => {
+function Innholdstabell() {
+    const { fagsak } = useFagsakContext();
     const behandlingstema: IBehandlingstema | undefined =
-        minimalFagsak.løpendeKategori && tilBehandlingstema(minimalFagsak.løpendeKategori);
+        fagsak.løpendeKategori && tilBehandlingstema(fagsak.løpendeKategori);
 
     return (
         <HStack gap="20">
@@ -47,12 +39,13 @@ const Innholdstabell = ({ minimalFagsak }: IInnholdstabell) => {
                     Status
                 </HeaderTekst>
                 <BodyTekst name={'status'} weight="semibold">
-                    {hentFagsakStatusVisning(minimalFagsak)}
+                    {hentFagsakStatusVisning(fagsak)}
                 </BodyTekst>
             </div>
         </HStack>
     );
-};
+}
+
 export const SaksoversiktPanelBredde = `calc(10 * ${ASpacing16})`;
 
 const FagsakPanel = styled(Box)`
@@ -64,31 +57,30 @@ const genererLinkTekst = (behandling: VisningBehandling) => {
     return behandling.status === BehandlingStatus.AVSLUTTET ? 'Gå til gjeldende vedtak' : 'Gå til åpen behandling';
 };
 
-const FagsakLenkepanel = ({ minimalFagsak }: IFagsakLinkPanel) => {
-    const aktivBehandling: VisningBehandling | undefined = hentAktivBehandlingPåMinimalFagsak(minimalFagsak);
+export function FagsakLenkepanel() {
+    const { fagsak } = useFagsakContext();
+    const aktivBehandling: VisningBehandling | undefined = hentAktivBehandlingPåMinimalFagsak(fagsak);
 
     return aktivBehandling ? (
         <Box width={SaksoversiktPanelBredde} marginBlock={'8 0'}>
             <LinkCard>
                 <LinkCard.Title>
                     <LinkCard.Anchor asChild={true}>
-                        <Link as={ReactRouterLink} to={`/fagsak/${minimalFagsak.id}/${aktivBehandling.behandlingId}`}>
+                        <Link as={ReactRouterLink} to={`/fagsak/${fagsak.id}/${aktivBehandling.behandlingId}`}>
                             {genererLinkTekst(aktivBehandling)}
                         </Link>
                     </LinkCard.Anchor>
                 </LinkCard.Title>
                 <LinkCard.Description>
                     <VStack paddingBlock={'4 0'}>
-                        <Innholdstabell minimalFagsak={minimalFagsak} />
+                        <Innholdstabell />
                     </VStack>
                 </LinkCard.Description>
             </LinkCard>
         </Box>
     ) : (
         <FagsakPanel borderColor="border-strong" borderWidth="1" borderRadius="small" padding="8">
-            <Innholdstabell minimalFagsak={minimalFagsak} />
+            <Innholdstabell />
         </FagsakPanel>
     );
-};
-
-export default FagsakLenkepanel;
+}

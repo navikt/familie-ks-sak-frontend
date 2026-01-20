@@ -81,7 +81,7 @@ export function FagsakContainer() {
                                     element={
                                         <>
                                             <Fagsaklinje />
-                                            <Saksoversikt minimalFagsak={fagsak} />
+                                            <Saksoversikt />
                                         </>
                                     }
                                 />
