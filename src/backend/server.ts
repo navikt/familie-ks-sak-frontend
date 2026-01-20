@@ -2,7 +2,6 @@ import './konfigurerApp.js'; // Må importeres først
 
 import path from 'path';
 
-import bodyParser from 'body-parser';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import expressStaticGzip from 'express-static-gzip';
 import { v4 as uuidv4 } from 'uuid';
@@ -34,9 +33,8 @@ backend(sessionConfig, prometheusTellere, appConfig).then(async ({ app, azureAut
 
     app.use('/redirect', doRedirectProxy());
 
-    // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser
-    app.use(bodyParser.json({ limit: '200mb' }));
-    app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
+    app.use(express.json({ limit: '200mb' }));
+    app.use(express.urlencoded({ limit: '200mb', extended: true }));
     app.use('/', await setupRouter(azureAuthClient, router));
 
     app.listen(port, '0.0.0.0', () => {
