@@ -7,27 +7,26 @@ import { Tabs } from '@navikt/ds-react';
 import Brev from './BrevModul/Brev';
 import Header from './Header/Header';
 import Historikk from './Historikk';
-import Totrinnskontroll from './Totrinnskontroll/Totrinnskontroll';
+import { Totrinnskontroll } from './Totrinnskontroll/Totrinnskontroll';
 import type { Hendelse } from './typer';
 import { TabValg } from './typer';
 import { useAppContext } from '../../context/AppContext';
-import type { IBehandling } from '../../typer/behandling';
+import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
+import { useBrukerContext } from '../../sider/Fagsak/BrukerContext';
 import { BehandlerRolle, BehandlingStatus } from '../../typer/behandling';
-import type { IPersonInfo } from '../../typer/person';
 
 interface IHendelsesoversiktProps {
     className?: string;
     hendelser: Hendelse[];
-    åpenBehandling: IBehandling;
-    bruker: IPersonInfo;
 }
 
-const Hendelsesoversikt = ({ hendelser, className, åpenBehandling, bruker }: IHendelsesoversiktProps) => {
+export function Hendelsesoversikt({ hendelser, className }: IHendelsesoversiktProps) {
+    const { behandling } = useBehandlingContext();
+    const { bruker } = useBrukerContext();
     const { hentSaksbehandlerRolle } = useAppContext();
 
     const skalViseTotrinnskontroll =
-        BehandlerRolle.BESLUTTER === hentSaksbehandlerRolle() &&
-        åpenBehandling?.status === BehandlingStatus.FATTER_VEDTAK;
+        BehandlerRolle.BESLUTTER === hentSaksbehandlerRolle() && behandling.status === BehandlingStatus.FATTER_VEDTAK;
 
     const [aktivTab, settAktivTab] = useState<TabValg>(
         skalViseTotrinnskontroll ? TabValg.Totrinnskontroll : TabValg.Historikk
@@ -40,7 +39,7 @@ const Hendelsesoversikt = ({ hendelser, className, åpenBehandling, bruker }: IH
 
                 {aktivTab === TabValg.Totrinnskontroll && (
                     <Tabs.Panel value={TabValg.Totrinnskontroll}>
-                        <Totrinnskontroll åpenBehandling={åpenBehandling} />
+                        <Totrinnskontroll />
                     </Tabs.Panel>
                 )}
                 {aktivTab === TabValg.Historikk && hendelser.length > 0 && <Historikk hendelser={hendelser} />}
@@ -50,6 +49,4 @@ const Hendelsesoversikt = ({ hendelser, className, åpenBehandling, bruker }: IH
             </Tabs>
         </div>
     );
-};
-
-export default Hendelsesoversikt;
+}

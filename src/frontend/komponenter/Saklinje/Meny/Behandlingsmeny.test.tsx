@@ -55,7 +55,7 @@ function Wrapper({
                             <Route
                                 path={`/fagsak/:fagsakId/:behandlingId/registrer-soknad`}
                                 element={
-                                    <HentOgSettBehandlingProvider fagsak={fagsak}>
+                                    <HentOgSettBehandlingProvider>
                                         <BehandlingProvider behandling={behandling}>
                                             <HenleggBehandlingModal />
                                             {children}

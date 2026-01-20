@@ -11,12 +11,8 @@ import { useAppContext } from '../../../../context/AppContext';
 import { HentFagsakQueryKeyFactory } from '../../../../hooks/useHentFagsak';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../typer/behandling';
-import type { IMinimalFagsak } from '../../../../typer/fagsak';
 import { obfuskerBehandling } from '../../../../utils/obfuskerData';
-
-interface Props extends PropsWithChildren {
-    fagsak: IMinimalFagsak;
-}
+import { useFagsakContext } from '../../FagsakContext';
 
 interface Context {
     behandlingRessurs: Ressurs<IBehandling>;
@@ -25,7 +21,8 @@ interface Context {
 
 const Context = createContext<Context | undefined>(undefined);
 
-export function HentOgSettBehandlingProvider({ fagsak, children }: Props) {
+export function HentOgSettBehandlingProvider({ children }: PropsWithChildren) {
+    const { fagsak } = useFagsakContext();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
