@@ -9,7 +9,7 @@ import { BrukerProvider } from './BrukerContext';
 import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
 import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
 import { FagsakProvider } from './FagsakContext';
-import JournalpostListe from './journalposter/JournalpostListe';
+import { JournalpostListe } from './journalposter/JournalpostListe';
 import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
 import { useFagsakId } from '../../hooks/useFagsakId';
@@ -103,7 +103,7 @@ export function FagsakContainer() {
                                     element={
                                         <>
                                             <Fagsaklinje />
-                                            <JournalpostListe bruker={bruker} />
+                                            <JournalpostListe />
                                         </>
                                     }
                                 />
