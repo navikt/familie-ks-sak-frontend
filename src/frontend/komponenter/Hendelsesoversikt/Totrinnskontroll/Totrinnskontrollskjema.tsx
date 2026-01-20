@@ -17,18 +17,17 @@ import { TotrinnskontrollBeslutning } from '../../../typer/totrinnskontroll';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 
-interface IProps {
+interface Props {
     innsendtVedtak: Ressurs<IBehandling>;
     sendInnVedtak: (beslutning: TotrinnskontrollBeslutning, begrunnelse: string, egetVedtak: boolean) => void;
-    åpenBehandling: IBehandling;
 }
 
 const StyledButton = styled(Button)`
     width: fit-content;
 `;
 
-const Totrinnskontrollskjema = ({ innsendtVedtak, sendInnVedtak, åpenBehandling }: IProps) => {
-    const { trinnPåBehandling } = useBehandlingContext();
+export function Totrinnskontrollskjema({ innsendtVedtak, sendInnVedtak }: Props) {
+    const { behandling, trinnPåBehandling } = useBehandlingContext();
     const { innloggetSaksbehandler } = useAppContext();
 
     const [beslutning, settBeslutning] = useState<TotrinnskontrollBeslutning>(TotrinnskontrollBeslutning.IKKE_VURDERT);
@@ -36,7 +35,7 @@ const Totrinnskontrollskjema = ({ innsendtVedtak, sendInnVedtak, åpenBehandling
 
     const senderInn = innsendtVedtak.status === RessursStatus.HENTER;
 
-    const totrinnskontroll = åpenBehandling.totrinnskontroll;
+    const totrinnskontroll = behandling.totrinnskontroll;
 
     const saksbehandler = totrinnskontroll?.saksbehandler ?? 'UKJENT SAKSBEHANDLER';
     const opprettetTidspunkt = totrinnskontroll?.opprettetTidspunkt ?? undefined;
@@ -146,7 +145,7 @@ const Totrinnskontrollskjema = ({ innsendtVedtak, sendInnVedtak, åpenBehandling
             />
         </Fieldset>
     );
-};
+}
 
 const Trinn = styled.div`
     display: flex;
@@ -168,5 +167,3 @@ const TrinnStatus = ({ kontrollertStatus, navn }: { kontrollertStatus: Kontrolle
         </Trinn>
     );
 };
-
-export default Totrinnskontrollskjema;

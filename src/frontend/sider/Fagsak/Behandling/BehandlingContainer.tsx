@@ -8,9 +8,8 @@ import { BehandlingRouter } from './BehandlingRouter';
 import { BehandlingProvider } from './context/BehandlingContext';
 import { useHentOgSettBehandlingContext } from './context/HentOgSettBehandlingContext';
 import { Høyremeny } from './Høyremeny/Høyremeny';
-import { Venstremeny } from './Venstremeny/Venstremeny';
-import type { IPersonInfo } from '../../../typer/person';
 import { KorrigerEtterbetalingModal } from './sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetalingModal';
+import { Venstremeny } from './Venstremeny/Venstremeny';
 import { Behandlingslinje } from '../../../komponenter/Saklinje/Behandlingslinje';
 import { HenleggBehandlingModal } from '../../../komponenter/Saklinje/Meny/HenleggBehandling/HenleggBehandlingModal';
 import { HenleggBehandlingVeivalgModal } from '../../../komponenter/Saklinje/Meny/HenleggBehandling/HenleggBehandlingVeivalgModal';
@@ -41,11 +40,7 @@ const HøyremenyContainer = styled.div`
     height: calc(100vh - 146px);
 `;
 
-interface Props {
-    bruker: IPersonInfo;
-}
-
-const BehandlingContainer = ({ bruker }: Props) => {
+export function BehandlingContainer() {
     const { behandlingRessurs } = useHentOgSettBehandlingContext();
 
     switch (behandlingRessurs.status) {
@@ -54,17 +49,17 @@ const BehandlingContainer = ({ bruker }: Props) => {
                 <BehandlingProvider behandling={behandlingRessurs.data}>
                     <HenleggBehandlingModal />
                     <HenleggBehandlingVeivalgModal />
-                    <KorrigerEtterbetalingModal behandling={behandlingRessurs.data} />
+                    <KorrigerEtterbetalingModal />
                     <Behandlingslinje />
                     <FlexContainer>
                         <VenstremenyContainer>
                             <Venstremeny />
                         </VenstremenyContainer>
                         <HovedinnholdContainer>
-                            <BehandlingRouter åpenBehandling={behandlingRessurs.data} bruker={bruker} />
+                            <BehandlingRouter />
                         </HovedinnholdContainer>
                         <HøyremenyContainer>
-                            <Høyremeny bruker={bruker} />
+                            <Høyremeny />
                         </HøyremenyContainer>
                     </FlexContainer>
                 </BehandlingProvider>
@@ -77,6 +72,4 @@ const BehandlingContainer = ({ bruker }: Props) => {
         default:
             return <div />;
     }
-};
-
-export default BehandlingContainer;
+}

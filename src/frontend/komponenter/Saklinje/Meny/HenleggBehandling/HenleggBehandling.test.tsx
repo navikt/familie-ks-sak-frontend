@@ -42,7 +42,7 @@ function Wrapper({
     return (
         <TestProviders featureToggles={featureToggles}>
             <FagsakProvider fagsak={fagsak}>
-                <HentOgSettBehandlingProvider fagsak={fagsak}>
+                <HentOgSettBehandlingProvider>
                     <BehandlingProvider behandling={behandling}>
                         <ModalWrapper />
                         <ActionMenu open={true}>

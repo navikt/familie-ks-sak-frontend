@@ -5,15 +5,10 @@ import { useKorrigerEtterbetalingForm, årsaker } from './useKorrigerEtterbetali
 import { erEtterbetalingsbeløpGyldig, erÅrsakForKorrigeringGyldig } from './validering';
 import { ModalType } from '../../../../../../context/ModalContext';
 import { useModal } from '../../../../../../hooks/useModal';
-import type { IBehandling } from '../../../../../../typer/behandling';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
-interface KorrigerEtterbetalingModalProps {
-    behandling: IBehandling;
-}
-
-export function KorrigerEtterbetalingModal({ behandling }: KorrigerEtterbetalingModalProps) {
-    const { vurderErLesevisning } = useBehandlingContext();
+export function KorrigerEtterbetalingModal() {
+    const { behandling, vurderErLesevisning } = useBehandlingContext();
     const {
         form,
         korrigerEtterbetaling,

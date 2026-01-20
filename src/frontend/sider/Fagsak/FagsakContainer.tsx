@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Alert, HStack, Loader } from '@navikt/ds-react';
 
-import BehandlingContainer from './Behandling/BehandlingContainer';
+import { BehandlingContainer } from './Behandling/BehandlingContainer';
 import { HentOgSettBehandlingProvider } from './Behandling/context/HentOgSettBehandlingContext';
 import { BrukerProvider } from './BrukerContext';
 import Dokumentutsending from './Dokumentutsending/Dokumentutsending';
@@ -111,8 +111,8 @@ export function FagsakContainer() {
                                 <Route
                                     path="/:behandlingId/*"
                                     element={
-                                        <HentOgSettBehandlingProvider fagsak={fagsak}>
-                                            <BehandlingContainer bruker={bruker} />
+                                        <HentOgSettBehandlingProvider>
+                                            <BehandlingContainer />
                                         </HentOgSettBehandlingProvider>
                                     }
                                 />

@@ -40,7 +40,7 @@ function Wrapper({
                     element={
                         <FagsakProvider fagsak={fagsak}>
                             <ManuelleBrevmottakerePåFagsakProvider>
-                                <HentOgSettBehandlingProvider fagsak={fagsak}>
+                                <HentOgSettBehandlingProvider>
                                     <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
                                 </HentOgSettBehandlingProvider>
                             </ManuelleBrevmottakerePåFagsakProvider>

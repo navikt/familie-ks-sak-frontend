@@ -7,18 +7,13 @@ import { Button, Stack, VStack } from '@navikt/ds-react';
 import { ASurfaceDefault } from '@navikt/ds-tokens/dist/tokens';
 import { hentDataFraRessursMedFallback } from '@navikt/familie-typer';
 
-import Behandlingskort from './Behandlingskort';
+import { Behandlingskort } from './Behandlingskort';
 import { useHøyremeny } from './useHøyremeny';
-import Hendelsesoversikt from '../../../../komponenter/Hendelsesoversikt/Hendelsesoversikt';
+import { Hendelsesoversikt } from '../../../../komponenter/Hendelsesoversikt/Hendelsesoversikt';
 import type { Hendelse } from '../../../../komponenter/Hendelsesoversikt/typer';
 import type { ILogg } from '../../../../typer/logg';
-import type { IPersonInfo } from '../../../../typer/person';
 import { Datoformat, isoStringTilFormatertString } from '../../../../utils/dato';
 import { useBehandlingContext } from '../context/BehandlingContext';
-
-interface Props {
-    bruker: IPersonInfo;
-}
 
 const ToggleVisningHøyremeny = styled(Button)`
     position: absolute;
@@ -33,7 +28,7 @@ const ToggleVisningHøyremeny = styled(Button)`
     z-index: 10;
 `;
 
-export function Høyremeny({ bruker }: Props) {
+export function Høyremeny() {
     const { behandling, logg, hentLogg } = useBehandlingContext();
 
     const [erÅpen, settErÅpen] = useHøyremeny();
@@ -61,7 +56,7 @@ export function Høyremeny({ bruker }: Props) {
             />
             <Activity mode={erÅpen ? 'visible' : 'hidden'}>
                 <VStack width={'25rem'}>
-                    <Behandlingskort åpenBehandling={behandling} />
+                    <Behandlingskort />
                     <Hendelsesoversikt
                         hendelser={hentDataFraRessursMedFallback(logg, []).map((loggElement: ILogg): Hendelse => {
                             return {
@@ -76,8 +71,6 @@ export function Høyremeny({ bruker }: Props) {
                                 beskrivelse: loggElement.tekst,
                             };
                         })}
-                        åpenBehandling={behandling}
-                        bruker={bruker}
                     />
                 </VStack>
             </Activity>

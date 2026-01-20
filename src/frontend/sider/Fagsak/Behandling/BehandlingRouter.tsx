@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { Route, Routes, useLocation } from 'react-router';
 
+import { useBrukerContext } from '../BrukerContext';
 import { useBehandlingContext } from './context/BehandlingContext';
 import Behandlingsresultat from './sider/Behandlingsresultat/Behandlingsresultat';
 import RegistrerSøknad from './sider/RegistrerSøknad/RegistrerSøknad';
@@ -15,21 +16,17 @@ import Vedtak from './sider/Vedtak/Vedtak';
 import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from './sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { TidslinjeProvider } from '../../../komponenter/Tidslinje/TidslinjeContext';
-import type { IBehandling } from '../../../typer/behandling';
-import type { IPersonInfo } from '../../../typer/person';
 import { hentSideHref } from '../../../utils/miljø';
 import { RefusjonEøsTabellProvider } from './sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
 
-interface Props {
-    bruker: IPersonInfo;
-    åpenBehandling: IBehandling;
-}
+export function BehandlingRouter() {
+    const { bruker } = useBrukerContext();
+    const { behandling, leggTilBesøktSide } = useBehandlingContext();
 
-export const BehandlingRouter = ({ bruker, åpenBehandling }: Props) => {
     const location = useLocation();
-    const { leggTilBesøktSide } = useBehandlingContext();
 
     const sidevisning = hentSideHref(location.pathname);
+
     useEffect(() => {
         if (sidevisning) {
             leggTilBesøktSide(Object.entries(sider).find(([_, side]) => side.href === sidevisning)?.[0] as SideId);
@@ -41,7 +38,7 @@ export const BehandlingRouter = ({ bruker, åpenBehandling }: Props) => {
             <Route
                 path="/registrer-soknad"
                 element={
-                    <SøknadProvider åpenBehandling={åpenBehandling}>
+                    <SøknadProvider åpenBehandling={behandling}>
                         <RegistrerSøknad />
                     </SøknadProvider>
                 }
@@ -49,8 +46,8 @@ export const BehandlingRouter = ({ bruker, åpenBehandling }: Props) => {
             <Route
                 path="/vilkaarsvurdering"
                 element={
-                    <VilkårsvurderingProvider åpenBehandling={åpenBehandling}>
-                        <Vilkårsvurdering åpenBehandling={åpenBehandling} />
+                    <VilkårsvurderingProvider åpenBehandling={behandling}>
+                        <Vilkårsvurdering åpenBehandling={behandling} />
                     </VilkårsvurderingProvider>
                 }
             />
@@ -58,15 +55,15 @@ export const BehandlingRouter = ({ bruker, åpenBehandling }: Props) => {
                 path="/tilkjent-ytelse"
                 element={
                     <TidslinjeProvider>
-                        <Behandlingsresultat åpenBehandling={åpenBehandling} />
+                        <Behandlingsresultat åpenBehandling={behandling} />
                     </TidslinjeProvider>
                 }
             />
             <Route
                 path="/simulering"
                 element={
-                    <SimuleringProvider åpenBehandling={åpenBehandling}>
-                        <Simulering åpenBehandling={åpenBehandling} />
+                    <SimuleringProvider åpenBehandling={behandling}>
+                        <Simulering åpenBehandling={behandling} />
                     </SimuleringProvider>
                 }
             />
@@ -75,8 +72,8 @@ export const BehandlingRouter = ({ bruker, åpenBehandling }: Props) => {
                 element={
                     <FeilutbetaltValutaTabellProvider>
                         <RefusjonEøsTabellProvider>
-                            <SammensattKontrollsakProvider åpenBehandling={åpenBehandling}>
-                                <Vedtak åpenBehandling={åpenBehandling} bruker={bruker} />
+                            <SammensattKontrollsakProvider åpenBehandling={behandling}>
+                                <Vedtak åpenBehandling={behandling} bruker={bruker} />
                             </SammensattKontrollsakProvider>
                         </RefusjonEøsTabellProvider>
                     </FeilutbetaltValutaTabellProvider>
@@ -84,4 +81,4 @@ export const BehandlingRouter = ({ bruker, åpenBehandling }: Props) => {
             />
         </Routes>
     );
-};
+}
