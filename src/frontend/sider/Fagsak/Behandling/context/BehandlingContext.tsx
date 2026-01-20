@@ -13,11 +13,9 @@ import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams
 import {
     BehandlerRolle,
     BehandlingStatus,
-    type BehandlingSteg,
     BehandlingÅrsak,
     type IBehandling,
     type IBehandlingPåVent,
-    type IOpprettBehandlingData,
 } from '../../../../typer/behandling';
 import { harTilgangTilEnhet } from '../../../../typer/enhet';
 import type { ILogg } from '../../../../typer/logg';
@@ -34,7 +32,6 @@ import {
     type ITrinn,
     KontrollertStatus,
     type SideId,
-    sider,
 } from '../sider/sider';
 
 interface Props extends PropsWithChildren {
@@ -43,14 +40,11 @@ interface Props extends PropsWithChildren {
 
 interface BehandlingContextValue {
     vurderErLesevisning: (sjekkTilgangTilEnhet?: boolean, skalIgnorereOmEnhetErMidlertidig?: boolean) => boolean;
-    forrigeÅpneSide: ISide | undefined;
-    hentStegPåÅpenBehandling: () => BehandlingSteg | undefined;
     leggTilBesøktSide: (besøktSide: SideId) => void;
     settIkkeKontrollerteSiderTilManglerKontroll: () => void;
     søkersMålform: Målform;
     trinnPåBehandling: { [sideId: string]: ITrinn };
     behandling: IBehandling;
-    opprettBehandling: (data: IOpprettBehandlingData) => Promise<void | Ressurs<IBehandling>>;
     logg: Ressurs<ILogg[]>;
     hentLogg: () => void;
     behandlingsstegSubmitressurs: Ressurs<IBehandling>;
@@ -65,8 +59,6 @@ interface BehandlingContextValue {
         erSammensattKontrollsak: boolean
     ) => void;
     behandlingPåVent: IBehandlingPåVent | undefined;
-    erBehandleneEnhetMidlertidig?: boolean;
-    erBehandlingAvsluttet: boolean;
 }
 
 const BehandlingContext = createContext<BehandlingContextValue | undefined>(undefined);
@@ -82,7 +74,7 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
         foreslåVedtakNesteOnClick,
     } = useBehandlingssteg(settBehandlingRessurs, behandling);
 
-    const { opprettBehandling, logg, hentLogg, oppdaterRegisteropplysninger } = useBehandlingApi(settBehandlingRessurs);
+    const { logg, hentLogg, oppdaterRegisteropplysninger } = useBehandlingApi(settBehandlingRessurs);
 
     const {
         harInnloggetSaksbehandlerSkrivetilgang,
@@ -93,10 +85,7 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const [forrigeÅpneSide, settForrigeÅpneSide] = useState<ISide | undefined>(undefined);
-    const [trinnPåBehandling, settTrinnPåBehandling] = useState<{
-        [sideId: string]: ITrinn;
-    }>({});
+    const [trinnPåBehandling, settTrinnPåBehandling] = useState<{ [sideId: string]: ITrinn }>({});
 
     useEffect(() => {
         const siderPåBehandling = hentTrinnForBehandling(behandling);
@@ -117,10 +106,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
 
         automatiskNavigeringTilSideForSteg();
     }, [behandling]);
-
-    useEffect(() => {
-        settForrigeÅpneSide(Object.values(sider).find((side: ISide) => location.pathname.includes(side.href)));
-    }, [location.pathname]);
 
     const leggTilBesøktSide = (besøktSide: SideId) => {
         if (kanBeslutteVedtak) {
@@ -148,10 +133,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
                 } else return acc;
             }, trinnPåBehandling)
         );
-    };
-
-    const hentStegPåÅpenBehandling = (): BehandlingSteg | undefined => {
-        return behandling.steg;
     };
 
     const vurderErLesevisning = (sjekkTilgangTilEnhet = true, skalIgnorereOmEnhetErMidlertidig = false): boolean => {
@@ -211,20 +192,15 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
     const erBehandleneEnhetMidlertidig =
         behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId === MIDLERTIDIG_BEHANDLENDE_ENHET_ID;
 
-    const erBehandlingAvsluttet = behandling.status === BehandlingStatus.AVSLUTTET;
-
     return (
         <BehandlingContext.Provider
             value={{
                 vurderErLesevisning,
-                forrigeÅpneSide,
-                hentStegPåÅpenBehandling,
                 leggTilBesøktSide,
                 settIkkeKontrollerteSiderTilManglerKontroll,
                 søkersMålform,
                 trinnPåBehandling,
                 behandling,
-                opprettBehandling,
                 logg,
                 hentLogg,
                 behandlingsstegSubmitressurs,
@@ -233,8 +209,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
                 oppdaterRegisteropplysninger,
                 foreslåVedtakNesteOnClick,
                 behandlingPåVent: behandling.behandlingPåVent,
-                erBehandleneEnhetMidlertidig,
-                erBehandlingAvsluttet,
                 settÅpenBehandling: settBehandlingRessurs,
             }}
         >
