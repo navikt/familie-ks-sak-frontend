@@ -15,6 +15,7 @@ import { type IBarnMedOpplysninger, Målform } from '../../../typer/søknad';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
 import { useBrukerContext } from '../BrukerContext';
+import { useFagsakContext } from '../FagsakContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
 
 export enum DokumentÅrsak {
@@ -57,10 +58,6 @@ const hentBarnMedOpplysningerFraBruker = () => {
     );
 };
 
-interface Props extends PropsWithChildren {
-    fagsakId: number;
-}
-
 interface DokumentutsendingSkjema {
     årsak: DokumentÅrsak | undefined;
     målform: Målform | undefined;
@@ -69,7 +66,6 @@ interface DokumentutsendingSkjema {
 }
 
 interface DokumentutsendingContextValue {
-    fagsakId: number;
     hentForhåndsvisningPåFagsak: () => void;
     hentBarnMedOpplysningerFraBruker: () => IBarnMedOpplysninger[];
     hentSkjemaFeilmelding: () => string | undefined;
@@ -87,7 +83,8 @@ interface DokumentutsendingContextValue {
 
 const DokumentutsendingContext = createContext<DokumentutsendingContextValue | undefined>(undefined);
 
-export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
+export function DokumentutsendingProvider({ children }: PropsWithChildren) {
+    const { fagsak } = useFagsakContext();
     const { bruker } = useBrukerContext();
     const { manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak } =
         useManuelleBrevmottakerePåFagsakContext();
@@ -221,7 +218,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
         hentForhåndsvisning<IManueltBrevRequestPåFagsak>({
             method: 'POST',
             data: skjemaData,
-            url: `/familie-ks-sak/api/brev/fagsak/${fagsakId}/forhaandsvis-brev`,
+            url: `/familie-ks-sak/api/brev/fagsak/${fagsak.id}/forhaandsvis-brev`,
         });
     };
 
@@ -231,7 +228,7 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
                 {
                     method: 'POST',
                     data: hentSkjemaData(),
-                    url: `/familie-ks-sak/api/brev/fagsak/${fagsakId}/send-brev`,
+                    url: `/familie-ks-sak/api/brev/fagsak/${fagsak.id}/send-brev`,
                 },
                 () => {
                     settVisInnsendtBrevModal(true);
@@ -283,7 +280,6 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
     return (
         <DokumentutsendingContext.Provider
             value={{
-                fagsakId,
                 hentForhåndsvisningPåFagsak,
                 hentBarnMedOpplysningerFraBruker,
                 hentSkjemaFeilmelding,
@@ -302,12 +298,12 @@ export const DokumentutsendingProvider = ({ fagsakId, children }: Props) => {
             {children}
         </DokumentutsendingContext.Provider>
     );
-};
+}
 
-export const useDokumentutsendingContext = () => {
+export function useDokumentutsendingContext() {
     const context = useContext(DokumentutsendingContext);
     if (context === undefined) {
         throw new Error('useDokumentutsendingContext må brukes innenfor en DokumentutsendingProvider');
     }
     return context;
-};
+}
