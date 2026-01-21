@@ -1,4 +1,3 @@
-import type { BehandlingÅrsak } from './behandling';
 import type { BehandlingKategori } from './behandlingstema';
 import type { INøkkelPar } from './common';
 import type { Utbetalingsperiode } from './utbetalingsperiode';
@@ -41,10 +40,3 @@ export const fagsakStatus: INøkkelPar = {
         navn: 'Avsluttet',
     },
 };
-
-export interface IInternstatistikk {
-    antallFagsakerTotalt: number;
-    antallFagsakerLøpende: number;
-    antallBehandlingerIkkeFerdigstilt: number;
-    antallBehandlingerPerÅrsak: Record<BehandlingÅrsak, number>;
-}
