@@ -25,8 +25,8 @@ import {
 import useDokument from '../../../hooks/useDokument';
 import PdfVisningModal from '../../../komponenter/PdfVisningModal/PdfVisningModal';
 import type { ITilgangsstyrtJournalpost } from '../../../typer/journalpost';
-import type { IPersonInfo } from '../../../typer/person';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
+import { useBrukerContext } from '../BrukerContext';
 
 const Container = styled.div`
     padding: 2rem;
@@ -62,18 +62,23 @@ const StyledHeaderCell = styled(Table.HeaderCell)`
     &:nth-of-type(1) {
         width: 3.5rem;
     }
+
     &:nth-of-type(3) {
         width: 25%;
     }
+
     &:nth-of-type(4) {
         width: 15%;
     }
+
     &:nth-of-type(5) {
         width: 20%;
     }
+
     &:nth-of-type(6) {
         width: 22%;
     }
+
     &:nth-of-type(7) {
         width: 8%;
     }
@@ -87,6 +92,7 @@ const StyledColumnHeader = styled(Table.ColumnHeader)`
 export const Vedleggsliste = styled.ul`
     list-style-type: none;
     margin: 0;
+
     &:first-child {
         padding-inline-start: 0;
     }
@@ -97,10 +103,6 @@ export const EllipsisBodyShort = styled(BodyShort)`
     overflow: hidden;
     text-overflow: ellipsis;
 `;
-
-interface IProps {
-    bruker: IPersonInfo;
-}
 
 const hentIkonForJournalpostType = (journalposttype: Journalposttype) => {
     switch (journalposttype) {
@@ -122,7 +124,8 @@ const settRiktigDatoMottatForJournalpost = (journalpost: IJournalpost): IJournal
     };
 };
 
-const JournalpostListe = ({ bruker }: IProps) => {
+export function JournalpostListe() {
+    const { bruker } = useBrukerContext();
     const { request } = useHttp();
     const [journalposterRessurs, settJournalposterRessurs] =
         useState<Ressurs<ITilgangsstyrtJournalpost[]>>(byggTomRessurs());
@@ -291,6 +294,4 @@ const JournalpostListe = ({ bruker }: IProps) => {
     } else {
         return null;
     }
-};
-
-export default JournalpostListe;
+}
