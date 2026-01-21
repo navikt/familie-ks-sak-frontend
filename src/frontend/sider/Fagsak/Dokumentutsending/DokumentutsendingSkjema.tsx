@@ -15,13 +15,9 @@ import FritekstAvsnitt from '../../../komponenter/FritekstAvsnitt';
 import { LeggTilBarnModal } from '../../../komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
 import { LeggTilBarnModalContextProvider } from '../../../komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
 import MålformVelger from '../../../komponenter/MålformVelger';
-import type { IPersonInfo } from '../../../typer/person';
 import type { IBarnMedOpplysninger } from '../../../typer/søknad';
+import { useBrukerContext } from '../BrukerContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
-
-interface Props {
-    bruker: IPersonInfo;
-}
 
 const Container = styled.div`
     padding: 2rem;
@@ -60,7 +56,8 @@ enum BarnIBrevÅrsak {
     BARN_BOSATT_MED_SØKER,
 }
 
-const DokumentutsendingSkjema = ({ bruker }: Props) => {
+export function DokumentutsendingSkjema() {
+    const { bruker } = useBrukerContext();
     const { harInnloggetSaksbehandlerSkrivetilgang } = useAppContext();
 
     const {
@@ -219,6 +216,4 @@ const DokumentutsendingSkjema = ({ bruker }: Props) => {
             </Container>
         </LeggTilBarnModalContextProvider>
     );
-};
-
-export default DokumentutsendingSkjema;
+}

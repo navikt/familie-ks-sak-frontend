@@ -5,13 +5,9 @@ import { Button, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useDokumentutsendingContext } from './DokumentutsendingContext';
-import DokumentutsendingSkjema from './DokumentutsendingSkjema';
-import type { IPersonInfo } from '../../../typer/person';
+import { DokumentutsendingSkjema } from './DokumentutsendingSkjema';
 import { fagsakHeaderHøydeRem } from '../../../typer/styling';
-
-interface Props {
-    bruker: IPersonInfo;
-}
+import { useFagsakContext } from '../FagsakContext';
 
 const Container = styled.div`
     display: grid;
@@ -20,10 +16,11 @@ const Container = styled.div`
     height: calc(100vh - ${fagsakHeaderHøydeRem}rem);
 `;
 
-const Dokumentutsending = ({ bruker }: Props) => {
+export function Dokumentutsending() {
+    const { fagsak } = useFagsakContext();
     const navigate = useNavigate();
 
-    const { fagsakId, hentetDokument, settVisInnsendtBrevModal, visInnsendtBrevModal } = useDokumentutsendingContext();
+    const { hentetDokument, settVisInnsendtBrevModal, visInnsendtBrevModal } = useDokumentutsendingContext();
 
     return (
         <Container>
@@ -40,7 +37,7 @@ const Dokumentutsending = ({ bruker }: Props) => {
                             key={'til saksoversikt'}
                             size={'medium'}
                             onClick={() => {
-                                navigate(`/fagsak/${fagsakId}/saksoversikt`);
+                                navigate(`/fagsak/${fagsak.id}/saksoversikt`);
                                 settVisInnsendtBrevModal(false);
                             }}
                             children={'Se saksoversikt'}
@@ -57,7 +54,7 @@ const Dokumentutsending = ({ bruker }: Props) => {
                     </Modal.Footer>
                 </Modal>
             )}
-            <DokumentutsendingSkjema bruker={bruker} />
+            <DokumentutsendingSkjema />
 
             <iframe
                 title={'dokument'}
@@ -67,6 +64,4 @@ const Dokumentutsending = ({ bruker }: Props) => {
             />
         </Container>
     );
-};
-
-export default Dokumentutsending;
+}
