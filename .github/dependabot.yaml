@@ -11,6 +11,10 @@ updates:
     schedule:
       interval: daily
       time: "09:00"
+    ignore:
+      - dependency-name: "@types/node"
+        versions:
+          - "25"
     cooldown:
       default-days: 4
     open-pull-requests-limit: 20
@@ -28,7 +32,65 @@ updates:
       aksel:
         patterns:
           - "@navikt/aksel-icons"
-          - "@navikt/ds-*"
+          - "@navikt/ds-css"
+          - "@navikt/ds-react"
+      familie:
+        patterns:
+          - "@navikt/familie-*"
+      tanstack:
+        patterns:
+          - "@tanstack/*"
+      sentry:
+        patterns:
+          - "@sentry/*"
+      testing-library:
+        patterns:
+          - "@testing-library/*"
+      landvelger:
+        patterns:
+          - "@navikt/landvelger"
+          - "@navikt/land-verktoy"
+          - "@navikt/flagg-ikoner"
+      eslint:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "eslint-*"
+          - "@types/eslint*"
+          - "typescript-eslint"
+          - "@typescript-eslint/*"
+          - "globals"
+      vitest:
+        patterns:
+          - "vitest"
+          - "jsdom"
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/plugin-react"
+      express:
+        patterns:
+          - "express"
+          - "@types/express"
+      classnames:
+        patterns:
+          - "classnames"
+          - "@types/classnames"
+      deep_equal:
+        patterns:
+          - "deep-equal"
+          - "@types/deep-equal"
+      react_router:
+        patterns:
+          - "react-router"
+          - "@types/react-router"
+      uuid:
+        patterns:
+          - "uuid"
+          - "@types/uuid"
+      types:
+        patterns:
+          - "@types/*"
       patch-updates:
         update-types:
           - patch
