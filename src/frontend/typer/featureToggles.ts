@@ -9,5 +9,4 @@ export enum FeatureToggle {
     kanOppretteOgEndreSammensatteKontrollsaker = 'familie-ks-sak.kan-opprette-og-endre-sammensatte-kontrollsaker',
     skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
     skalAlltidViseAlleVedtaksperioder = 'familie-ks-sak-frontend.alltid-vis-alle-vedtaksperioder',
-    skalViseOppholdsadresse = 'familie-ks-sak.skal-vise-oppholdsadresse',
 }

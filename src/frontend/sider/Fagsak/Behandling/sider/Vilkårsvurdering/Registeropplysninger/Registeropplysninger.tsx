@@ -11,8 +11,6 @@ import { ASpacing4 } from '@navikt/ds-tokens/dist/tokens';
 
 import styles from './Registeropplysninger.module.css';
 import RegisteropplysningerTabell from './RegisteropplysningerTabell';
-import { useFeatureToggles } from '../../../../../../hooks/useFeatureToggles';
-import { FeatureToggle } from '../../../../../../typer/featureToggles';
 import type { IRestRegisterhistorikk } from '../../../../../../typer/person';
 import { Registeropplysning } from '../../../../../../typer/registeropplysning';
 import { Datoformat, isoStringTilFormatertString } from '../../../../../../utils/dato';
@@ -23,7 +21,6 @@ interface IRegisteropplysningerProps {
 }
 
 const Registeropplysninger = ({ opplysninger, fødselsdato }: IRegisteropplysningerProps) => {
-    const toggles = useFeatureToggles();
     const manglerRegisteropplysninger = opplysninger.statsborgerskap.length === 0;
 
     const personErDød = opplysninger.dødsboadresse.length > 0;
@@ -89,13 +86,11 @@ const Registeropplysninger = ({ opplysninger, fødselsdato }: IRegisteropplysnin
                         ikon={<HouseIcon fontSize={'1.5rem'} title="Hjem-ikon" focusable="false" />}
                         historikk={opplysninger.bostedsadresse}
                     />
-                    {toggles[FeatureToggle.skalViseOppholdsadresse] && (
-                        <RegisteropplysningerTabell
-                            opplysningstype={Registeropplysning.OPPHOLDSADRESSE}
-                            ikon={<HouseIcon fontSize={'1.5rem'} title="Hjem-ikon" focusable="false" />}
-                            historikk={opplysninger.oppholdsadresse}
-                        />
-                    )}
+                    <RegisteropplysningerTabell
+                        opplysningstype={Registeropplysning.OPPHOLDSADRESSE}
+                        ikon={<HouseIcon fontSize={'1.5rem'} title="Hjem-ikon" focusable="false" />}
+                        historikk={opplysninger.oppholdsadresse}
+                    />
                 </Box>
             )}
         </>
