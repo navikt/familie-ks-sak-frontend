@@ -117,8 +117,7 @@ export const filtrerOgSorterPerioderMedBegrunnelseBehov = (
     vedtaksperioder: IVedtaksperiodeMedBegrunnelser[],
     behandlingResultat: BehandlingResultat,
     behandlingStatus: BehandlingStatus,
-    sisteVedtaksperiodeVisningDato: IsoDatoString | undefined,
-    skalAlltidViseAlleVedtaksperioder: boolean
+    sisteVedtaksperiodeVisningDato: IsoDatoString | undefined
 ): IVedtaksperiodeMedBegrunnelser[] => {
     const sorterteOgFiltrertePerioder = vedtaksperioder
         .slice()
@@ -131,8 +130,6 @@ export const filtrerOgSorterPerioderMedBegrunnelseBehov = (
         .filter((vedtaksperiode: IVedtaksperiodeMedBegrunnelser) => {
             if (behandlingStatus === BehandlingStatus.AVSLUTTET) {
                 return harPeriodeBegrunnelse(vedtaksperiode);
-            } else if (skalAlltidViseAlleVedtaksperioder) {
-                return true;
             } else {
                 return (
                     (sisteVedtaksperiodeVisningDato &&
