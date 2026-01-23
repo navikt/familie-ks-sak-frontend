@@ -3,9 +3,12 @@ export interface FeatureToggles {
 }
 
 export enum FeatureToggle {
+    // Operasjonelle
     kanBehandleTekniskEndring = 'familie-ks-sak.behandling.teknisk-endring',
     kanManueltKorrigereMedVedtaksbrev = 'familie-ks-sak.behandling.korreksjon-vedtaksbrev',
     tekniskVedlikeholdHenleggelse = 'familie-ks-sak.teknisk-vedlikehold-henleggelse.tilgangsstyring',
     kanOppretteOgEndreSammensatteKontrollsaker = 'familie-ks-sak.kan-opprette-og-endre-sammensatte-kontrollsaker',
     skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
+
+    // Release
 }
