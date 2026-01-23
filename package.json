@@ -112,5 +112,8 @@
     "typescript-eslint": "8.53.0",
     "vite": "7.3.0",
     "vitest": "4.0.5"
+  },
+  "resolutions": {
+    "csstype": "3.1.2"
   }
 }
