@@ -7,7 +7,6 @@ import AppInfoModal from './komponenter/Modal/AppInfoModal';
 import OpprettFagsakModal from './komponenter/Modal/Fagsak/OpprettFagsakModal';
 import { FeilmeldingModal } from './komponenter/Modal/FeilmeldingModal';
 import UgyldigSesjon from './komponenter/Modal/SesjonUtløpt';
-import { UtdatertAppVersjonModal } from './komponenter/Modal/UtdatertAppVersjonModal/UtdatertAppVersjonModal';
 import { ForhåndsvisOpprettingAvPdfModal } from './komponenter/PdfVisningModal/ForhåndsvisOpprettingAvPdfModal';
 import SystemetLaster from './komponenter/SystemetLaster/SystemetLaster';
 import Toasts from './komponenter/Toast/Toasts';
@@ -40,7 +39,6 @@ const Container = () => {
                     {systemetLaster() && <SystemetLaster />}
                     <Toasts />
                     <Main $systemetLaster={systemetLaster()}>
-                        <UtdatertAppVersjonModal />
                         <OpprettFagsakModal />
                         <FeilmeldingModal />
                         <ForhåndsvisOpprettingAvPdfModal />
