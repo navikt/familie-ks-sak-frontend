@@ -3,7 +3,7 @@ import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
 import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
-import { type FeatureToggles, FeatureToggle } from './featureToggles';
+import { FeatureToggle, type FeatureToggles } from './featureToggles';
 import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { ManglendeSvalbardmerking } from './ManglendeSvalbardmerking';
 import type { IRestOvergangsordningAndel } from './overgangsordningAndel';
@@ -67,9 +67,6 @@ export const behandlingÅrsakerSomIkkeSkalSettesManuelt = (toggles: FeatureToggl
         BehandlingÅrsak.KLAGE,
         BehandlingÅrsak.LOVENDRING_2024,
         BehandlingÅrsak.SATSENDRING,
-        toggles[FeatureToggle.kanOppretteRevurderingMedAarsakIverksetteKaVedtak]
-            ? null
-            : BehandlingÅrsak.IVERKSETTE_KA_VEDTAK,
         toggles[FeatureToggle.kanManueltKorrigereMedVedtaksbrev] ? null : BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
     ].filter(behandlingsårsak => behandlingsårsak !== null);
 

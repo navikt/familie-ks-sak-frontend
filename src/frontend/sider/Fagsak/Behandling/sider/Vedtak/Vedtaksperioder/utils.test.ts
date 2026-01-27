@@ -26,8 +26,7 @@ describe('Vedtak utils', () => {
                 vedtaksperioder,
                 BehandlingResultat.AVSLÅTT_ENDRET_OG_OPPHØRT,
                 BehandlingStatus.UTREDES,
-                undefined,
-                true
+                undefined
             );
             expect(perioder.length).toBe(3);
             expect(perioder[0].type).toBe(Vedtaksperiodetype.UTBETALING);
@@ -45,8 +44,7 @@ describe('Vedtak utils', () => {
                     vedtaksperioder,
                     BehandlingResultat.INNVILGET_OG_OPPHØRT,
                     BehandlingStatus.AVSLUTTET,
-                    undefined,
-                    true
+                    undefined
                 );
                 expect(perioder.length).toBe(1);
                 expect(perioder[0].type).toEqual(Vedtaksperiodetype.OPPHØR);
@@ -66,8 +64,7 @@ describe('Vedtak utils', () => {
                     ],
                     BehandlingResultat.INNVILGET,
                     BehandlingStatus.UTREDES,
-                    undefined,
-                    false
+                    undefined
                 );
                 expect(perioder.length).toBe(1);
             });
@@ -84,8 +81,7 @@ describe('Vedtak utils', () => {
                     ],
                     BehandlingResultat.INNVILGET,
                     BehandlingStatus.UTREDES,
-                    undefined,
-                    false
+                    undefined
                 );
                 expect(perioder.length).toBe(0);
             });
@@ -99,8 +95,7 @@ describe('Vedtak utils', () => {
                     vedtaksperioder,
                     BehandlingResultat.OPPHØRT,
                     BehandlingStatus.UTREDES,
-                    undefined,
-                    true
+                    undefined
                 );
                 expect(perioder.length).toBe(1);
                 expect(perioder[0].type).toBe(Vedtaksperiodetype.OPPHØR);
