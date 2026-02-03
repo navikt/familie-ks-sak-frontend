@@ -13,7 +13,7 @@ import { SimuleringProvider } from './sider/Simulering/SimuleringContext';
 import { FeilutbetaltValutaTabellProvider } from './sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import { SammensattKontrollsakProvider } from './sider/Vedtak/SammensattKontrollsak/SammensattKontrollsakContext';
 import Vedtak from './sider/Vedtak/Vedtak';
-import Vilkårsvurdering from './sider/Vilkårsvurdering/Vilkårsvurdering';
+import { Vilkårsvurdering } from './sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from './sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { TidslinjeProvider } from '../../../komponenter/Tidslinje/TidslinjeContext';
 import { hentSideHref } from '../../../utils/miljø';
@@ -47,7 +47,7 @@ export function BehandlingRouter() {
                 path="/vilkaarsvurdering"
                 element={
                     <VilkårsvurderingProvider åpenBehandling={behandling}>
-                        <Vilkårsvurdering åpenBehandling={behandling} />
+                        <Vilkårsvurdering />
                     </VilkårsvurderingProvider>
                 }
             />

@@ -1,51 +1,38 @@
 import { useState } from 'react';
 
-import classNames from 'classnames';
 import { useNavigate } from 'react-router';
 
-import { ArrowsSquarepathIcon } from '@navikt/aksel-icons';
-import { Alert, BodyShort, Button, Detail, ErrorMessage, ErrorSummary, HStack, List } from '@navikt/ds-react';
-import type { Ressurs } from '@navikt/familie-typer';
-import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
+import { Alert, BodyShort, ErrorMessage, ErrorSummary, List } from '@navikt/ds-react';
+import { RessursStatus } from '@navikt/familie-typer';
 
 import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderingITestmiljøKnapp';
+import { OppdaterRegisteropplysninger } from './OppdaterRegisteropplysninger';
 import { ManglendeSvalbardmerkingVarsel } from './Varsel/ManglendeSvalbardmerkingVarsel';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
-import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
-import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingSteg, BehandlingÅrsak } from '../../../../../typer/behandling';
 import { Datoformat, isoStringTilFormatertString } from '../../../../../utils/dato';
 import { erProd } from '../../../../../utils/miljø';
 import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
+import { useFagsakContext } from '../../../FagsakContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
-interface IProps {
-    åpenBehandling: IBehandling;
-}
-
-const Vilkårsvurdering = ({ åpenBehandling }: IProps) => {
-    const { fagsakId } = useSakOgBehandlingParams();
+export function Vilkårsvurdering() {
+    const { fagsak } = useFagsakContext();
+    const { behandling, vurderErLesevisning, vilkårsvurderingNesteOnClick, behandlingsstegSubmitressurs } =
+        useBehandlingContext();
 
     const { vilkårsvurdering, feiloppsummeringFeil } = useVilkårsvurderingContext();
-    const {
-        vurderErLesevisning,
-        oppdaterRegisteropplysninger,
-        vilkårsvurderingNesteOnClick,
-        behandlingsstegSubmitressurs,
-    } = useBehandlingContext();
+
     const erLesevisning = vurderErLesevisning();
 
-    const registeropplysningerHentetTidpsunkt = vilkårsvurdering[0]?.person?.registerhistorikk?.hentetTidspunkt;
-
     const [visFeilmeldinger, settVisFeilmeldinger] = useState(false);
-    const [hentOpplysningerRessurs, settHentOpplysningerRessurs] = useState(byggTomRessurs());
 
     const navigate = useNavigate();
 
     const uregistrerteBarn =
-        åpenBehandling.søknadsgrunnlag?.barnaMedOpplysninger.filter(barn => !barn.erFolkeregistrert) ?? [];
+        behandling.søknadsgrunnlag?.barnaMedOpplysninger.filter(barn => !barn.erFolkeregistrert) ?? [];
 
     if (vilkårsvurdering.length === 0) {
         return <div>Finner ingen vilkår på behandlingen.</div>;
@@ -57,14 +44,14 @@ const Vilkårsvurdering = ({ åpenBehandling }: IProps) => {
 
     return (
         <Skjemasteg
-            skalViseForrigeKnapp={åpenBehandling.årsak === BehandlingÅrsak.SØKNAD}
+            skalViseForrigeKnapp={behandling.årsak === BehandlingÅrsak.SØKNAD}
             tittel={'Vilkårsvurdering'}
             forrigeOnClick={() => {
-                navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/registrer-soknad`);
+                navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/registrer-soknad`);
             }}
             nesteOnClick={() => {
                 if (erLesevisning) {
-                    navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/tilkjent-ytelse`);
+                    navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/tilkjent-ytelse`);
                 } else if (!erFeilISkjema) {
                     vilkårsvurderingNesteOnClick();
                 } else {
@@ -75,45 +62,8 @@ const Vilkårsvurdering = ({ åpenBehandling }: IProps) => {
             senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
             steg={BehandlingSteg.VILKÅRSVURDERING}
         >
-            <>
-                <HStack align={'center'} wrap={false} marginBlock={'space-0 space-8'}>
-                    <Detail
-                        textColor="subtle"
-                        children={
-                            registeropplysningerHentetTidpsunkt
-                                ? `Registeropplysninger hentet ${isoStringTilFormatertString({
-                                      isoString: registeropplysningerHentetTidpsunkt,
-                                      tilFormat: Datoformat.DATO_TID_SEKUNDER,
-                                  })} fra Folkeregisteret`
-                                : 'Kunne ikke hente innhentingstidspunkt for registeropplysninger'
-                        }
-                    />
-                    {!erLesevisning && (
-                        <Button
-                            className={classNames('oppdater-registeropplysninger-knapp')}
-                            id={'oppdater-registeropplysninger'}
-                            aria-label={'Oppdater registeropplysninger'}
-                            title={'Oppdater'}
-                            onClick={() => {
-                                settHentOpplysningerRessurs(byggHenterRessurs());
-                                oppdaterRegisteropplysninger().then((response: Ressurs<IBehandling>) => {
-                                    settHentOpplysningerRessurs(response);
-                                });
-                            }}
-                            loading={hentOpplysningerRessurs.status === RessursStatus.HENTER}
-                            variant="tertiary"
-                            size="small"
-                            icon={<ArrowsSquarepathIcon fontSize={'1.5rem'} focusable="false" />}
-                        />
-                    )}
-                </HStack>
-                {hentOpplysningerRessurs.status === RessursStatus.FEILET && (
-                    <ErrorMessage>{hentOpplysningerRessurs.frontendFeilmelding}</ErrorMessage>
-                )}
-            </>
-
-            {!erProd() && <FyllUtVilkårsvurderingITestmiljøKnapp behandlingId={åpenBehandling.behandlingId} />}
-
+            <OppdaterRegisteropplysninger />
+            {!erProd() && <FyllUtVilkårsvurderingITestmiljøKnapp behandlingId={behandling.behandlingId} />}
             <VilkårsvurderingSkjema />
             {uregistrerteBarn.length > 0 && (
                 <Alert variant="info">
@@ -134,7 +84,7 @@ const Vilkårsvurdering = ({ åpenBehandling }: IProps) => {
                     <BodyShort>Dette vil føre til avslag for barna i listen.</BodyShort>
                 </Alert>
             )}
-            <ManglendeSvalbardmerkingVarsel manglendeSvalbardmerking={åpenBehandling.manglendeSvalbardmerking} />
+            <ManglendeSvalbardmerkingVarsel manglendeSvalbardmerking={behandling.manglendeSvalbardmerking} />
             {erFeilISkjema && visFeilmeldinger && (
                 <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
                     {feiloppsummeringFeil.map(item => (
@@ -149,6 +99,4 @@ const Vilkårsvurdering = ({ åpenBehandling }: IProps) => {
             )}
         </Skjemasteg>
     );
-};
-
-export default Vilkårsvurdering;
+}
