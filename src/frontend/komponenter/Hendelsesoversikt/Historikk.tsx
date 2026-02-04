@@ -1,14 +1,7 @@
 import styled from 'styled-components';
 
-import { Tabs } from '@navikt/ds-react';
-
 import HendelseItem from './komponenter/HendelseItem';
-import { type Hendelse, TabValg } from './typer';
-
-const StyledPanel = styled(Tabs.Panel)`
-    overflow: auto;
-    max-width: 35rem;
-`;
+import { type Hendelse } from './typer';
 
 const Liste = styled.ul`
     min-height: 3.125rem;
@@ -21,13 +14,11 @@ interface IProps {
 }
 
 const Historikk = ({ hendelser }: IProps) => (
-    <StyledPanel value={TabValg.Historikk}>
-        <Liste>
-            {hendelser?.map((hendelse: Hendelse) => (
-                <HendelseItem key={hendelse.id} hendelse={hendelse} />
-            ))}
-        </Liste>
-    </StyledPanel>
+    <Liste>
+        {hendelser?.map((hendelse: Hendelse) => (
+            <HendelseItem key={hendelse.id} hendelse={hendelse} />
+        ))}
+    </Liste>
 );
 
 export default Historikk;
