@@ -1,11 +1,11 @@
 import { Tabs } from '@navikt/ds-react';
 
+import { TabValg } from './Høyremeny';
+import IkonDokumenter from './Ikoner/IkonDokumenter';
+import IkonHistorikk from './Ikoner/IkonHistorikk';
+import IkonMeldinger from './Ikoner/IkonMeldinger';
+import IkonTotrinnskontroll from './Ikoner/IkonTotrinnskontroll';
 import styles from './Tabvelger.module.css';
-import IkonDokumenter from '../../../../komponenter/Hendelsesoversikt/ikoner/IkonDokumenter';
-import IkonHistorikk from '../../../../komponenter/Hendelsesoversikt/ikoner/IkonHistorikk';
-import IkonMeldinger from '../../../../komponenter/Hendelsesoversikt/ikoner/IkonMeldinger';
-import IkonTotrinnskontroll from '../../../../komponenter/Hendelsesoversikt/ikoner/IkonTotrinnskontroll';
-import { TabValg } from '../../../../komponenter/Hendelsesoversikt/typer';
 import { useBehandlingContext } from '../context/BehandlingContext';
 
 interface Props {

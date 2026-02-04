@@ -2,10 +2,10 @@ import { Valideringsstatus } from '@navikt/familie-skjema';
 
 import { Brevmal } from './typer';
 import { hentMuligeBrevmalerImplementering, mottakersMålformImplementering } from './useBrevModul';
-import { Behandlingstype, BehandlingÅrsak } from '../../../typer/behandling';
-import { Målform } from '../../../typer/søknad';
-import { mockBehandling } from '../../../utils/test/behandling/behandling.mock';
-import { mockBarn, mockSøker } from '../../../utils/test/person/person.mock';
+import { Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
+import { Målform } from '../../../../../typer/søknad';
+import { mockBehandling } from '../../../../../utils/test/behandling/behandling.mock';
+import { mockBarn, mockSøker } from '../../../../../utils/test/person/person.mock';
 
 describe('useBrevModul', () => {
     describe('hentMuligeBrevmalerImplementering', () => {

@@ -8,12 +8,12 @@ import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import { hentEnkeltInformasjonsbrevRequest } from './Informasjonsbrev/enkeltInformasjonsbrevUtils';
 import useDokument from '../../../hooks/useDokument';
-import { Informasjonsbrev } from '../../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { IManueltBrevRequestPåFagsak } from '../../../typer/dokument';
 import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../typer/person';
 import { type IBarnMedOpplysninger, Målform } from '../../../typer/søknad';
 import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
+import { Informasjonsbrev } from '../Behandling/Høyremeny/Brev/typer';
 import { useBrukerContext } from '../BrukerContext';
 import { useFagsakContext } from '../FagsakContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';

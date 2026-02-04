@@ -1,5 +1,4 @@
-import type { IIkonProps } from './Ikon';
-import Ikon from './Ikon';
+import Ikon, { type IIkonProps } from './Ikon';
 
 const IkonHistorikk = ({ width = 32, height = 32 }: IIkonProps) => {
     return (

@@ -1,7 +1,7 @@
 import { HStack } from '@navikt/ds-react';
 
-import StatusIkon, { Status } from '../../../ikoner/StatusIkon';
-import { TotrinnskontrollBeslutning } from '../../../typer/totrinnskontroll';
+import StatusIkon, { Status } from '../../../../../ikoner/StatusIkon';
+import { TotrinnskontrollBeslutning } from '../../../../../typer/totrinnskontroll';
 
 interface IProps {
     beslutning: TotrinnskontrollBeslutning;

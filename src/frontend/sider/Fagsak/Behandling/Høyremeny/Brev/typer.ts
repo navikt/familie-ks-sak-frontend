@@ -1,4 +1,4 @@
-import type { Målform } from '../../../typer/søknad';
+import type { Målform } from '../../../../../typer/søknad';
 
 export interface BrevtypeSelect extends HTMLSelectElement {
     value: Brevmal | '';
