@@ -13,23 +13,23 @@ import styles from './Brevskjema.module.css';
 import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
 import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import { useBrevModul } from './useBrevModul';
-import { ModalType } from '../../../context/ModalContext';
-import { useModal } from '../../../hooks/useModal';
+import { ModalType } from '../../../../../context/ModalContext';
+import { useModal } from '../../../../../hooks/useModal';
 import {
     mutationKey,
     useOpprettForhåndsvisbarBehandlingBrevPdf,
-} from '../../../hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
-import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import type { IBehandling } from '../../../typer/behandling';
-import type { IManueltBrevRequestPåBehandling } from '../../../typer/dokument';
-import type { IGrunnlagPerson, IPersonInfo } from '../../../typer/person';
-import { PersonType } from '../../../typer/person';
-import { målform } from '../../../typer/søknad';
-import { lagPersonLabel } from '../../../utils/formatter';
-import type { IFritekstFelt } from '../../../utils/fritekstfelter';
-import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
-import Knapperekke from '../../Knapperekke';
-import SkjultLegend from '../../SkjultLegend';
+} from '../../../../../hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
+import Knapperekke from '../../../../../komponenter/Knapperekke';
+import SkjultLegend from '../../../../../komponenter/SkjultLegend';
+import type { IBehandling } from '../../../../../typer/behandling';
+import type { IManueltBrevRequestPåBehandling } from '../../../../../typer/dokument';
+import type { IGrunnlagPerson, IPersonInfo } from '../../../../../typer/person';
+import { PersonType } from '../../../../../typer/person';
+import { målform } from '../../../../../typer/søknad';
+import { lagPersonLabel } from '../../../../../utils/formatter';
+import type { IFritekstFelt } from '../../../../../utils/fritekstfelter';
+import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface IProps {
     onSubmitSuccess: () => void;

@@ -17,14 +17,14 @@ import {
 
 import TotrinnskontrollModalInnhold from './TotrinnskontrollModalInnhold';
 import { Totrinnskontrollskjema } from './Totrinnskontrollskjema';
-import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import type { ITrinn } from '../../../sider/Fagsak/Behandling/sider/sider';
-import { KontrollertStatus } from '../../../sider/Fagsak/Behandling/sider/sider';
-import { useFagsakContext } from '../../../sider/Fagsak/FagsakContext';
-import type { IBehandling } from '../../../typer/behandling';
-import { BehandlingStatus } from '../../../typer/behandling';
-import type { ITotrinnskontrollData } from '../../../typer/totrinnskontroll';
-import { TotrinnskontrollBeslutning } from '../../../typer/totrinnskontroll';
+import type { IBehandling } from '../../../../../typer/behandling';
+import { BehandlingStatus } from '../../../../../typer/behandling';
+import type { ITotrinnskontrollData } from '../../../../../typer/totrinnskontroll';
+import { TotrinnskontrollBeslutning } from '../../../../../typer/totrinnskontroll';
+import { useFagsakContext } from '../../../FagsakContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
+import { KontrollertStatus } from '../../sider/sider';
+import type { ITrinn } from '../../sider/sider';
 
 const Container = styled.div`
     padding: 0.5rem 1.5rem;

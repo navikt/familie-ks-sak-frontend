@@ -1,8 +1,8 @@
-import type { Informasjonsbrev } from '../../../../komponenter/Hendelsesoversikt/BrevModul/typer';
 import type { SkjemaBrevmottaker } from '../../../../komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IManueltBrevRequestPåFagsak } from '../../../../typer/dokument';
 import type { IPersonInfo } from '../../../../typer/person';
 import type { Målform } from '../../../../typer/søknad';
+import type { Informasjonsbrev } from '../../Behandling/Høyremeny/Brev/typer';
 
 interface IHentEnkeltInformasjonsbrevRequestInput {
     bruker: IPersonInfo;

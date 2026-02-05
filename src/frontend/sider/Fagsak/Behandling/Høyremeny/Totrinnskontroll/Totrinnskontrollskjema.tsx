@@ -6,16 +6,16 @@ import { BodyShort, Button, Detail, Fieldset, Heading, HStack, Radio, RadioGroup
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useAppContext } from '../../../context/AppContext';
-import ØyeGrå from '../../../ikoner/ØyeGrå';
-import ØyeGrønn from '../../../ikoner/ØyeGrønn';
-import ØyeRød from '../../../ikoner/ØyeRød';
-import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { KontrollertStatus } from '../../../sider/Fagsak/Behandling/sider/sider';
-import type { IBehandling } from '../../../typer/behandling';
-import { TotrinnskontrollBeslutning } from '../../../typer/totrinnskontroll';
-import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
-import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
+import { useAppContext } from '../../../../../context/AppContext';
+import ØyeGrå from '../../../../../ikoner/ØyeGrå';
+import ØyeGrønn from '../../../../../ikoner/ØyeGrønn';
+import ØyeRød from '../../../../../ikoner/ØyeRød';
+import type { IBehandling } from '../../../../../typer/behandling';
+import { TotrinnskontrollBeslutning } from '../../../../../typer/totrinnskontroll';
+import { Datoformat, isoStringTilFormatertString } from '../../../../../utils/dato';
+import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
+import { useBehandlingContext } from '../../context/BehandlingContext';
+import { KontrollertStatus } from '../../sider/sider';
 
 interface Props {
     innsendtVedtak: Ressurs<IBehandling>;

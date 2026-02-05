@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { MagnifyingGlassIcon } from '@navikt/aksel-icons';
 import { Alert, Button } from '@navikt/ds-react';
 
-import BrevmottakerListe from './Hendelsesoversikt/BrevModul/BrevmottakerListe';
+import BrevmottakerListe from '../sider/Fagsak/Behandling/Høyremeny/Brev/BrevmottakerListe';
 import { sider } from '../sider/Fagsak/Behandling/sider/sider';
 import type { IBehandling } from '../typer/behandling';
 import type { IPersonInfo } from '../typer/person';

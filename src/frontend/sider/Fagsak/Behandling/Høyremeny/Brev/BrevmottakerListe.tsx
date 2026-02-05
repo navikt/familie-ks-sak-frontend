@@ -1,9 +1,9 @@
-import type { IPersonInfo } from '../../../typer/person';
-import { formaterIdent, lagBrukerLabel } from '../../../utils/formatter';
 import {
     Mottaker,
     type SkjemaBrevmottaker,
-} from '../../Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+} from '../../../../../komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import type { IPersonInfo } from '../../../../../typer/person';
+import { formaterIdent, lagBrukerLabel } from '../../../../../utils/formatter';
 
 interface IProps {
     bruker: IPersonInfo;
