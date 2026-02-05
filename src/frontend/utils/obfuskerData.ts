@@ -4,16 +4,7 @@ import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
 import type { IBehandling } from '../typer/behandling';
 import type { IMinimalFagsak } from '../typer/fagsak';
 import { FagsakDeltagerRolle, type IFagsakDeltager } from '../typer/fagsakdeltager';
-import { type ILogg, LoggType } from '../typer/logg';
 import { ForelderBarnRelasjonRolle, type IGrunnlagPerson, type IPersonInfo, PersonType } from '../typer/person';
-
-export const obfuskerLogg = (logg: Ressurs<ILogg[]>) => {
-    if (logg.status === RessursStatus.SUKSESS) {
-        logg.data
-            ?.filter(logg => logg.type === LoggType.BREVMOTTAKER_LAGT_TIL_ELLER_FJERNET)
-            .forEach(logg => (logg.tekst = ''));
-    }
-};
 
 export const obfuskerBehandling = (behandlingRessurs: Ressurs<IBehandling>) => {
     if (behandlingRessurs.status === RessursStatus.SUKSESS) {

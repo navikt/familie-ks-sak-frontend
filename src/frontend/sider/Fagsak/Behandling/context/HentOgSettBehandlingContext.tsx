@@ -5,10 +5,11 @@ import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
 
 import { useHttp } from '@navikt/familie-http';
-import { byggFeiletRessurs, byggTomRessurs, type Ressurs } from '@navikt/familie-typer';
+import { byggFeiletRessurs, byggTomRessurs, type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../context/AppContext';
 import { HentFagsakQueryKeyFactory } from '../../../../hooks/useHentFagsak';
+import { HentHistorikkinnslagQueryKeyFactory } from '../../../../hooks/useHentHistorikkinnslag';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../typer/behandling';
 import { obfuskerBehandling } from '../../../../utils/obfuskerData';
@@ -43,6 +44,11 @@ export function HentOgSettBehandlingProvider({ children }: PropsWithChildren) {
     }, [behandlingId, erBehandlingDelAvFagsak]);
 
     const settBehandlingRessurs = async (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak: boolean = true) => {
+        if (behandling.status === RessursStatus.SUKSESS) {
+            queryClient.invalidateQueries({
+                queryKey: HentHistorikkinnslagQueryKeyFactory.historikkinnslag(behandling.data.behandlingId),
+            });
+        }
         if (oppdaterMinimalFagsak) {
             await queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
         }
