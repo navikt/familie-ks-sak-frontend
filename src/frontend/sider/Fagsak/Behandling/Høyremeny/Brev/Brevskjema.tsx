@@ -37,7 +37,7 @@ interface IProps {
 }
 
 export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
-    const { behandling, settÅpenBehandling, vurderErLesevisning, hentLogg } = useBehandlingContext();
+    const { behandling, settÅpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
 
     const {
@@ -347,7 +347,6 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                             (ressurs: Ressurs<IBehandling>) => {
                                 onSubmitSuccess();
                                 settÅpenBehandling(ressurs);
-                                hentLogg();
                             }
                         );
                     }}
