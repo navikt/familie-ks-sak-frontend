@@ -3,8 +3,7 @@ import type { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, Button, Fieldset, Heading, Link, TextField } from '@navikt/ds-react';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import { Alert, Button, Fieldset, Heading, Link, TextField, UNSAFE_Combobox } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -103,14 +102,26 @@ const ValutakursTabellRadEndre = ({
     return (
         <Fieldset error={skjema.visFeilmeldinger && visSubmitFeilmelding()} legend={'Endre valutakurs'} hideLegend>
             <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
-                <FamilieReactSelect
-                    {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}
-                    erLesevisning={lesevisning}
+                <UNSAFE_Combobox
+                    error={skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger).error}
+                    readOnly={lesevisning}
                     label={'Barn'}
-                    isMulti
+                    isMultiSelect
                     options={tilgjengeligeBarn}
-                    value={skjema.felter.barnIdenter.verdi}
-                    onChange={options => skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])}
+                    selectedOptions={skjema.felter.barnIdenter.verdi}
+                    onToggleSelected={(option, isSelected) => {
+                        if (isSelected) {
+                            skjema.felter.barnIdenter.validerOgSettFelt(
+                                skjema.felter.barnIdenter.verdi.concat(
+                                    tilgjengeligeBarn.find(barn => barn.value === option)!
+                                )
+                            );
+                        } else {
+                            skjema.felter.barnIdenter.validerOgSettFelt(
+                                skjema.felter.barnIdenter.verdi.filter(barn => barn.value !== option)
+                            );
+                        }
+                    }}
                 />
                 <StyledEøsPeriodeSkjema
                     periode={skjema.felter.periode}
@@ -174,7 +185,6 @@ const ValutakursTabellRadEndre = ({
                         </StyledISKAlert>
                     )}
                 </StyledFieldset>
-
                 {!lesevisning && (
                     <Knapperad>
                         <div>

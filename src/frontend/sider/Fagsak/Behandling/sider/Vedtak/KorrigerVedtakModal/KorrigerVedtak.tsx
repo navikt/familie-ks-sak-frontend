@@ -1,39 +1,19 @@
-import { useState } from 'react';
-
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
-import { Dropdown } from '@navikt/ds-react';
+import { ActionMenu } from '@navikt/ds-react';
 
-import KorrigerVedtakModal from './KorrigerVedtakModal';
 import type { IRestKorrigertVedtak } from '../../../../../../typer/vedtak';
 
 interface IKorrigerVedtak {
+    åpneModal: () => void;
     korrigertVedtak?: IRestKorrigertVedtak;
-    behandlingId: number;
-    erLesevisning: boolean;
 }
 
-const KorrigerVedtak = ({ korrigertVedtak, behandlingId, erLesevisning }: IKorrigerVedtak) => {
-    const [visModal, settVisModal] = useState<boolean>(false);
-
+const KorrigerVedtak = ({ åpneModal, korrigertVedtak }: IKorrigerVedtak) => {
     return (
-        <>
-            <Dropdown.Menu.List.Item
-                onClick={() => {
-                    settVisModal(true);
-                }}
-            >
-                <ExclamationmarkTriangleIcon fontSize={'1.4rem'} />
-                {korrigertVedtak ? <>Vis korrigert vedtak</> : <>Korriger vedtak</>}
-            </Dropdown.Menu.List.Item>
-            {visModal && (
-                <KorrigerVedtakModal
-                    behandlingId={behandlingId}
-                    korrigertVedtak={korrigertVedtak}
-                    erLesevisning={erLesevisning}
-                    lukkModal={() => settVisModal(false)}
-                />
-            )}
-        </>
+        <ActionMenu.Item onClick={åpneModal}>
+            <ExclamationmarkTriangleIcon fontSize={'1.4rem'} />
+            {korrigertVedtak ? <>Vis korrigert vedtak</> : <>Korriger vedtak</>}
+        </ActionMenu.Item>
     );
 };
 
