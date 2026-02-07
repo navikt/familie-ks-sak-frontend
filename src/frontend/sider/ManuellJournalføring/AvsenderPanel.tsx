@@ -52,14 +52,12 @@ export const AvsenderPanel = () => {
             aria-label={skjema.felter.avsenderNavn.verdi || 'Ukjent avsender'}
         >
             <ExpansionCard.Header>
-                <ExpansionCard.Title>
-                    <DeltagerInfo
-                        ikon={<EmailIkon filled={åpen} width={48} height={48} />}
-                        navn={skjema.felter.avsenderNavn.verdi || 'Ukjent avsender'}
-                        ident={formaterIdent(skjema.felter.avsenderIdent.verdi ?? '')}
-                        undertittel="Avsender"
-                    />
-                </ExpansionCard.Title>
+                <DeltagerInfo
+                    ikon={<EmailIkon filled={åpen} width={48} height={48} />}
+                    navn={skjema.felter.avsenderNavn.verdi || 'Ukjent avsender'}
+                    ident={formaterIdent(skjema.felter.avsenderIdent.verdi ?? '')}
+                    undertittel="Avsender"
+                />
             </ExpansionCard.Header>
             <StyledExpansionContent>
                 {erLesevisning() ? (

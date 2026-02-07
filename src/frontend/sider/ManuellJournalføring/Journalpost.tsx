@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { BodyShort, ExpansionCard, Heading } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard } from '@navikt/ds-react';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -62,10 +62,8 @@ const Journalpost = () => {
     return (
         <ExpansionCard id={skjema.felter.journalpostTittel.id} size={'small'} aria-label={'journalpost'}>
             <ExpansionCard.Header>
-                <ExpansionCard.Title>
-                    <Heading size={'small'} level={'2'}>
-                        {skjema.felter.journalpostTittel.verdi || 'Ingen tittel'}
-                    </Heading>
+                <ExpansionCard.Title size={'small'} as={'h2'}>
+                    {skjema.felter.journalpostTittel.verdi || 'Ingen tittel'}
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
