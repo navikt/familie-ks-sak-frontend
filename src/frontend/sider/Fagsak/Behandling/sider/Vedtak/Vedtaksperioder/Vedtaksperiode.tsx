@@ -1,11 +1,11 @@
-import { BodyShort, ErrorMessage, Label } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer/dist/ressurs';
+import { BodyShort, ErrorMessage, HStack, Label, Loader } from '@navikt/ds-react';
 
 import BegrunnelserMultiselect from './BegrunnelserMultiselect';
 import EkspanderbarVedtaksperiode from './EkspanderbarVedtaksperiode';
 import FritekstVedtakbegrunnelser from './FritekstVedtakbegrunnelser';
 import Utbetalingsresultat from './Utbetalingsresultat';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
+import { useHentGenererteBrevbegrunnelser } from '../../../../../../hooks/useHentGenererteBrevbegrunnelser';
 import { Standardbegrunnelse } from '../../../../../../typer/vedtak';
 import { type IVedtaksperiodeMedBegrunnelser, Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 
@@ -15,7 +15,12 @@ interface IProps {
 }
 
 const Vedtaksperiode = ({ vedtaksperiodeMedBegrunnelser, sisteVedtaksperiodeFom }: IProps) => {
-    const { erPanelEkspandert, onPanelClose, genererteBrevbegrunnelser } = useVedtaksperiodeContext();
+    const { erPanelEkspandert, onPanelClose } = useVedtaksperiodeContext();
+    const {
+        data: genererteBrevbegrunnelser,
+        isPending: genererteBrevbegrunnelserPending,
+        error: genererteBrevbegrunnelserError,
+    } = useHentGenererteBrevbegrunnelser({ vedtaksperiodeId: vedtaksperiodeMedBegrunnelser.id });
 
     const vedtaksperiodeInneholderFramtidigOpphørBegrunnelse =
         vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
@@ -52,24 +57,27 @@ const Vedtaksperiode = ({ vedtaksperiodeMedBegrunnelser, sisteVedtaksperiodeFom 
             {vedtaksperiodeMedBegrunnelser.type !== Vedtaksperiodetype.AVSLAG && (
                 <BegrunnelserMultiselect tillatKunLesevisning={vedtaksperiodeInneholderFramtidigOpphørBegrunnelse} />
             )}
-            {genererteBrevbegrunnelser.status === RessursStatus.SUKSESS &&
-                genererteBrevbegrunnelser.data.length > 0 && (
+            {genererteBrevbegrunnelserPending ? (
+                <HStack justify={'center'} align={'center'} paddingBlock={'space-32'} gap={'space-8'}>
+                    <Loader size={'small'} />
+                    <BodyShort>Laster genererte brevbegrunnelser...</BodyShort>
+                </HStack>
+            ) : (
+                genererteBrevbegrunnelser &&
+                genererteBrevbegrunnelser.length > 0 && (
                     <>
                         <Label>Begrunnelse(r)</Label>
                         <ul>
-                            {genererteBrevbegrunnelser.data.map((begrunnelse: string, index: number) => (
+                            {genererteBrevbegrunnelser.map((begrunnelse: string, index: number) => (
                                 <li key={`begrunnelse-${index}`}>
                                     <BodyShort children={begrunnelse} />
                                 </li>
                             ))}
                         </ul>
                     </>
-                )}
-            {genererteBrevbegrunnelser.status === RessursStatus.FEILET && (
-                <>
-                    <ErrorMessage>{genererteBrevbegrunnelser.frontendFeilmelding}</ErrorMessage>
-                </>
+                )
             )}
+            {genererteBrevbegrunnelserError && <ErrorMessage>{genererteBrevbegrunnelserError.message}</ErrorMessage>}
             {vedtaksperiodeStøtterFritekst && <FritekstVedtakbegrunnelser />}
         </EkspanderbarVedtaksperiode>
     );
