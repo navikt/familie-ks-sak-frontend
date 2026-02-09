@@ -31,6 +31,7 @@ const StyledExpansionContent = styled(ExpansionCard.Content)`
     .navds-expansioncard__content-inner {
         margin: 1rem 4rem;
     }
+
     padding: 0.5rem 1rem 1rem;
 `;
 
@@ -63,14 +64,12 @@ export const BrukerPanel = () => {
             size="small"
         >
             <ExpansionCard.Header>
-                <ExpansionCard.Title>
-                    <DeltagerInfo
-                        ikon={<KontoSirkel filled={åpen} width={48} height={48} />}
-                        navn={skjema.felter.bruker.verdi?.navn || 'Ukjent bruker'}
-                        undertittel={'Søker/Bruker'}
-                        ident={formaterIdent(skjema.felter.bruker.verdi?.personIdent ?? '')}
-                    />
-                </ExpansionCard.Title>
+                <DeltagerInfo
+                    ikon={<KontoSirkel filled={åpen} width={48} height={48} />}
+                    navn={skjema.felter.bruker.verdi?.navn || 'Ukjent bruker'}
+                    undertittel={'Søker/Bruker'}
+                    ident={formaterIdent(skjema.felter.bruker.verdi?.personIdent ?? '')}
+                />
             </ExpansionCard.Header>
             <StyledExpansionContent>
                 {!erLesevisning() && (
