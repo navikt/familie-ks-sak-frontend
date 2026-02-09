@@ -42,9 +42,9 @@
   "dependencies": {
     "@dotenvx/dotenvx": "1.52.0",
     "@grafana/faro-web-sdk": "2.2.2",
-    "@navikt/aksel-icons": "7.36.0",
-    "@navikt/ds-css": "7.36.0",
-    "@navikt/ds-react": "7.36.0",
+    "@navikt/aksel-icons": "8.2.2",
+    "@navikt/ds-css": "8.2.2",
+    "@navikt/ds-react": "8.2.2",
     "@navikt/familie-backend": "10.1.16",
     "@navikt/familie-form-elements": "21.0.7",
     "@navikt/familie-header": "16.1.2",
