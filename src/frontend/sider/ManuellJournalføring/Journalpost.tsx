@@ -1,49 +1,28 @@
-import styled from 'styled-components';
-
-import { BodyShort, ExpansionCard } from '@navikt/ds-react';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import { BodyShort, Box, ExpansionCard, UNSAFE_Combobox } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 import { JournalpostTittel } from '../../typer/manuell-journalføring';
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 
-export const journalpostTittelList = Object.keys(JournalpostTittel).map((_, index) => {
-    return {
-        value: Object.values(JournalpostTittel)[index].toString(),
-        label: Object.values(JournalpostTittel)[index].toString(),
-        isDisabled: false,
-    };
-});
-
-const JournalpostMetadataDiv = styled.div`
-    margin-bottom: 1.25rem;
-`;
-
 const EndreJournalpost = () => {
     const { skjema, erLesevisning } = useManuellJournalføringContext();
 
     return (
-        <FamilieReactSelect
-            {...skjema.felter.journalpostTittel.hentNavInputProps(skjema.visFeilmeldinger)}
-            creatable={true}
-            isClearable
-            erLesevisning={erLesevisning()}
+        <UNSAFE_Combobox
+            error={skjema.felter.journalpostTittel.hentNavInputProps(skjema.visFeilmeldinger).error}
+            allowNewValues
+            readOnly={erLesevisning()}
             label={'Endre journalposttittel'}
             placeholder={'Skriv fritekst for å endre tittel...'}
-            isMulti={false}
-            options={journalpostTittelList}
-            value={
-                skjema.felter.journalpostTittel.verdi === ''
-                    ? null
-                    : {
-                          value: skjema.felter.journalpostTittel.verdi,
-                          label: skjema.felter.journalpostTittel.verdi,
-                      }
+            isMultiSelect={false}
+            options={Object.values(JournalpostTittel)}
+            selectedOptions={
+                skjema.felter.journalpostTittel.verdi === '' ? [] : [skjema.felter.journalpostTittel.verdi]
             }
-            onChange={value => {
-                if (value && 'value' in value) {
-                    skjema.felter.journalpostTittel.validerOgSettFelt(value.value);
+            onToggleSelected={(value, isSelected) => {
+                if (isSelected) {
+                    skjema.felter.journalpostTittel.validerOgSettFelt(value);
                 } else {
                     skjema.felter.journalpostTittel.nullstill();
                 }
@@ -67,7 +46,7 @@ const Journalpost = () => {
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <JournalpostMetadataDiv>
+                <Box marginBlock={'space-0 space-20'}>
                     <BodyShort>
                         Mottatt:{' '}
                         {isoStringTilFormatertString({
@@ -76,7 +55,7 @@ const Journalpost = () => {
                             defaultString: 'Ingen mottatt dato',
                         })}
                     </BodyShort>
-                </JournalpostMetadataDiv>
+                </Box>
                 <EndreJournalpost />
             </ExpansionCard.Content>
         </ExpansionCard>
