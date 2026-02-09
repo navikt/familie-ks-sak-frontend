@@ -11,6 +11,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { mapBegrunnelserTilSelectOptions } from './utils';
 import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
+import { useOppdaterBegrunnelserMutationState } from '../../../../../../hooks/useOppdaterStandardbegrunnelserMutationState';
 import type { OptionType } from '../../../../../../typer/common';
 import type { Begrunnelse, BegrunnelseType } from '../../../../../../typer/vedtak';
 import { begrunnelseTyper } from '../../../../../../typer/vedtak';
@@ -29,9 +30,10 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = tillatKunLesevisning || vurderErLesevisning();
 
-    const { id, onChangeBegrunnelse, grupperteBegrunnelser, begrunnelserPut, vedtaksperiodeMedBegrunnelser } =
+    const { id, onChangeBegrunnelse, grupperteBegrunnelser, vedtaksperiodeMedBegrunnelser } =
         useVedtaksperiodeContext();
     const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
+    const oppdaterBegrunnelserMutation = useOppdaterBegrunnelserMutationState(vedtaksperiodeMedBegrunnelser.id);
 
     const [begrunnelser, settBegrunnelser] = useState<OptionType[]>([]);
 
@@ -79,13 +81,8 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
                 }),
             }}
             placeholder={'Velg begrunnelse(r)'}
-            isDisabled={erLesevisning || begrunnelserPut.status === RessursStatus.HENTER}
-            feil={
-                begrunnelserPut.status === RessursStatus.FUNKSJONELL_FEIL ||
-                begrunnelserPut.status === RessursStatus.FEILET
-                    ? begrunnelserPut.frontendFeilmelding
-                    : undefined
-            }
+            isDisabled={erLesevisning || oppdaterBegrunnelserMutation?.status === 'pending'}
+            feil={oppdaterBegrunnelserMutation?.error?.message}
             label="Velg standardtekst i brev"
             creatable={false}
             erLesevisning={erLesevisning}
