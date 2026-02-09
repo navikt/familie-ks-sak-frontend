@@ -5,15 +5,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import deepEqual from 'deep-equal';
 
 import type { ActionMeta, GroupBase, OptionType } from '@navikt/familie-form-elements';
-import { useHttp } from '@navikt/familie-http';
 import type { FeiloppsummeringFeil, FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
-import type { Ressurs } from '@navikt/familie-typer';
-import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
+import { byggSuksessRessurs, type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import { grupperteBegrunnelser } from './utils';
 import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import { HentGenererteBrevbegrunnelserQueryKeyFactory } from '../../../../../../hooks/useHentGenererteBrevbegrunnelser';
+import { useOppdaterBegrunnelser } from '../../../../../../hooks/useOppdaterBegrunnelser';
 import { Behandlingstype, type IBehandling } from '../../../../../../typer/behandling';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type {
@@ -52,13 +51,11 @@ interface VedtaksperiodeContextValue {
     putVedtaksperiodeMedFritekster: () => void;
     skjema: ISkjema<BegrunnelserSkjema, IBehandling>;
     åpenBehandling: IBehandling;
-    begrunnelserPut: Ressurs<unknown>;
 }
 
 const VedtaksperiodeContext = createContext<VedtaksperiodeContextValue | undefined>(undefined);
 
 export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegrunnelser, children }: IProps) => {
-    const { request } = useHttp();
     const { settÅpenBehandling } = useBehandlingContext();
     const queryClient = useQueryClient();
     const [erPanelEkspandert, settErPanelEkspandert] = useState(
@@ -66,7 +63,12 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
             vedtaksperiodeMedBegrunnelser.begrunnelser.length === 0 &&
             vedtaksperiodeMedBegrunnelser.fritekster.length === 0
     );
-    const [begrunnelserPut, settBegrunnelserPut] = useState(byggTomRessurs());
+
+    const { mutate: oppdaterBegrunnelser } = useOppdaterBegrunnelser(vedtaksperiodeMedBegrunnelser.id, {
+        onSuccess: behandling => {
+            settÅpenBehandling(byggSuksessRessurs(behandling));
+        },
+    });
 
     const maksAntallKulepunkter = 3;
     const makslengdeFritekst = 350;
@@ -137,50 +139,34 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
         switch (action.action) {
             case 'select-option':
                 if (action.option) {
-                    oppdaterBegrunnelser([
-                        ...alleBegrunnelser.map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
-                        action.option?.value as Begrunnelse,
-                    ]);
+                    oppdaterBegrunnelser({
+                        begrunnelser: [
+                            ...alleBegrunnelser.map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
+                            action.option?.value as Begrunnelse,
+                        ],
+                    });
                 }
                 break;
             case 'pop-value':
             case 'remove-value':
                 if (action.removedValue) {
-                    oppdaterBegrunnelser(
-                        [
+                    oppdaterBegrunnelser({
+                        begrunnelser: [
                             ...alleBegrunnelser.filter(
                                 persistertBegrunnelse =>
                                     persistertBegrunnelse.begrunnelse !== (action.removedValue?.value as Begrunnelse)
                             ),
-                        ].map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse)
-                    );
+                        ].map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
+                    });
                 }
 
                 break;
             case 'clear':
-                oppdaterBegrunnelser([]);
+                oppdaterBegrunnelser({ begrunnelser: [] });
                 break;
             default:
                 throw new Error('Ukjent action ved onChange på vedtakbegrunnelser');
         }
-    };
-
-    const oppdaterBegrunnelser = (begrunnelser: Begrunnelse[]) => {
-        settBegrunnelserPut(byggHenterRessurs());
-        request<{ begrunnelser: Begrunnelse[] }, IBehandling>({
-            method: 'PUT',
-            url: `/familie-ks-sak/api/vedtaksperioder/begrunnelser/${vedtaksperiodeMedBegrunnelser.id}`,
-            data: { begrunnelser },
-        }).then((behandling: Ressurs<IBehandling>) => {
-            if (behandling.status === RessursStatus.SUKSESS) {
-                settÅpenBehandling(behandling);
-                settBegrunnelserPut(byggTomRessurs());
-            } else if (behandling.status === RessursStatus.FUNKSJONELL_FEIL) {
-                settBegrunnelserPut(byggFeiletRessurs(behandling.frontendFeilmelding));
-            } else {
-                settBegrunnelserPut(byggFeiletRessurs('Klarte ikke oppdatere begrunnelser'));
-            }
-        });
     };
 
     const leggTilFritekst = () => {
@@ -240,7 +226,6 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
                 putVedtaksperiodeMedFritekster,
                 skjema,
                 åpenBehandling,
-                begrunnelserPut,
             }}
         >
             {children}
