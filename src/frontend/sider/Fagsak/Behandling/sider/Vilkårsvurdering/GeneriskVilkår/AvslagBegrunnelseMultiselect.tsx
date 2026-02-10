@@ -1,12 +1,11 @@
 import type { GroupBase } from 'react-select';
 import styled from 'styled-components';
 
-import { Alert, BodyShort, Label } from '@navikt/ds-react';
+import { BodyShort, Label } from '@navikt/ds-react';
 import { ASurfaceActionHover } from '@navikt/ds-tokens/dist/tokens';
 import type { ActionMeta, FormatOptionLabelMeta } from '@navikt/familie-form-elements';
 import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import type { Felt } from '@navikt/familie-skjema';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
 import type { OptionType } from '../../../../../../typer/common';
@@ -15,7 +14,7 @@ import { BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedta
 import type { Regelverk, VilkårType } from '../../../../../../typer/vilkår';
 import { finnBegrunnelseType, hentBakgrunnsfarge, hentBorderfarge } from '../../../../../../utils/vedtakUtils';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
-import { useVedtakBegrunnelser } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
+import { useAlleBegrunnelserContext } from '../../Vedtak/Vedtaksperioder/AlleBegrunnelserContext';
 
 interface IProps {
     vilkårType: VilkårType;
@@ -29,7 +28,7 @@ const GroupLabel = styled.div`
 
 const AvslagBegrunnelseMultiselect = ({ vilkårType, begrunnelser, regelverk }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
-    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
+    const { alleBegrunnelser } = useAlleBegrunnelserContext();
 
     const { grupperteAvslagsbegrunnelser } = useAvslagBegrunnelseMultiselect(vilkårType, regelverk);
 
@@ -69,10 +68,6 @@ const AvslagBegrunnelseMultiselect = ({ vilkårType, begrunnelser, regelverk }: 
         }
     };
 
-    if (alleBegrunnelserRessurs.status === RessursStatus.FEILET) {
-        return <Alert variant="error">Klarte ikke å hente inn begrunnelser for vilkår.</Alert>;
-    }
-
     return (
         <FamilieReactSelect
             value={valgteBegrunnlser}
@@ -96,7 +91,7 @@ const AvslagBegrunnelseMultiselect = ({ vilkårType, begrunnelser, regelverk }: 
             formatOptionLabel={(option: OptionType, formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>) => {
                 if (formatOptionLabelMeta.context == 'value') {
                     // Formatering når alternativet er valgt
-                    const begrunnelseType = finnBegrunnelseType(alleBegrunnelserRessurs, option.value as Begrunnelse);
+                    const begrunnelseType = finnBegrunnelseType(alleBegrunnelser, option.value as Begrunnelse);
                     const begrunnelseTypeLabel = begrunnelseTyper[begrunnelseType as BegrunnelseType];
                     return (
                         <BodyShort>

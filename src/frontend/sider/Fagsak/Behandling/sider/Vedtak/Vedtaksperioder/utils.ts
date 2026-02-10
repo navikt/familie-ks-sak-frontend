@@ -1,7 +1,6 @@
 import { addMonths, differenceInMilliseconds, isAfter, isBefore, isSameMonth, startOfMonth } from 'date-fns';
 
 import type { GroupBase, OptionType } from '@navikt/familie-form-elements';
-import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingResultat, BehandlingStatus } from '../../../../../../typer/behandling';
 import {
@@ -26,7 +25,7 @@ import {
 
 export function grupperteBegrunnelser(
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser,
-    alleBegrunnelserRessurs: Ressurs<AlleBegrunnelser>
+    alleBegrunnelser: AlleBegrunnelser
 ) {
     const vedtaksperiodeTilBegrunnelseTyper = () => {
         switch (vedtaksperiodeMedBegrunnelser.type) {
@@ -50,38 +49,33 @@ export function grupperteBegrunnelser(
 
     const begrunnelseTyperKnyttetTilVedtaksperiodetype = vedtaksperiodeTilBegrunnelseTyper();
 
-    const grupperteBegrunnelserFraBackend =
-        alleBegrunnelserRessurs.status === RessursStatus.SUKSESS
-            ? Object.keys(alleBegrunnelserRessurs.data)
-                  .filter((begrunnelseType: string) =>
-                      begrunnelseTyperKnyttetTilVedtaksperiodetype.includes(begrunnelseType as BegrunnelseType)
-                  )
-                  .reduce((acc: GroupBase<OptionType>[], begrunnelseType: string) => {
-                      return [
-                          ...acc,
-                          {
-                              label: begrunnelseTyper[begrunnelseType as BegrunnelseType],
-                              options: vedtaksperiodeMedBegrunnelser.gyldigeBegrunnelser
-                                  .filter((begrunnelse: Begrunnelse) => {
-                                      return (
-                                          alleBegrunnelserRessurs.data[begrunnelseType as BegrunnelseType].find(
-                                              begrunnelseTilknyttetVilkår =>
-                                                  begrunnelseTilknyttetVilkår.id === begrunnelse
-                                          ) !== undefined
-                                      );
-                                  })
-                                  .map((begrunnelse: Begrunnelse) => ({
-                                      label:
-                                          alleBegrunnelserRessurs.data[begrunnelseType as BegrunnelseType].find(
-                                              begrunnelseTilknyttetVilkår =>
-                                                  begrunnelseTilknyttetVilkår.id === begrunnelse
-                                          )?.navn ?? begrunnelse,
-                                      value: begrunnelse,
-                                  })),
-                          },
-                      ];
-                  }, [])
-            : [];
+    const grupperteBegrunnelserFraBackend = Object.keys(alleBegrunnelser)
+        .filter((begrunnelseType: string) =>
+            begrunnelseTyperKnyttetTilVedtaksperiodetype.includes(begrunnelseType as BegrunnelseType)
+        )
+        .reduce((acc: GroupBase<OptionType>[], begrunnelseType: string) => {
+            return [
+                ...acc,
+                {
+                    label: begrunnelseTyper[begrunnelseType as BegrunnelseType],
+                    options: vedtaksperiodeMedBegrunnelser.gyldigeBegrunnelser
+                        .filter((begrunnelse: Begrunnelse) => {
+                            return (
+                                alleBegrunnelser[begrunnelseType as BegrunnelseType].find(
+                                    begrunnelseTilknyttetVilkår => begrunnelseTilknyttetVilkår.id === begrunnelse
+                                ) !== undefined
+                            );
+                        })
+                        .map((begrunnelse: Begrunnelse) => ({
+                            label:
+                                alleBegrunnelser[begrunnelseType as BegrunnelseType].find(
+                                    begrunnelseTilknyttetVilkår => begrunnelseTilknyttetVilkår.id === begrunnelse
+                                )?.navn ?? begrunnelse,
+                            value: begrunnelse,
+                        })),
+                },
+            ];
+        }, []);
 
     return grupperteBegrunnelserFraBackend;
 }

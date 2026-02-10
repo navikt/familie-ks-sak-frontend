@@ -7,10 +7,10 @@ import deepEqual from 'deep-equal';
 import type { ActionMeta, GroupBase, OptionType } from '@navikt/familie-form-elements';
 import type { FeiloppsummeringFeil, FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
-import { byggSuksessRessurs, RessursStatus } from '@navikt/familie-typer';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 
+import { useAlleBegrunnelserContext } from './AlleBegrunnelserContext';
 import { grupperteBegrunnelser } from './utils';
-import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import { HentGenererteBrevbegrunnelserQueryKeyFactory } from '../../../../../../hooks/useHentGenererteBrevbegrunnelser';
 import { useOppdaterBegrunnelser } from '../../../../../../hooks/useOppdaterBegrunnelser';
 import { useOppdaterVedtaksperiodeMedFritekster } from '../../../../../../hooks/useOppdaterVedtaksperiodeMedFritekster';
@@ -65,6 +65,9 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
     const { mutate: oppdaterBegrunnelser } = useOppdaterBegrunnelser(vedtaksperiodeMedBegrunnelser.id, {
         onSuccess: behandling => {
             settÅpenBehandling(byggSuksessRessurs(behandling));
+            queryClient.invalidateQueries({
+                queryKey: HentGenererteBrevbegrunnelserQueryKeyFactory.vedtaksperiode(vedtaksperiodeMedBegrunnelser.id),
+            });
         },
     });
 
@@ -73,6 +76,11 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
         {
             onSuccess: (behandling: IBehandling) => {
                 settÅpenBehandling(byggSuksessRessurs(behandling));
+                queryClient.invalidateQueries({
+                    queryKey: HentGenererteBrevbegrunnelserQueryKeyFactory.vedtaksperiode(
+                        vedtaksperiodeMedBegrunnelser.id
+                    ),
+                });
                 onPanelClose(false);
             },
         }
@@ -81,7 +89,7 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
     const maksAntallKulepunkter = 3;
     const makslengdeFritekst = 350;
 
-    const alleBegrunnelser = [
+    const valgteBegrunnelser = [
         ...vedtaksperiodeMedBegrunnelser.begrunnelser,
         ...vedtaksperiodeMedBegrunnelser.eøsBegrunnelser,
     ];
@@ -118,7 +126,7 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
         skjemanavn: 'Begrunnelser for vedtaksperiode',
     });
 
-    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
+    const { alleBegrunnelser } = useAlleBegrunnelserContext();
 
     const populerSkjemaFraBackend = () => {
         settVisfeilmeldinger(false);
@@ -135,13 +143,8 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
     };
 
     useEffect(() => {
-        if (alleBegrunnelserRessurs.status === RessursStatus.SUKSESS) {
-            populerSkjemaFraBackend();
-            queryClient.invalidateQueries({
-                queryKey: HentGenererteBrevbegrunnelserQueryKeyFactory.vedtaksperiode(vedtaksperiodeMedBegrunnelser.id),
-            });
-        }
-    }, [alleBegrunnelserRessurs, vedtaksperiodeMedBegrunnelser]);
+        populerSkjemaFraBackend();
+    }, [vedtaksperiodeMedBegrunnelser]);
 
     const onChangeBegrunnelse = (action: ActionMeta<OptionType>) => {
         switch (action.action) {
@@ -149,7 +152,7 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
                 if (action.option) {
                     oppdaterBegrunnelser({
                         begrunnelser: [
-                            ...alleBegrunnelser.map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
+                            ...valgteBegrunnelser.map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
                             action.option?.value as Begrunnelse,
                         ],
                     });
@@ -160,7 +163,7 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
                 if (action.removedValue) {
                     oppdaterBegrunnelser({
                         begrunnelser: [
-                            ...alleBegrunnelser.filter(
+                            ...valgteBegrunnelser.filter(
                                 persistertBegrunnelse =>
                                     persistertBegrunnelse.begrunnelse !== (action.removedValue?.value as Begrunnelse)
                             ),
@@ -212,7 +215,7 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
         <VedtaksperiodeContext.Provider
             value={{
                 erPanelEkspandert,
-                grupperteBegrunnelser: grupperteBegrunnelser(vedtaksperiodeMedBegrunnelser, alleBegrunnelserRessurs),
+                grupperteBegrunnelser: grupperteBegrunnelser(vedtaksperiodeMedBegrunnelser, alleBegrunnelser),
                 hentFeilTilOppsummering,
                 id: vedtaksperiodeMedBegrunnelser.id,
                 vedtaksperiodeMedBegrunnelser,

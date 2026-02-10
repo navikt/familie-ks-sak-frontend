@@ -8,7 +8,7 @@ import AvslagBegrunnelseMultiselect from './AvslagBegrunnelseMultiselect';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
 import type { IVilkårResultat } from '../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
-import { VedtakBegrunnelserProvider } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
+import { AlleBegrunnelserProvider } from '../../Vedtak/Vedtaksperioder/AlleBegrunnelserContext';
 
 interface IProps {
     lagretVilkår: IVilkårResultat;
@@ -55,13 +55,13 @@ const AvslagSkjema = ({ erEksplisittAvslagPåSøknad, lagretVilkår, avslagBegru
                 </Checkbox>
             )}
             {erEksplisittAvslagPåSøknad.verdi && (
-                <VedtakBegrunnelserProvider>
+                <AlleBegrunnelserProvider>
                     <AvslagBegrunnelseMultiselect
                         vilkårType={lagretVilkår.vilkårType}
                         begrunnelser={avslagBegrunnelser}
                         regelverk={lagretVilkår.vurderesEtter}
                     />
-                </VedtakBegrunnelserProvider>
+                </AlleBegrunnelserProvider>
             )}
         </StyledFieldset>
     );
