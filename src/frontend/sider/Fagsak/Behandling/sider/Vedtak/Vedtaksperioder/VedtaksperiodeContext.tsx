@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import deepEqual from 'deep-equal';
 
-import type { ActionMeta, GroupBase, OptionType } from '@navikt/familie-form-elements';
+import type { GroupBase, OptionType } from '@navikt/familie-form-elements';
 import type { FeiloppsummeringFeil, FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import { byggSuksessRessurs } from '@navikt/familie-typer';
@@ -44,7 +44,7 @@ interface VedtaksperiodeContextValue {
     leggTilFritekst: () => void;
     maksAntallKulepunkter: number;
     makslengdeFritekst: number;
-    onChangeBegrunnelse: (action: ActionMeta<OptionType>) => void;
+    onChangeBegrunnelse: (option: string, isSelected: boolean) => void;
     onPanelClose: (visAlert: boolean) => void;
     putVedtaksperiodeMedFritekster: () => void;
     skjema: ISkjema<BegrunnelserSkjema, IBehandling>;
@@ -146,37 +146,22 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
         populerSkjemaFraBackend();
     }, [vedtaksperiodeMedBegrunnelser]);
 
-    const onChangeBegrunnelse = (action: ActionMeta<OptionType>) => {
-        switch (action.action) {
-            case 'select-option':
-                if (action.option) {
-                    oppdaterBegrunnelser({
-                        begrunnelser: [
-                            ...valgteBegrunnelser.map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
-                            action.option?.value as Begrunnelse,
-                        ],
-                    });
-                }
-                break;
-            case 'pop-value':
-            case 'remove-value':
-                if (action.removedValue) {
-                    oppdaterBegrunnelser({
-                        begrunnelser: [
-                            ...valgteBegrunnelser.filter(
-                                persistertBegrunnelse =>
-                                    persistertBegrunnelse.begrunnelse !== (action.removedValue?.value as Begrunnelse)
-                            ),
-                        ].map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
-                    });
-                }
-
-                break;
-            case 'clear':
-                oppdaterBegrunnelser({ begrunnelser: [] });
-                break;
-            default:
-                throw new Error('Ukjent action ved onChange på vedtakbegrunnelser');
+    const onChangeBegrunnelse = (option: string, isSelected: boolean) => {
+        if (isSelected) {
+            oppdaterBegrunnelser({
+                begrunnelser: [
+                    ...valgteBegrunnelser.map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
+                    option as Begrunnelse,
+                ],
+            });
+        } else {
+            oppdaterBegrunnelser({
+                begrunnelser: [
+                    ...valgteBegrunnelser.filter(
+                        persistertBegrunnelse => persistertBegrunnelse.begrunnelse !== (option as Begrunnelse)
+                    ),
+                ].map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
+            });
         }
     };
 
