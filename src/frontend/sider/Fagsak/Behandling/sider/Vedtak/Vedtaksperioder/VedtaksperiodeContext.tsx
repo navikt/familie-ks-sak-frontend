@@ -7,18 +7,16 @@ import deepEqual from 'deep-equal';
 import type { ActionMeta, GroupBase, OptionType } from '@navikt/familie-form-elements';
 import type { FeiloppsummeringFeil, FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
-import { byggSuksessRessurs, type Ressurs, RessursStatus } from '@navikt/familie-typer';
+import { byggSuksessRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { grupperteBegrunnelser } from './utils';
 import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import { HentGenererteBrevbegrunnelserQueryKeyFactory } from '../../../../../../hooks/useHentGenererteBrevbegrunnelser';
 import { useOppdaterBegrunnelser } from '../../../../../../hooks/useOppdaterBegrunnelser';
+import { useOppdaterVedtaksperiodeMedFritekster } from '../../../../../../hooks/useOppdaterVedtaksperiodeMedFritekster';
 import { Behandlingstype, type IBehandling } from '../../../../../../typer/behandling';
 import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import type {
-    IRestPutVedtaksperiodeMedFritekster,
-    IVedtaksperiodeMedBegrunnelser,
-} from '../../../../../../typer/vedtaksperiode';
+import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
 import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
 import {
     genererIdBasertPåAndreFritekster,
@@ -70,6 +68,16 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
         },
     });
 
+    const { mutate: oppdaterVedtaksperiodeMedFritekster } = useOppdaterVedtaksperiodeMedFritekster(
+        vedtaksperiodeMedBegrunnelser.id,
+        {
+            onSuccess: (behandling: IBehandling) => {
+                settÅpenBehandling(byggSuksessRessurs(behandling));
+                onPanelClose(false);
+            },
+        }
+    );
+
     const maksAntallKulepunkter = 3;
     const makslengdeFritekst = 350;
 
@@ -96,7 +104,7 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
         },
     });
 
-    const { hentFeilTilOppsummering, kanSendeSkjema, onSubmit, settVisfeilmeldinger, skjema } = useSkjema<
+    const { hentFeilTilOppsummering, kanSendeSkjema, settVisfeilmeldinger, skjema } = useSkjema<
         {
             periode: IIsoDatoPeriode;
             fritekster: FeltState<IFritekstFelt>[];
@@ -194,19 +202,9 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
 
     const putVedtaksperiodeMedFritekster = () => {
         if (kanSendeSkjema()) {
-            onSubmit<IRestPutVedtaksperiodeMedFritekster>(
-                {
-                    method: 'PUT',
-                    url: `/familie-ks-sak/api/vedtaksperioder/fritekster/${vedtaksperiodeMedBegrunnelser.id}`,
-                    data: {
-                        fritekster: skjema.felter.fritekster.verdi.map(fritekst => fritekst.verdi.tekst),
-                    },
-                },
-                (behandling: Ressurs<IBehandling>) => {
-                    settÅpenBehandling(behandling);
-                    onPanelClose(false);
-                }
-            );
+            oppdaterVedtaksperiodeMedFritekster({
+                fritekster: skjema.felter.fritekster.verdi.map(fritekst => fritekst.verdi.tekst),
+            });
         }
     };
 

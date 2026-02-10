@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { ExternalLinkIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Fieldset, Heading, HelpText, Label, Link, Tag, Textarea } from '@navikt/ds-react';
 import type { FeltState } from '@navikt/familie-skjema';
-import { RessursStatus } from '@navikt/familie-typer';
 
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
+import { useOppdaterVedtaksperiodeMedFriteksterMutationState } from '../../../../../../hooks/useOppdaterVedtaksperiodeMedFriteksterMutationState';
 import Knapperekke from '../../../../../../komponenter/Knapperekke';
 import { målform } from '../../../../../../typer/søknad';
 import type { IFritekstFelt } from '../../../../../../utils/fritekstfelter';
@@ -81,6 +81,10 @@ const FritekstVedtakbegrunnelser = () => {
         vedtaksperiodeMedBegrunnelser,
     } = useVedtaksperiodeContext();
 
+    const oppdaterVedtaksperiodeMedFriteksterMutation = useOppdaterVedtaksperiodeMedFriteksterMutationState(
+        vedtaksperiodeMedBegrunnelser.id
+    );
+
     const erMaksAntallKulepunkter = skjema.felter.fritekster.verdi.length >= maksAntallKulepunkter;
 
     const fieldsetId = `Fritekster ${id}`;
@@ -142,7 +146,10 @@ const FritekstVedtakbegrunnelser = () => {
                 <>
                     <Fieldset
                         id={fieldsetId}
-                        error={skjema.visFeilmeldinger && hentFrontendFeilmelding(skjema.submitRessurs)}
+                        error={
+                            (skjema.visFeilmeldinger && hentFrontendFeilmelding(skjema.submitRessurs)) ||
+                            oppdaterVedtaksperiodeMedFriteksterMutation?.error?.message
+                        }
                         legend={'Fritekst til kulepunkt i brev'}
                         hideLegend
                     >
@@ -200,12 +207,10 @@ const FritekstVedtakbegrunnelser = () => {
                     {!erLesevisning && (
                         <Knapperekke>
                             <Button
-                                onClick={() => {
-                                    putVedtaksperiodeMedFritekster();
-                                }}
+                                onClick={putVedtaksperiodeMedFritekster}
                                 size="small"
                                 variant="primary"
-                                loading={skjema.submitRessurs.status === RessursStatus.HENTER}
+                                loading={oppdaterVedtaksperiodeMedFriteksterMutation?.status === 'pending'}
                             >
                                 Lagre
                             </Button>
