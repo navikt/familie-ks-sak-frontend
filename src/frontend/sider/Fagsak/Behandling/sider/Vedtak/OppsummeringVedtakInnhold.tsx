@@ -12,7 +12,7 @@ import { useRefusjonEøsTabellContext } from './RefusjonEøs/RefusjonEøsTabellC
 import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrollsak';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import { Vedtaksmeny } from './Vedtaksmeny/Vedtaksmeny';
-import { VedtakBegrunnelserProvider } from './Vedtaksperioder/VedtakBegrunnelserContext';
+import { AlleBegrunnelserProvider } from './Vedtaksperioder/AlleBegrunnelserContext';
 import Vedtaksperioder from './Vedtaksperioder/Vedtaksperioder';
 import { useAppContext } from '../../../../../context/AppContext';
 import useDokument from '../../../../../hooks/useDokument';
@@ -154,9 +154,9 @@ const OppsummeringVedtakInnhold = ({
                             <SammensattKontrollsak />
                         ) : (
                             <>
-                                <VedtakBegrunnelserProvider>
+                                <AlleBegrunnelserProvider>
                                     <Vedtaksperioder åpenBehandling={åpenBehandling} />
-                                </VedtakBegrunnelserProvider>
+                                </AlleBegrunnelserProvider>
                                 {erFeilutbetaltValutaTabellSynlig && <FeilutbetaltValutaTabell />}
                                 {erRefusjonEøsTabellSynlig && <RefusjonEøsTabell />}
                             </>

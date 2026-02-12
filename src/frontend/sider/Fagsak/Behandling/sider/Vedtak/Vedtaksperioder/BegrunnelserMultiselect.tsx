@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react';
-
 import type { GroupBase } from 'react-select';
 import styled from 'styled-components';
 
 import { BodyShort, Label } from '@navikt/ds-react';
 import { AZIndexPopover } from '@navikt/ds-tokens/dist/tokens';
 import { type ActionMeta, FamilieReactSelect, type FormatOptionLabelMeta } from '@navikt/familie-form-elements';
-import { RessursStatus } from '@navikt/familie-typer';
 
+import { useAlleBegrunnelserContext } from './AlleBegrunnelserContext';
 import { mapBegrunnelserTilSelectOptions } from './utils';
-import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
 import { useOppdaterBegrunnelserMutationState } from '../../../../../../hooks/useOppdaterStandardbegrunnelserMutationState';
 import type { OptionType } from '../../../../../../typer/common';
@@ -32,18 +29,10 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
 
     const { id, onChangeBegrunnelse, grupperteBegrunnelser, vedtaksperiodeMedBegrunnelser } =
         useVedtaksperiodeContext();
-    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
+    const { alleBegrunnelser } = useAlleBegrunnelserContext();
     const oppdaterBegrunnelserMutation = useOppdaterBegrunnelserMutationState(vedtaksperiodeMedBegrunnelser.id);
 
-    const [begrunnelser, settBegrunnelser] = useState<OptionType[]>([]);
-
-    useEffect(() => {
-        if (alleBegrunnelserRessurs.status === RessursStatus.SUKSESS) {
-            settBegrunnelser(
-                mapBegrunnelserTilSelectOptions(vedtaksperiodeMedBegrunnelser, alleBegrunnelserRessurs.data)
-            );
-        }
-    }, [vedtaksperiodeMedBegrunnelser, alleBegrunnelserRessurs]);
+    const begrunnelser = mapBegrunnelserTilSelectOptions(vedtaksperiodeMedBegrunnelser, alleBegrunnelser);
 
     return (
         <FamilieReactSelect
@@ -62,7 +51,7 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
                 multiValue: (provided, props) => {
                     const currentOption = props.data as OptionType;
                     const begrunnelseType: BegrunnelseType | undefined = finnBegrunnelseType(
-                        alleBegrunnelserRessurs,
+                        alleBegrunnelser,
                         currentOption.value as Begrunnelse
                     );
 
@@ -91,7 +80,7 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
                 onChangeBegrunnelse(action);
             }}
             formatOptionLabel={(option: OptionType, formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>) => {
-                const begrunnelseType = finnBegrunnelseType(alleBegrunnelserRessurs, option.value as Begrunnelse);
+                const begrunnelseType = finnBegrunnelseType(alleBegrunnelser, option.value as Begrunnelse);
 
                 if (formatOptionLabelMeta.context === 'value') {
                     const type = begrunnelseTyper[begrunnelseType as BegrunnelseType];

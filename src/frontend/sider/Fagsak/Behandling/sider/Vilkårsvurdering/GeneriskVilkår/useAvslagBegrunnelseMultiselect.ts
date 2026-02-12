@@ -1,20 +1,14 @@
 import type { GroupBase } from 'react-select';
 
-import { RessursStatus } from '@navikt/familie-typer';
-
 import type { OptionType } from '../../../../../../typer/common';
 import type { IRestBegrunnelseTilknyttetVilkår } from '../../../../../../typer/vedtak';
 import { BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
 import type { VilkårType } from '../../../../../../typer/vilkår';
 import { Regelverk } from '../../../../../../typer/vilkår';
-import { useVedtakBegrunnelser } from '../../Vedtak/Vedtaksperioder/VedtakBegrunnelserContext';
+import { useAlleBegrunnelserContext } from '../../Vedtak/Vedtaksperioder/AlleBegrunnelserContext';
 
 const useAvslagBegrunnelseMultiselect = (vilkårType: VilkårType, regelverk?: Regelverk) => {
-    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
-
-    if (alleBegrunnelserRessurs.status !== RessursStatus.SUKSESS) {
-        return { grupperteAvslagsbegrunnelser: [] };
-    }
+    const { alleBegrunnelser } = useAlleBegrunnelserContext();
 
     const gyldigeBegrunnelseTyper = [BegrunnelseType.AVSLAG];
 
@@ -22,7 +16,7 @@ const useAvslagBegrunnelseMultiselect = (vilkårType: VilkårType, regelverk?: R
         gyldigeBegrunnelseTyper.push(BegrunnelseType.EØS_AVSLAG);
     }
 
-    const grupperteBegrunnelser = Object.keys(alleBegrunnelserRessurs.data)
+    const grupperteBegrunnelser = Object.keys(alleBegrunnelser)
         .map((type: string) => type as BegrunnelseType)
         .filter((begrunnelseType: BegrunnelseType) => gyldigeBegrunnelseTyper.includes(begrunnelseType))
         .reduce((acc: GroupBase<OptionType>[], begrunnelseType: BegrunnelseType) => {
@@ -30,7 +24,7 @@ const useAvslagBegrunnelseMultiselect = (vilkårType: VilkårType, regelverk?: R
                 ...acc,
                 {
                     label: begrunnelseTyper[begrunnelseType],
-                    options: alleBegrunnelserRessurs.data[begrunnelseType]
+                    options: alleBegrunnelser[begrunnelseType]
                         .filter((begrunnelse: IRestBegrunnelseTilknyttetVilkår) => begrunnelse.vilkår === vilkårType)
                         .map((begrunnelse: IRestBegrunnelseTilknyttetVilkår) => ({
                             label: begrunnelse.navn,

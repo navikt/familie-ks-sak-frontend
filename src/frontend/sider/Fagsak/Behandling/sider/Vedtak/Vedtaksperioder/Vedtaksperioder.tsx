@@ -2,11 +2,9 @@ import { Fragment } from 'react';
 
 import styled from 'styled-components';
 
-import { Alert, Heading, HelpText } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { Heading, HelpText } from '@navikt/ds-react';
 
 import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
-import { useVedtakBegrunnelser } from './VedtakBegrunnelserContext';
 import Vedtaksperiode from './Vedtaksperiode';
 import { VedtaksperiodeProvider } from './VedtaksperiodeContext';
 import type { IBehandling } from '../../../../../../typer/behandling';
@@ -33,21 +31,12 @@ interface VedtaksperioderProps {
 }
 
 const Vedtaksperioder = ({ åpenBehandling }: VedtaksperioderProps) => {
-    const { alleBegrunnelserRessurs } = useVedtakBegrunnelser();
-
     const sorterteVedtaksperioderSomSkalvises = filtrerOgSorterPerioderMedBegrunnelseBehov(
         åpenBehandling.vedtak?.vedtaksperioderMedBegrunnelser ?? [],
         åpenBehandling.resultat,
         åpenBehandling.status,
         åpenBehandling.sisteVedtaksperiodeVisningDato
     );
-
-    if (
-        alleBegrunnelserRessurs.status === RessursStatus.FEILET ||
-        alleBegrunnelserRessurs.status === RessursStatus.FUNKSJONELL_FEIL
-    ) {
-        return <Alert variant="error">Klarte ikke å hente inn begrunnelser for vedtak.</Alert>;
-    }
 
     const [sorterteAvslagsperioder, sorterteAndreVedtaksperioder] = partition(
         vedtaksperiode => vedtaksperiode.type === Vedtaksperiodetype.AVSLAG,
