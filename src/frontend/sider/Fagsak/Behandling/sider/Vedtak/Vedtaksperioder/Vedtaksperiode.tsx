@@ -62,6 +62,8 @@ const Vedtaksperiode = ({ vedtaksperiodeMedBegrunnelser, sisteVedtaksperiodeFom 
                     <Loader size={'small'} />
                     <BodyShort>Laster genererte brevbegrunnelser...</BodyShort>
                 </HStack>
+            ) : genererteBrevbegrunnelserError ? (
+                <ErrorMessage>{genererteBrevbegrunnelserError.message}</ErrorMessage>
             ) : (
                 genererteBrevbegrunnelser &&
                 genererteBrevbegrunnelser.length > 0 && (
@@ -77,7 +79,6 @@ const Vedtaksperiode = ({ vedtaksperiodeMedBegrunnelser, sisteVedtaksperiodeFom 
                     </>
                 )
             )}
-            {genererteBrevbegrunnelserError && <ErrorMessage>{genererteBrevbegrunnelserError.message}</ErrorMessage>}
             {vedtaksperiodeStøtterFritekst && <FritekstVedtakbegrunnelser />}
         </EkspanderbarVedtaksperiode>
     );
