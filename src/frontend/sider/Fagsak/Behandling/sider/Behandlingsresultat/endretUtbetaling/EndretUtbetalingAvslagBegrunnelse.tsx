@@ -93,7 +93,7 @@ export const EndretUtbetalingAvslagBegrunnelse = ({ skjema }: IProps) => {
                 }
             }}
         >
-            <option disabled value={''}>
+            <option disabled hidden value={''}>
                 Velg begrunnelse
             </option>
             {grupperteBegrunnelser.map(optgroup => (

@@ -20,3 +20,9 @@
 .textField {
     width: fit-content;
 }
+
+.documentsCombobox {
+    label {
+        width: 100%;
+    }
+}

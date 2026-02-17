@@ -135,7 +135,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                             if (isSelected) {
                                 skjema.felter.barnIdenter.validerOgSettFelt([
                                     ...skjema.felter.barnIdenter.verdi,
-                                    tilgjengeligeBarn.find(barn => barn.value === option)!,
+                                    valgtBarn,
                                 ]);
                             } else {
                                 skjema.felter.barnIdenter.validerOgSettFelt([
