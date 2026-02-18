@@ -58,6 +58,7 @@ export const mockBehandling = ({
     return {
         behandlingId,
         endretAv: 'VL',
+        aktiv: true,
         arbeidsfordelingPåBehandling: {
             behandlendeEnhetId: '4820',
             behandlendeEnhetNavn: 'enhet navn',
@@ -69,6 +70,7 @@ export const mockBehandling = ({
         personer: [barn, søker],
         resultat: BehandlingResultat.INNVILGET,
         opprettetTidspunkt,
+        aktivertTidspunkt: opprettetTidspunkt,
         kategori: BehandlingKategori.NASJONAL,
         status,
         personResultater: [søkerRestPersonResultat, barnRestPersonResultat],

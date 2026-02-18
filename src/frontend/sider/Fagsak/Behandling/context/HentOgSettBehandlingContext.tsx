@@ -12,8 +12,10 @@ import { HentFagsakQueryKeyFactory } from '../../../../hooks/useHentFagsak';
 import { HentHistorikkinnslagQueryKeyFactory } from '../../../../hooks/useHentHistorikkinnslag';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../typer/behandling';
+import type { IMinimalFagsak } from '../../../../typer/fagsak';
 import { obfuskerBehandling } from '../../../../utils/obfuskerData';
 import { useFagsakContext } from '../../FagsakContext';
+import { lagVisningsBehandlingFraBehandling } from '../../Saksoversikt/visningBehandling';
 
 interface Context {
     behandlingRessurs: Ressurs<IBehandling>;
@@ -43,14 +45,18 @@ export function HentOgSettBehandlingProvider({ children }: PropsWithChildren) {
         }
     }, [behandlingId, erBehandlingDelAvFagsak]);
 
-    const settBehandlingRessurs = async (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak: boolean = true) => {
+    const settBehandlingRessurs = (behandling: Ressurs<IBehandling>) => {
         if (behandling.status === RessursStatus.SUKSESS) {
             queryClient.invalidateQueries({
                 queryKey: HentHistorikkinnslagQueryKeyFactory.historikkinnslag(behandling.data.behandlingId),
             });
-        }
-        if (oppdaterMinimalFagsak) {
-            await queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
+            queryClient.setQueryData(HentFagsakQueryKeyFactory.fagsak(fagsak.id), (fagsak: IMinimalFagsak) => ({
+                ...fagsak,
+                behandlinger: [
+                    ...fagsak.behandlinger.filter(b => b.behandlingId !== behandling.data.behandlingId),
+                    lagVisningsBehandlingFraBehandling(behandling.data),
+                ],
+            }));
         }
         if (skalObfuskereData) {
             obfuskerBehandling(behandling);

@@ -46,7 +46,7 @@ interface BehandlingContextValue {
     behandlingsstegSubmitressurs: Ressurs<IBehandling>;
     vilkårsvurderingNesteOnClick: () => void;
     behandlingresultatNesteOnClick: () => void;
-    settÅpenBehandling: (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak?: boolean) => void;
+    settÅpenBehandling: (behandling: Ressurs<IBehandling>) => void;
     foreslåVedtakNesteOnClick: (
         settVisModal: (visModal: boolean) => void,
         erUlagretNyFeilutbetaltValuta: boolean,

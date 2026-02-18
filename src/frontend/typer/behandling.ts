@@ -217,8 +217,10 @@ export interface IBehandling {
     arbeidsfordelingPåBehandling: IArbeidsfordelingPåBehandling;
     behandlingId: number;
     endretAv: string;
+    aktiv: boolean;
     kategori: BehandlingKategori;
     opprettetTidspunkt: string;
+    aktivertTidspunkt: string;
     personResultater: IRestPersonResultat[];
     personer: IGrunnlagPerson[];
     resultat: BehandlingResultat;
