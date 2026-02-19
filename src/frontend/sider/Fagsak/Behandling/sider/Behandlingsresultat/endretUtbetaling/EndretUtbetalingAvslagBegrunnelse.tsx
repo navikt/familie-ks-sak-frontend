@@ -1,23 +1,15 @@
-import styled from 'styled-components';
-
-import { Alert, BodyShort, Label } from '@navikt/ds-react';
-import type { FormatOptionLabelMeta, GroupBase } from '@navikt/familie-form-elements';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import { Alert, Select } from '@navikt/ds-react';
+import type { GroupBase } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../typer/common';
-import type { IRestBegrunnelseTilknyttetEndretUtbetaling } from '../../../../../../typer/endretUtbetaling';
 import { IEndretUtbetalingAndelÅrsak } from '../../../../../../typer/utbetalingAndel';
 import { type Begrunnelse, BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { useHentEndretUtbetalingBegrunnelser } from '../useHentEndretUtbetalingBegrunnelser';
-
-const GroupLabel = styled.div`
-    color: black;
-`;
 
 interface IProps {
     skjema: ISkjema<IEndretUtbetalingAndelSkjema, IBehandling>;
@@ -57,19 +49,13 @@ export const EndretUtbetalingAvslagBegrunnelse = ({ skjema }: IProps) => {
         return <Alert variant="error">Klarte ikke å hente inn begrunnelser for endret utbetaling.</Alert>;
     }
 
-    const finnBegrunnelseType = (begrunnelse: Begrunnelse): BegrunnelseType | undefined => {
-        return Object.keys(lastedeTekster).find(begrunnelseType => {
-            return lastedeTekster
-                ? lastedeTekster[begrunnelseType as BegrunnelseType].find(
-                      (begrunnelseTilknyttetVilkår: IRestBegrunnelseTilknyttetEndretUtbetaling) =>
-                          begrunnelseTilknyttetVilkår.id === begrunnelse
-                  ) !== undefined
-                : '';
-        }) as BegrunnelseType;
-    };
-
     function finnBegrunnelseForSelect(begrunnelseVerdi?: Begrunnelse) {
-        if (!lastedeTekster) return;
+        if (!lastedeTekster) {
+            return {
+                value: '',
+                label: '',
+            };
+        }
 
         for (const key in lastedeTekster) {
             const valgtBegrunnelse = lastedeTekster[key as BegrunnelseType].find(begrunnelse => {
@@ -83,62 +69,40 @@ export const EndretUtbetalingAvslagBegrunnelse = ({ skjema }: IProps) => {
                 };
             }
         }
+        return {
+            value: '',
+            label: '',
+        };
     }
 
     return (
-        <FamilieReactSelect
+        <Select
             {...skjema.felter.vedtaksbegrunnelser.hentNavInputProps(skjema.visFeilmeldinger)}
-            value={finnBegrunnelseForSelect(prevalgtBegrunnelse)}
+            value={finnBegrunnelseForSelect(prevalgtBegrunnelse).value}
             label={'Velg standardtekst i brev'}
-            creatable={false}
-            placeholder={'Velg begrunnelse'}
-            erLesevisning={vurderErLesevisning()}
-            isMulti={false}
-            options={grupperteBegrunnelser}
-            onChange={options => {
-                if (options && 'value' in options) {
+            readOnly={vurderErLesevisning()}
+            onChange={event => {
+                if (event) {
                     /* 
                         Vi ønsker kun en begrunnelse her, men modellen tilsier at det skal være en array.
                         Hardkoder dermed den ene valgte verdien som en array med en begrunnelse.
                     */
-                    skjema.felter.vedtaksbegrunnelser.validerOgSettFelt([options.value]);
+                    skjema.felter.vedtaksbegrunnelser.validerOgSettFelt([event.target.value]);
                 } else {
                     skjema.felter.vedtaksbegrunnelser.validerOgSettFelt([]);
                 }
             }}
-            formatGroupLabel={(group: GroupBase<OptionType>) => {
-                return (
-                    <GroupLabel>
-                        <Label>{group.label}</Label>
-                        <hr />
-                    </GroupLabel>
-                );
-            }}
-            formatOptionLabel={(option: OptionType, formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>) => {
-                if (formatOptionLabelMeta.context == 'value') {
-                    // Formatering når alternativet er valgt
-                    const begrunnelseType = finnBegrunnelseType(option.value as Begrunnelse);
-                    const begrunnelseTypeLabel = begrunnelseTyper[begrunnelseType as BegrunnelseType];
-                    return (
-                        <BodyShort>
-                            <strong>{begrunnelseTypeLabel}</strong>: {option.label}
-                        </BodyShort>
-                    );
-                } else {
-                    // Formatering når alternativet er i nedtrekkslisten
-                    return <BodyShort>{option.label}</BodyShort>;
-                }
-            }}
-            propSelectStyles={{
-                container: provided => ({
-                    ...provided,
-                    maxWidth: '25rem',
-                }),
-                groupHeading: provided => ({
-                    ...provided,
-                    textTransform: 'none',
-                }),
-            }}
-        />
+        >
+            <option disabled hidden value={''}>
+                Velg begrunnelse
+            </option>
+            {grupperteBegrunnelser.map(optgroup => (
+                <optgroup label={optgroup.label}>
+                    {optgroup.options.map(option => (
+                        <option value={option.value}>{option.label}</option>
+                    ))}
+                </optgroup>
+            ))}
+        </Select>
     );
 };

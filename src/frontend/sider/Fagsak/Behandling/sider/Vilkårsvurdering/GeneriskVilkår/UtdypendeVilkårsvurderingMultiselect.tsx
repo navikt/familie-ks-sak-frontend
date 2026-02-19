@@ -1,9 +1,6 @@
 import type { ReactNode } from 'react';
 
-import styled from 'styled-components';
-
-import type { ActionMeta } from '@navikt/familie-form-elements';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import { UNSAFE_Combobox } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import type { OptionType } from '../../../../../../typer/common';
@@ -53,10 +50,6 @@ const utdypendeVilkårsvurderingTekst: Record<UtdypendeVilkårsvurdering, string
     [UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_STORBRITANNIA]: 'Barn bor i Storbritannia',
 };
 
-const StyledFamilieReactSelect = styled(FamilieReactSelect)`
-    margin-top: 0.75rem;
-`;
-
 const mapUtdypendeVilkårsvurderingTilOption = (utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering): OptionType => ({
     value: utdypendeVilkårsvurdering,
     label: utdypendeVilkårsvurderingTekst[utdypendeVilkårsvurdering],
@@ -69,29 +62,16 @@ export const UtdypendeVilkårsvurderingMultiselect = ({
     feilhåndtering,
     children,
 }: Props) => {
-    const håndterEndring = (action: ActionMeta<OptionType>) => {
-        switch (action.action) {
-            case 'select-option':
-                utdypendeVilkårsvurderinger.validerOgSettFelt([
-                    ...utdypendeVilkårsvurderinger.verdi,
-                    action.option?.value as UtdypendeVilkårsvurdering,
-                ]);
-                break;
-            case 'deselect-option':
-            case 'remove-value':
-            case 'pop-value': {
-                utdypendeVilkårsvurderinger.validerOgSettFelt(
-                    utdypendeVilkårsvurderinger.verdi.filter(
-                        utdypendeVurdering => utdypendeVurdering !== action.removedValue?.value
-                    )
-                );
-                break;
-            }
-            case 'clear':
-                utdypendeVilkårsvurderinger.validerOgSettFelt([]);
-                break;
-            case 'create-option':
-                break;
+    const håndterEndring = (option: string, isSelected: boolean) => {
+        if (isSelected) {
+            utdypendeVilkårsvurderinger.validerOgSettFelt([
+                ...utdypendeVilkårsvurderinger.verdi,
+                option as UtdypendeVilkårsvurdering,
+            ]);
+        } else {
+            utdypendeVilkårsvurderinger.validerOgSettFelt(
+                utdypendeVilkårsvurderinger.verdi.filter(utdypendeVurdering => utdypendeVurdering !== option)
+            );
         }
     };
 
@@ -101,24 +81,14 @@ export const UtdypendeVilkårsvurderingMultiselect = ({
 
     return (
         <>
-            <StyledFamilieReactSelect
-                id="UtdypendeVilkarsvurderingMultiselect"
+            <UNSAFE_Combobox
                 label="Utdypende vilkårsvurdering"
-                value={utdypendeVilkårsvurderinger.verdi.map(mapUtdypendeVilkårsvurderingTilOption)}
-                propSelectStyles={{
-                    menu: provided => ({
-                        ...provided,
-                        zIndex: 3,
-                    }),
-                }}
-                creatable={false}
-                erLesevisning={erLesevisning}
-                isMulti
-                onChange={(_, action: ActionMeta<OptionType>) => {
-                    håndterEndring(action);
-                }}
+                selectedOptions={utdypendeVilkårsvurderinger.verdi.map(mapUtdypendeVilkårsvurderingTilOption)}
+                readOnly={erLesevisning}
+                isMultiSelect
+                onToggleSelected={håndterEndring}
                 options={muligeUtdypendeVilkårsvurderinger.map(mapUtdypendeVilkårsvurderingTilOption)}
-                feil={feilhåndtering}
+                error={feilhåndtering}
             />
             {children}
         </>

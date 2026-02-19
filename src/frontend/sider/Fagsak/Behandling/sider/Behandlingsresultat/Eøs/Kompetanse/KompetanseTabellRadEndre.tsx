@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, Box, Button, Fieldset, Select } from '@navikt/ds-react';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import { Alert, Box, Button, Fieldset, Select, UNSAFE_Combobox } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -54,10 +53,6 @@ const StyledSelect = styled(Select)`
     margin-top: 1.5rem;
 `;
 
-const StyledFamilieReactSelect = styled(FamilieReactSelect)`
-    margin-top: 0.5rem;
-`;
-
 const StyledEøsPeriodeSkjema = styled(EøsPeriodeSkjema)`
     margin-top: 1.5rem;
 `;
@@ -100,14 +95,27 @@ const KompetanseTabellRadEndre = ({
     return (
         <Fieldset error={skjema.visFeilmeldinger && visSubmitFeilmelding()} legend={'Kompetanseskjema'} hideLegend>
             <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
-                <StyledFamilieReactSelect
-                    {...skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger)}
-                    erLesevisning={lesevisning}
+                <UNSAFE_Combobox
+                    error={skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger).error}
+                    readOnly={lesevisning}
                     label={'Barn'}
-                    isMulti
+                    isMultiSelect
                     options={tilgjengeligeBarn}
-                    value={skjema.felter.barnIdenter.verdi}
-                    onChange={options => skjema.felter.barnIdenter.validerOgSettFelt(options as OptionType[])}
+                    selectedOptions={skjema.felter.barnIdenter.verdi}
+                    onToggleSelected={(option, isSelected) => {
+                        const valgtBarn = tilgjengeligeBarn.find(barn => barn.value === option);
+                        if (!valgtBarn) throw new Error('Klarer ikke legge til barn');
+                        if (isSelected) {
+                            skjema.felter.barnIdenter.validerOgSettFelt([
+                                ...skjema.felter.barnIdenter.verdi,
+                                valgtBarn,
+                            ]);
+                        } else {
+                            skjema.felter.barnIdenter.validerOgSettFelt([
+                                ...skjema.felter.barnIdenter.verdi.filter(barn => barn.value !== valgtBarn.value),
+                            ]);
+                        }
+                    }}
                 />
                 <StyledEøsPeriodeSkjema
                     periode={skjema.felter.periode}

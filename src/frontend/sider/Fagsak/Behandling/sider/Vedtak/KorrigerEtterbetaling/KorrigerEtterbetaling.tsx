@@ -1,5 +1,5 @@
 import { DocPencilIcon } from '@navikt/aksel-icons';
-import { Dropdown } from '@navikt/ds-react';
+import { ActionMenu } from '@navikt/ds-react';
 
 import { ModalType } from '../../../../../../context/ModalContext';
 import { useModal } from '../../../../../../hooks/useModal';
@@ -13,14 +13,14 @@ const KorrigerEtterbetaling = ({ korrigertEtterbetaling }: IKorrigerEtterbetalin
     const { åpneModal } = useModal(ModalType.KORRIGER_ETTERBETALING);
 
     return (
-        <Dropdown.Menu.List.Item
+        <ActionMenu.Item
             onClick={() => {
                 åpneModal();
             }}
         >
             <DocPencilIcon fontSize={'1.4rem'} />
             {korrigertEtterbetaling ? <>Vis korrigert etterbetaling</> : <>Korriger etterbetaling</>}
-        </Dropdown.Menu.List.Item>
+        </ActionMenu.Item>
     );
 };
 

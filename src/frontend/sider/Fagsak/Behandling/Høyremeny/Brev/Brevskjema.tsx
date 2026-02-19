@@ -1,8 +1,18 @@
 import type { ChangeEvent } from 'react';
 
 import { FileTextIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
-import { Button, Fieldset, HStack, Label, Select, Tag, Textarea, TextField, VStack } from '@navikt/ds-react';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import {
+    Button,
+    Fieldset,
+    HStack,
+    Label,
+    Select,
+    Tag,
+    Textarea,
+    TextField,
+    UNSAFE_Combobox,
+    VStack,
+} from '@navikt/ds-react';
 import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -10,7 +20,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { BarnBrevetGjelder } from './BarnBrevetGjelder';
 import BrevmottakerListe from './BrevmottakerListe';
 import styles from './Brevskjema.module.css';
-import type { BrevtypeSelect, ISelectOptionMedBrevtekst } from './typer';
+import type { BrevtypeSelect } from './typer';
 import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import { useBrevModul } from './useBrevModul';
 import { ModalType } from '../../../../../context/ModalContext';
@@ -93,6 +103,8 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
         return null;
     }
 
+    const dokumenterOptions = opplysningsdokumenter.map(leggTilValuePåOption);
+
     return (
         <>
             <Fieldset error={hentFrontendFeilmelding(skjema.submitRessurs)} legend={'Send brev'} hideLegend>
@@ -139,28 +151,33 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                         })}
                     </Select>
                     {skjema.felter.dokumenter.erSynlig && (
-                        <FamilieReactSelect
-                            {...skjema.felter.dokumenter.hentNavInputProps(skjema.visFeilmeldinger)}
+                        <UNSAFE_Combobox
+                            error={skjema.felter.dokumenter.hentNavInputProps(skjema.visFeilmeldinger).error}
+                            id={skjema.felter.dokumenter.hentNavInputProps(skjema.visFeilmeldinger).id}
+                            selectedOptions={skjema.felter.dokumenter.verdi}
+                            className={styles.documentsCombobox}
                             label={
                                 <HStack marginBlock={'space-16 space-8'} justify={'space-between'}>
-                                    <Label
-                                        htmlFor={skjema.felter.dokumenter.hentNavInputProps(skjema.visFeilmeldinger).id}
-                                    >
-                                        Velg dokumenter
-                                    </Label>
+                                    Velg dokumenter
                                     <Tag variant="neutral" size="small">
                                         Skriv {målform[mottakersMålform()].toLowerCase()}
                                     </Tag>
                                 </HStack>
                             }
-                            creatable={false}
-                            isMulti={true}
-                            onChange={valgteOptions => {
-                                skjema.felter.dokumenter.onChange(
-                                    valgteOptions === null ? [] : (valgteOptions as ISelectOptionMedBrevtekst[])
-                                );
+                            isMultiSelect
+                            onToggleSelected={(option, isSelected) => {
+                                if (isSelected) {
+                                    skjema.felter.dokumenter.onChange([
+                                        ...skjema.felter.dokumenter.verdi,
+                                        dokumenterOptions.find(dokument => dokument.value === option)!,
+                                    ]);
+                                } else {
+                                    skjema.felter.dokumenter.onChange(
+                                        skjema.felter.dokumenter.verdi.filter(dokument => dokument.value !== option)
+                                    );
+                                }
                             }}
-                            options={opplysningsdokumenter.map(leggTilValuePåOption)}
+                            options={dokumenterOptions}
                         />
                     )}
                     {skjema.felter.friteksterKulepunkter.erSynlig && (
