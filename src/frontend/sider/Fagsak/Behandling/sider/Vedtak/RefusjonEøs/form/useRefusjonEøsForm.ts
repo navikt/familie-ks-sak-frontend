@@ -80,7 +80,7 @@ export function useRefusjonEøsForm({ type, refusjonEøs, skjulForm }: Props) {
                 },
             })
                 .then(behandling => {
-                    settÅpenBehandling(byggSuksessRessurs(behandling), false);
+                    settÅpenBehandling(byggSuksessRessurs(behandling));
                     skjulForm();
                 })
                 .catch(e => {
@@ -104,7 +104,7 @@ export function useRefusjonEøsForm({ type, refusjonEøs, skjulForm }: Props) {
                 },
             })
                 .then(behandling => {
-                    settÅpenBehandling(byggSuksessRessurs(behandling), false);
+                    settÅpenBehandling(byggSuksessRessurs(behandling));
                     skjulForm();
                 })
                 .catch(e => {

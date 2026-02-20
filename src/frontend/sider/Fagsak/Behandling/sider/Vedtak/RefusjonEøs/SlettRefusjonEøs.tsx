@@ -17,7 +17,7 @@ export function SlettRefusjonEøs({ refusjonEøsId }: Props) {
     const { mutate, isPending } = useSlettRefusjonEøs({
         refusjonEøsId: refusjonEøsId,
         onSuccess: behandling => {
-            settÅpenBehandling(byggSuksessRessurs(behandling), false);
+            settÅpenBehandling(byggSuksessRessurs(behandling));
             if (!erLeggTilRefusjonEøsFormÅpen && behandling.refusjonEøs.length === 0) {
                 skjulRefusjonEøsTabell();
             }
