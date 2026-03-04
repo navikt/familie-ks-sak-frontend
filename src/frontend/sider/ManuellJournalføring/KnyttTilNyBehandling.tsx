@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { Checkbox, Fieldset, Heading } from '@navikt/ds-react';
-import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
+import { Space32 } from '@navikt/ds-tokens/dist/tokens';
 
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 import { BehandlingstemaSelect } from '../../komponenter/BehandlingstemaSelect';
@@ -9,7 +9,7 @@ import BehandlingstypeFelt from '../../komponenter/Saklinje/Meny/OpprettBehandli
 import { BehandlingårsakFelt } from '../../komponenter/Saklinje/Meny/OpprettBehandling/BehandlingsårsakFelt';
 
 const StyledFieldset = styled(Fieldset)`
-    margin-top: ${ASpacing8};
+    margin-top: ${Space32};
 `;
 
 /**

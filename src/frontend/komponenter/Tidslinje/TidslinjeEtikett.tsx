@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { Button } from '@navikt/ds-react';
-import { ASurfaceSelected, ATextActionSelected } from '@navikt/ds-tokens/dist/tokens';
+import { BgAccentStrongPressed, TextNeutral } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { TidslinjeVindu, useTidslinjeContext } from './TidslinjeContext';
@@ -13,10 +13,10 @@ interface IEtikettProp {
 }
 
 const EtikettKnapp = styled(Button)<{ $valgt: boolean }>`
-    color: ${({ $valgt }) => $valgt && ATextActionSelected};
-    background-color: ${({ $valgt }) => $valgt && ASurfaceSelected};
+    color: ${({ $valgt }) => $valgt && TextNeutral};
+    background-color: ${({ $valgt }) => $valgt && BgAccentStrongPressed};
 `;
-
+//TODO NGHI check the colors
 const TidslinjeEtikett = ({ etikett }: IEtikettProp) => {
     const {
         aktivEtikett,

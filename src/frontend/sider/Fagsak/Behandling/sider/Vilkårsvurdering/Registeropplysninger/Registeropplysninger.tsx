@@ -7,7 +7,7 @@ import {
     PassportIcon,
 } from '@navikt/aksel-icons';
 import { Alert, Box, Detail, Heading } from '@navikt/ds-react';
-import { ASpacing4 } from '@navikt/ds-tokens/dist/tokens';
+import { Space16 } from '@navikt/ds-tokens/dist/tokens';
 
 import styles from './Registeropplysninger.module.css';
 import RegisteropplysningerTabell from './RegisteropplysningerTabell';
@@ -31,14 +31,14 @@ const Registeropplysninger = ({ opplysninger, fødselsdato }: IRegisteropplysnin
                 Registeropplysninger
             </Heading>
             {manglerRegisteropplysninger ? (
-                <Alert variant="info" style={{ marginTop: ASpacing4 }}>
+                <Alert variant="info" style={{ marginTop: Space16 }}>
                     Det ble ikke hentet inn registeropplysninger på denne behandlingen.
                 </Alert>
             ) : (
                 <Box width={'32rem'}>
                     <Detail
                         textColor="subtle"
-                        style={{ marginBottom: ASpacing4 }}
+                        style={{ marginBottom: Space16 }}
                         children={
                             'Sist hentet fra Folkeregisteret ' +
                             isoStringTilFormatertString({

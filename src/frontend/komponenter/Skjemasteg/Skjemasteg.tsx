@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { Box, Button, ErrorMessage, Heading, VStack } from '@navikt/ds-react';
-import { ASpacing24, ASpacing4, ASpacing6 } from '@navikt/ds-tokens/dist/tokens';
+import { Space16, Space24, Space96 } from '@navikt/ds-tokens/dist/tokens';
 
 import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
 import { BehandlingSteg } from '../../typer/behandling';
@@ -28,17 +28,17 @@ interface IProps extends PropsWithChildren {
 }
 
 const StyledErrorMessage = styled(ErrorMessage)`
-    margin-top: ${ASpacing4};
+    margin-top: ${Space16};
 `;
 
 const Navigering = styled.div`
-    margin: ${ASpacing24} 0 ${ASpacing4};
+    margin: ${Space96} 0 ${Space16};
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
 
     button:not(:first-child) {
-        margin-right: ${ASpacing6};
+        margin-right: ${Space24};
     }
 `;
 

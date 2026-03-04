@@ -46,8 +46,8 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
                 description="Filtrer barnehagebarn resultater"
                 hideLegend
             >
-                <VStack gap="4">
-                    <HStack gap="4" align="end">
+                <VStack gap="space-16">
+                    <HStack gap="space-16" align="end">
                         <TextField
                             label="Barns ident"
                             title="Filtrer på barns ident"
@@ -80,7 +80,7 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
                                 />
                             )}
                         />
-                        <HStack gap="4" align="center">
+                        <HStack gap="space-16" align="center">
                             <StyledCheckbox
                                 id="kun-loepende-andel"
                                 title="Vis kun løpende andeler"
@@ -94,7 +94,7 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
                             </HelpText>
                         </HStack>
                     </HStack>
-                    <HStack gap="4">
+                    <HStack gap="space-16">
                         <Button type="submit" variant="primary" size="medium" icon={<FunnelIcon aria-hidden />}>
                             Filtrer
                         </Button>

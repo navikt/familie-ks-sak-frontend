@@ -10,6 +10,7 @@ import type { ITilgangsstyrtJournalpost } from '../../../typer/journalpost';
 
 const ListeElement = styled.li`
     margin-bottom: 1rem;
+
     &:last-child {
         margin-bottom: 0;
     }
@@ -39,7 +40,7 @@ export const JournalpostDokument = ({ dokument, hentForhåndsvisning, tilgangsst
 
     return (
         <ListeElement>
-            <HStack gap="1">
+            <HStack gap="space-4">
                 {journalpostTilgang.harTilgang ? (
                     <>
                         <EllipsisBodyShort size="small" title={dokumentTittel}>

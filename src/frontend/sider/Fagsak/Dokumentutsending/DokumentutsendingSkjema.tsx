@@ -150,7 +150,7 @@ export function DokumentutsendingSkjema() {
                     </Select>
 
                     {skalViseFritekstAvsnitt && (
-                        <Box paddingBlock={'space-4 0'}>
+                        <Box paddingBlock={'space-4 space-0'}>
                             <FritekstAvsnitt />
                         </Box>
                     )}

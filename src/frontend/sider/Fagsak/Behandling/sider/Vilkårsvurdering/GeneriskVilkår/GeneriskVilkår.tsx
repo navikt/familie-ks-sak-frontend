@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, Heading } from '@navikt/ds-react';
-import { ASpacing16, ASpacing5, ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
+import { Space20, Space32, Space64 } from '@navikt/ds-tokens/dist/tokens';
 
 import VilkårTabell from './VilkårTabell';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
@@ -21,15 +21,15 @@ interface IProps {
 }
 
 const Container = styled.div`
-    margin-top: ${ASpacing16};
+    margin-top: ${Space64};
 
     &:last-child {
-        margin-bottom: ${ASpacing8};
+        margin-bottom: ${Space32};
     }
 `;
 
 const UtførKnapp = styled(Button)`
-    margin-top: ${ASpacing5};
+    margin-top: ${Space20};
 `;
 
 const GeneriskVilkår = ({ person, vilkårFraConfig, vilkårResultater, generiskVilkårKey }: IProps) => {

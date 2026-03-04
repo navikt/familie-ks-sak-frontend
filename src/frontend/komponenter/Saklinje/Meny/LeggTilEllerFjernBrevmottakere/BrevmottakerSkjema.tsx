@@ -38,7 +38,7 @@ const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) =
                 hideLegend
                 error={skjema.visFeilmeldinger && hentFrontendFeilmelding(skjema.submitRessurs)}
             >
-                <VStack gap={'6'}>
+                <VStack gap={'space-24'}>
                     <Select
                         {...skjema.felter.mottaker.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
                         readOnly={erLesevisning}
