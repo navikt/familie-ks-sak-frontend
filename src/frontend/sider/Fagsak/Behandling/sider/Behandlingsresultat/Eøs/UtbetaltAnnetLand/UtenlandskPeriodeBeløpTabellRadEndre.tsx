@@ -30,7 +30,7 @@ const UtbetaltBeløpRad = styled.div`
 `;
 
 const UtbetaltBeløpInfo = styled(Alert)`
-    margin-bottom: var(--navds-spacing-6);
+    margin-bottom: var(--ax-space-24);
 `;
 
 const UtbetaltBeløpText = styled(BodyShort)`

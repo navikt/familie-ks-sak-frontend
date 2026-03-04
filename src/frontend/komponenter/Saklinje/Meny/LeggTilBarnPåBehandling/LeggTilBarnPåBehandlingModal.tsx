@@ -91,7 +91,7 @@ export function LeggTiLBarnPåBehandlingModal({ lukkModal }: Props) {
     return (
         <Modal open onClose={onAvbryt} aria-label={'Legg til barn'} width={'35rem'} portal>
             <Modal.Header>
-                <HStack gap={'2'}>
+                <HStack gap={'space-8'}>
                     <Heading level="2" size="small">
                         Legg til barn
                     </Heading>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { XMarkIcon } from '@navikt/aksel-icons';
 import { Alert, BodyShort, Box, Button, Heading, HGrid, VStack } from '@navikt/ds-react';
-import { ASpacing10, ASpacing4, ASpacing6 } from '@navikt/ds-tokens/dist/tokens';
+import { Space16 } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
@@ -27,13 +27,9 @@ const AlertAlignedRight = styled(Alert)`
     float: right;
 `;
 
-const UtbetalingsbeløpStack = styled(VStack)`
-    padding: ${ASpacing6} ${ASpacing10} ${ASpacing4} 0;
-`;
-
 const TotaltUtbetaltRad = styled(HGrid)`
     border-top: 1px dashed;
-    padding-top: ${ASpacing4};
+    padding-top: ${Space16};
 `;
 
 interface IProps {
@@ -137,7 +133,7 @@ const Oppsummeringsboks = ({
         const columns = skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem';
 
         return (
-            <HGrid columns={columns} gap={'4'}>
+            <HGrid columns={columns} gap={'space-16'}>
                 {children}
             </HGrid>
         );
@@ -148,7 +144,7 @@ const Oppsummeringsboks = ({
     );
 
     return (
-        <Box borderColor="border-strong" borderWidth="1" padding="10">
+        <Box borderColor="neutral-strong" borderWidth="1" padding="space-40">
             <HGrid columns="1fr 3rem" align="center">
                 <Heading level="3" size="xsmall">
                     {månedNavnOgÅr()}
@@ -165,7 +161,7 @@ const Oppsummeringsboks = ({
                 <BodyShort spacing>Ingen utbetalinger</BodyShort>
             ) : (
                 <>
-                    <UtbetalingsbeløpStack gap="4">
+                    <VStack gap="space-16" paddingInline={'space-0 space-40'} paddingBlock={'space-24 space-16'}>
                         <UtbetalingsbeløpRad>
                             <BodyShort>Person</BodyShort>
                             <BodyShort>Barnehageplass</BodyShort>
@@ -204,7 +200,7 @@ const Oppsummeringsboks = ({
                                 <BodyShort>Utbetaling i tråd med fastsatt praksis ifm lovendring 2024.</BodyShort>
                             </Alert>
                         )}
-                    </UtbetalingsbeløpStack>
+                    </VStack>
                 </>
             )}
         </Box>

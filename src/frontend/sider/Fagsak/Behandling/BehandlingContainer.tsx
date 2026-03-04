@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { Alert } from '@navikt/ds-react';
-import { ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
+import { BorderNeutral } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { BehandlingRouter } from './BehandlingRouter';
@@ -20,7 +20,7 @@ const FlexContainer = styled.div`
 
 const VenstremenyContainer = styled.div`
     min-width: 1rem;
-    border-right: 1px solid ${ABorderDivider};
+    border-right: 1px solid ${BorderNeutral};
     overflow-x: hidden;
     overflow-y: scroll;
     height: calc(100vh - 146px);
@@ -34,7 +34,7 @@ const HovedinnholdContainer = styled.div`
 
 const HøyremenyContainer = styled.div`
     min-width: 1rem;
-    border-left: 1px solid ${ABorderDivider};
+    border-left: 1px solid ${BorderNeutral};
     overflow-x: hidden;
     overflow-y: scroll;
     height: calc(100vh - 146px);

@@ -20,7 +20,7 @@ const Container = styled.article`
 const OppgavebenkInnhold = () => {
     return (
         <Container>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <OppgaveHeader />
                 <OppgaveList />
             </VStack>

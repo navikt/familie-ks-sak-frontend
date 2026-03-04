@@ -21,7 +21,7 @@ const StyledHelpText = styled(HelpText)`
     margin-top: 0.1rem;
     margin-left: 0.6rem;
 
-    & + .navds-popover {
+    & + .aksel-popover {
         max-width: 20rem;
     }
 `;

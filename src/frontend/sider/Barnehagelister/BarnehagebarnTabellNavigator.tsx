@@ -51,7 +51,7 @@ const BarnehagebarnTabellNavigator = (props: BarnehagebarnTabellNavigatorProps) 
                         <option value="200">Vis 200 per side</option>
                     </StyledSelect>
                     {data.totalElements > 0 ? (
-                        <HStack gap="2" align="center">
+                        <HStack gap="space-8" align="center">
                             |
                             <span>
                                 <b>

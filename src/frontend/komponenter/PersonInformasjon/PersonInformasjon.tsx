@@ -54,7 +54,7 @@ const PersonInformasjon = ({ person, somOverskrift = false }: IProps) => {
 
     if (somOverskrift) {
         return (
-            <HStack gap="6" wrap={false} align="center">
+            <HStack gap="space-24" wrap={false} align="center">
                 <PersonIkon
                     erBarn={alder < 18}
                     kjønn={person.kjønn}
@@ -62,12 +62,12 @@ const PersonInformasjon = ({ person, somOverskrift = false }: IProps) => {
                     erAdresseBeskyttet={erAdresseBeskyttet}
                     erEgenAnsatt={erEgenAnsatt}
                 />
-                <HStack gap="4" align="center" wrap={false}>
+                <HStack gap="space-24" align="center" wrap={false}>
                     <HeadingUtenOverflow level="2" size="medium" title={navnOgAlder}>
                         {navnOgAlder}
                     </HeadingUtenOverflow>
                     <Skillelinje erHeading />
-                    <HStack gap="1" wrap={false} align="center">
+                    <HStack gap="space-4" wrap={false} align="center">
                         <Heading level="2" size="medium" as="span">
                             {formatertIdent}
                         </Heading>
@@ -82,7 +82,7 @@ const PersonInformasjon = ({ person, somOverskrift = false }: IProps) => {
     }
 
     return (
-        <HStack gap="2" align="center" wrap={false}>
+        <HStack gap="space-8" align="center" wrap={false}>
             <PersonIkon
                 erBarn={alder < 18}
                 kjønn={person.kjønn}
@@ -94,7 +94,7 @@ const PersonInformasjon = ({ person, somOverskrift = false }: IProps) => {
                 {navnOgAlder}
             </BodyShort>
             <Skillelinje />
-            <HStack gap="1" wrap={false} align="center">
+            <HStack gap="space-4" wrap={false} align="center">
                 <BodyShort>{formatertIdent}</BodyShort>
                 <CopyButton size="small" copyText={person.personIdent} />
             </HStack>
