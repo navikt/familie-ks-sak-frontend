@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 
 import { BodyShort, Table } from '@navikt/ds-react';
-import { ABorderDanger, ABorderDefault, ABorderWarning, ASurfaceAction } from '@navikt/ds-tokens/dist/tokens';
 
 import StatusIkon from '../../../../../../../ikoner/StatusIkon';
-import { EøsPeriodeStatus } from '../../../../../../../typer/eøsPerioder';
+import type { EøsPeriodeStatus } from '../../../../../../../typer/eøsPerioder';
 import type { IGrunnlagPerson } from '../../../../../../../typer/person';
 import { Datoformat, type IIsoMånedPeriode, isoMånedPeriodeTilFormatertString } from '../../../../../../../utils/dato';
 import { lagPersonLabel } from '../../../../../../../utils/formatter';
@@ -17,13 +16,6 @@ interface IEøsPeriodeSkjemaContainerProps {
 
 export const EøsPeriodeSkjemaContainer = styled.div<IEøsPeriodeSkjemaContainerProps>`
     max-width: 40rem;
-    border-left: 0.125rem solid
-        ${props => {
-            if (props.$lesevisning) return ABorderDefault;
-            if (props.$status === EøsPeriodeStatus.IKKE_UTFYLT) return ABorderWarning;
-            if (props.$status === EøsPeriodeStatus.UFULLSTENDIG) return ABorderDanger;
-            return ASurfaceAction;
-        }};
     padding-left: 2rem;
     margin-left: -3rem;
 `;
@@ -37,6 +29,7 @@ export const Knapperad = styled.div`
 
 const EøsPeriodeVurdertCelle = styled.div`
     display: flex;
+
     svg {
         margin-right: 1rem;
     }

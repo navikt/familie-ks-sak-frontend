@@ -10,14 +10,14 @@ interface IProps {
 const TotrinnskontrollModalInnhold = ({ beslutning }: IProps) => {
     if (beslutning === TotrinnskontrollBeslutning.IKKE_VURDERT) {
         return (
-            <HStack wrap={false} align={'center'} gap="4">
+            <HStack wrap={false} align={'center'} gap="space-16">
                 <StatusIkon status={Status.FEIL} />
                 Beslutning er IKKE_VURDERT. Ta kontakt med kontantstøtteteamet.
             </HStack>
         );
     } else {
         return (
-            <HStack wrap={false} align={'center'} gap="4">
+            <HStack wrap={false} align={'center'} gap="space-16">
                 <StatusIkon status={Status.OK} />
                 {beslutning === TotrinnskontrollBeslutning.GODKJENT
                     ? 'Behandlingen er godkjent, og vedtaket er iverksatt'

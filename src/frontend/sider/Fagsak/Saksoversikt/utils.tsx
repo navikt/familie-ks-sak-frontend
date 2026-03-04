@@ -182,7 +182,7 @@ export const lagLenkePåResultat = (fagsakId: number, behandling: Saksoversiktsb
             );
         case Saksoversiktstype.KLAGE:
             return (
-                <HStack gap={'2'}>
+                <HStack gap={'space-8'}>
                     <Link
                         href={`/redirect/familie-klage/behandling/${behandling.id}`}
                         onMouseDown={event => event.preventDefault()}

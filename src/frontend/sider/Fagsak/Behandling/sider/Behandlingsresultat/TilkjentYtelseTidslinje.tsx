@@ -31,6 +31,7 @@ const TidslinjeControls = styled.div`
 
 const TidslinjeContainer = styled.div`
     display: flex;
+
     & .tidslinje {
         margin: 0;
         overflow-x: hidden;
@@ -48,7 +49,7 @@ const TidslinjeContainer = styled.div`
         }
     }
 `;
-
+//TODO NGHI - navds- klassnames er utdatert for Aksel komponenter, men tidslinjen er fra familie-tidslinje og ikke oppdatert for Aksel v.8
 const TidslinjeLabels = styled.div`
     min-width: 7rem;
 `;
