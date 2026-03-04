@@ -135,7 +135,7 @@ export const BarnehagebarnTabell = (props: BarnehagebarnTabellProps) => {
             )}
 
             {!error && data?.content.length === 0 && (
-                <Box marginBlock="space-16 0">
+                <Box marginBlock="space-16 space-0">
                     <Alert variant="warning">Ingen barnehagebarn (ev tøm filter)</Alert>
                 </Box>
             )}

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, Checkbox, Fieldset, Label, Select, TextField } from '@navikt/ds-react';
-import { ABorderAction } from '@navikt/ds-tokens/dist/tokens';
+import { BorderAccent } from '@navikt/ds-tokens/dist/tokens';
 
 import { useOvergangsordningAndelContext } from './OvergangsordningAndelContext';
 import Månedvelger, { DagIMåneden } from '../../../../../../komponenter/Datovelger/Månedvelger';
@@ -23,7 +23,7 @@ const StyledFieldset = styled(Fieldset)`
     margin-bottom: 1.5rem;
     padding-left: 2rem;
     margin-right: 2rem;
-    border-left: 0.0625rem solid ${ABorderAction};
+    border-left: 0.0625rem solid ${BorderAccent};
     max-width: 30rem;
 `;
 

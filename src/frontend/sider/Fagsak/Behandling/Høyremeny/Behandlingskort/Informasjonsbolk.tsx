@@ -1,5 +1,5 @@
 import { BodyShort, HGrid } from '@navikt/ds-react';
-import { ATextDefault } from '@navikt/ds-tokens/dist/tokens';
+import { TextNeutral } from '@navikt/ds-tokens/dist/tokens';
 
 interface IProps {
     label: string;
@@ -12,7 +12,7 @@ const Informasjonsbolk = ({ label, tekst, tekstHover, tekstFarge }: IProps) => {
     return (
         <HGrid columns={2}>
             <BodyShort>{label}</BodyShort>
-            <BodyShort weight="semibold" style={{ color: tekstFarge ?? ATextDefault }} title={tekstHover}>
+            <BodyShort weight="semibold" style={{ color: tekstFarge ?? TextNeutral }} title={tekstHover}>
                 {tekst}
             </BodyShort>
         </HGrid>

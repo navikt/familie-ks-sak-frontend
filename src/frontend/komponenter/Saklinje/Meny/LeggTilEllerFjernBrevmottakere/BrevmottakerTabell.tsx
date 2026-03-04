@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Alert, Button, Heading, HStack, Spacer } from '@navikt/ds-react';
-import { AFontWeightBold } from '@navikt/ds-tokens/dist/tokens';
+import { FontWeightBold } from '@navikt/ds-tokens/dist/tokens';
 import CountryData from '@navikt/land-verktoy';
 
 import type { IRestBrevmottaker, SkjemaBrevmottaker } from './useBrevmottakerSkjema';
@@ -19,7 +19,7 @@ const DefinitionList = styled.dl`
     margin-left: 1rem;
 
     dt {
-        font-weight: ${AFontWeightBold};
+        font-weight: ${FontWeightBold};
     }
 
     dd {
