@@ -1,6 +1,6 @@
 import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 
 import { type Ressurs } from '@navikt/familie-typer';
 
@@ -8,7 +8,7 @@ import { useHentOgSettBehandlingContext } from './HentOgSettBehandlingContext';
 import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './utils';
 import { useAppContext } from '../../../../context/AppContext';
-import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
+import { useNavigerAutomatiskTilSideForBehandlingssteg } from '../../../../hooks/useNavigerAutomatiskTilSideForBehandlingssteg';
 import {
     BehandlerRolle,
     BehandlingStatus,
@@ -21,16 +21,7 @@ import { PersonType } from '../../../../typer/person';
 import { Målform } from '../../../../typer/søknad';
 import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '../../../../utils/behandling';
 import { hentSideHref } from '../../../../utils/miljø';
-import {
-    erViPåUdefinertFagsakSide,
-    erViPåUlovligSteg,
-    finnSideForBehandlingssteg,
-    hentTrinnForBehandling,
-    type ISide,
-    type ITrinn,
-    KontrollertStatus,
-    type SideId,
-} from '../sider/sider';
+import { hentTrinnForBehandling, type ITrinn, KontrollertStatus, type SideId } from '../sider/sider';
 
 interface Props extends PropsWithChildren {
     behandling: IBehandling;
@@ -59,8 +50,9 @@ interface BehandlingContextValue {
 const BehandlingContext = createContext<BehandlingContextValue | undefined>(undefined);
 
 export const BehandlingProvider = ({ behandling, children }: Props) => {
-    const { fagsakId } = useSakOgBehandlingParams();
     const { settBehandlingRessurs } = useHentOgSettBehandlingContext();
+
+    useNavigerAutomatiskTilSideForBehandlingssteg({ behandling });
 
     const {
         submitRessurs: behandlingsstegSubmitressurs,
@@ -76,7 +68,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
         hentSaksbehandlerRolle,
     } = useAppContext();
 
-    const navigate = useNavigate();
     const location = useLocation();
     const [trinnPåBehandling, settTrinnPåBehandling] = useState<{ [sideId: string]: ITrinn }>({});
 
@@ -96,8 +87,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
                 };
             }, {})
         );
-
-        automatiskNavigeringTilSideForSteg();
     }, [behandling]);
 
     const leggTilBesøktSide = (besøktSide: SideId) => {
@@ -161,17 +150,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
             status,
             sjekkTilgangTilEnhet
         );
-    };
-
-    const automatiskNavigeringTilSideForSteg = () => {
-        const sideForSteg: ISide | undefined = finnSideForBehandlingssteg(behandling);
-
-        if (
-            (erViPåUdefinertFagsakSide(location.pathname) || erViPåUlovligSteg(location.pathname, sideForSteg)) &&
-            sideForSteg
-        ) {
-            navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/${sideForSteg.href}`, { replace: true });
-        }
     };
 
     const søkersMålform: Målform =
