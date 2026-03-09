@@ -134,11 +134,9 @@ export const finnSideForBehandlingssteg = (behandling: IBehandling): ISide | und
         if (sider.VEDTAK.visSide && sider.VEDTAK.visSide(behandling)) {
             return sider.VEDTAK;
         }
-
         if (sider.SIMULERING.visSide && sider.SIMULERING.visSide(behandling)) {
             return sider.SIMULERING;
         }
-
         return sider.BEHANDLINGRESULTAT;
     }
 

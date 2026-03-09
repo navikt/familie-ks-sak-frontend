@@ -1,9 +1,9 @@
 import type { VisningBehandling } from '../../../sider/Fagsak/Saksoversikt/visningBehandling';
+import { lagVisningBehandling } from '../../../testutils/testdata/behandlingTestdata';
 import { BehandlingKategori } from '../../../typer/behandlingstema';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
 import { FagsakStatus } from '../../../typer/fagsak';
 import type { Utbetalingsperiode } from '../../../typer/utbetalingsperiode';
-import { mockVisningBehandling } from '../behandling/behandling.mock';
 
 interface IMockMinimalFagsak {
     behandlinger?: VisningBehandling[];
@@ -18,7 +18,7 @@ interface IMockMinimalFagsak {
 }
 
 export const mockMinimalFagsak = ({
-    behandlinger = [mockVisningBehandling()],
+    behandlinger = [lagVisningBehandling()],
     gjeldendeUtbetalingsperioder = [],
     id = 1,
     opprettetTidspunkt = '2020-09-19T09:08:56.8',
