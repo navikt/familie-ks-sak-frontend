@@ -1,0 +1,253 @@
+[
+  {
+    "person": {
+      "type": "SØKER",
+      "fødselsdato": "1987-05-17",
+      "personIdent": "17158720496",
+      "navn": "Snakkesalig Balanse",
+      "kjønn": "KVINNE",
+      "registerhistorikk": {
+        "hentetTidspunkt": "2022-11-07T12:27:49.739",
+        "sivilstand": [
+          {
+            "fom": "2005-05-17",
+            "tom": null,
+            "verdi": "Ugift"
+          }
+        ],
+        "oppholdstillatelse": [],
+        "statsborgerskap": [
+          {
+            "fom": "1987-05-17",
+            "tom": null,
+            "verdi": "Norge"
+          }
+        ],
+        "bostedsadresse": [
+          {
+            "fom": "1987-05-17",
+            "tom": null,
+            "verdi": "Vesterliringen \n16, 8646 "
+          }
+        ],
+        "dødsboadresse": []
+      },
+      "målform": "NB",
+      "dødsfallDato": null
+    },
+    "personIdent": "17158720496",
+    "vilkårResultater": [
+      {
+        "begrunnelse": "",
+        "id": 1004707,
+        "periode": {
+          "fom": "1987-05-17"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BOSATT_I_RIKET",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2022-11-07T12:58:52.115",
+        "behandlingId": 1001701,
+        "vurderesEtter": "NASJONALE_REGLER",
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      },
+      {
+        "begrunnelse": "",
+        "id": 1004701,
+        "periode": {
+          "fom": "1987-05-17"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "MEDLEMSKAP",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2022-11-07T12:34:33.289",
+        "behandlingId": 1001701,
+        "vurderesEtter": "NASJONALE_REGLER",
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      }
+    ],
+    "andreVurderinger": []
+  },
+  {
+    "person": {
+      "type": "BARN",
+      "fødselsdato": "2023-01-15",
+      "personIdent": "12222055378",
+      "navn": "Motløs Trikk",
+      "kjønn": "MANN",
+      "registerhistorikk": {
+        "hentetTidspunkt": "2023-01-15T00:00:00.000",
+        "sivilstand": [],
+        "oppholdstillatelse": [],
+        "statsborgerskap": [
+          {
+            "fom": "2023-01-15",
+            "tom": null,
+            "verdi": "Norge"
+          }
+        ],
+        "bostedsadresse": [
+          {
+            "fom": "2023-01-15",
+            "tom": null,
+            "verdi": "Vesterliringen \n16, 8646 "
+          }
+        ],
+        "dødsboadresse": []
+      },
+      "målform": "NB",
+      "dødsfallDato": null
+    },
+    "personIdent": "12222055378",
+    "vilkårResultater": [
+      {
+        "begrunnelse": "",
+        "id": 1004661,
+        "periode": {
+          "fom": "2023-01-15",
+          "tom": "2024-08-28"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BARNEHAGEPLASS",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2023-01-15T00:00:00.000",
+        "behandlingId": 1001701,
+        "vurderesEtter": null,
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": 8
+      },
+      {
+        "begrunnelse": "",
+        "id": 1004662,
+        "periode": {
+          "fom": "2024-08-29",
+          "tom": "2024-12-31"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BARNEHAGEPLASS",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2023-01-15T00:00:00.000",
+        "behandlingId": 1001701,
+        "vurderesEtter": null,
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": 8
+      },
+      {
+        "begrunnelse": "",
+        "id": 1004653,
+        "periode": {
+          "fom": "2023-01-15"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BOR_MED_SØKER",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2023-01-15T00:00:00.000",
+        "behandlingId": 1001701,
+        "vurderesEtter": "NASJONALE_REGLER",
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      },
+      {
+        "begrunnelse": "",
+        "id": 1004702,
+        "periode": {
+          "fom": "2023-01-15"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BOSATT_I_RIKET",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2023-01-15T00:00:00.000",
+        "behandlingId": 1001701,
+        "vurderesEtter": "NASJONALE_REGLER",
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      },
+      {
+        "begrunnelse": "",
+        "id": 1004703,
+        "periode": {
+          "fom": "2023-01-15"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "MEDLEMSKAP_ANNEN_FORELDER",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2023-01-15T00:00:00.000",
+        "behandlingId": 1001701,
+        "vurderesEtter": "NASJONALE_REGLER",
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      },
+      {
+        "begrunnelse": "",
+        "id": 1004706,
+        "periode": {
+          "fom": "2023-01-15",
+          "tom": "2024-07-31"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BARNETS_ALDER",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2022-11-07T12:51:51.065",
+        "behandlingId": 1001701,
+        "vurderesEtter": null,
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      },
+      {
+        "begrunnelse": "",
+        "id": 1004707,
+        "periode": {
+          "fom": "2024-08-01",
+          "tom": "2024-08-24"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BARNETS_ALDER",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2023-01-15T00:00:00.000",
+        "behandlingId": 1001701,
+        "vurderesEtter": null,
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      }
+    ],
+    "andreVurderinger": []
+  }
+]

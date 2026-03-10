@@ -1,3 +1,4 @@
+import barnehageperiodeErEtterBarnetsAlderMenIPeriodeForOvergangsordning from './testcaser/barnehageperiodeErEtterBarnetsAlderMenIPeriodeForOvergangsordning.json';
 import barnehageperiodeStarterEtter2årEllerSkole from './testcaser/barnehageperiodeStarterEtter2årEllerSkole.json';
 import bosattIRiketIkkeUtfylt from './testcaser/bosattIRiketIkkeUtfylt.json';
 import happyCase from './testcaser/happyCase.json';
@@ -22,6 +23,14 @@ describe('hentFeilIVilkårsvurdering', () => {
 
         expect(feilIVilkåarsvurdering.length).toEqual(1);
         expect(feilIVilkåarsvurdering[0].skjemaelementId.includes('BARNEHAGEPLASS')).toBe(true);
+    });
+
+    test('Skal ikke gi feilmelding dersom en barnehageperiode starter etter siste periode for "barnets alder"-vilkåret, men innenfor periode for overgangsordning', () => {
+        const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
+            barnehageperiodeErEtterBarnetsAlderMenIPeriodeForOvergangsordning as unknown as IPersonResultat[]
+        );
+
+        expect(feilIVilkåarsvurdering.length).toEqual(0);
     });
 
     test('Skal gi feilmelding dersom ett av vilkårene ikke er utfylt', () => {

@@ -1,4 +1,4 @@
-import { addDays, isAfter, isSameDay } from 'date-fns';
+import { addDays, addMonths, endOfMonth, isAfter, isSameDay, startOfMonth } from 'date-fns';
 
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
@@ -6,10 +6,10 @@ import { annenVurderingFeilmeldingId } from '../../sider/Fagsak/Behandling/sider
 import { vilkårFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
 import type { IAnnenVurdering, IPersonResultat, IVilkårResultat } from '../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig, VilkårType } from '../../typer/vilkår';
-import type { IIsoDatoPeriode } from '../../utils/dato';
 import {
     erEtterEllerSammeDato,
     erFørEllerSammeDato,
+    type IIsoDatoPeriode,
     isoStringTilDateMedFallback,
     parseFraOgMedDato,
     parseTilOgMedDato,
@@ -33,7 +33,8 @@ export const hentFeilIVilkårsvurdering = (personResultater: IPersonResultat[]):
             ...hentIkkeVurderteAndreVurderingerFeil(personResultat),
             ...hentBarnehageplassPeriodeStarterForSentFeil(
                 oppfylteBarnetsAlderVilkårResultater,
-                barnehageplassVilkårResultater
+                barnehageplassVilkårResultater,
+                new Date(personResultat.person.fødselsdato)
             ),
             ...hentBarnetsalderVilkårManglerBarnehagePeriodeFeil(
                 oppfylteBarnetsAlderVilkårResultater,
@@ -61,7 +62,8 @@ const hentIkkeVurderteVilkårFeil = (personResultat: IPersonResultat): Feiloppsu
 
 const hentBarnehageplassPeriodeStarterForSentFeil = (
     oppfylteBarnetsAlderVilkårResultater: IVilkårResultat[],
-    barnehageplassVilkårResultater: IVilkårResultat[]
+    barnehageplassVilkårResultater: IVilkårResultat[],
+    barnetsAlder: Date
 ): FeiloppsummeringFeil[] => {
     const sisteOppfylteBarnetsAlderVilkårResultat = oppfylteBarnetsAlderVilkårResultater.reduce(
         (senesteVilkårResultat: IVilkårResultat | undefined, vilkårResultat) => {
@@ -76,8 +78,10 @@ const hentBarnehageplassPeriodeStarterForSentFeil = (
     );
 
     return barnehageplassVilkårResultater
-        .filter(barnehageplassVilkårResultat =>
-            starterEtter(barnehageplassVilkårResultat.periode, sisteOppfylteBarnetsAlderVilkårResultat?.periode)
+        .filter(
+            barnehageplassVilkårResultat =>
+                starterEtter(barnehageplassVilkårResultat.periode, sisteOppfylteBarnetsAlderVilkårResultat?.periode) &&
+                !periodeErInnenforPeriodeForOvergangsordning(barnehageplassVilkårResultat, barnetsAlder)
         )
         .map(vilkårResultat => ({
             skjemaelementId: vilkårFeilmeldingId(vilkårResultat),
@@ -158,6 +162,24 @@ function starterEtter(
             isoString: barnetsAlderPeriode?.tom,
             fallbackDate: tidenesEnde,
         })
+    );
+}
+
+function periodeErInnenforPeriodeForOvergangsordning(
+    barnehageplassVilkårResultat: IVilkårResultat,
+    barnetsFødselsdato: Date
+) {
+    const fom = parseFraOgMedDato(barnehageplassVilkårResultat.periode.fom);
+    const tom = parseTilOgMedDato(barnehageplassVilkårResultat.periode.tom);
+    const august2024 = new Date(2024, 7, 1);
+    const april2025 = new Date(2025, 3, 30);
+    const barn19Måneder = startOfMonth(addMonths(barnetsFødselsdato, 19));
+    const barn23Måneder = endOfMonth(addMonths(barnetsFødselsdato, 23));
+    return (
+        fom.getTime() >= barn19Måneder.getTime() &&
+        fom.getTime() >= august2024.getTime() &&
+        tom.getTime() <= barn23Måneder.getTime() &&
+        tom.getTime() <= april2025.getTime()
     );
 }
 
