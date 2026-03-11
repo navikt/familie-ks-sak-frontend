@@ -10,13 +10,13 @@ import { RessursStatus } from '@navikt/familie-typer';
 import type { Currency } from '@navikt/land-verktoy';
 
 import Datovelger from '../../../../../../../komponenter/Datovelger/Datovelger';
+import { EØS_CURRENCY, Valutavelger } from '../../../../../../../komponenter/Valutavelger/Valutavelger';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import { EøsPeriodeStatus, type IValutakurs } from '../../../../../../../typer/eøsPerioder';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
-import { StyledFamilieValutavelger } from '../EøsKomponenter/FamilieLandvelger';
 
 const ValutakursRad = styled.div`
     width: 32rem;
@@ -146,14 +146,10 @@ const ValutakursTabellRadEndre = ({
                             disableWeekends
                             kanKunVelgeFortid
                         />
-                        <StyledFamilieValutavelger
-                            erLesevisning={true}
-                            id={'valuta'}
+                        <Valutavelger
                             label={'Valuta'}
-                            kunEøs
-                            medFlag
-                            size="small"
                             value={skjema.felter.valutakode?.verdi}
+                            options={EØS_CURRENCY}
                             onChange={(value: Currency) => {
                                 if (value) {
                                     skjema.felter.valutakode?.validerOgSettFelt(value.value);
@@ -161,8 +157,7 @@ const ValutakursTabellRadEndre = ({
                                     skjema.felter.valutakode?.nullstill();
                                 }
                             }}
-                            utenMargin
-                            kanNullstilles
+                            readOnly={true}
                         />
                         <StyledTextField
                             label={'Valutakurs'}
