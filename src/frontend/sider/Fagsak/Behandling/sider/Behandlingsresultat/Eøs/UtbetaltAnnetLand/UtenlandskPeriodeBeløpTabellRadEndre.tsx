@@ -3,12 +3,13 @@ import type { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, BodyShort, Button, Fieldset, Select, TextField, UNSAFE_Combobox } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Fieldset, HStack, Select, TextField, UNSAFE_Combobox } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Currency } from '@navikt/land-verktoy';
 
+import { EØS_CURRENCY, Valutavelger } from '../../../../../../../komponenter/Valutavelger/Valutavelger';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import {
@@ -20,14 +21,6 @@ import {
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
-import { StyledFamilieValutavelger } from '../EøsKomponenter/FamilieLandvelger';
-
-const UtbetaltBeløpRad = styled.div`
-    width: 32rem;
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-`;
 
 const UtbetaltBeløpInfo = styled(Alert)`
     margin-bottom: var(--navds-spacing-6);
@@ -160,7 +153,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                     legend={'Utbetalt i det andre landet'}
                     size={'medium'}
                 >
-                    <UtbetaltBeløpRad>
+                    <HStack gap={'space-32'} wrap={false} justify={'start'} align={'start'}>
                         <StyledTextField
                             label={'Beløp per barn'}
                             readOnly={lesevisning}
@@ -168,13 +161,10 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                             onChange={event => skjema.felter.beløp?.validerOgSettFelt(event.target.value)}
                             size={'medium'}
                         />
-                        <StyledFamilieValutavelger
-                            erLesevisning={lesevisning}
-                            id={'valuta'}
+                        <Valutavelger
                             label={'Valuta'}
-                            kunEøs
-                            medFlag
                             value={skjema.felter.valutakode?.verdi}
+                            options={EØS_CURRENCY}
                             onChange={(value: Currency) => {
                                 if (value) {
                                     skjema.felter.valutakode?.validerOgSettFelt(value.value);
@@ -182,8 +172,8 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                                     skjema.felter.valutakode?.nullstill();
                                 }
                             }}
-                            utenMargin
-                            kanNullstilles
+                            readOnly={lesevisning}
+                            error={skjema.felter.valutakode?.feilmelding?.toString()}
                         />
                         <Select
                             label={'Intervall'}
@@ -206,7 +196,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                                 );
                             })}
                         </Select>
-                    </UtbetaltBeløpRad>
+                    </HStack>
                 </StyledFieldset>
                 {!lesevisning && (
                     <Knapperad>
