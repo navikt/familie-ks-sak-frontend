@@ -18,6 +18,7 @@ import Valutakurser from './Eøs/Valutakurs/Valutakurser';
 import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAugust2024Alert';
 import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
+import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import { useBehandlingContextsresultat } from './useBehandlingsresultat';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
@@ -79,7 +80,8 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
         personerMedUgyldigEtterbetalingsperiode,
     } = useBehandlingContextsresultat(åpenBehandling);
 
-    const { aktivEtikett } = useTidslinjeContext(); //, filterOgSorterAndelPersonerIGrunnlag, filterOgSorterGrunnlagPersonerMedAndeler } =
+    const { aktivEtikett, filterOgSorterAndelPersonerIGrunnlag, filterOgSorterGrunnlagPersonerMedAndeler } =
+        useTidslinjeContext();
 
     const { vurderErLesevisning, behandlingresultatNesteOnClick, behandlingsstegSubmitressurs } =
         useBehandlingContext();
@@ -101,8 +103,6 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
         hentPersonerMedUgyldigEtterbetalingsperiode();
     }, [åpenBehandling]);
 
-    /*
-    TODO NGHI - NBNB IKKE SLETT
     const grunnlagPersoner = filterOgSorterGrunnlagPersonerMedAndeler(
         åpenBehandling.personer,
         åpenBehandling.personerMedAndelerTilkjentYtelse
@@ -111,8 +111,6 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
         grunnlagPersoner,
         åpenBehandling.personerMedAndelerTilkjentYtelse
     );
-    TODO NGHI denne kommenteres ut fordi den er ubrukt per tid, men er i bruk i utkommentert komponent for tidslinje så ikke slett.
-     */
 
     const harKompetanser = åpenBehandling.kompetanser?.length > 0;
     const harUtenlandskeBeløper = åpenBehandling.utenlandskePeriodebeløp?.length > 0;
@@ -154,8 +152,7 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
                     .
                 </StyledAlert>
             )}
-            {/*<TilkjentYtelseTidslinje grunnlagPersoner={grunnlagPersoner} tidslinjePersoner={tidslinjePersoner} /> */}
-            {/* TODO NGHI - denne komponenten er utdatert for Aksel v.8, om den blir innført vil det knekke programmet lokalt*/}
+            <TilkjentYtelseTidslinje grunnlagPersoner={grunnlagPersoner} tidslinjePersoner={tidslinjePersoner} />
             {!erLesevisning && (
                 <EndretUtbetalingAndel>
                     <Button variant="tertiary" size="small" onClick={opprettEndretUtbetaling} icon={<StyledEditIkon />}>
