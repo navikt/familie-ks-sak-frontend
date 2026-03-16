@@ -1,9 +1,14 @@
-import type { GroupBase } from 'react-select';
 import styled from 'styled-components';
 
 import { BodyShort, Label } from '@navikt/ds-react';
 import { AZIndexPopover } from '@navikt/ds-tokens/dist/tokens';
-import { type ActionMeta, FamilieReactSelect, type FormatOptionLabelMeta } from '@navikt/familie-form-elements';
+import {
+    type ActionMeta,
+    FamilieReactSelect,
+    type FormatOptionLabelMeta,
+    type GroupBase,
+    type StylesConfig,
+} from '@navikt/familie-form-elements';
 
 import { useAlleBegrunnelserContext } from './AlleBegrunnelserContext';
 import { mapBegrunnelserTilSelectOptions } from './utils';
@@ -34,41 +39,42 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
 
     const begrunnelser = mapBegrunnelserTilSelectOptions(vedtaksperiodeMedBegrunnelser, alleBegrunnelser);
 
+    const propSelectStyles: StylesConfig<OptionType, boolean, GroupBase<OptionType>> = {
+        container: (provided, props) =>
+            Object.assign({}, provided, {
+                maxWidth: '50rem',
+                zIndex: props.isFocused ? Number(AZIndexPopover) : 1,
+            }),
+        groupHeading: provided =>
+            Object.assign({}, provided, {
+                textTransform: 'none',
+            }),
+        multiValue: (provided, props) => {
+            const currentOption = props.data;
+            const vedtakBegrunnelseType: BegrunnelseType | undefined = finnBegrunnelseType(
+                alleBegrunnelser,
+                currentOption.value as Begrunnelse
+            );
+
+            return Object.assign({}, provided, {
+                backgroundColor: hentBakgrunnsfarge(vedtakBegrunnelseType),
+                border: `1px solid ${hentBorderfarge(vedtakBegrunnelseType)}`,
+                borderRadius: '0.5rem',
+            });
+        },
+        multiValueLabel: provided =>
+            Object.assign({}, provided, {
+                whiteSpace: 'pre-wrap',
+                textOverflow: 'hidden',
+                overflow: 'hidden',
+            }),
+    };
+
     return (
         <FamilieReactSelect
             id={`${id}`}
             value={begrunnelser}
-            propSelectStyles={{
-                container: (provided, props) => ({
-                    ...provided,
-                    maxWidth: '50rem',
-                    zIndex: props.isFocused ? AZIndexPopover : 1,
-                }),
-                groupHeading: provided => ({
-                    ...provided,
-                    textTransform: 'none',
-                }),
-                multiValue: (provided, props) => {
-                    const currentOption = props.data as OptionType;
-                    const begrunnelseType: BegrunnelseType | undefined = finnBegrunnelseType(
-                        alleBegrunnelser,
-                        currentOption.value as Begrunnelse
-                    );
-
-                    return {
-                        ...provided,
-                        backgroundColor: hentBakgrunnsfarge(begrunnelseType),
-                        border: `1px solid ${hentBorderfarge(begrunnelseType)}`,
-                        borderRadius: '0.5rem',
-                    };
-                },
-                multiValueLabel: provided => ({
-                    ...provided,
-                    whiteSpace: 'pre-wrap',
-                    textOverflow: 'hidden',
-                    overflow: 'hidden',
-                }),
-            }}
+            propSelectStyles={propSelectStyles}
             placeholder={'Velg begrunnelse(r)'}
             isDisabled={erLesevisning || oppdaterBegrunnelserMutation?.status === 'pending'}
             feil={oppdaterBegrunnelserMutation?.error?.message}
