@@ -6,9 +6,9 @@ import {
     BorderNeutral,
     FontWeightBold,
     Space16,
-    TextDanger,
+    TextDangerSubtle,
     TextNeutral,
-    TextSuccess,
+    TextSuccessSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
 
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../../../typer/simulering';
@@ -84,7 +84,7 @@ const SimuleringPanel = ({
                 <HStack>
                     <BodyShort>Feilutbetaling</BodyShort>
                     <Spacer />
-                    <BoldTekstMedFarge $farge={feilutbetaling > 0 ? TextDanger : TextNeutral}>
+                    <BoldTekstMedFarge $farge={feilutbetaling > 0 ? TextDangerSubtle : TextNeutral}>
                         {formaterBeløpEllerDashOmUndefined(feilutbetaling)}
                     </BoldTekstMedFarge>
                 </HStack>
@@ -113,7 +113,9 @@ const SimuleringPanel = ({
                         </BodyShort>
                         <Spacer />
                         <BoldTekstMedFarge
-                            $farge={nestePeriode?.resultat && nestePeriode.resultat > 0 ? TextSuccess : TextNeutral}
+                            $farge={
+                                nestePeriode?.resultat && nestePeriode.resultat > 0 ? TextSuccessSubtle : TextNeutral
+                            }
                         >
                             {formaterBeløpEllerDashOmUndefined(nestePeriode?.resultat)}
                         </BoldTekstMedFarge>

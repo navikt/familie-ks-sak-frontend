@@ -53,6 +53,8 @@ const MenyLenke = styled(NavLink)<{ $erLenkenAktiv: boolean }>`
 
 const UndersideSirkel = styled.span`
     border-color: ${BorderWarning};
+    border-width: 1px;
+    border-style: solid;
     border-radius: 50%;
     background-color: ${BgWarningModerate};
     display: inline-grid;
