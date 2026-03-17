@@ -7,10 +7,10 @@ import {
     BorderNeutral,
     BorderNeutralSubtle,
     BorderSuccess,
-    TextDanger,
-    TextInfo,
+    TextDangerSubtle,
+    TextInfoSubtle,
     TextNeutral,
-    TextSuccess,
+    TextSuccessSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
 
 import Informasjonsbolk from './Informasjonsbolk';
@@ -58,12 +58,12 @@ const hentResultatfargeTekst = (behandlingResultat: BehandlingResultat) => {
         case BehandlingResultat.INNVILGET:
         case BehandlingResultat.DELVIS_INNVILGET:
         case BehandlingResultat.FORTSATT_INNVILGET:
-            return TextSuccess;
+            return TextSuccessSubtle;
         case (BehandlingResultat.ENDRET_UTBETALING, BehandlingResultat.ENDRET_UTEN_UTBETALING):
-            return TextInfo;
+            return TextInfoSubtle;
         case BehandlingResultat.AVSLÅTT:
         case (BehandlingResultat.OPPHØRT, BehandlingResultat.FORTSATT_OPPHØRT):
-            return TextDanger;
+            return TextDangerSubtle;
         default:
             return TextNeutral;
     }
