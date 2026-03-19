@@ -15,10 +15,6 @@ export function erDefinert<T extends NonNullable<unknown>>(value: T | undefined 
 
 export const fjernWhitespace = (streng: string) => streng.replace(/\s/g, '').replace(/[ \u0085]/g, '');
 
-export const tilFeilside = (): void => {
-    window.location.assign(window.location.protocol + '//' + window.location.host + '/error');
-};
-
 export const sjekkTilgangTilPerson = (personRes: Ressurs<IPersonInfo>): Ressurs<IPersonInfo> => {
     if (personRes.status === RessursStatus.SUKSESS && personRes.data.harTilgang === false) {
         return byggFeiletRessurs('Du har ikke tilgang til denne brukeren.');
