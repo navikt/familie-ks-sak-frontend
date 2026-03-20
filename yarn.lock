@@ -1066,13 +1066,13 @@
   resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/8.0.5/f048cb47ad2f6b83720c058383fe95802b024718#f048cb47ad2f6b83720c058383fe95802b024718"
   integrity sha512-oZPfF95H6k/Tz/cK4IQirTRXy4Vz0aSUtHWZAaDa1CVd7+8ifj1Aw8KLV6pPvlHaPirrek1sFsK5GNnad6h3qA==
 
-"@navikt/flagg-ikoner@10.0.0":
-  version "10.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/flagg-ikoner/10.0.0/7b14281f02976161f8837b36bd7bf9f85da8ab1b#7b14281f02976161f8837b36bd7bf9f85da8ab1b"
-  integrity sha512-IgQ43nvbKwAVd4/93EwG0KiAF0xRFXPYyEf0Mj7TB/zgOP+wZaqJ0laM19ogdS2sBRaJznWhgnquuVkbkkEZBA==
+"@navikt/flagg-ikoner@12.2.0":
+  version "12.2.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/flagg-ikoner/12.2.0/40e13bd33bd3deb72f34710bfe320f51044a7b9a#40e13bd33bd3deb72f34710bfe320f51044a7b9a"
+  integrity sha512-BnkbWPNLkg05kO7r1eR/RzMATcbCE652y0Q2F49Kzri69ISg/7fFnBaJdFY40zUWfVOTbK2YSNqZ778dJMsWCA==
   dependencies:
-    svg-country-flags "^1.2.10"
-    uuid "^9.0.0"
+    svg-country-flags "1.2.10"
+    uuid "9.0.1"
 
 "@navikt/fnrvalidator@2.2.0":
   version "2.2.0"
@@ -1084,19 +1084,19 @@
   resolved "https://npm.pkg.github.com/download/@navikt/fnrvalidator/2.2.1/37ed0feb23a7525139ad5512684ff6b0977112c6#37ed0feb23a7525139ad5512684ff6b0977112c6"
   integrity sha512-R6x3MBFC0E/B7oTs+P2jAP+ym7+d6cwSpDsLeMja9IwPpJq3HV/OClFBVWm9fJZPmXfumKRMGy6gqsQPj90ftg==
 
-"@navikt/land-verktoy@9.1.8":
-  version "9.1.8"
-  resolved "https://npm.pkg.github.com/download/@navikt/land-verktoy/9.1.8/932ec398628725c391f19df559e3c2a0e130b72e#932ec398628725c391f19df559e3c2a0e130b72e"
-  integrity sha512-vKcSx3GlbX7tHH25aZnTRJjpWO582W0vGxzVpfOYL+0YxfgKQdJ7+PzLEIGz3drAhAcCFGJCNhq6F44SkIddyg==
+"@navikt/land-verktoy@12.2.0":
+  version "12.2.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/land-verktoy/12.2.0/b3fa2351c4e9cb81df8f05bf5f8d5aa32597985e#b3fa2351c4e9cb81df8f05bf5f8d5aa32597985e"
+  integrity sha512-eT/qAYowA1KoYeKr5NooZEDsVldMZ0CJYLB0NqhKLMaOBhYJiyPAIavVl2mtWQmDUKEV5wBYf6tmSV/SVBf8dg==
   dependencies:
-    "@piotrgorecki/i18n-currency-name" "^1.3.0"
-    country-data-list "^1.2.2"
-    i18n-iso-countries "^7.5.0"
+    "@piotrgorecki/i18n-currency-name" "1.3.0"
+    country-data-list "1.6.0"
+    i18n-iso-countries "7.14.0"
 
-"@navikt/landvelger@10.0.0":
-  version "10.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/landvelger/10.0.0/be0965113024c3c8e76651dd7fe6faee996dc2d5#be0965113024c3c8e76651dd7fe6faee996dc2d5"
-  integrity sha512-rp4OAfNuT8Vh7+WV9Ttc9rwYVlpwWuVBuLv5wtOcjWue6hAQ1AJ2YRu6dHt/dXPvZ5MiqBHtZHCJ3abhsPP3IA==
+"@navikt/landvelger@12.2.0":
+  version "12.2.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/landvelger/12.2.0/1e0b757e33fbfbe426b4416c841d2af249d177a8#1e0b757e33fbfbe426b4416c841d2af249d177a8"
+  integrity sha512-StXVIvANNr6+meTGVHLMuMfqu6b0daiDGxu26h8JFTEGYOB08npoU1m+nimumy+QUPPOlwopeTiKsTCHk73tzg==
 
 "@noble/ciphers@^1.3.0":
   version "1.3.0"
@@ -1204,7 +1204,7 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-1.32.0.tgz#a15e8f78f32388a7e4655e7f539570e40958ca3f"
   integrity sha512-s0OpmpQFSfMrmedAn9Lhg4KWJELHCU6uU9dtIJ28N8UGhf9Y55im5X8fEzwhwDwiSqN+ZPSNrDJF7ivf/AuRPQ==
 
-"@piotrgorecki/i18n-currency-name@^1.3.0":
+"@piotrgorecki/i18n-currency-name@1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@piotrgorecki/i18n-currency-name/-/i18n-currency-name-1.3.0.tgz#c7d6b9f6df705bf4f2516f1d25c455af14d7c167"
   integrity sha512-Txbw0UmGgyvkZEFzjycmh7hEwYeRftILvx4G72PrMBHoS18PGnPODWbZvw7bi+KoV+buMezEHy8ezojc0f7YvQ==
@@ -2686,7 +2686,7 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-country-data-list@^1.2.2:
+country-data-list@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/country-data-list/-/country-data-list-1.6.0.tgz#2ebd1fae15094c148a2d8c150f73768580e9cc82"
   integrity sha512-KG1flNkUHtde7q9zw1/NcH5fFgDxU6gRt4f7jhBm2ucNXrSO8UBWv/w8UyueOhJGabzzjHJ7fTyRVLrKruWpUw==
@@ -4349,7 +4349,7 @@ husky@9.1.7:
   resolved "https://registry.yarnpkg.com/husky/-/husky-9.1.7.tgz#d46a38035d101b46a70456a850ff4201344c0b2d"
   integrity sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==
 
-i18n-iso-countries@^7.5.0:
+i18n-iso-countries@7.14.0:
   version "7.14.0"
   resolved "https://registry.yarnpkg.com/i18n-iso-countries/-/i18n-iso-countries-7.14.0.tgz#cd5ae098198bce1cc40cadbf0a37ce6c8e9d0edf"
   integrity sha512-nXHJZYtNrfsi1UQbyRqm3Gou431elgLjKl//CYlnBGt5aTWdRPH1PiS2T/p/n8Q8LnqYqzQJik3Q7mkwvLokeg==
@@ -6487,9 +6487,9 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-svg-country-flags@^1.2.10:
+svg-country-flags@1.2.10:
   version "1.2.10"
-  resolved "https://registry.npmjs.org/svg-country-flags/-/svg-country-flags-1.2.10.tgz"
+  resolved "https://registry.yarnpkg.com/svg-country-flags/-/svg-country-flags-1.2.10.tgz#b1b94e9f08f065d7b3d0ff9ab359898edd4dd3b0"
   integrity sha512-xrqwo0TYf/h2cfPvGpjdSuSguUbri4vNNizBnwzoZnX0xGo3O5nGJMlbYEp7NOYcnPGBm6LE2axqDWSB847bLw==
 
 symbol-tree@^3.2.4:
@@ -6882,10 +6882,10 @@ uuid@*, uuid@13.0.0:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-13.0.0.tgz#263dc341b19b4d755eb8fe36b78d95a6b65707e8"
   integrity sha512-XQegIaBTVUjSHliKqcnFqYypAd4S+WCYt5NIeRs6w/UAry7z8Y9j5ZwRRL4kzq9U3sD6v+85er9FvkEaBpji2w==
 
-uuid@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.npmjs.org/uuid/-/uuid-9.0.0.tgz"
-  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
+uuid@9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.1.tgz#e188d4c8853cc722220392c424cd637f32293f30"
+  integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
 
 vary@^1.1.2:
   version "1.1.2"
