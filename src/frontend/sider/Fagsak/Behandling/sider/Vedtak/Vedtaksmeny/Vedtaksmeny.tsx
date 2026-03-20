@@ -46,10 +46,7 @@ export function Vedtaksmeny({ erBehandlingMedVedtaksbrevutsending }: Props) {
                 />
             )}
             {visEndreEndringstidspunktModal && (
-                <OppdaterEndringstidspunktModal
-                    lukkModal={() => settVisEndreEndringstidspunktModal(false)}
-                    åpenBehandling={behandling}
-                />
+                <OppdaterEndringstidspunktModal lukkModal={() => settVisEndreEndringstidspunktModal(false)} />
             )}
             <ActionMenu>
                 <ActionMenu.Trigger>
