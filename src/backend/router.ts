@@ -45,11 +45,14 @@ export default async (authClient: Client, router: Router) => {
     if (erLokal()) {
         vite = await createServer({
             root: path.join(process.cwd(), frontendPath),
+            mode: process.env.ENV,
             server: { middlewareMode: true },
             appType: 'custom',
         });
         router.use(vite.middlewares);
     }
+
+    const htmlPath = path.join(process.cwd(), frontendPath, 'index.html');
 
     // APP
     router.get(
@@ -59,14 +62,13 @@ export default async (authClient: Client, router: Router) => {
         async (req: Request, res: Response) => {
             prometheusTellere.appLoad.inc();
 
-            const htmlPath = path.join(process.cwd(), frontendPath, 'index.html');
-            let htmlInnhold = fs.readFileSync(htmlPath, 'utf-8');
-
             if (erLokal()) {
-                htmlInnhold = await vite.transformIndexHtml(req.url, htmlInnhold);
+                const htmlInnhold = await fs.promises.readFile(htmlPath, 'utf-8');
+                const transformed = await vite.transformIndexHtml(req.url, htmlInnhold);
+                res.status(200).type('html').send(transformed);
+            } else {
+                res.sendFile(htmlPath);
             }
-
-            res.status(200).type('html').send(htmlInnhold);
         }
     );
 

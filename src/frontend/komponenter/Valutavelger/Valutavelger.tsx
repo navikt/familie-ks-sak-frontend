@@ -3,7 +3,11 @@ import { useId } from 'react';
 import { PadlockLockedFillIcon } from '@navikt/aksel-icons';
 import { HStack, Label } from '@navikt/ds-react';
 import type { Currency } from '@navikt/land-verktoy';
-import CountrySelect from '@navikt/landvelger';
+import _CountrySelect from '@navikt/landvelger';
+
+// Plaster for problem med default export i landvelger. Spiller ikke på lag ved konvertering fra CJS til ESM.
+// Ekstraherer default med fallbacks
+const CountrySelect = (_CountrySelect as unknown as { default?: typeof _CountrySelect }).default ?? _CountrySelect;
 
 import Styles from './Valutavelger.module.css';
 
