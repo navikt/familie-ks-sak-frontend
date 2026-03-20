@@ -32,7 +32,7 @@ export function OpprettFagsakModalInnhold({ personIdent, personNavn }: Props) {
     return (
         <>
             <Modal.Body>
-                <VStack gap={'4'}>
+                <VStack gap={'space-16'}>
                     <BodyShort>Ønsker du å opprette fagsak for denne personen?</BodyShort>
                     <BodyShort>{`${personNavn} (${formaterIdent(personIdent)})`}</BodyShort>
                     {visFeilmelding && (

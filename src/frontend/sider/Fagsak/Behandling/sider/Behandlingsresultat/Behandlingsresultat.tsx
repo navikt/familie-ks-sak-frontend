@@ -107,7 +107,6 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
         åpenBehandling.personer,
         åpenBehandling.personerMedAndelerTilkjentYtelse
     );
-
     const tidslinjePersoner = filterOgSorterAndelPersonerIGrunnlag(
         grunnlagPersoner,
         åpenBehandling.personerMedAndelerTilkjentYtelse

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { Alert, BodyShort, Checkbox, Heading, Table, VStack } from '@navikt/ds-react';
-import { ASpacing8 } from '@navikt/ds-tokens/dist/tokens';
+import { Space32 } from '@navikt/ds-tokens/dist/tokens';
 
 import { KnyttTilNyBehandling } from './KnyttTilNyBehandling';
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
@@ -19,7 +19,7 @@ const GenerellSakInfoStripeTittel = styled.div`
 `;
 
 const StyledAlert = styled(Alert)`
-    margin-top: ${ASpacing8};
+    margin-top: ${Space32};
 `;
 
 export const KnyttJournalpostTilBehandling = () => {
@@ -41,7 +41,7 @@ export const KnyttJournalpostTilBehandling = () => {
     return (
         <KnyttDiv>
             {sorterteJournalføringsbehandlinger.length > 0 && (
-                <VStack gap="6">
+                <VStack gap="space-24">
                     {ressursHarFeilet(klageStatus) && (
                         <Alert variant="warning">
                             <BodyShort>Klagebehandlinger er ikke tilgjengelig for øyeblikket.</BodyShort>

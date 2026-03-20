@@ -57,7 +57,7 @@ const SletteKnapp = styled(Button)`
 const StyledHelpText = styled(HelpText)`
     margin: 0.6rem;
 
-    & + .navds-popover {
+    & + .aksel-popover {
         max-width: 25rem;
         text-align: left;
     }

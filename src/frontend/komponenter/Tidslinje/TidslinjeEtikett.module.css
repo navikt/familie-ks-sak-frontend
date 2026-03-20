@@ -1,0 +1,9 @@
+.etikettKnapp {
+    &:hover {
+        background-color: var(--ax-bg-accent-moderate-hover);
+    }
+}
+
+.valgtEtikett {
+    background-color: var(--ax-bg-accent-moderate);
+}

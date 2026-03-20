@@ -15,7 +15,7 @@ interface Props {
 
 function InnholdContainer({ children }: PropsWithChildren) {
     return (
-        <Box borderWidth={'0 0 1 0'} borderColor={'border-subtle'} paddingInline={'4'} paddingBlock={'2'}>
+        <Box borderWidth={'0 0 1 0'} borderColor={'neutral-subtle'} paddingInline={'space-16'} paddingBlock={'space-8'}>
             {children}
         </Box>
     );
@@ -29,11 +29,11 @@ export function Personlinje({ bruker }: Props) {
     if (bruker === undefined) {
         return (
             <InnholdContainer>
-                <HStack align={'center'} gap={'3 4'}>
-                    <HStack align={'center'} gap={'3 4'}>
+                <HStack align={'center'} gap={'space-12 space-16'}>
+                    <HStack align={'center'} gap={'space-12 space-16'}>
                         <PersonIkon kjønn={kjønnType.UKJENT} erBarn={false} />
                         <Divider />
-                        <HStack align={'center'} gap={'1'}>
+                        <HStack align={'center'} gap={'space-4'}>
                             Personen er ikke identifisert
                         </HStack>
                     </HStack>
@@ -44,8 +44,8 @@ export function Personlinje({ bruker }: Props) {
 
     return (
         <InnholdContainer>
-            <HStack align={'center'} gap={'3 4'}>
-                <HStack align={'center'} gap={'3 4'}>
+            <HStack align={'center'} gap={'space-12 space-16'}>
+                <HStack align={'center'} gap={'space-12 space-16'}>
                     <PersonIkon
                         kjønn={bruker.kjønn}
                         erBarn={hentAlder(bruker.fødselsdato ?? '') < 18}
@@ -53,7 +53,7 @@ export function Personlinje({ bruker }: Props) {
                         harTilgang={bruker.harTilgang}
                         erEgenAnsatt={bruker.erEgenAnsatt}
                     />
-                    <HStack align={'center'} gap={'3 4'}>
+                    <HStack align={'center'} gap={'space-12 space-16'}>
                         <BodyShort as={'span'} weight={'semibold'}>
                             {bruker.navn} ({hentAlder(bruker.fødselsdato ?? '')} år)
                             {bruker.harFalskIdentitet && (
@@ -64,7 +64,7 @@ export function Personlinje({ bruker }: Props) {
                             )}
                         </BodyShort>
                         <Divider />
-                        <HStack align={'center'} gap={'1'}>
+                        <HStack align={'center'} gap={'space-4'}>
                             {formaterIdent(bruker.personIdent)}
                             <CopyButton copyText={bruker.personIdent.replace(' ', '')} size={'small'} />
                         </HStack>

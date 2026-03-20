@@ -2,15 +2,15 @@ import styled from 'styled-components';
 
 import { BodyShort, Heading } from '@navikt/ds-react';
 import {
-    ABorderAction,
-    ABorderDanger,
-    ABorderDefault,
-    ABorderSubtle,
-    ABorderSuccess,
-    AIconInfo,
-    AIconSuccess,
-    ATextDanger,
-    ATextDefault,
+    BorderAccent,
+    BorderDanger,
+    BorderNeutral,
+    BorderNeutralSubtle,
+    BorderSuccess,
+    TextDangerSubtle,
+    TextInfoSubtle,
+    TextNeutral,
+    TextSuccessSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
 
 import Informasjonsbolk from './Informasjonsbolk';
@@ -29,49 +29,49 @@ import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const hentResultatfarge = (behandlingResultat: BehandlingResultat) => {
     if (erBehandlingHenlagt(behandlingResultat)) {
-        return ABorderSubtle;
+        return BorderNeutralSubtle;
     }
 
     switch (behandlingResultat) {
         case BehandlingResultat.INNVILGET:
         case BehandlingResultat.DELVIS_INNVILGET:
         case BehandlingResultat.FORTSATT_INNVILGET:
-            return ABorderSuccess;
+            return BorderSuccess;
         case (BehandlingResultat.ENDRET_UTBETALING, BehandlingResultat.ENDRET_UTEN_UTBETALING):
-            return ABorderAction;
+            return BorderAccent;
         case BehandlingResultat.AVSLÅTT:
         case (BehandlingResultat.OPPHØRT, BehandlingResultat.FORTSATT_OPPHØRT):
-            return ABorderDanger;
+            return BorderDanger;
         case BehandlingResultat.IKKE_VURDERT:
-            return ABorderSubtle;
+            return BorderNeutralSubtle;
         default:
-            return ABorderDefault;
+            return BorderNeutral;
     }
 };
 
 const hentResultatfargeTekst = (behandlingResultat: BehandlingResultat) => {
     if (erBehandlingHenlagt(behandlingResultat)) {
-        return ATextDefault;
+        return TextNeutral;
     }
 
     switch (behandlingResultat) {
         case BehandlingResultat.INNVILGET:
         case BehandlingResultat.DELVIS_INNVILGET:
         case BehandlingResultat.FORTSATT_INNVILGET:
-            return AIconSuccess;
+            return TextSuccessSubtle;
         case (BehandlingResultat.ENDRET_UTBETALING, BehandlingResultat.ENDRET_UTEN_UTBETALING):
-            return AIconInfo;
+            return TextInfoSubtle;
         case BehandlingResultat.AVSLÅTT:
         case (BehandlingResultat.OPPHØRT, BehandlingResultat.FORTSATT_OPPHØRT):
-            return ATextDanger;
+            return TextDangerSubtle;
         default:
-            return ATextDefault;
+            return TextNeutral;
     }
 };
 
 const Container = styled.div<{ $behandlingResultat: BehandlingResultat }>`
-    border: 1px solid ${ABorderSubtle};
-    border-left: 0.5rem solid ${ABorderSubtle};
+    border: 1px solid ${BorderNeutralSubtle};
+    border-left: 0.5rem solid ${BorderNeutralSubtle};
     border-radius: 0.25rem;
     padding: 0.5rem;
     margin: 0.5rem;
@@ -85,7 +85,7 @@ const StyledHeading = styled(Heading)`
 
 const StyledHr = styled.hr`
     border: none;
-    border-bottom: 1px solid ${ABorderSubtle};
+    border-bottom: 1px solid ${BorderNeutralSubtle};
 `;
 
 export function Behandlingskort() {

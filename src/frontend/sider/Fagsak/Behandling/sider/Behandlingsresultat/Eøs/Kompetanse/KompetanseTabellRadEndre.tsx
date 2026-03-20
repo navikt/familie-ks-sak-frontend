@@ -268,7 +268,7 @@ const KompetanseTabellRadEndre = ({
                         {kompetanseResultater[KompetanseResultat.TO_PRIMÆRLAND]}
                     </option>
                 </Select>
-                <Box marginBlock={'6 0'}>
+                <Box marginBlock={'space-24 space-0'}>
                     {toPrimærland && (
                         <Alert
                             variant={'warning'}

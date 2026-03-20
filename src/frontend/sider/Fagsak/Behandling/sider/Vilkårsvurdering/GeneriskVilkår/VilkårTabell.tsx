@@ -29,15 +29,19 @@ const TabellHeader = styled(Table.HeaderCell)`
     &:nth-of-type(1) {
         width: 10rem;
     }
+
     &:nth-of-type(2) {
         width: 12rem;
     }
+
     &:nth-of-type(4) {
         width: 12rem;
     }
+
     &:nth-of-type(5) {
         width: 17rem;
     }
+
     &:nth-of-type(6) {
         width: 2.25rem;
     }
