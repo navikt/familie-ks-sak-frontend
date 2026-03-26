@@ -38,7 +38,6 @@ export function Valutavelger({ label, value, options, onChange, error, readOnly 
     return (
         <CountrySelect
             id={id}
-            className={Styles.valutavelger}
             values={values}
             locale={'nb'}
             label={labelElement}
