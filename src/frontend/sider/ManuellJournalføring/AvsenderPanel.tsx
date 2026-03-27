@@ -12,11 +12,13 @@ import { EmailIkon } from '../../ikoner/EmailIkon';
 import { formaterIdent } from '../../utils/formatter';
 
 const StyledExpansionContent = styled(ExpansionCard.Content)`
-    .navds-expansioncard__content-inner {
-        margin: 1rem 4rem;
-    }
+    &[data-open='true'] {
+        padding: var(--ax-space-8) var(--ax-space-16) var(--ax-space-16);
 
-    padding: 0.5rem 1rem 1rem;
+        & > div {
+            margin: var(--ax-space-16) var(--ax-space-64);
+        }
+    }
 `;
 
 const StyledExpansionCard = styled(ExpansionCard)`

@@ -61,7 +61,7 @@ const AnnenVurderingTabellRad = ({ person, annenVurderingConfig, annenVurdering 
             }
         >
             <Table.DataCell>
-                <HStack gap="4">
+                <HStack gap="space-16">
                     <VilkårResultatIkon resultat={annenVurdering.resultat} />
                     <BodyShort children={uiResultat[annenVurdering.resultat]} />
                 </HStack>

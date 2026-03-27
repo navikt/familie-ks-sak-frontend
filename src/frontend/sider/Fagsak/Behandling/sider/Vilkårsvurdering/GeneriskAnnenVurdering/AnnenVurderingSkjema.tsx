@@ -7,8 +7,7 @@ import { Button, Radio, RadioGroup, Textarea } from '@navikt/ds-react';
 import { useAnnenVurderingSkjema } from './AnnenVurderingSkjemaContext';
 import { annenVurderingBegrunnelseFeilmeldingId } from './AnnenVurderingTabell';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../../../typer/vilkår';
-import { Resultat } from '../../../../../../typer/vilkår';
+import { type IAnnenVurdering, type IAnnenVurderingConfig, Resultat } from '../../../../../../typer/vilkår';
 import { FieldsetForVilkårSkjema } from '../GeneriskVilkår/VilkårSkjema';
 
 const Knapperad = styled.div`
@@ -40,6 +39,7 @@ export const AnnenVurderingSkjema = ({
             errorPropagation={false}
             legend={''}
             $lesevisning={erLesevisning}
+            $ikkeVurdert={annenVurdering.resultat === Resultat.IKKE_VURDERT}
         >
             <RadioGroup
                 readOnly={erLesevisning}

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { BodyShort, Label } from '@navikt/ds-react';
-import { AZIndexPopover } from '@navikt/ds-tokens/dist/tokens';
 import {
     type ActionMeta,
     FamilieReactSelect,
@@ -43,7 +42,7 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
         container: (provided, props) =>
             Object.assign({}, provided, {
                 maxWidth: '50rem',
-                zIndex: props.isFocused ? Number(AZIndexPopover) : 1,
+                zIndex: props.isFocused ? 1000 : 1,
             }),
         groupHeading: provided =>
             Object.assign({}, provided, {

@@ -2,7 +2,7 @@ import { Link as ReactRouterLink } from 'react-router';
 import styled from 'styled-components';
 
 import { BodyShort, Box, HStack, Link, LinkCard, VStack } from '@navikt/ds-react';
-import { AFontSizeHeadingMedium, AFontSizeXlarge, ASpacing16, ASpacing4 } from '@navikt/ds-tokens/dist/tokens';
+import { FontSizeHeadingMedium, FontSizeXlarge, Space16, Space64 } from '@navikt/ds-tokens/dist/tokens';
 
 import type { VisningBehandling } from './visningBehandling';
 import { BehandlingStatus } from '../../../typer/behandling';
@@ -12,11 +12,11 @@ import { hentAktivBehandlingPåMinimalFagsak, hentFagsakStatusVisning } from '..
 import { useFagsakContext } from '../FagsakContext';
 
 const HeaderTekst = styled(BodyShort)`
-    font-size: ${AFontSizeXlarge};
+    font-size: ${FontSizeXlarge};
 `;
 
 const BodyTekst = styled(BodyShort)`
-    font-size: ${AFontSizeHeadingMedium};
+    font-size: ${FontSizeHeadingMedium};
 `;
 
 function Innholdstabell() {
@@ -25,7 +25,7 @@ function Innholdstabell() {
         fagsak.løpendeKategori && tilBehandlingstema(fagsak.løpendeKategori);
 
     return (
-        <HStack gap="20">
+        <HStack gap="space-80">
             <div>
                 <HeaderTekst for={'behandlingstema'} spacing>
                     Behandlingstema
@@ -46,11 +46,11 @@ function Innholdstabell() {
     );
 }
 
-export const SaksoversiktPanelBredde = `calc(10 * ${ASpacing16})`;
+export const SaksoversiktPanelBredde = `calc(10 * ${Space64})`;
 
 const FagsakPanel = styled(Box)`
     width: ${SaksoversiktPanelBredde};
-    margin-top: ${ASpacing4};
+    margin-top: ${Space16};
 `;
 
 const genererLinkTekst = (behandling: VisningBehandling) => {
@@ -62,7 +62,7 @@ export function FagsakLenkepanel() {
     const aktivBehandling: VisningBehandling | undefined = hentAktivBehandlingPåMinimalFagsak(fagsak);
 
     return aktivBehandling ? (
-        <Box width={SaksoversiktPanelBredde} marginBlock={'8 0'}>
+        <Box width={SaksoversiktPanelBredde} marginBlock={'space-32 space-0'}>
             <LinkCard>
                 <LinkCard.Title>
                     <LinkCard.Anchor asChild={true}>
@@ -72,14 +72,14 @@ export function FagsakLenkepanel() {
                     </LinkCard.Anchor>
                 </LinkCard.Title>
                 <LinkCard.Description>
-                    <VStack paddingBlock={'4 0'}>
+                    <VStack paddingBlock={'space-16 space-0'}>
                         <Innholdstabell />
                     </VStack>
                 </LinkCard.Description>
             </LinkCard>
         </Box>
     ) : (
-        <FagsakPanel borderColor="border-strong" borderWidth="1" borderRadius="small" padding="8">
+        <FagsakPanel borderColor="neutral-strong" borderWidth="1" borderRadius="2" padding="space-32">
             <Innholdstabell />
         </FagsakPanel>
     );

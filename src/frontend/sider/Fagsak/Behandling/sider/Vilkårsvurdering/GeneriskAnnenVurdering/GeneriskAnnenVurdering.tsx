@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { Fieldset, Heading } from '@navikt/ds-react';
-import { ASpacing16 } from '@navikt/ds-tokens/dist/tokens';
+import { Space64 } from '@navikt/ds-tokens/dist/tokens';
 
 import AnnenVurderingTabell from './AnnenVurderingTabell';
 import type { IGrunnlagPerson } from '../../../../../../typer/person';
@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const StyledFieldset = styled(Fieldset)`
-    margin-top: ${ASpacing16};
+    margin-top: ${Space64};
 `;
 
 const GeneriskAnnenVurdering = ({ person, annenVurderingConfig, andreVurderinger }: IProps) => {
