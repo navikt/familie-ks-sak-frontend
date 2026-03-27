@@ -9,9 +9,12 @@ import { Valideringsstatus } from '@navikt/familie-skjema';
 
 import type { ILeggTilFjernBrevmottakerSkjemaFelter } from './useBrevmottakerSkjema';
 import { Mottaker, mottakerVisningsnavn } from './useBrevmottakerSkjema';
+import { useFeatureToggles } from '../../../../hooks/useFeatureToggles';
 import { FamilieLandvelger } from '../../../../sider/Fagsak/Behandling/sider/Behandlingsresultat/Eøs/EøsKomponenter/FamilieLandvelger';
 import type { IBehandling } from '../../../../typer/behandling';
+import { FeatureToggle } from '../../../../typer/featureToggles';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
+import { ALL_COUNTRIES_REGION_CODES, type RegionCode, RegionCombobox } from '../../../FlagCombobox';
 
 const StyledTextField = styled(TextField)<{ $width: string }>`
     width: ${props => props.$width};
@@ -25,6 +28,7 @@ interface Props {
 }
 
 const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) => {
+    const toggles = useFeatureToggles();
     const erPåDokumentutsendingPåFagsak = useLocation().pathname.includes('dokumentutsending');
 
     const gyldigeMottakerTyper = erPåDokumentutsendingPåFagsak
@@ -62,27 +66,58 @@ const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) =
                             skjema.felter.navn.validerOgSettFelt(event.target.value);
                         }}
                     />
-                    <FamilieLandvelger
-                        id={'land'}
-                        value={skjema.felter.land.verdi !== '' ? skjema.felter.land.verdi : undefined}
-                        label={'Land'}
-                        medFlag
-                        utenMargin
-                        eksluderLand={
-                            skjema.felter.mottaker.verdi === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE
-                                ? ['NO', 'XU']
-                                : ['XU']
-                        }
-                        feil={
-                            skjema.visFeilmeldinger && skjema.felter.land.valideringsstatus === Valideringsstatus.FEIL
-                                ? skjema.felter.land.feilmelding?.toString()
-                                : ''
-                        }
-                        erLesevisning={erLesevisning}
-                        onChange={land => {
-                            skjema.felter.land.validerOgSettFelt(land.value);
-                        }}
-                    />
+                    {toggles[FeatureToggle.brukNyFlagCombobox] ? (
+                        <RegionCombobox
+                            label={'Land'}
+                            value={
+                                (skjema.felter.land.verdi !== '' ? skjema.felter.land.verdi : undefined) as RegionCode
+                            }
+                            options={ALL_COUNTRIES_REGION_CODES.filter(rc => {
+                                if (skjema.felter.mottaker.verdi === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE) {
+                                    return rc !== 'NO' && rc !== 'XU';
+                                }
+                                return rc !== 'XU';
+                            })}
+                            onChange={value => {
+                                if (value) {
+                                    skjema.felter.land.validerOgSettFelt(value);
+                                } else {
+                                    skjema.felter.land.nullstill();
+                                }
+                            }}
+                            readOnly={erLesevisning}
+                            error={
+                                skjema.visFeilmeldinger &&
+                                skjema.felter.land.valideringsstatus === Valideringsstatus.FEIL
+                                    ? skjema.felter.land.feilmelding?.toString()
+                                    : ''
+                            }
+                            dropdownPlacement={skjema.felter.land.verdi ? 'bottom' : 'top'}
+                        />
+                    ) : (
+                        <FamilieLandvelger
+                            id={'land'}
+                            value={skjema.felter.land.verdi !== '' ? skjema.felter.land.verdi : undefined}
+                            label={'Land'}
+                            medFlag
+                            utenMargin
+                            eksluderLand={
+                                skjema.felter.mottaker.verdi === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE
+                                    ? ['NO', 'XU']
+                                    : ['XU']
+                            }
+                            feil={
+                                skjema.visFeilmeldinger &&
+                                skjema.felter.land.valideringsstatus === Valideringsstatus.FEIL
+                                    ? skjema.felter.land.feilmelding?.toString()
+                                    : ''
+                            }
+                            erLesevisning={erLesevisning}
+                            onChange={land => {
+                                skjema.felter.land.validerOgSettFelt(land.value);
+                            }}
+                        />
+                    )}
                     {skjema.felter.land.verdi && (
                         <>
                             <TextField
