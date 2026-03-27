@@ -1,13 +1,11 @@
-import styled from 'styled-components';
-
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, Box, Button, Fieldset, Select, UNSAFE_Combobox } from '@navikt/ds-react';
+import { Alert, Box, Button, Fieldset, HStack, Select, UNSAFE_Combobox, VStack } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 import type { Country } from '@navikt/land-verktoy';
 
-import type { IBehandling } from '../../../../../../../typer/behandling';
+import { type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import {
     AnnenForelderAktivitet,
@@ -21,7 +19,6 @@ import {
 } from '../../../../../../../typer/eøsPerioder';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
-import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
 import { FamilieLandvelger } from '../EøsKomponenter/FamilieLandvelger';
 
 const kompetansePeriodeFeilmeldingId = (kompetanse: ISkjema<IKompetanse, IBehandling>): string =>
@@ -29,10 +26,9 @@ const kompetansePeriodeFeilmeldingId = (kompetanse: ISkjema<IKompetanse, IBehand
         kompetanse.felter.periode.verdi.fom
     }`;
 
-interface IProps {
+interface Props {
     skjema: ISkjema<IKompetanse, IBehandling>;
     tilgjengeligeBarn: OptionType[];
-    status: EøsPeriodeStatus;
     valideringErOk: () => boolean;
     sendInnSkjema: () => void;
     toggleForm: (visAlert: boolean) => void;
@@ -41,32 +37,15 @@ interface IProps {
     erAnnenForelderOmfattetAvNorskLovgivning?: boolean;
 }
 
-const StyledAlert = styled(Alert)`
-    margin-top: 1.5rem;
-`;
-
-const StyledFamilieLandvelger = styled(FamilieLandvelger)`
-    margin-top: 1.5rem;
-`;
-
-const StyledSelect = styled(Select)`
-    margin-top: 1.5rem;
-`;
-
-const StyledEøsPeriodeSkjema = styled(EøsPeriodeSkjema)`
-    margin-top: 1.5rem;
-`;
-
-const KompetanseTabellRadEndre = ({
+export function KompetanseTabellRadEndre({
     skjema,
     tilgjengeligeBarn,
-    status,
     sendInnSkjema,
     toggleForm,
     slettKompetanse,
     behandlingsÅrsakErOvergangsordning,
     erAnnenForelderOmfattetAvNorskLovgivning,
-}: IProps) => {
+}: Props) {
     const { vurderErLesevisning } = useBehandlingContext();
     const lesevisning = vurderErLesevisning(true);
 
@@ -83,6 +62,7 @@ const KompetanseTabellRadEndre = ({
     };
 
     const toPrimærland = skjema.felter.resultat?.verdi === KompetanseResultat.TO_PRIMÆRLAND;
+
     const nasjonalRettDifferanseberegningMedUlikeAktivitetsland =
         skjema.felter.resultat?.verdi === KompetanseResultat.NASJONAL_RETT_DIFFERANSEBEREGNING &&
         skjema.felter.barnetsBostedsland.verdi === 'NO' &&
@@ -94,7 +74,7 @@ const KompetanseTabellRadEndre = ({
 
     return (
         <Fieldset error={skjema.visFeilmeldinger && visSubmitFeilmelding()} legend={'Kompetanseskjema'} hideLegend>
-            <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
+            <VStack gap={'space-16'} maxWidth={'40rem'} paddingInline={'space-4 space-4'}>
                 <UNSAFE_Combobox
                     error={skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger).error}
                     readOnly={lesevisning}
@@ -117,7 +97,7 @@ const KompetanseTabellRadEndre = ({
                         }
                     }}
                 />
-                <StyledEøsPeriodeSkjema
+                <EøsPeriodeSkjema
                     periode={skjema.felter.periode}
                     periodeFeilmeldingId={kompetansePeriodeFeilmeldingId(skjema)}
                     initielFom={skjema.felter.initielFom}
@@ -126,11 +106,11 @@ const KompetanseTabellRadEndre = ({
                     behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
                 />
                 {erAnnenForelderOmfattetAvNorskLovgivning && (
-                    <StyledAlert variant="info" inline>
+                    <Alert variant="info" inline>
                         Annen forelder er omfattet av norsk lovgivning og har selvstendig rett i perioden
-                    </StyledAlert>
+                    </Alert>
                 )}
-                <StyledSelect
+                <Select
                     {...skjema.felter.søkersAktivitet.hentNavInputProps(skjema.visFeilmeldinger)}
                     readOnly={lesevisning}
                     label={'Søkers aktivitet'}
@@ -149,8 +129,8 @@ const KompetanseTabellRadEndre = ({
                                 </option>
                             );
                         })}
-                </StyledSelect>
-                <StyledSelect
+                </Select>
+                <Select
                     className="unset-margin-bottom"
                     {...skjema.felter.annenForeldersAktivitet.hentNavInputProps(skjema.visFeilmeldinger)}
                     readOnly={lesevisning}
@@ -172,13 +152,13 @@ const KompetanseTabellRadEndre = ({
                             </option>
                         );
                     })}
-                </StyledSelect>
+                </Select>
                 {skjema.felter.annenForeldersAktivitet.verdi === AnnenForelderAktivitet.IKKE_AKTUELT && (
-                    <StyledAlert variant="info" size="small" inline>
+                    <Alert variant="info" size="small" inline>
                         Søker har enten aleneomsorg for egne barn eller forsørger andre barn
-                    </StyledAlert>
+                    </Alert>
                 )}
-                <StyledFamilieLandvelger
+                <FamilieLandvelger
                     erLesevisning={lesevisning}
                     id={'søkersAktivitetsland'}
                     label={'Søkers aktivitetsland'}
@@ -197,6 +177,7 @@ const KompetanseTabellRadEndre = ({
                             ? skjema.felter.søkersAktivitetsland.feilmelding?.toString()
                             : ''
                     }
+                    utenMargin
                 />
                 <FamilieLandvelger
                     erLesevisning={lesevisning}
@@ -217,6 +198,7 @@ const KompetanseTabellRadEndre = ({
                             ? skjema.felter.annenForeldersAktivitetsland.feilmelding?.toString()
                             : ''
                     }
+                    utenMargin
                 />
                 <FamilieLandvelger
                     erLesevisning={lesevisning}
@@ -237,6 +219,7 @@ const KompetanseTabellRadEndre = ({
                             ? skjema.felter.barnetsBostedsland?.feilmelding?.toString()
                             : ''
                     }
+                    utenMargin
                 />
                 <Select
                     {...skjema.felter.resultat.hentNavInputProps(skjema.visFeilmeldinger)}
@@ -251,7 +234,6 @@ const KompetanseTabellRadEndre = ({
                     <option key={KompetanseResultat.NORGE_ER_PRIMÆRLAND} value={KompetanseResultat.NORGE_ER_PRIMÆRLAND}>
                         {kompetanseResultater[KompetanseResultat.NORGE_ER_PRIMÆRLAND]}
                     </option>
-
                     <option
                         key={KompetanseResultat.NORGE_ER_SEKUNDÆRLAND}
                         value={KompetanseResultat.NORGE_ER_SEKUNDÆRLAND}
@@ -268,30 +250,24 @@ const KompetanseTabellRadEndre = ({
                         {kompetanseResultater[KompetanseResultat.TO_PRIMÆRLAND]}
                     </option>
                 </Select>
-                <Box marginBlock={'6 0'}>
-                    {toPrimærland && (
-                        <Alert
-                            variant={'warning'}
-                            inline
-                            size={'small'}
-                            children={
-                                'Norge og annen forelders aktivitetsland er primærland. Saksbehandler må manuelt vurdere om Norge skal utbetale kontantstøtten.'
-                            }
-                        />
-                    )}
-                    {nasjonalRettDifferanseberegningMedUlikeAktivitetsland && (
-                        <Alert
-                            variant={'warning'}
-                            inline
-                            size={'small'}
-                            children={
-                                'To andre EØS-land er primærland. Saksbehandler må manuelt beregne hvilket av EØS-landene som utbetaler den høyeste kontantstøtten og som Norge skal differanseberegne mot.'
-                            }
-                        />
-                    )}
-                </Box>
+                {toPrimærland && (
+                    <Box marginBlock={'space-2 space-2'}>
+                        <Alert variant={'warning'} size={'small'} inline={true}>
+                            Norge og annen forelders aktivitetsland er primærland. Saksbehandler må manuelt vurdere om
+                            Norge skal utbetale kontantstøtten.
+                        </Alert>
+                    </Box>
+                )}
+                {nasjonalRettDifferanseberegningMedUlikeAktivitetsland && (
+                    <Box marginBlock={'space-2 space-2'}>
+                        <Alert variant={'warning'} size={'small'} inline={true}>
+                            To andre EØS-land er primærland. Saksbehandler må manuelt beregne hvilket av EØS-landene som
+                            utbetaler den høyeste kontantstøtten og som Norge skal differanseberegne mot.
+                        </Alert>
+                    </Box>
+                )}
                 {!lesevisning && (
-                    <Knapperad>
+                    <HStack justify={'space-between'} marginBlock={'space-12 space-0'}>
                         <div>
                             <Button
                                 onClick={() => sendInnSkjema()}
@@ -310,7 +286,6 @@ const KompetanseTabellRadEndre = ({
                                 Avbryt
                             </Button>
                         </div>
-
                         {skjema.felter.status.verdi !== EøsPeriodeStatus.IKKE_UTFYLT && (
                             <Button
                                 variant={'tertiary'}
@@ -322,14 +297,12 @@ const KompetanseTabellRadEndre = ({
                                 size={'small'}
                                 icon={<TrashIcon />}
                             >
-                                {'Fjern'}
+                                Fjern
                             </Button>
                         )}
-                    </Knapperad>
+                    </HStack>
                 )}
-            </EøsPeriodeSkjemaContainer>
+            </VStack>
         </Fieldset>
     );
-};
-
-export default KompetanseTabellRadEndre;
+}
