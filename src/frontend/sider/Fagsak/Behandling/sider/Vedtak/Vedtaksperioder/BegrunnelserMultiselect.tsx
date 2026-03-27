@@ -65,7 +65,6 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
             Object.assign({}, provided, {
                 whiteSpace: 'pre-wrap',
                 textOverflow: 'hidden',
-                overflow: 'hidden',
             }),
     };
 
@@ -81,6 +80,8 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
             creatable={false}
             erLesevisning={erLesevisning}
             isMulti={true}
+            menuPosition="fixed"
+            menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
             onChange={(_, action: ActionMeta<OptionType>) => {
                 onChangeBegrunnelse(action);
             }}
