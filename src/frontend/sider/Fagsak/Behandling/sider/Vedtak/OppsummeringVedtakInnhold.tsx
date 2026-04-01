@@ -14,9 +14,9 @@ import { useSammensattKontrollsakContext } from './SammensattKontrollsak/Sammens
 import { Vedtaksmeny } from './Vedtaksmeny/Vedtaksmeny';
 import { AlleBegrunnelserProvider } from './Vedtaksperioder/AlleBegrunnelserContext';
 import Vedtaksperioder from './Vedtaksperioder/Vedtaksperioder';
-import { useAppContext } from '../../../../../context/AppContext';
 import useDokument from '../../../../../hooks/useDokument';
 import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
+import { useSaksbehandler } from '../../../../../hooks/useSaksbehandler';
 import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAlert';
 import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisningModal';
 import {
@@ -53,11 +53,11 @@ const OppsummeringVedtakInnhold = ({
     settVisModal,
     bruker,
 }: IOppsummeringVedtakInnholdProps) => {
-    const { hentSaksbehandlerRolle } = useAppContext();
     const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandlingContext();
     const erLesevisning = vurderErLesevisning();
     const navigate = useNavigate();
+    const saksbehandler = useSaksbehandler();
 
     const { hentForhåndsvisning, nullstillDokument, visDokumentModal, hentetDokument, settVisDokumentModal } =
         useDokument();
@@ -68,7 +68,7 @@ const OppsummeringVedtakInnhold = ({
     const { erRefusjonEøsTabellSynlig } = useRefusjonEøsTabellContext();
 
     const hentVedtaksbrev = () => {
-        const rolle = hentSaksbehandlerRolle();
+        const rolle = saksbehandler.hentRolle();
         const skalOgsåLagreBrevPåVedtak =
             rolle &&
             rolle > BehandlerRolle.VEILEDER &&

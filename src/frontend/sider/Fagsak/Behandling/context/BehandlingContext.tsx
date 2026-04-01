@@ -7,8 +7,8 @@ import { type Ressurs } from '@navikt/familie-typer';
 import { useHentOgSettBehandlingContext } from './HentOgSettBehandlingContext';
 import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './utils';
-import { useAppContext } from '../../../../context/AppContext';
 import { useNavigerAutomatiskTilSideForBehandlingssteg } from '../../../../hooks/useNavigerAutomatiskTilSideForBehandlingssteg';
+import { useSaksbehandler } from '../../../../hooks/useSaksbehandler';
 import {
     BehandlerRolle,
     BehandlingStatus,
@@ -52,6 +52,8 @@ const BehandlingContext = createContext<BehandlingContextValue | undefined>(unde
 export const BehandlingProvider = ({ behandling, children }: Props) => {
     const { settBehandlingRessurs } = useHentOgSettBehandlingContext();
 
+    const saksbehandler = useSaksbehandler();
+
     useNavigerAutomatiskTilSideForBehandlingssteg({ behandling });
 
     const {
@@ -60,13 +62,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
         behandlingresultatNesteOnClick,
         foreslåVedtakNesteOnClick,
     } = useBehandlingssteg(settBehandlingRessurs, behandling);
-
-    const {
-        harInnloggetSaksbehandlerSkrivetilgang,
-        harInnloggetSaksbehandlerSuperbrukerTilgang,
-        innloggetSaksbehandler,
-        hentSaksbehandlerRolle,
-    } = useAppContext();
 
     const location = useLocation();
     const [trinnPåBehandling, settTrinnPåBehandling] = useState<{ [sideId: string]: ITrinn }>({});
@@ -125,8 +120,8 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
             return true;
         }
 
-        const innloggetSaksbehandlerSkrivetilgang = harInnloggetSaksbehandlerSkrivetilgang();
-        const innloggetSaksbehandlerHarSuperbrukerTilgang = harInnloggetSaksbehandlerSuperbrukerTilgang();
+        const innloggetSaksbehandlerSkrivetilgang = saksbehandler.harSkrivetilgang();
+        const innloggetSaksbehandlerHarSuperbrukerTilgang = saksbehandler.harSuperbrukerTilgang();
 
         const behandlingsårsak = behandling.årsak;
         const behandlingsårsakErÅpenForAlleMedTilgangTilÅOppretteÅrsak =
@@ -135,10 +130,9 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
         const saksbehandlerHarTilgangTilEnhet =
             innloggetSaksbehandlerHarSuperbrukerTilgang ||
             behandlingsårsakErÅpenForAlleMedTilgangTilÅOppretteÅrsak ||
-            harTilgangTilEnhet(
-                behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId ?? '',
-                innloggetSaksbehandler?.groups ?? []
-            );
+            harTilgangTilEnhet(behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId ?? '', [
+                ...saksbehandler.groups,
+            ]);
 
         const steg = behandling.steg;
         const status = behandling.status;
@@ -157,8 +151,8 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
 
     const kanBeslutteVedtak =
         behandling.status === BehandlingStatus.FATTER_VEDTAK &&
-        BehandlerRolle.BESLUTTER === hentSaksbehandlerRolle() &&
-        innloggetSaksbehandler?.email !== behandling.endretAv;
+        BehandlerRolle.BESLUTTER === saksbehandler.hentRolle() &&
+        saksbehandler.email !== behandling.endretAv;
 
     const erBehandleneEnhetMidlertidig =
         behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId === MIDLERTIDIG_BEHANDLENDE_ENHET_ID;

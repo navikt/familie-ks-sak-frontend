@@ -29,7 +29,7 @@ const Main = styled.main<{ $systemetLaster: boolean }>`
 `;
 
 const Container = () => {
-    const { autentisert, systemetLaster, innloggetSaksbehandler, appInfoModal } = useAppContext();
+    const { autentisert, systemetLaster, appInfoModal } = useAppContext();
 
     return (
         <Router>
@@ -42,10 +42,7 @@ const Container = () => {
                         <OpprettFagsakModal />
                         <FeilmeldingModal />
                         <ForhåndsvisOpprettingAvPdfModal />
-                        <HeaderMedSøk
-                            brukerNavn={innloggetSaksbehandler?.displayName}
-                            brukerEnhet={innloggetSaksbehandler?.enhet}
-                        />
+                        <HeaderMedSøk />
                         <Routes>
                             <Route path="/fagsak/:fagsakId/*" element={<FagsakContainer />} />
                             <Route path="/oppgaver/journalfor/:oppgaveId" element={<ManuellJournalføring />} />
