@@ -1,5 +1,4 @@
 import { Valideringsstatus } from '@navikt/familie-skjema';
-import type { ISaksbehandler } from '@navikt/familie-typer';
 
 import type { INøkkelPar, IPar } from '../../typer/common';
 import { hentPar } from '../../typer/common';
@@ -14,6 +13,7 @@ import {
     SaksbehandlerFilter,
     saksbehandlerFilter,
 } from '../../typer/oppgave';
+import type { Saksbehandler } from '../../typer/saksbehandler';
 
 enum FeltSortOrder {
     NONE = 'NONE',
@@ -36,7 +36,7 @@ export interface IOppgaveFelt {
     // TODO: midlertidig - ønsker å bruke FeltState og Skjema-hook
     valideringsstatus?: Valideringsstatus;
     feilmelding?: string;
-    erSynlig?: (par: IPar, innloggetSaksbehandler?: ISaksbehandler) => boolean;
+    erSynlig?: (par: IPar, saksbehandler: Saksbehandler) => boolean;
 }
 
 export interface IOppgaveFelter {
@@ -53,7 +53,7 @@ export interface IOppgaveFelter {
     tilordnetRessurs: IOppgaveFelt;
 }
 
-export const initialOppgaveFelter = (innloggetSaksbehandler?: ISaksbehandler): IOppgaveFelter => {
+export const initialOppgaveFelter = (saksbehandler: Saksbehandler): IOppgaveFelter => {
     const searchParams = JSON.parse(localStorage.getItem('oppgaveFeltVerdier') || '{}');
 
     return {
@@ -132,8 +132,8 @@ export const initialOppgaveFelter = (innloggetSaksbehandler?: ISaksbehandler): I
                 nøkkelPar: enhetFilter,
             },
             order: FeltSortOrder.NONE,
-            erSynlig: (par: IPar, innloggetSaksbehandler?: ISaksbehandler) => {
-                return harTilgangTilEnhet(par.id.replace('E', ''), innloggetSaksbehandler?.groups ?? []);
+            erSynlig: (par: IPar, saksbehandler: Saksbehandler) => {
+                return harTilgangTilEnhet(par.id.replace('E', ''), saksbehandler.groups);
             },
         },
         tilordnetRessurs: {
@@ -143,11 +143,11 @@ export const initialOppgaveFelter = (innloggetSaksbehandler?: ISaksbehandler): I
                 type: 'select',
                 selectedValue: hentPar(
                     searchParams['tilordnetRessurs']?.toString(),
-                    saksbehandlerFilter(innloggetSaksbehandler),
+                    saksbehandlerFilter(saksbehandler),
                     SaksbehandlerFilter.ALLE
                 ),
                 initialValue: SaksbehandlerFilter.ALLE,
-                nøkkelPar: saksbehandlerFilter(innloggetSaksbehandler),
+                nøkkelPar: saksbehandlerFilter(saksbehandler),
             },
             order: FeltSortOrder.NONE,
         },
