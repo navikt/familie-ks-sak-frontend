@@ -6,8 +6,8 @@ import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useAppContext } from '../../../../context/AppContext';
 import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
+import { useSaksbehandler } from '../../../../hooks/useSaksbehandler';
 import { BehandlingResultat, BehandlingÅrsak, type IBehandling } from '../../../../typer/behandling';
 import { defaultFunksjonellFeil } from '../../../../typer/feilmeldinger';
 
@@ -16,9 +16,9 @@ const useBehandlingssteg = (
     behandling?: IBehandling
 ) => {
     const { request } = useHttp();
-    const { innloggetSaksbehandler } = useAppContext();
     const { fagsakId, behandlingId } = useSakOgBehandlingParams();
     const navigate = useNavigate();
+    const saksbehandler = useSaksbehandler();
 
     const [submitRessurs, settSubmitRessurs] = useState<Ressurs<IBehandling>>(byggTomRessurs());
 
@@ -115,7 +115,7 @@ const useBehandlingssteg = (
         request<void, IBehandling>({
             method: 'POST',
             url: `/familie-ks-sak/api/behandlinger/${behandling?.behandlingId}/steg/foreslå-vedtak?behandlendeEnhet=${
-                innloggetSaksbehandler?.enhet ?? '9999'
+                saksbehandler.enhet ?? '9999'
             }`,
             påvirkerSystemLaster: true,
         }).then((response: Ressurs<IBehandling>) => {

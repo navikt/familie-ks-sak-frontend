@@ -9,7 +9,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import BarnIBrevSkjema from './BarnIBrev/BarnIBrevSkjema';
 import { dokumentÅrsak, DokumentÅrsak, useDokumentutsendingContext } from './DokumentutsendingContext';
 import { LeggTilBarnKnapp } from './LeggTilBarnKnapp';
-import { useAppContext } from '../../../context/AppContext';
+import { useSaksbehandler } from '../../../hooks/useSaksbehandler';
 import { BrevmottakereAlert } from '../../../komponenter/BrevmottakereAlert';
 import FritekstAvsnitt from '../../../komponenter/FritekstAvsnitt';
 import { LeggTilBarnModal } from '../../../komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
@@ -58,7 +58,8 @@ enum BarnIBrevÅrsak {
 
 export function DokumentutsendingSkjema() {
     const { bruker } = useBrukerContext();
-    const { harInnloggetSaksbehandlerSkrivetilgang } = useAppContext();
+
+    const saksbehandler = useSaksbehandler();
 
     const {
         hentForhåndsvisningPåFagsak,
@@ -100,7 +101,7 @@ export function DokumentutsendingSkjema() {
 
     const skalViseFritekstAvsnitt = årsakVerdi === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE;
 
-    const erLesevisning = !harInnloggetSaksbehandlerSkrivetilgang();
+    const erLesevisning = !saksbehandler.harSkrivetilgang();
 
     function onLeggTilBarn(barn: IBarnMedOpplysninger) {
         skjema.felter.barnIBrev.validerOgSettFelt([...skjema.felter.barnIBrev.verdi, barn]);

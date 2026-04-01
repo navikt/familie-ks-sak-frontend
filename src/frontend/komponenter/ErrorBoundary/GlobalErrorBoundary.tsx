@@ -5,21 +5,16 @@ import * as Sentry from '@sentry/browser';
 
 import { XMarkOctagonIcon } from '@navikt/aksel-icons';
 import { BodyShort, Button, ErrorMessage, Heading, HStack, VStack } from '@navikt/ds-react';
-import type { ISaksbehandler } from '@navikt/familie-typer';
 
-import Styles from './ErrorBoundary.module.css';
-
-interface Props extends PropsWithChildren {
-    autentisertSaksbehandler?: ISaksbehandler;
-}
+import Styles from './GlobalErrorBoundary.module.css';
 
 interface State {
     hasError: boolean;
     error?: Error;
 }
 
-export class ErrorBoundary extends Component<Props, State> {
-    public constructor(props: Props) {
+export class GlobalErrorBoundary extends Component<PropsWithChildren, State> {
+    public constructor(props: PropsWithChildren) {
         super(props);
         this.state = { hasError: false };
         this.visSentryDialog = this.visSentryDialog.bind(this);
@@ -33,19 +28,12 @@ export class ErrorBoundary extends Component<Props, State> {
     public componentDidCatch(error: any, info: any): void {
         console.error(error, info);
         if (Sentry.isEnabled()) {
-            Sentry.setUser({
-                username: this.props.autentisertSaksbehandler
-                    ? this.props.autentisertSaksbehandler.displayName
-                    : 'Ukjent bruker',
-                email: this.props.autentisertSaksbehandler ? this.props.autentisertSaksbehandler.email : 'Ukjent email',
-            });
             Sentry.withScope(scope => {
                 Object.keys(info).forEach(key => {
                     scope.setExtra(key, info[key]);
                     Sentry.captureException(error);
                 });
             });
-            this.visSentryDialog();
         }
     }
 
@@ -56,8 +44,8 @@ export class ErrorBoundary extends Component<Props, State> {
                 subtitle: '',
                 subtitle2: 'Teamet har fått beskjed. Dersom du ønsker å hjelpe oss, si litt om hva som skjedde.',
                 user: {
-                    name: this.props.autentisertSaksbehandler?.displayName,
-                    email: this.props.autentisertSaksbehandler?.email,
+                    name: 'Ukjent bruker',
+                    email: 'Ukjent epostadresse',
                 },
                 labelName: 'NAVN',
                 labelComments: 'HVA SKJEDDE?',
