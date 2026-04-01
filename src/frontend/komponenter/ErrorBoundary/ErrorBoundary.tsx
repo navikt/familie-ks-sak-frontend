@@ -1,16 +1,15 @@
-import type { PropsWithChildren, ReactNode } from 'react';
-import { Component } from 'react';
+import { Component, type PropsWithChildren, type ReactNode } from 'react';
 
 import * as Sentry from '@sentry/browser';
 
 import { XMarkOctagonIcon } from '@navikt/aksel-icons';
 import { BodyShort, Button, ErrorMessage, Heading, HStack, VStack } from '@navikt/ds-react';
-import type { ISaksbehandler } from '@navikt/familie-typer';
 
-import Styles from './ErrorBoundary.module.css';
+import { useSaksbehandler } from '../../hooks/useSaksbehandler';
+import type { Saksbehandler } from '../../typer/saksbehandler';
 
 interface Props extends PropsWithChildren {
-    autentisertSaksbehandler?: ISaksbehandler;
+    saksbehandler?: Saksbehandler;
 }
 
 interface State {
@@ -34,10 +33,8 @@ export class ErrorBoundary extends Component<Props, State> {
         console.error(error, info);
         if (Sentry.isEnabled()) {
             Sentry.setUser({
-                username: this.props.autentisertSaksbehandler
-                    ? this.props.autentisertSaksbehandler.displayName
-                    : 'Ukjent bruker',
-                email: this.props.autentisertSaksbehandler ? this.props.autentisertSaksbehandler.email : 'Ukjent email',
+                username: this.props.saksbehandler?.displayName ?? 'Ukjent navn',
+                email: this.props.saksbehandler?.email ?? 'Ukjent e-post',
             });
             Sentry.withScope(scope => {
                 Object.keys(info).forEach(key => {
@@ -45,7 +42,6 @@ export class ErrorBoundary extends Component<Props, State> {
                     Sentry.captureException(error);
                 });
             });
-            this.visSentryDialog();
         }
     }
 
@@ -56,8 +52,8 @@ export class ErrorBoundary extends Component<Props, State> {
                 subtitle: '',
                 subtitle2: 'Teamet har fått beskjed. Dersom du ønsker å hjelpe oss, si litt om hva som skjedde.',
                 user: {
-                    name: this.props.autentisertSaksbehandler?.displayName,
-                    email: this.props.autentisertSaksbehandler?.email,
+                    name: this.props.saksbehandler?.displayName ?? 'Ukjent navn',
+                    email: this.props.saksbehandler?.email ?? 'Ukjent e-post',
                 },
                 labelName: 'NAVN',
                 labelComments: 'HVA SKJEDDE?',
@@ -71,7 +67,7 @@ export class ErrorBoundary extends Component<Props, State> {
     render(): ReactNode {
         if (this.state.hasError) {
             return (
-                <div className={Styles.container}>
+                <VStack height={'100vh'} align={'center'} justify={'center'}>
                     <VStack gap={'space-32'}>
                         <VStack gap={'space-8'}>
                             <Heading size={'medium'} level={'1'}>
@@ -98,9 +94,14 @@ export class ErrorBoundary extends Component<Props, State> {
                             </HStack>
                         )}
                     </VStack>
-                </div>
+                </VStack>
             );
         }
         return this.props.children;
     }
+}
+
+export function ErrorBoundaryMedSaksbehandler({ children }: PropsWithChildren) {
+    const saksbehandler = useSaksbehandler();
+    return <ErrorBoundary saksbehandler={saksbehandler}>{children}</ErrorBoundary>;
 }

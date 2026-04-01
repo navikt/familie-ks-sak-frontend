@@ -1,43 +1,37 @@
 import { Header } from '@navikt/familie-header';
 
 import FagsakDeltagerSøk from './FagsakDeltagerSøk';
+import { useSaksbehandler } from '../../hooks/useSaksbehandler';
 
-interface IHeaderMedSøkProps {
-    brukerNavn?: string;
-    brukerEnhet?: string;
-}
+export function HeaderMedSøk() {
+    const saksbehandler = useSaksbehandler();
 
-export const HeaderMedSøk = ({ brukerNavn, brukerEnhet }: IHeaderMedSøkProps) => {
-    const genererEksterneLenker = () => {
-        const eksterneLenker = [
-            {
-                name: 'Rekvirer D-nr i DREK',
-                href: `${window.origin}/redirect/drek`,
-                isExternal: true,
-            },
-            {
-                name: 'Barnehagelister',
-                href: `/barnehagelister`,
-                isExternal: false,
-            },
-            {
-                name: 'nEESSI',
-                href: `${window.origin}/redirect/neessi`,
-                isExternal: true,
-            },
-        ];
-
-        return eksterneLenker;
-    };
+    const eksterneLenker = [
+        {
+            name: 'Rekvirer D-nr i DREK',
+            href: `${window.origin}/redirect/drek`,
+            isExternal: true,
+        },
+        {
+            name: 'Barnehagelister',
+            href: `/barnehagelister`,
+            isExternal: false,
+        },
+        {
+            name: 'nEESSI',
+            href: `${window.origin}/redirect/neessi`,
+            isExternal: true,
+        },
+    ];
 
     return (
         <Header
-            tittel="Nav Kontantstøtte"
-            brukerinfo={{ navn: brukerNavn ?? 'Ukjent', enhet: brukerEnhet ?? 'Ukjent' }}
+            tittel={'Nav Kontantstøtte'}
+            brukerinfo={{ navn: saksbehandler.displayName, enhet: saksbehandler.enhet }}
             brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
-            eksterneLenker={genererEksterneLenker()}
+            eksterneLenker={eksterneLenker}
         >
             <FagsakDeltagerSøk />
         </Header>
     );
-};
+}

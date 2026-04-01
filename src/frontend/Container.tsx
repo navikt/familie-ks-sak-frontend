@@ -19,7 +19,7 @@ import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalf
 import { Oppgavebenk } from './sider/Oppgavebenk/Oppgavebenk';
 
 export function Container() {
-    const { autentisert, innloggetSaksbehandler, appInfoModal } = useAppContext();
+    const { autentisert, appInfoModal } = useAppContext();
     const { systemetLaster } = useHttp();
 
     return (
@@ -33,10 +33,7 @@ export function Container() {
                         <OpprettFagsakModal />
                         <FeilmeldingModal />
                         <ForhåndsvisOpprettingAvPdfModal />
-                        <HeaderMedSøk
-                            brukerNavn={innloggetSaksbehandler?.displayName}
-                            brukerEnhet={innloggetSaksbehandler?.enhet}
-                        />
+                        <HeaderMedSøk />
                         <Routes>
                             <Route path="/fagsak/:fagsakId/*" element={<FagsakContainer />} />
                             <Route path="/oppgaver/journalfor/:oppgaveId" element={<ManuellJournalføring />} />

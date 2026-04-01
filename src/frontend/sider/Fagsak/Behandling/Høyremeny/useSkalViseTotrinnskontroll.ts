@@ -1,12 +1,14 @@
-import { useAppContext } from '../../../../context/AppContext';
+import { useSaksbehandler } from '../../../../hooks/useSaksbehandler';
 import { BehandlerRolle, BehandlingStatus } from '../../../../typer/behandling';
 import { useBehandlingContext } from '../context/BehandlingContext';
 
 export function useSkalViseTotrinnskontroll() {
     const { behandling } = useBehandlingContext();
-    const { hentSaksbehandlerRolle } = useAppContext();
 
-    const saksbehandlerrolle = hentSaksbehandlerRolle();
+    const saksbehandler = useSaksbehandler();
 
-    return BehandlerRolle.BESLUTTER === saksbehandlerrolle && behandling.status === BehandlingStatus.FATTER_VEDTAK;
+    const erBeslutter = saksbehandler.rolle === BehandlerRolle.BESLUTTER;
+    const erPåFatterVedtak = behandling.status === BehandlingStatus.FATTER_VEDTAK;
+
+    return erBeslutter && erPåFatterVedtak;
 }

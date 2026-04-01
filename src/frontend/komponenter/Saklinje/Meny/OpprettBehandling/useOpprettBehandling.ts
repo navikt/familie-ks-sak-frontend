@@ -7,12 +7,12 @@ import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
-import { useAppContext } from '../../../../context/AppContext';
 import { useFagsak } from '../../../../hooks/useFagsak';
 import { HentFagsakQueryKeyFactory } from '../../../../hooks/useHentFagsak';
 import { HentKlagebehandlingerQueryKeyFactory } from '../../../../hooks/useHentKlagebehandlinger';
 import { HentKontantstøttebehandlingerQueryKeyFactory } from '../../../../hooks/useHentKontantstøttebehandlinger';
 import { HentTilbakekrevingsbehandlingerQueryKeyFactory } from '../../../../hooks/useHentTilbakekrevingsbehandlinger';
+import { useSaksbehandler } from '../../../../hooks/useSaksbehandler';
 import { useBrukerContext } from '../../../../sider/Fagsak/BrukerContext';
 import type { IBehandling, IRestNyBehandling } from '../../../../typer/behandling';
 import { Behandlingstype, BehandlingÅrsak } from '../../../../typer/behandling';
@@ -38,9 +38,9 @@ const useOpprettBehandling = ({
     onOpprettTilbakekrevingSuccess: () => void;
 }) => {
     const { bruker } = useBrukerContext();
-    const { innloggetSaksbehandler } = useAppContext();
 
     const fagsak = useFagsak();
+    const saksbehandler = useSaksbehandler();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
@@ -170,7 +170,7 @@ const useOpprettBehandling = ({
                     søkersIdent: søkersIdent,
                     behandlingType: behandlingstype.verdi as Behandlingstype,
                     behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,
-                    saksbehandlerIdent: innloggetSaksbehandler?.navIdent,
+                    saksbehandlerIdent: saksbehandler.navIdent,
                     søknadMottattDato: dateTilIsoDatoStringEllerUndefined(skjema.felter.søknadMottattDato.verdi),
                 },
                 method: 'POST',
