@@ -4,9 +4,9 @@ import { Checkbox, Fieldset, Heading } from '@navikt/ds-react';
 import { Space32 } from '@navikt/ds-tokens/dist/tokens';
 
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
-import { BehandlingstemaSelect } from '../../komponenter/BehandlingstemaSelect';
 import BehandlingstypeFelt from '../../komponenter/Saklinje/Meny/OpprettBehandling/BehandlingstypeFelt';
 import { BehandlingårsakFelt } from '../../komponenter/Saklinje/Meny/OpprettBehandling/BehandlingsårsakFelt';
+import { OpprettBehandlingBehandlingstemaSelect } from '../../komponenter/Saklinje/Meny/OpprettBehandling/OpprettBehandlingBehandlingstemaSelect';
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: ${Space32};
@@ -55,7 +55,7 @@ export const KnyttTilNyBehandling = () => {
             )}
 
             {behandlingstema.erSynlig && (
-                <BehandlingstemaSelect
+                <OpprettBehandlingBehandlingstemaSelect
                     behandlingstema={behandlingstema}
                     readOnly={!kanKnytteJournalpostTilBehandling()}
                     visFeilmeldinger={skjema.visFeilmeldinger}
