@@ -6,11 +6,11 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';
 import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
+import { OpprettBehandlingBehandlingstemaSelect } from './OpprettBehandlingBehandlingstemaSelect';
 import useOpprettBehandling from './useOpprettBehandling';
 import { useFagsakContext } from '../../../../sider/Fagsak/FagsakContext';
 import { hentDagensDato } from '../../../../utils/dato';
 import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
-import { BehandlingstemaSelect } from '../../../BehandlingstemaSelect';
 import Datovelger from '../../../Datovelger/Datovelger';
 
 const StyledFieldset = styled(Fieldset)`
@@ -74,7 +74,7 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
                         />
                     )}
                     {opprettBehandlingSkjema.felter.behandlingstema.erSynlig && (
-                        <BehandlingstemaSelect
+                        <OpprettBehandlingBehandlingstemaSelect
                             behandlingstema={opprettBehandlingSkjema.felter.behandlingstema}
                             visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
                             name="Behandlingstema"
