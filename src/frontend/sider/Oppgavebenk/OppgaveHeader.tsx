@@ -4,7 +4,7 @@ import FilterSkjema from './FilterSkjema';
 
 const OppgaveHeader = () => {
     return (
-        <VStack justify="space-between" gap="2">
+        <VStack justify="space-between" gap="space-8">
             <Heading size={'medium'} level={'2'}>
                 Oppgavebenken
             </Heading>

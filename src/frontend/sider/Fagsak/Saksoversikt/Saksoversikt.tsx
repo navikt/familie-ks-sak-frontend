@@ -122,11 +122,11 @@ export function Saksoversikt() {
     };
 
     return (
-        <Box maxWidth="70rem" margin="16">
+        <Box maxWidth="70rem" margin="space-64">
             <Heading size={'large'} level={'1'} spacing>
                 Saksoversikt
             </Heading>
-            <VStack gap="14">
+            <VStack gap="space-56">
                 <FagsakLenkepanel />
                 {fagsak.status === FagsakStatus.LØPENDE && (
                     <div>

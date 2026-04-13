@@ -44,7 +44,7 @@ const OppgavelisteSaksbehandler = ({ oppgave, innloggetSaksbehandler }: IOppgave
         ) !== undefined;
 
     return oppgave.tilordnetRessurs ? (
-        <HGrid columns={2} gap={'2'} align="center">
+        <HGrid columns={2} gap={'space-8'} align="center">
             <BodyShort>{oppgave.tilordnetRessurs}</BodyShort>
             {oppgaveTypeErStøttet && (
                 <Button
@@ -59,7 +59,7 @@ const OppgavelisteSaksbehandler = ({ oppgave, innloggetSaksbehandler }: IOppgave
             )}
         </HGrid>
     ) : (
-        <HGrid columns={2} gap={'2'} align="center">
+        <HGrid columns={2} gap={'space-8'} align="center">
             <BodyShort>Ikke tildelt</BodyShort>
             {oppgaveTypeErStøttet && (
                 <Button
