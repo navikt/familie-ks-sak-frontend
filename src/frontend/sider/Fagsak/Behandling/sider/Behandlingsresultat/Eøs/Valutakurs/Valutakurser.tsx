@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { Alert, Heading, Table } from '@navikt/ds-react';
-import { ASpacing2 } from '@navikt/ds-tokens/dist/tokens';
+import { Space8 } from '@navikt/ds-tokens/dist/tokens';
 
 import ValutakursTabellRad from './ValutakursTabellRad';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
@@ -19,19 +19,22 @@ const StyledHeaderCell = styled(Table.HeaderCell)`
     &:nth-of-type(2) {
         width: 11rem;
     }
+
     &:nth-of-type(3) {
         width: 7.5rem;
     }
+
     &:nth-of-type(4) {
         width: 14rem;
     }
+
     &:nth-of-type(5) {
         width: 2.25rem;
     }
 `;
 
 const AlertWithBottomMargin = styled(Alert)`
-    margin-bottom: ${ASpacing2};
+    margin-bottom: ${Space8};
 `;
 
 interface IProps {

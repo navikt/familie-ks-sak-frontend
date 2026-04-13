@@ -1,14 +1,14 @@
 import {
-    ABorderDanger,
-    ABorderDefault,
-    ABorderSubtle,
-    ABorderSuccess,
-    ABorderWarning,
-    ASurfaceActionSubtle,
-    ASurfaceDangerSubtle,
-    ASurfaceNeutralSubtle,
-    ASurfaceSuccessSubtle,
-    ASurfaceWarningSubtle,
+    BgAccentSoft,
+    BgDangerSoft,
+    BgNeutralSoft,
+    BgSuccessSoft,
+    BgWarningSoft,
+    BorderDanger,
+    BorderNeutral,
+    BorderNeutralSubtle,
+    BorderSuccess,
+    BorderWarning,
 } from '@navikt/ds-tokens/dist/tokens';
 
 import { BehandlingResultat } from '../typer/behandling';
@@ -34,15 +34,15 @@ export const hentBakgrunnsfarge = (begrunnelseType?: BegrunnelseType) => {
     switch (begrunnelseType) {
         case BegrunnelseType.INNVILGET:
         case BegrunnelseType.FORTSATT_INNVILGET:
-            return ASurfaceSuccessSubtle;
+            return BgSuccessSoft;
         case BegrunnelseType.AVSLAG:
-            return ASurfaceDangerSubtle;
+            return BgDangerSoft;
         case BegrunnelseType.REDUKSJON:
-            return ASurfaceWarningSubtle;
+            return BgWarningSoft;
         case BegrunnelseType.OPPHØR:
-            return ASurfaceNeutralSubtle;
+            return BgNeutralSoft;
         default:
-            return ASurfaceActionSubtle;
+            return BgAccentSoft;
     }
 };
 
@@ -50,15 +50,15 @@ export const hentBorderfarge = (begrunnelseType?: BegrunnelseType) => {
     switch (begrunnelseType) {
         case BegrunnelseType.INNVILGET:
         case BegrunnelseType.FORTSATT_INNVILGET:
-            return ABorderSuccess;
+            return BorderSuccess;
         case BegrunnelseType.AVSLAG:
-            return ABorderDanger;
+            return BorderDanger;
         case BegrunnelseType.REDUKSJON:
-            return ABorderWarning;
+            return BorderWarning;
         case BegrunnelseType.OPPHØR:
-            return ABorderDefault;
+            return BorderNeutral;
         default:
-            return ABorderSubtle;
+            return BorderNeutralSubtle;
     }
 };
 

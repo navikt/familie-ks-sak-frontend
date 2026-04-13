@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
 import { Pagination } from '@navikt/ds-react';
-import { AGray800 } from '@navikt/ds-tokens/dist/tokens';
+import { TextNeutralSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { oppgaveSideLimit, useOppgavebenkContext } from './OppgavebenkContext';
 import type { IOppgave } from '../../typer/oppgave';
 
 const StyledDiv = styled.div`
-    color: ${AGray800};
+    color: ${TextNeutralSubtle};
     display: flex;
     align-items: center;
     justify-content: space-between;

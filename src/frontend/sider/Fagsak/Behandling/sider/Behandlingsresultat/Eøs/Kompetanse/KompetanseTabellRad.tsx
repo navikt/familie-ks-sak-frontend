@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { BodyShort, Table } from '@navikt/ds-react';
 
-import KompetanseTabellRadEndre from './KompetanseTabellRadEndre';
+import { KompetanseTabellRadEndre } from './KompetanseTabellRadEndre';
 import { kompetanseFeilmeldingId, useKompetansePeriodeSkjema } from './useKompetansePeriodeSkjema';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
@@ -85,7 +85,6 @@ const KompetanseTabellRad = ({ kompetanse, åpenBehandling, visFeilmeldinger }: 
                     sendInnSkjema={sendInnSkjema}
                     toggleForm={toggleForm}
                     slettKompetanse={slettKompetanse}
-                    status={kompetanse.status}
                     behandlingsÅrsakErOvergangsordning={åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024}
                     erAnnenForelderOmfattetAvNorskLovgivning={kompetanse.erAnnenForelderOmfattetAvNorskLovgivning}
                 />

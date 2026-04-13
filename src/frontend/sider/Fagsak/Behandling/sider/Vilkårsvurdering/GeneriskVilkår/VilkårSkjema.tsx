@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, Label, Radio, RadioGroup, Select, Textarea } from '@navikt/ds-react';
-import { ABorderDefault, ASurfaceAction } from '@navikt/ds-tokens/dist/tokens';
+import { BorderAccent, BorderNeutral, BorderWarning } from '@navikt/ds-tokens/dist/tokens';
 
 import AvslagSkjema from './AvslagSkjema';
 import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
@@ -21,14 +21,17 @@ import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 export const FieldsetForVilkårSkjema = styled(Fieldset)<{
     $lesevisning: boolean;
+    $ikkeVurdert: boolean;
 }>`
     max-width: 30rem;
     border-left: 0.125rem solid
         ${props => {
             if (props.$lesevisning) {
-                return ABorderDefault;
+                return BorderNeutral;
+            } else if (props.$ikkeVurdert) {
+                return BorderWarning;
             }
-            return ASurfaceAction;
+            return BorderAccent;
         }};
     padding-left: 2rem;
 `;
@@ -87,6 +90,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
             legend={'Endre vilkår'}
             hideLegend
             $lesevisning={false}
+            $ikkeVurdert={lagretVilkårResultat.resultat === Resultat.IKKE_VURDERT}
         >
             {visVurderesEtter && (
                 <Select

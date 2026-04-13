@@ -1,21 +1,16 @@
 import { useEffect } from 'react';
 
-import styled from 'styled-components';
+import classNames from 'classnames';
 
 import { Button } from '@navikt/ds-react';
-import { ASurfaceSelected, ATextActionSelected } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
 import { TidslinjeVindu, useTidslinjeContext } from './TidslinjeContext';
+import styles from './TidslinjeEtikett.module.css';
 
 interface IEtikettProp {
     etikett: Etikett;
 }
-
-const EtikettKnapp = styled(Button)<{ $valgt: boolean }>`
-    color: ${({ $valgt }) => $valgt && ATextActionSelected};
-    background-color: ${({ $valgt }) => $valgt && ASurfaceSelected};
-`;
 
 const TidslinjeEtikett = ({ etikett }: IEtikettProp) => {
     const {
@@ -42,15 +37,18 @@ const TidslinjeEtikett = ({ etikett }: IEtikettProp) => {
     }, [etikett]);
 
     return (
-        <EtikettKnapp
+        <Button
+            className={classNames(styles.etikettKnapp, {
+                [styles.valgtEtikett]:
+                    !!aktivEtikett && aktivEtikett.date.toDateString() === etikett.date.toDateString(),
+            })}
             variant="tertiary"
             size="xsmall"
             disabled={aktivtTidslinjeVindu.vindu.id === TidslinjeVindu.TRE_ÅR}
             onClick={onEtikettClick}
-            $valgt={!!aktivEtikett && aktivEtikett.date.toDateString() === etikett.date.toDateString()}
         >
             {etikett.label}
-        </EtikettKnapp>
+        </Button>
     );
 };
 

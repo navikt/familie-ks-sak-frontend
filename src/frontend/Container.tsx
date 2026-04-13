@@ -1,6 +1,9 @@
+import classNames from 'classnames';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router';
-import styled from 'styled-components';
 
+import { useHttp } from '@navikt/familie-http';
+
+import Styles from './Container.module.css';
 import { useAppContext } from './context/AppContext';
 import { HeaderMedSøk } from './komponenter/HeaderMedSøk/HeaderMedSøk';
 import AppInfoModal from './komponenter/Modal/AppInfoModal';
@@ -15,21 +18,9 @@ import { FagsakContainer } from './sider/Fagsak/FagsakContainer';
 import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';
 import { Oppgavebenk } from './sider/Oppgavebenk/Oppgavebenk';
 
-const Main = styled.main<{ $systemetLaster: boolean }>`
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    ${props => {
-        if (props.$systemetLaster)
-            return `
-                filter: blur(12px);
-                -webkit-filter: blur(12px);
-        `;
-    }};
-`;
-
-const Container = () => {
-    const { autentisert, systemetLaster, innloggetSaksbehandler, appInfoModal } = useAppContext();
+export function Container() {
+    const { autentisert, innloggetSaksbehandler, appInfoModal } = useAppContext();
+    const { systemetLaster } = useHttp();
 
     return (
         <Router>
@@ -38,7 +29,7 @@ const Container = () => {
                 <>
                     {systemetLaster() && <SystemetLaster />}
                     <Toasts />
-                    <Main $systemetLaster={systemetLaster()}>
+                    <main className={classNames(Styles.main, { [Styles.systemLaster]: systemetLaster() })}>
                         <OpprettFagsakModal />
                         <FeilmeldingModal />
                         <ForhåndsvisOpprettingAvPdfModal />
@@ -53,13 +44,11 @@ const Container = () => {
                             <Route path="/oppgaver" element={<Oppgavebenk />} />
                             <Route path="/" element={<Navigate to="/oppgaver" />} />
                         </Routes>
-                    </Main>
+                    </main>
                 </>
             ) : (
                 <UgyldigSesjon />
             )}
         </Router>
     );
-};
-
-export default Container;
+}

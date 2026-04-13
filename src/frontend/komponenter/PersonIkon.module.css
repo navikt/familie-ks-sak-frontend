@@ -10,33 +10,33 @@
 
 .mannlig {
     g {
-        fill: var(--a-blue-400);
+        fill: var(--ax-accent-600);
     }
 }
 
 .kvinnelig {
     g {
-        fill: var(--a-purple-400);
+        fill: var(--ax-meta-purple-800);
     }
 }
 
 .adresseBeskyttet {
     g {
-        fill: var(--a-orange-600);
+        fill: var(--ax-warning-500);
     }
 }
 
 .nøytralAdresseBeskyttet {
     path {
         &:first-of-type {
-            fill: var(--a-orange-600);
+            fill: var(--ax-warning-500);
         }
     }
 }
 
 .navLogo {
     path {
-        fill: var(--a-white);
+        fill: var(--ax-neutral-000);
     }
 
     margin: auto;
@@ -65,13 +65,13 @@
 }
 
 .ansattMannlig {
-    background-color: var(--a-blue-400);
+    background-color: var(--ax-accent-600);
 }
 
 .ansattKvinnelig {
-    background-color: var(--a-purple-400);
+    background-color: var(--ax-meta-purple-800);
 }
 
 .ansattAdresseBeskyttet {
-    background-color: var(--a-orange-600);
+    background-color: var(--ax-warning-500);
 }

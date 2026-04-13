@@ -5,21 +5,25 @@ import styled from 'styled-components';
 
 import { Label } from '@navikt/ds-react';
 import {
-    ABorderDanger,
-    ABorderStrong,
-    AGray100,
-    AGray300,
-    ASpacing2,
-    ATextDanger,
+    BgNeutralModerate,
+    BgNeutralSoft,
+    BorderDanger,
+    BorderFocus,
+    Space8,
+    TextDanger,
 } from '@navikt/ds-tokens/dist/tokens';
 import type { Country, Currency } from '@navikt/land-verktoy';
 import { CountryFilter } from '@navikt/land-verktoy';
 import type { CountrySelectProps } from '@navikt/landvelger';
-import CountrySelect from '@navikt/landvelger';
+import _CountrySelect from '@navikt/landvelger';
+
+// Plaster for problem med default export i landvelger. Spiller ikke på lag ved konvertering fra CJS til ESM.
+// Ekstraherer default med fallbacks
+const CountrySelect = (_CountrySelect as unknown as { default?: typeof _CountrySelect }).default ?? _CountrySelect;
 
 const Landvelger = styled(CountrySelect)`
     display: grid;
-    gap: ${ASpacing2};
+    gap: ${Space8};
     margin-bottom: ${props => (props.utenMargin ? '0rem' : '1rem')};
 
     p.navds-label--small {
@@ -33,8 +37,9 @@ const Landvelger = styled(CountrySelect)`
             .c-countrySelect__select__indicators {
                 display: none;
             }
+
             .c-countrySelect__select__control {
-                background-color: ${AGray100};
+                background-color: ${BgNeutralSoft};
             }
         }
     }
@@ -48,12 +53,12 @@ const Landvelger = styled(CountrySelect)`
 
         .c-countrySelect__select__indicator-separator {
             width: ${props => (props.kanNullstilles ? '1px !important' : '0px')};
-            background-color: ${AGray300};
+            background-color: ${BgNeutralModerate};
         }
 
         .c-countrySelect__select__control {
-            border: 1px solid ${props => (props.feil ? ABorderDanger : ABorderStrong)};
-            box-shadow: ${props => (props.feil ? `0 0 0 1px ${ABorderDanger}` : 'none')};
+            border: 1px solid ${props => (props.feil ? BorderDanger : BorderFocus)};
+            box-shadow: ${props => (props.feil ? `0 0 0 1px ${BorderDanger}` : 'none')};
         }
 
         .c-countrySelect__select__value-container {
@@ -62,7 +67,7 @@ const Landvelger = styled(CountrySelect)`
     }
 
     .navds-error-message {
-        color: ${ATextDanger};
+        color: ${TextDanger};
         font-size: 1rem;
         font-weight: bold;
 

@@ -84,7 +84,7 @@ export function Totrinnskontrollskjema({ innsendtVedtak, sendInnVedtak }: Props)
                 hideLegend
                 error={hentFrontendFeilmelding(innsendtVedtak)}
             >
-                <HStack gap={'2'}>
+                <HStack gap={'space-8'}>
                     <Radio
                         name={'totrinnskontroll'}
                         value={TotrinnskontrollBeslutning.GODKJENT}
