@@ -22,7 +22,6 @@ export const useOppdaterBehandlingstemaSkjema = ({ lukkModal }: Props) => {
     const { behandling, settÅpenBehandling } = useBehandlingContext();
     const { mutateAsync: oppdaterBehandlingstema } = useOppdaterBehandlingstema();
 
-    // TODO: do something to handle the exclamation mark? (also in BA)
     const eksisterendeBehandlingstema = Object.values(behandlingstemaer).find(
         it => it.kategori === behandling.kategori
     )!;
