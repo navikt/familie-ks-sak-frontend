@@ -1,4 +1,5 @@
 import '@navikt/ds-css';
+import './index.css';
 
 import { useEffect, useState } from 'react';
 
