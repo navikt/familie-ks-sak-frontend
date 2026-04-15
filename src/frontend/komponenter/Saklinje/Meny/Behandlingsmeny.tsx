@@ -8,7 +8,7 @@ import Styles from './Behandlingsmeny.module.css';
 import { EndreBehandlendeEnhet } from './EndreBehandlendeEnhet/EndreBehandlendeEnhet';
 import { EndreBehandlendeEnhetModal } from './EndreBehandlendeEnhet/EndreBehandlendeEnhetModal';
 import { EndreBehandlingstema } from './EndreBehandling/EndreBehandlingstema';
-import { OppdaterBehandlingstemaModal } from './EndreBehandling/OppdaterBehandlingstemaModal';
+import { EndreBehandlingstemaModal } from './EndreBehandling/EndreBehandlingstemaModal';
 import { HenleggBehandling } from './HenleggBehandling/HenleggBehandling';
 import { SettBehandlingPåVentModal } from './LeggBehandlingPåVent/SettBehandlingPåVentModal';
 import { SettEllerOppdaterVenting } from './LeggBehandlingPåVent/SettEllerOppdaterVenting';
@@ -58,7 +58,7 @@ export function Behandlingsmeny() {
                 <EndreBehandlendeEnhetModal lukkModal={() => settVisEndreBehandlendeEnhetModal(false)} />
             )}
             {visEndreBehandlingstemaModal && (
-                <OppdaterBehandlingstemaModal lukkModal={() => settVisEndreBehandlingstemaModal(false)} />
+                <EndreBehandlingstemaModal lukkModal={() => settVisEndreBehandlingstemaModal(false)} />
             )}
             {visLeggTilBarnPåBehandlingaModal && (
                 <LeggTiLBarnPåBehandlingModal lukkModal={() => settVisLeggTilBarnPåBehandlingaModal(false)} />

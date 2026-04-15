@@ -2,39 +2,43 @@ import { useForm } from 'react-hook-form';
 
 import { byggSuksessRessurs } from '@navikt/familie-typer';
 
+import { useConfirmBrowserRefresh } from '../../../../hooks/useConfirmBrowserRefresh';
 import { useOppdaterBehandlingstema } from '../../../../hooks/useOppdaterBehandlingstema';
 import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { behandlingstemaer, type IBehandlingstema } from '../../../../typer/behandlingstema';
+import { type IBehandlingstema, tilBehandlingstema } from '../../../../typer/behandlingstema';
 
-export enum OppdaterBehandlingstemaFelt {
+export enum EndreBehandlingstemaFelt {
     BEHANDLINGSTEMA = 'behandlingstema',
 }
 
-export interface OppdaterBehandlingstemaFormValues {
-    [OppdaterBehandlingstemaFelt.BEHANDLINGSTEMA]: IBehandlingstema;
+export interface EndreBehandlingstemaFormValues {
+    [EndreBehandlingstemaFelt.BEHANDLINGSTEMA]: IBehandlingstema;
 }
 
 interface Props {
     lukkModal: () => void;
 }
 
-export const useOppdaterBehandlingstemaSkjema = ({ lukkModal }: Props) => {
+export const useEndreBehandlingstemaSkjema = ({ lukkModal }: Props) => {
     const { behandling, settÅpenBehandling } = useBehandlingContext();
     const { mutateAsync: oppdaterBehandlingstema } = useOppdaterBehandlingstema();
 
-    const eksisterendeBehandlingstema = Object.values(behandlingstemaer).find(
-        it => it.kategori === behandling.kategori
-    )!;
+    const eksisterendeBehandlingstema = tilBehandlingstema(behandling.kategori)!;
 
-    const form = useForm<OppdaterBehandlingstemaFormValues, unknown, OppdaterBehandlingstemaFormValues>({
+    const form = useForm<EndreBehandlingstemaFormValues>({
         values: {
-            [OppdaterBehandlingstemaFelt.BEHANDLINGSTEMA]: eksisterendeBehandlingstema,
+            [EndreBehandlingstemaFelt.BEHANDLINGSTEMA]: eksisterendeBehandlingstema,
         },
     });
 
-    const { setError } = form;
+    const {
+        setError,
+        formState: { isDirty },
+    } = form;
 
-    const onSubmit = async (values: OppdaterBehandlingstemaFormValues) => {
+    useConfirmBrowserRefresh({ enabled: isDirty });
+
+    const onSubmit = async (values: EndreBehandlingstemaFormValues) => {
         const { behandlingstema } = values;
 
         const oppdaterBehandlingstemaParameters = {
