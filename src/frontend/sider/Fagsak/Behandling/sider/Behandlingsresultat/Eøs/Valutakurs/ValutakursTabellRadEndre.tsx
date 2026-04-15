@@ -11,7 +11,7 @@ import type { Currency } from '@navikt/land-verktoy';
 
 import { useFeatureToggles } from '../../../../../../../hooks/useFeatureToggles';
 import Datovelger from '../../../../../../../komponenter/Datovelger/Datovelger';
-import { type CurrencyCode, CurrencyCombobox, EØS_CURRENCY_CODES } from '../../../../../../../komponenter/FlagCombobox';
+import { type Valutakode, ValutaCombobox, EØS_VALUTAKODER } from '../../../../../../../komponenter/FlaggCombobox';
 import { EØS_CURRENCY, Valutavelger } from '../../../../../../../komponenter/Valutavelger/Valutavelger';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
@@ -142,10 +142,10 @@ const ValutakursTabellRadEndre = ({
                             kanKunVelgeFortid
                         />
                         {toggles[FeatureToggle.brukNyFlagCombobox] ? (
-                            <CurrencyCombobox
+                            <ValutaCombobox
                                 label={'Valuta'}
-                                value={skjema.felter.valutakode?.verdi as CurrencyCode}
-                                options={EØS_CURRENCY_CODES}
+                                value={skjema.felter.valutakode?.verdi as Valutakode}
+                                options={EØS_VALUTAKODER}
                                 onChange={() => {}}
                                 readOnly={true}
                             />
