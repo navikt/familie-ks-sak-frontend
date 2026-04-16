@@ -3,13 +3,14 @@ import { useController, useFormContext } from 'react-hook-form';
 import { Select } from '@navikt/ds-react';
 
 import { EndreBehandlingstemaFelt, type EndreBehandlingstemaFormValues } from './useEndreBehandlingstemaSkjema';
-import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IBehandlingstema } from '../../../../typer/behandlingstema';
 import { behandlingstemaer } from '../../../../typer/behandlingstema';
 
-export const BehandlingstemaSelect = () => {
-    const { vurderErLesevisning } = useBehandlingContext();
+interface Props {
+    erLesevisning: boolean;
+}
 
+export const BehandlingstemaSelect = ({ erLesevisning }: Props) => {
     const { control } = useFormContext<EndreBehandlingstemaFormValues>();
     const {
         field: { value, onChange },
@@ -22,8 +23,6 @@ export const BehandlingstemaSelect = () => {
             required: 'Behandlingstema må velges.',
         },
     });
-
-    const erLesevisning = vurderErLesevisning();
 
     const konverterTilBehandlingstema = (behandlingstemaId: string): IBehandlingstema => {
         return behandlingstemaer[behandlingstemaId as keyof typeof behandlingstemaer];

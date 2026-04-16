@@ -4,12 +4,16 @@ import { Button, Fieldset, Modal } from '@navikt/ds-react';
 
 import { BehandlingstemaSelect } from './BehandlingstemaSelect';
 import { useEndreBehandlingstemaSkjema } from './useEndreBehandlingstemaSkjema';
+import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
 
 interface Props {
     lukkModal: () => void;
 }
 
 export const EndreBehandlingstemaModal = ({ lukkModal }: Props) => {
+    const { vurderErLesevisning } = useBehandlingContext();
+    const erLesevisning = vurderErLesevisning();
+
     const { form, onSubmit } = useEndreBehandlingstemaSkjema({ lukkModal });
 
     const {
@@ -17,15 +21,11 @@ export const EndreBehandlingstemaModal = ({ lukkModal }: Props) => {
         formState: { isSubmitting, errors },
     } = form;
 
-    const onClose = () => {
-        lukkModal();
-    };
-
     return (
         <Modal
             open
             header={{ heading: 'Endre behandlingstema', size: 'small' }}
-            onClose={onClose}
+            onClose={lukkModal}
             width={'35rem'}
             portal
         >
@@ -33,14 +33,20 @@ export const EndreBehandlingstemaModal = ({ lukkModal }: Props) => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Modal.Body>
                         <Fieldset error={errors.root?.message} legend={'Endre behandlingstema'} hideLegend>
-                            <BehandlingstemaSelect />
+                            <BehandlingstemaSelect erLesevisning={erLesevisning} />
                         </Fieldset>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button type={'submit'} variant="primary" size="small" loading={isSubmitting}>
+                        <Button
+                            type={'submit'}
+                            variant="primary"
+                            size="small"
+                            loading={isSubmitting}
+                            disabled={erLesevisning}
+                        >
                             Bekreft
                         </Button>
-                        <Button variant="secondary" size="small" onClick={onClose}>
+                        <Button variant="secondary" size="small" onClick={lukkModal}>
                             Avbryt
                         </Button>
                     </Modal.Footer>
