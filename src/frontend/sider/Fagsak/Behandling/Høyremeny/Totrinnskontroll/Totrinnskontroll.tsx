@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import type { AxiosError } from 'axios';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
-import { Button, Modal } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import {
@@ -15,49 +13,34 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import TotrinnskontrollModalInnhold from './TotrinnskontrollModalInnhold';
+import { useTotrinnskontrollModalContext } from './TotrinnskontrollModalContextProvider';
 import { Totrinnskontrollskjema } from './Totrinnskontrollskjema';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingStatus } from '../../../../../typer/behandling';
 import type { ITotrinnskontrollData } from '../../../../../typer/totrinnskontroll';
 import { TotrinnskontrollBeslutning } from '../../../../../typer/totrinnskontroll';
-import { useFagsakContext } from '../../../FagsakContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 import { KontrollertStatus } from '../../sider/sider';
 import type { ITrinn } from '../../sider/sider';
+import { Tab, useTabContext } from '../TabContextProvider';
 
 const Container = styled.div`
     padding: 0.5rem 1.5rem;
     display: flex;
 `;
 
-interface IModalVerdier {
-    skalVises: boolean;
-    beslutning: TotrinnskontrollBeslutning;
-}
-
-const initiellModalVerdi = {
-    skalVises: false,
-    beslutning: TotrinnskontrollBeslutning.IKKE_VURDERT,
-};
-
 export function Totrinnskontroll() {
-    const { fagsak } = useFagsakContext();
     const { behandling, trinnPåBehandling, settIkkeKontrollerteSiderTilManglerKontroll, settÅpenBehandling } =
         useBehandlingContext();
+    const { settTab } = useTabContext();
+    const { åpneModal } = useTotrinnskontrollModalContext();
+
     const { request } = useHttp();
-    const navigate = useNavigate();
 
     const [innsendtVedtak, settInnsendtVedtak] = useState<Ressurs<IBehandling>>(byggTomRessurs());
-    const [modalVerdi, settModalVerdi] = useState<IModalVerdier>(initiellModalVerdi);
-    useEffect(() => {
-        settModalVerdi({
-            ...modalVerdi,
-            skalVises: innsendtVedtak.status === RessursStatus.SUKSESS,
-        });
-    }, [innsendtVedtak.status]);
 
     const [forrigeState, settForrigeState] = useState(trinnPåBehandling);
+
     const nullstillFeilmelding = () => {
         const erFørsteSjekk = Object.entries(forrigeState).some(([sideId, trinn]) => {
             const oppdatertTrinn: ITrinn = Object.entries(trinnPåBehandling)
@@ -90,7 +73,6 @@ export function Totrinnskontroll() {
         }
 
         settInnsendtVedtak(byggHenterRessurs());
-        settModalVerdi({ ...modalVerdi, beslutning });
         const manglerBegrunnelse = beslutning === TotrinnskontrollBeslutning.UNDERKJENT && !begrunnelse;
         if (beslutning === TotrinnskontrollBeslutning.IKKE_VURDERT) {
             settInnsendtVedtak(byggFeiletRessurs('Totrinnskontroll ikke vurdert ved innsending'));
@@ -112,6 +94,8 @@ export function Totrinnskontroll() {
                     settInnsendtVedtak(response);
                     if (response.status === RessursStatus.SUKSESS) {
                         settÅpenBehandling(response);
+                        åpneModal(beslutning);
+                        settTab(Tab.Historikk);
                     }
                 })
                 .catch((_error: AxiosError) => {
@@ -126,41 +110,6 @@ export function Totrinnskontroll() {
                 <Container className="totrinnskontroll">
                     <Totrinnskontrollskjema sendInnVedtak={sendInnVedtak} innsendtVedtak={innsendtVedtak} />
                 </Container>
-            )}
-
-            {modalVerdi.skalVises && (
-                <Modal
-                    open
-                    onClose={() => settModalVerdi({ ...modalVerdi, skalVises: false })}
-                    header={{ heading: 'Totrinnskontroll', size: 'small', closeButton: false }}
-                    width={'35rem'}
-                >
-                    <Modal.Body>
-                        <TotrinnskontrollModalInnhold beslutning={modalVerdi.beslutning} />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            key={'oppgavebenk'}
-                            variant={'primary'}
-                            size={'small'}
-                            onClick={() => {
-                                settModalVerdi(initiellModalVerdi);
-                                navigate('/oppgaver');
-                            }}
-                            children={'Gå til oppgavebenken'}
-                        />
-                        <Button
-                            variant={'secondary'}
-                            key={'saksoversikt'}
-                            size={'small'}
-                            onClick={() => {
-                                settModalVerdi(initiellModalVerdi);
-                                navigate(`/fagsak/${fagsak.id}/saksoversikt`);
-                            }}
-                            children={'Gå til saksoversikten'}
-                        />
-                    </Modal.Footer>
-                </Modal>
             )}
         </>
     );
