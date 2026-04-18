@@ -20,7 +20,7 @@ import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import { useBehandlingContextsresultat } from './useBehandlingsresultat';
-import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
+import { useFagsakId } from '../../../../../hooks/useFagsakId';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';
@@ -68,7 +68,7 @@ interface IBehandlingsresultatProps {
 
 const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => {
     const navigate = useNavigate();
-    const { fagsakId } = useSakOgBehandlingParams();
+    const fagsakId = useFagsakId();
 
     const {
         opprettEndretUtbetaling,

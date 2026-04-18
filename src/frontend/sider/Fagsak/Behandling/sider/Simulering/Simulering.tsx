@@ -9,13 +9,13 @@ import { useSimuleringContext } from './SimuleringContext';
 import SimuleringPanel from './SimuleringPanel';
 import SimuleringTabell from './SimuleringTabell';
 import TilbakekrevingSkjema from './TilbakekrevingSkjema';
-import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
+import { useFagsakId } from '../../../../../hooks/useFagsakId';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingResultat, BehandlingSteg } from '../../../../../typer/behandling';
 import type { ITilbakekreving } from '../../../../../typer/simulering';
 import { hentSøkersMålform } from '../../../../../utils/behandling';
-import { useBehandlingContext } from '../../../Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface ISimuleringProps {
     åpenBehandling: IBehandling;
@@ -26,8 +26,6 @@ const StyledAlert = styled(Alert)`
 `;
 
 const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
-    const { fagsakId } = useSakOgBehandlingParams();
-    const navigate = useNavigate();
     const {
         hentSkjemadata,
         onSubmit,
@@ -36,7 +34,11 @@ const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
         harÅpenTilbakekrevingRessurs,
         erFeilutbetaling,
     } = useSimuleringContext();
+
     const { vurderErLesevisning, settÅpenBehandling } = useBehandlingContext();
+
+    const fagsakId = useFagsakId();
+    const navigate = useNavigate();
 
     const nesteOnClick = () => {
         if (vurderErLesevisning() || åpenBehandling?.resultat == BehandlingResultat.AVSLÅTT) {

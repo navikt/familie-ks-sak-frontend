@@ -12,7 +12,7 @@ import { FagsakProvider } from './FagsakContext';
 import { JournalpostListe } from './journalposter/JournalpostListe';
 import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
-import { useFagsakId } from '../../hooks/useFagsakId';
+import { useFagsakIdParam } from '../../hooks/useFagsakIdParam';
 import { useHentFagsak } from '../../hooks/useHentFagsak';
 import { useHentPerson } from '../../hooks/useHentPerson';
 import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
@@ -20,9 +20,9 @@ import { Personlinje } from '../../komponenter/Personlinje/Personlinje';
 import { Fagsaklinje } from '../../komponenter/Saklinje/Fagsaklinje';
 
 export function FagsakContainer() {
-    const fagsakId = useFagsakId();
+    const fagsakIdParam = useFagsakIdParam();
 
-    const { data: fagsak, isPending: isPendingFagsak, error: fagsakError } = useHentFagsak(fagsakId);
+    const { data: fagsak, isPending: isPendingFagsak, error: fagsakError } = useHentFagsak(fagsakIdParam);
 
     const {
         data: bruker,
