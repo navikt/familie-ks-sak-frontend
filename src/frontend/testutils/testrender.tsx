@@ -5,15 +5,15 @@ import { render as rtlRender, type RenderOptions, screen as rtlScreen } from '@t
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 
-import type { ISaksbehandler } from '@navikt/familie-typer';
-
 import { AppProvider } from '../context/AppContext';
 import { AuthContextProvider } from '../context/AuthContext';
 import { ModalProvider } from '../context/ModalContext';
 import { lagSaksbehandler } from './testdata/saksbehandlerTestdata';
 import { FeatureTogglesProvider } from '../context/FeatureTogglesContext';
 import { HttpContextProvider } from '../context/HttpContext';
+import { SaksbehandlerProvider } from '../context/SaksbehandlerContext';
 import type { FeatureToggles } from '../typer/featureToggles';
+import type { Saksbehandler } from '../typer/saksbehandler';
 import { skruPåAlleToggles } from './mocks/handlers/featureToggleHandlers';
 
 function lagQueryClient() {
@@ -29,7 +29,7 @@ function lagQueryClient() {
 interface Props extends PropsWithChildren {
     queryClient?: QueryClient;
     initialEntries?: [{ pathname: string }];
-    saksbehandler?: ISaksbehandler;
+    saksbehandler?: Saksbehandler;
     fjernRessursSomLasterTimeout?: number;
     featureToggles?: FeatureToggles;
 }
@@ -43,19 +43,21 @@ export function TestProviders({
     children,
 }: Props) {
     return (
-        <AuthContextProvider autentisertSaksbehandler={saksbehandler}>
-            <HttpContextProvider fjernRessursSomLasterTimeout={fjernRessursSomLasterTimeout}>
-                <QueryClientProvider client={queryClient}>
-                    <FeatureTogglesProvider featureToggles={featureToggles}>
-                        <AppProvider>
-                            <ModalProvider>
-                                <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
-                            </ModalProvider>
-                        </AppProvider>
-                    </FeatureTogglesProvider>
-                </QueryClientProvider>
-            </HttpContextProvider>
-        </AuthContextProvider>
+        <QueryClientProvider client={queryClient}>
+            <SaksbehandlerProvider saksbehandler={saksbehandler}>
+                <AuthContextProvider>
+                    <HttpContextProvider fjernRessursSomLasterTimeout={fjernRessursSomLasterTimeout}>
+                        <FeatureTogglesProvider featureToggles={featureToggles}>
+                            <AppProvider>
+                                <ModalProvider>
+                                    <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
+                                </ModalProvider>
+                            </AppProvider>
+                        </FeatureTogglesProvider>
+                    </HttpContextProvider>
+                </AuthContextProvider>
+            </SaksbehandlerProvider>
+        </QueryClientProvider>
     );
 }
 
