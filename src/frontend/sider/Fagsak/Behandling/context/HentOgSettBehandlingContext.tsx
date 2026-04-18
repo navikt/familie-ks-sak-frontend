@@ -8,12 +8,12 @@ import { useHttp } from '@navikt/familie-http';
 import { byggFeiletRessurs, byggTomRessurs, type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../context/AppContext';
+import { useBehandlingIdParam } from '../../../../hooks/useBehandlingIdParam';
+import { useFagsak } from '../../../../hooks/useFagsak';
 import { HentFagsakQueryKeyFactory } from '../../../../hooks/useHentFagsak';
 import { HentHistorikkinnslagQueryKeyFactory } from '../../../../hooks/useHentHistorikkinnslag';
-import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
 import type { IBehandling } from '../../../../typer/behandling';
 import { obfuskerBehandling } from '../../../../utils/obfuskerData';
-import { useFagsakContext } from '../../FagsakContext';
 
 interface Context {
     behandlingRessurs: Ressurs<IBehandling>;
@@ -23,25 +23,26 @@ interface Context {
 const Context = createContext<Context | undefined>(undefined);
 
 export function HentOgSettBehandlingProvider({ children }: PropsWithChildren) {
-    const { fagsak } = useFagsakContext();
+    const { skalObfuskereData } = useAppContext();
+    const { request } = useHttp();
+
+    const fagsak = useFagsak();
+    const behandlingIdParam = useBehandlingIdParam();
+
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-
-    const { request } = useHttp();
-    const { behandlingId } = useSakOgBehandlingParams();
-    const { skalObfuskereData } = useAppContext();
 
     const [behandlingRessurs, privatSettBehandlingRessurs] = useState<Ressurs<IBehandling>>(byggTomRessurs());
 
     const erBehandlingDelAvFagsak = fagsak.behandlinger.some(
-        behandling => behandling.behandlingId.toString() === behandlingId
+        behandling => behandling.behandlingId === behandlingIdParam
     );
 
     useEffect(() => {
-        if (behandlingId !== undefined && !erBehandlingDelAvFagsak) {
+        if (behandlingIdParam !== undefined && !erBehandlingDelAvFagsak) {
             navigate(`/fagsak/${fagsak.id}`);
         }
-    }, [behandlingId, erBehandlingDelAvFagsak]);
+    }, [behandlingIdParam, erBehandlingDelAvFagsak]);
 
     const settBehandlingRessurs = async (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak: boolean = true) => {
         if (behandling.status === RessursStatus.SUKSESS) {
@@ -60,10 +61,10 @@ export function HentOgSettBehandlingProvider({ children }: PropsWithChildren) {
 
     useEffect(() => {
         privatSettBehandlingRessurs(byggTomRessurs());
-        if (behandlingId) {
+        if (behandlingIdParam) {
             request<void, IBehandling>({
                 method: 'GET',
-                url: `/familie-ks-sak/api/behandlinger/${behandlingId}`,
+                url: `/familie-ks-sak/api/behandlinger/${behandlingIdParam}`,
                 påvirkerSystemLaster: true,
             })
                 .then(response => settBehandlingRessurs(response))
@@ -71,7 +72,7 @@ export function HentOgSettBehandlingProvider({ children }: PropsWithChildren) {
                     privatSettBehandlingRessurs(byggFeiletRessurs('Ukjent ved innhenting av behandling'))
                 );
         }
-    }, [behandlingId]);
+    }, [behandlingIdParam]);
 
     return <Context.Provider value={{ behandlingRessurs, settBehandlingRessurs }}>{children}</Context.Provider>;
 }

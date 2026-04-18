@@ -9,7 +9,7 @@ import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/Feilutb
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
 import { useRefusjonEøsTabellContext } from './RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
-import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
+import { useFagsakId } from '../../../../../hooks/useFagsakId';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import type { IBehandling } from '../../../../../typer/behandling';
 import { BehandlingStatus, BehandlingSteg, Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
@@ -29,12 +29,13 @@ const StyledSkjemaSteg = styled(Skjemasteg)`
 `;
 
 const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
-    const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } = useBehandlingContext();
 
     const { erLeggTilFeilutbetaltValutaFormÅpen } = useFeilutbetaltValutaTabellContext();
     const { erLeggTilRefusjonEøsFormÅpen } = useRefusjonEøsTabellContext();
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
+
+    const fagsakId = useFagsakId();
 
     const navigate = useNavigate();
 

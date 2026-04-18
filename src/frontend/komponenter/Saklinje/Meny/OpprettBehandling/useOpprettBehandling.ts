@@ -8,13 +8,12 @@ import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import { useAppContext } from '../../../../context/AppContext';
+import { useFagsak } from '../../../../hooks/useFagsak';
 import { HentFagsakQueryKeyFactory } from '../../../../hooks/useHentFagsak';
 import { HentKlagebehandlingerQueryKeyFactory } from '../../../../hooks/useHentKlagebehandlinger';
 import { HentKontantstøttebehandlingerQueryKeyFactory } from '../../../../hooks/useHentKontantstøttebehandlinger';
 import { HentTilbakekrevingsbehandlingerQueryKeyFactory } from '../../../../hooks/useHentTilbakekrevingsbehandlinger';
-import useSakOgBehandlingParams from '../../../../hooks/useSakOgBehandlingParams';
 import { useBrukerContext } from '../../../../sider/Fagsak/BrukerContext';
-import { useFagsakContext } from '../../../../sider/Fagsak/FagsakContext';
 import type { IBehandling, IRestNyBehandling } from '../../../../typer/behandling';
 import { Behandlingstype, BehandlingÅrsak } from '../../../../typer/behandling';
 import type { IBehandlingstema } from '../../../../typer/behandlingstema';
@@ -38,10 +37,10 @@ const useOpprettBehandling = ({
     lukkModal: () => void;
     onOpprettTilbakekrevingSuccess: () => void;
 }) => {
-    const { fagsakId } = useSakOgBehandlingParams();
-    const { fagsak } = useFagsakContext();
     const { bruker } = useBrukerContext();
     const { innloggetSaksbehandler } = useAppContext();
+
+    const fagsak = useFagsak();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
@@ -129,7 +128,7 @@ const useOpprettBehandling = ({
         onSubmit<{ klageMottattDato: IsoDatoString }>(
             {
                 method: 'POST',
-                url: `/familie-ks-sak/api/fagsaker/${fagsakId}/opprett-klagebehandling`,
+                url: `/familie-ks-sak/api/fagsaker/${fagsak.id}/opprett-klagebehandling`,
                 data: { klageMottattDato: dateTilIsoDatoString(klageMottattDato.verdi) },
             },
             response => {
@@ -149,7 +148,7 @@ const useOpprettBehandling = ({
             {
                 method: 'POST',
                 url: `/familie-ks-sak/api/tilbakekreving/manuell`,
-                data: { fagsakId: fagsakId },
+                data: { fagsakId: fagsak.id },
             },
             response => {
                 if (response.status === RessursStatus.SUKSESS) {
@@ -191,9 +190,9 @@ const useOpprettBehandling = ({
                     const behandling = response.data;
 
                     if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
-                        navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/registrer-soknad`);
+                        navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/registrer-soknad`);
                     } else {
-                        navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/vilkaarsvurdering`);
+                        navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
                     }
                 }
             }
