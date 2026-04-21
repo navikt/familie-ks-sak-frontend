@@ -16,7 +16,7 @@ import { AlleBegrunnelserProvider } from './Vedtaksperioder/AlleBegrunnelserCont
 import Vedtaksperioder from './Vedtaksperioder/Vedtaksperioder';
 import { useAppContext } from '../../../../../context/AppContext';
 import useDokument from '../../../../../hooks/useDokument';
-import useSakOgBehandlingParams from '../../../../../hooks/useSakOgBehandlingParams';
+import { useFagsakId } from '../../../../../hooks/useFagsakId';
 import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAlert';
 import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisningModal';
 import {
@@ -54,16 +54,17 @@ const OppsummeringVedtakInnhold = ({
     bruker,
 }: IOppsummeringVedtakInnholdProps) => {
     const { hentSaksbehandlerRolle } = useAppContext();
-    const { fagsakId } = useSakOgBehandlingParams();
     const { vurderErLesevisning } = useBehandlingContext();
-    const erLesevisning = vurderErLesevisning();
+
+    const fagsakId = useFagsakId();
     const navigate = useNavigate();
+
+    const erLesevisning = vurderErLesevisning();
 
     const { hentForhåndsvisning, nullstillDokument, visDokumentModal, hentetDokument, settVisDokumentModal } =
         useDokument();
 
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
-
     const { erFeilutbetaltValutaTabellSynlig } = useFeilutbetaltValutaTabellContext();
     const { erRefusjonEøsTabellSynlig } = useRefusjonEøsTabellContext();
 
