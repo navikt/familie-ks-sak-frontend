@@ -24,6 +24,7 @@ interface IBaseFagsak {
 export interface IMinimalFagsak extends IBaseFagsak {
     behandlinger: VisningBehandling[];
     gjeldendeUtbetalingsperioder: Utbetalingsperiode[];
+    finnesStrengtFortroligPersonIFagsak: boolean;
 }
 
 export const fagsakStatus: INøkkelPar = {
