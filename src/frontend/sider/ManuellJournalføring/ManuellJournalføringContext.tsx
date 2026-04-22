@@ -423,7 +423,7 @@ export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
                                   : nyBehandlingsårsak,
 
                         navIdent: saksbehandler.navIdent,
-                        journalførendeEnhet: saksbehandler.navIdent,
+                        journalførendeEnhet: saksbehandler.enhet,
                     },
                 },
                 (fagsakId: Ressurs<string>) => {
