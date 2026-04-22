@@ -1046,10 +1046,10 @@
   resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/8.0.5/f048cb47ad2f6b83720c058383fe95802b024718#f048cb47ad2f6b83720c058383fe95802b024718"
   integrity sha512-oZPfF95H6k/Tz/cK4IQirTRXy4Vz0aSUtHWZAaDa1CVd7+8ifj1Aw8KLV6pPvlHaPirrek1sFsK5GNnad6h3qA==
 
-"@navikt/flagg-ikoner@11.2.0":
-  version "11.2.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/flagg-ikoner/11.2.0/2c1eb46d6435672be05b9a3cd5a6c120652249fe#2c1eb46d6435672be05b9a3cd5a6c120652249fe"
-  integrity sha512-8PDM0ExTUcN2QAcofrh1OIhd5ay4MAZCgxkZTss0xkFB2nm+KKEYO3Qv7I64tKyVQgzLsejXqUTaoRFP8SeHNA==
+"@navikt/flagg-ikoner@13.0.7":
+  version "13.0.7"
+  resolved "https://npm.pkg.github.com/download/@navikt/flagg-ikoner/13.0.7/37115d5f4ce00511cc9457e8896f7a529c40ad58#37115d5f4ce00511cc9457e8896f7a529c40ad58"
+  integrity sha512-NenvZ9EZxiLb/mMeUphmdTBCI4JP7bV8NDKaZMFzWplQYg7mF7BpeiYESKC1FkrknlAJ1DeRiQ6cKHvNyDhmUw==
   dependencies:
     svg-country-flags "1.2.10"
     uuid "9.0.1"
@@ -1064,19 +1064,19 @@
   resolved "https://npm.pkg.github.com/download/@navikt/fnrvalidator/2.2.1/37ed0feb23a7525139ad5512684ff6b0977112c6#37ed0feb23a7525139ad5512684ff6b0977112c6"
   integrity sha512-R6x3MBFC0E/B7oTs+P2jAP+ym7+d6cwSpDsLeMja9IwPpJq3HV/OClFBVWm9fJZPmXfumKRMGy6gqsQPj90ftg==
 
-"@navikt/land-verktoy@9.1.8":
-  version "9.1.8"
-  resolved "https://npm.pkg.github.com/download/@navikt/land-verktoy/9.1.8/932ec398628725c391f19df559e3c2a0e130b72e#932ec398628725c391f19df559e3c2a0e130b72e"
-  integrity sha512-vKcSx3GlbX7tHH25aZnTRJjpWO582W0vGxzVpfOYL+0YxfgKQdJ7+PzLEIGz3drAhAcCFGJCNhq6F44SkIddyg==
+"@navikt/land-verktoy@13.0.7":
+  version "13.0.7"
+  resolved "https://npm.pkg.github.com/download/@navikt/land-verktoy/13.0.7/9dd04f2a3a6e0e050fc1e85d7976559ba7d0975d#9dd04f2a3a6e0e050fc1e85d7976559ba7d0975d"
+  integrity sha512-t1W0PMuqyG+OMMg6tPX45gbVVRQuRR6vJ0fB0+DdyAMGl6Pm3r4w1HgDji+g2tnHTgnO0JIElfHU2WJZ5wCkkA==
   dependencies:
-    "@piotrgorecki/i18n-currency-name" "^1.3.0"
-    country-data-list "^1.2.2"
-    i18n-iso-countries "^7.5.0"
+    "@piotrgorecki/i18n-currency-name" "1.3.0"
+    country-data-list "1.6.0"
+    i18n-iso-countries "7.14.0"
 
-"@navikt/landvelger@10.0.0":
-  version "10.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/landvelger/10.0.0/be0965113024c3c8e76651dd7fe6faee996dc2d5#be0965113024c3c8e76651dd7fe6faee996dc2d5"
-  integrity sha512-rp4OAfNuT8Vh7+WV9Ttc9rwYVlpwWuVBuLv5wtOcjWue6hAQ1AJ2YRu6dHt/dXPvZ5MiqBHtZHCJ3abhsPP3IA==
+"@navikt/landvelger@13.0.7":
+  version "13.0.7"
+  resolved "https://npm.pkg.github.com/download/@navikt/landvelger/13.0.7/e24671fdf1abe2a1e49724957244a4e0eeb5705f#e24671fdf1abe2a1e49724957244a4e0eeb5705f"
+  integrity sha512-Q6kXX1YeA/ioSnoFoLvqJlwczuLYYDrVoMJO85ygVUP8y5qLa+kn/XnjZSr9nhyPSYsJN9EJBCTjRhNfV2rYSQ==
 
 "@noble/ciphers@^1.3.0":
   version "1.3.0"
@@ -1190,7 +1190,7 @@
   resolved "https://registry.yarnpkg.com/@oxc-project/types/-/types-0.124.0.tgz#1dfd7b3fbb98febc2f91b505f48c940db73c8701"
   integrity sha512-VBFWMTBvHxS11Z5Lvlr3IWgrwhMTXV+Md+EQF0Xf60+wAdsGFTBx7X7K/hP4pi8N7dcm1RvcHwDxZ16Qx8keUg==
 
-"@piotrgorecki/i18n-currency-name@^1.3.0":
+"@piotrgorecki/i18n-currency-name@1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@piotrgorecki/i18n-currency-name/-/i18n-currency-name-1.3.0.tgz#c7d6b9f6df705bf4f2516f1d25c455af14d7c167"
   integrity sha512-Txbw0UmGgyvkZEFzjycmh7hEwYeRftILvx4G72PrMBHoS18PGnPODWbZvw7bi+KoV+buMezEHy8ezojc0f7YvQ==
@@ -2774,7 +2774,7 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-country-data-list@^1.2.2:
+country-data-list@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/country-data-list/-/country-data-list-1.6.0.tgz#2ebd1fae15094c148a2d8c150f73768580e9cc82"
   integrity sha512-KG1flNkUHtde7q9zw1/NcH5fFgDxU6gRt4f7jhBm2ucNXrSO8UBWv/w8UyueOhJGabzzjHJ7fTyRVLrKruWpUw==
@@ -4391,7 +4391,7 @@ husky@9.1.7:
   resolved "https://registry.yarnpkg.com/husky/-/husky-9.1.7.tgz#d46a38035d101b46a70456a850ff4201344c0b2d"
   integrity sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==
 
-i18n-iso-countries@^7.5.0:
+i18n-iso-countries@7.14.0:
   version "7.14.0"
   resolved "https://registry.yarnpkg.com/i18n-iso-countries/-/i18n-iso-countries-7.14.0.tgz#cd5ae098198bce1cc40cadbf0a37ce6c8e9d0edf"
   integrity sha512-nXHJZYtNrfsi1UQbyRqm3Gou431elgLjKl//CYlnBGt5aTWdRPH1PiS2T/p/n8Q8LnqYqzQJik3Q7mkwvLokeg==
