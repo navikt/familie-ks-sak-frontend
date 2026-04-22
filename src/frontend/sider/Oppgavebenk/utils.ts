@@ -42,7 +42,7 @@ export const sorterEtterNøkkel = (a: IOppgaveRad, b: IOppgaveRad, sorteringsnø
 
 export interface IOppgaveRad extends Omit<IOppgave, 'tilordnetRessurs' | 'identer'> {
     ident: IOppgaveIdent[] | undefined;
-    tilordnetRessurs: { oppg: IOppgave; innloggetSaksbehandler: Saksbehandler };
+    tilordnetRessurs: { oppg: IOppgave; saksbehandler: Saksbehandler };
     handlinger: IOppgave;
 }
 
@@ -60,7 +60,7 @@ export const mapIOppgaverTilOppgaveRad = (oppgaver: IOppgave[], saksbehandler: S
             beskrivelse: oppg.beskrivelse,
             opprettetTidspunkt: oppg.opprettetTidspunkt,
             prioritet: oppg.prioritet,
-            tilordnetRessurs: { oppg, innloggetSaksbehandler: saksbehandler },
+            tilordnetRessurs: { oppg, saksbehandler },
             tildeltEnhetsnr: enhet ? enhet.navn : oppg.tildeltEnhetsnr,
             handlinger: oppg,
         };
