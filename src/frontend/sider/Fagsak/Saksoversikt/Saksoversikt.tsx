@@ -1,7 +1,8 @@
 import { addMonths, differenceInMilliseconds, startOfMonth } from 'date-fns';
 import { Link as ReactRouterLink } from 'react-router';
 
-import { Alert, Box, Heading, Link, VStack } from '@navikt/ds-react';
+import { InformationSquareIcon } from '@navikt/aksel-icons';
+import { Box, Heading, InfoCard, Link, LocalAlert, VStack } from '@navikt/ds-react';
 
 import { Behandlinger } from './Behandlinger';
 import { FagsakLenkepanel, SaksoversiktPanelBredde } from './FagsakLenkepanel';
@@ -58,7 +59,7 @@ export function Saksoversikt() {
     const lenkeTilBehandlingsresultat = () => {
         return aktivBehandling ? (
             <Link as={ReactRouterLink} to={`/fagsak/${fagsak.id}/${aktivBehandling.behandlingId}/tilkjent-ytelse`}>
-                Se detaljer
+                Se behandlingsresultat for detaljer
             </Link>
         ) : null;
     };
@@ -71,24 +72,28 @@ export function Saksoversikt() {
             return utbetalingsperiodeInneværendeMåned.utbetaltPerMnd < 1 &&
                 gjeldendeBehandling?.kategori === BehandlingKategori.EØS ? (
                 <Box width={SaksoversiktPanelBredde}>
-                    <Alert variant="info">
-                        Siste gjeldende vedtak er en EØS-sak uten månedlige utbetalinger fra Nav
-                    </Alert>
+                    <InfoCard data-color="info">
+                        <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                            Siste gjeldende vedtak er en EØS-sak uten månedlige utbetalinger fra Nav
+                        </InfoCard.Message>
+                    </InfoCard>
                 </Box>
             ) : (
                 <>
                     {utbetalingsperiodeNesteMåned &&
                         utbetalingsperiodeNesteMåned !== utbetalingsperiodeInneværendeMåned && (
                             <Box width={SaksoversiktPanelBredde}>
-                                <Alert variant="info">
-                                    <VStack>
-                                        {`Utbetalingen endres fra og med ${dateTilFormatertString({
-                                            date: nesteMåned,
-                                            tilFormat: Datoformat.MÅNED_ÅR_NAVN,
-                                        })}`}
-                                        {lenkeTilBehandlingsresultat()}
-                                    </VStack>
-                                </Alert>
+                                <InfoCard data-color="info">
+                                    <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                                        <InfoCard.Title>
+                                            {`Utbetalingen endres fra og med ${dateTilFormatertString({
+                                                date: nesteMåned,
+                                                tilFormat: Datoformat.MÅNED_ÅR_NAVN,
+                                            })}`}
+                                        </InfoCard.Title>
+                                    </InfoCard.Header>
+                                    <InfoCard.Content>{lenkeTilBehandlingsresultat()}</InfoCard.Content>
+                                </InfoCard>
                             </Box>
                         )}
                     <Utbetalinger vedtaksperiode={utbetalingsperiodeInneværendeMåned} />
@@ -97,24 +102,30 @@ export function Saksoversikt() {
         } else if (utbetalingsperiodeNesteMåned) {
             return (
                 <Box width={SaksoversiktPanelBredde}>
-                    <Alert variant="info">
-                        <VStack>
-                            {`Utbetalingen starter ${dateTilFormatertString({
-                                date: nesteMåned,
-                                tilFormat: Datoformat.MÅNED_ÅR_NAVN,
-                            })}`}
-                            {lenkeTilBehandlingsresultat()}
-                        </VStack>
-                    </Alert>
+                    <InfoCard data-color="info">
+                        <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                            <InfoCard.Title>
+                                {`Utbetalingen starter ${dateTilFormatertString({
+                                    date: nesteMåned,
+                                    tilFormat: Datoformat.MÅNED_ÅR_NAVN,
+                                })}`}
+                            </InfoCard.Title>
+                        </InfoCard.Header>
+                        <InfoCard.Content>{lenkeTilBehandlingsresultat()}</InfoCard.Content>
+                    </InfoCard>
                 </Box>
             );
         } else {
             return (
                 <Box width={SaksoversiktPanelBredde}>
-                    <Alert variant="error">
-                        Noe gikk galt ved henting av utbetalinger. Prøv igjen eller kontakt brukerstøtte hvis problemet
-                        vedvarer.
-                    </Alert>
+                    <LocalAlert status="error">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>Noe gikk galt ved henting av utbetalinger.</LocalAlert.Title>
+                        </LocalAlert.Header>
+                        <LocalAlert.Content>
+                            Prøv igjen eller kontakt brukerstøtte hvis problemet vedvarer.
+                        </LocalAlert.Content>
+                    </LocalAlert>
                 </Box>
             );
         }

@@ -2,8 +2,8 @@ import type { ChangeEvent } from 'react';
 
 import styled from 'styled-components';
 
-import { FileTextIcon } from '@navikt/aksel-icons';
-import { Alert, Box, Button, Fieldset, Heading, Label, Select } from '@navikt/ds-react';
+import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
+import { Box, Button, Fieldset, Heading, InfoCard, Label, Select } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnIBrevSkjema from './BarnIBrev/BarnIBrevSkjema';
@@ -31,10 +31,6 @@ const StyledFieldset = styled(Fieldset)`
 
 const FeltMargin = styled.div`
     margin-bottom: 2rem;
-`;
-
-const StyledAlert = styled(Alert)`
-    margin: 1rem 0;
 `;
 
 const Handlinger = styled.div`
@@ -178,9 +174,13 @@ export function DokumentutsendingSkjema() {
                     />
 
                     {årsakVerdi && visForhåndsvisningBeskjed() && (
-                        <StyledAlert variant="info">
-                            Du har gjort endringer i brevet som ikke er forhåndsvist
-                        </StyledAlert>
+                        <Box marginBlock={'space-16'}>
+                            <InfoCard data-color="info">
+                                <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                                    Du har gjort endringer i brevet som ikke er forhåndsvist
+                                </InfoCard.Message>
+                            </InfoCard>
+                        </Box>
                     )}
                 </StyledFieldset>
 

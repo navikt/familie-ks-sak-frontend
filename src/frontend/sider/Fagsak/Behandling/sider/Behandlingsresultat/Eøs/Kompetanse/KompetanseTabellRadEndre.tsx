@@ -1,5 +1,5 @@
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, Box, Button, Fieldset, HStack, Select, UNSAFE_Combobox, VStack } from '@navikt/ds-react';
+import { Box, Button, Fieldset, HStack, InlineMessage, Select, UNSAFE_Combobox, VStack } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -105,9 +105,9 @@ export function KompetanseTabellRadEndre({
                     behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
                 />
                 {erAnnenForelderOmfattetAvNorskLovgivning && (
-                    <Alert variant="info" inline>
+                    <InlineMessage status={'info'}>
                         Annen forelder er omfattet av norsk lovgivning og har selvstendig rett i perioden
-                    </Alert>
+                    </InlineMessage>
                 )}
                 <Select
                     {...skjema.felter.søkersAktivitet.hentNavInputProps(skjema.visFeilmeldinger)}
@@ -153,9 +153,9 @@ export function KompetanseTabellRadEndre({
                     })}
                 </Select>
                 {skjema.felter.annenForeldersAktivitet.verdi === AnnenForelderAktivitet.IKKE_AKTUELT && (
-                    <Alert variant="info" size="small" inline>
+                    <InlineMessage status="info" size="small">
                         Søker har enten aleneomsorg for egne barn eller forsørger andre barn
-                    </Alert>
+                    </InlineMessage>
                 )}
                 <RegionCombobox
                     label={'Søkers aktivitetsland'}
@@ -245,18 +245,18 @@ export function KompetanseTabellRadEndre({
                 </Select>
                 {toPrimærland && (
                     <Box marginBlock={'space-2 space-2'}>
-                        <Alert variant={'warning'} size={'small'} inline={true}>
+                        <InlineMessage status={'warning'} size={'small'}>
                             Norge og annen forelders aktivitetsland er primærland. Saksbehandler må manuelt vurdere om
                             Norge skal utbetale kontantstøtten.
-                        </Alert>
+                        </InlineMessage>
                     </Box>
                 )}
                 {nasjonalRettDifferanseberegningMedUlikeAktivitetsland && (
                     <Box marginBlock={'space-2 space-2'}>
-                        <Alert variant={'warning'} size={'small'} inline={true}>
+                        <InlineMessage status={'warning'} size={'small'}>
                             To andre EØS-land er primærland. Saksbehandler må manuelt beregne hvilket av EØS-landene som
                             utbetaler den høyeste kontantstøtten og som Norge skal differanseberegne mot.
-                        </Alert>
+                        </InlineMessage>
                     </Box>
                 )}
                 {!lesevisning && (

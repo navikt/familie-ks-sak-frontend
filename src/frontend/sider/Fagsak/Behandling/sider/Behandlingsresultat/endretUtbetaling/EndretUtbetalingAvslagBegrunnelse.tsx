@@ -1,4 +1,4 @@
-import { Alert, Select } from '@navikt/ds-react';
+import { LocalAlert, Select } from '@navikt/ds-react';
 import type { GroupBase } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -46,7 +46,13 @@ export const EndretUtbetalingAvslagBegrunnelse = ({ skjema }: IProps) => {
     });
 
     if (endretUtbetalingsbegrunnelser.status === RessursStatus.FEILET) {
-        return <Alert variant="error">Klarte ikke å hente inn begrunnelser for endret utbetaling.</Alert>;
+        return (
+            <LocalAlert status="error">
+                <LocalAlert.Header>
+                    <LocalAlert.Title>Klarte ikke å hente inn begrunnelser for endret utbetaling.</LocalAlert.Title>
+                </LocalAlert.Header>
+            </LocalAlert>
+        );
     }
 
     function finnBegrunnelseForSelect(begrunnelseVerdi?: Begrunnelse) {

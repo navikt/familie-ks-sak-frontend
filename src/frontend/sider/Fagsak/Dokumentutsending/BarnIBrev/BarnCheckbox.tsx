@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Button, Checkbox } from '@navikt/ds-react';
+import { Box, Button, Checkbox } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import type { IBarnMedOpplysninger } from '../../../../typer/søknad';
@@ -17,8 +17,6 @@ const CheckboxOgSlettknapp = styled.div`
 `;
 
 const StyledCheckbox = styled(Checkbox)`
-    margin-left: 1rem;
-
     > label {
         width: 100%;
     }
@@ -50,11 +48,13 @@ const BarnCheckbox = ({ barn, barnIBrevFelt }: IProps) => {
     return (
         <div>
             <CheckboxOgSlettknapp>
-                <StyledCheckbox value={barn.ident}>
-                    <LabelContent>
-                        <LabelTekst title={navnOgIdentTekst}>{navnOgIdentTekst}</LabelTekst>
-                    </LabelContent>
-                </StyledCheckbox>
+                <Box marginInline={'space-16 space-0'}>
+                    <StyledCheckbox value={barn.ident}>
+                        <LabelContent>
+                            <LabelTekst title={navnOgIdentTekst}>{navnOgIdentTekst}</LabelTekst>
+                        </LabelContent>
+                    </StyledCheckbox>
+                </Box>
                 {barn.manueltRegistrert && (
                     <FjernBarnKnapp
                         variant={'tertiary'}

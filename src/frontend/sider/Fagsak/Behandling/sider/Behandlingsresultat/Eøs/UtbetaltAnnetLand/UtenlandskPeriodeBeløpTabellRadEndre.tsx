@@ -3,7 +3,17 @@ import type { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, BodyShort, Button, Fieldset, HGrid, Select, TextField, UNSAFE_Combobox } from '@navikt/ds-react';
+import {
+    BodyShort,
+    Box,
+    Button,
+    Fieldset,
+    HGrid,
+    InlineMessage,
+    Select,
+    TextField,
+    UNSAFE_Combobox,
+} from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -20,10 +30,6 @@ import {
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
-
-const UtbetaltBeløpInfo = styled(Alert)`
-    margin-bottom: var(--ax-space-24);
-`;
 
 const UtbetaltBeløpText = styled(BodyShort)`
     font-weight: bold;
@@ -104,11 +110,13 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
             hideLegend
         >
             <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
-                <UtbetaltBeløpInfo variant="info" inline>
-                    <UtbetaltBeløpText size="small">
-                        Dersom det er ulike beløp per barn utbetalt i det andre landet, må barna registreres separat
-                    </UtbetaltBeløpText>
-                </UtbetaltBeløpInfo>
+                <Box marginBlock={'space-0 space-24'}>
+                    <InlineMessage status="info">
+                        <UtbetaltBeløpText size="small">
+                            Dersom det er ulike beløp per barn utbetalt i det andre landet, må barna registreres separat
+                        </UtbetaltBeløpText>
+                    </InlineMessage>
+                </Box>
                 <UNSAFE_Combobox
                     error={skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger).error}
                     readOnly={lesevisning}

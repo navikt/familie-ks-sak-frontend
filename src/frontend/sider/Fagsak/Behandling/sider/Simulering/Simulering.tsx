@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 
-import { Alert } from '@navikt/ds-react';
+import { InformationSquareIcon } from '@navikt/aksel-icons';
+import { Box, InfoCard, LocalAlert } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -20,10 +20,6 @@ import { useBehandlingContext } from '../../context/BehandlingContext';
 interface ISimuleringProps {
     åpenBehandling: IBehandling;
 }
-
-const StyledAlert = styled(Alert)`
-    margin-bottom: 2rem;
-`;
 
 const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
     const {
@@ -83,7 +79,11 @@ const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
         >
             {simuleringsresultat?.status === RessursStatus.SUKSESS ? (
                 simuleringsresultat.data.perioder.length === 0 ? (
-                    <Alert variant="info">Det er ingen etterbetaling, feilutbetaling eller neste utbetaling</Alert>
+                    <InfoCard data-color="info">
+                        <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                            Det er ingen etterbetaling, feilutbetaling eller neste utbetaling
+                        </InfoCard.Message>
+                    </InfoCard>
                 ) : (
                     <>
                         <SimuleringPanel simulering={simuleringsresultat.data} />
@@ -97,16 +97,29 @@ const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
                     </>
                 )
             ) : (
-                <Alert variant="info">Det har skjedd en feil: {simuleringsresultat?.frontendFeilmelding}</Alert>
+                <LocalAlert status="error">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>Det har skjedd en feil</LocalAlert.Title>
+                    </LocalAlert.Header>
+                    <LocalAlert.Content>{simuleringsresultat?.frontendFeilmelding}</LocalAlert.Content>
+                </LocalAlert>
             )}
 
             {(tilbakekrevingSkjema.submitRessurs.status === RessursStatus.FEILET ||
                 tilbakekrevingSkjema.submitRessurs.status === RessursStatus.FUNKSJONELL_FEIL ||
                 tilbakekrevingSkjema.submitRessurs.status === RessursStatus.IKKE_TILGANG) && (
-                <StyledAlert variant="error">
-                    Det har skjedd en feil og vi klarte ikke å lagre tilbakekrevingsvalget:{' '}
-                    {tilbakekrevingSkjema.submitRessurs.frontendFeilmelding}
-                </StyledAlert>
+                <Box marginBlock={'space-16 space-32'}>
+                    <LocalAlert status="error">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>
+                                Det har skjedd en feil og vi klarte ikke å lagre tilbakekrevingsvalget
+                            </LocalAlert.Title>
+                        </LocalAlert.Header>
+                        <LocalAlert.Content>
+                            {tilbakekrevingSkjema.submitRessurs.frontendFeilmelding}
+                        </LocalAlert.Content>
+                    </LocalAlert>
+                </Box>
             )}
         </Skjemasteg>
     );
