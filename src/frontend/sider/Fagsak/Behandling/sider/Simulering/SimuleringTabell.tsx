@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { isAfter } from 'date-fns';
 import styled from 'styled-components';
 
-import { Alert, BodyShort, Heading, Switch, Table } from '@navikt/ds-react';
+import { BodyShort, Box, Heading, LocalAlert, Switch, Table } from '@navikt/ds-react';
 import {
     BgNeutralSoft,
     FontWeightBold,
@@ -33,10 +33,6 @@ const Årsvelger = styled.div`
 
 const StyledSwitch = styled(Switch)`
     width: fit-content;
-`;
-
-const StyledAlert = styled(Alert)`
-    margin-bottom: 1rem;
 `;
 
 const IkkeFullBreddeTabell = styled(Table)`
@@ -130,10 +126,19 @@ const SimuleringTabell = ({ simulering }: ISimuleringProps) => {
     return (
         <>
             {erManuellPosteringSamtidigSomResultatIkkeErNull && (
-                <StyledAlert variant={'warning'}>
-                    Det finnes manuelle posteringer på den forrige behandlingen. Du må mest sannsynlig sende en oppgave
-                    til NØS og be dem gjøre manuelle posteringer tilsvarende de manuelle posteringene i tabellen.
-                </StyledAlert>
+                <Box marginBlock={'space-0 space-16'}>
+                    <LocalAlert status="warning">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>
+                                Det finnes manuelle posteringer på den forrige behandlingen.
+                            </LocalAlert.Title>
+                        </LocalAlert.Header>
+                        <LocalAlert.Content>
+                            Du må mest sannsynlig sende en oppgave til NØS og be dem gjøre manuelle posteringer
+                            tilsvarende de manuelle posteringene i tabellen.
+                        </LocalAlert.Content>
+                    </LocalAlert>
+                </Box>
             )}
             <Heading size={'small'} level={'2'} spacing>
                 Simuleringsresultat for{' '}

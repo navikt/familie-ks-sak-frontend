@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 
-import { FileTextIcon } from '@navikt/aksel-icons';
-import { Alert, BodyShort, Button, Modal } from '@navikt/ds-react';
+import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
+import { BodyShort, Box, Button, InfoCard, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { FeilutbetaltValutaTabell } from './FeilutbetaltValuta/FeilutbetaltValutaTabell';
@@ -37,14 +36,6 @@ interface IOppsummeringVedtakInnholdProps {
     erBehandlingMedVedtaksbrevutsending: boolean;
     bruker: IPersonInfo;
 }
-
-const BehandlingKorrigertAlert = styled(Alert)`
-    margin-bottom: 1.5rem;
-`;
-
-const Modaltekst = styled(BodyShort)`
-    margin: 2rem 0;
-`;
 
 const OppsummeringVedtakInnhold = ({
     åpenBehandling,
@@ -97,19 +88,29 @@ const OppsummeringVedtakInnhold = ({
     };
 
     if (!erBehandlingMedVedtaksbrevutsending) {
-        return <Alert variant="info">{`Du er inne på en teknisk behandling og det finnes ingen vedtaksbrev.`}</Alert>;
+        return (
+            <InfoCard data-color="info">
+                <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                    Du er inne på en teknisk behandling og det finnes ingen vedtaksbrev.
+                </InfoCard.Message>
+            </InfoCard>
+        );
     }
 
     if (åpenBehandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK) {
         return (
-            <Alert variant="info">
-                Du er i en iverksette KA-vedtak behandling. Det skal ikke sendes vedtaksbrev. Bruk "Send brev" hvis du
-                skal informere bruker om:
-                <ul>
-                    <li>Utbetaling</li>
-                    <li>EØS-kompetanse</li>
-                </ul>
-            </Alert>
+            <InfoCard data-color="info">
+                <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                    <InfoCard.Title>Du er i en iverksette KA-vedtak behandling.</InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
+                    Det skal ikke sendes vedtaksbrev. Bruk "Send brev" hvis du skal informere bruker om:
+                    <ul>
+                        <li>Utbetaling</li>
+                        <li>EØS-kompetanse</li>
+                    </ul>
+                </InfoCard.Content>
+            </InfoCard>
         );
     }
 
@@ -127,12 +128,22 @@ const OppsummeringVedtakInnhold = ({
             )}
             <div>
                 {åpenBehandling.korrigertEtterbetaling && (
-                    <BehandlingKorrigertAlert variant="info">
-                        Etterbetalingsbeløp i brevet er manuelt korrigert
-                    </BehandlingKorrigertAlert>
+                    <Box marginBlock={'space-0 space-24'}>
+                        <InfoCard data-color="info">
+                            <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                                Etterbetalingsbeløp i brevet er manuelt korrigert
+                            </InfoCard.Message>
+                        </InfoCard>
+                    </Box>
                 )}
                 {åpenBehandling.korrigertVedtak && (
-                    <BehandlingKorrigertAlert variant="info">Vedtaket er korrigert etter § 35</BehandlingKorrigertAlert>
+                    <Box marginBlock={'space-0 space-24'}>
+                        <InfoCard data-color="info">
+                            <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                                Vedtaket er korrigert etter § 35
+                            </InfoCard.Message>
+                        </InfoCard>
+                    </Box>
                 )}
                 <BrevmottakereAlert
                     bruker={bruker}
@@ -144,9 +155,13 @@ const OppsummeringVedtakInnhold = ({
                 {åpenBehandling.årsak === BehandlingÅrsak.DØDSFALL ||
                 åpenBehandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
                 åpenBehandling.status === BehandlingStatus.AVSLUTTET ? (
-                    <Alert variant="info" style={{ margin: '2rem 0 1rem 0' }}>
-                        {hentInfostripeTekst(åpenBehandling.årsak, åpenBehandling.status)}
-                    </Alert>
+                    <Box marginBlock={'space-32 space-16'}>
+                        <InfoCard data-color="info">
+                            <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                                {hentInfostripeTekst(åpenBehandling.årsak, åpenBehandling.status)}
+                            </InfoCard.Message>
+                        </InfoCard>
+                    </Box>
                 ) : (
                     <>
                         {erSammensattKontrollsak ? (
@@ -184,7 +199,9 @@ const OppsummeringVedtakInnhold = ({
                     portal
                 >
                     <Modal.Body>
-                        <Modaltekst>Behandlingen er nå sendt til totrinnskontroll</Modaltekst>
+                        <Box marginBlock={'space-32'}>
+                            <BodyShort>Behandlingen er nå sendt til totrinnskontroll</BodyShort>
+                        </Box>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button

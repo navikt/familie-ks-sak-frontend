@@ -9,8 +9,6 @@
 }
 
 .checkbox {
-    margin-left: var(--ax-space-16);
-
     > label {
         width: 100%;
     }

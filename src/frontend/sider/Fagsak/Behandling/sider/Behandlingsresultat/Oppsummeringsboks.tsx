@@ -3,7 +3,7 @@ import { type PropsWithChildren, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { XMarkIcon } from '@navikt/aksel-icons';
-import { Alert, BodyShort, Box, Button, Heading, HGrid, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, Heading, HGrid, InlineMessage, VStack } from '@navikt/ds-react';
 import { Space16 } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
 
@@ -22,10 +22,6 @@ import { EøsPeriodeStatus, KompetanseResultat } from '../../../../../typer/eøs
 import type { Utbetalingsperiode } from '../../../../../typer/utbetalingsperiode';
 import { dateTilFormatertString, Datoformat, periodeOverlapperMedValgtDato } from '../../../../../utils/dato';
 import { formaterBeløp, formaterIdent, hentAlderSomString, sorterUtbetaling } from '../../../../../utils/formatter';
-
-const AlertAlignedRight = styled(Alert)`
-    float: right;
-`;
 
 const TotaltUtbetaltRad = styled(HGrid)`
     border-top: 1px dashed;
@@ -182,12 +178,7 @@ const Oppsummeringsboks = ({
                                 {utbetalingsBeløpStatusMap.get(detalj.person.personIdent) ? (
                                     <BodyShort>{formaterBeløp(detalj.utbetaltPerMnd)}</BodyShort>
                                 ) : (
-                                    <AlertAlignedRight
-                                        variant="warning"
-                                        children={'Må beregnes'}
-                                        size={'small'}
-                                        inline
-                                    />
+                                    <InlineMessage status="warning" children={'Må beregnes'} size={'small'} />
                                 )}
                             </UtbetalingsbeløpRad>
                         ))}
@@ -196,9 +187,9 @@ const Oppsummeringsboks = ({
                             <BodyShort weight="semibold">{formaterBeløp(utbetalingsperiode.utbetaltPerMnd)}</BodyShort>
                         </TotaltUtbetaltRad>
                         {erAndelForPraksisendring && (
-                            <Alert variant={'info'} size={'small'}>
-                                <BodyShort>Utbetaling i tråd med fastsatt praksis ifm lovendring 2024.</BodyShort>
-                            </Alert>
+                            <InlineMessage status={'info'}>
+                                Utbetaling i tråd med fastsatt praksis ifm lovendring 2024.
+                            </InlineMessage>
                         )}
                     </VStack>
                 </>

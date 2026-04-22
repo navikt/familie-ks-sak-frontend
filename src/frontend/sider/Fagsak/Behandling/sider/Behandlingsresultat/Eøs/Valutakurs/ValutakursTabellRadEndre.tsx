@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, Button, Fieldset, Heading, HGrid, Link, TextField, UNSAFE_Combobox } from '@navikt/ds-react';
+import { Box, Button, Fieldset, HGrid, Link, LocalAlert, TextField, UNSAFE_Combobox } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -23,10 +23,6 @@ const StyledEøsPeriodeSkjema = styled(EøsPeriodeSkjema)`
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: 1.5rem;
-`;
-
-const StyledISKAlert = styled(Alert)`
-    margin-top: 2rem;
 `;
 
 const valutakursPeriodeFeilmeldingId = (valutakurs: ISkjema<IValutakurs, IBehandling>): string =>
@@ -151,17 +147,24 @@ const ValutakursTabellRadEndre = ({
                         />
                     </HGrid>
                     {erManuellInputAvKurs && (
-                        <StyledISKAlert variant="warning" size="small" inline>
-                            <Heading size="small">Manuell innhenting av valutakurs for Islandske kroner (ISK)</Heading>
-                            Systemet har ikke valutakurser for valutakursdatoer før 1. februar 2018. Disse må hentes fra{' '}
-                            <Link
-                                href="https://navno.sharepoint.com/:x:/r/sites/fag-og-ytelser-familie-barnetrygd/Delte%20dokumenter/E%C3%98S/Valutakalkulator%202022.xlsm?d=w200955f53e1d4323ae72f9d1b15f617c&csf=1&web=1&e=w3OE5N"
-                                target="_blank"
-                            >
-                                Valutakalkulator
-                            </Link>
-                            .
-                        </StyledISKAlert>
+                        <Box marginBlock={'space-32 space-0'}>
+                            <LocalAlert status="warning">
+                                <LocalAlert.Header>
+                                    <LocalAlert.Title>
+                                        Manuell innhenting av valutakurs for Islandske kroner (ISK)
+                                    </LocalAlert.Title>
+                                </LocalAlert.Header>
+                                Systemet har ikke valutakurser for valutakursdatoer før 1. februar 2018. Disse må hentes
+                                fra{' '}
+                                <Link
+                                    href="https://navno.sharepoint.com/:x:/r/sites/fag-og-ytelser-familie-barnetrygd/Delte%20dokumenter/E%C3%98S/Valutakalkulator%202022.xlsm?d=w200955f53e1d4323ae72f9d1b15f617c&csf=1&web=1&e=w3OE5N"
+                                    target="_blank"
+                                >
+                                    Valutakalkulator
+                                </Link>
+                                .
+                            </LocalAlert>
+                        </Box>
                     )}
                 </StyledFieldset>
                 {!lesevisning && (

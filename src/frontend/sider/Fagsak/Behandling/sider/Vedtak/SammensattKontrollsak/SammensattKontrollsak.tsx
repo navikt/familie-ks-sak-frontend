@@ -1,20 +1,9 @@
 import { useState } from 'react';
 
-import styled from 'styled-components';
-
-import { Alert, Button, ErrorMessage, Textarea, VStack } from '@navikt/ds-react';
-import { Space24 } from '@navikt/ds-tokens/dist/tokens';
+import { Button, ErrorMessage, LocalAlert, Textarea, VStack } from '@navikt/ds-react';
 
 import { useSammensattKontrollsakContext } from './SammensattKontrollsakContext';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
-
-const StyledVStack = styled(VStack)`
-    margin-bottom: ${Space24};
-`;
-
-const StyledButton = styled(Button)`
-    align-self: start;
-`;
 
 export function SammensattKontrollsak() {
     const { vurderErLesevisning } = useBehandlingContext();
@@ -28,7 +17,7 @@ export function SammensattKontrollsak() {
     const erLesevisning = vurderErLesevisning();
 
     return (
-        <StyledVStack gap="space-20">
+        <VStack gap="space-20" marginBlock={'space-0 space-24'} align={'start'}>
             <Textarea
                 label="Fritekst til vedtaksbrev"
                 description="Her skal du skrive hvilke vurderinger som er gjort, hvilken informasjon som er lagt til grunn og hvilke hjemler som er brukt."
@@ -38,21 +27,24 @@ export function SammensattKontrollsak() {
                 readOnly={erLesevisning}
             />
             {fritekstErEndret && (
-                <Alert variant="warning" size="small">
-                    Du har ikke lagret dine siste endringer, og vil miste disse om du forlater siden uten å lagre.
-                </Alert>
+                <LocalAlert status="warning">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>Du har ikke lagret dine siste endringer</LocalAlert.Title>
+                    </LocalAlert.Header>
+                    <LocalAlert.Content>Du vil miste disse om du forlater siden uten å lagre.</LocalAlert.Content>
+                </LocalAlert>
             )}
-            {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+            {feilmelding && <ErrorMessage showIcon={true}>{feilmelding}</ErrorMessage>}
             {!erLesevisning && (
-                <StyledButton
+                <Button
                     onClick={() => opprettEllerOppdaterSammensattKontrollsak(fritekst)}
                     variant="primary"
                     size="small"
                     loading={false}
                 >
                     Lagre
-                </StyledButton>
+                </Button>
             )}
-        </StyledVStack>
+        </VStack>
     );
 }
