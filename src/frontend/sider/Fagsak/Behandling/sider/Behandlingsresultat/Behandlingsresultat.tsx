@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons';
 import { Alert, Button, ErrorMessage, ErrorSummary, Label } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import EndretUtbetalingAndelTabell from './endretUtbetaling/EndretUtbetalingAndelTabell';
 import KompetanseSkjema from './Eøs/Kompetanse/KompetanseSkjema';
@@ -21,16 +21,16 @@ import OvergangsordningAndelTabell from './OvergangsordningAndel/Overgangsordnin
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 import { useBehandlingContextsresultat } from './useBehandlingsresultat';
 import { useFagsakId } from '../../../../../hooks/useFagsakId';
+import { useOppdaterBehandlingsresultat } from '../../../../../hooks/useOppdaterBehandlingsresultat';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
-import { BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';
+import { BehandlingResultat, BehandlingSteg, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';
 import {
     type IRestKompetanse,
     type IRestUtenlandskPeriodeBeløp,
     type IRestValutakurs,
 } from '../../../../../typer/eøsPerioder';
 import { formaterIdent, slåSammenListeTilStreng } from '../../../../../utils/formatter';
-import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const EndretUtbetalingAndel = styled.div`
@@ -67,6 +67,7 @@ interface IBehandlingsresultatProps {
 }
 
 const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => {
+    const { settÅpenBehandling, vurderErLesevisning } = useBehandlingContext();
     const navigate = useNavigate();
     const fagsakId = useFagsakId();
 
@@ -80,11 +81,23 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
         personerMedUgyldigEtterbetalingsperiode,
     } = useBehandlingContextsresultat(åpenBehandling);
 
+    const {
+        mutate: oppdaterBehandlingsresultat,
+        isPending: oppdaterBehandlingsresultatIsPending,
+        error: oppdaterBehandlingsresultatError,
+    } = useOppdaterBehandlingsresultat({
+        onSuccess: behandling => {
+            settÅpenBehandling(byggSuksessRessurs(behandling));
+            if (behandling.resultat !== BehandlingResultat.AVSLÅTT) {
+                navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/simulering`);
+            } else {
+                navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/vedtak`);
+            }
+        },
+    });
+
     const { aktivEtikett, filterOgSorterAndelPersonerIGrunnlag, filterOgSorterGrunnlagPersonerMedAndeler } =
         useTidslinjeContext();
-
-    const { vurderErLesevisning, behandlingresultatNesteOnClick, behandlingsstegSubmitressurs } =
-        useBehandlingContext();
 
     const erLesevisning = vurderErLesevisning();
     const {
@@ -124,7 +137,7 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
 
     return (
         <Skjemasteg
-            senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
+            senderInn={oppdaterBehandlingsresultatIsPending}
             tittel="Behandlingsresultat"
             className="behandlingsresultat"
             forrigeOnClick={() => navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`)}
@@ -134,11 +147,11 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
                 } else if (harEøs && !erEøsInformasjonGyldig()) {
                     settVisFeilmeldinger(true);
                 } else {
-                    behandlingresultatNesteOnClick();
+                    oppdaterBehandlingsresultat({ behandlingId: åpenBehandling.behandlingId });
                 }
             }}
             maxWidthStyle={'80rem'}
-            feilmelding={hentFrontendFeilmelding(behandlingsstegSubmitressurs)}
+            feilmelding={oppdaterBehandlingsresultatError?.message}
             steg={BehandlingSteg.BEHANDLINGSRESULTAT}
             skalViseNesteKnapp={skalViseNesteKnapp}
         >
