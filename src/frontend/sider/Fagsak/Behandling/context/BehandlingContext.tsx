@@ -35,8 +35,6 @@ interface BehandlingContextValue {
     trinnPåBehandling: { [sideId: string]: ITrinn };
     behandling: IBehandling;
     behandlingsstegSubmitressurs: Ressurs<IBehandling>;
-    vilkårsvurderingNesteOnClick: () => void;
-    behandlingresultatNesteOnClick: () => void;
     settÅpenBehandling: (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak?: boolean) => void;
     foreslåVedtakNesteOnClick: (
         settVisModal: (visModal: boolean) => void,
@@ -54,12 +52,10 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
 
     useNavigerAutomatiskTilSideForBehandlingssteg({ behandling });
 
-    const {
-        submitRessurs: behandlingsstegSubmitressurs,
-        vilkårsvurderingNesteOnClick,
-        behandlingresultatNesteOnClick,
-        foreslåVedtakNesteOnClick,
-    } = useBehandlingssteg(settBehandlingRessurs, behandling);
+    const { submitRessurs: behandlingsstegSubmitressurs, foreslåVedtakNesteOnClick } = useBehandlingssteg(
+        settBehandlingRessurs,
+        behandling
+    );
 
     const {
         harInnloggetSaksbehandlerSkrivetilgang,
@@ -173,8 +169,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
                 trinnPåBehandling,
                 behandling,
                 behandlingsstegSubmitressurs,
-                vilkårsvurderingNesteOnClick,
-                behandlingresultatNesteOnClick,
                 foreslåVedtakNesteOnClick,
                 behandlingPåVent: behandling.behandlingPåVent,
                 settÅpenBehandling: settBehandlingRessurs,

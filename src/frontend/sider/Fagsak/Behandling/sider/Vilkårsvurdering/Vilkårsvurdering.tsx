@@ -3,25 +3,25 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { Alert, BodyShort, ErrorMessage, ErrorSummary, List } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderingITestmiljøKnapp';
 import { OppdaterRegisteropplysninger } from './OppdaterRegisteropplysninger';
 import { ManglendeSvalbardmerkingVarsel } from './Varsel/ManglendeSvalbardmerkingVarsel';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
+import { useOppdaterVilkårsvurdering } from '../../../../../hooks/useOppdaterVilkårsvurdering';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { BehandlingSteg, BehandlingÅrsak } from '../../../../../typer/behandling';
+import { defaultFunksjonellFeil } from '../../../../../typer/feilmeldinger';
 import { Datoformat, isoStringTilFormatertString } from '../../../../../utils/dato';
 import { erProd } from '../../../../../utils/miljø';
-import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { useFagsakContext } from '../../../FagsakContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 export function Vilkårsvurdering() {
     const { fagsak } = useFagsakContext();
-    const { behandling, vurderErLesevisning, vilkårsvurderingNesteOnClick, behandlingsstegSubmitressurs } =
-        useBehandlingContext();
+    const { behandling, settÅpenBehandling, vurderErLesevisning } = useBehandlingContext();
 
     const { vilkårsvurdering, feiloppsummeringFeil } = useVilkårsvurderingContext();
 
@@ -31,6 +31,17 @@ export function Vilkårsvurdering() {
 
     const navigate = useNavigate();
 
+    const {
+        mutate: oppdaterVilkårsvurdering,
+        isPending: oppdaterVilkårsvurderingIsPending,
+        error: oppdaterVilkårsvurderingError,
+    } = useOppdaterVilkårsvurdering({
+        onSuccess: behandling => {
+            settÅpenBehandling(byggSuksessRessurs(behandling));
+            navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/tilkjent-ytelse`);
+        },
+    });
+
     const uregistrerteBarn =
         behandling.søknadsgrunnlag?.barnaMedOpplysninger.filter(barn => !barn.erFolkeregistrert) ?? [];
 
@@ -39,8 +50,6 @@ export function Vilkårsvurdering() {
     }
 
     const erFeilISkjema = feiloppsummeringFeil.length > 0;
-
-    const skjemaFeilmelding = hentFrontendFeilmelding(behandlingsstegSubmitressurs);
 
     return (
         <Skjemasteg
@@ -53,13 +62,13 @@ export function Vilkårsvurdering() {
                 if (erLesevisning) {
                     navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/tilkjent-ytelse`);
                 } else if (!erFeilISkjema) {
-                    vilkårsvurderingNesteOnClick();
+                    oppdaterVilkårsvurdering({ behandlingId: behandling.behandlingId });
                 } else {
                     settVisFeilmeldinger(true);
                 }
             }}
             maxWidthStyle={'80rem'}
-            senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
+            senderInn={oppdaterVilkårsvurderingIsPending}
             steg={BehandlingSteg.VILKÅRSVURDERING}
         >
             <OppdaterRegisteropplysninger />
@@ -94,8 +103,8 @@ export function Vilkårsvurdering() {
                     ))}
                 </ErrorSummary>
             )}
-            {skjemaFeilmelding !== '' && skjemaFeilmelding !== undefined && (
-                <ErrorMessage>{skjemaFeilmelding}</ErrorMessage>
+            {oppdaterVilkårsvurderingError && (
+                <ErrorMessage>{oppdaterVilkårsvurderingError.message ?? defaultFunksjonellFeil}</ErrorMessage>
             )}
         </Skjemasteg>
     );
