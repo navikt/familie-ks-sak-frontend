@@ -7,11 +7,8 @@ import { Alert, BodyShort, Button, Fieldset, HGrid, Select, TextField, UNSAFE_Co
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
-import type { Currency } from '@navikt/land-verktoy';
 
-import { useFeatureToggles } from '../../../../../../../hooks/useFeatureToggles';
 import { type Valutakode, ValutaCombobox, EØS_VALUTAKODER } from '../../../../../../../komponenter/FlaggCombobox';
-import { EØS_CURRENCY, Valutavelger } from '../../../../../../../komponenter/Valutavelger/Valutavelger';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import {
@@ -20,7 +17,6 @@ import {
     UtenlandskPeriodeBeløpIntervall,
     utenlandskPeriodeBeløpIntervaller,
 } from '../../../../../../../typer/eøsPerioder';
-import { FeatureToggle } from '../../../../../../../typer/featureToggles';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
@@ -76,7 +72,6 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
     behandlingsÅrsakErOvergangsordning,
 }: IProps) => {
     const { vurderErLesevisning } = useBehandlingContext();
-    const toggles = useFeatureToggles();
 
     const lesevisning = vurderErLesevisning(true);
 
@@ -162,37 +157,20 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                             onChange={event => skjema.felter.beløp?.validerOgSettFelt(event.target.value)}
                             size={'medium'}
                         />
-                        {toggles[FeatureToggle.brukNyFlagCombobox] ? (
-                            <ValutaCombobox
-                                label={'Valuta'}
-                                value={skjema.felter.valutakode?.verdi as Valutakode}
-                                options={EØS_VALUTAKODER}
-                                onChange={value => {
-                                    if (value) {
-                                        skjema.felter.valutakode?.validerOgSettFelt(value);
-                                    } else {
-                                        skjema.felter.valutakode?.nullstill();
-                                    }
-                                }}
-                                readOnly={lesevisning}
-                                error={skjema.felter.valutakode?.feilmelding?.toString()}
-                            />
-                        ) : (
-                            <Valutavelger
-                                label={'Valuta'}
-                                value={skjema.felter.valutakode?.verdi}
-                                options={EØS_CURRENCY}
-                                onChange={(value: Currency) => {
-                                    if (value) {
-                                        skjema.felter.valutakode?.validerOgSettFelt(value.value);
-                                    } else {
-                                        skjema.felter.valutakode?.nullstill();
-                                    }
-                                }}
-                                readOnly={lesevisning}
-                                error={skjema.felter.valutakode?.feilmelding?.toString()}
-                            />
-                        )}
+                        <ValutaCombobox
+                            label={'Valuta'}
+                            value={skjema.felter.valutakode?.verdi as Valutakode}
+                            options={EØS_VALUTAKODER}
+                            onChange={value => {
+                                if (value) {
+                                    skjema.felter.valutakode?.validerOgSettFelt(value);
+                                } else {
+                                    skjema.felter.valutakode?.nullstill();
+                                }
+                            }}
+                            readOnly={lesevisning}
+                            error={skjema.felter.valutakode?.feilmelding?.toString()}
+                        />
                         <Select
                             label={'Intervall'}
                             readOnly={lesevisning}

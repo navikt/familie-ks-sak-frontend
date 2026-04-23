@@ -11,5 +11,4 @@ export enum FeatureToggle {
     skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
 
     // Release
-    brukNyFlagCombobox = 'familie-ks-sak.bruk-ny-flag-combobox',
 }
