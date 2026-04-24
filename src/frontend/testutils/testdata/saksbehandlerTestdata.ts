@@ -1,3 +1,6 @@
+import type { ISaksbehandler } from '@navikt/familie-typer';
+
+import { BehandlerRolle } from '../../typer/behandling';
 import type { Saksbehandler } from '../../typer/saksbehandler';
 
 export function lagSaksbehandler(saksbehandler: Partial<Saksbehandler> = {}): Saksbehandler {
@@ -10,7 +13,24 @@ export function lagSaksbehandler(saksbehandler: Partial<Saksbehandler> = {}): Sa
         lastName: 'Behandler',
         enhet: '0001',
         navIdent: 'A1',
+        rolle: BehandlerRolle.SAKSBEHANDLER,
+        harSkrivetilgang: true,
+        harSuperbrukertilgang: false,
         ...saksbehandler,
+    };
+}
+
+export function lagISaksbehandler(iSaksbehandler: Partial<ISaksbehandler> = {}): ISaksbehandler {
+    return {
+        displayName: 'Sak Behandler',
+        email: 'saksbehandler@nav.no',
+        firstName: 'Sak',
+        groups: ['c7e0b108-7ae6-432c-9ab4-946174c240c0'],
+        identifier: '30987654321',
+        lastName: 'Behandler',
+        enhet: '0001',
+        navIdent: 'A1',
+        ...iSaksbehandler,
     };
 }
 
