@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import { Route, Routes, useLocation } from 'react-router';
 
-import { useBrukerContext } from '../BrukerContext';
 import { useBehandlingContext } from './context/BehandlingContext';
 import Behandlingsresultat from './sider/Behandlingsresultat/Behandlingsresultat';
 import RegistrerSøknad from './sider/RegistrerSøknad/RegistrerSøknad';
@@ -20,7 +19,6 @@ import { hentSideHref } from '../../../utils/miljø';
 import { RefusjonEøsTabellProvider } from './sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
 
 export function BehandlingRouter() {
-    const { bruker } = useBrukerContext();
     const { behandling, leggTilBesøktSide } = useBehandlingContext();
 
     const location = useLocation();
@@ -73,7 +71,7 @@ export function BehandlingRouter() {
                     <FeilutbetaltValutaTabellProvider>
                         <RefusjonEøsTabellProvider>
                             <SammensattKontrollsakProvider åpenBehandling={behandling}>
-                                <Vedtak åpenBehandling={behandling} bruker={bruker} />
+                                <Vedtak />
                             </SammensattKontrollsakProvider>
                         </RefusjonEøsTabellProvider>
                     </FeilutbetaltValutaTabellProvider>

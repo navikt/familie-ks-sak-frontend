@@ -5,7 +5,6 @@ import { useLocation } from 'react-router';
 import { type Ressurs } from '@navikt/familie-typer';
 
 import { useHentOgSettBehandlingContext } from './HentOgSettBehandlingContext';
-import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './utils';
 import { useAppContext } from '../../../../context/AppContext';
 import { useNavigerAutomatiskTilSideForBehandlingssteg } from '../../../../hooks/useNavigerAutomatiskTilSideForBehandlingssteg';
@@ -34,14 +33,7 @@ interface BehandlingContextValue {
     søkersMålform: Målform;
     trinnPåBehandling: { [sideId: string]: ITrinn };
     behandling: IBehandling;
-    behandlingsstegSubmitressurs: Ressurs<IBehandling>;
     settÅpenBehandling: (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak?: boolean) => void;
-    foreslåVedtakNesteOnClick: (
-        settVisModal: (visModal: boolean) => void,
-        erUlagretNyFeilutbetaltValuta: boolean,
-        erUlagretNyRefusjonEøsPeriode: boolean,
-        erSammensattKontrollsak: boolean
-    ) => void;
     behandlingPåVent: IBehandlingPåVent | undefined;
 }
 
@@ -51,11 +43,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
     const { settBehandlingRessurs } = useHentOgSettBehandlingContext();
 
     useNavigerAutomatiskTilSideForBehandlingssteg({ behandling });
-
-    const { submitRessurs: behandlingsstegSubmitressurs, foreslåVedtakNesteOnClick } = useBehandlingssteg(
-        settBehandlingRessurs,
-        behandling
-    );
 
     const {
         harInnloggetSaksbehandlerSkrivetilgang,
@@ -168,8 +155,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
                 søkersMålform,
                 trinnPåBehandling,
                 behandling,
-                behandlingsstegSubmitressurs,
-                foreslåVedtakNesteOnClick,
                 behandlingPåVent: behandling.behandlingPåVent,
                 settÅpenBehandling: settBehandlingRessurs,
             }}
