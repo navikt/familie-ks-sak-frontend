@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, Label, Radio, RadioGroup, Select, Textarea } from '@navikt/ds-react';
-import { BorderAccent, BorderNeutral, BorderWarning } from '@navikt/ds-tokens/dist/tokens';
+import { BorderNeutral, TextInfoSubtle, TextWarningSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 import AvslagSkjema from './AvslagSkjema';
 import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
@@ -29,9 +29,9 @@ export const FieldsetForVilkårSkjema = styled(Fieldset)<{
             if (props.$lesevisning) {
                 return BorderNeutral;
             } else if (props.$ikkeVurdert) {
-                return BorderWarning;
+                return TextWarningSubtle;
             }
-            return BorderAccent;
+            return TextInfoSubtle;
         }};
     padding-left: 2rem;
 `;
