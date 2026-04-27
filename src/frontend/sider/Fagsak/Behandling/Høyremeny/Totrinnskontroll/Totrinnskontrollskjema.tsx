@@ -6,7 +6,7 @@ import { BodyShort, Button, Detail, Fieldset, Heading, HStack, Radio, RadioGroup
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useAppContext } from '../../../../../context/AppContext';
+import { useSaksbehandler } from '../../../../../hooks/useSaksbehandler';
 import ØyeGrå from '../../../../../ikoner/ØyeGrå';
 import ØyeGrønn from '../../../../../ikoner/ØyeGrønn';
 import ØyeRød from '../../../../../ikoner/ØyeRød';
@@ -28,7 +28,7 @@ const StyledButton = styled(Button)`
 
 export function Totrinnskontrollskjema({ innsendtVedtak, sendInnVedtak }: Props) {
     const { behandling, trinnPåBehandling } = useBehandlingContext();
-    const { innloggetSaksbehandler } = useAppContext();
+    const saksbehandler = useSaksbehandler();
 
     const [beslutning, settBeslutning] = useState<TotrinnskontrollBeslutning>(TotrinnskontrollBeslutning.IKKE_VURDERT);
     const [begrunnelse, settBegrunnelse] = useState<string>('');
@@ -37,10 +37,10 @@ export function Totrinnskontrollskjema({ innsendtVedtak, sendInnVedtak }: Props)
 
     const totrinnskontroll = behandling.totrinnskontroll;
 
-    const saksbehandler = totrinnskontroll?.saksbehandler ?? 'UKJENT SAKSBEHANDLER';
+    const totrinnskontrollSaksbehandler = totrinnskontroll?.saksbehandler ?? 'UKJENT SAKSBEHANDLER';
     const opprettetTidspunkt = totrinnskontroll?.opprettetTidspunkt ?? undefined;
 
-    const egetVedtak = totrinnskontroll?.saksbehandlerId === innloggetSaksbehandler?.navIdent;
+    const egetVedtak = totrinnskontroll?.saksbehandlerId === saksbehandler.navIdent;
 
     return (
         <Fieldset
@@ -63,7 +63,7 @@ export function Totrinnskontrollskjema({ innsendtVedtak, sendInnVedtak }: Props)
                             defaultString: 'UKJENT OPPRETTELSESTIDSPUNKT',
                         })}
                     </BodyShort>
-                    <BodyShort>{saksbehandler}</BodyShort>
+                    <BodyShort>{totrinnskontrollSaksbehandler}</BodyShort>
                     <br />
                     <Detail>Vedtaket er sendt til godkjenning</Detail>
                 </div>

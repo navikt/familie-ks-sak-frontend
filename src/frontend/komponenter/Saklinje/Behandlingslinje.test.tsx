@@ -3,8 +3,6 @@ import type { PropsWithChildren } from 'react';
 import { Route, Routes } from 'react-router';
 import { describe, expect, test } from 'vitest';
 
-import type { ISaksbehandler } from '@navikt/familie-typer';
-
 import { Behandlingslinje } from './Behandlingslinje';
 import { BehandlingProvider } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '../../sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
@@ -16,9 +14,10 @@ import { lagSaksbehandler } from '../../testutils/testdata/saksbehandlerTestdata
 import { render, TestProviders } from '../../testutils/testrender';
 import type { IBehandling } from '../../typer/behandling';
 import type { IMinimalFagsak } from '../../typer/fagsak';
+import type { Saksbehandler } from '../../typer/saksbehandler';
 
 interface WrapperProps extends PropsWithChildren {
-    saksbehandler?: ISaksbehandler;
+    saksbehandler?: Saksbehandler;
     fagsak?: IMinimalFagsak;
     behandling?: IBehandling;
 }

@@ -126,7 +126,7 @@ const OppgaveList = () => {
                             <Table.DataCell>
                                 <OppgavelisteSaksbehandler
                                     oppgave={rad.tilordnetRessurs.oppg}
-                                    innloggetSaksbehandler={rad.tilordnetRessurs.innloggetSaksbehandler}
+                                    saksbehandler={rad.tilordnetRessurs.saksbehandler}
                                 />
                             </Table.DataCell>
                             <Table.DataCell>

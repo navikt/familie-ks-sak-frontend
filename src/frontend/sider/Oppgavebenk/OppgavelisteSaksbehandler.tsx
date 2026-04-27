@@ -1,20 +1,20 @@
 import { useEffect, useRef } from 'react';
 
-import { Alert, BodyShort, Button, HGrid } from '@navikt/ds-react';
-import type { ISaksbehandler } from '@navikt/familie-typer';
+import { BodyShort, Button, HGrid } from '@navikt/ds-react';
 
 import { useOppgavebenkContext } from './OppgavebenkContext';
 import { useAppContext } from '../../context/AppContext';
 import type { IOppgave } from '../../typer/oppgave';
 import { OppgavetypeFilter } from '../../typer/oppgave';
+import type { Saksbehandler } from '../../typer/saksbehandler';
 import { hentFnrFraOppgaveIdenter } from '../../utils/oppgave';
 
 interface IOppgavelisteSaksbehandler {
     oppgave: IOppgave;
-    innloggetSaksbehandler?: ISaksbehandler;
+    saksbehandler: Saksbehandler;
 }
 
-const OppgavelisteSaksbehandler = ({ oppgave, innloggetSaksbehandler }: IOppgavelisteSaksbehandler) => {
+const OppgavelisteSaksbehandler = ({ oppgave, saksbehandler }: IOppgavelisteSaksbehandler) => {
     const { fordelOppgave, tilbakestillFordelingPåOppgave } = useOppgavebenkContext();
     const { sjekkTilgang } = useAppContext();
     const oppgaveRef = useRef<IOppgave | null>(null);
@@ -25,10 +25,6 @@ const OppgavelisteSaksbehandler = ({ oppgave, innloggetSaksbehandler }: IOppgave
         }
         oppgaveRef.current = oppgave;
     }, [oppgave]);
-
-    if (innloggetSaksbehandler == null) {
-        return <Alert variant="error">Klarte ikke hente innlogget saksbehandler</Alert>;
-    }
 
     const oppgaveTypeErStøttet =
         [
@@ -70,7 +66,7 @@ const OppgavelisteSaksbehandler = ({ oppgave, innloggetSaksbehandler }: IOppgave
                         const brukerident = hentFnrFraOppgaveIdenter(oppgave.identer);
 
                         if (!brukerident || (brukerident && (await sjekkTilgang(brukerident)))) {
-                            fordelOppgave(oppgave, innloggetSaksbehandler?.navIdent);
+                            fordelOppgave(oppgave, saksbehandler.navIdent);
                         }
                     }}
                     children={'Tildel meg'}
