@@ -7,8 +7,7 @@ import { BodyShort, Table } from '@navikt/ds-react';
 
 import { vilkårFeilmeldingId } from './VilkårTabell';
 import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
-import type { IVilkårResultat } from '../../../../../../typer/vilkår';
-import { uiResultat } from '../../../../../../typer/vilkår';
+import { type IVilkårResultat, uiResultat } from '../../../../../../typer/vilkår';
 import {
     Datoformat,
     isoDatoPeriodeTilFormatertString,

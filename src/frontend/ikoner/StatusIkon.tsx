@@ -20,25 +20,25 @@ export enum Status {
 }
 
 const OkIkon = styled(CheckmarkCircleFillIcon)`
-    color: var(--ax-success-600);
+    color: var(--ax-text-success-subtle);
     font-size: 1.5rem;
     min-width: 1.5rem;
 `;
 
 const FeilIkon = styled(XMarkOctagonFillIcon)`
-    color: var(--ax-danger-700);
+    color: var(--ax-text-danger-subtle);
     font-size: 1.5rem;
     min-width: 1.5rem;
 `;
 
 const AdvarselIkon = styled(ExclamationmarkTriangleFillIcon)`
-    color: var(--ax-warning-500);
+    color: var(--ax-text-warning-subtle);
     font-size: 1.5rem;
     min-width: 1.5rem;
 `;
 
 const InfoIkon = styled(InformationSquareFillIcon)`
-    color: var(--ax-info-700);
+    color: var(--ax-text-info-subtle);
     font-size: 1.5rem;
     min-width: 1.5rem;
 `;
