@@ -8,7 +8,7 @@ import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import styles from './VilkårsvurderingSkjema.module.css';
-import PersonInformasjon from '../../../../../komponenter/PersonInformasjon/PersonInformasjon';
+import { PersonInformasjon } from '../../../../../komponenter/PersonInformasjon/PersonInformasjon';
 import { PersonType } from '../../../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../../../typer/vilkår';
 import { annenVurderingConfig, Resultat, vilkårConfig } from '../../../../../typer/vilkår';
@@ -55,7 +55,7 @@ const VilkårsvurderingSkjema = () => {
                             justify={'space-between'}
                             wrap={false}
                         >
-                            <PersonInformasjon person={personResultat.person} somOverskrift />
+                            <PersonInformasjon person={personResultat.person} />
                             <Button
                                 id={`vis-skjul-vilkårsvurdering-${index}_${personResultat.person.fødselsdato}}`}
                                 variant="tertiary"
