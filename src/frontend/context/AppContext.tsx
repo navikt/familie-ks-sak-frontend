@@ -15,7 +15,6 @@ import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useAuthContext } from './AuthContext';
 import { useFeatureToggles } from '../hooks/useFeatureToggles';
 import { useSaksbehandler } from '../hooks/useSaksbehandler';
 import type { IToast, ToastTyper } from '../komponenter/Toast/typer';
@@ -42,7 +41,6 @@ const initalState: IModal = {
 };
 
 interface AppContextValue {
-    autentisert: boolean;
     lukkModal: () => void;
     appInfoModal: IModal;
     settToast: (toastId: ToastTyper, toast: IToast) => void;
@@ -61,7 +59,6 @@ interface AppContextValue {
 const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 const AppProvider = (props: PropsWithChildren) => {
-    const { autentisert } = useAuthContext();
     const { request } = useHttp();
     const toggles = useFeatureToggles();
 
@@ -119,7 +116,6 @@ const AppProvider = (props: PropsWithChildren) => {
     return (
         <AppContext.Provider
             value={{
-                autentisert,
                 lukkModal,
                 appInfoModal,
                 settToast: (toastId: ToastTyper, toast: IToast) =>

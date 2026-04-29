@@ -5,6 +5,7 @@ import { useHttp } from '@navikt/familie-http';
 
 import Styles from './Container.module.css';
 import { useAppContext } from './context/AppContext';
+import { useAuthContext } from './context/AuthContext';
 import { HeaderMedSøk } from './komponenter/HeaderMedSøk/HeaderMedSøk';
 import AppInfoModal from './komponenter/Modal/AppInfoModal';
 import OpprettFagsakModal from './komponenter/Modal/Fagsak/OpprettFagsakModal';
@@ -19,7 +20,8 @@ import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalf
 import { Oppgavebenk } from './sider/Oppgavebenk/Oppgavebenk';
 
 export function Container() {
-    const { autentisert, appInfoModal } = useAppContext();
+    const { autentisert } = useAuthContext();
+    const { appInfoModal } = useAppContext();
     const { systemetLaster } = useHttp();
 
     return (
