@@ -6,13 +6,11 @@ import IkonTotrinnskontroll from './Ikoner/IkonTotrinnskontroll';
 import { Tab } from './TabContextProvider';
 import styles from './Tabvelger.module.css';
 import { useSkalViseTotrinnskontroll } from './useSkalViseTotrinnskontroll';
-import { useBehandlingContext } from '../context/BehandlingContext';
+import { useErLesevisning } from '../../../../hooks/useErLesevisning';
 
 export function Tabvelger() {
-    const { vurderErLesevisning } = useBehandlingContext();
+    const erLesevisning = useErLesevisning();
     const skalViseTotrinnskontroll = useSkalViseTotrinnskontroll();
-
-    const erLesevisning = vurderErLesevisning();
 
     return (
         <Tabs.List className={styles.tabsListe}>
