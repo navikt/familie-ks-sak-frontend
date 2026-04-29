@@ -1,88 +1,50 @@
-import styled from 'styled-components';
-
 import { BodyShort, CopyButton, Heading, HStack } from '@navikt/ds-react';
 
-import { useBrukerContext } from '../../sider/Fagsak/BrukerContext';
+import { useBruker } from '../../hooks/useBruker';
 import { type IGrunnlagPerson, type IPersonInfo, personTypeMap } from '../../typer/person';
 import { formaterIdent, hentAlder } from '../../utils/formatter';
-import { erAdresseBeskyttet } from '../../utils/validators';
 import DødsfallTag from '../DødsfallTag';
 import { PersonIkon } from '../PersonIkon';
+import Styles from './PersonInformasjon.module.css';
+import { erAdresseBeskyttet } from '../../utils/validators';
 
-interface IProps {
-    person: IGrunnlagPerson;
-    somOverskrift?: boolean;
-    width?: string;
-}
-
-const HeadingUtenOverflow = styled(Heading)`
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const hentAdresseBeskyttelseGradering = (bruker: IPersonInfo, personIdent: string): boolean | undefined => {
-    const forelderBarnRelasjoner = bruker.forelderBarnRelasjon;
-    const forelderBarnRelasjon = forelderBarnRelasjoner.find(rel => rel.personIdent === personIdent);
-
+function hentAdresseBeskyttelseGradering(bruker: IPersonInfo, personIdent: string): boolean | undefined {
     if (bruker.personIdent === personIdent) {
         return erAdresseBeskyttet(bruker.adressebeskyttelseGradering);
-    } else if (forelderBarnRelasjon?.personIdent === personIdent) {
+    }
+    const forelderBarnRelasjon = bruker.forelderBarnRelasjon.find(rel => rel.personIdent === personIdent);
+    if (forelderBarnRelasjon?.personIdent === personIdent) {
         return erAdresseBeskyttet(forelderBarnRelasjon.adressebeskyttelseGradering);
     }
-};
+}
 
-const Skillelinje = ({ erHeading = false }: { erHeading?: boolean }) => {
+function Skillelinje({ erHeading = false }: { erHeading?: boolean }) {
     if (erHeading) {
         return (
-            <Heading level="2" size="medium" as="span">
+            <Heading level={'2'} size={'medium'} as={'span'}>
                 |
             </Heading>
         );
     }
     return <BodyShort>|</BodyShort>;
-};
+}
 
-const PersonInformasjon = ({ person, somOverskrift = false }: IProps) => {
+interface Props {
+    person: IGrunnlagPerson;
+}
+
+export function PersonInformasjon({ person }: Props) {
+    const bruker = useBruker();
+
     const alder = hentAlder(person.fødselsdato);
     const navnOgAlder = `${person.navn} (${alder} år)`;
     const formatertIdent = formaterIdent(person.personIdent);
-    const { bruker } = useBrukerContext();
 
     const erAdresseBeskyttet = hentAdresseBeskyttelseGradering(bruker, person.personIdent);
     const erEgenAnsatt = bruker.erEgenAnsatt;
 
-    if (somOverskrift) {
-        return (
-            <HStack gap="space-24" wrap={false} align="center">
-                <PersonIkon
-                    erBarn={alder < 18}
-                    kjønn={person.kjønn}
-                    størrelse={'m'}
-                    erAdresseBeskyttet={erAdresseBeskyttet}
-                    erEgenAnsatt={erEgenAnsatt}
-                />
-                <HStack gap="space-24" align="center" wrap={false}>
-                    <HeadingUtenOverflow level="2" size="medium" title={navnOgAlder}>
-                        {navnOgAlder}
-                    </HeadingUtenOverflow>
-                    <Skillelinje erHeading />
-                    <HStack gap="space-4" wrap={false} align="center">
-                        <Heading level="2" size="medium" as="span">
-                            {formatertIdent}
-                        </Heading>
-                        <CopyButton size="small" copyText={person.personIdent} />
-                    </HStack>
-                    <Skillelinje erHeading />
-                    <Heading level="2" size="medium" as="span">{`${personTypeMap[person.type]} `}</Heading>
-                    {person.dødsfallDato?.length && <DødsfallTag dødsfallDato={person.dødsfallDato} />}
-                </HStack>
-            </HStack>
-        );
-    }
-
     return (
-        <HStack gap="space-8" align="center" wrap={false}>
+        <HStack gap={'space-24'} wrap={false} align={'center'}>
             <PersonIkon
                 erBarn={alder < 18}
                 kjønn={person.kjønn}
@@ -90,18 +52,21 @@ const PersonInformasjon = ({ person, somOverskrift = false }: IProps) => {
                 erAdresseBeskyttet={erAdresseBeskyttet}
                 erEgenAnsatt={erEgenAnsatt}
             />
-            <BodyShort className={'navn'} title={navnOgAlder}>
-                {navnOgAlder}
-            </BodyShort>
-            <Skillelinje />
-            <HStack gap="space-4" wrap={false} align="center">
-                <BodyShort>{formatertIdent}</BodyShort>
-                <CopyButton size="small" copyText={person.personIdent} />
+            <HStack gap={'space-24'} align={'center'} wrap={false}>
+                <Heading level={'2'} size={'medium'} title={navnOgAlder} className={Styles.headingUtenOverflow}>
+                    {navnOgAlder}
+                </Heading>
+                <Skillelinje erHeading={true} />
+                <HStack gap={'space-4'} align={'center'} wrap={false}>
+                    <Heading level={'2'} size={'medium'} as={'span'}>
+                        {formatertIdent}
+                    </Heading>
+                    <CopyButton size={'small'} copyText={person.personIdent} />
+                </HStack>
+                <Skillelinje erHeading={true} />
+                <Heading level={'2'} size={'medium'} as={'span'}>{`${personTypeMap[person.type]}`}</Heading>
+                {person.dødsfallDato?.length && <DødsfallTag dødsfallDato={person.dødsfallDato} />}
             </HStack>
-            <Skillelinje />
-            <BodyShort>{`${personTypeMap[person.type]} `}</BodyShort>
         </HStack>
     );
-};
-
-export default PersonInformasjon;
+}
