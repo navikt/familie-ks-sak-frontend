@@ -11,6 +11,7 @@ export function lagFagsak(fagsak?: Partial<IMinimalFagsak>): IMinimalFagsak {
         løpendeKategori: undefined,
         behandlinger: [],
         gjeldendeUtbetalingsperioder: [],
+        finnesStrengtFortroligPersonIFagsak: false,
         ...fagsak,
     };
 }

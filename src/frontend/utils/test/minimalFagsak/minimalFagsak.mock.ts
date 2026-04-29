@@ -15,6 +15,7 @@ interface IMockMinimalFagsak {
     søkerFødselsnummer?: string;
     underBehandling?: boolean;
     løpendeKategori?: BehandlingKategori;
+    finnesStrengtFortroligPersonIFagsak?: boolean;
 }
 
 export const mockMinimalFagsak = ({
@@ -27,6 +28,7 @@ export const mockMinimalFagsak = ({
     søkerFødselsnummer = '12345678910',
     underBehandling = false,
     løpendeKategori = BehandlingKategori.NASJONAL,
+    finnesStrengtFortroligPersonIFagsak = false,
 }: IMockMinimalFagsak = {}): IMinimalFagsak => ({
     behandlinger,
     id,
@@ -37,4 +39,5 @@ export const mockMinimalFagsak = ({
     underBehandling,
     gjeldendeUtbetalingsperioder,
     løpendeKategori,
+    finnesStrengtFortroligPersonIFagsak,
 });
