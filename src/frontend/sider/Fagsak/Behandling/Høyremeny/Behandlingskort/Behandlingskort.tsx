@@ -1,19 +1,9 @@
-import styled from 'styled-components';
+import { BodyShort, Box, Heading, HStack, VStack } from '@navikt/ds-react';
+import { TextDangerSubtle, TextInfoSubtle, TextNeutral, TextSuccessSubtle } from '@navikt/ds-tokens/dist/tokens';
 
-import { BodyShort, Heading } from '@navikt/ds-react';
-import {
-    BorderAccent,
-    BorderDanger,
-    BorderNeutral,
-    BorderNeutralSubtle,
-    BorderSuccess,
-    TextDangerSubtle,
-    TextInfoSubtle,
-    TextNeutral,
-    TextSuccessSubtle,
-} from '@navikt/ds-tokens/dist/tokens';
-
-import Informasjonsbolk from './Informasjonsbolk';
+import { Informasjonsbolk } from './Informasjonsbolk';
+import { useBehandling } from '../../../../../hooks/useBehandling';
+import { useFagsak } from '../../../../../hooks/useFagsak';
 import {
     BehandlingResultat,
     behandlingsresultater,
@@ -22,128 +12,119 @@ import {
     behandlingÅrsak,
     erBehandlingHenlagt,
 } from '../../../../../typer/behandling';
+import { behandlingKategori } from '../../../../../typer/behandlingstema';
 import { Datoformat, isoStringTilFormatertString } from '../../../../../utils/dato';
-import { useFagsakContext } from '../../../FagsakContext';
-import { sakstype } from '../../../Saksoversikt/Saksoversikt';
-import { useBehandlingContext } from '../../context/BehandlingContext';
 
-const hentResultatfarge = (behandlingResultat: BehandlingResultat) => {
+function hentResultatfarge(behandlingResultat: BehandlingResultat) {
     if (erBehandlingHenlagt(behandlingResultat)) {
-        return BorderNeutralSubtle;
+        return 'neutral-subtle';
     }
-
     switch (behandlingResultat) {
         case BehandlingResultat.INNVILGET:
         case BehandlingResultat.DELVIS_INNVILGET:
         case BehandlingResultat.FORTSATT_INNVILGET:
-            return BorderSuccess;
-        case (BehandlingResultat.ENDRET_UTBETALING, BehandlingResultat.ENDRET_UTEN_UTBETALING):
-            return BorderAccent;
+            return 'success';
+        case BehandlingResultat.ENDRET_UTBETALING:
+        case BehandlingResultat.ENDRET_UTEN_UTBETALING:
+            return 'accent';
         case BehandlingResultat.AVSLÅTT:
-        case (BehandlingResultat.OPPHØRT, BehandlingResultat.FORTSATT_OPPHØRT):
-            return BorderDanger;
+        case BehandlingResultat.OPPHØRT:
+        case BehandlingResultat.FORTSATT_OPPHØRT:
+            return 'danger';
         case BehandlingResultat.IKKE_VURDERT:
-            return BorderNeutralSubtle;
+            return 'neutral-subtle';
         default:
-            return BorderNeutral;
+            return 'neutral';
     }
-};
+}
 
-const hentResultatfargeTekst = (behandlingResultat: BehandlingResultat) => {
+function hentResultatfargeTekst(behandlingResultat: BehandlingResultat) {
     if (erBehandlingHenlagt(behandlingResultat)) {
         return TextNeutral;
     }
-
     switch (behandlingResultat) {
         case BehandlingResultat.INNVILGET:
         case BehandlingResultat.DELVIS_INNVILGET:
         case BehandlingResultat.FORTSATT_INNVILGET:
             return TextSuccessSubtle;
-        case (BehandlingResultat.ENDRET_UTBETALING, BehandlingResultat.ENDRET_UTEN_UTBETALING):
+        case BehandlingResultat.ENDRET_UTBETALING:
+        case BehandlingResultat.ENDRET_UTEN_UTBETALING:
             return TextInfoSubtle;
         case BehandlingResultat.AVSLÅTT:
-        case (BehandlingResultat.OPPHØRT, BehandlingResultat.FORTSATT_OPPHØRT):
+        case BehandlingResultat.OPPHØRT:
+        case BehandlingResultat.FORTSATT_OPPHØRT:
             return TextDangerSubtle;
         default:
             return TextNeutral;
     }
-};
-
-const Container = styled.div<{ $behandlingResultat: BehandlingResultat }>`
-    border: 1px solid ${BorderNeutralSubtle};
-    border-left: 0.5rem solid ${BorderNeutralSubtle};
-    border-radius: 0.25rem;
-    padding: 0.5rem;
-    margin: 0.5rem;
-    border-color: ${({ $behandlingResultat }) => hentResultatfarge($behandlingResultat)};
-`;
-
-const StyledHeading = styled(Heading)`
-    font-size: 1rem;
-    margin-bottom: 0.2rem;
-`;
-
-const StyledHr = styled.hr`
-    border: none;
-    border-bottom: 1px solid ${BorderNeutralSubtle};
-`;
+}
 
 export function Behandlingskort() {
-    const { fagsak } = useFagsakContext();
-    const { behandling } = useBehandlingContext();
+    const fagsak = useFagsak();
+    const behandling = useBehandling();
 
-    const behandlinger = fagsak.behandlinger ?? [];
-
+    const behandlinger = fagsak.behandlinger;
     const antallBehandlinger = behandlinger.length;
     const behandlingIndex = behandlinger.findIndex(b => b.behandlingId === behandling.behandlingId) + 1;
 
-    const tittel = `${behandlingstyper[behandling.type].navn} (${behandlingIndex}/${antallBehandlinger}) - ${sakstype(behandling).toLowerCase()}`;
-
     return (
-        <Container $behandlingResultat={behandling.resultat}>
-            <StyledHeading size={'small'} level={'2'}>
-                {tittel}
-            </StyledHeading>
-            <BodyShort>{behandlingÅrsak[behandling.årsak]}</BodyShort>
-            <StyledHr />
-            <Informasjonsbolk label="Behandlingsstatus" tekst={behandlingsstatuser[behandling.status]} />
-            <Informasjonsbolk
-                label="Resultat"
-                tekst={behandlingsresultater[behandling.resultat]}
-                tekstFarge={hentResultatfargeTekst(behandling.resultat)}
-            />
-            <div>
-                {behandling.søknadMottattDato && (
+        <Box
+            padding="space-8"
+            borderColor={hentResultatfarge(behandling.resultat)}
+            borderWidth="1 1 1 5"
+            borderRadius="4"
+            margin="space-8"
+        >
+            <Box borderWidth="0 0 1 0" borderColor="neutral-subtle">
+                <VStack gap="space-4" marginBlock="space-0 space-8">
+                    <HStack gap={'space-4'}>
+                        <Heading size={'xsmall'} level={'2'}>
+                            {`${behandlingstyper[behandling.type].navn} (${behandlingIndex}/${antallBehandlinger})`}
+                        </Heading>
+                        <BodyShort>{behandlingKategori[behandling.kategori]}</BodyShort>
+                    </HStack>
+                    <BodyShort>{behandlingÅrsak[behandling.årsak]}</BodyShort>
+                </VStack>
+            </Box>
+            <VStack gap="space-16" marginBlock="space-12 space-0">
+                <Informasjonsbolk label="Behandlingsstatus" tekst={behandlingsstatuser[behandling.status]} />
+                <Informasjonsbolk
+                    label="Resultat"
+                    tekst={behandlingsresultater[behandling.resultat]}
+                    tekstFarge={hentResultatfargeTekst(behandling.resultat)}
+                />
+                <Box>
+                    {behandling.søknadMottattDato && (
+                        <Informasjonsbolk
+                            label="Søknad mottatt"
+                            tekst={isoStringTilFormatertString({
+                                isoString: behandling.søknadMottattDato,
+                                tilFormat: Datoformat.DATO,
+                            })}
+                        />
+                    )}
                     <Informasjonsbolk
-                        label="Søknad mottatt"
+                        label="Opprettet"
                         tekst={isoStringTilFormatertString({
-                            isoString: behandling.søknadMottattDato,
+                            isoString: behandling.opprettetTidspunkt,
                             tilFormat: Datoformat.DATO,
                         })}
                     />
-                )}
+                    <Informasjonsbolk
+                        label="Vedtaksdato"
+                        tekst={isoStringTilFormatertString({
+                            isoString: behandling.vedtak?.vedtaksdato,
+                            tilFormat: Datoformat.DATO,
+                            defaultString: 'Ikke satt',
+                        })}
+                    />
+                </Box>
                 <Informasjonsbolk
-                    label="Opprettet"
-                    tekst={isoStringTilFormatertString({
-                        isoString: behandling.opprettetTidspunkt,
-                        tilFormat: Datoformat.DATO,
-                    })}
+                    label="Enhet"
+                    tekst={behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId}
+                    tekstHover={behandling.arbeidsfordelingPåBehandling.behandlendeEnhetNavn}
                 />
-                <Informasjonsbolk
-                    label="Vedtaksdato"
-                    tekst={isoStringTilFormatertString({
-                        isoString: behandling.vedtak?.vedtaksdato,
-                        tilFormat: Datoformat.DATO,
-                        defaultString: 'Ikke satt',
-                    })}
-                />
-            </div>
-
-            <Informasjonsbolk
-                label="Enhet"
-                tekst={behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId}
-                tekstHover={behandling.arbeidsfordelingPåBehandling.behandlendeEnhetNavn}
-            />
-        </Container>
+            </VStack>
+        </Box>
     );
 }

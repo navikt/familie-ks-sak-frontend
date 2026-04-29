@@ -332,7 +332,7 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                 <Button
                     id={'forhandsvis-vedtaksbrev'}
                     variant={'secondary'}
-                    size={'medium'}
+                    size={'small'}
                     disabled={skjemaErLåst}
                     onClick={() => {
                         if (behandling.behandlingId === undefined) {
@@ -351,7 +351,7 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                 </Button>
                 <Button
                     variant={'primary'}
-                    size={'medium'}
+                    size={'small'}
                     loading={skjema.submitRessurs.status === RessursStatus.HENTER}
                     disabled={skjemaErLåst}
                     onClick={() => {
