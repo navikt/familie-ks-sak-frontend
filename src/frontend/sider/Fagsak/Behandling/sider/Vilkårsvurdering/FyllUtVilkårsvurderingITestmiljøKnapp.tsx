@@ -34,5 +34,9 @@ export const FyllUtVilkårsvurderingITestmiljøKnapp = ({ behandlingId }: IProps
         });
     };
 
-    return <StyledButton onClick={fyllUtSatsendring}>Fyll ut vilkårsvurdering</StyledButton>;
+    return (
+        <StyledButton size={'small'} onClick={fyllUtSatsendring}>
+            Fyll ut vilkårsvurdering
+        </StyledButton>
+    );
 };
