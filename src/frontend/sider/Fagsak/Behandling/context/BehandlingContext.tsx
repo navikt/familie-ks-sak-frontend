@@ -28,6 +28,9 @@ interface Props extends PropsWithChildren {
 }
 
 interface BehandlingContextValue {
+    /**
+     * @Deprecated - Erstattes av {@link useErLesevisning}.
+     */
     vurderErLesevisning: (sjekkTilgangTilEnhet?: boolean, skalIgnorereOmEnhetErMidlertidig?: boolean) => boolean;
     leggTilBesøktSide: (besøktSide: SideId) => void;
     settIkkeKontrollerteSiderTilManglerKontroll: () => void;
@@ -112,6 +115,9 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
         );
     };
 
+    /**
+     * @Deprecated - Erstattes av {@link useErLesevisning}.
+     */
     const vurderErLesevisning = (sjekkTilgangTilEnhet = true, skalIgnorereOmEnhetErMidlertidig = false): boolean => {
         if (behandling.behandlingPåVent || behandling.status === BehandlingStatus.SATT_PÅ_MASKINELL_VENT) {
             return true;
