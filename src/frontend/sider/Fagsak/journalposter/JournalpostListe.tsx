@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
-import { Alert, BodyShort, Heading, Table } from '@navikt/ds-react';
+import { BodyShort, GlobalAlert, Heading, Table } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import type { IJournalpost, Ressurs } from '@navikt/familie-typer';
 import {
@@ -169,7 +169,11 @@ export function JournalpostListe() {
     ) {
         return (
             <Container>
-                <Alert variant="error">Klarte ikke å hente inn journalposter for fagsak.</Alert>
+                <GlobalAlert status={'error'}>
+                    <GlobalAlert.Header>
+                        <GlobalAlert.Title>Klarte ikke å hente inn journalposter for fagsak.</GlobalAlert.Title>
+                    </GlobalAlert.Header>
+                </GlobalAlert>
             </Container>
         );
     }

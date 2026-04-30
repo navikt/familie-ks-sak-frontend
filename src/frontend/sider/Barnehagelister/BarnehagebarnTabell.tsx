@@ -1,6 +1,6 @@
 import { Link as ReactRouterLink } from 'react-router';
 
-import { Alert, Box, HStack, Link, Loader, Table } from '@navikt/ds-react';
+import { Box, HStack, Link, Loader, LocalAlert, Table } from '@navikt/ds-react';
 
 import { useHentBarnehagebarn } from '../../hooks/useHentBarnehagebarn';
 import type { BarnehagebarnRequestParams } from '../../typer/barnehagebarn';
@@ -130,13 +130,21 @@ export const BarnehagebarnTabell = (props: BarnehagebarnTabellProps) => {
 
             {error && (
                 <Box margin={'space-8'}>
-                    <Alert variant={'error'}>{error.message}</Alert>
+                    <LocalAlert status="error">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>{error.message}</LocalAlert.Title>
+                        </LocalAlert.Header>
+                    </LocalAlert>
                 </Box>
             )}
 
             {!error && data?.content.length === 0 && (
                 <Box marginBlock="space-16 space-0">
-                    <Alert variant="warning">Ingen barnehagebarn (ev tøm filter)</Alert>
+                    <LocalAlert status="warning">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>Ingen barnehagebarn (ev tøm filter)</LocalAlert.Title>
+                        </LocalAlert.Header>
+                    </LocalAlert>
                 </Box>
             )}
         </>

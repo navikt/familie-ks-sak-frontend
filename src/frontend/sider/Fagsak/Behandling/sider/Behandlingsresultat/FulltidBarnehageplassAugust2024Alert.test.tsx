@@ -85,11 +85,12 @@ describe('FulltidBarnehageplassAugust2024Alert', () => {
         render(<FulltidBarnehageplassAugust2024Alert utbetalingsperioder={utbetalingsperioder} />);
 
         // Assert
-        expect(screen.getByRole('img', { name: 'Advarsel' })).toBeInTheDocument();
+        expect(
+            screen.getByText('Det er perioder som kan føre til utbetaling for barn 123456 78901, 123456 78902.')
+        ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Det er perioder som kan føre til utbetaling for barn 123456 78901, 123456 78902. ' +
-                    'Kontroller om barnet hører inn under regelverk før lovendring 1. august 24. ' +
+                'Kontroller om barnet hører inn under regelverk før lovendring 1. august 24. ' +
                     'Bruk «Endret utbetalingsperiode» for å stoppe etterbetalingen hvis barnet hadde ' +
                     'fulltidsplass i barnehage i august 24, og huk av boksen for avslag.'
             )
@@ -155,11 +156,12 @@ describe('FulltidBarnehageplassAugust2024Alert', () => {
         render(<FulltidBarnehageplassAugust2024Alert utbetalingsperioder={utbetalingsperioder} />);
 
         // Assert
-        expect(screen.getByRole('img', { name: 'Advarsel' })).toBeInTheDocument();
+        expect(
+            screen.getByText('Det er perioder som kan føre til utbetaling for barn 123456 78901.')
+        ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Det er perioder som kan føre til utbetaling for barn 123456 78901. ' +
-                    'Kontroller om barnet hører inn under regelverk før lovendring 1. august 24. ' +
+                'Kontroller om barnet hører inn under regelverk før lovendring 1. august 24. ' +
                     'Bruk «Endret utbetalingsperiode» for å stoppe etterbetalingen hvis barnet hadde ' +
                     'fulltidsplass i barnehage i august 24, og huk av boksen for avslag.'
             )

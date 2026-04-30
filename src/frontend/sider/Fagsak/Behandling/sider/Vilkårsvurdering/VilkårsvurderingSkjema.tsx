@@ -1,7 +1,7 @@
 import { Activity, useEffect, useState } from 'react';
 
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
-import { Alert, Box, Button, HStack } from '@navikt/ds-react';
+import { Box, Button, HStack, LocalAlert } from '@navikt/ds-react';
 
 import GeneriskAnnenVurdering from './GeneriskAnnenVurdering/GeneriskAnnenVurdering';
 import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
@@ -88,7 +88,13 @@ const VilkårsvurderingSkjema = () => {
                                             fødselsdato={personResultat.person.fødselsdato}
                                         />
                                     ) : (
-                                        <Alert variant="warning" children={'Klarte ikke hente registeropplysninger'} />
+                                        <LocalAlert status="warning">
+                                            <LocalAlert.Header>
+                                                <LocalAlert.Title>
+                                                    Klarte ikke hente registeropplysninger
+                                                </LocalAlert.Title>
+                                            </LocalAlert.Header>
+                                        </LocalAlert>
                                     )}
                                 </>
                                 {Object.values(vilkårConfig)

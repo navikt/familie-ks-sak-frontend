@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Alert, Heading, Table } from '@navikt/ds-react';
+import { Heading, LocalAlert, Table } from '@navikt/ds-react';
 
 import KompetanseTabellRad from './KompetanseTabellRad';
 import type { IBehandling } from '../../../../../../../typer/behandling';
@@ -18,9 +18,11 @@ const StyledHeaderCell = styled(Table.HeaderCell)`
     &:nth-of-type(2) {
         width: 11rem;
     }
+
     &:nth-of-type(3) {
         width: 14rem;
     }
+
     &:nth-of-type(4) {
         width: 2.25rem;
     }
@@ -42,11 +44,13 @@ const KompetanseSkjema = ({ kompetanser, åpenBehandling, visFeilmeldinger }: IP
                 Kompetanse
             </Heading>
             {harUfullstendigeKompetanser && (
-                <Alert
-                    variant={'warning'}
-                    fullWidth
-                    children={'For EØS-perioder med tilkjent ytelse, må det fastsettes kompetanse'}
-                />
+                <LocalAlert status="warning">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>
+                            For EØS-perioder med tilkjent ytelse, må det fastsettes kompetanse
+                        </LocalAlert.Title>
+                    </LocalAlert.Header>
+                </LocalAlert>
             )}
             <StyledTable>
                 <Table.Header>

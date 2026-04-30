@@ -1,6 +1,4 @@
-import styled from 'styled-components';
-
-import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { Box, InlineMessage, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
 import { Regelverk, Resultat } from '../../../../../../../../typer/vilkår';
@@ -11,10 +9,6 @@ import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 
 type MedlemskapAnnenForelderProps = IVilkårSkjemaBaseProps;
-
-const StyledAlert = styled(Alert)`
-    margin-top: 1rem;
-`;
 
 export const MedlemskapAnnenForelder = ({
     lagretVilkårResultat,
@@ -62,13 +56,13 @@ export const MedlemskapAnnenForelder = ({
                 <br />
 
                 {skjema.felter.vurderesEtter.verdi === Regelverk.EØS_FORORDNINGEN && (
-                    <>
-                        <StyledAlert variant="info" inline>
+                    <Box marginBlock={'space-16 space-0'}>
+                        <InlineMessage status="info">
                             Du må vurdere dette vilkåret når den andre forelderen er omfattet av norsk lovgivning og
                             søker har selvstendig rett
-                        </StyledAlert>
+                        </InlineMessage>
                         <br />
-                    </>
+                    </Box>
                 )}
 
                 <RadioGroup

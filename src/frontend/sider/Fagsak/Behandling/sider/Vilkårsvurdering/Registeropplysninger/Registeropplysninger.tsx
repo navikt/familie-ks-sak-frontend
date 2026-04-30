@@ -4,9 +4,10 @@ import {
     GlobeIcon,
     HeartIcon,
     HouseIcon,
+    InformationSquareIcon,
     PassportIcon,
 } from '@navikt/aksel-icons';
-import { Alert, Box, Detail, Heading } from '@navikt/ds-react';
+import { Box, Detail, Heading, InfoCard } from '@navikt/ds-react';
 import { Space16 } from '@navikt/ds-tokens/dist/tokens';
 
 import styles from './Registeropplysninger.module.css';
@@ -31,9 +32,13 @@ const Registeropplysninger = ({ opplysninger, fødselsdato }: IRegisteropplysnin
                 Registeropplysninger
             </Heading>
             {manglerRegisteropplysninger ? (
-                <Alert variant="info" style={{ marginTop: Space16 }}>
-                    Det ble ikke hentet inn registeropplysninger på denne behandlingen.
-                </Alert>
+                <Box marginBlock={'space-16 space-0'}>
+                    <InfoCard data-color="info">
+                        <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                            Det ble ikke hentet inn registeropplysninger på denne behandlingen.
+                        </InfoCard.Message>
+                    </InfoCard>
+                </Box>
             ) : (
                 <Box width={'32rem'}>
                     <Detail

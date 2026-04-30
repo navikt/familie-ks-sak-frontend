@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-import { Alert, Heading, Table } from '@navikt/ds-react';
-import { Space8 } from '@navikt/ds-tokens/dist/tokens';
+import { Box, Heading, LocalAlert, Table } from '@navikt/ds-react';
 
 import ValutakursTabellRad from './ValutakursTabellRad';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
@@ -33,10 +32,6 @@ const StyledHeaderCell = styled(Table.HeaderCell)`
     }
 `;
 
-const AlertWithBottomMargin = styled(Alert)`
-    margin-bottom: ${Space8};
-`;
-
 interface IProps {
     valutakurser: IRestValutakurs[];
     erValutakurserGyldige: () => boolean;
@@ -51,18 +46,24 @@ const Valutakurser = ({ valutakurser, erValutakurserGyldige, åpenBehandling, vi
                 Valuta
             </Heading>
             {åpenBehandling.årsak == BehandlingÅrsak.OVERGANGSORDNING_2024 && (
-                <AlertWithBottomMargin
-                    variant={'warning'}
-                    fullWidth
-                    children={'For EØS-perioder med overgangsordning skal valutakursdato være 29.11.2024'}
-                />
+                <Box marginBlock={'space-0 space-8'}>
+                    <LocalAlert status="warning">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>
+                                For EØS-perioder med overgangsordning skal valutakursdato være 29.11.2024
+                            </LocalAlert.Title>
+                        </LocalAlert.Header>
+                    </LocalAlert>
+                </Box>
             )}
             {!erValutakurserGyldige() && (
-                <Alert
-                    variant={'warning'}
-                    fullWidth
-                    children={'For perioder som skal differanseberegnes, må valutakursdato registeres'}
-                />
+                <LocalAlert status="warning">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>
+                            For perioder som skal differanseberegnes, må valutakursdato registeres
+                        </LocalAlert.Title>
+                    </LocalAlert.Header>
+                </LocalAlert>
             )}
             <StyledTable>
                 <Table.Header>
