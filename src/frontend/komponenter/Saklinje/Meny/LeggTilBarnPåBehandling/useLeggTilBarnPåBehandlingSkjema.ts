@@ -57,4 +57,8 @@ export function useLeggTilBarnPåBehandlingSkjema({ lukkModal }: Props) {
             });
         }
     };
+    return {
+        form,
+        onSubmit,
+    };
 }
