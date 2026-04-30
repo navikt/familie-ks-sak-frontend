@@ -1,18 +1,10 @@
+import { sjekkEr11Tall, sjekkErGyldigIdent } from '@utils/validators';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { TextField } from '@navikt/ds-react';
-import { idnr } from '@navikt/fnrvalidator';
 
 import { useLeggTilBarnModalContext } from './LeggTilBarnModalContext';
 import { Fields, type FormValues } from './useLeggTilBarnForm';
-
-function sjekkEr11Tall(verdi: string): boolean {
-    return /^\d{11}$/.test(verdi.replace(' ', ''));
-}
-
-function sjekkErGyldigIdent(verdi: string): boolean {
-    return idnr(verdi).status === 'valid';
-}
 
 export function FødselsnummerField() {
     const { control } = useFormContext<FormValues>();
