@@ -1,23 +1,21 @@
 import { getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk';
 
-import { erPreprod, erProd } from './miljø';
+import { erPreprod, erProd } from './utils/miljø';
 
 type TelemetryCollectorURL =
     | 'https://telemetry.nav.no/collect'
     | 'https://telemetry.ekstern.dev.nav.no/collect'
     | 'http://localhost:12347';
 
-const getTelemetryCollectorURL = (): TelemetryCollectorURL => {
+function getTelemetryCollectorURL(): TelemetryCollectorURL {
     if (erProd()) {
         return 'https://telemetry.nav.no/collect';
     }
-
     if (erPreprod()) {
         return 'https://telemetry.ekstern.dev.nav.no/collect';
     }
-
     return 'http://localhost:12347';
-};
+}
 
 export function initGrafanaFaro() {
     try {
@@ -36,6 +34,6 @@ export function initGrafanaFaro() {
             });
         }
     } catch (e) {
-        console.error('Init Grafana Faro feilet', e);
+        console.error('Grafana Faro feilet ved initialisering', e);
     }
 }

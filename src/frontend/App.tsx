@@ -1,8 +1,6 @@
 import '@navikt/ds-css';
 import './index.css';
 
-import { useEffect } from 'react';
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -14,7 +12,6 @@ import { HttpContextProvider } from './context/HttpContext';
 import { ModalProvider } from './context/ModalContext';
 import { SaksbehandlerProvider } from './context/SaksbehandlerContext';
 import { ErrorBoundary, ErrorBoundaryMedSaksbehandler } from './komponenter/ErrorBoundary/ErrorBoundary';
-import { initGrafanaFaro } from './utils/grafanaFaro';
 import { erProd } from './utils/miljø';
 
 const queryClient = new QueryClient({
@@ -25,11 +22,7 @@ const queryClient = new QueryClient({
     },
 });
 
-const App = () => {
-    useEffect(() => {
-        initGrafanaFaro();
-    }, []);
-
+export function App() {
     return (
         <ErrorBoundary>
             <QueryClientProvider client={queryClient}>
@@ -52,6 +45,4 @@ const App = () => {
             </QueryClientProvider>
         </ErrorBoundary>
     );
-};
-
-export default App;
+}
