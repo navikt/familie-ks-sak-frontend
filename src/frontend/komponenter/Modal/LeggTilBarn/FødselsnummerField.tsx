@@ -1,10 +1,10 @@
+import { sjekkEr11Tall, sjekkErGyldigIdent } from '@utils/validators';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { TextField } from '@navikt/ds-react';
 
 import { useLeggTilBarnModalContext } from './LeggTilBarnModalContext';
 import { Fields, type FormValues } from './useLeggTilBarnForm';
-import { sjekkEr11Tall, sjekkErGyldigIdent } from '../../../utils/validators';
 
 export function FødselsnummerField() {
     const { control } = useFormContext<FormValues>();
