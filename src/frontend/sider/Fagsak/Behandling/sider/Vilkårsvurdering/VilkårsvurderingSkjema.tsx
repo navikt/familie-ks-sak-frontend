@@ -78,7 +78,6 @@ const VilkårsvurderingSkjema = () => {
                         </HStack>
                         <Activity mode={erEkspandert ? 'visible' : 'hidden'}>
                             <Box paddingInline={skjermstørrelse > Skjermstørrelse.XL ? 'space-56 space-0' : 'space-0'}>
-                                {' '}
                                 <>
                                     {personResultat.person.registerhistorikk ? (
                                         <Registeropplysninger
