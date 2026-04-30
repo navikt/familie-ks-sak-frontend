@@ -1,11 +1,10 @@
+import { useHarSaksbehandlerTilgang } from '@hooks/useHarSaksbehandlerTilgang';
+import { useLeggTilBarnPåBehandling } from '@hooks/useLeggTilBarnPåBehandling';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { adressebeskyttelsestyper } from '@typer/person';
 import { useForm } from 'react-hook-form';
 
 import { byggSuksessRessurs } from '@navikt/familie-typer';
-
-import { useHarSaksbehandlerTilgang } from '../../../../hooks/useHarSaksbehandlerTilgang';
-import { useLeggTilBarnPåBehandling } from '../../../../hooks/useLeggTilBarnPåBehandling';
-import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { adressebeskyttelsestyper } from '../../../../typer/person';
 
 export enum LeggTilBarnPåBehandlingFelt {
     BARNIDENT = 'barnIdent',
