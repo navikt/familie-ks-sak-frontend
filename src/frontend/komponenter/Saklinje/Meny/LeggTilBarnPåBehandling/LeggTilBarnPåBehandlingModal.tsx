@@ -16,6 +16,7 @@ interface Props {
     lukkModal: () => void;
 }
 
+// TODO: opprydding her og oppdater til ny kode. Samtidig - se over koden og se at det nye for KS stemmer med det som allerede lå her
 export function LeggTiLBarnPåBehandlingModal({ lukkModal }: Props) {
     const { request } = useHttp();
     const { behandling, settÅpenBehandling } = useBehandlingContext();
