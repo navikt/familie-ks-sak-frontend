@@ -1,6 +1,6 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
 import { LeggTilBarnFelt } from '@komponenter/Saklinje/Meny/LeggTilBarnPåBehandling/LeggTilBarnFelt';
 import { useLeggTilBarnPåBehandlingSkjema } from '@komponenter/Saklinje/Meny/LeggTilBarnPåBehandling/useLeggTilBarnPåBehandlingSkjema';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { FormProvider } from 'react-hook-form';
 
 import { InformationSquareIcon } from '@navikt/aksel-icons';
@@ -11,8 +11,7 @@ interface Props {
 }
 
 export function LeggTiLBarnPåBehandlingModal({ lukkModal }: Props) {
-    const { vurderErLesevisning } = useBehandlingContext();
-    const erLesevisning = vurderErLesevisning();
+    const erLesevisning = useErLesevisning();
 
     const { form, onSubmit } = useLeggTilBarnPåBehandlingSkjema({ lukkModal });
 
