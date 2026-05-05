@@ -1,3 +1,10 @@
+import { validerPeriodePåBarnetsAlder } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/Vilkår/BarnetsAlder/BarnetsAlderValidering';
+import { erBegrunnelsePåkrevd } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
+import { Adressebeskyttelsegradering, type IGrunnlagPerson, PersonType } from '@typer/person';
+import { IEndretUtbetalingAndelÅrsak } from '@typer/utbetalingAndel';
+import type { Begrunnelse } from '@typer/vedtak';
+import type { UtdypendeVilkårsvurdering } from '@typer/vilkår';
+import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '@typer/vilkår';
 import { addMonths, endOfMonth, isAfter, isBefore, isSameDay, isValid, parseISO } from 'date-fns';
 
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
@@ -5,13 +12,6 @@ import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 import { idnr } from '@navikt/fnrvalidator';
 
 import { hentDagensDato, type IIsoDatoPeriode, isoStringTilDate } from './dato';
-import { validerPeriodePåBarnetsAlder } from '../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/Vilkår/BarnetsAlder/BarnetsAlderValidering';
-import { erBegrunnelsePåkrevd } from '../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårSkjema';
-import { Adressebeskyttelsegradering, type IGrunnlagPerson, PersonType } from '../typer/person';
-import { IEndretUtbetalingAndelÅrsak } from '../typer/utbetalingAndel';
-import type { Begrunnelse } from '../typer/vedtak';
-import type { UtdypendeVilkårsvurdering } from '../typer/vilkår';
-import { Resultat, UtdypendeVilkårsvurderingGenerell, VilkårType } from '../typer/vilkår';
 
 const harFyltInnIdent = (felt: FeltState<string>): FeltState<string> => {
     return /^\d{11}$/.test(felt.verdi.replace(' ', '')) ? ok(felt) : feil(felt, 'Identen har ikke 11 tall');
@@ -28,6 +28,14 @@ export const identValidator = (identFelt: FeltState<string>): FeltState<string> 
     }
 
     return validerIdent(identFelt);
+};
+
+export const sjekkEr11Tall = (verdi: string): boolean => {
+    return /^\d{11}$/.test(verdi.replace(' ', ''));
+};
+
+export const sjekkErGyldigIdent = (verdi: string): boolean => {
+    return idnr(verdi).status === 'valid';
 };
 
 const finnesDatoFørFødselsdato = (person: IGrunnlagPerson, fom: Date, tom?: Date) => {
