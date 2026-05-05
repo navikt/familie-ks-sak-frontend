@@ -8,6 +8,7 @@ import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import styles from './VilkårsvurderingSkjema.module.css';
+import { Skjermstørrelse, useSkjermstørrelse } from '../../../../../hooks/useSkjermstørrelse';
 import { PersonInformasjon } from '../../../../../komponenter/PersonInformasjon/PersonInformasjon';
 import { PersonType } from '../../../../../typer/person';
 import type { IPersonResultat, IVilkårConfig, IVilkårResultat } from '../../../../../typer/vilkår';
@@ -17,6 +18,8 @@ import { useBehandlingContext } from '../../context/BehandlingContext';
 const VilkårsvurderingSkjema = () => {
     const { vilkårsvurdering } = useVilkårsvurderingContext();
     const { vurderErLesevisning, behandlingPåVent } = useBehandlingContext();
+
+    const skjermstørrelse = useSkjermstørrelse();
 
     const personHarIkkevurdertVilkår = (personResultat: IPersonResultat) =>
         personResultat.vilkårResultater.some(
@@ -44,43 +47,37 @@ const VilkårsvurderingSkjema = () => {
         <>
             {vilkårsvurdering.map((personResultat: IPersonResultat, index: number) => {
                 const andreVurderinger = personResultat.andreVurderinger;
+                const erEkspandert = personErEkspandert[personResultat.personIdent];
                 return (
                     <div
                         key={`${index}_${personResultat.person.fødselsdato}`}
                         id={`${index}_${personResultat.person.fødselsdato}`}
                     >
                         <HStack
-                            paddingBlock={'space-32'}
-                            className={styles.personlinje}
+                            gap={'space-8'}
                             justify={'space-between'}
-                            wrap={false}
+                            wrap={true}
+                            className={styles.personlinje}
+                            paddingBlock={'space-32'}
                         >
                             <PersonInformasjon person={personResultat.person} />
                             <Button
-                                id={`vis-skjul-vilkårsvurdering-${index}_${personResultat.person.fødselsdato}}`}
-                                variant="tertiary"
+                                variant={'tertiary'}
+                                size={skjermstørrelse > Skjermstørrelse.XL ? 'medium' : 'small'}
                                 onClick={() =>
                                     settPersonErEkspandert({
                                         ...personErEkspandert,
-                                        [personResultat.personIdent]: !personErEkspandert[personResultat.personIdent],
+                                        [personResultat.personIdent]: !erEkspandert,
                                     })
                                 }
-                                icon={
-                                    personErEkspandert[personResultat.personIdent] ? (
-                                        <ChevronUpIcon aria-hidden />
-                                    ) : (
-                                        <ChevronDownIcon aria-hidden />
-                                    )
-                                }
-                                iconPosition="right"
+                                icon={erEkspandert ? <ChevronUpIcon aria-hidden /> : <ChevronDownIcon aria-hidden />}
+                                iconPosition={'right'}
                             >
-                                {personErEkspandert[personResultat.personIdent]
-                                    ? 'Skjul vilkårsvurdering'
-                                    : 'Vis vilkårsvurdering'}
+                                {erEkspandert ? 'Skjul vilkårsvurdering' : 'Vis vilkårsvurdering'}
                             </Button>
                         </HStack>
-                        <Activity mode={personErEkspandert[personResultat.personIdent] ? 'visible' : 'hidden'}>
-                            <Box paddingInline={'space-56 space-0'}>
+                        <Activity mode={erEkspandert ? 'visible' : 'hidden'}>
+                            <Box paddingInline={skjermstørrelse > Skjermstørrelse.XL ? 'space-56 space-0' : 'space-0'}>
                                 <>
                                     {personResultat.person.registerhistorikk ? (
                                         <Registeropplysninger

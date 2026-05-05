@@ -39,9 +39,7 @@ export function PersonInformasjon({ person }: Props) {
     const alder = hentAlder(person.fødselsdato);
     const navnOgAlder = `${person.navn} (${alder} år)`;
     const formatertIdent = formaterIdent(person.personIdent);
-
     const erAdresseBeskyttet = hentAdresseBeskyttelseGradering(bruker, person.personIdent);
-    const erEgenAnsatt = bruker.erEgenAnsatt;
 
     return (
         <HStack gap={'space-24'} wrap={false} align={'center'}>
@@ -50,22 +48,28 @@ export function PersonInformasjon({ person }: Props) {
                 kjønn={person.kjønn}
                 størrelse={'m'}
                 erAdresseBeskyttet={erAdresseBeskyttet}
-                erEgenAnsatt={erEgenAnsatt}
+                erEgenAnsatt={bruker.erEgenAnsatt}
             />
-            <HStack gap={'space-24'} align={'center'} wrap={false}>
-                <Heading level={'2'} size={'medium'} title={navnOgAlder} className={Styles.headingUtenOverflow}>
-                    {navnOgAlder}
-                </Heading>
-                <Skillelinje erHeading={true} />
-                <HStack gap={'space-4'} align={'center'} wrap={false}>
-                    <Heading level={'2'} size={'medium'} as={'span'}>
-                        {formatertIdent}
+            <HStack gap={'space-16'} align={'center'} wrap={true}>
+                <HStack gap={'space-16'} align={'center'} wrap={false}>
+                    <Heading level={'2'} size={'medium'} title={navnOgAlder} className={Styles.headingUtenOverflow}>
+                        {navnOgAlder}
                     </Heading>
-                    <CopyButton size={'small'} copyText={person.personIdent} />
+                    <Skillelinje erHeading={true} />
                 </HStack>
-                <Skillelinje erHeading={true} />
-                <Heading level={'2'} size={'medium'} as={'span'}>{`${personTypeMap[person.type]}`}</Heading>
-                {person.dødsfallDato?.length && <DødsfallTag dødsfallDato={person.dødsfallDato} />}
+                <HStack gap={'space-16'} align={'center'} wrap={false}>
+                    <HStack gap={'space-4'} align={'center'} wrap={false}>
+                        <Heading level={'2'} size={'medium'} as={'span'}>
+                            {formatertIdent}
+                        </Heading>
+                        <CopyButton size={'small'} copyText={person.personIdent} />
+                    </HStack>
+                    <Skillelinje erHeading={true} />
+                </HStack>
+                <HStack gap={'space-16'} align={'center'} wrap={false}>
+                    <Heading level={'2'} size={'medium'} as={'span'}>{`${personTypeMap[person.type]}`}</Heading>
+                    {person.dødsfallDato?.length && <DødsfallTag dødsfallDato={person.dødsfallDato} />}
+                </HStack>
             </HStack>
         </HStack>
     );
