@@ -1,3 +1,4 @@
+import { useBehandling } from '@hooks/useBehandling';
 import { useHarSaksbehandlerTilgang } from '@hooks/useHarSaksbehandlerTilgang';
 import { useLeggTilBarnPåBehandling } from '@hooks/useLeggTilBarnPåBehandling';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
@@ -19,7 +20,8 @@ interface Props {
 }
 
 export function useLeggTilBarnPåBehandlingSkjema({ lukkModal }: Props) {
-    const { settÅpenBehandling, behandling } = useBehandlingContext();
+    const behandling = useBehandling();
+    const { settÅpenBehandling } = useBehandlingContext();
     const { mutateAsync: harSaksbehandlerTilgang } = useHarSaksbehandlerTilgang();
     const { mutateAsync: leggTilBarnPåBehandling } = useLeggTilBarnPåBehandling();
 
