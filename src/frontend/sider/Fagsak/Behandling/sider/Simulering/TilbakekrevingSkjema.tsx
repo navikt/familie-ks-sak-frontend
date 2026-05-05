@@ -1,6 +1,5 @@
 import { ExternalLinkIcon, FileTextIcon } from '@navikt/aksel-icons';
 import {
-    Alert,
     BodyLong,
     BodyShort,
     Box,
@@ -12,6 +11,7 @@ import {
     HStack,
     Label,
     Link,
+    LocalAlert,
     Radio,
     RadioGroup,
     Spacer,
@@ -70,10 +70,12 @@ const TilbakekrevingSkjema = ({
     ) {
         return (
             <Box marginBlock={'space-24 space-0'}>
-                <Alert variant="error">
-                    Det har skjedd en feil:
-                    {harÅpenTilbakekrevingRessurs.frontendFeilmelding}
-                </Alert>
+                <LocalAlert status="error">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>Det har skjedd en feil</LocalAlert.Title>
+                    </LocalAlert.Header>
+                    <LocalAlert.Content>{harÅpenTilbakekrevingRessurs.frontendFeilmelding}</LocalAlert.Content>
+                </LocalAlert>
             </Box>
         );
     }
@@ -86,10 +88,14 @@ const TilbakekrevingSkjema = ({
         return (
             <VStack marginBlock={'space-64 space-0'} gap={'space-24'}>
                 <Label>Tilbakekrevingsvalg</Label>
-                <Alert variant="warning">
-                    Det foreligger en åpen tilbakekrevingsbehandling. Endringer i vedtaket vil automatisk oppdatere
-                    eksisterende feilutbetalte perioder og beløp.
-                </Alert>
+                <LocalAlert status="warning">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>Det foreligger en åpen tilbakekrevingsbehandling.</LocalAlert.Title>
+                    </LocalAlert.Header>
+                    <LocalAlert.Content>
+                        Endringer i vedtaket vil automatisk oppdatere eksisterende feilutbetalte perioder og beløp.
+                    </LocalAlert.Content>
+                </LocalAlert>
             </VStack>
         );
     }
@@ -98,10 +104,14 @@ const TilbakekrevingSkjema = ({
         return (
             <VStack marginBlock={'space-64 space-0'} gap={'space-24'}>
                 <Label>Tilbakekrevingsvalg</Label>
-                <Alert variant="warning">
-                    Tilbakekreving uten varsel er valgt automatisk, da feilutbetailngen ble avdekket etter at saken ble
-                    sendt til beslutter.
-                </Alert>
+                <LocalAlert status="warning">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>
+                            Tilbakekreving uten varsel er valgt automatisk, da feilutbetalingen ble avdekket etter at
+                            saken ble sendt til beslutter.
+                        </LocalAlert.Title>
+                    </LocalAlert.Header>
+                </LocalAlert>
             </VStack>
         );
     }

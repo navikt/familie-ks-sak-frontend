@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons';
-import { Alert, Button, ErrorMessage, ErrorSummary, Label } from '@navikt/ds-react';
+import { Box, Button, ErrorMessage, ErrorSummary, Label, LocalAlert } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import EndretUtbetalingAndelTabell from './endretUtbetaling/EndretUtbetalingAndelTabell';
@@ -52,10 +52,6 @@ const StyledEditIkon = styled(PencilIcon)`
 
 const StyledPlusIkon = styled(PlusCircleIcon)`
     margin-right: 0.5rem;
-`;
-
-const StyledAlert = styled(Alert)`
-    margin-bottom: 1rem;
 `;
 
 const StyledErrorSummary = styled(ErrorSummary)`
@@ -144,13 +140,19 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
         >
             <FulltidBarnehageplassAugust2024Alert utbetalingsperioder={åpenBehandling.utbetalingsperioder} />
             {personerMedUgyldigEtterbetalingsperiode.length > 0 && (
-                <StyledAlert variant={'warning'}>
-                    Du har perioder som kan føre til etterbetaling utover 3 måneder for person{' '}
-                    {slåSammenListeTilStreng(
-                        personerMedUgyldigEtterbetalingsperiode.map(ident => formaterIdent(ident))
-                    )}
-                    .
-                </StyledAlert>
+                <Box marginBlock={'space-0 space-16'}>
+                    <LocalAlert status="warning">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>
+                                Du har perioder som kan føre til etterbetaling utover 3 måneder for person{' '}
+                                {slåSammenListeTilStreng(
+                                    personerMedUgyldigEtterbetalingsperiode.map(ident => formaterIdent(ident))
+                                )}
+                                .
+                            </LocalAlert.Title>
+                        </LocalAlert.Header>
+                    </LocalAlert>
+                </Box>
             )}
             <TilkjentYtelseTidslinje grunnlagPersoner={grunnlagPersoner} tidslinjePersoner={tidslinjePersoner} />
             {!erLesevisning && (

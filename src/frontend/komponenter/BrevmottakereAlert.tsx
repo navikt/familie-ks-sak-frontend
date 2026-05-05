@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
 import { useLocation } from 'react-router';
-import styled from 'styled-components';
 
-import { MagnifyingGlassIcon } from '@navikt/aksel-icons';
-import { Alert, Button } from '@navikt/ds-react';
+import { InformationSquareIcon, MagnifyingGlassIcon } from '@navikt/aksel-icons';
+import { Box, Button, InfoCard } from '@navikt/ds-react';
 
 import BrevmottakerListe from '../sider/Fagsak/Behandling/Høyremeny/Brev/BrevmottakerListe';
 import { sider } from '../sider/Fagsak/Behandling/sider/sider';
@@ -35,10 +34,6 @@ interface BrevmottakereAlertFagsakProps extends Props {
     brevmottakere: SkjemaBrevmottaker[];
 }
 
-const StyledAlert = styled(Alert)`
-    margin-bottom: 1.5rem;
-`;
-
 export const BrevmottakereAlert = (props: BrevmottakereAlertBehandlingProps | BrevmottakereAlertFagsakProps) => {
     const location = useLocation();
     const [visManuelleMottakereModal, settVisManuelleMottakereModal] = useState(false);
@@ -47,29 +42,36 @@ export const BrevmottakereAlert = (props: BrevmottakereAlertBehandlingProps | Br
 
     function hentBrevtypetekst(pathname: string) {
         if (hentSideHref(pathname) === sider.SIMULERING.href) {
-            return 'varsel';
+            return 'Varsel';
         } else if (pathname.includes('dokumentutsending')) {
-            return 'informasjonsbrev';
+            return 'Informasjonsbrev';
         } else {
-            return 'vedtak';
+            return 'Vedtak';
         }
     }
 
     return (
         <>
             {brevmottakere && brevmottakere.length !== 0 && (
-                <StyledAlert variant="info" className={props.className}>
-                    {`Brevmottaker(e) er endret, og ${hentBrevtypetekst(location.pathname)} sendes til:`}
-                    <BrevmottakerListe brevmottakere={brevmottakere} bruker={props.bruker} />
-                    <Button
-                        variant={'tertiary'}
-                        onClick={() => settVisManuelleMottakereModal(true)}
-                        icon={<MagnifyingGlassIcon />}
-                        size={'xsmall'}
-                    >
-                        Se detaljer
-                    </Button>
-                </StyledAlert>
+                <Box marginBlock={'space-0 space-24'} className={props.className}>
+                    <InfoCard data-color="info">
+                        <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                            <InfoCard.Title>Brevmottaker(e) er endret</InfoCard.Title>
+                        </InfoCard.Header>
+                        <InfoCard.Content>
+                            {hentBrevtypetekst(location.pathname)} sendes til:
+                            <BrevmottakerListe brevmottakere={brevmottakere} bruker={props.bruker} />
+                            <Button
+                                variant={'tertiary'}
+                                onClick={() => settVisManuelleMottakereModal(true)}
+                                icon={<MagnifyingGlassIcon />}
+                                size={'xsmall'}
+                            >
+                                Se detaljer
+                            </Button>
+                        </InfoCard.Content>
+                    </InfoCard>
+                </Box>
             )}
 
             {visManuelleMottakereModal &&

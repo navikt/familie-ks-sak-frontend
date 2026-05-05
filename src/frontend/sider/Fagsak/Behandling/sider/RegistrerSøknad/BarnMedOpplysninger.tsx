@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { BodyShort, Button, Checkbox, HStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, Checkbox, HStack } from '@navikt/ds-react';
 
 import styles from './BarnMedOpplysninger.module.css';
 import { useSøknadContext } from './SøknadContext';
@@ -34,11 +34,13 @@ const BarnMedOpplysninger = ({ barn }: IProps) => {
                     />
                 ) : null
             ) : (
-                <Checkbox className={styles.checkbox} value={barn.ident}>
-                    <HStack className={styles.labelContent}>
-                        <p title={navnOgIdentTekst}>{navnOgIdentTekst}</p>
-                    </HStack>
-                </Checkbox>
+                <Box marginInline={'space-16 space-0'}>
+                    <Checkbox className={styles.checkbox} value={barn.ident}>
+                        <HStack className={styles.labelContent}>
+                            <p title={navnOgIdentTekst}>{navnOgIdentTekst}</p>
+                        </HStack>
+                    </Checkbox>
+                </Box>
             )}
             {barn.manueltRegistrert && !erLesevisning && (
                 <Button

@@ -1,6 +1,6 @@
 import { differenceInMilliseconds } from 'date-fns';
 
-import { Alert, Checkbox, CheckboxGroup } from '@navikt/ds-react';
+import { Box, Checkbox, CheckboxGroup, InlineMessage } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import styles from './BarnBrevetGjelder.module.css';
@@ -66,20 +66,19 @@ export const BarnBrevetGjelder = (props: IProps) => {
             {sorterteBarn.map((barn: IBarnMedOpplysninger, index: number) => {
                 const barnLabel = lagBarnLabel(barn);
                 return (
-                    <Checkbox value={barn.ident} key={'barn-' + index} className={styles.checkbox}>
-                        <p title={barnLabel} className={styles.labelTekst}>
-                            {barnLabel}
-                        </p>
-                    </Checkbox>
+                    <Box marginInline={'space-16 space-0'}>
+                        <Checkbox value={barn.ident} key={'barn-' + index}>
+                            <p title={barnLabel} className={styles.labelTekst}>
+                                {barnLabel}
+                            </p>
+                        </Checkbox>
+                    </Box>
                 );
             })}
             {skalViseVarselOmManglendeBarn && (
-                <Alert
-                    variant="warning"
-                    children={'Du må trykke "Bekreft og fortsett" før du kan legge til barn.'}
-                    size={'small'}
-                    inline
-                />
+                <InlineMessage status="warning" size="small">
+                    Du må trykke "Bekreft og fortsett" før du kan legge til barn.
+                </InlineMessage>
             )}
         </CheckboxGroup>
     );
