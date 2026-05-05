@@ -1,8 +1,9 @@
+import type { IIsoDatoPeriode, IsoDatoString } from '@utils/dato';
+
 import type { BehandlingSteg, BehandlingStegStatus } from './behandling';
 import type { IGrunnlagPerson } from './person';
 import { PersonType } from './person';
 import type { Begrunnelse, BegrunnelseType, IRestBegrunnelseTilknyttetVilkår } from './vedtak';
-import type { IIsoDatoPeriode, IsoDatoString } from '../utils/dato';
 
 export enum Resultat {
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
@@ -43,6 +44,12 @@ export interface IPersonResultat {
     vilkårResultater: IVilkårResultat[];
     andreVurderinger: IAnnenVurdering[];
     person: IGrunnlagPerson;
+}
+
+export function harPersonIkkeVurdertVilkår(personResultat: IPersonResultat) {
+    return personResultat.vilkårResultater.some(
+        vilkårResultatFelt => vilkårResultatFelt.resultat === Resultat.IKKE_VURDERT
+    );
 }
 
 export interface IAnnenVurdering {
