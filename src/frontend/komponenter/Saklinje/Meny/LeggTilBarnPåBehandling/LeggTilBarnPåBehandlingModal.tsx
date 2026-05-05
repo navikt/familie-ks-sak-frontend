@@ -43,12 +43,10 @@ export function LeggTiLBarnPåBehandlingModal({ lukkModal }: Props) {
                             hideLegend
                         >
                             <InfoCard data-color={'info'}>
-                                <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
-                                    <InfoCard.Title>
-                                        Du er i ferd med å legge til et barn på behandlingen. Handlingen kan ikke
-                                        reverseres uten å henlegge.
-                                    </InfoCard.Title>
-                                </InfoCard.Header>
+                                <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                                    Du er i ferd med å legge til et barn på behandlingen. Handlingen kan ikke reverseres
+                                    uten å henlegge.
+                                </InfoCard.Message>
                             </InfoCard>
                             <LeggTilBarnFelt erLesevisning={erLesevisning} />
                         </Fieldset>
