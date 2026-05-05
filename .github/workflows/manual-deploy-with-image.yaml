@@ -13,7 +13,7 @@ on:
         required: true
         type: string
         description: 'Image name to deploy (ex: familie-ks-sak-frontend-prod)'
-      image:
+      image-tag:
         required: true
         type: string
         description: 'Image tag to deploy (ex: 2025.02.14-14.40-70a41ds)'
@@ -27,7 +27,7 @@ jobs:
     uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy-with-tag.yaml@main # ratchet:exclude
     with:
       image-name: ${{ inputs.image-name }}
-      image-tag: ${{ inputs.image }}
+      image-tag: ${{ inputs.image-tag }}
       cluster: ${{ inputs.environment }}-gcp
       resource: .nais/app-${{ inputs.environment }}.yaml
     secrets: inherit
