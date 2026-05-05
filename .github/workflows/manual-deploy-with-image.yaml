@@ -9,6 +9,10 @@ on:
         options:
           - dev
           - prod
+      image-name:
+        required: true
+        type: string
+        description: 'Image name to deploy (ex: familie-ks-sak-frontend-prod)'
       image:
         required: true
         type: string
@@ -22,6 +26,7 @@ jobs:
       id-token: write
     uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy-with-tag.yaml@main # ratchet:exclude
     with:
+      image-name: ${{ inputs.image-name }}
       image-tag: ${{ inputs.image }}
       cluster: ${{ inputs.environment }}-gcp
       resource: .nais/app-${{ inputs.environment }}.yaml
