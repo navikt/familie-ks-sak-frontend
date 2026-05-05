@@ -1,6 +1,4 @@
-import styled from 'styled-components';
-
-import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { Box, InlineMessage, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useMedlemskap } from './MedlemskapContext';
 import { Regelverk, Resultat } from '../../../../../../../../typer/vilkår';
@@ -11,10 +9,6 @@ import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 
 type MedlemskapProps = IVilkårSkjemaBaseProps;
-
-const StyledAlert = styled(Alert)`
-    margin-top: 1rem;
-`;
 
 export const Medlemskap = ({
     lagretVilkårResultat,
@@ -59,21 +53,23 @@ export const Medlemskap = ({
                 settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                 periodeChildren={
                     skalViseDatoVarsel && (
-                        <StyledAlert inline variant={'warning'} size={'small'}>
-                            Du må dobbeltsjekke at foreslått f.o.m dato er korrekt
-                        </StyledAlert>
+                        <Box marginBlock={'space-16 space-0'}>
+                            <InlineMessage status={'warning'} size={'small'}>
+                                Du må dobbeltsjekke at foreslått f.o.m dato er korrekt
+                            </InlineMessage>
+                        </Box>
                     )
                 }
             >
                 <br />
 
                 {skjema.felter.vurderesEtter.verdi === Regelverk.EØS_FORORDNINGEN && (
-                    <>
-                        <StyledAlert variant="info" inline>
+                    <Box marginBlock={'space-16 space-0'}>
+                        <InlineMessage status="info">
                             Du må vurdere dette vilkåret når søker er omfattet av norsk lovgivning
-                        </StyledAlert>
+                        </InlineMessage>
                         <br />
-                    </>
+                    </Box>
                 )}
 
                 <RadioGroup

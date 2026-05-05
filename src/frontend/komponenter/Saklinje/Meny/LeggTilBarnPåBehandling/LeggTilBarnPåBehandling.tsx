@@ -1,7 +1,8 @@
-import { ActionMenu } from '@navikt/ds-react';
+import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { BehandlingÅrsak } from '@typer/behandling';
 
-import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { BehandlingÅrsak } from '../../../../typer/behandling';
+import { ActionMenu } from '@navikt/ds-react';
 
 const relevanteBehandlingsårsaker = [
     BehandlingÅrsak.NYE_OPPLYSNINGER,
@@ -15,9 +16,9 @@ interface Props {
 }
 
 export function LeggTilBarnPåBehandling({ åpneModal }: Props) {
-    const { behandling, vurderErLesevisning } = useBehandlingContext();
+    const behandling = useBehandling();
 
-    const erLesevisning = vurderErLesevisning();
+    const erLesevisning = useErLesevisning();
     const harRelevantBehandlingsårsak = relevanteBehandlingsårsaker.includes(behandling.årsak);
 
     if (erLesevisning || !harRelevantBehandlingsårsak) {

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useNavigate } from 'react-router';
 
-import { Alert, BodyShort, Button, Modal, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, LocalAlert, Modal, VStack } from '@navikt/ds-react';
 
 import { ModalType } from '../../../context/ModalContext';
 import { useModal } from '../../../hooks/useModal';
@@ -36,9 +36,12 @@ export function OpprettFagsakModalInnhold({ personIdent, personNavn }: Props) {
                     <BodyShort>Ønsker du å opprette fagsak for denne personen?</BodyShort>
                     <BodyShort>{`${personNavn} (${formaterIdent(personIdent)})`}</BodyShort>
                     {visFeilmelding && (
-                        <Alert variant={'error'} closeButton={true} onClose={() => settVisFeilmelding(false)}>
-                            {error?.message ?? 'Ukjent feil oppstod'}
-                        </Alert>
+                        <LocalAlert status="error">
+                            <LocalAlert.Header>
+                                <LocalAlert.Title>{error?.message ?? 'Ukjent feil oppstod'}</LocalAlert.Title>
+                                <LocalAlert.CloseButton onClick={() => settVisFeilmelding(false)} />
+                            </LocalAlert.Header>
+                        </LocalAlert>
                     )}
                 </VStack>
             </Modal.Body>

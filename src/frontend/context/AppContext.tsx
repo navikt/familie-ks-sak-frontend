@@ -1,16 +1,17 @@
 import {
+    createContext,
     type Dispatch,
     type JSX,
     type PropsWithChildren,
     type ReactNode,
     type SetStateAction,
     useContext,
+    useState,
 } from 'react';
-import { createContext, useState } from 'react';
 
 import type { AxiosRequestConfig } from 'axios';
 
-import { Alert, BodyShort, Button } from '@navikt/ds-react';
+import { Button, InlineMessage } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -85,13 +86,11 @@ const AppProvider = (props: PropsWithChildren) => {
                     onClose: () => lukkModal(),
                     innhold: () => {
                         return (
-                            <Alert variant={'error'} inline>
-                                <BodyShort>
-                                    {`Bruker har diskresjonskode ${
-                                        adressebeskyttelsestyper[ressurs.data.adressebeskyttelsegradering]
-                                    }`}
-                                </BodyShort>
-                            </Alert>
+                            <InlineMessage status={'error'}>
+                                {`Bruker har diskresjonskode ${
+                                    adressebeskyttelsestyper[ressurs.data.adressebeskyttelsegradering]
+                                }`}
+                            </InlineMessage>
                         );
                     },
                     actions: [

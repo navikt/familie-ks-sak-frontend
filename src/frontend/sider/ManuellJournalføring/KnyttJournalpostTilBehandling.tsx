@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { Alert, BodyShort, Checkbox, Heading, Table, VStack } from '@navikt/ds-react';
-import { Space32 } from '@navikt/ds-tokens/dist/tokens';
+import { InformationSquareIcon } from '@navikt/aksel-icons';
+import { Box, Checkbox, Heading, InfoCard, LocalAlert, Table, VStack } from '@navikt/ds-react';
 
 import { KnyttTilNyBehandling } from './KnyttTilNyBehandling';
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
@@ -10,16 +10,8 @@ import { finnVisningstekstForJournalføringsbehandlingsårsak } from '../../type
 import { Datoformat, isoStringTilFormatertString } from '../../utils/dato';
 import { ressursHarFeilet } from '../../utils/ressursUtils';
 
-const KnyttDiv = styled.div`
-    margin-top: 20px;
-`;
-
 const GenerellSakInfoStripeTittel = styled.div`
     font-weight: bold;
-`;
-
-const StyledAlert = styled(Alert)`
-    margin-top: ${Space32};
 `;
 
 export const KnyttJournalpostTilBehandling = () => {
@@ -39,13 +31,17 @@ export const KnyttJournalpostTilBehandling = () => {
     const sorterteJournalføringsbehandlinger = hentSorterteJournalføringsbehandlinger();
 
     return (
-        <KnyttDiv>
+        <Box marginBlock={'space-20 space-0'}>
             {sorterteJournalføringsbehandlinger.length > 0 && (
                 <VStack gap="space-24">
                     {ressursHarFeilet(klageStatus) && (
-                        <Alert variant="warning">
-                            <BodyShort>Klagebehandlinger er ikke tilgjengelig for øyeblikket.</BodyShort>
-                        </Alert>
+                        <LocalAlert status="warning">
+                            <LocalAlert.Header>
+                                <LocalAlert.Title>
+                                    Klagebehandlinger er ikke tilgjengelig for øyeblikket.
+                                </LocalAlert.Title>
+                            </LocalAlert.Header>
+                        </LocalAlert>
                     )}
                     <div>
                         <Heading size={'small'} level={'2'}>
@@ -121,14 +117,18 @@ export const KnyttJournalpostTilBehandling = () => {
             )}
             <KnyttTilNyBehandling />
             {visGenerellSakInfoStripe && (
-                <StyledAlert variant="info">
-                    <GenerellSakInfoStripeTittel>
-                        {sorterteJournalføringsbehandlinger.length > 0
-                            ? `Du velger å journalføre uten å knytte til behandling(er).`
-                            : `Du velger å journalføre uten å knytte til ny behandling.`}
-                    </GenerellSakInfoStripeTittel>
-                </StyledAlert>
+                <Box marginBlock={'space-32 space-0'}>
+                    <InfoCard data-color="info">
+                        <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                            <GenerellSakInfoStripeTittel>
+                                {sorterteJournalføringsbehandlinger.length > 0
+                                    ? `Du velger å journalføre uten å knytte til behandling(er).`
+                                    : `Du velger å journalføre uten å knytte til ny behandling.`}
+                            </GenerellSakInfoStripeTittel>
+                        </InfoCard.Message>
+                    </InfoCard>
+                </Box>
             )}
-        </KnyttDiv>
+        </Box>
     );
 };

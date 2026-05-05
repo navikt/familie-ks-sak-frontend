@@ -1,6 +1,4 @@
-import styled from 'styled-components';
-
-import { Alert, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { Box, InlineMessage, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useLovligOpphold } from './LovligOppholdContext';
 import { Resultat } from '../../../../../../../../typer/vilkår';
@@ -11,10 +9,6 @@ import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 
 type LovligOppholdProps = IVilkårSkjemaBaseProps;
-
-const StyledAlert = styled(Alert)`
-    margin-top: 1rem;
-`;
 
 export const LovligOpphold = ({
     lagretVilkårResultat,
@@ -59,9 +53,11 @@ export const LovligOpphold = ({
                 settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                 periodeChildren={
                     skalViseDatoVarsel && (
-                        <StyledAlert inline variant={'warning'} size={'small'}>
-                            Du må dobbeltsjekke at foreslått f.o.m dato er korrekt
-                        </StyledAlert>
+                        <Box marginBlock={'space-16 space-0'}>
+                            <InlineMessage status={'warning'} size={'small'}>
+                                Du må dobbeltsjekke at foreslått f.o.m dato er korrekt
+                            </InlineMessage>
+                        </Box>
                     )
                 }
             >
