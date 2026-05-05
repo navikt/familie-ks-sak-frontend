@@ -26,6 +26,11 @@ export default defineConfig(({ mode }) => {
                 tsconfigPaths(),
                 mode === 'prod' || mode === 'preprod' ? sentryPlugin() : undefined, // Sentry må være siste plugin
             ],
+            test: {
+                globals: true,
+                environment: 'jsdom',
+                setupFiles: './vitest.setup.ts',
+            },
         };
     } catch (e) {
         console.error('Vite define config feilet', e);
