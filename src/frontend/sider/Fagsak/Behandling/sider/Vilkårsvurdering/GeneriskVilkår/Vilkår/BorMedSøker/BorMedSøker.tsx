@@ -2,9 +2,9 @@ import { bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår, useBorMed
 import type { Regelverk } from '../../../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
-import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
+import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 type BosattIRiketProps = IVilkårSkjemaBaseProps;
 
@@ -30,7 +30,7 @@ export const BorMedSøker = ({
     });
 
     return (
-        <VilkårEkspanderbarRad
+        <VilkårTabellRad
             lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
@@ -52,6 +52,6 @@ export const BorMedSøker = ({
                     );
                 }}
             />
-        </VilkårEkspanderbarRad>
+        </VilkårTabellRad>
     );
 };

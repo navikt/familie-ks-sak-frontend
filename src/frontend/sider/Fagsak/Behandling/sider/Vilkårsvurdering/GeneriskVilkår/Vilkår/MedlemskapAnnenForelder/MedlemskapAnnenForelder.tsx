@@ -4,9 +4,9 @@ import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
 import { Regelverk, Resultat } from '../../../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
-import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
+import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 type MedlemskapAnnenForelderProps = IVilkårSkjemaBaseProps;
 
@@ -37,7 +37,7 @@ export const MedlemskapAnnenForelder = ({
     };
 
     return (
-        <VilkårEkspanderbarRad
+        <VilkårTabellRad
             lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
@@ -106,6 +106,6 @@ export const MedlemskapAnnenForelder = ({
                     </Radio>
                 </RadioGroup>
             </VilkårSkjema>
-        </VilkårEkspanderbarRad>
+        </VilkårTabellRad>
     );
 };

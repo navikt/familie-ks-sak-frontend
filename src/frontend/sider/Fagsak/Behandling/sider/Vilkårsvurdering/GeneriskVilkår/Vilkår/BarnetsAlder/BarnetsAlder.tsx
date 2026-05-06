@@ -15,9 +15,9 @@ import {
 import { utledLovverk } from '../../../../../../../../utils/lovverk';
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
-import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
+import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 const hentSpørsmålForLovverkFør2025 = (periode: IIsoDatoPeriode) => {
     const fraOgMedDato = isoStringTilDateEllerUndefinedHvisUgyldigDato(periode.fom);
@@ -64,7 +64,7 @@ export const BarnetsAlder = ({
     const spørsmål = hentSpørsmålForLovverk(lovverk, skjema.felter.periode.verdi);
 
     return (
-        <VilkårEkspanderbarRad
+        <VilkårTabellRad
             lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
@@ -118,6 +118,6 @@ export const BarnetsAlder = ({
                     </Radio>
                 </RadioGroup>
             </VilkårSkjema>
-        </VilkårEkspanderbarRad>
+        </VilkårTabellRad>
     );
 };

@@ -4,9 +4,9 @@ import { useLovligOpphold } from './LovligOppholdContext';
 import { Resultat } from '../../../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
-import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
+import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 type LovligOppholdProps = IVilkårSkjemaBaseProps;
 
@@ -36,7 +36,7 @@ export const LovligOpphold = ({
         skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
     };
     return (
-        <VilkårEkspanderbarRad
+        <VilkårTabellRad
             lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
@@ -104,6 +104,6 @@ export const LovligOpphold = ({
                     </Radio>
                 </RadioGroup>
             </VilkårSkjema>
-        </VilkårEkspanderbarRad>
+        </VilkårTabellRad>
     );
 };

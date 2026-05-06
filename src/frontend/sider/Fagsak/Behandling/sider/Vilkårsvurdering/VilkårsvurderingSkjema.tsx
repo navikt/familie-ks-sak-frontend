@@ -14,7 +14,7 @@ import {
 } from '@typer/vilkår';
 
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
-import { Box, Button, HStack, LocalAlert } from '@navikt/ds-react';
+import { Box, Button, LocalAlert, Stack } from '@navikt/ds-react';
 
 import GeneriskAnnenVurdering from './GeneriskAnnenVurdering/GeneriskAnnenVurdering';
 import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
@@ -28,6 +28,8 @@ const VilkårsvurderingSkjema = () => {
     const skjermstørrelse = useSkjermstørrelse();
     const erLesevisning = useErLesevisning();
 
+    const erStorSkjerm = skjermstørrelse > Skjermstørrelse['2XL'];
+
     return (
         <>
             {vilkårsvurdering.map((personResultat, index) => {
@@ -39,7 +41,8 @@ const VilkårsvurderingSkjema = () => {
                     >
                         {({ ekspandert, ekspander }) => (
                             <div id={`${index}_${personResultat.person.fødselsdato}`}>
-                                <HStack
+                                <Stack
+                                    direction={erStorSkjerm ? 'row' : 'column'}
                                     gap={'space-8'}
                                     justify={'space-between'}
                                     wrap={true}
@@ -47,25 +50,26 @@ const VilkårsvurderingSkjema = () => {
                                     paddingBlock={'space-32'}
                                 >
                                     <PersonInformasjon person={personResultat.person} />
-                                    <Button
-                                        variant={'tertiary'}
-                                        size={skjermstørrelse > Skjermstørrelse.XL ? 'medium' : 'small'}
-                                        onClick={ekspander}
-                                        icon={
-                                            ekspandert ? <ChevronUpIcon aria-hidden /> : <ChevronDownIcon aria-hidden />
-                                        }
-                                        iconPosition={'right'}
-                                    >
-                                        {ekspandert ? 'Skjul vilkårsvurdering' : 'Vis vilkårsvurdering'}
-                                    </Button>
-                                </HStack>
+                                    <div>
+                                        <Button
+                                            variant={'tertiary'}
+                                            size={erStorSkjerm ? 'medium' : 'small'}
+                                            onClick={ekspander}
+                                            icon={
+                                                ekspandert ? (
+                                                    <ChevronUpIcon aria-hidden />
+                                                ) : (
+                                                    <ChevronDownIcon aria-hidden />
+                                                )
+                                            }
+                                            iconPosition={'right'}
+                                        >
+                                            {ekspandert ? 'Skjul vilkårsvurdering' : 'Vis vilkårsvurdering'}
+                                        </Button>
+                                    </div>
+                                </Stack>
                                 <Activity mode={ekspandert ? 'visible' : 'hidden'}>
-                                    <Box
-                                        paddingInline={
-                                            skjermstørrelse > Skjermstørrelse.XL ? 'space-56 space-0' : 'space-0'
-                                        }
-                                    >
-                                        {' '}
+                                    <Box paddingInline={erStorSkjerm ? 'space-56 space-0' : 'space-0'}>
                                         <>
                                             {personResultat.person.registerhistorikk ? (
                                                 <Registeropplysninger
