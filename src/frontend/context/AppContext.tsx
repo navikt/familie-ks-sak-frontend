@@ -16,10 +16,7 @@ import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useFeatureToggles } from '../hooks/useFeatureToggles';
-import { useSaksbehandler } from '../hooks/useSaksbehandler';
 import type { IToast, ToastTyper } from '../komponenter/Toast/typer';
-import { FeatureToggle } from '../typer/featureToggles';
 import type { IRestTilgang } from '../typer/person';
 import { adressebeskyttelsestyper } from '../typer/person';
 
@@ -54,19 +51,15 @@ interface AppContextValue {
     toasts: {
         [toastId: string]: IToast;
     };
-    skalObfuskereData: boolean;
 }
 
 const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 const AppProvider = (props: PropsWithChildren) => {
     const { request } = useHttp();
-    const toggles = useFeatureToggles();
 
     const [appInfoModal, settAppInfoModal] = useState<IModal>(initalState);
     const [toasts, settToasts] = useState<{ [toastId: string]: IToast }>({});
-
-    const saksbehandler = useSaksbehandler();
 
     const lukkModal = () => {
         settAppInfoModal(initalState);
@@ -110,8 +103,6 @@ const AppProvider = (props: PropsWithChildren) => {
         });
     };
 
-    const skalObfuskereData = toggles[FeatureToggle.skalObfuskereData] && !saksbehandler.harSkrivetilgang;
-
     return (
         <AppContext.Provider
             value={{
@@ -125,7 +116,6 @@ const AppProvider = (props: PropsWithChildren) => {
                 settToasts,
                 sjekkTilgang,
                 toasts,
-                skalObfuskereData,
             }}
         >
             {props.children}
