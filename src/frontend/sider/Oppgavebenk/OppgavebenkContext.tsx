@@ -2,9 +2,12 @@ import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import { useToastContext } from '@context/ToastContext';
+import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
+import { useOpprettEllerHentFagsak } from '@hooks/useOpprettEllerHentFagsak';
+import { useOpprettEllerHentFagsakPaaPerson } from '@hooks/useOpprettEllerHentFagsakPaaPerson';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { AlertType, ToastTyper } from '@komponenter/Toast/typer';
-import type { IMinimalFagsak } from '@typer/fagsak';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     BehandlingstypeFilter,
     EnhetFilter,
@@ -15,6 +18,7 @@ import {
     SaksbehandlerFilter,
 } from '@typer/oppgave';
 import { erIsoStringGyldig } from '@utils/dato';
+import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
 import { hentFnrFraOppgaveIdenter } from '@utils/oppgave';
 import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import { hentNesteSorteringsrekkefølge, hentSortState, Sorteringsrekkefølge } from '@utils/tabell';
@@ -29,7 +33,6 @@ import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } f
 
 import { initialOppgaveFelter, type IOppgaveFelt, type IOppgaveFelter } from './oppgavefelter';
 import { type IOppgaveRad, mapIOppgaverTilOppgaveRad, sorterEtterNøkkel, Sorteringsnøkkel } from './utils';
-import { useOpprettEllerHentFagsak } from '../Fagsak/useOpprettEllerHentFagsak';
 
 const OPPGAVEBENK_SORTERINGSNØKKEL = 'OPPGAVEBENK_SORTERINGSNØKKEL';
 export const oppgaveSideLimit = 15;
@@ -56,10 +59,22 @@ const OppgavebenkContext = createContext<OppgavebenkContextValue | undefined>(un
 
 export const OppgavebenkProvider = (props: PropsWithChildren) => {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const saksbehandler = useSaksbehandler();
     const { settToast } = useToastContext();
     const { request } = useHttp();
-    const { opprettEllerHentFagsak } = useOpprettEllerHentFagsak();
-    const saksbehandler = useSaksbehandler();
+    const { mutateAsync: opprettEllerHentFagsakPaaPerson } = useOpprettEllerHentFagsakPaaPerson();
+    const { mutateAsync: opprettEllerHentFagsak } = useOpprettEllerHentFagsak({
+        onSuccess: fagsak => {
+            queryClient.setQueryData(HentFagsakQueryKeyFactory.fagsak(fagsak.id), fagsak);
+            const aktivBehandling = hentAktivBehandlingPåMinimalFagsak(fagsak);
+            if (aktivBehandling) {
+                navigate(`/fagsak/${fagsak.id}/${aktivBehandling.behandlingId}`);
+            } else {
+                navigate(`/fagsak/${fagsak.id}/saksoversikt`);
+            }
+        },
+    });
 
     const [hentOppgaverVedSidelast, settHentOppgaverVedSidelast] = useState(true);
     const [side, settSide] = useState<number>(1);
@@ -212,7 +227,6 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
                             gåTilTilbakekreving(oppgave);
                         } else if (oppgave.aktoerId) {
                             opprettEllerHentFagsak({
-                                personIdent: null,
                                 aktørId: oppgave.aktoerId,
                             });
                         }
@@ -368,17 +382,10 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
     const gåTilTilbakekreving = (oppgave: IOppgave) => {
         const brukerident = hentFnrFraOppgaveIdenter(oppgave.identer);
         if (brukerident) {
-            request<{ ident: string }, IMinimalFagsak | undefined>({
-                method: 'POST',
-                url: `/familie-ks-sak/api/fagsaker/hent-fagsak-paa-person`,
-                data: {
-                    ident: brukerident,
-                },
-            }).then((fagsak: Ressurs<IMinimalFagsak | undefined>) => {
-                if (fagsak.status === RessursStatus.SUKSESS && !!fagsak.data) {
-                    window.location.href = `/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsak.data.id}/behandling/${oppgave.saksreferanse}`;
-                }
-            });
+            opprettEllerHentFagsakPaaPerson({ ident: brukerident }).then(
+                fagsak =>
+                    (window.location.href = `/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsak.id}/behandling/${oppgave.saksreferanse}`)
+            );
         }
     };
 

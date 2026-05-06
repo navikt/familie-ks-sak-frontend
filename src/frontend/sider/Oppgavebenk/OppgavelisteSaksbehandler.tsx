@@ -3,8 +3,7 @@ import { useEffect, useRef } from 'react';
 import { useVisManglerTilgangModal } from '@context/ManglerTilgangModalContext';
 import { useVisTekniskFeilModal } from '@context/TekniskFeilModalContext';
 import { useSjekkSaksbehandlertilgangTilIdent } from '@hooks/useSjekkSaksbehandlertilgangTilIdent';
-import type { IOppgave } from '@typer/oppgave';
-import { OppgavetypeFilter } from '@typer/oppgave';
+import { type IOppgave, OppgavetypeFilter } from '@typer/oppgave';
 import type { Saksbehandler } from '@typer/saksbehandler';
 import { hentFnrFraOppgaveIdenter } from '@utils/oppgave';
 

@@ -1,6 +1,33 @@
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { useOpprettEllerHentFagsakPaaPerson } from '@hooks/useOpprettEllerHentFagsakPaaPerson';
+import { useSaksbehandler } from '@hooks/useSaksbehandler';
+import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
+import type { IBehandlingstema } from '@typer/behandlingstema';
+import type { IMinimalFagsak } from '@typer/fagsak';
+import {
+    type Journalføringsbehandling,
+    opprettJournalføringsbehandlingFraKlagebehandling,
+    opprettJournalføringsbehandlingFraKontantstøttebehandling,
+} from '@typer/journalføringsbehandling';
+import { type IKlagebehandling, Klagebehandlingstype } from '@typer/klage';
+import {
+    type IDataForManuellJournalføring,
+    type IRestJournalføring,
+    JournalpostKanal,
+    type TilknyttetBehandling,
+} from '@typer/manuell-journalføring';
+import {
+    finnBehandlingstemaFraOppgave,
+    type IRestLukkOppgaveOgKnyttJournalpost,
+    OppgavetypeFilter,
+} from '@typer/oppgave';
+import { Adressebeskyttelsegradering, type IPersonInfo } from '@typer/person';
+import type { ISamhandlerInfo } from '@typer/samhandler';
+import type { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
+import { isoStringTilDate } from '@utils/dato';
+import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
 import type { AxiosError } from 'axios';
 import { differenceInMilliseconds } from 'date-fns';
 import { useNavigate, useParams } from 'react-router';
@@ -18,34 +45,7 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 
-import useFagsakApi from '../../api/useFagsakApi';
 import useDokument from '../../hooks/useDokument';
-import { useSaksbehandler } from '../../hooks/useSaksbehandler';
-import { Behandlingstype, BehandlingÅrsak } from '../../typer/behandling';
-import type { IBehandlingstema } from '../../typer/behandlingstema';
-import type { IMinimalFagsak } from '../../typer/fagsak';
-import {
-    type Journalføringsbehandling,
-    opprettJournalføringsbehandlingFraKlagebehandling,
-    opprettJournalføringsbehandlingFraKontantstøttebehandling,
-} from '../../typer/journalføringsbehandling';
-import { type IKlagebehandling, Klagebehandlingstype } from '../../typer/klage';
-import {
-    type IDataForManuellJournalføring,
-    type IRestJournalføring,
-    JournalpostKanal,
-    type TilknyttetBehandling,
-} from '../../typer/manuell-journalføring';
-import {
-    finnBehandlingstemaFraOppgave,
-    type IRestLukkOppgaveOgKnyttJournalpost,
-    OppgavetypeFilter,
-} from '../../typer/oppgave';
-import { Adressebeskyttelsegradering, type IPersonInfo } from '../../typer/person';
-import type { ISamhandlerInfo } from '../../typer/samhandler';
-import type { Tilbakekrevingsbehandlingstype } from '../../typer/tilbakekrevingsbehandling';
-import { isoStringTilDate } from '../../utils/dato';
-import { hentAktivBehandlingPåMinimalFagsak } from '../../utils/fagsak';
 import type { VisningBehandling } from '../Fagsak/Saksoversikt/visningBehandling';
 
 interface ManuellJournalføringSkjemaFelter {
@@ -88,10 +88,13 @@ interface ManuellJournalføringContextValue {
 const ManuellJournalføringContext = createContext<ManuellJournalføringContextValue | undefined>(undefined);
 
 export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
-    const { hentFagsakForPerson } = useFagsakApi();
     const navigate = useNavigate();
     const { request } = useHttp();
     const { oppgaveId } = useParams<{ oppgaveId: string }>();
+    const { mutateAsync: opprettEllerHentFagsakPaaPerson } = useOpprettEllerHentFagsakPaaPerson({
+        onSuccess: fagsak => settMinimalFagsak(fagsak),
+        onError: () => settMinimalFagsak(undefined),
+    });
 
     const saksbehandler = useSaksbehandler();
 
@@ -264,13 +267,10 @@ export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
             }
         }
 
-        const restFagsak = await hentFagsakForPerson(hentetPerson.data.personIdent);
         skjema.felter.bruker.validerOgSettFelt(hentetPerson.data);
-        if (restFagsak.status === RessursStatus.SUKSESS && restFagsak.data) {
-            settMinimalFagsak(restFagsak.data);
-        } else {
-            settMinimalFagsak(undefined);
-        }
+
+        opprettEllerHentFagsakPaaPerson({ ident: hentetPerson.data.personIdent });
+
         return '';
     };
 
