@@ -1,9 +1,8 @@
+import { sendVedtakTilBeslutter } from '@api/sendVedtakTilBeslutter';
 import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import type { IBehandling } from '@typer/behandling';
 
 import { useHttp } from '@navikt/familie-http';
-
-import { sendVedtakTilBeslutter } from '../api/sendVedtakTilBeslutter';
-import type { IBehandling } from '../typer/behandling';
 
 interface Parameters {
     behandlingId: number;

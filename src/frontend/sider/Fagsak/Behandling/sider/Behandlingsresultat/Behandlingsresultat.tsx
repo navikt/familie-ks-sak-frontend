@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
 import { useOppdaterBehandlingsresultat } from '@hooks/useOppdaterBehandlingsresultat';
 import { useTidslinjeContext } from '@komponenter/Tidslinje/TidslinjeContext';
@@ -59,9 +60,11 @@ interface IBehandlingsresultatProps {
 }
 
 const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => {
-    const { settÅpenBehandling, vurderErLesevisning } = useBehandlingContext();
-    const navigate = useNavigate();
+    const { settÅpenBehandling } = useBehandlingContext();
+
     const fagsakId = useFagsakId();
+    const erLesevisning = useErLesevisning();
+    const navigate = useNavigate();
 
     const {
         opprettEndretUtbetaling,
@@ -91,7 +94,6 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
     const { aktivEtikett, filterOgSorterAndelPersonerIGrunnlag, filterOgSorterGrunnlagPersonerMedAndeler } =
         useTidslinjeContext();
 
-    const erLesevisning = vurderErLesevisning();
     const {
         erEøsInformasjonGyldig,
         kompetanser,
