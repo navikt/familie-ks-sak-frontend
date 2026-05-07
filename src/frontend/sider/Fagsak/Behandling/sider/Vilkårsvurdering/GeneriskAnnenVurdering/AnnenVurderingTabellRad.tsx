@@ -1,37 +1,30 @@
 import { useState } from 'react';
 
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { IGrunnlagPerson } from '@typer/person';
+import type { IAnnenVurdering, IAnnenVurderingConfig } from '@typer/vilkår';
+import { Resultat, uiResultat } from '@typer/vilkår';
 import deepEqual from 'deep-equal';
-import styled from 'styled-components';
 
-import { BodyShort, HStack, Table } from '@navikt/ds-react';
+import { PersonIcon } from '@navikt/aksel-icons';
+import { BodyShort, HStack, Table, Tooltip } from '@navikt/ds-react';
 
 import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
 import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
-import ManuellVurdering from '../../../../../../ikoner/ManuellVurdering';
+import Styles from './AnnenVurderingTabellRad.module.css';
 import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
-import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../../../typer/vilkår';
-import { Resultat, uiResultat } from '../../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
-interface IProps {
+interface Props {
     person: IGrunnlagPerson;
     annenVurderingConfig: IAnnenVurderingConfig;
     annenVurdering: IAnnenVurdering;
 }
 
-const BeskrivelseCelle = styled(BodyShort)`
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const AnnenVurderingTabellRad = ({ person, annenVurderingConfig, annenVurdering }: IProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-    const erLesevisning = vurderErLesevisning();
+export function AnnenVurderingTabellRad({ person, annenVurderingConfig, annenVurdering }: Props) {
+    const erLesevisning = useErLesevisning();
 
     const [ekspandertAnnenVurdering, settEkspandertAnnenVurdering] = useState(
-        erLesevisning || false || annenVurdering.resultat === Resultat.IKKE_VURDERT
+        erLesevisning || annenVurdering.resultat === Resultat.IKKE_VURDERT
     );
     const [redigerbartAnnenVurdering, settRedigerbartAnnenVurdering] = useState<IAnnenVurdering>(annenVurdering);
 
@@ -47,7 +40,7 @@ const AnnenVurderingTabellRad = ({ person, annenVurderingConfig, annenVurdering 
     return (
         <Table.ExpandableRow
             open={ekspandertAnnenVurdering}
-            togglePlacement="right"
+            togglePlacement={'right'}
             id={annenVurderingFeilmeldingId(annenVurdering)}
             onOpenChange={() => toggleForm(true)}
             content={
@@ -61,20 +54,24 @@ const AnnenVurderingTabellRad = ({ person, annenVurderingConfig, annenVurdering 
             }
         >
             <Table.DataCell>
-                <HStack gap="space-16">
+                <HStack justify={'start'} align={'center'} gap={'space-6'} wrap={false}>
                     <VilkårResultatIkon resultat={annenVurdering.resultat} />
-                    <BodyShort children={uiResultat[annenVurdering.resultat]} />
+                    <BodyShort>{uiResultat[annenVurdering.resultat]}</BodyShort>
                 </HStack>
             </Table.DataCell>
             <Table.DataCell>
-                <BeskrivelseCelle children={annenVurdering.begrunnelse} />
+                <Tooltip content={annenVurdering.begrunnelse} className={Styles.tooltip}>
+                    <BodyShort className={Styles.beskrivelse}>{annenVurdering.begrunnelse}</BodyShort>
+                </Tooltip>
             </Table.DataCell>
             <Table.DataCell>
-                <ManuellVurdering />
+                {annenVurdering.erVurdert && (
+                    <HStack justify={'start'} align={'center'} gap={'space-6'} wrap={false}>
+                        <PersonIcon title={'Manuell vurdering'} className={Styles.ikon} />
+                        <BodyShort>Vurdert i denne behandlingen</BodyShort>
+                    </HStack>
+                )}
             </Table.DataCell>
-            <Table.DataCell>{annenVurdering.erVurdert ? 'Vurdert i denne behandlingen' : ''}</Table.DataCell>
         </Table.ExpandableRow>
     );
-};
-
-export default AnnenVurderingTabellRad;
+}

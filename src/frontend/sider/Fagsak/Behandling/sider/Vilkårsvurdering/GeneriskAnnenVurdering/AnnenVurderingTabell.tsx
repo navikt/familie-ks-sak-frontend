@@ -1,8 +1,10 @@
+import type { IGrunnlagPerson } from '@typer/person';
+import type { IAnnenVurdering, IAnnenVurderingConfig } from '@typer/vilkår';
+
 import { Table } from '@navikt/ds-react';
 
-import AnnenVurderingTabellRad from './AnnenVurderingTabellRad';
-import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import type { IAnnenVurdering, IAnnenVurderingConfig } from '../../../../../../typer/vilkår';
+import Styles from './AnnenVurderingTabell.module.css';
+import { AnnenVurderingTabellRad } from './AnnenVurderingTabellRad';
 
 export const annenVurderingFeilmeldingId = (annenVurdering: IAnnenVurdering) =>
     `annen-vurdering_${annenVurdering.type}_${annenVurdering.id}`;
@@ -10,22 +12,21 @@ export const annenVurderingFeilmeldingId = (annenVurdering: IAnnenVurdering) =>
 export const annenVurderingBegrunnelseFeilmeldingId = (annenVurdering: IAnnenVurdering) =>
     `annen-vurdering-begrunnelse_${annenVurdering.type}_${annenVurdering.id}`;
 
-interface IProps {
+interface Props {
     person: IGrunnlagPerson;
     andreVurderinger: IAnnenVurdering[];
     annenVurderingConfig: IAnnenVurderingConfig;
 }
 
-const AnnenVurderingTabell = ({ person, annenVurderingConfig, andreVurderinger }: IProps) => {
+export function AnnenVurderingTabell({ person, annenVurderingConfig, andreVurderinger }: Props) {
     return (
-        <Table>
+        <Table className={Styles.table}>
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell>Vurdering</Table.HeaderCell>
-                    <Table.HeaderCell>Begrunnelse</Table.HeaderCell>
-                    <Table.HeaderCell />
-                    <Table.HeaderCell />
-                    <Table.HeaderCell />
+                    <Table.HeaderCell className={Styles.col1}>Vurdering</Table.HeaderCell>
+                    <Table.HeaderCell className={Styles.col2}>Begrunnelse</Table.HeaderCell>
+                    <Table.HeaderCell className={Styles.col3}>Vurdert av</Table.HeaderCell>
+                    <Table.HeaderCell className={Styles.col4} />
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -42,6 +43,4 @@ const AnnenVurderingTabell = ({ person, annenVurderingConfig, andreVurderinger }
             </Table.Body>
         </Table>
     );
-};
-
-export default AnnenVurderingTabell;
+}
