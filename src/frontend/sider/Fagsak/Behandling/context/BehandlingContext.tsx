@@ -1,5 +1,11 @@
 import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
+import { useNavigerAutomatiskTilSideForBehandlingssteg } from '@hooks/useNavigerAutomatiskTilSideForBehandlingssteg';
+import { useSaksbehandler } from '@hooks/useSaksbehandler';
+import { BehandlerRolle, BehandlingStatus, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
+import { harTilgangTilEnhet } from '@typer/enhet';
+import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '@utils/behandling';
+import { hentSideHref } from '@utils/miljø';
 import { useLocation } from 'react-router';
 
 import { type Ressurs } from '@navikt/familie-typer';
@@ -7,20 +13,6 @@ import { type Ressurs } from '@navikt/familie-typer';
 import { useHentOgSettBehandlingContext } from './HentOgSettBehandlingContext';
 import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './utils';
-import { useNavigerAutomatiskTilSideForBehandlingssteg } from '../../../../hooks/useNavigerAutomatiskTilSideForBehandlingssteg';
-import { useSaksbehandler } from '../../../../hooks/useSaksbehandler';
-import {
-    BehandlerRolle,
-    BehandlingStatus,
-    BehandlingÅrsak,
-    type IBehandling,
-    type IBehandlingPåVent,
-} from '../../../../typer/behandling';
-import { harTilgangTilEnhet } from '../../../../typer/enhet';
-import { PersonType } from '../../../../typer/person';
-import { Målform } from '../../../../typer/søknad';
-import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '../../../../utils/behandling';
-import { hentSideHref } from '../../../../utils/miljø';
 import { hentTrinnForBehandling, type ITrinn, KontrollertStatus, type SideId } from '../sider/sider';
 
 interface Props extends PropsWithChildren {
@@ -34,7 +26,6 @@ interface BehandlingContextValue {
     vurderErLesevisning: (sjekkTilgangTilEnhet?: boolean, skalIgnorereOmEnhetErMidlertidig?: boolean) => boolean;
     leggTilBesøktSide: (besøktSide: SideId) => void;
     settIkkeKontrollerteSiderTilManglerKontroll: () => void;
-    søkersMålform: Målform;
     trinnPåBehandling: { [sideId: string]: ITrinn };
     behandling: IBehandling;
     behandlingsstegSubmitressurs: Ressurs<IBehandling>;
@@ -47,7 +38,6 @@ interface BehandlingContextValue {
         erUlagretNyRefusjonEøsPeriode: boolean,
         erSammensattKontrollsak: boolean
     ) => void;
-    behandlingPåVent: IBehandlingPåVent | undefined;
 }
 
 const BehandlingContext = createContext<BehandlingContextValue | undefined>(undefined);
@@ -147,9 +137,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
         );
     };
 
-    const søkersMålform: Målform =
-        behandling.personer.find(person => person.type === PersonType.SØKER)?.målform ?? Målform.NB;
-
     const kanBeslutteVedtak =
         behandling.status === BehandlingStatus.FATTER_VEDTAK &&
         BehandlerRolle.BESLUTTER === saksbehandler.rolle &&
@@ -164,14 +151,12 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
                 vurderErLesevisning,
                 leggTilBesøktSide,
                 settIkkeKontrollerteSiderTilManglerKontroll,
-                søkersMålform,
                 trinnPåBehandling,
                 behandling,
                 behandlingsstegSubmitressurs,
                 vilkårsvurderingNesteOnClick,
                 behandlingresultatNesteOnClick,
                 foreslåVedtakNesteOnClick,
-                behandlingPåVent: behandling.behandlingPåVent,
                 settÅpenBehandling: settBehandlingRessurs,
             }}
         >

@@ -1,5 +1,12 @@
 import type { ChangeEvent } from 'react';
 
+import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useOppdaterVedtaksperiodeMedFriteksterMutationState } from '@hooks/useOppdaterVedtaksperiodeMedFriteksterMutationState';
+import { utledSøkersMålform } from '@typer/behandling';
+import { målform } from '@typer/søknad';
+import type { IFritekstFelt } from '@utils/fritekstfelter';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import styled from 'styled-components';
 
 import { ExternalLinkIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
@@ -7,12 +14,7 @@ import { BodyLong, Button, Fieldset, Heading, HelpText, Label, Link, Tag, Textar
 import type { FeltState } from '@navikt/familie-skjema';
 
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
-import { useOppdaterVedtaksperiodeMedFriteksterMutationState } from '../../../../../../hooks/useOppdaterVedtaksperiodeMedFriteksterMutationState';
 import Knapperekke from '../../../../../../komponenter/Knapperekke';
-import { målform } from '../../../../../../typer/søknad';
-import type { IFritekstFelt } from '../../../../../../utils/fritekstfelter';
-import { hentFrontendFeilmelding } from '../../../../../../utils/ressursUtils';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 const FritekstContainer = styled.div`
     padding: 1rem;
@@ -68,8 +70,9 @@ const ItalicText = styled(BodyLong)`
 `;
 
 const FritekstVedtakbegrunnelser = () => {
-    const { vurderErLesevisning, søkersMålform } = useBehandlingContext();
-    const erLesevisning = vurderErLesevisning();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
+
     const {
         skjema,
         leggTilFritekst,
@@ -133,7 +136,7 @@ const FritekstVedtakbegrunnelser = () => {
                     </ItalicText>
                 </StyledHelpText>
                 <StyledTag variant="neutral" size="small">
-                    Skriv {målform[søkersMålform].toLowerCase()}
+                    Skriv {målform[utledSøkersMålform(behandling)].toLowerCase()}
                 </StyledTag>
             </InfoBoks>
             {erLesevisning ? (
