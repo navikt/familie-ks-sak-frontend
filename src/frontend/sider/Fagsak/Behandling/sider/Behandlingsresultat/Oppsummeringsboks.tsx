@@ -1,4 +1,4 @@
-import { type PropsWithChildren, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -125,16 +125,6 @@ const Oppsummeringsboks = ({
             upd => upd.ytelseType === YtelseType.OVERGANGSORDNING || upd.ytelseType === YtelseType.PRAKSISENDRING_2024
         );
 
-    const UtbetalingsbeløpRad = ({ children }: PropsWithChildren) => {
-        const columns = skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem';
-
-        return (
-            <HGrid columns={columns} gap={'space-16'}>
-                {children}
-            </HGrid>
-        );
-    };
-
     const erAndelForPraksisendring = utbetalingsperiode?.utbetalingsperiodeDetaljer.some(
         upd => upd.ytelseType === YtelseType.PRAKSISENDRING_2024
     );
@@ -158,15 +148,22 @@ const Oppsummeringsboks = ({
             ) : (
                 <>
                     <VStack gap="space-16" paddingInline={'space-0 space-40'} paddingBlock={'space-24 space-16'}>
-                        <UtbetalingsbeløpRad>
+                        <HGrid
+                            columns={skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem'}
+                            gap={'space-16'}
+                        >
                             <BodyShort>Person</BodyShort>
                             <BodyShort>Barnehageplass</BodyShort>
                             <BodyShort>Kontantstøtte</BodyShort>
                             {skalViseYtelseType && <BodyShort>Ytelsetype</BodyShort>}
                             <BodyShort>Beløp</BodyShort>
-                        </UtbetalingsbeløpRad>
+                        </HGrid>
                         {utbetalingsperiode.utbetalingsperiodeDetaljer.sort(sorterUtbetaling).map(detalj => (
-                            <UtbetalingsbeløpRad key={detalj.person.navn}>
+                            <HGrid
+                                key={detalj.person.navn}
+                                columns={skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem'}
+                                gap={'space-16'}
+                            >
                                 <BodyShort>{`${detalj.person.navn} (${hentAlderSomString(
                                     detalj.person.fødselsdato
                                 )}) | ${formaterIdent(detalj.person.personIdent)}`}</BodyShort>
@@ -180,7 +177,7 @@ const Oppsummeringsboks = ({
                                 ) : (
                                     <InlineMessage status="warning" children={'Må beregnes'} size={'small'} />
                                 )}
-                            </UtbetalingsbeløpRad>
+                            </HGrid>
                         ))}
                         <TotaltUtbetaltRad columns="1fr 5rem">
                             <BodyShort weight="semibold">Totalt utbetalt per mnd</BodyShort>
