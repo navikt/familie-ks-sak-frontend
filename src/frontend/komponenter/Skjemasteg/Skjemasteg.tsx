@@ -12,6 +12,8 @@ import { behandlingErEtterSteg } from '../../utils/steg';
 import { BehandlingPåVentAlert } from '../Alert/BehandlingPåVentAlert';
 import { MidlertidigEnhetAlert } from '../Alert/MidlertidigEnhetAlert';
 
+export const MAX_SKJEMASTEG_BREDDE = '1440px';
+
 interface IProps extends PropsWithChildren {
     className?: string;
     forrigeKnappTittel?: string;

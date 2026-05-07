@@ -9,9 +9,9 @@ import { antallTimerKvalifiserer } from './BarnehageplassUtils';
 import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
-import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
+import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 const StyledTextField = styled(TextField)`
     margin-bottom: 1rem;
@@ -72,7 +72,7 @@ export const Barnehageplass = ({
     }, [skjema.felter.utdypendeVilkårsvurdering]);
 
     return (
-        <VilkårEkspanderbarRad
+        <VilkårTabellRad
             lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
@@ -150,6 +150,6 @@ export const Barnehageplass = ({
                     />
                 )}
             </VilkårSkjema>
-        </VilkårEkspanderbarRad>
+        </VilkårTabellRad>
     );
 };

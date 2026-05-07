@@ -1,5 +1,11 @@
 import { useState } from 'react';
 
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useFagsak } from '@hooks/useFagsak';
+import { BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
+import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
+import { erProd } from '@utils/miljø';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import { useNavigate } from 'react-router';
 
 import { InformationSquareIcon } from '@navikt/aksel-icons';
@@ -11,26 +17,18 @@ import { OppdaterRegisteropplysninger } from './OppdaterRegisteropplysninger';
 import { ManglendeSvalbardmerkingVarsel } from './Varsel/ManglendeSvalbardmerkingVarsel';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
-import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
-import { BehandlingSteg, BehandlingÅrsak } from '../../../../../typer/behandling';
-import { Datoformat, isoStringTilFormatertString } from '../../../../../utils/dato';
-import { erProd } from '../../../../../utils/miljø';
-import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import { useFagsakContext } from '../../../FagsakContext';
+import Skjemasteg, { MAX_SKJEMASTEG_BREDDE } from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 export function Vilkårsvurdering() {
-    const { fagsak } = useFagsakContext();
-    const { behandling, vurderErLesevisning, vilkårsvurderingNesteOnClick, behandlingsstegSubmitressurs } =
-        useBehandlingContext();
-
+    const { behandling, vilkårsvurderingNesteOnClick, behandlingsstegSubmitressurs } = useBehandlingContext();
     const { vilkårsvurdering, feiloppsummeringFeil } = useVilkårsvurderingContext();
 
-    const erLesevisning = vurderErLesevisning();
+    const fagsak = useFagsak();
+    const erLesevisning = useErLesevisning();
+    const navigate = useNavigate();
 
     const [visFeilmeldinger, settVisFeilmeldinger] = useState(false);
-
-    const navigate = useNavigate();
 
     const uregistrerteBarn =
         behandling.søknadsgrunnlag?.barnaMedOpplysninger.filter(barn => !barn.erFolkeregistrert) ?? [];
@@ -59,7 +57,7 @@ export function Vilkårsvurdering() {
                     settVisFeilmeldinger(true);
                 }
             }}
-            maxWidthStyle={'80rem'}
+            maxWidthStyle={MAX_SKJEMASTEG_BREDDE}
             senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
             steg={BehandlingSteg.VILKÅRSVURDERING}
         >

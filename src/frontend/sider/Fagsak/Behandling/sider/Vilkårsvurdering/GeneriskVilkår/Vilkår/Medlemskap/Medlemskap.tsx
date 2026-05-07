@@ -4,9 +4,9 @@ import { useMedlemskap } from './MedlemskapContext';
 import { Regelverk, Resultat } from '../../../../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
-import { VilkårEkspanderbarRad } from '../../VilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
+import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 type MedlemskapProps = IVilkårSkjemaBaseProps;
 
@@ -36,7 +36,7 @@ export const Medlemskap = ({
         skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
     };
     return (
-        <VilkårEkspanderbarRad
+        <VilkårTabellRad
             lagretVilkårResultat={lagretVilkårResultat}
             erVilkårEkspandert={erVilkårEkspandert}
             toggleForm={toggleForm}
@@ -115,6 +115,6 @@ export const Medlemskap = ({
                     )}
                 </RadioGroup>
             </VilkårSkjema>
-        </VilkårEkspanderbarRad>
+        </VilkårTabellRad>
     );
 };
