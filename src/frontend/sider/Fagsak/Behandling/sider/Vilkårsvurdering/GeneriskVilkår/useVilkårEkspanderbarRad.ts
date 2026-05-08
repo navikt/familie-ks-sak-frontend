@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { type IVilkårResultat, Resultat } from '../../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
+import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { type IVilkårResultat, Resultat } from '@typer/vilkår';
 
 interface IProps {
     vilkårHarEndringerSomIkkeErLagret: () => boolean;
@@ -9,16 +10,15 @@ interface IProps {
 }
 
 export const useVilkårEkspanderbarRad = ({ vilkårHarEndringerSomIkkeErLagret, lagretVilkårResultat }: IProps) => {
-    const { vurderErLesevisning, behandlingPåVent } = useBehandlingContext();
-    const erLesevisning = vurderErLesevisning();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
 
     const initiellEkspandering = erLesevisning || lagretVilkårResultat.resultat === Resultat.IKKE_VURDERT;
-
     const [erVilkårEkspandert, settErVilkårEkspandert] = useState(initiellEkspandering);
 
     useEffect(() => {
         settErVilkårEkspandert(initiellEkspandering);
-    }, [behandlingPåVent]);
+    }, [behandling.behandlingPåVent]);
 
     const toggleForm = (visAlert: boolean) => {
         if (erVilkårEkspandert && visAlert && vilkårHarEndringerSomIkkeErLagret()) {
