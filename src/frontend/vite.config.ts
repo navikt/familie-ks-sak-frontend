@@ -43,7 +43,7 @@ const sentryPlugin = () =>
             name: process.env.SENTRY_RELEASE,
             uploadLegacySourcemaps: {
                 paths: ['./dist_frontend'],
-                ignore: ['./node_modules'],
+                // ignore: ['./node_modules'], # Test om dette gir bedre feilmeldinger
                 urlPrefix: `~/assets`,
             },
         },
