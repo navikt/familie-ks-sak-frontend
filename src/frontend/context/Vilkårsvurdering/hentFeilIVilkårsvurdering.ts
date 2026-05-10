@@ -123,9 +123,9 @@ const barnetsAlderPeriodeManglerBarnehagePeriode = (
         return true;
     }
 
-    const periodeMedFramtidigOpphørPgaBarnehageplass = barnehageplassVilkårResultater.find(
-        vilkårresultat => vilkårresultat.søkerHarMeldtFraOmBarnehageplass
-    )?.periode;
+    const senestePeriodeMedFramtidigOpphørPgaBarnehageplass = barnehageplassVilkårResultater
+        .toSorted((a, b) => parseFraOgMedDato(b.periode.fom).getTime() - parseFraOgMedDato(a.periode.fom).getTime())
+        .find(vilkårresultat => vilkårresultat.søkerHarMeldtFraOmBarnehageplass)?.periode;
 
     const sammenslåttBarnehageperiode = sammenSlåtteBarnehageperioder[0];
 
@@ -134,9 +134,9 @@ const barnetsAlderPeriodeManglerBarnehagePeriode = (
         parseFraOgMedDato(barnetsAlderPeriode.fom)
     );
     const sistePeriodeHarFramtidigOpphørPgaBarnehageplass =
-        periodeMedFramtidigOpphørPgaBarnehageplass &&
+        senestePeriodeMedFramtidigOpphørPgaBarnehageplass &&
         erEtterEllerSammeDato(
-            parseTilOgMedDato(periodeMedFramtidigOpphørPgaBarnehageplass.tom),
+            parseTilOgMedDato(senestePeriodeMedFramtidigOpphørPgaBarnehageplass.tom),
             parseTilOgMedDato(sammenslåttBarnehageperiode.tom)
         );
     const barnehageperiodeOverlapperTilSluttenAvBarnetsAlderPeriode = erEtterEllerSammeDato(

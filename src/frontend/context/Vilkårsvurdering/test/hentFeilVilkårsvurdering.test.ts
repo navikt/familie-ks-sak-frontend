@@ -1,6 +1,7 @@
 import barnehageperiodeErEtterBarnetsAlderMenIPeriodeForOvergangsordning from './testcaser/barnehageperiodeErEtterBarnetsAlderMenIPeriodeForOvergangsordning.json';
 import barnehageperiodeStarterEtter2årEllerSkole from './testcaser/barnehageperiodeStarterEtter2årEllerSkole.json';
 import bosattIRiketIkkeUtfylt from './testcaser/bosattIRiketIkkeUtfylt.json';
+import flereBarnehageperioderMedMeldtBarnehageplass from './testcaser/flereBarnehageperioderMedMeldtBarnehageplass.json';
 import happyCase from './testcaser/happyCase.json';
 import manglerBarnehageplassBarnetsAlderVilkårsvurdering from './testcaser/manglerBarnehageplassBarnetsAlderVilkårsvurdering.json';
 import type { IPersonResultat } from '../../../typer/vilkår';
@@ -44,6 +45,14 @@ describe('hentFeilIVilkårsvurdering', () => {
 
     test('Skal ikke gi feilmelding dersom ingenting er galt', () => {
         const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(happyCase as unknown as IPersonResultat[]);
+
+        expect(feilIVilkåarsvurdering.length).toEqual(0);
+    });
+
+    test('Skal ikke gi feilmelding ved flere barnehageperioder der en mellom periode og siste periode har meldt barnehageplass', () => {
+        const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
+            flereBarnehageperioderMedMeldtBarnehageplass as unknown as IPersonResultat[]
+        );
 
         expect(feilIVilkåarsvurdering.length).toEqual(0);
     });
