@@ -1,16 +1,16 @@
 import { Fragment } from 'react';
 
+import { useBehandling } from '@hooks/useBehandling';
+import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
+import { Vedtaksperiodetype } from '@typer/vedtaksperiode';
+import { partition } from '@utils/commons';
 import styled from 'styled-components';
 
 import { Heading, HelpText } from '@navikt/ds-react';
 
 import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
-import Vedtaksperiode from './Vedtaksperiode';
+import { Vedtaksperiode } from './Vedtaksperiode';
 import { VedtaksperiodeProvider } from './VedtaksperiodeContext';
-import type { IBehandling } from '../../../../../../typer/behandling';
-import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
-import { Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
-import { partition } from '../../../../../../utils/commons';
 
 const StyledHeading = styled(Heading)`
     display: flex;
@@ -26,16 +26,14 @@ const StyledHelpText = styled(HelpText)`
     }
 `;
 
-interface VedtaksperioderProps {
-    åpenBehandling: IBehandling;
-}
+export function Vedtaksperioder() {
+    const behandling = useBehandling();
 
-const Vedtaksperioder = ({ åpenBehandling }: VedtaksperioderProps) => {
     const sorterteVedtaksperioderSomSkalvises = filtrerOgSorterPerioderMedBegrunnelseBehov(
-        åpenBehandling.vedtak?.vedtaksperioderMedBegrunnelser ?? [],
-        åpenBehandling.resultat,
-        åpenBehandling.status,
-        åpenBehandling.sisteVedtaksperiodeVisningDato
+        behandling.vedtak?.vedtaksperioderMedBegrunnelser ?? [],
+        behandling.resultat,
+        behandling.status,
+        behandling.sisteVedtaksperiodeVisningDato
     );
 
     const [sorterteAvslagsperioder, sorterteAndreVedtaksperioder] = partition(
@@ -49,31 +47,27 @@ const Vedtaksperioder = ({ åpenBehandling }: VedtaksperioderProps) => {
                 sorterteVedtaksperioderMedBegrunnelser={sorterteAndreVedtaksperioder}
                 overskrift={'Begrunnelser i vedtaksbrev'}
                 hjelpetekst={'Her skal du sette begrunnelsestekster for innvilgelse, reduksjon og opphør.'}
-                åpenBehandling={åpenBehandling}
             />
 
             <GrupperteVedtaksperioder
                 sorterteVedtaksperioderMedBegrunnelser={sorterteAvslagsperioder}
                 overskrift={'Begrunnelser for avslag i vedtaksbrev'}
                 hjelpetekst={'Her har vi hentet begrunnelser for avslag som er satt tidligere i behandlingen.'}
-                åpenBehandling={åpenBehandling}
             />
         </>
     ) : (
         <Fragment />
     );
-};
+}
 
 const GrupperteVedtaksperioder = ({
     sorterteVedtaksperioderMedBegrunnelser,
     overskrift,
     hjelpetekst,
-    åpenBehandling,
 }: {
     sorterteVedtaksperioderMedBegrunnelser: IVedtaksperiodeMedBegrunnelser[];
     overskrift: string;
     hjelpetekst: string;
-    åpenBehandling: IBehandling;
 }) => {
     if (sorterteVedtaksperioderMedBegrunnelser.length === 0) {
         return null;
@@ -92,13 +86,9 @@ const GrupperteVedtaksperioder = ({
                 (vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser) => (
                     <VedtaksperiodeProvider
                         key={vedtaksperiodeMedBegrunnelser.id}
-                        åpenBehandling={åpenBehandling}
                         vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
                     >
-                        <Vedtaksperiode
-                            vedtaksperiodeMedBegrunnelser={vedtaksperiodeMedBegrunnelser}
-                            sisteVedtaksperiodeFom={sisteVedtaksperiodeFom}
-                        />
+                        <Vedtaksperiode sisteVedtaksperiodeFom={sisteVedtaksperiodeFom} />
                     </VedtaksperiodeProvider>
                 )
             )}

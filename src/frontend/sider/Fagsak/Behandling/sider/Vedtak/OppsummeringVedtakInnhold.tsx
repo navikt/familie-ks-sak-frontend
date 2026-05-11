@@ -1,3 +1,15 @@
+import { useFagsakId } from '@hooks/useFagsakId';
+import { useSaksbehandler } from '@hooks/useSaksbehandler';
+import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
+import {
+    BehandlerRolle,
+    BehandlingStatus,
+    BehandlingSteg,
+    BehandlingÅrsak,
+    hentStegNummer,
+    type IBehandling,
+} from '@typer/behandling';
+import type { IPersonInfo } from '@typer/person';
 import { useNavigate } from 'react-router';
 
 import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
@@ -12,21 +24,9 @@ import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrol
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import { Vedtaksmeny } from './Vedtaksmeny/Vedtaksmeny';
 import { AlleBegrunnelserProvider } from './Vedtaksperioder/AlleBegrunnelserContext';
-import Vedtaksperioder from './Vedtaksperioder/Vedtaksperioder';
+import { Vedtaksperioder } from './Vedtaksperioder/Vedtaksperioder';
 import useDokument from '../../../../../hooks/useDokument';
-import { useFagsakId } from '../../../../../hooks/useFagsakId';
-import { useSaksbehandler } from '../../../../../hooks/useSaksbehandler';
-import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAlert';
 import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisningModal';
-import {
-    BehandlerRolle,
-    BehandlingStatus,
-    BehandlingSteg,
-    BehandlingÅrsak,
-    hentStegNummer,
-    type IBehandling,
-} from '../../../../../typer/behandling';
-import type { IPersonInfo } from '../../../../../typer/person';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface IOppsummeringVedtakInnholdProps {
@@ -169,7 +169,7 @@ const OppsummeringVedtakInnhold = ({
                         ) : (
                             <>
                                 <AlleBegrunnelserProvider>
-                                    <Vedtaksperioder åpenBehandling={åpenBehandling} />
+                                    <Vedtaksperioder />
                                 </AlleBegrunnelserProvider>
                                 {erFeilutbetaltValutaTabellSynlig && <FeilutbetaltValutaTabell />}
                                 {erRefusjonEøsTabellSynlig && <RefusjonEøsTabell />}
