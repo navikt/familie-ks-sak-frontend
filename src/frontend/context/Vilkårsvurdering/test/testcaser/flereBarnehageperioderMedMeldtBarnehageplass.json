@@ -1,0 +1,177 @@
+[
+  {
+    "person": {
+      "type": "BARN",
+      "fødselsdato": "2024-02-01",
+      "personIdent": "12345678910",
+      "navn": "Test Barn",
+      "kjønn": "MANN",
+      "registerhistorikk": {
+        "hentetTidspunkt": "2025-01-01T12:00:00.000",
+        "sivilstand": [],
+        "oppholdstillatelse": [],
+        "statsborgerskap": [
+          {
+            "fom": "2024-02-01",
+            "tom": null,
+            "verdi": "Norge"
+          }
+        ],
+        "bostedsadresse": [
+          {
+            "fom": "2024-02-01",
+            "tom": null,
+            "verdi": "Testveien 1, 0001 Oslo"
+          }
+        ],
+        "dødsboadresse": []
+      },
+      "målform": "NB",
+      "dødsfallDato": null
+    },
+    "personIdent": "12345678910",
+    "vilkårResultater": [
+      {
+        "begrunnelse": "",
+        "id": 1,
+        "periode": {
+          "fom": "2025-02-01",
+          "tom": "2026-02-01"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BARNETS_ALDER",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": true,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2025-01-10T10:00:00.000",
+        "behandlingId": 1,
+        "vurderesEtter": null,
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      },
+      {
+        "begrunnelse": "",
+        "id": 2,
+        "periode": {
+          "fom": "2025-01-02",
+          "tom": "2025-12-14"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BARNEHAGEPLASS",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2025-01-10T10:00:00.000",
+        "behandlingId": 1,
+        "vurderesEtter": null,
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null,
+        "søkerHarMeldtFraOmBarnehageplass": false
+      },
+      {
+        "begrunnelse": "",
+        "id": 3,
+        "periode": {
+          "fom": "2025-12-15",
+          "tom": "2026-01-16"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BARNEHAGEPLASS",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2025-01-10T10:00:00.000",
+        "behandlingId": 1,
+        "vurderesEtter": null,
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": 19,
+        "søkerHarMeldtFraOmBarnehageplass": true
+      },
+      {
+        "begrunnelse": "",
+        "id": 4,
+        "periode": {
+          "fom": "2026-01-17",
+          "tom": "2026-08-06"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BARNEHAGEPLASS",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2025-01-10T10:00:00.000",
+        "behandlingId": 1,
+        "vurderesEtter": null,
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": 40,
+        "søkerHarMeldtFraOmBarnehageplass": true
+      },
+      {
+        "begrunnelse": "",
+        "id": 5,
+        "periode": {
+          "fom": "2024-02-01"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BOSATT_I_RIKET",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2025-01-10T10:00:00.000",
+        "behandlingId": 1,
+        "vurderesEtter": "NASJONALE_REGLER",
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      },
+      {
+        "begrunnelse": "",
+        "id": 6,
+        "periode": {
+          "fom": "2024-02-01"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "BOR_MED_SØKER",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2025-01-10T10:00:00.000",
+        "behandlingId": 1,
+        "vurderesEtter": "NASJONALE_REGLER",
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      },
+      {
+        "begrunnelse": "",
+        "id": 7,
+        "periode": {
+          "fom": "2024-02-01"
+        },
+        "resultat": "OPPFYLT",
+        "vilkårType": "MEDLEMSKAP_ANNEN_FORELDER",
+        "endretAv": "Z994294",
+        "erVurdert": true,
+        "erAutomatiskVurdert": false,
+        "erEksplisittAvslagPåSøknad": false,
+        "avslagBegrunnelser": [],
+        "endretTidspunkt": "2025-01-10T10:00:00.000",
+        "behandlingId": 1,
+        "vurderesEtter": "NASJONALE_REGLER",
+        "utdypendeVilkårsvurderinger": [],
+        "antallTimer": null
+      }
+    ],
+    "andreVurderinger": []
+  }
+]
