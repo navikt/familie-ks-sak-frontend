@@ -3,26 +3,23 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import { HentGenererteBrevbegrunnelserQueryKeyFactory } from '@hooks/useHentGenererteBrevbegrunnelser';
 import { useOppdaterBegrunnelser } from '@hooks/useOppdaterBegrunnelser';
-import { useOppdaterVedtaksperiodeMedFritekster } from '@hooks/useOppdaterVedtaksperiodeMedFritekster';
+import { MAKS_LENGDE_FRITEKST } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/Fritekstbegrunnelser';
 import { useQueryClient } from '@tanstack/react-query';
 import { Behandlingstype, type IBehandling } from '@typer/behandling';
 import type { Begrunnelse } from '@typer/vedtak';
 import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
 import type { IIsoDatoPeriode } from '@utils/dato';
-import { genererIdBasertPåAndreFritekster, type IFritekstFelt, lagInitiellFritekst } from '@utils/fritekstfelter';
+import { type IFritekstFelt, lagInitiellFritekst } from '@utils/fritekstfelter';
 import deepEqual from 'deep-equal';
 
 import type { ActionMeta, GroupBase, OptionType } from '@navikt/familie-form-elements';
-import type { FeiloppsummeringFeil, FeltState, ISkjema } from '@navikt/familie-skjema';
+import type { FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { useAlleBegrunnelserContext } from './AlleBegrunnelserContext';
 import { grupperteBegrunnelser } from './utils';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
-
-const maksAntallKulepunkter = 3;
-const makslengdeFritekst = 350;
 
 interface Props extends PropsWithChildren {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
@@ -36,15 +33,11 @@ interface BegrunnelserSkjema {
 interface VedtaksperiodeContextValue {
     erPanelEkspandert: boolean;
     grupperteBegrunnelser: GroupBase<OptionType>[];
-    hentFeilTilOppsummering: () => FeiloppsummeringFeil[];
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
-    leggTilFritekst: () => void;
-    maksAntallKulepunkter: number;
-    makslengdeFritekst: number;
     onChangeBegrunnelse: (action: ActionMeta<OptionType>) => void;
     onPanelClose: (visAlert: boolean) => void;
-    putVedtaksperiodeMedFritekster: () => void;
     skjema: ISkjema<BegrunnelserSkjema, IBehandling>;
+    kanSendeSkjema: () => boolean;
 }
 
 const VedtaksperiodeContext = createContext<VedtaksperiodeContextValue | undefined>(undefined);
@@ -69,21 +62,6 @@ export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children
         },
     });
 
-    const { mutate: oppdaterVedtaksperiodeMedFritekster } = useOppdaterVedtaksperiodeMedFritekster(
-        vedtaksperiodeMedBegrunnelser.id,
-        {
-            onSuccess: async (behandling: IBehandling) => {
-                await queryClient.invalidateQueries({
-                    queryKey: HentGenererteBrevbegrunnelserQueryKeyFactory.vedtaksperiode(
-                        vedtaksperiodeMedBegrunnelser.id
-                    ),
-                });
-                settÅpenBehandling(byggSuksessRessurs(behandling));
-                onPanelClose(false);
-            },
-        }
-    );
-
     const valgteBegrunnelser = [
         ...vedtaksperiodeMedBegrunnelser.begrunnelser,
         ...vedtaksperiodeMedBegrunnelser.eøsBegrunnelser,
@@ -107,7 +85,7 @@ export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children
         },
     });
 
-    const { hentFeilTilOppsummering, kanSendeSkjema, settVisfeilmeldinger, skjema } = useSkjema<
+    const { kanSendeSkjema, settVisfeilmeldinger, skjema } = useSkjema<
         {
             periode: IIsoDatoPeriode;
             fritekster: FeltState<IFritekstFelt>[];
@@ -132,7 +110,7 @@ export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children
 
         skjema.felter.fritekster.validerOgSettFelt(
             vedtaksperiodeMedBegrunnelser.fritekster.map((fritekst, id) =>
-                lagInitiellFritekst(fritekst, id, makslengdeFritekst)
+                lagInitiellFritekst(fritekst, id, MAKS_LENGDE_FRITEKST)
             )
         );
     };
@@ -175,13 +153,6 @@ export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children
         }
     };
 
-    const leggTilFritekst = () => {
-        skjema.felter.fritekster.validerOgSettFelt([
-            ...skjema.felter.fritekster.verdi,
-            lagInitiellFritekst('', genererIdBasertPåAndreFritekster(skjema.felter.fritekster), makslengdeFritekst),
-        ]);
-    };
-
     const onPanelClose = (visAlert: boolean) => {
         if (
             erPanelEkspandert &&
@@ -198,28 +169,16 @@ export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children
         }
     };
 
-    const putVedtaksperiodeMedFritekster = () => {
-        if (kanSendeSkjema()) {
-            oppdaterVedtaksperiodeMedFritekster({
-                fritekster: skjema.felter.fritekster.verdi.map(fritekst => fritekst.verdi.tekst),
-            });
-        }
-    };
-
     return (
         <VedtaksperiodeContext.Provider
             value={{
                 erPanelEkspandert,
                 grupperteBegrunnelser: grupperteBegrunnelser(vedtaksperiodeMedBegrunnelser, alleBegrunnelser),
-                hentFeilTilOppsummering,
                 vedtaksperiodeMedBegrunnelser,
-                leggTilFritekst,
-                maksAntallKulepunkter,
-                makslengdeFritekst,
                 onChangeBegrunnelse,
                 onPanelClose,
-                putVedtaksperiodeMedFritekster,
                 skjema,
+                kanSendeSkjema,
             }}
         >
             {children}
