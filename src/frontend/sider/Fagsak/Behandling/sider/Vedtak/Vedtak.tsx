@@ -1,81 +1,110 @@
 import { useState } from 'react';
 
+import { useBruker } from '@hooks/useBruker';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useFagsakId } from '@hooks/useFagsakId';
+import { useSaksbehandler } from '@hooks/useSaksbehandler';
+import { useSendVedtakTilBeslutter } from '@hooks/useSendVedtakTilBeslutter';
+import {
+    BehandlingStatus,
+    BehandlingSteg,
+    Behandlingstype,
+    BehandlingÅrsak,
+    type IBehandling,
+} from '@typer/behandling';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 
-import { RessursStatus } from '@navikt/familie-typer';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
 import { useRefusjonEøsTabellContext } from './RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
-import { useFagsakId } from '../../../../../hooks/useFagsakId';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
-import type { IBehandling } from '../../../../../typer/behandling';
-import { BehandlingStatus, BehandlingSteg, Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
-import type { IPersonInfo } from '../../../../../typer/person';
-import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
-interface IVedtakProps {
-    åpenBehandling: IBehandling;
-    bruker: IPersonInfo;
+function kanForeslåVedtak(behandling: IBehandling) {
+    const minstEnPeriodeHarBegrunnelseEllerFritekst = (behandling.vedtak?.vedtaksperioderMedBegrunnelser ?? []).some(
+        vedtaksperioderMedBegrunnelse =>
+            vedtaksperioderMedBegrunnelse.begrunnelser.length !== 0 ||
+            vedtaksperioderMedBegrunnelse.eøsBegrunnelser.length !== 0 ||
+            vedtaksperioderMedBegrunnelse.fritekster.length !== 0
+    );
+    return (
+        minstEnPeriodeHarBegrunnelseEllerFritekst ||
+        behandling?.årsak === BehandlingÅrsak.TEKNISK_ENDRING ||
+        behandling?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
+        behandling?.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
+        behandling?.årsak === BehandlingÅrsak.DØDSFALL
+    );
 }
 
-const StyledSkjemaSteg = styled(Skjemasteg)`
-    .typo-innholdstittel {
-        margin-bottom: 1.4rem;
-    }
-`;
-
-const Vedtak = ({ åpenBehandling, bruker }: IVedtakProps) => {
-    const { vurderErLesevisning, foreslåVedtakNesteOnClick, behandlingsstegSubmitressurs } = useBehandlingContext();
-
+export function Vedtak() {
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
     const { erLeggTilFeilutbetaltValutaFormÅpen } = useFeilutbetaltValutaTabellContext();
     const { erLeggTilRefusjonEøsFormÅpen } = useRefusjonEøsTabellContext();
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
 
+    const saksbehandler = useSaksbehandler();
     const fagsakId = useFagsakId();
-
+    const bruker = useBruker();
+    const erLesevisning = useErLesevisning();
     const navigate = useNavigate();
 
     const [visModal, settVisModal] = useState<boolean>(false);
+    const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
 
-    const visSubmitKnapp = !vurderErLesevisning() && åpenBehandling?.status === BehandlingStatus.UTREDES;
+    const {
+        mutate: sendVedtakTilBeslutter,
+        isPending: sendVedtakTilBeslutterIsPending,
+        error: sendVedtakTilBeslutterError,
+    } = useSendVedtakTilBeslutter({
+        onSuccess: behandling => {
+            settÅpenBehandling(byggSuksessRessurs(behandling));
+            settVisModal(true);
+        },
+    });
 
-    const foreslåVedtak = () => {
-        foreslåVedtakNesteOnClick(
-            (visModal: boolean) => settVisModal(visModal),
-            erLeggTilFeilutbetaltValutaFormÅpen,
-            erLeggTilRefusjonEøsFormÅpen,
-            erSammensattKontrollsak
-        );
-    };
-
+    const visSubmitKnapp = !erLesevisning && behandling.status === BehandlingStatus.UTREDES;
     const erBehandlingMedVedtaksbrevutsending =
-        åpenBehandling.type !== Behandlingstype.TEKNISK_ENDRING && åpenBehandling.årsak !== BehandlingÅrsak.SATSENDRING;
+        behandling.type !== Behandlingstype.TEKNISK_ENDRING && behandling.årsak !== BehandlingÅrsak.SATSENDRING;
+
+    function sendTilBeslutter() {
+        if (erLeggTilFeilutbetaltValutaFormÅpen) {
+            settFeilmelding(
+                'Det er lagt til en ny periode med feilutbetalt valuta. Fyll ut periode og beløp, eller fjern perioden.'
+            );
+        } else if (erLeggTilRefusjonEøsFormÅpen) {
+            settFeilmelding(
+                'Det er lagt til en ny periode med refusjon EØS. Fyll ut periode og refusjonsbeløp, eller fjern perioden.'
+            );
+        } else if (!kanForeslåVedtak(behandling) && !erSammensattKontrollsak) {
+            settFeilmelding('Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.');
+        } else {
+            settFeilmelding(undefined);
+            sendVedtakTilBeslutter({ behandlingId: behandling.behandlingId, behandlendeEnhet: saksbehandler.enhet });
+        }
+    }
 
     return (
-        <StyledSkjemaSteg
+        <Skjemasteg
             tittel="Vedtak"
-            forrigeOnClick={() => navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/simulering`)}
-            nesteOnClick={visSubmitKnapp ? foreslåVedtak : undefined}
+            forrigeOnClick={() => navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/simulering`)}
+            nesteOnClick={visSubmitKnapp ? sendTilBeslutter : undefined}
             nesteKnappTittel={'Til godkjenning'}
-            senderInn={behandlingsstegSubmitressurs.status === RessursStatus.HENTER}
+            senderInn={sendVedtakTilBeslutterIsPending}
             maxWidthStyle="54rem"
             className={'vedtak'}
-            feilmelding={hentFrontendFeilmelding(behandlingsstegSubmitressurs)}
+            feilmelding={feilmelding ?? sendVedtakTilBeslutterError?.message}
             steg={BehandlingSteg.BESLUTTE_VEDTAK}
         >
             <OppsummeringVedtakInnhold
-                åpenBehandling={åpenBehandling}
+                åpenBehandling={behandling}
                 erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending}
                 visModal={visModal}
                 settVisModal={settVisModal}
                 bruker={bruker}
             />
-        </StyledSkjemaSteg>
+        </Skjemasteg>
     );
-};
-
-export default Vedtak;
+}

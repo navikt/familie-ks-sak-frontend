@@ -1,0 +1,22 @@
+import { sendVedtakTilBeslutter } from '@api/sendVedtakTilBeslutter';
+import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import type { IBehandling } from '@typer/behandling';
+
+import { useHttp } from '@navikt/familie-http';
+
+interface Parameters {
+    behandlingId: number;
+    behandlendeEnhet: string;
+}
+
+type Options = Omit<UseMutationOptions<IBehandling, DefaultError, Parameters>, 'mutationFn'>;
+
+export function useSendVedtakTilBeslutter(options?: Options) {
+    const { request } = useHttp();
+    return useMutation<IBehandling, Error, Parameters>({
+        mutationFn: (parameters: Parameters): Promise<IBehandling> => {
+            return sendVedtakTilBeslutter(request, parameters);
+        },
+        ...options,
+    });
+}

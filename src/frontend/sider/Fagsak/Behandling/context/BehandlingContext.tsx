@@ -11,7 +11,6 @@ import { useLocation } from 'react-router';
 import { type Ressurs } from '@navikt/familie-typer';
 
 import { useHentOgSettBehandlingContext } from './HentOgSettBehandlingContext';
-import useBehandlingssteg from './useBehandlingssteg';
 import { saksbehandlerHarKunLesevisning } from './utils';
 import { hentTrinnForBehandling, type ITrinn, KontrollertStatus, type SideId } from '../sider/sider';
 
@@ -28,16 +27,7 @@ interface BehandlingContextValue {
     settIkkeKontrollerteSiderTilManglerKontroll: () => void;
     trinnPåBehandling: { [sideId: string]: ITrinn };
     behandling: IBehandling;
-    behandlingsstegSubmitressurs: Ressurs<IBehandling>;
-    vilkårsvurderingNesteOnClick: () => void;
-    behandlingresultatNesteOnClick: () => void;
     settÅpenBehandling: (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak?: boolean) => void;
-    foreslåVedtakNesteOnClick: (
-        settVisModal: (visModal: boolean) => void,
-        erUlagretNyFeilutbetaltValuta: boolean,
-        erUlagretNyRefusjonEøsPeriode: boolean,
-        erSammensattKontrollsak: boolean
-    ) => void;
 }
 
 const BehandlingContext = createContext<BehandlingContextValue | undefined>(undefined);
@@ -48,13 +38,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
     const saksbehandler = useSaksbehandler();
 
     useNavigerAutomatiskTilSideForBehandlingssteg({ behandling });
-
-    const {
-        submitRessurs: behandlingsstegSubmitressurs,
-        vilkårsvurderingNesteOnClick,
-        behandlingresultatNesteOnClick,
-        foreslåVedtakNesteOnClick,
-    } = useBehandlingssteg(settBehandlingRessurs, behandling);
 
     const location = useLocation();
     const [trinnPåBehandling, settTrinnPåBehandling] = useState<{ [sideId: string]: ITrinn }>({});
@@ -153,10 +136,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
                 settIkkeKontrollerteSiderTilManglerKontroll,
                 trinnPåBehandling,
                 behandling,
-                behandlingsstegSubmitressurs,
-                vilkårsvurderingNesteOnClick,
-                behandlingresultatNesteOnClick,
-                foreslåVedtakNesteOnClick,
                 settÅpenBehandling: settBehandlingRessurs,
             }}
         >
