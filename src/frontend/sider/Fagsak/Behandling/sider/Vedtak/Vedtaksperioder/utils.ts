@@ -1,27 +1,22 @@
-import { addMonths, differenceInMilliseconds, isAfter, isBefore, isSameMonth, startOfMonth } from 'date-fns';
-
-import type { GroupBase, OptionType } from '@navikt/familie-form-elements';
-
-import { BehandlingResultat, BehandlingStatus } from '../../../../../../typer/behandling';
+import { BehandlingResultat, BehandlingStatus } from '@typer/behandling';
 import {
     type Begrunnelse,
     BegrunnelseType,
     begrunnelseTyper,
     type IRestBegrunnelseTilknyttetVilkår,
-} from '../../../../../../typer/vedtak';
-import {
-    type IRestVedtaksbegrunnelse,
-    type IVedtaksperiodeMedBegrunnelser,
-    Vedtaksperiodetype,
-} from '../../../../../../typer/vedtaksperiode';
-import type { AlleBegrunnelser } from '../../../../../../typer/vilkår';
+} from '@typer/vedtak';
+import { type IVedtaksperiodeMedBegrunnelser, Vedtaksperiodetype } from '@typer/vedtaksperiode';
+import type { AlleBegrunnelser } from '@typer/vilkår';
 import {
     hentDagensDato,
     type IsoDatoString,
     isoStringTilDate,
     isoStringTilDateMedFallback,
     tidenesMorgen,
-} from '../../../../../../utils/dato';
+} from '@utils/dato';
+import { addMonths, differenceInMilliseconds, isAfter, isBefore, isSameMonth, startOfMonth } from 'date-fns';
+
+import type { GroupBase, OptionType } from '@navikt/familie-form-elements';
 
 export function grupperteBegrunnelser(
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser,
@@ -88,10 +83,12 @@ export const mapBegrunnelserTilSelectOptions = (
         ...vedtaksperiodeMedBegrunnelser.begrunnelser,
         ...vedtaksperiodeMedBegrunnelser.eøsBegrunnelser,
     ];
-    return alleBegrunnelser.map((begrunnelse: IRestVedtaksbegrunnelse) => ({
-        value: begrunnelse.begrunnelse.toString(),
-        label: hentLabelForOption(begrunnelse.begrunnelseType, begrunnelse.begrunnelse, vilkårBegrunnelser),
-    }));
+    return alleBegrunnelser
+        .map(({ begrunnelse, begrunnelseType }) => ({
+            value: begrunnelse.toString(),
+            label: hentLabelForOption(begrunnelseType, begrunnelse, vilkårBegrunnelser),
+        }))
+        .toSorted((o1, o2) => o1.label.localeCompare(o2.label));
 };
 
 const hentLabelForOption = (
