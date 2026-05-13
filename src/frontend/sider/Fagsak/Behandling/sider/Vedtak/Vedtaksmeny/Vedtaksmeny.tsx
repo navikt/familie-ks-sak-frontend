@@ -5,16 +5,20 @@ import { useErLesevisning } from '@hooks/useErLesevisning';
 import { BehandlingKategori } from '@typer/behandlingstema';
 import { vedtakHarFortsattUtbetaling } from '@utils/vedtakUtils';
 
+import { KorrigerVedtakModal } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtakModal/KorrigerVedtakModal';
+import { BehandlingKategori } from '@typer/behandlingstema';
+import { vedtakHarFortsattUtbetaling } from '@utils/vedtakUtils';
+
 import { ArrowUndoIcon, CalculatorIcon, ChevronDownIcon, StarsEuIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button, Stack } from '@navikt/ds-react';
 
 import Styles from './Vedtaksmeny.module.css';
+import { useBehandlingContext } from '../../../context/BehandlingContext';
 import EndreEndringstidspunkt from '../endringstidspunkt/EndreEndringstidspunkt';
 import { OppdaterEndringstidspunktModal } from '../endringstidspunkt/OppdaterEndringstidspunktModal';
 import { useFeilutbetaltValutaTabellContext } from '../FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import KorrigerEtterbetaling from '../KorrigerEtterbetaling/KorrigerEtterbetaling';
 import KorrigerVedtak from '../KorrigerVedtakModal/KorrigerVedtak';
-import KorrigerVedtakModal from '../KorrigerVedtakModal/KorrigerVedtakModal';
 import { useRefusjonEøsTabellContext } from '../RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from '../SammensattKontrollsak/SammensattKontrollsakContext';
 
