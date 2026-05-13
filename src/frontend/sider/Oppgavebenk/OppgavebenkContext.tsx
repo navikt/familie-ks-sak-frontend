@@ -368,11 +368,11 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
     const gåTilTilbakekreving = (oppgave: IOppgave) => {
         const brukerident = hentFnrFraOppgaveIdenter(oppgave.identer);
         if (brukerident) {
-            request<{ personIdent: string }, IMinimalFagsak | undefined>({
+            request<{ ident: string }, IMinimalFagsak | undefined>({
                 method: 'POST',
                 url: `/familie-ks-sak/api/fagsaker/hent-fagsak-paa-person`,
                 data: {
-                    personIdent: brukerident,
+                    ident: brukerident,
                 },
             }).then((fagsak: Ressurs<IMinimalFagsak | undefined>) => {
                 if (fagsak.status === RessursStatus.SUKSESS && !!fagsak.data) {
