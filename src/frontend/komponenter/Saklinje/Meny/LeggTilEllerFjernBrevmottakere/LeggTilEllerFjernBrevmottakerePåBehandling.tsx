@@ -1,8 +1,10 @@
+import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Behandlingstype } from '@typer/behandling';
+
 import { ActionMenu } from '@navikt/ds-react';
 
 import type { SkjemaBrevmottaker } from './useBrevmottakerSkjema';
-import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { Behandlingstype } from '../../../../typer/behandling';
 
 function utledLabel(brevmottakere: SkjemaBrevmottaker[], erLesevisning: boolean) {
     if (erLesevisning) {
@@ -24,7 +26,8 @@ interface Props {
 }
 
 export function LeggTilEllerFjernBrevmottakerePåBehandling({ åpneModal }: Props) {
-    const { behandling, vurderErLesevisning } = useBehandlingContext();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
 
     const erRelevantBehandlingstype = relevanteBehandlingstyper.includes(behandling.type);
 
@@ -32,7 +35,6 @@ export function LeggTilEllerFjernBrevmottakerePåBehandling({ åpneModal }: Prop
         return null;
     }
 
-    const erLesevisning = vurderErLesevisning();
     const harBrevmottaker = behandling.brevmottakere.length > 0;
 
     if (erLesevisning && !harBrevmottaker) {

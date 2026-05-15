@@ -1,14 +1,15 @@
 import type { PropsWithChildren, ReactNode } from 'react';
 import { useEffect } from 'react';
 
+import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { BehandlingSteg } from '@typer/behandling';
+import { behandlingErEtterSteg } from '@utils/steg';
 import styled from 'styled-components';
 
 import { Box, Button, ErrorMessage, Heading, VStack } from '@navikt/ds-react';
 import { Space16, Space24, Space96 } from '@navikt/ds-tokens/dist/tokens';
 
-import { useBehandlingContext } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { BehandlingSteg } from '../../typer/behandling';
-import { behandlingErEtterSteg } from '../../utils/steg';
 import { BehandlingPåVentAlert } from '../Alert/BehandlingPåVentAlert';
 import { MidlertidigEnhetAlert } from '../Alert/MidlertidigEnhetAlert';
 
@@ -58,7 +59,8 @@ const Skjemasteg = ({
     skalViseForrigeKnapp = true,
     feilmelding = '',
 }: IProps) => {
-    const { behandling, vurderErLesevisning } = useBehandlingContext();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
 
     useEffect(() => {
         const skjema = document.getElementById('skjemasteg');
@@ -93,7 +95,7 @@ const Skjemasteg = ({
                     {children}
                     {feilmelding !== '' && <StyledErrorMessage>{feilmelding}</StyledErrorMessage>}
                     <Navigering>
-                        {nesteOnClick && skalViseNesteKnapp && (!vurderErLesevisning() || kanGåVidereILesevisning) && (
+                        {nesteOnClick && skalViseNesteKnapp && (!erLesevisning || kanGåVidereILesevisning) && (
                             <Button variant={'primary'} onClick={onNesteClicked} loading={senderInn}>
                                 {nesteKnappTittel}
                             </Button>
