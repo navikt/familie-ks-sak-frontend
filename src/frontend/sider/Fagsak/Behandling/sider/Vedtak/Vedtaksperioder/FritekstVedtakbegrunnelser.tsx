@@ -69,14 +69,10 @@ const ItalicText = styled(BodyLong)`
     font-style: italic;
 `;
 
-const FritekstVedtakbegrunnelser = () => {
-    const behandling = useBehandling();
-    const erLesevisning = useErLesevisning();
-
+export function FritekstVedtakbegrunnelser() {
     const {
         skjema,
         leggTilFritekst,
-        id,
         makslengdeFritekst,
         maksAntallKulepunkter,
         onPanelClose,
@@ -84,13 +80,16 @@ const FritekstVedtakbegrunnelser = () => {
         vedtaksperiodeMedBegrunnelser,
     } = useVedtaksperiodeContext();
 
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
+
     const oppdaterVedtaksperiodeMedFriteksterMutation = useOppdaterVedtaksperiodeMedFriteksterMutationState(
         vedtaksperiodeMedBegrunnelser.id
     );
 
     const erMaksAntallKulepunkter = skjema.felter.fritekster.verdi.length >= maksAntallKulepunkter;
 
-    const fieldsetId = `Fritekster ${id}`;
+    const fieldsetId = `Fritekster ${vedtaksperiodeMedBegrunnelser.id}`;
 
     const onChangeFritekst = (event: ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
         skjema.felter.fritekster.validerOgSettFelt([
@@ -242,6 +241,4 @@ const FritekstVedtakbegrunnelser = () => {
             {'Legg til fritekst'}
         </Button>
     ) : null;
-};
-
-export default FritekstVedtakbegrunnelser;
+}

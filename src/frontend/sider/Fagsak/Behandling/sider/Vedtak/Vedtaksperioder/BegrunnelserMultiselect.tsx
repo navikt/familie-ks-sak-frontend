@@ -1,3 +1,9 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useOppdaterBegrunnelserMutationState } from '@hooks/useOppdaterStandardbegrunnelserMutationState';
+import type { OptionType } from '@typer/common';
+import { type Begrunnelse, type BegrunnelseType, Standardbegrunnelse } from '@typer/vedtak';
+import { begrunnelseTyper } from '@typer/vedtak';
+import { finnBegrunnelseType, hentBakgrunnsfarge, hentBorderfarge } from '@utils/vedtakUtils';
 import styled from 'styled-components';
 
 import { BodyShort, Label } from '@navikt/ds-react';
@@ -12,31 +18,28 @@ import {
 import { useAlleBegrunnelserContext } from './AlleBegrunnelserContext';
 import { mapBegrunnelserTilSelectOptions } from './utils';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
-import { useOppdaterBegrunnelserMutationState } from '../../../../../../hooks/useOppdaterStandardbegrunnelserMutationState';
-import type { OptionType } from '../../../../../../typer/common';
-import type { Begrunnelse, BegrunnelseType } from '../../../../../../typer/vedtak';
-import { begrunnelseTyper } from '../../../../../../typer/vedtak';
-import { finnBegrunnelseType, hentBakgrunnsfarge, hentBorderfarge } from '../../../../../../utils/vedtakUtils';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
-
-interface IProps {
-    tillatKunLesevisning: boolean;
-}
 
 const GroupLabel = styled.div`
     color: black;
 `;
 
-const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-    const erLesevisning = tillatKunLesevisning || vurderErLesevisning();
-
-    const { id, onChangeBegrunnelse, grupperteBegrunnelser, vedtaksperiodeMedBegrunnelser } =
-        useVedtaksperiodeContext();
+export function BegrunnelserMultiselect() {
+    const { vedtaksperiodeMedBegrunnelser, onChangeBegrunnelse, grupperteBegrunnelser } = useVedtaksperiodeContext();
     const { alleBegrunnelser } = useAlleBegrunnelserContext();
+
+    const erLesevisning = useErLesevisning();
     const oppdaterBegrunnelserMutation = useOppdaterBegrunnelserMutationState(vedtaksperiodeMedBegrunnelser.id);
 
     const begrunnelser = mapBegrunnelserTilSelectOptions(vedtaksperiodeMedBegrunnelser, alleBegrunnelser);
+
+    const vedtaksperiodeInneholderFramtidigOpphørBegrunnelse =
+        vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
+            vedtaksBegrunnelser =>
+                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
+                Standardbegrunnelse.OPPHØR_FRAMTIDIG_OPPHØR_BARNEHAGEPLASS
+        ).length > 0;
+
+    const erRedigeringDeaktivert = vedtaksperiodeInneholderFramtidigOpphørBegrunnelse || erLesevisning;
 
     const propSelectStyles: StylesConfig<OptionType, boolean, GroupBase<OptionType>> = {
         container: (provided, props) =>
@@ -70,15 +73,16 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
 
     return (
         <FamilieReactSelect
-            id={`${id}`}
+            id={`${vedtaksperiodeMedBegrunnelser.id}`}
             value={begrunnelser}
             propSelectStyles={propSelectStyles}
             placeholder={'Velg begrunnelse(r)'}
-            isDisabled={erLesevisning || oppdaterBegrunnelserMutation?.status === 'pending'}
+            isLoading={oppdaterBegrunnelserMutation?.status === 'pending'}
+            isDisabled={erRedigeringDeaktivert || oppdaterBegrunnelserMutation?.status === 'pending'}
             feil={oppdaterBegrunnelserMutation?.error?.message}
             label="Velg standardtekst i brev"
             creatable={false}
-            erLesevisning={erLesevisning}
+            erLesevisning={erRedigeringDeaktivert}
             isMulti={true}
             menuPosition="fixed"
             menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
@@ -110,6 +114,4 @@ const BegrunnelserMultiselect = ({ tillatKunLesevisning }: IProps) => {
             options={grupperteBegrunnelser}
         />
     );
-};
-
-export default BegrunnelserMultiselect;
+}

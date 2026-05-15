@@ -1,7 +1,15 @@
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { HentGenererteBrevbegrunnelserQueryKeyFactory } from '@hooks/useHentGenererteBrevbegrunnelser';
+import { useOppdaterBegrunnelser } from '@hooks/useOppdaterBegrunnelser';
+import { useOppdaterVedtaksperiodeMedFritekster } from '@hooks/useOppdaterVedtaksperiodeMedFritekster';
 import { useQueryClient } from '@tanstack/react-query';
+import { Behandlingstype, type IBehandling } from '@typer/behandling';
+import type { Begrunnelse } from '@typer/vedtak';
+import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
+import type { IIsoDatoPeriode } from '@utils/dato';
+import { genererIdBasertPåAndreFritekster, type IFritekstFelt, lagInitiellFritekst } from '@utils/fritekstfelter';
 import deepEqual from 'deep-equal';
 
 import type { ActionMeta, GroupBase, OptionType } from '@navikt/familie-form-elements';
@@ -11,23 +19,13 @@ import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { useAlleBegrunnelserContext } from './AlleBegrunnelserContext';
 import { grupperteBegrunnelser } from './utils';
-import { HentGenererteBrevbegrunnelserQueryKeyFactory } from '../../../../../../hooks/useHentGenererteBrevbegrunnelser';
-import { useOppdaterBegrunnelser } from '../../../../../../hooks/useOppdaterBegrunnelser';
-import { useOppdaterVedtaksperiodeMedFritekster } from '../../../../../../hooks/useOppdaterVedtaksperiodeMedFritekster';
-import { Behandlingstype, type IBehandling } from '../../../../../../typer/behandling';
-import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import type { IVedtaksperiodeMedBegrunnelser } from '../../../../../../typer/vedtaksperiode';
-import type { IIsoDatoPeriode } from '../../../../../../utils/dato';
-import {
-    genererIdBasertPåAndreFritekster,
-    type IFritekstFelt,
-    lagInitiellFritekst,
-} from '../../../../../../utils/fritekstfelter';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
-interface IProps extends PropsWithChildren {
+const maksAntallKulepunkter = 3;
+const makslengdeFritekst = 350;
+
+interface Props extends PropsWithChildren {
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
-    åpenBehandling: IBehandling;
 }
 
 interface BegrunnelserSkjema {
@@ -39,7 +37,6 @@ interface VedtaksperiodeContextValue {
     erPanelEkspandert: boolean;
     grupperteBegrunnelser: GroupBase<OptionType>[];
     hentFeilTilOppsummering: () => FeiloppsummeringFeil[];
-    id: number;
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser;
     leggTilFritekst: () => void;
     maksAntallKulepunkter: number;
@@ -48,46 +45,44 @@ interface VedtaksperiodeContextValue {
     onPanelClose: (visAlert: boolean) => void;
     putVedtaksperiodeMedFritekster: () => void;
     skjema: ISkjema<BegrunnelserSkjema, IBehandling>;
-    åpenBehandling: IBehandling;
 }
 
 const VedtaksperiodeContext = createContext<VedtaksperiodeContextValue | undefined>(undefined);
 
-export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegrunnelser, children }: IProps) => {
-    const { settÅpenBehandling } = useBehandlingContext();
+export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children }: Props) {
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
+
     const queryClient = useQueryClient();
+
     const [erPanelEkspandert, settErPanelEkspandert] = useState(
-        åpenBehandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING &&
+        behandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING &&
             vedtaksperiodeMedBegrunnelser.begrunnelser.length === 0 &&
             vedtaksperiodeMedBegrunnelser.fritekster.length === 0
     );
 
     const { mutate: oppdaterBegrunnelser } = useOppdaterBegrunnelser(vedtaksperiodeMedBegrunnelser.id, {
-        onSuccess: behandling => {
-            settÅpenBehandling(byggSuksessRessurs(behandling));
-            queryClient.invalidateQueries({
+        onSuccess: async behandling => {
+            await queryClient.invalidateQueries({
                 queryKey: HentGenererteBrevbegrunnelserQueryKeyFactory.vedtaksperiode(vedtaksperiodeMedBegrunnelser.id),
             });
+            settÅpenBehandling(byggSuksessRessurs(behandling));
         },
     });
 
     const { mutate: oppdaterVedtaksperiodeMedFritekster } = useOppdaterVedtaksperiodeMedFritekster(
         vedtaksperiodeMedBegrunnelser.id,
         {
-            onSuccess: (behandling: IBehandling) => {
-                settÅpenBehandling(byggSuksessRessurs(behandling));
-                queryClient.invalidateQueries({
+            onSuccess: async (behandling: IBehandling) => {
+                await queryClient.invalidateQueries({
                     queryKey: HentGenererteBrevbegrunnelserQueryKeyFactory.vedtaksperiode(
                         vedtaksperiodeMedBegrunnelser.id
                     ),
                 });
+                settÅpenBehandling(byggSuksessRessurs(behandling));
                 onPanelClose(false);
             },
         }
     );
-
-    const maksAntallKulepunkter = 3;
-    const makslengdeFritekst = 350;
 
     const valgteBegrunnelser = [
         ...vedtaksperiodeMedBegrunnelser.begrunnelser,
@@ -217,7 +212,6 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
                 erPanelEkspandert,
                 grupperteBegrunnelser: grupperteBegrunnelser(vedtaksperiodeMedBegrunnelser, alleBegrunnelser),
                 hentFeilTilOppsummering,
-                id: vedtaksperiodeMedBegrunnelser.id,
                 vedtaksperiodeMedBegrunnelser,
                 leggTilFritekst,
                 maksAntallKulepunkter,
@@ -226,19 +220,17 @@ export const VedtaksperiodeProvider = ({ åpenBehandling, vedtaksperiodeMedBegru
                 onPanelClose,
                 putVedtaksperiodeMedFritekster,
                 skjema,
-                åpenBehandling,
             }}
         >
             {children}
         </VedtaksperiodeContext.Provider>
     );
-};
+}
 
-export const useVedtaksperiodeContext = () => {
+export function useVedtaksperiodeContext() {
     const context = useContext(VedtaksperiodeContext);
-
     if (context === undefined) {
         throw new Error('useVedtaksperiodeContext må brukes inne i en VedtaksperiodeProvider');
     }
     return context;
-};
+}
