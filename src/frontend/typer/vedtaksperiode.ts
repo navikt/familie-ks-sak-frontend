@@ -1,8 +1,9 @@
+import { type IsoDatoString } from '@utils/dato';
+
 import type { YtelseType } from './beregning';
 import { ytelsetype } from './beregning';
 import { type IGrunnlagPerson } from './person';
 import type { Begrunnelse, BegrunnelseType } from './vedtak';
-import { type IsoDatoString } from '../utils/dato';
 
 export interface IVedtaksperiodeMedBegrunnelser {
     id: number;
@@ -92,3 +93,7 @@ export const hentVedtaksperiodeTittel = (vedtaksperiodeMedBegrunnelser: IVedtaks
             return '';
     }
 };
+
+export function skalViseFritekstbegrunnelser(vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser) {
+    return vedtaksperiodeMedBegrunnelser.støtterFritekst || vedtaksperiodeMedBegrunnelser.fritekster.length > 0;
+}
