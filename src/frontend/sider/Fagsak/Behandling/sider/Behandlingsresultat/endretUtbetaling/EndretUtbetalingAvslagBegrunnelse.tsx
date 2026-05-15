@@ -1,14 +1,15 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { IBehandling } from '@typer/behandling';
+import type { OptionType } from '@typer/common';
+import { IEndretUtbetalingAndelÅrsak } from '@typer/utbetalingAndel';
+import { type Begrunnelse, BegrunnelseType, begrunnelseTyper } from '@typer/vedtak';
+
 import { LocalAlert, Select } from '@navikt/ds-react';
 import type { GroupBase } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
-import type { IBehandling } from '../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../typer/common';
-import { IEndretUtbetalingAndelÅrsak } from '../../../../../../typer/utbetalingAndel';
-import { type Begrunnelse, BegrunnelseType, begrunnelseTyper } from '../../../../../../typer/vedtak';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { useHentEndretUtbetalingBegrunnelser } from '../useHentEndretUtbetalingBegrunnelser';
 
 interface IProps {
@@ -16,8 +17,9 @@ interface IProps {
 }
 
 export const EndretUtbetalingAvslagBegrunnelse = ({ skjema }: IProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
     const { endretUtbetalingsbegrunnelser } = useHentEndretUtbetalingBegrunnelser();
+
+    const erLesevisning = useErLesevisning();
 
     const prevalgtBegrunnelse =
         skjema.felter.vedtaksbegrunnelser.verdi && skjema.felter.vedtaksbegrunnelser.verdi.length > 0
@@ -86,7 +88,7 @@ export const EndretUtbetalingAvslagBegrunnelse = ({ skjema }: IProps) => {
             {...skjema.felter.vedtaksbegrunnelser.hentNavInputProps(skjema.visFeilmeldinger)}
             value={finnBegrunnelseForSelect(prevalgtBegrunnelse).value}
             label={'Velg standardtekst i brev'}
-            readOnly={vurderErLesevisning()}
+            readOnly={erLesevisning}
             onChange={event => {
                 if (event) {
                     /* 

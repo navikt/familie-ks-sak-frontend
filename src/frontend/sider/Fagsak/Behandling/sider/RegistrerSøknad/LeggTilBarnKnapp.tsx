@@ -1,14 +1,13 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useLeggTilBarnModalContext } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
+
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
 
-import { useLeggTilBarnModalContext } from '../../../../../komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
-import { useBehandlingContext } from '../../context/BehandlingContext';
-
 export function LeggTilBarnKnapp() {
-    const { vurderErLesevisning } = useBehandlingContext();
     const { åpneModal } = useLeggTilBarnModalContext();
 
-    const erLesevisning = vurderErLesevisning();
+    const erLesevisning = useErLesevisning();
 
     if (erLesevisning) {
         return null;

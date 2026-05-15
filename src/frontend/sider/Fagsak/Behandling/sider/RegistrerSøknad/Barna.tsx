@@ -1,3 +1,9 @@
+import { useBruker } from '@hooks/useBruker';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { IForelderBarnRelasjonMaskert } from '@typer/person';
+import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '@typer/person';
+import type { IBarnMedOpplysninger } from '@typer/søknad';
+import { isoStringTilDate } from '@utils/dato';
 import { differenceInMilliseconds } from 'date-fns';
 
 import { InformationSquareIcon } from '@navikt/aksel-icons';
@@ -6,18 +12,12 @@ import { CheckboxGroup, Heading, HStack, InfoCard, Label, VStack } from '@navikt
 import BarnMedOpplysninger from './BarnMedOpplysninger';
 import { useSøknadContext } from './SøknadContext';
 import RødError from '../../../../../ikoner/RødError';
-import type { IForelderBarnRelasjonMaskert } from '../../../../../typer/person';
-import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '../../../../../typer/person';
-import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
-import { isoStringTilDate } from '../../../../../utils/dato';
-import { useBrukerContext } from '../../../BrukerContext';
-import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const Barna = () => {
-    const { vurderErLesevisning } = useBehandlingContext();
-    const lesevisning = vurderErLesevisning();
-    const { bruker } = useBrukerContext();
     const { skjema } = useSøknadContext();
+
+    const bruker = useBruker();
+    const lesevisning = useErLesevisning();
 
     const sorterteBarnMedOpplysninger = skjema.felter.barnaMedOpplysninger.verdi.sort(
         (a: IBarnMedOpplysninger, b: IBarnMedOpplysninger) => {

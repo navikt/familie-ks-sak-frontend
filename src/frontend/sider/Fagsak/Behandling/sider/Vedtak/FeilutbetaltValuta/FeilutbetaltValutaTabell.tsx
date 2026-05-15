@@ -1,3 +1,10 @@
+import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useFagsak } from '@hooks/useFagsak';
+import type { IBehandling } from '@typer/behandling';
+import type { IMinimalFagsak } from '@typer/fagsak';
+import { isoDatoPeriodeTilFormatertString } from '@utils/dato';
+
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { Button, CopyButton, Heading, Stack, Table } from '@navikt/ds-react';
 
@@ -6,11 +13,6 @@ import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValutaTabellCo
 import { FeilutbetaltValutaForm } from './form/FeilutbetaltValutaForm';
 import { Type } from './form/useFeilutbetaltValutaForm';
 import { SlettFeilutbetaltValutaError } from './SlettFeilutbetaltValutaError';
-import type { IBehandling } from '../../../../../../typer/behandling';
-import type { IMinimalFagsak } from '../../../../../../typer/fagsak';
-import { isoDatoPeriodeTilFormatertString } from '../../../../../../utils/dato';
-import { useFagsakContext } from '../../../../FagsakContext';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 function lagTekstTilNøs(fagsak: IMinimalFagsak, behandling: IBehandling) {
     const url = `https://kontantstotte.intern.nav.no/fagsak/${fagsak.id}/${behandling.behandlingId}/vedtak`;
@@ -37,16 +39,15 @@ function lagTekstTilNøs(fagsak: IMinimalFagsak, behandling: IBehandling) {
 }
 
 export function FeilutbetaltValutaTabell() {
-    const { fagsak } = useFagsakContext();
-    const { behandling, vurderErLesevisning } = useBehandlingContext();
-
     const {
         erLeggTilFeilutbetaltValutaFormÅpen,
         visLeggTilFeilutbetaltValutaForm,
         skjulLeggTilFeilutbetaltValutaForm,
     } = useFeilutbetaltValutaTabellContext();
 
-    const erLesevisning = vurderErLesevisning();
+    const fagsak = useFagsak();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
 
     return (
         <Stack direction={'column'} gap={'space-20'} marginBlock={'space-48 space-48'}>

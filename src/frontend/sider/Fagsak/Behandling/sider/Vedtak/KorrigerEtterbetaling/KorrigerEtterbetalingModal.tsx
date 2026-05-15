@@ -1,3 +1,8 @@
+import { ModalType } from '@context/ModalContext';
+import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useModal } from '@hooks/useModal';
+
 import { ArrowUndoIcon } from '@navikt/aksel-icons';
 import {
     Button,
@@ -14,12 +19,11 @@ import {
 
 import { useKorrigerEtterbetalingForm, årsaker } from './useKorrigerEtterbetalingForm';
 import { erEtterbetalingsbeløpGyldig, erÅrsakForKorrigeringGyldig } from './validering';
-import { ModalType } from '../../../../../../context/ModalContext';
-import { useModal } from '../../../../../../hooks/useModal';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 export function KorrigerEtterbetalingModal() {
-    const { behandling, vurderErLesevisning } = useBehandlingContext();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
+
     const {
         form,
         korrigerEtterbetaling,
@@ -31,7 +35,6 @@ export function KorrigerEtterbetalingModal() {
     const { lukkModal, erModalÅpen, tittel, bredde } = useModal(ModalType.KORRIGER_ETTERBETALING);
 
     const korrigertEtterbetaling = behandling.korrigertEtterbetaling;
-    const erLesevisning = vurderErLesevisning();
 
     function handleLukkModal() {
         form.reset();

@@ -1,3 +1,9 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useFagsakId } from '@hooks/useFagsakId';
+import type { IBehandling } from '@typer/behandling';
+import { BehandlingResultat, BehandlingSteg } from '@typer/behandling';
+import type { ITilbakekreving } from '@typer/simulering';
+import { hentSøkersMålform } from '@utils/behandling';
 import { useNavigate } from 'react-router';
 
 import { InformationSquareIcon } from '@navikt/aksel-icons';
@@ -9,12 +15,7 @@ import { useSimuleringContext } from './SimuleringContext';
 import SimuleringPanel from './SimuleringPanel';
 import SimuleringTabell from './SimuleringTabell';
 import TilbakekrevingSkjema from './TilbakekrevingSkjema';
-import { useFagsakId } from '../../../../../hooks/useFagsakId';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
-import type { IBehandling } from '../../../../../typer/behandling';
-import { BehandlingResultat, BehandlingSteg } from '../../../../../typer/behandling';
-import type { ITilbakekreving } from '../../../../../typer/simulering';
-import { hentSøkersMålform } from '../../../../../utils/behandling';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface ISimuleringProps {
@@ -31,13 +32,14 @@ const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
         erFeilutbetaling,
     } = useSimuleringContext();
 
-    const { vurderErLesevisning, settÅpenBehandling } = useBehandlingContext();
+    const { settÅpenBehandling } = useBehandlingContext();
 
     const fagsakId = useFagsakId();
+    const erLesevisning = useErLesevisning();
     const navigate = useNavigate();
 
     const nesteOnClick = () => {
-        if (vurderErLesevisning() || åpenBehandling?.resultat == BehandlingResultat.AVSLÅTT) {
+        if (erLesevisning || åpenBehandling?.resultat == BehandlingResultat.AVSLÅTT) {
             navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/vedtak`);
         } else {
             onSubmit<ITilbakekreving | undefined>(

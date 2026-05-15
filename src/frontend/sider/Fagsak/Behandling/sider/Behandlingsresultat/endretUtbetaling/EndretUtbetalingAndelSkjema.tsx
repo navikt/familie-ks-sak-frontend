@@ -1,5 +1,18 @@
 import { type ChangeEvent, useEffect } from 'react';
 
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { IBehandling } from '@typer/behandling';
+import {
+    AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
+    AVSLAG_ALLEREDE_UTBETALT_SØKER,
+    IEndretUtbetalingAndelÅrsak,
+    årsaker,
+    årsakTekst,
+} from '@typer/utbetalingAndel';
+import type { Begrunnelse } from '@typer/vedtak';
+import type { IsoMånedString } from '@utils/dato';
+import { lagPersonLabel } from '@utils/formatter';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
@@ -13,19 +26,6 @@ import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
 import Datovelger from '../../../../../../komponenter/Datovelger/Datovelger';
 import Knapperekke from '../../../../../../komponenter/Knapperekke';
 import MånedÅrVelger from '../../../../../../komponenter/MånedÅrInput/MånedÅrVelger';
-import type { IBehandling } from '../../../../../../typer/behandling';
-import {
-    AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
-    AVSLAG_ALLEREDE_UTBETALT_SØKER,
-    IEndretUtbetalingAndelÅrsak,
-    årsaker,
-    årsakTekst,
-} from '../../../../../../typer/utbetalingAndel';
-import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import type { IsoMånedString } from '../../../../../../utils/dato';
-import { lagPersonLabel } from '../../../../../../utils/formatter';
-import { hentFrontendFeilmelding } from '../../../../../../utils/ressursUtils';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 const KnapperekkeVenstre = styled.div`
     display: flex;
@@ -75,7 +75,7 @@ const EndretUtbetalingAndelSkjema = ({
     oppdaterEndretUtbetaling,
     slettEndretUtbetaling,
 }: IEndretUtbetalingAndelSkjemaProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
+    const erLesevisning = useErLesevisning();
 
     const finnÅrTilbakeTilStønadFra = (): number => {
         return (
@@ -126,7 +126,6 @@ const EndretUtbetalingAndelSkjema = ({
         }
     }, [skjema.felter.årsak.verdi]);
 
-    const erLesevisning = vurderErLesevisning();
     const skalViseEksplisittAvslagsfelt =
         skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT ||
         !skjema.felter.periodeSkalUtbetalesTilSøker.verdi;
