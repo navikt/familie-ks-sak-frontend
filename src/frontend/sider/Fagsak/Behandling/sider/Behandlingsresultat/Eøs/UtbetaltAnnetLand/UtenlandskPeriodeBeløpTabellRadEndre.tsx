@@ -1,5 +1,15 @@
 import type { ReactNode } from 'react';
 
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { type Valutakode, ValutaCombobox, EØS_VALUTAKODER } from '@komponenter/FlaggCombobox';
+import type { IBehandling } from '@typer/behandling';
+import type { OptionType } from '@typer/common';
+import {
+    EøsPeriodeStatus,
+    type IUtenlandskPeriodeBeløp,
+    UtenlandskPeriodeBeløpIntervall,
+    utenlandskPeriodeBeløpIntervaller,
+} from '@typer/eøsPerioder';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
@@ -18,16 +28,6 @@ import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { type Valutakode, ValutaCombobox, EØS_VALUTAKODER } from '../../../../../../../komponenter/FlaggCombobox';
-import type { IBehandling } from '../../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../../typer/common';
-import {
-    EøsPeriodeStatus,
-    type IUtenlandskPeriodeBeløp,
-    UtenlandskPeriodeBeløpIntervall,
-    utenlandskPeriodeBeløpIntervaller,
-} from '../../../../../../../typer/eøsPerioder';
-import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
 
@@ -77,9 +77,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
     slettUtenlandskPeriodeBeløp,
     behandlingsÅrsakErOvergangsordning,
 }: IProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-
-    const lesevisning = vurderErLesevisning(true);
+    const erLesevisning = useErLesevisning();
 
     const visUtbetaltBeløpGruppeFeilmelding = (): ReactNode => {
         if (skjema.felter.beløp?.valideringsstatus === Valideringsstatus.FEIL) {
@@ -109,7 +107,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
             legend={'Endre utenlandsk periodebeløp'}
             hideLegend
         >
-            <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
+            <EøsPeriodeSkjemaContainer $lesevisning={erLesevisning} $status={status}>
                 <Box marginBlock={'space-0 space-24'}>
                     <InlineMessage status="info">
                         <UtbetaltBeløpText size="small">
@@ -119,7 +117,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                 </Box>
                 <UNSAFE_Combobox
                     error={skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger).error}
-                    readOnly={lesevisning}
+                    readOnly={erLesevisning}
                     label={'Barn'}
                     isMultiSelect
                     options={tilgjengeligeBarn}
@@ -147,7 +145,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                     periodeFeilmeldingId={utenlandskPeriodeBeløpPeriodeFeilmeldingId(skjema)}
                     initielFom={skjema.felter.initielFom}
                     visFeilmeldinger={skjema.visFeilmeldinger}
-                    lesevisning={lesevisning}
+                    lesevisning={erLesevisning}
                     maxWidth={32}
                     behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
                 />
@@ -160,7 +158,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                     <HGrid columns={'1fr 2fr 1fr'} gap={'space-12'}>
                         <TextField
                             label={'Beløp per barn'}
-                            readOnly={lesevisning}
+                            readOnly={erLesevisning}
                             value={skjema.felter.beløp?.verdi}
                             onChange={event => skjema.felter.beløp?.validerOgSettFelt(event.target.value)}
                             size={'medium'}
@@ -176,12 +174,12 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                                     skjema.felter.valutakode?.nullstill();
                                 }
                             }}
-                            readOnly={lesevisning}
+                            readOnly={erLesevisning}
                             error={skjema.felter.valutakode?.feilmelding?.toString()}
                         />
                         <Select
                             label={'Intervall'}
-                            readOnly={lesevisning}
+                            readOnly={erLesevisning}
                             value={skjema.felter.intervall?.verdi || undefined}
                             onChange={event =>
                                 skjema.felter.intervall?.validerOgSettFelt(
@@ -202,7 +200,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                         </Select>
                     </HGrid>
                 </StyledFieldset>
-                {!lesevisning && (
+                {!erLesevisning && (
                     <Knapperad>
                         <div>
                             <Button

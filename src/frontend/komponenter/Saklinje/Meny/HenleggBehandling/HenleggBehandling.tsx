@@ -1,18 +1,20 @@
-import { ActionMenu } from '@navikt/ds-react';
+import { ModalType } from '@context/ModalContext';
+import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useFeatureToggles } from '@hooks/useFeatureToggles';
+import { useModal } from '@hooks/useModal';
+import { erPåHenleggbartSteg } from '@typer/behandling';
+import { FeatureToggle } from '@typer/featureToggles';
 
-import { ModalType } from '../../../../context/ModalContext';
-import { useFeatureToggles } from '../../../../hooks/useFeatureToggles';
-import { useModal } from '../../../../hooks/useModal';
-import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { erPåHenleggbartSteg } from '../../../../typer/behandling';
-import { FeatureToggle } from '../../../../typer/featureToggles';
+import { ActionMenu } from '@navikt/ds-react';
 
 export function HenleggBehandling() {
     const toggles = useFeatureToggles();
-    const { behandling, vurderErLesevisning } = useBehandlingContext();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
+
     const { åpneModal } = useModal(ModalType.HENLEGG_BEHANDLING);
 
-    const erLesevisning = vurderErLesevisning();
     const harTilgangTilTekniskVedlikeholdHenleggelse = toggles[FeatureToggle.tekniskVedlikeholdHenleggelse];
 
     const kanHenlegge =

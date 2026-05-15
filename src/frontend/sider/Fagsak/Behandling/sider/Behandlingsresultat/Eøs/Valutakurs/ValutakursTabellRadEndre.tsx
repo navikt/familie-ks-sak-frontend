@@ -1,5 +1,10 @@
 import type { ReactNode } from 'react';
 
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { type Valutakode, ValutaCombobox, EØS_VALUTAKODER } from '@komponenter/FlaggCombobox';
+import type { IBehandling } from '@typer/behandling';
+import type { OptionType } from '@typer/common';
+import { EøsPeriodeStatus, type IValutakurs } from '@typer/eøsPerioder';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
@@ -9,11 +14,6 @@ import { Valideringsstatus } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import Datovelger from '../../../../../../../komponenter/Datovelger/Datovelger';
-import { type Valutakode, ValutaCombobox, EØS_VALUTAKODER } from '../../../../../../../komponenter/FlaggCombobox';
-import type { IBehandling } from '../../../../../../../typer/behandling';
-import type { OptionType } from '../../../../../../../typer/common';
-import { EøsPeriodeStatus, type IValutakurs } from '../../../../../../../typer/eøsPerioder';
-import { useBehandlingContext } from '../../../../context/BehandlingContext';
 import EøsPeriodeSkjema from '../EøsKomponenter/EøsPeriodeSkjema';
 import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
 
@@ -59,9 +59,7 @@ const ValutakursTabellRadEndre = ({
     erManuellInputAvKurs,
     behandlingsÅrsakErOvergangsordning,
 }: IProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-
-    const lesevisning = vurderErLesevisning(true);
+    const erLesevisning = useErLesevisning();
 
     const visKursGruppeFeilmelding = (): ReactNode => {
         if (skjema.felter.valutakode?.valideringsstatus === Valideringsstatus.FEIL) {
@@ -87,10 +85,10 @@ const ValutakursTabellRadEndre = ({
 
     return (
         <Fieldset error={skjema.visFeilmeldinger && visSubmitFeilmelding()} legend={'Endre valutakurs'} hideLegend>
-            <EøsPeriodeSkjemaContainer $lesevisning={lesevisning} $status={status}>
+            <EøsPeriodeSkjemaContainer $lesevisning={erLesevisning} $status={status}>
                 <UNSAFE_Combobox
                     error={skjema.felter.barnIdenter.hentNavInputProps(skjema.visFeilmeldinger).error}
-                    readOnly={lesevisning}
+                    readOnly={erLesevisning}
                     label={'Barn'}
                     isMultiSelect
                     options={tilgjengeligeBarn}
@@ -114,7 +112,7 @@ const ValutakursTabellRadEndre = ({
                     periodeFeilmeldingId={valutakursPeriodeFeilmeldingId(skjema)}
                     initielFom={skjema.felter.initielFom}
                     visFeilmeldinger={skjema.visFeilmeldinger}
-                    lesevisning={lesevisning}
+                    lesevisning={erLesevisning}
                     maxWidth={32}
                     behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
                 />
@@ -128,7 +126,7 @@ const ValutakursTabellRadEndre = ({
                             felt={skjema.felter.valutakursdato}
                             label={'Valutakursdato'}
                             visFeilmeldinger={false}
-                            readOnly={lesevisning}
+                            readOnly={erLesevisning}
                             disableWeekends
                             kanKunVelgeFortid
                         />
@@ -141,7 +139,7 @@ const ValutakursTabellRadEndre = ({
                         />
                         <TextField
                             label={'Valutakurs'}
-                            readOnly={lesevisning || !erManuellInputAvKurs}
+                            readOnly={erLesevisning || !erManuellInputAvKurs}
                             value={skjema.felter.kurs?.verdi}
                             onChange={event => skjema.felter.kurs?.validerOgSettFelt(event.target.value)}
                         />
@@ -167,7 +165,7 @@ const ValutakursTabellRadEndre = ({
                         </Box>
                     )}
                 </StyledFieldset>
-                {!lesevisning && (
+                {!erLesevisning && (
                     <Knapperad>
                         <div>
                             <Button
