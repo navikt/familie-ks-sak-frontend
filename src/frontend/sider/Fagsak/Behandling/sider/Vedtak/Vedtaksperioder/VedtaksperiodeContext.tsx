@@ -79,6 +79,7 @@ export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children
                     ),
                 });
                 settÅpenBehandling(byggSuksessRessurs(behandling));
+                onPanelClose(false);
             },
         }
     );
