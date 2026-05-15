@@ -1,30 +1,31 @@
+import { oppdaterVedtaksperiodeMedFritekster } from '@api/oppdaterVedtaksperiodeMedFritekster';
 import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import type { IBehandling } from '@typer/behandling';
 
 import { useHttp } from '@navikt/familie-http';
 
-import { oppdaterVedtaksperiodeMedFritekster } from '../api/oppdaterVedtaksperiodeMedFritekster';
-import type { IBehandling } from '../typer/behandling';
-import type { IRestPutVedtaksperiodeMedFritekster } from '../typer/vedtaksperiode';
-
-export const OppdaterVedtaksperioderMedFriteksterMutationKeyFactory = {
-    vedtaksperiodeMedBegrunnelser: (vedtaksperiodeMedBegrunnelserId: number) => [
+export const OppdaterVedtaksperiodeMedFriteksterMutationKeyFactory = {
+    vedtaksperiodeMedFritekster: (vedtaksperiodeMedBegrunnelserId: number) => [
         'vedtaksperioderMedFritekster',
         vedtaksperiodeMedBegrunnelserId,
     ],
 };
 
-type Options = Omit<
-    UseMutationOptions<IBehandling, DefaultError, IRestPutVedtaksperiodeMedFritekster, unknown>,
-    'mutationFn'
->;
+type Options = Omit<UseMutationOptions<IBehandling, DefaultError, Parameters>, 'mutationFn'>;
 
-export function useOppdaterVedtaksperiodeMedFritekster(vedtaksperiodeMedBegrunnelserId: number, options: Options = {}) {
+interface Parameters {
+    fritekster: string[];
+}
+
+export function useOppdaterVedtaksperiodeMedFritekster(vedtaksperiodeMedBegrunnelserId: number, options?: Options) {
     const { request } = useHttp();
     return useMutation({
-        mutationFn: (payload: IRestPutVedtaksperiodeMedFritekster) => {
+        mutationFn: (parameters: Parameters) => {
+            const { fritekster } = parameters;
+            const payload = { fritekster };
             return oppdaterVedtaksperiodeMedFritekster(request, vedtaksperiodeMedBegrunnelserId, payload);
         },
-        mutationKey: OppdaterVedtaksperioderMedFriteksterMutationKeyFactory.vedtaksperiodeMedBegrunnelser(
+        mutationKey: OppdaterVedtaksperiodeMedFriteksterMutationKeyFactory.vedtaksperiodeMedFritekster(
             vedtaksperiodeMedBegrunnelserId
         ),
         ...options,

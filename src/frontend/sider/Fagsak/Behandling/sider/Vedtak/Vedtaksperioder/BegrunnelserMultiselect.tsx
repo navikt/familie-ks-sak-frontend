@@ -1,5 +1,5 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useOppdaterBegrunnelserMutationState } from '@hooks/useOppdaterStandardbegrunnelserMutationState';
+import { useOppdaterVedtaksperiodeMedBegrunnelserMutationState } from '@hooks/useOppdaterStandardbegrunnelserMutationState';
 import type { OptionType } from '@typer/common';
 import { type Begrunnelse, type BegrunnelseType, Standardbegrunnelse } from '@typer/vedtak';
 import { begrunnelseTyper } from '@typer/vedtak';
@@ -28,7 +28,9 @@ export function BegrunnelserMultiselect() {
     const { alleBegrunnelser } = useAlleBegrunnelserContext();
 
     const erLesevisning = useErLesevisning();
-    const oppdaterBegrunnelserMutation = useOppdaterBegrunnelserMutationState(vedtaksperiodeMedBegrunnelser.id);
+    const oppdaterVedtaksperiodeMedBegrunnelserMutationState = useOppdaterVedtaksperiodeMedBegrunnelserMutationState(
+        vedtaksperiodeMedBegrunnelser.id
+    );
 
     const begrunnelser = mapBegrunnelserTilSelectOptions(vedtaksperiodeMedBegrunnelser, alleBegrunnelser);
 
@@ -77,9 +79,11 @@ export function BegrunnelserMultiselect() {
             value={begrunnelser}
             propSelectStyles={propSelectStyles}
             placeholder={'Velg begrunnelse(r)'}
-            isLoading={oppdaterBegrunnelserMutation?.status === 'pending'}
-            isDisabled={erRedigeringDeaktivert || oppdaterBegrunnelserMutation?.status === 'pending'}
-            feil={oppdaterBegrunnelserMutation?.error?.message}
+            isLoading={oppdaterVedtaksperiodeMedBegrunnelserMutationState?.status === 'pending'}
+            isDisabled={
+                erRedigeringDeaktivert || oppdaterVedtaksperiodeMedBegrunnelserMutationState?.status === 'pending'
+            }
+            feil={oppdaterVedtaksperiodeMedBegrunnelserMutationState?.error?.message}
             label="Velg standardtekst i brev"
             creatable={false}
             erLesevisning={erRedigeringDeaktivert}

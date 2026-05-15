@@ -2,7 +2,7 @@ import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { HentGenererteBrevbegrunnelserQueryKeyFactory } from '@hooks/useHentGenererteBrevbegrunnelser';
-import { useOppdaterBegrunnelser } from '@hooks/useOppdaterBegrunnelser';
+import { useOppdaterVedtaksperiodeMedBegrunnelser } from '@hooks/useOppdaterVedtaksperiodeMedBegrunnelser';
 import { MAKS_LENGDE_FRITEKST } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/Fritekstbegrunnelser';
 import { useQueryClient } from '@tanstack/react-query';
 import { Behandlingstype, type IBehandling } from '@typer/behandling';
@@ -53,14 +53,19 @@ export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children
             vedtaksperiodeMedBegrunnelser.fritekster.length === 0
     );
 
-    const { mutate: oppdaterBegrunnelser } = useOppdaterBegrunnelser(vedtaksperiodeMedBegrunnelser.id, {
-        onSuccess: async behandling => {
-            await queryClient.invalidateQueries({
-                queryKey: HentGenererteBrevbegrunnelserQueryKeyFactory.vedtaksperiode(vedtaksperiodeMedBegrunnelser.id),
-            });
-            settÅpenBehandling(byggSuksessRessurs(behandling));
-        },
-    });
+    const { mutate: oppdaterVedtaksperiodeMedBegrunnelser } = useOppdaterVedtaksperiodeMedBegrunnelser(
+        vedtaksperiodeMedBegrunnelser.id,
+        {
+            onSuccess: async behandling => {
+                await queryClient.invalidateQueries({
+                    queryKey: HentGenererteBrevbegrunnelserQueryKeyFactory.vedtaksperiode(
+                        vedtaksperiodeMedBegrunnelser.id
+                    ),
+                });
+                settÅpenBehandling(byggSuksessRessurs(behandling));
+            },
+        }
+    );
 
     const valgteBegrunnelser = [
         ...vedtaksperiodeMedBegrunnelser.begrunnelser,
@@ -123,7 +128,7 @@ export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children
         switch (action.action) {
             case 'select-option':
                 if (action.option) {
-                    oppdaterBegrunnelser({
+                    oppdaterVedtaksperiodeMedBegrunnelser({
                         begrunnelser: [
                             ...valgteBegrunnelser.map(vedtaksBegrunnelse => vedtaksBegrunnelse.begrunnelse),
                             action.option?.value as Begrunnelse,
@@ -134,7 +139,7 @@ export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children
             case 'pop-value':
             case 'remove-value':
                 if (action.removedValue) {
-                    oppdaterBegrunnelser({
+                    oppdaterVedtaksperiodeMedBegrunnelser({
                         begrunnelser: [
                             ...valgteBegrunnelser.filter(
                                 persistertBegrunnelse =>
@@ -146,7 +151,7 @@ export function VedtaksperiodeProvider({ vedtaksperiodeMedBegrunnelser, children
 
                 break;
             case 'clear':
-                oppdaterBegrunnelser({ begrunnelser: [] });
+                oppdaterVedtaksperiodeMedBegrunnelser({ begrunnelser: [] });
                 break;
             default:
                 throw new Error('Ukjent action ved onChange på vedtakbegrunnelser');
