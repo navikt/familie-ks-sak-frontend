@@ -1,3 +1,4 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
@@ -27,7 +28,6 @@ import { AlleBegrunnelserProvider } from './Vedtaksperioder/AlleBegrunnelserCont
 import { Vedtaksperioder } from './Vedtaksperioder/Vedtaksperioder';
 import useDokument from '../../../../../hooks/useDokument';
 import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisningModal';
-import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface IOppsummeringVedtakInnholdProps {
     åpenBehandling: IBehandling;
@@ -44,13 +44,10 @@ const OppsummeringVedtakInnhold = ({
     settVisModal,
     bruker,
 }: IOppsummeringVedtakInnholdProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-
-    const fagsakId = useFagsakId();
-    const navigate = useNavigate();
     const saksbehandler = useSaksbehandler();
-
-    const erLesevisning = vurderErLesevisning();
+    const fagsakId = useFagsakId();
+    const erLesevisning = useErLesevisning();
+    const navigate = useNavigate();
 
     const { hentForhåndsvisning, nullstillDokument, visDokumentModal, hentetDokument, settVisDokumentModal } =
         useDokument();

@@ -1,13 +1,14 @@
 import { useId } from 'react';
 
+import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
 import { FormProvider } from 'react-hook-form';
 
 import { BodyShort, Button, Fieldset, InlineMessage, Label, Modal, VStack } from '@navikt/ds-react';
 
 import { EndringstidspunktFelt } from './EndringstidspunktFelt';
 import { useEndringstidspunktForm } from './useEndringstidspunktForm';
-import { Datoformat, isoStringTilFormatertString } from '../../../../../../utils/dato';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 function formaterDato(endringstidspunkt: string) {
     return isoStringTilFormatertString({ isoString: endringstidspunkt, tilFormat: Datoformat.DATO });
@@ -18,7 +19,8 @@ interface Props {
 }
 
 export function OppdaterEndringstidspunktModal({ lukkModal }: Props) {
-    const { behandling, vurderErLesevisning } = useBehandlingContext();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
     const hentetEndringstidspunktId = useId();
 
     const { form, onSubmit } = useEndringstidspunktForm({ lukkModal });
@@ -28,7 +30,6 @@ export function OppdaterEndringstidspunktModal({ lukkModal }: Props) {
         formState: { errors, isSubmitting },
     } = form;
 
-    const erLesevisning = vurderErLesevisning();
     const endringstidspunkt = behandling.endringstidspunkt;
 
     return (

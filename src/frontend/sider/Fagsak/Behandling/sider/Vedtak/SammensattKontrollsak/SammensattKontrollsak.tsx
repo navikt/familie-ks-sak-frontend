@@ -1,20 +1,20 @@
 import { useState } from 'react';
 
+import { useErLesevisning } from '@hooks/useErLesevisning';
+
 import { Button, ErrorMessage, LocalAlert, Textarea, VStack } from '@navikt/ds-react';
 
 import { useSammensattKontrollsakContext } from './SammensattKontrollsakContext';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 export function SammensattKontrollsak() {
-    const { vurderErLesevisning } = useBehandlingContext();
     const { sammensattKontrollsak, opprettEllerOppdaterSammensattKontrollsak, feilmelding } =
         useSammensattKontrollsakContext();
+
+    const erLesevisning = useErLesevisning();
 
     const [fritekst, settFritekst] = useState<string>(sammensattKontrollsak?.fritekst ?? '');
 
     const fritekstErEndret = fritekst !== (sammensattKontrollsak?.fritekst ?? '');
-
-    const erLesevisning = vurderErLesevisning();
 
     return (
         <VStack gap="space-20" marginBlock={'space-0 space-24'} align={'start'}>

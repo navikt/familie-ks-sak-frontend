@@ -1,9 +1,11 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useSlettFeilutbetaltValuta } from '@hooks/useSlettFeilutbetaltValuta';
+
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, Tooltip } from '@navikt/ds-react';
 import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValutaTabellContext';
-import { useSlettFeilutbetaltValuta } from '../../../../../../hooks/useSlettFeilutbetaltValuta';
 import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface Props {
@@ -11,8 +13,10 @@ interface Props {
 }
 
 export function SlettFeilutbetaltValuta({ feilutbetaltValutaId }: Props) {
-    const { behandling, settÅpenBehandling, vurderErLesevisning } = useBehandlingContext();
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
     const { erLeggTilFeilutbetaltValutaFormÅpen, skjulFeilutbetaltValutaTabell } = useFeilutbetaltValutaTabellContext();
+
+    const erLesevisning = useErLesevisning();
 
     const { mutate, isPending } = useSlettFeilutbetaltValuta({
         feilutbetaltValutaId: feilutbetaltValutaId,
@@ -23,8 +27,6 @@ export function SlettFeilutbetaltValuta({ feilutbetaltValutaId }: Props) {
             }
         },
     });
-
-    const erLesevisning = vurderErLesevisning();
 
     if (erLesevisning) {
         return null;
