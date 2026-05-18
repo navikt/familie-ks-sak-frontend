@@ -1,14 +1,15 @@
+import type { IBehandling } from '@typer/behandling';
+import type { Begrunnelse } from '@typer/vedtak';
+
 import type { FamilieRequest } from '@navikt/familie-http/dist/HttpProvider';
 
-import type { IBehandling } from '../typer/behandling';
-import type { Begrunnelse } from '../typer/vedtak';
 import { RessursResolver } from '../utils/ressursResolver';
 
 interface Payload {
     begrunnelser: Begrunnelse[];
 }
 
-export async function oppdaterBegrunnelser(
+export async function oppdaterVedtaksperiodeMedBegrunnelser(
     request: FamilieRequest,
     vedtaksperiodeMedBegrunnelserId: number,
     payload: Payload
