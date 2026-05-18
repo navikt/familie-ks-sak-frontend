@@ -1,6 +1,7 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { Regelverk } from '@typer/vilkår';
+
 import { bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår, useBorMedSøker } from './BorMedSøkerContext';
-import type { Regelverk } from '../../../../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
@@ -14,8 +15,7 @@ export const BorMedSøker = ({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: BosattIRiketProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-    const erLesevisning = vurderErLesevisning();
+    const erLesevisning = useErLesevisning();
 
     const {
         vilkårSkjemaContext,

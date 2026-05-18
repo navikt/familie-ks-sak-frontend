@@ -1,3 +1,6 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { Begrunnelse } from '@typer/vedtak';
+import type { IVilkårResultat } from '@typer/vilkår';
 import classNames from 'classnames';
 import styled from 'styled-components';
 
@@ -5,9 +8,6 @@ import { BodyShort, Checkbox, Fieldset } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import AvslagBegrunnelseMultiselect from './AvslagBegrunnelseMultiselect';
-import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import type { IVilkårResultat } from '../../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { AlleBegrunnelserProvider } from '../../Vedtak/Vedtaksperioder/AlleBegrunnelserContext';
 
 interface IProps {
@@ -29,8 +29,7 @@ const StyledFieldset = styled(Fieldset)`
 `;
 
 const AvslagSkjema = ({ erEksplisittAvslagPåSøknad, lagretVilkår, avslagBegrunnelser, visFeilmeldinger }: IProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-    const lesevisning = vurderErLesevisning();
+    const erLesevisning = useErLesevisning();
 
     return (
         <StyledFieldset
@@ -38,7 +37,7 @@ const AvslagSkjema = ({ erEksplisittAvslagPåSøknad, lagretVilkår, avslagBegru
             hideLegend
             error={visFeilmeldinger ? avslagBegrunnelser.feilmelding : ''}
         >
-            {lesevisning ? (
+            {erLesevisning ? (
                 erEksplisittAvslagPåSøknad.verdi && (
                     <BodyShort
                         className={classNames('skjemaelement', 'lese-felt')}

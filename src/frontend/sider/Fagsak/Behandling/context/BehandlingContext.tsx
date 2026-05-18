@@ -2,16 +2,13 @@ import { createContext, type PropsWithChildren, useContext, useEffect, useState 
 
 import { useNavigerAutomatiskTilSideForBehandlingssteg } from '@hooks/useNavigerAutomatiskTilSideForBehandlingssteg';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
-import { BehandlerRolle, BehandlingStatus, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
-import { harTilgangTilEnhet } from '@typer/enhet';
-import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '@utils/behandling';
+import { BehandlerRolle, BehandlingStatus, type IBehandling } from '@typer/behandling';
 import { hentSideHref } from '@utils/miljø';
 import { useLocation } from 'react-router';
 
 import { type Ressurs } from '@navikt/familie-typer';
 
 import { useHentOgSettBehandlingContext } from './HentOgSettBehandlingContext';
-import { saksbehandlerHarKunLesevisning } from './utils';
 import { hentTrinnForBehandling, type ITrinn, KontrollertStatus, type SideId } from '../sider/sider';
 
 interface Props extends PropsWithChildren {
@@ -19,10 +16,6 @@ interface Props extends PropsWithChildren {
 }
 
 interface BehandlingContextValue {
-    /**
-     * @Deprecated - Erstattes av {@link useErLesevisning}.
-     */
-    vurderErLesevisning: (sjekkTilgangTilEnhet?: boolean, skalIgnorereOmEnhetErMidlertidig?: boolean) => boolean;
     leggTilBesøktSide: (besøktSide: SideId) => void;
     settIkkeKontrollerteSiderTilManglerKontroll: () => void;
     trinnPåBehandling: { [sideId: string]: ITrinn };
@@ -88,50 +81,14 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
         );
     };
 
-    /**
-     * @Deprecated - Erstattes av {@link useErLesevisning}.
-     */
-    const vurderErLesevisning = (sjekkTilgangTilEnhet = true, skalIgnorereOmEnhetErMidlertidig = false): boolean => {
-        if (behandling.behandlingPåVent || behandling.status === BehandlingStatus.SATT_PÅ_MASKINELL_VENT) {
-            return true;
-        }
-        if (erBehandleneEnhetMidlertidig && !skalIgnorereOmEnhetErMidlertidig) {
-            return true;
-        }
-
-        const behandlingsårsak = behandling.årsak;
-        const behandlingsårsakErÅpenForAlleMedTilgangTilÅOppretteÅrsak =
-            behandlingsårsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV;
-
-        const saksbehandlerHarTilgangTilEnhet =
-            saksbehandler.harSuperbrukertilgang ||
-            behandlingsårsakErÅpenForAlleMedTilgangTilÅOppretteÅrsak ||
-            harTilgangTilEnhet(behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId ?? '', saksbehandler.groups);
-
-        const steg = behandling.steg;
-        const status = behandling.status;
-
-        return saksbehandlerHarKunLesevisning(
-            saksbehandler.harSkrivetilgang,
-            saksbehandlerHarTilgangTilEnhet,
-            steg,
-            status,
-            sjekkTilgangTilEnhet
-        );
-    };
-
     const kanBeslutteVedtak =
         behandling.status === BehandlingStatus.FATTER_VEDTAK &&
         BehandlerRolle.BESLUTTER === saksbehandler.rolle &&
         saksbehandler.email !== behandling.endretAv;
 
-    const erBehandleneEnhetMidlertidig =
-        behandling.arbeidsfordelingPåBehandling.behandlendeEnhetId === MIDLERTIDIG_BEHANDLENDE_ENHET_ID;
-
     return (
         <BehandlingContext.Provider
             value={{
-                vurderErLesevisning,
                 leggTilBesøktSide,
                 settIkkeKontrollerteSiderTilManglerKontroll,
                 trinnPåBehandling,

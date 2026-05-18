@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Resultat, UtdypendeVilkårsvurderingGenerell } from '@typer/vilkår';
 import styled from 'styled-components';
 
 import { BodyShort, Checkbox, Radio, RadioGroup, TextField } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import { antallTimerKvalifiserer } from './BarnehageplassUtils';
-import { Resultat, UtdypendeVilkårsvurderingGenerell } from '../../../../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
@@ -25,8 +25,7 @@ export const Barnehageplass = ({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: BarnehageplassProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-    const erLesevisning = vurderErLesevisning();
+    const erLesevisning = useErLesevisning();
 
     const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, harBarnehageplass, settHarBarnehageplass } =
         useBarnehageplass(lagretVilkårResultat, person);

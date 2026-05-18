@@ -1,19 +1,19 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Lovverk } from '@typer/lovverk';
+import { Resultat } from '@typer/vilkår';
+import {
+    datoForLovendringAugust24,
+    type IIsoDatoPeriode,
+    isoStringTilDate,
+    isoStringTilDateEllerUndefinedHvisUgyldigDato,
+} from '@utils/dato';
+import { utledLovverk } from '@utils/lovverk';
 import { isBefore } from 'date-fns';
 
 import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
 import Datovelger from '../../../../../../../../komponenter/Datovelger/Datovelger';
-import { Lovverk } from '../../../../../../../../typer/lovverk';
-import { Resultat } from '../../../../../../../../typer/vilkår';
-import {
-    datoForLovendringAugust24,
-    type IIsoDatoPeriode,
-    isoStringTilDate,
-    isoStringTilDateEllerUndefinedHvisUgyldigDato,
-} from '../../../../../../../../utils/dato';
-import { utledLovverk } from '../../../../../../../../utils/lovverk';
-import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
@@ -48,8 +48,7 @@ export const BarnetsAlder = ({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: BarnetsAlderProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-    const erLesevisning = vurderErLesevisning();
+    const erLesevisning = useErLesevisning();
 
     const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBarnetsAlder(lagretVilkårResultat, person);
 

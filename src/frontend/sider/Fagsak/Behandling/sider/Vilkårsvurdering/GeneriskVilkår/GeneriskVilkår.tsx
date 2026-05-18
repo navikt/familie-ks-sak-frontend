@@ -1,5 +1,9 @@
 import { useState } from 'react';
 
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { IGrunnlagPerson } from '@typer/person';
+import type { IVilkårConfig, IVilkårResultat, VilkårType } from '@typer/vilkår';
+import { Resultat } from '@typer/vilkår';
 import styled from 'styled-components';
 
 import { PlusCircleIcon } from '@navikt/aksel-icons';
@@ -7,10 +11,6 @@ import { Button, Fieldset, Heading } from '@navikt/ds-react';
 import { Space20, Space32, Space64 } from '@navikt/ds-tokens/dist/tokens';
 
 import VilkårTabell from './VilkårTabell';
-import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import type { IVilkårConfig, IVilkårResultat, VilkårType } from '../../../../../../typer/vilkår';
-import { Resultat } from '../../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
 
 interface IProps {
@@ -33,8 +33,8 @@ const UtførKnapp = styled(Button)`
 `;
 
 const GeneriskVilkår = ({ person, vilkårFraConfig, vilkårResultater, generiskVilkårKey }: IProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
     const vilkårsvurderingApi = useVilkårsvurderingApi();
+    const erLesevisning = useErLesevisning();
 
     const [visFeilmeldingerForVilkår, settVisFeilmeldingerForVilkår] = useState(false);
 
@@ -45,7 +45,7 @@ const GeneriskVilkår = ({ person, vilkårFraConfig, vilkårResultater, generisk
     };
 
     const skalViseLeggTilKnapp = () => {
-        if (vurderErLesevisning()) {
+        if (erLesevisning) {
             return false;
         }
         const uvurdertPeriodePåVilkår = vilkårResultater.find(vilkår => vilkår.resultat === Resultat.IKKE_VURDERT);
