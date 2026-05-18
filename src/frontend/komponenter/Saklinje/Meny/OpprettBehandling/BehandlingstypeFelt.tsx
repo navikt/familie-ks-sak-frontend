@@ -90,12 +90,14 @@ const BehandlingstypeFelt = ({
                     Tilbakekreving
                 </option>
             )}
-            <option
-                aria-selected={behandlingstype.verdi === Klagebehandlingstype.KLAGE}
-                value={Klagebehandlingstype.KLAGE}
-            >
-                Klage
-            </option>
+            {!minimalFagsak?.finnesStrengtFortroligPersonIFagsak && (
+                <option
+                    aria-selected={behandlingstype.verdi === Klagebehandlingstype.KLAGE}
+                    value={Klagebehandlingstype.KLAGE}
+                >
+                    Klage
+                </option>
+            )}
         </Select>
     );
 };
