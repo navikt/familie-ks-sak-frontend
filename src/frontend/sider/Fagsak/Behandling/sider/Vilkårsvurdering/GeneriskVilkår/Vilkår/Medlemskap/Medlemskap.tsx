@@ -1,8 +1,9 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Regelverk, Resultat } from '@typer/vilkår';
+
 import { Box, InlineMessage, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useMedlemskap } from './MedlemskapContext';
-import { Regelverk, Resultat } from '../../../../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../../../context/BehandlingContext';
 import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
@@ -16,8 +17,7 @@ export const Medlemskap = ({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: MedlemskapProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-    const erLesevisning = vurderErLesevisning();
+    const erLesevisning = useErLesevisning();
 
     const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } = useMedlemskap(
         lagretVilkårResultat,

@@ -1,3 +1,17 @@
+import { ModalType } from '@context/ModalContext';
+import { useBehandling } from '@hooks/useBehandling';
+import { useBruker } from '@hooks/useBruker';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useModal } from '@hooks/useModal';
+import {
+    mutationKey,
+    useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf,
+} from '@hooks/useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf';
+import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
+import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '@typer/simulering';
+import type { Målform } from '@typer/søknad';
+import { målform } from '@typer/søknad';
+
 import { ExternalLinkIcon, FileTextIcon } from '@navikt/aksel-icons';
 import {
     BodyLong,
@@ -24,18 +38,6 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useSimuleringContext } from './SimuleringContext';
 import styles from './TilbakekrevingSkjema.module.css';
-import { ModalType } from '../../../../../context/ModalContext';
-import { useModal } from '../../../../../hooks/useModal';
-import {
-    mutationKey,
-    useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf,
-} from '../../../../../hooks/useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf';
-import { BrevmottakereAlert } from '../../../../../komponenter/BrevmottakereAlert';
-import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '../../../../../typer/simulering';
-import type { Målform } from '../../../../../typer/søknad';
-import { målform } from '../../../../../typer/søknad';
-import { useBrukerContext } from '../../../BrukerContext';
-import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const TilbakekrevingSkjema = ({
     søkerMålform,
@@ -44,7 +46,6 @@ const TilbakekrevingSkjema = ({
     søkerMålform: Målform;
     harÅpenTilbakekrevingRessurs: Ressurs<boolean>;
 }) => {
-    const { vurderErLesevisning, behandling } = useBehandlingContext();
     const { tilbakekrevingSkjema, hentFeilTilOppsummering, maksLengdeTekst } = useSimuleringContext();
     const { fritekstVarsel, begrunnelse, tilbakekrevingsvalg } = tilbakekrevingSkjema.felter;
 
@@ -55,9 +56,9 @@ const TilbakekrevingSkjema = ({
             onMutate: () => åpneForhåndsvisOpprettingAvPdfModal({ mutationKey }),
         });
 
-    const { bruker } = useBrukerContext();
-
-    const erLesevisning = vurderErLesevisning();
+    const bruker = useBruker();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
 
     const radioOnChange = (tilbakekrevingsalternativ: Tilbakekrevingsvalg) => {
         tilbakekrevingSkjema.felter.tilbakekrevingsvalg.validerOgSettFelt(tilbakekrevingsalternativ);
@@ -83,7 +84,7 @@ const TilbakekrevingSkjema = ({
     if (
         harÅpenTilbakekrevingRessurs.status === RessursStatus.SUKSESS &&
         harÅpenTilbakekrevingRessurs.data &&
-        !vurderErLesevisning()
+        !erLesevisning
     ) {
         return (
             <VStack marginBlock={'space-64 space-0'} gap={'space-24'}>
@@ -100,7 +101,7 @@ const TilbakekrevingSkjema = ({
         );
     }
 
-    if (vurderErLesevisning() && !tilbakekrevingSkjema.felter.tilbakekrevingsvalg.verdi) {
+    if (erLesevisning && !tilbakekrevingSkjema.felter.tilbakekrevingsvalg.verdi) {
         return (
             <VStack marginBlock={'space-64 space-0'} gap={'space-24'}>
                 <Label>Tilbakekrevingsvalg</Label>
@@ -153,7 +154,7 @@ const TilbakekrevingSkjema = ({
                     {...begrunnelse.hentNavInputProps(
                         tilbakekrevingSkjema.visFeilmeldinger || begrunnelse.verdi.length > maksLengdeTekst
                     )}
-                    readOnly={vurderErLesevisning()}
+                    readOnly={erLesevisning}
                     maxLength={maksLengdeTekst}
                     description="Hva er årsaken til feilutbetaling? Hvordan og når ble feilutbetalingen oppdaget? Begrunn hvordan feilutbetalingen skal behandles videre."
                 />
@@ -269,7 +270,7 @@ const TilbakekrevingSkjema = ({
                                                 tilbakekrevingSkjema.visFeilmeldinger ||
                                                     fritekstVarsel.verdi.length > maksLengdeTekst
                                             )}
-                                            readOnly={vurderErLesevisning()}
+                                            readOnly={erLesevisning}
                                             maxLength={maksLengdeTekst}
                                         />
                                         <HStack justify={'end'} marginBlock={'space-0 space-16'}>
@@ -309,11 +310,11 @@ const TilbakekrevingSkjema = ({
                         </Radio>
                     </RadioGroup>
                 )}
-                {vurderErLesevisning() && fritekstVarsel.erSynlig && (
+                {erLesevisning && fritekstVarsel.erSynlig && (
                     <Textarea
                         label="Fritekst i varselet"
                         {...fritekstVarsel.hentNavInputProps(tilbakekrevingSkjema.visFeilmeldinger)}
-                        readOnly={vurderErLesevisning()}
+                        readOnly={erLesevisning}
                     />
                 )}
 

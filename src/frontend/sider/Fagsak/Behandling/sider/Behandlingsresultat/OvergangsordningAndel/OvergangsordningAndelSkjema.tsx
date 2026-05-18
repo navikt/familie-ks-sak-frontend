@@ -1,3 +1,8 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { BehandlingÅrsak, type IBehandling } from '@typer/behandling';
+import { isNumeric } from '@utils/eøsValidators';
+import { lagPersonLabel } from '@utils/formatter';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
@@ -7,11 +12,6 @@ import { BorderAccent } from '@navikt/ds-tokens/dist/tokens';
 import { useOvergangsordningAndelContext } from './OvergangsordningAndelContext';
 import Månedvelger, { DagIMåneden } from '../../../../../../komponenter/Datovelger/Månedvelger';
 import Knapperekke from '../../../../../../komponenter/Knapperekke';
-import { BehandlingÅrsak, type IBehandling } from '../../../../../../typer/behandling';
-import { isNumeric } from '../../../../../../utils/eøsValidators';
-import { lagPersonLabel } from '../../../../../../utils/formatter';
-import { hentFrontendFeilmelding } from '../../../../../../utils/ressursUtils';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 const KnapperekkeVenstre = styled.div`
     display: flex;
@@ -55,8 +55,6 @@ interface IOvergangsordningAndelSkjemaProps {
 }
 
 const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndelSkjemaProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-
     const {
         overgangsordningAndel,
         skjema,
@@ -65,7 +63,9 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
         tilbakestillOgLukkOvergangsordningAndel,
     } = useOvergangsordningAndelContext();
 
-    const erLesevisning = vurderErLesevisning() || åpenBehandling.årsak !== BehandlingÅrsak.OVERGANGSORDNING_2024;
+    const erLesevisning = useErLesevisning();
+
+    const erRedigeringDeaktivert = erLesevisning || åpenBehandling.årsak !== BehandlingÅrsak.OVERGANGSORDNING_2024;
 
     return (
         <StyledFieldset
@@ -81,7 +81,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                     onChange={event => {
                         skjema.felter.personIdent.validerOgSettFelt(event.target.value);
                     }}
-                    readOnly={erLesevisning}
+                    readOnly={erRedigeringDeaktivert}
                 >
                     <option value={''}>Velg person</option>
                     {åpenBehandling.personerMedAndelerTilkjentYtelse
@@ -102,7 +102,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                         label={'F.o.m.'}
                         visFeilmeldinger={skjema.visFeilmeldinger}
                         dagIMåneden={DagIMåneden.FØRSTE_DAG}
-                        readOnly={erLesevisning}
+                        readOnly={erRedigeringDeaktivert}
                     />
                     <Månedvelger
                         felt={skjema.felter.tom}
@@ -110,7 +110,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                         visFeilmeldinger={skjema.visFeilmeldinger}
                         dagIMåneden={DagIMåneden.SISTE_DAG}
                         tilhørendeFomFelt={skjema.felter.fom}
-                        readOnly={erLesevisning}
+                        readOnly={erRedigeringDeaktivert}
                     />
                 </FlexDiv>
             </Feltmargin>
@@ -121,7 +121,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                         skjema.felter.deltBosted.validerOgSettFelt(event.target.checked);
                         skjema.felter.antallTimer.validerOgSettFelt('0');
                     }}
-                    readOnly={erLesevisning}
+                    readOnly={erRedigeringDeaktivert}
                 >
                     {'Barnet har delt bosted'}
                 </Checkbox>
@@ -136,10 +136,10 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                             skjema.felter.antallTimer.validerOgSettFelt(event.target.value);
                         }
                     }}
-                    readOnly={erLesevisning || skjema.felter.deltBosted.verdi}
+                    readOnly={erRedigeringDeaktivert || skjema.felter.deltBosted.verdi}
                 />
             </Feltmargin>
-            {!erLesevisning && (
+            {!erRedigeringDeaktivert && (
                 <Knapperekke>
                     <KnapperekkeVenstre>
                         <StyledButton size={'small'} variant={'primary'} onClick={oppdaterOvergangsordningAndel}>
@@ -150,7 +150,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                         </Button>
                     </KnapperekkeVenstre>
 
-                    {!erLesevisning && (
+                    {!erRedigeringDeaktivert && (
                         <Button
                             variant={'tertiary'}
                             id={`sletteknapp-overgangsordning-andel-${overgangsordningAndel.id}`}

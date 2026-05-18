@@ -1,5 +1,12 @@
 import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
+import { useBruker } from '@hooks/useBruker';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useFagsak } from '@hooks/useFagsak';
+import type { IBehandling } from '@typer/behandling';
+import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '@typer/person';
+import type { IBarnMedOpplysninger, IBarnMedOpplysningerBackend, IRestRegistrerSøknad, Målform } from '@typer/søknad';
+import { hentBarnMedLøpendeUtbetaling } from '@utils/fagsak';
 import { useNavigate } from 'react-router';
 
 import type { Avhengigheter, FeiloppsummeringFeil, ISkjema } from '@navikt/familie-skjema';
@@ -7,17 +14,6 @@ import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useFagsak } from '../../../../../hooks/useFagsak';
-import type { IBehandling } from '../../../../../typer/behandling';
-import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../../../typer/person';
-import type {
-    IBarnMedOpplysninger,
-    IBarnMedOpplysningerBackend,
-    IRestRegistrerSøknad,
-    Målform,
-} from '../../../../../typer/søknad';
-import { hentBarnMedLøpendeUtbetaling } from '../../../../../utils/fagsak';
-import { useBrukerContext } from '../../../BrukerContext';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface Props extends PropsWithChildren {
@@ -41,10 +37,11 @@ interface SøknadContextValue {
 const SøknadContext = createContext<SøknadContextValue | undefined>(undefined);
 
 export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
-    const { vurderErLesevisning, settÅpenBehandling } = useBehandlingContext();
-    const { bruker } = useBrukerContext();
+    const { settÅpenBehandling } = useBehandlingContext();
 
     const fagsak = useFagsak();
+    const bruker = useBruker();
+    const erLesevisning = useErLesevisning();
     const navigate = useNavigate();
 
     const barnMedLøpendeUtbetaling = hentBarnMedLøpendeUtbetaling(fagsak);
@@ -121,7 +118,7 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
     }, [åpenBehandling]);
 
     const nesteAction = (bekreftEndringerViaFrontend: boolean) => {
-        if (vurderErLesevisning()) {
+        if (erLesevisning) {
             navigate(`/fagsak/${fagsak.id}/${åpenBehandling?.behandlingId}/vilkaarsvurdering`);
         } else {
             onSubmit<IRestRegistrerSøknad>(

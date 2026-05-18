@@ -1,3 +1,6 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { IBarnMedOpplysninger } from '@typer/søknad';
+import { formaterIdent, hentAlderSomString } from '@utils/formatter';
 import classNames from 'classnames';
 
 import { BodyShort, Box, Button, Checkbox, HStack } from '@navikt/ds-react';
@@ -5,9 +8,6 @@ import { BodyShort, Box, Button, Checkbox, HStack } from '@navikt/ds-react';
 import styles from './BarnMedOpplysninger.module.css';
 import { useSøknadContext } from './SøknadContext';
 import Slett from '../../../../../ikoner/Slett';
-import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
-import { formaterIdent, hentAlderSomString } from '../../../../../utils/formatter';
-import { useBehandlingContext } from '../../context/BehandlingContext';
 
 interface IProps {
     barn: IBarnMedOpplysninger;
@@ -15,8 +15,9 @@ interface IProps {
 
 const BarnMedOpplysninger = ({ barn }: IProps) => {
     const { skjema, barnMedLøpendeUtbetaling } = useSøknadContext();
-    const { vurderErLesevisning } = useBehandlingContext();
-    const erLesevisning = vurderErLesevisning();
+
+    const erLesevisning = useErLesevisning();
+
     const barnetHarLøpendeUtbetaling = barnMedLøpendeUtbetaling.has(barn.ident);
 
     const navnOgIdentTekst = `${barn.navn ?? 'Navn ukjent'} (${hentAlderSomString(

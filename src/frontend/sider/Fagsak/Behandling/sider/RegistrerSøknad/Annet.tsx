@@ -1,12 +1,13 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+
 import { Heading, Textarea, VStack } from '@navikt/ds-react';
 
 import { useSøknadContext } from './SøknadContext';
-import { useBehandlingContext } from '../../context/BehandlingContext';
 
 const Annet = () => {
-    const { vurderErLesevisning } = useBehandlingContext();
     const { skjema } = useSøknadContext();
-    const lesevisning = vurderErLesevisning();
+
+    const erLesevisning = useErLesevisning();
 
     return (
         <VStack marginBlock={'space-32'}>
@@ -14,8 +15,8 @@ const Annet = () => {
             <br />
             <Textarea
                 {...skjema.felter.endringAvOpplysningerBegrunnelse.hentNavInputProps(skjema.visFeilmeldinger)}
-                readOnly={lesevisning}
-                label={!lesevisning && 'Ved endring av opplysningene er begrunnelse obligatorisk'}
+                readOnly={erLesevisning}
+                label={!erLesevisning && 'Ved endring av opplysningene er begrunnelse obligatorisk'}
                 maxLength={2000}
             />
         </VStack>
