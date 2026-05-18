@@ -1,12 +1,14 @@
 import { useState } from 'react';
 
+import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { BehandlingKategori } from '@typer/behandlingstema';
+import { vedtakHarFortsattUtbetaling } from '@utils/vedtakUtils';
+
 import { ArrowUndoIcon, CalculatorIcon, ChevronDownIcon, StarsEuIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button, Stack } from '@navikt/ds-react';
 
 import Styles from './Vedtaksmeny.module.css';
-import { BehandlingKategori } from '../../../../../../typer/behandlingstema';
-import { vedtakHarFortsattUtbetaling } from '../../../../../../utils/vedtakUtils';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 import EndreEndringstidspunkt from '../endringstidspunkt/EndreEndringstidspunkt';
 import { OppdaterEndringstidspunktModal } from '../endringstidspunkt/OppdaterEndringstidspunktModal';
 import { useFeilutbetaltValutaTabellContext } from '../FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
@@ -21,11 +23,8 @@ interface Props {
 }
 
 export function Vedtaksmeny({ erBehandlingMedVedtaksbrevutsending }: Props) {
-    const { behandling, vurderErLesevisning } = useBehandlingContext();
     const { erFeilutbetaltValutaTabellSynlig, visFeilutbetaltValutaTabell } = useFeilutbetaltValutaTabellContext();
     const { erRefusjonEøsTabellSynlig, visRefusjonEøsTabell } = useRefusjonEøsTabellContext();
-    const [visKorrigerVedtakModal, settVisKorrigerVedtakModal] = useState<boolean>(false);
-    const [visEndreEndringstidspunktModal, settVisEndreEndringstidspunktModal] = useState<boolean>(false);
     const {
         skalViseSammensattKontrollsakMenyvalg,
         erSammensattKontrollsak,
@@ -33,7 +32,11 @@ export function Vedtaksmeny({ erBehandlingMedVedtaksbrevutsending }: Props) {
         slettSammensattKontrollsak,
     } = useSammensattKontrollsakContext();
 
-    const erLesevisning = vurderErLesevisning();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
+
+    const [visKorrigerVedtakModal, settVisKorrigerVedtakModal] = useState<boolean>(false);
+    const [visEndreEndringstidspunktModal, settVisEndreEndringstidspunktModal] = useState<boolean>(false);
 
     return (
         <Stack width={'100%'} justify={'end'} align={'center'}>
