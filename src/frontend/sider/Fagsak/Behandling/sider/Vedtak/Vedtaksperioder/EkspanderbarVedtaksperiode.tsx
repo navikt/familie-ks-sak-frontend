@@ -13,111 +13,84 @@ import {
 } from '@utils/dato';
 import { formaterBeløp, summer } from '@utils/formatter';
 import { endOfMonth, isAfter, isSameDay } from 'date-fns';
-import styled from 'styled-components';
 
-import { BodyShort, ExpansionCard, Label } from '@navikt/ds-react';
-
-const StyledExpansionCard = styled(ExpansionCard)`
-    margin-bottom: 1rem;
-`;
-
-const StyledExpansionHeader = styled(ExpansionCard.Header)`
-    align-items: center;
-`;
-
-const StyledExpansionTitle = styled(ExpansionCard.Title)`
-    display: grid;
-    grid-template-columns: minmax(6rem, 12rem) minmax(6rem, 15rem) auto;
-    grid-gap: 0.5rem;
-    margin-left: 0;
-`;
+import { BodyShort, ExpansionCard, HGrid, Label } from '@navikt/ds-react';
 
 interface Props extends PropsWithChildren {
     sisteVedtaksperiodeFom?: string;
 }
 
-const erSammeFom = (dato1?: IsoDatoString, dato2?: IsoDatoString): boolean =>
-    isSameDay(parseFraOgMedDato(dato1), parseFraOgMedDato(dato2));
+function erSammeFom(dato1?: IsoDatoString, dato2?: IsoDatoString): boolean {
+    return isSameDay(parseFraOgMedDato(dato1), parseFraOgMedDato(dato2));
+}
 
-const slutterSenereEnnInneværendeMåned = (tom?: string) =>
-    isAfter(isoStringTilDateMedFallback({ isoString: tom, fallbackDate: tidenesEnde }), endOfMonth(hentDagensDato()));
+function slutterSenereEnnInneværendeMåned(tom?: string) {
+    return isAfter(
+        isoStringTilDateMedFallback({ isoString: tom, fallbackDate: tidenesEnde }),
+        endOfMonth(hentDagensDato())
+    );
+}
 
-const finnPresentertTomDato = (
+function finnPresentertTomDato(
     vedtaksperiodeInneholderOvergangsordningBegrunnelse: boolean,
     periodeFom?: string,
     periodeTom?: string,
     sisteVedtaksperiodeFom?: string
-) => {
+) {
     if (vedtaksperiodeInneholderOvergangsordningBegrunnelse) {
         return periodeTom;
     }
-
     if (erSammeFom(periodeFom, sisteVedtaksperiodeFom)) {
         return slutterSenereEnnInneværendeMåned(periodeTom) ? '' : periodeTom;
     }
     return periodeTom;
-};
+}
 
 export function EkspanderbarVedtaksperiode({ sisteVedtaksperiodeFom, children }: Props) {
     const { vedtaksperiodeMedBegrunnelser, erPanelEkspandert, onPanelClose } = useVedtaksperiodeContext();
 
-    const vedtaksperiodeInneholderOvergangsordningBegrunnelse =
-        vedtaksperiodeMedBegrunnelser.begrunnelser.filter(
-            vedtaksBegrunnelser =>
-                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
-                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING ||
-                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
-                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING_GRADERT_UTBETALING ||
-                (vedtaksBegrunnelser.begrunnelse as Standardbegrunnelse) ===
-                    Standardbegrunnelse.INNVILGET_OVERGANGSORDNING_DELT_BOSTED
-        ).length > 0;
+    const { begrunnelser, type, utbetalingsperiodeDetaljer, fom, tom } = vedtaksperiodeMedBegrunnelser;
 
-    const periode = {
-        fom: vedtaksperiodeMedBegrunnelser.fom,
-        tom: vedtaksperiodeMedBegrunnelser.tom,
-    };
+    const vedtaksperiodeInneholderOvergangsordningBegrunnelse = begrunnelser.some(
+        ({ begrunnelse }) =>
+            begrunnelse === Standardbegrunnelse.INNVILGET_OVERGANGSORDNING ||
+            begrunnelse === Standardbegrunnelse.INNVILGET_OVERGANGSORDNING_GRADERT_UTBETALING ||
+            begrunnelse === Standardbegrunnelse.INNVILGET_OVERGANGSORDNING_DELT_BOSTED
+    );
 
-    const vedtaksperiodeTittel = hentVedtaksperiodeTittel(vedtaksperiodeMedBegrunnelser);
+    const erUtbetaling = type === Vedtaksperiodetype.UTBETALING;
+    const harUtbetalingsperiodeDetaljer = utbetalingsperiodeDetaljer.length > 0;
+    const skalViseSum = erUtbetaling && harUtbetalingsperiodeDetaljer;
+    const sum = summer(utbetalingsperiodeDetaljer.map(detalj => detalj.utbetaltPerMnd));
+    const tittel = hentVedtaksperiodeTittel(vedtaksperiodeMedBegrunnelser);
+
+    const periode = isoDatoPeriodeTilFormatertString({
+        fom: fom,
+        tom: finnPresentertTomDato(
+            vedtaksperiodeInneholderOvergangsordningBegrunnelse,
+            fom,
+            tom,
+            sisteVedtaksperiodeFom
+        ),
+    });
 
     return (
-        <StyledExpansionCard
-            key={`${periode.fom}_${periode.tom}`}
+        <ExpansionCard
+            aria-label={`Begrunnelse - Periode ${fom}_${tom}`}
             size={'small'}
             open={erPanelEkspandert}
             onToggle={() => onPanelClose(true)}
-            aria-label={`Periode ${periode.fom}_${periode.tom}`}
         >
-            <StyledExpansionHeader>
-                <StyledExpansionTitle>
-                    {periode.fom && (
-                        <Label>
-                            {isoDatoPeriodeTilFormatertString({
-                                fom: periode.fom,
-                                tom: finnPresentertTomDato(
-                                    vedtaksperiodeInneholderOvergangsordningBegrunnelse,
-                                    periode.fom,
-                                    periode.tom,
-                                    sisteVedtaksperiodeFom
-                                ),
-                            })}
-                        </Label>
-                    )}
-                    <BodyShort>{vedtaksperiodeTittel}</BodyShort>
-                    {vedtaksperiodeMedBegrunnelser.type === Vedtaksperiodetype.UTBETALING &&
-                        vedtaksperiodeMedBegrunnelser.utbetalingsperiodeDetaljer.length > 0 && (
-                            <BodyShort>
-                                {formaterBeløp(
-                                    summer(
-                                        vedtaksperiodeMedBegrunnelser.utbetalingsperiodeDetaljer.map(
-                                            utbetalingsperiodeDetalj => utbetalingsperiodeDetalj.utbetaltPerMnd
-                                        )
-                                    )
-                                )}
-                            </BodyShort>
-                        )}
-                </StyledExpansionTitle>
-            </StyledExpansionHeader>
+            <ExpansionCard.Header>
+                <ExpansionCard.Title>
+                    <HGrid columns={'minmax(6rem, 12rem) minmax(6rem, 15rem) auto'} gap={'space-8'}>
+                        {fom && <Label>{periode}</Label>}
+                        <BodyShort>{tittel}</BodyShort>
+                        {skalViseSum && <BodyShort>{formaterBeløp(sum)}</BodyShort>}
+                    </HGrid>
+                </ExpansionCard.Title>
+            </ExpansionCard.Header>
             <ExpansionCard.Content>{children}</ExpansionCard.Content>
-        </StyledExpansionCard>
+        </ExpansionCard>
     );
 }
