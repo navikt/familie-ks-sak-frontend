@@ -1,15 +1,15 @@
 import type { PropsWithChildren } from 'react';
 
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Resultat } from '@typer/vilkår';
+import type { IIsoDatoPeriode, IsoDatoString } from '@utils/dato';
+import { nyIsoDatoPeriode } from '@utils/dato';
 import styled from 'styled-components';
 
 import { Fieldset, HelpText, Label } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import DatovelgerForGammelSkjemaløsning from '../../../../../../komponenter/Datovelger/DatovelgerForGammelSkjemaløsning';
-import { Resultat } from '../../../../../../typer/vilkår';
-import type { IIsoDatoPeriode, IsoDatoString } from '../../../../../../utils/dato';
-import { nyIsoDatoPeriode } from '../../../../../../utils/dato';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps extends PropsWithChildren {
     periode: Felt<IIsoDatoPeriode>;
@@ -47,8 +47,7 @@ const VelgPeriode = ({
     children,
     tomErPåkrevd,
 }: IProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
-    const lesevisning = vurderErLesevisning();
+    const erLesevisning = useErLesevisning();
 
     return (
         <MarginFieldset
@@ -56,7 +55,7 @@ const VelgPeriode = ({
             legend={'Periode for vurderingen'}
             hideLegend
         >
-            {!lesevisning && (
+            {!erLesevisning && (
                 <StyledLegend>
                     <StyledLabel>Velg periode</StyledLabel>
                     <HelpText title="Hvordan fastsette periode">
@@ -78,12 +77,12 @@ const VelgPeriode = ({
                         periode.validerOgSettFelt(nyIsoDatoPeriode(dato, periode.verdi.tom));
                     }}
                     visFeilmeldinger={false}
-                    readOnly={lesevisning}
+                    readOnly={erLesevisning}
                 />
                 <DatovelgerForGammelSkjemaløsning
                     label={tomErPåkrevd ? 'T.o.m' : 'T.o.m (valgfri)'}
                     value={periode.verdi.tom}
-                    readOnly={lesevisning}
+                    readOnly={erLesevisning}
                     onDateChange={(dato?: IsoDatoString) => {
                         periode.validerOgSettFelt(nyIsoDatoPeriode(periode.verdi.fom, dato));
                     }}

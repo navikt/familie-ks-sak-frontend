@@ -1,11 +1,12 @@
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { OptionType } from '@typer/common';
+import type { Begrunnelse } from '@typer/vedtak';
+import type { Regelverk, VilkårType } from '@typer/vilkår';
+
 import { UNSAFE_Combobox } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
-import type { OptionType } from '../../../../../../typer/common';
-import type { Begrunnelse } from '../../../../../../typer/vedtak';
-import type { Regelverk, VilkårType } from '../../../../../../typer/vilkår';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 interface IProps {
     vilkårType: VilkårType;
@@ -14,7 +15,7 @@ interface IProps {
 }
 
 const AvslagBegrunnelseMultiselect = ({ vilkårType, begrunnelser, regelverk }: IProps) => {
-    const { vurderErLesevisning } = useBehandlingContext();
+    const erLesevisning = useErLesevisning();
 
     const { grupperteAvslagsbegrunnelser } = useAvslagBegrunnelseMultiselect(vilkårType, regelverk);
 
@@ -42,7 +43,7 @@ const AvslagBegrunnelseMultiselect = ({ vilkårType, begrunnelser, regelverk }: 
             selectedOptions={valgteBegrunnlser}
             label={'Velg standardtekst i brev'}
             placeholder={'Velg begrunnelse(r)'}
-            readOnly={vurderErLesevisning()}
+            readOnly={erLesevisning}
             isMultiSelect
             onToggleSelected={onChangeBegrunnelse}
             options={grupperteAvslagsbegrunnelser}
