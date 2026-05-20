@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 
+import { Målform, målform } from '@typer/søknad';
+
 import { Box, Heading, Radio, RadioGroup } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
-
-import { Målform, målform } from '../typer/søknad';
 
 interface IProps {
     målformFelt: Felt<Målform | undefined>;

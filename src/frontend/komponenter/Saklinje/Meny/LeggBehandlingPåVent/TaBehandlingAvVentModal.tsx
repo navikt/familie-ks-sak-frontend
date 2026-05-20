@@ -1,15 +1,15 @@
 import { useState } from 'react';
 
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import type { IBehandling } from '@typer/behandling';
+import { settPåVentÅrsaker } from '@typer/behandling';
+import { defaultFunksjonellFeil } from '@typer/feilmeldinger';
+import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
+
 import { BodyShort, Box, Button, LocalAlert, Modal } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
-import type { Ressurs } from '@navikt/familie-typer';
 import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
-
-import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import type { IBehandling } from '../../../../typer/behandling';
-import { settPåVentÅrsaker } from '../../../../typer/behandling';
-import { defaultFunksjonellFeil } from '../../../../typer/feilmeldinger';
-import { Datoformat, isoStringTilFormatertString } from '../../../../utils/dato';
+import type { Ressurs } from '@navikt/familie-typer';
 
 interface Props {
     lukkModal: () => void;

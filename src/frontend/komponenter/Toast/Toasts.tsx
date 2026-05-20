@@ -1,25 +1,17 @@
-import styled from 'styled-components';
+import { useAppContext } from '@context/AppContext';
 
 import Toast from './Toast';
-import { useAppContext } from '../../context/AppContext';
-
-const Container = styled.div`
-    position: fixed;
-    right: 2rem;
-    float: right;
-    bottom: 0;
-    z-index: 1000;
-`;
+import styles from './Toasts.module.css';
 
 const Toasts = () => {
     const { toasts } = useAppContext();
 
     return (
-        <Container>
+        <div className={styles.container}>
             {Object.entries(toasts).map(([toastId, toast]) => (
                 <Toast key={toastId} toastId={toastId} toast={toast} />
             ))}
-        </Container>
+        </div>
     );
 };
 

@@ -1,25 +1,16 @@
-import styled from 'styled-components';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import type { IBehandling, IBehandlingPåVent } from '@typer/behandling';
+import { settPåVentÅrsaker } from '@typer/behandling';
+import { dateTilIsoDatoString } from '@utils/dato';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 
-import { BodyShort, Button, Fieldset, Modal, Select } from '@navikt/ds-react';
+import { BodyShort, Box, Button, Fieldset, Modal, Select, VStack } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { hentAlleÅrsaker } from './settPåVentUtils';
 import { useSettPåVentSkjema } from './useSettPåVentSkjema';
-import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import type { IBehandling, IBehandlingPåVent } from '../../../../typer/behandling';
-import { settPåVentÅrsaker } from '../../../../typer/behandling';
-import { dateTilIsoDatoString } from '../../../../utils/dato';
-import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
 import Datovelger from '../../../Datovelger/Datovelger';
-
-const Feltmargin = styled.div`
-    margin-bottom: 2rem;
-`;
-const StyledBodyShort = styled(BodyShort)`
-    margin-bottom: 2.5rem;
-    margin-top: 0.5rem;
-`;
 
 interface IProps {
     lukkModal: () => void;
@@ -72,24 +63,27 @@ export const SettBehandlingPåVentModal = ({ lukkModal }: IProps) => {
                     legend={'Sett behandling på vent'}
                     hideLegend
                 >
-                    {erBehandlingAlleredePåVent && <StyledBodyShort>Behandlingen er satt på vent.</StyledBodyShort>}
-
-                    <Feltmargin>
+                    {erBehandlingAlleredePåVent && (
+                        <Box marginBlock={'space-8 space-40'}>
+                            <BodyShort>Behandlingen er satt på vent.</BodyShort>
+                        </Box>
+                    )}
+                    <VStack gap={'space-32'}>
                         <Datovelger
                             felt={frist}
                             label={'Frist'}
                             visFeilmeldinger={skjema.visFeilmeldinger}
                             kanKunVelgeFremtid
                         />
-                    </Feltmargin>
-                    <Select {...årsak.hentNavInputProps(skjema.visFeilmeldinger)} label={'Årsak'}>
-                        <option value={undefined}>Velg årsak</option>
-                        {årsaker.map(årsak => (
-                            <option value={årsak.valueOf()} key={årsak.valueOf()}>
-                                {settPåVentÅrsaker[årsak]}
-                            </option>
-                        ))}
-                    </Select>
+                        <Select {...skjema.felter.årsak.hentNavInputProps(skjema.visFeilmeldinger)} label={'Årsak'}>
+                            <option value={undefined}>Velg årsak</option>
+                            {årsaker.map(årsak => (
+                                <option value={årsak.valueOf()} key={årsak.valueOf()}>
+                                    {settPåVentÅrsaker[årsak]}
+                                </option>
+                            ))}
+                        </Select>
+                    </VStack>
                 </Fieldset>
             </Modal.Body>
             <Modal.Footer>
