@@ -1,6 +1,23 @@
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
+import { useAppContext } from '@context/AppContext';
+import { useSaksbehandler } from '@hooks/useSaksbehandler';
+import { AlertType, ToastTyper } from '@komponenter/Toast/typer';
+import type { IMinimalFagsak } from '@typer/fagsak';
+import {
+    BehandlingstypeFilter,
+    EnhetFilter,
+    type IFinnOppgaveRequest,
+    type IHentOppgaveDto,
+    type IOppgave,
+    OppgavetypeFilter,
+    SaksbehandlerFilter,
+} from '@typer/oppgave';
+import { erIsoStringGyldig } from '@utils/dato';
+import { hentFnrFraOppgaveIdenter } from '@utils/oppgave';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
+import { hentNesteSorteringsrekkefølge, hentSortState, Sorteringsrekkefølge } from '@utils/tabell';
 import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
 
@@ -12,23 +29,6 @@ import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } f
 
 import { initialOppgaveFelter, type IOppgaveFelt, type IOppgaveFelter } from './oppgavefelter';
 import { type IOppgaveRad, mapIOppgaverTilOppgaveRad, sorterEtterNøkkel, Sorteringsnøkkel } from './utils';
-import { useAppContext } from '../../context/AppContext';
-import { useSaksbehandler } from '../../hooks/useSaksbehandler';
-import { AlertType, ToastTyper } from '../../komponenter/Toast/typer';
-import type { IMinimalFagsak } from '../../typer/fagsak';
-import {
-    BehandlingstypeFilter,
-    EnhetFilter,
-    type IFinnOppgaveRequest,
-    type IHentOppgaveDto,
-    type IOppgave,
-    OppgavetypeFilter,
-    SaksbehandlerFilter,
-} from '../../typer/oppgave';
-import { erIsoStringGyldig } from '../../utils/dato';
-import { hentFnrFraOppgaveIdenter } from '../../utils/oppgave';
-import { hentFrontendFeilmelding } from '../../utils/ressursUtils';
-import { hentNesteSorteringsrekkefølge, hentSortState, Sorteringsrekkefølge } from '../../utils/tabell';
 import { useOpprettEllerHentFagsak } from '../Fagsak/useOpprettEllerHentFagsak';
 
 const OPPGAVEBENK_SORTERINGSNØKKEL = 'OPPGAVEBENK_SORTERINGSNØKKEL';
