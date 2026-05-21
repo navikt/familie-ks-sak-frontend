@@ -12,6 +12,7 @@ type Options = Omit<UseMutationOptions<IBehandling, DefaultError, KorrigerVedtak
 
 export function useKorrigerVedtak(options?: Options) {
     const { request } = useHttp();
+
     return useMutation<IBehandling, Error, KorrigerVedtakParameters>({
         mutationFn: (parameters: KorrigerVedtakParameters): Promise<IBehandling> => {
             const { vedtaksdato, begrunnelse, behandlingId } = parameters;

@@ -1,7 +1,6 @@
 import { useAngreKorrigertVedtak } from '@hooks/useAngreKorrigertVedtak';
 import { useKorrigerVedtak } from '@hooks/useKorrigerVedtak';
-import type { IRestKorrigertVedtak } from '@typer/vedtak';
-import { dateTilIsoDatoString } from '@utils/dato';
+import { dateTilIsoDatoString, type IsoDatoString } from '@utils/dato';
 import { useForm } from 'react-hook-form';
 
 import { byggSuksessRessurs } from '@navikt/familie-typer';
@@ -14,31 +13,31 @@ export enum KorrigerVedtakFelt {
 }
 
 export interface KorrigerVedtakFormValues {
-    [KorrigerVedtakFelt.VEDTAKSDATO]: Date | null;
+    [KorrigerVedtakFelt.VEDTAKSDATO]: IsoDatoString | null;
     [KorrigerVedtakFelt.BEGRUNNELSE]: string;
 }
 
 type TransformedKorrigerVedtakFormValues = {
-    [KorrigerVedtakFelt.VEDTAKSDATO]: Date;
+    [KorrigerVedtakFelt.VEDTAKSDATO]: IsoDatoString;
     [KorrigerVedtakFelt.BEGRUNNELSE]: string;
 };
 
 interface Props {
     lukkModal: () => void;
-    behandlingId: number;
-    korrigertVedtak?: IRestKorrigertVedtak;
 }
 
-export function useKorrigerVedtakSkjema({ behandlingId, korrigertVedtak, lukkModal }: Props) {
-    const { settÅpenBehandling } = useBehandlingContext();
+export function useKorrigerVedtakSkjema({ lukkModal }: Props) {
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
+    const korrigertVedtak = behandling.korrigertVedtak;
+
     const { mutateAsync: korrigerVedtak } = useKorrigerVedtak();
     const { mutateAsync: angreKorrigertVedtak } = useAngreKorrigertVedtak();
 
-    const opprinneligVedtaksdato = korrigertVedtak ? new Date(korrigertVedtak.vedtaksdato) : null;
-
     const form = useForm<KorrigerVedtakFormValues, unknown, TransformedKorrigerVedtakFormValues>({
         values: {
-            [KorrigerVedtakFelt.VEDTAKSDATO]: opprinneligVedtaksdato,
+            [KorrigerVedtakFelt.VEDTAKSDATO]: korrigertVedtak?.vedtaksdato
+                ? dateTilIsoDatoString(new Date(korrigertVedtak.vedtaksdato))
+                : null,
             [KorrigerVedtakFelt.BEGRUNNELSE]: '',
         },
     });
@@ -49,9 +48,9 @@ export function useKorrigerVedtakSkjema({ behandlingId, korrigertVedtak, lukkMod
         const { vedtaksdato, begrunnelse } = values;
 
         const korrigerVedtakParameters = {
-            vedtaksdato: dateTilIsoDatoString(vedtaksdato),
+            vedtaksdato,
             begrunnelse,
-            behandlingId,
+            behandlingId: behandling.behandlingId,
         };
 
         return korrigerVedtak(korrigerVedtakParameters)
@@ -67,7 +66,7 @@ export function useKorrigerVedtakSkjema({ behandlingId, korrigertVedtak, lukkMod
     };
 
     const onAngreKorrigertVedtak = () => {
-        return angreKorrigertVedtak(behandlingId)
+        return angreKorrigertVedtak(behandling.behandlingId)
             .then(behandling => {
                 settÅpenBehandling(byggSuksessRessurs(behandling));
                 lukkModal();
