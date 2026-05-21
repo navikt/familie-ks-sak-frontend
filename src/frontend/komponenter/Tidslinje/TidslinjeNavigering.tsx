@@ -1,8 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
-import styled from 'styled-components';
-
-import { Button } from '@navikt/ds-react';
+import { Button, HStack } from '@navikt/ds-react';
 
 import { NavigeringsRetning } from './TidslinjeContext';
 import FamilieChevron from '../../ikoner/FamilieChevron';
@@ -15,23 +13,6 @@ interface IProps extends PropsWithChildren {
     navigerTilHyøyreTittel?: string;
 }
 
-const StyledTidslinjenavigering = styled.div`
-    display: flex;
-    flex-direction: row;
-
-    & > button {
-        &:first-child {
-            margin-right: 0.625rem;
-        }
-    }
-`;
-
-const DivMedHøyremargin = styled.div`
-    margin-right: 0.625rem;
-    display: flex;
-    align-items: center;
-`;
-
 const TidslinjeNavigering = ({
     naviger,
     kanNavigereTilHøyre = true,
@@ -41,7 +22,7 @@ const TidslinjeNavigering = ({
     children,
 }: IProps) => {
     return (
-        <StyledTidslinjenavigering className={'tidslinje-header__navigering'}>
+        <HStack gap={'space-12'}>
             <Button
                 title={'Naviger til venstre'}
                 variant="tertiary"
@@ -54,7 +35,7 @@ const TidslinjeNavigering = ({
                     {navigerTilVenstreTittel ? navigerTilVenstreTittel : 'Naviger til venstre i tidslinjen'}
                 </span>
             </Button>
-            {children && <DivMedHøyremargin>{children}</DivMedHøyremargin>}
+            {children}
             <Button
                 title={'Naviger til høyre'}
                 variant="tertiary"
@@ -67,7 +48,7 @@ const TidslinjeNavigering = ({
                     {navigerTilHyøyreTittel ? navigerTilHyøyreTittel : 'Naviger til høyre i tidslinjen'}
                 </span>
             </Button>
-        </StyledTidslinjenavigering>
+        </HStack>
     );
 };
 

@@ -1,23 +1,16 @@
+import { useFagsakContext } from '@sider/Fagsak/FagsakContext';
+import { hentDagensDato } from '@utils/dato';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import { isBefore, subDays } from 'date-fns';
-import styled from 'styled-components';
 
-import { Box, Button, Fieldset, LocalAlert, Modal } from '@navikt/ds-react';
+import { Box, Button, Fieldset, LocalAlert, Modal, VStack } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BehandlingstypeFelt from './BehandlingstypeFelt';
 import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
 import { OpprettBehandlingBehandlingstemaSelect } from './OpprettBehandlingBehandlingstemaSelect';
 import useOpprettBehandling from './useOpprettBehandling';
-import { useFagsakContext } from '../../../../sider/Fagsak/FagsakContext';
-import { hentDagensDato } from '../../../../utils/dato';
-import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
 import Datovelger from '../../../Datovelger/Datovelger';
-
-const StyledFieldset = styled(Fieldset)`
-    && > div:not(:last-child):not(:empty) {
-        margin-bottom: 1rem;
-    }
-`;
 
 interface Props {
     lukkModal: () => void;
@@ -53,47 +46,49 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
             onClose={lukkOpprettBehandlingModal}
         >
             <Modal.Body>
-                <StyledFieldset
+                <Fieldset
                     error={hentFrontendFeilmelding(opprettBehandlingSkjema.submitRessurs)}
                     legend={'Opprett ny behandling'}
                     hideLegend
                 >
-                    <BehandlingstypeFelt
-                        behandlingstype={opprettBehandlingSkjema.felter.behandlingstype}
-                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                        minimalFagsak={fagsak}
-                    />
-                    {opprettBehandlingSkjema.felter.behandlingsårsak.erSynlig && (
-                        <BehandlingårsakFelt
-                            behandlingsårsak={opprettBehandlingSkjema.felter.behandlingsårsak}
+                    <VStack gap={'space-16'}>
+                        <BehandlingstypeFelt
+                            behandlingstype={opprettBehandlingSkjema.felter.behandlingstype}
                             visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                            minimalFagsak={fagsak}
                         />
-                    )}
-                    {opprettBehandlingSkjema.felter.behandlingstema.erSynlig && (
-                        <OpprettBehandlingBehandlingstemaSelect
-                            behandlingstema={opprettBehandlingSkjema.felter.behandlingstema}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                            name="Behandlingstema"
-                            label="Velg behandlingstema"
-                        />
-                    )}
-                    {opprettBehandlingSkjema.felter.klageMottattDato.erSynlig && (
-                        <Datovelger
-                            felt={opprettBehandlingSkjema.felter.klageMottattDato}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                            label={'Klage mottatt'}
-                            kanKunVelgeFortid
-                        />
-                    )}
-                    {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
-                        <Datovelger
-                            felt={opprettBehandlingSkjema.felter.søknadMottattDato}
-                            visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                            label={'Mottatt dato'}
-                            kanKunVelgeFortid
-                        />
-                    )}
-                </StyledFieldset>
+                        {opprettBehandlingSkjema.felter.behandlingsårsak.erSynlig && (
+                            <BehandlingårsakFelt
+                                behandlingsårsak={opprettBehandlingSkjema.felter.behandlingsårsak}
+                                visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                            />
+                        )}
+                        {opprettBehandlingSkjema.felter.behandlingstema.erSynlig && (
+                            <OpprettBehandlingBehandlingstemaSelect
+                                behandlingstema={opprettBehandlingSkjema.felter.behandlingstema}
+                                visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                name="Behandlingstema"
+                                label="Velg behandlingstema"
+                            />
+                        )}
+                        {opprettBehandlingSkjema.felter.klageMottattDato.erSynlig && (
+                            <Datovelger
+                                felt={opprettBehandlingSkjema.felter.klageMottattDato}
+                                visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                label={'Klage mottatt'}
+                                kanKunVelgeFortid
+                            />
+                        )}
+                        {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
+                            <Datovelger
+                                felt={opprettBehandlingSkjema.felter.søknadMottattDato}
+                                visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
+                                label={'Mottatt dato'}
+                                kanKunVelgeFortid
+                            />
+                        )}
+                    </VStack>
+                </Fieldset>
                 {søknadMottattDatoErMerEnn360DagerSiden && (
                     <Box marginBlock={'space-24 space-0'}>
                         <LocalAlert status="warning">
