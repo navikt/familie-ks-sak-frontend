@@ -65,7 +65,7 @@ export function KorrigerVedtakModal({ lukkModal }: Props) {
                                 {visAngreKnapp && (
                                     <Button
                                         size={'small'}
-                                        onClick={onAngreKorrigertVedtak}
+                                        onClick={handleSubmit(onAngreKorrigertVedtak)}
                                         variant={'tertiary'}
                                         loading={isSubmitting}
                                         icon={<ArrowUndoIcon />}
