@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { useBehandling } from '@hooks/useBehandling';
-import { useErLesevisning } from '@hooks/useErLesevisning';
+import { KorrigerVedtakModal } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtakModal/KorrigerVedtakModal';
 import { BehandlingKategori } from '@typer/behandlingstema';
 import { vedtakHarFortsattUtbetaling } from '@utils/vedtakUtils';
 
@@ -14,7 +14,6 @@ import { OppdaterEndringstidspunktModal } from '../endringstidspunkt/OppdaterEnd
 import { useFeilutbetaltValutaTabellContext } from '../FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import KorrigerEtterbetaling from '../KorrigerEtterbetaling/KorrigerEtterbetaling';
 import KorrigerVedtak from '../KorrigerVedtakModal/KorrigerVedtak';
-import KorrigerVedtakModal from '../KorrigerVedtakModal/KorrigerVedtakModal';
 import { useRefusjonEøsTabellContext } from '../RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from '../SammensattKontrollsak/SammensattKontrollsakContext';
 
@@ -33,21 +32,13 @@ export function Vedtaksmeny({ erBehandlingMedVedtaksbrevutsending }: Props) {
     } = useSammensattKontrollsakContext();
 
     const behandling = useBehandling();
-    const erLesevisning = useErLesevisning();
 
     const [visKorrigerVedtakModal, settVisKorrigerVedtakModal] = useState<boolean>(false);
     const [visEndreEndringstidspunktModal, settVisEndreEndringstidspunktModal] = useState<boolean>(false);
 
     return (
         <Stack width={'100%'} justify={'end'} align={'center'}>
-            {visKorrigerVedtakModal && (
-                <KorrigerVedtakModal
-                    behandlingId={behandling.behandlingId}
-                    korrigertVedtak={behandling.korrigertVedtak}
-                    erLesevisning={erLesevisning}
-                    lukkModal={() => settVisKorrigerVedtakModal(false)}
-                />
-            )}
+            {visKorrigerVedtakModal && <KorrigerVedtakModal lukkModal={() => settVisKorrigerVedtakModal(false)} />}
             {visEndreEndringstidspunktModal && (
                 <OppdaterEndringstidspunktModal lukkModal={() => settVisEndreEndringstidspunktModal(false)} />
             )}
