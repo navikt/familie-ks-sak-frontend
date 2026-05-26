@@ -1,11 +1,12 @@
+import { useToastContext } from '@context/ToastContext';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import type { IBehandling } from '@typer/behandling';
+
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggHenterRessurs, RessursStatus } from '@navikt/familie-typer';
 
 import type { BrevmottakerUseSkjema, IRestBrevmottaker } from './useBrevmottakerSkjema';
-import { useAppContext } from '../../../../context/AppContext';
-import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import type { IBehandling } from '../../../../typer/behandling';
 import { AlertType, ToastTyper } from '../../../Toast/typer';
 
 interface Props {
@@ -14,7 +15,7 @@ interface Props {
 
 export const useLagreEllerFjernMottakerPåBehandling = ({ behandlingId }: Props) => {
     const { settÅpenBehandling } = useBehandlingContext();
-    const { settToast } = useAppContext();
+    const { settToast } = useToastContext();
     const { request } = useHttp();
 
     const lagreMottaker = (verdierFraBrevmottakerUseSkjema: BrevmottakerUseSkjema) => {

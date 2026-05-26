@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-import { useAppContext } from '@context/AppContext';
+import { useToastContext } from '@context/ToastContext';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { AlertType, ToastTyper } from '@komponenter/Toast/typer';
 import type { IMinimalFagsak } from '@typer/fagsak';
@@ -56,7 +56,7 @@ const OppgavebenkContext = createContext<OppgavebenkContextValue | undefined>(un
 
 export const OppgavebenkProvider = (props: PropsWithChildren) => {
     const navigate = useNavigate();
-    const { settToast } = useAppContext();
+    const { settToast } = useToastContext();
     const { request } = useHttp();
     const { opprettEllerHentFagsak } = useOpprettEllerHentFagsak();
     const saksbehandler = useSaksbehandler();

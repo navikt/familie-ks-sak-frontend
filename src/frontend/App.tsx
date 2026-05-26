@@ -1,18 +1,19 @@
 import '@navikt/ds-css';
 import './index.css';
 
+import { AppProvider } from '@context/AppContext';
+import { AuthContextProvider } from '@context/AuthContext';
+import { FeatureTogglesProvider } from '@context/FeatureTogglesContext';
+import { HttpContextProvider } from '@context/HttpContext';
+import { ModalProvider } from '@context/ModalContext';
+import { SaksbehandlerProvider } from '@context/SaksbehandlerContext';
+import { ToastProvider } from '@context/ToastContext';
+import { ErrorBoundary, ErrorBoundaryMedSaksbehandler } from '@komponenter/ErrorBoundary/ErrorBoundary';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { erProd } from '@utils/miljø';
 
 import { Container } from './Container';
-import { AppProvider } from './context/AppContext';
-import { AuthContextProvider } from './context/AuthContext';
-import { FeatureTogglesProvider } from './context/FeatureTogglesContext';
-import { HttpContextProvider } from './context/HttpContext';
-import { ModalProvider } from './context/ModalContext';
-import { SaksbehandlerProvider } from './context/SaksbehandlerContext';
-import { ErrorBoundary, ErrorBoundaryMedSaksbehandler } from './komponenter/ErrorBoundary/ErrorBoundary';
-import { erProd } from './utils/miljø';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -34,7 +35,9 @@ export function App() {
                                 <FeatureTogglesProvider>
                                     <AppProvider>
                                         <ModalProvider>
-                                            <Container />
+                                            <ToastProvider>
+                                                <Container />
+                                            </ToastProvider>
                                         </ModalProvider>
                                     </AppProvider>
                                 </FeatureTogglesProvider>
