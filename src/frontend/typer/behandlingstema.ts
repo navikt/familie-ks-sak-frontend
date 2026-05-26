@@ -8,10 +8,6 @@ export enum Behandlingstema {
     EØS = 'EØS',
 }
 
-export interface IRestEndreBehandlingstema {
-    behandlingKategori: BehandlingKategori;
-}
-
 export const behandlingKategori: Record<BehandlingKategori, string> = {
     NASJONAL: 'Nasjonal',
     EØS: 'EØS',

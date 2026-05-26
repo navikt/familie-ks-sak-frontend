@@ -64,11 +64,6 @@ export interface IUtbetalingsperiodeDetalj {
     erPåvirketAvEndring: boolean;
 }
 
-export interface IRestOverstyrtEndringstidspunkt {
-    overstyrtEndringstidspunkt: IsoDatoString;
-    behandlingId: number;
-}
-
 export const hentVedtaksperiodeTittel = (vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser) => {
     const { type, utbetalingsperiodeDetaljer } = vedtaksperiodeMedBegrunnelser;
 
