@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useOpprettEllerHentFagsakPaaPersonMutationState } from '@hooks/useOpprettEllerHentFagsakPaaPersonMutationState';
+import { useHentFagsakPaaPersonError } from '@hooks/useHentFagsakPaaPersonError';
 import styled from 'styled-components';
 
 import { Button, ExpansionCard, LocalAlert, TextField, VStack } from '@navikt/ds-react';
@@ -47,9 +47,8 @@ export const BrukerPanel = () => {
         verdi: '',
         valideringsfunksjon: identValidator,
     });
-    const hentFagsakPaaPersonMutationState = useOpprettEllerHentFagsakPaaPersonMutationState()
-        .filter(state => Object.values(state.variables as object).includes(nyIdent.verdi))
-        .at(-1);
+
+    const hentFagsakPaaPersonError = useHentFagsakPaaPersonError(nyIdent.verdi);
 
     useEffect(() => {
         settFeilMelding('');
@@ -110,14 +109,12 @@ export const BrukerPanel = () => {
                                 variant="secondary"
                             />
                         </FlexDiv>
-                        {hentFagsakPaaPersonMutationState?.error && (
+                        {hentFagsakPaaPersonError && (
                             <LocalAlert status={'error'}>
                                 <LocalAlert.Header>
                                     <LocalAlert.Title>Klarte ikke å endre bruker</LocalAlert.Title>
                                 </LocalAlert.Header>
-                                <LocalAlert.Content>
-                                    {hentFagsakPaaPersonMutationState?.error.message}
-                                </LocalAlert.Content>
+                                <LocalAlert.Content>{hentFagsakPaaPersonError?.message}</LocalAlert.Content>
                             </LocalAlert>
                         )}
                     </VStack>

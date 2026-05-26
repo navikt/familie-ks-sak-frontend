@@ -1,5 +1,3 @@
-import { useOpprettEllerHentFagsakMutationState } from '@hooks/useOpprettEllerHentFagsakMutationState';
-import { useOpprettEllerHentFagsakPaaPersonMutationState } from '@hooks/useOpprettEllerHentFagsakPaaPersonMutationState';
 import type { OppgavetypeFilter } from '@typer/oppgave';
 import { oppgaveTypeFilter, PrioritetFilter } from '@typer/oppgave';
 import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
@@ -19,8 +17,6 @@ export function OppgaveList() {
     const { oppgaver, sorterteOppgaverader, sortering, settOgLagreSortering, side } = useOppgavebenkContext();
 
     const oppgaverPåDenneSiden = sorterteOppgaverader.slice((side - 1) * oppgaveSideLimit, side * oppgaveSideLimit);
-    const opprettEllerHentFagsakMutationState = useOpprettEllerHentFagsakMutationState();
-    const hentFagsakPaaPersonMutationState = useOpprettEllerHentFagsakPaaPersonMutationState();
 
     return (
         <Box as={'section'}>
@@ -131,21 +127,7 @@ export function OppgaveList() {
                         ))}
                     </Table.Body>
                 </Table>
-            </Box>{' '}
-            {(opprettEllerHentFagsakMutationState.find(e => e.status === 'error') ||
-                hentFagsakPaaPersonMutationState.find(e => e.status === 'error')) && (
-                <Box marginBlock={'space-16 space-0'} marginInline={'space-32'}>
-                    <LocalAlert status={'error'}>
-                        <LocalAlert.Header>
-                            <LocalAlert.Title>Henting av fagsak feilet</LocalAlert.Title>
-                        </LocalAlert.Header>
-                        <LocalAlert.Content>
-                            {hentFagsakPaaPersonMutationState[0].error?.message ||
-                                opprettEllerHentFagsakMutationState[0].error?.message}
-                        </LocalAlert.Content>
-                    </LocalAlert>
-                </Box>
-            )}
+            </Box>
             {oppgaver.status === RessursStatus.SUKSESS && oppgaver.data.oppgaver.length === 0 && (
                 <Box marginBlock={'space-16 space-0'}>
                     <LocalAlert status={'warning'}>

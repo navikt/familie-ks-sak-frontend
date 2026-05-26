@@ -1,11 +1,10 @@
 import { opprettEllerHentFagsak } from '@api/opprettEllerHentFagsak';
+import { MetaKey } from '@hooks/meta/metaKey';
 import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
 import type { IMinimalFagsak } from '@typer/fagsak';
 
-import { useHttp } from '@navikt/familie-http';
-
 export const OpprettEllerHentFagsakMutationKeyFactory = {
-    opprettEllerHentFagsakData: () => ['opprett-eller-hent-fagsak'],
+    opprettEllerHentFagsak: () => ['opprett_eller_hent_fagsak'],
 };
 
 interface Parameters {
@@ -15,12 +14,14 @@ interface Parameters {
 type Options = Omit<UseMutationOptions<IMinimalFagsak, DefaultError, Parameters>, 'mutationFn'>;
 
 export function useOpprettEllerHentFagsak(options?: Options) {
-    const { request } = useHttp();
     return useMutation({
+        mutationKey: OpprettEllerHentFagsakMutationKeyFactory.opprettEllerHentFagsak(),
         mutationFn: (parameters: Parameters) => {
-            return opprettEllerHentFagsak(request, parameters);
+            const { aktørId } = parameters;
+            const payload = { aktørId };
+            return opprettEllerHentFagsak(payload);
         },
-        mutationKey: OpprettEllerHentFagsakMutationKeyFactory.opprettEllerHentFagsakData(),
+        meta: { [MetaKey.VIS_SYSTEMET_LASTER]: true },
         ...options,
     });
 }

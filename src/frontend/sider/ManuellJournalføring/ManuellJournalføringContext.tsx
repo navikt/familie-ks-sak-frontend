@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { useOpprettEllerHentFagsakPaaPerson } from '@hooks/useOpprettEllerHentFagsakPaaPerson';
+import { useHentFagsakPaaPerson } from '@hooks/useHentFagsakPaaPerson';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 import type { IBehandlingstema } from '@typer/behandlingstema';
@@ -91,10 +91,6 @@ export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
     const navigate = useNavigate();
     const { request } = useHttp();
     const { oppgaveId } = useParams<{ oppgaveId: string }>();
-    const { mutateAsync: opprettEllerHentFagsakPaaPerson } = useOpprettEllerHentFagsakPaaPerson({
-        onSuccess: fagsak => settMinimalFagsak(fagsak),
-        onError: () => settMinimalFagsak(undefined),
-    });
 
     const saksbehandler = useSaksbehandler();
 
@@ -105,6 +101,11 @@ export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
 
     const [dataForManuellJournalføring, settDataForManuellJournalføring] =
         useState(byggTomRessurs<IDataForManuellJournalføring>());
+
+    const { mutateAsync: hentFagsakPaaPerson } = useHentFagsakPaaPerson({
+        onSuccess: fagsak => settMinimalFagsak(fagsak),
+        onError: () => settMinimalFagsak(undefined),
+    });
 
     useEffect(() => {
         if (oppgaveId) {
@@ -269,7 +270,7 @@ export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
 
         skjema.felter.bruker.validerOgSettFelt(hentetPerson.data);
 
-        opprettEllerHentFagsakPaaPerson({ ident: hentetPerson.data.personIdent });
+        await hentFagsakPaaPerson({ ident: hentetPerson.data.personIdent });
 
         return '';
     };

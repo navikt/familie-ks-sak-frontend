@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useVisManglerTilgangModal } from '@context/ManglerTilgangModalContext';
 import { useVisTekniskFeilModal } from '@context/TekniskFeilModalContext';
-import { useOpprettEllerHentFagsakPaaPerson } from '@hooks/useOpprettEllerHentFagsakPaaPerson';
+import { useHentFagsakPaaPerson } from '@hooks/useHentFagsakPaaPerson';
 import { useSjekkSaksbehandlertilgangTilIdent } from '@hooks/useSjekkSaksbehandlertilgangTilIdent';
 import type { IOppgave } from '@typer/oppgave';
 import { OppgavetypeFilter, oppgaveTypeFilter } from '@typer/oppgave';
@@ -24,11 +24,7 @@ export function OppgaveDirektelenke({ oppgave }: Props) {
     const [laster, settLaster] = useState(false);
 
     const { mutateAsync: sjekkSaksbehandlertilgangTilIdent } = useSjekkSaksbehandlertilgangTilIdent();
-
-    const { mutateAsync: opprettEllerHentFagsakPaaPerson } = useOpprettEllerHentFagsakPaaPerson({
-        onSuccess: fagsak => navigate(`/fagsak/${fagsak.id}/saksoversikt`),
-        onError: error => visTekniskFeilModal(error),
-    });
+    const { mutateAsync: hentFagsakPaaPerson } = useHentFagsakPaaPerson();
 
     async function navigerTilJournalføring() {
         settLaster(true);
@@ -57,7 +53,8 @@ export function OppgaveDirektelenke({ oppgave }: Props) {
             try {
                 const tilgangsreusltat = await sjekkSaksbehandlertilgangTilIdent({ brukerIdent });
                 if (tilgangsreusltat.saksbehandlerHarTilgang) {
-                    await opprettEllerHentFagsakPaaPerson({ ident: brukerIdent });
+                    const fagsak = await hentFagsakPaaPerson({ ident: brukerIdent });
+                    navigate(`/fagsak/${fagsak.id}/saksoversikt`);
                 } else {
                     visManglerTilgangModal(tilgangsreusltat);
                 }

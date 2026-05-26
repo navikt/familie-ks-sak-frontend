@@ -1,10 +1,11 @@
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
+import { useVisTekniskFeilModal } from '@context/TekniskFeilModalContext';
 import { useToastContext } from '@context/ToastContext';
 import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
+import { useHentFagsakPaaPerson } from '@hooks/useHentFagsakPaaPerson';
 import { useOpprettEllerHentFagsak } from '@hooks/useOpprettEllerHentFagsak';
-import { useOpprettEllerHentFagsakPaaPerson } from '@hooks/useOpprettEllerHentFagsakPaaPerson';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { AlertType, ToastTyper } from '@komponenter/Toast/typer';
 import { useQueryClient } from '@tanstack/react-query';
@@ -58,12 +59,16 @@ interface OppgavebenkContextValue {
 const OppgavebenkContext = createContext<OppgavebenkContextValue | undefined>(undefined);
 
 export const OppgavebenkProvider = (props: PropsWithChildren) => {
-    const navigate = useNavigate();
-    const queryClient = useQueryClient();
-    const saksbehandler = useSaksbehandler();
     const { settToast } = useToastContext();
     const { request } = useHttp();
-    const { mutateAsync: opprettEllerHentFagsakPaaPerson } = useOpprettEllerHentFagsakPaaPerson();
+
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const visTekniskFeilModal = useVisTekniskFeilModal();
+    const saksbehandler = useSaksbehandler();
+
+    const { mutateAsync: hentFagsakPaaPerson } = useHentFagsakPaaPerson();
+
     const { mutateAsync: opprettEllerHentFagsak } = useOpprettEllerHentFagsak({
         onSuccess: fagsak => {
             queryClient.setQueryData(HentFagsakQueryKeyFactory.fagsak(fagsak.id), fagsak);
@@ -213,7 +218,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
             url: `/familie-ks-sak/api/oppgave/${oppgave.id}/fordel?saksbehandler=${saksbehandler}`,
             påvirkerSystemLaster: true,
         })
-            .then((oppgaveId: Ressurs<string>) => {
+            .then(async (oppgaveId: Ressurs<string>) => {
                 if (oppgaveId.status === RessursStatus.SUKSESS) {
                     const oppgavetypeFilter = OppgavetypeFilter[oppgave.oppgavetype as keyof typeof OppgavetypeFilter];
                     if (
@@ -226,9 +231,11 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
                             // tilbakekreving
                             gåTilTilbakekreving(oppgave);
                         } else if (oppgave.aktoerId) {
-                            opprettEllerHentFagsak({
-                                aktørId: oppgave.aktoerId,
-                            });
+                            try {
+                                await opprettEllerHentFagsak({ aktørId: oppgave.aktoerId });
+                            } catch (error) {
+                                visTekniskFeilModal(error);
+                            }
                         }
                     }
                 } else {
@@ -379,15 +386,17 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
             });
     };
 
-    const gåTilTilbakekreving = (oppgave: IOppgave) => {
+    async function gåTilTilbakekreving(oppgave: IOppgave) {
         const brukerident = hentFnrFraOppgaveIdenter(oppgave.identer);
         if (brukerident) {
-            opprettEllerHentFagsakPaaPerson({ ident: brukerident }).then(
-                fagsak =>
-                    (window.location.href = `/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsak.id}/behandling/${oppgave.saksreferanse}`)
-            );
+            try {
+                const fagsak = await hentFagsakPaaPerson({ ident: brukerident });
+                window.location.href = `/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsak.id}/behandling/${oppgave.saksreferanse}`;
+            } catch (error) {
+                visTekniskFeilModal(error);
+            }
         }
-    };
+    }
 
     return (
         <OppgavebenkContext.Provider
