@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { useAppContext } from '@context/AppContext';
+import { useToastContext } from '@context/ToastContext';
 
 import { LocalAlert } from '@navikt/ds-react';
 
@@ -8,7 +8,7 @@ import styles from './Toast.module.css';
 import type { IToast } from './typer';
 
 const Toast = ({ toastId, toast }: { toastId: string; toast: IToast }) => {
-    const { toasts, settToasts } = useAppContext();
+    const { toasts, settToasts } = useToastContext();
     const toastRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
