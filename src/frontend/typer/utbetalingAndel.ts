@@ -1,4 +1,3 @@
-import type { OptionType } from './common';
 import type { Begrunnelse } from './vedtak';
 import type { IsoDatoString, IsoMånedString } from '../utils/dato';
 
@@ -38,25 +37,3 @@ export const AVSLAG_ALLEREDE_UTBETALT_SØKER =
 
 export const AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER =
     'NasjonalEllerFellesBegrunnelse$AVSLAG_ENDRINGSPERIODE_ALLEREDE_UTBETALT_ANNEN_FORELDER';
-
-export enum IEndretUtbetalingAndelFullSats {
-    FULL_SATS = 'FULL_SATS',
-}
-
-interface SatsOption extends OptionType {
-    fullSats: boolean;
-}
-
-export const satsTilOption = (fullSats: boolean): SatsOption => ({
-    value: fullSats ? '100' : '50',
-    label: fullSats ? 'Full' : 'Delt',
-    fullSats: fullSats,
-});
-
-export const optionTilsats = (satsLabel: string): boolean => {
-    return satsLabel === IEndretUtbetalingAndelFullSats.FULL_SATS.valueOf();
-};
-
-export const satser: IEndretUtbetalingAndelFullSats[] = Object.keys(IEndretUtbetalingAndelFullSats).map(
-    k => k as IEndretUtbetalingAndelFullSats
-);

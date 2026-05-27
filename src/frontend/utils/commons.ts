@@ -1,10 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import type { Ressurs } from '@navikt/familie-typer';
-import { byggFeiletRessurs, RessursStatus } from '@navikt/familie-typer';
-
-import type { IPersonInfo } from '../typer/person';
-
 export const randomUUID = (): string => {
     return uuidv4();
 };
@@ -14,14 +9,6 @@ export function erDefinert<T extends NonNullable<unknown>>(value: T | undefined 
 }
 
 export const fjernWhitespace = (streng: string) => streng.replace(/\s/g, '').replace(/[ \u0085]/g, '');
-
-export const sjekkTilgangTilPerson = (personRes: Ressurs<IPersonInfo>): Ressurs<IPersonInfo> => {
-    if (personRes.status === RessursStatus.SUKSESS && personRes.data.harTilgang === false) {
-        return byggFeiletRessurs('Du har ikke tilgang til denne brukeren.');
-    } else {
-        return personRes;
-    }
-};
 
 // Skamløst knabba herfra https://gist.github.com/zachlysobey/71ac85046d0d533287ed85e1caa64660
 export function partition<T>(predicate: (val: T) => boolean, arr: Array<T>): [Array<T>, Array<T>] {
