@@ -1,32 +1,28 @@
+import { useAuthContext } from '@context/AuthContext';
+import { HeaderMedSøk } from '@komponenter/HeaderMedSøk/HeaderMedSøk';
+import { FeilmeldingModal } from '@komponenter/Modal/FeilmeldingModal';
+import { ForhåndsvisOpprettingAvPdfModal } from '@komponenter/PdfVisningModal/ForhåndsvisOpprettingAvPdfModal';
+import { FagsakContainer } from '@sider/Fagsak/FagsakContainer';
+import { Oppgavebenk } from '@sider/Oppgavebenk/Oppgavebenk';
 import classNames from 'classnames';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router';
 
 import { useHttp } from '@navikt/familie-http';
 
 import Styles from './Container.module.css';
-import { useAppContext } from './context/AppContext';
-import { useAuthContext } from './context/AuthContext';
-import { HeaderMedSøk } from './komponenter/HeaderMedSøk/HeaderMedSøk';
-import AppInfoModal from './komponenter/Modal/AppInfoModal';
 import OpprettFagsakModal from './komponenter/Modal/Fagsak/OpprettFagsakModal';
-import { FeilmeldingModal } from './komponenter/Modal/FeilmeldingModal';
 import UgyldigSesjon from './komponenter/Modal/SesjonUtløpt';
-import { ForhåndsvisOpprettingAvPdfModal } from './komponenter/PdfVisningModal/ForhåndsvisOpprettingAvPdfModal';
 import SystemetLaster from './komponenter/SystemetLaster/SystemetLaster';
 import Toasts from './komponenter/Toast/Toasts';
 import Barnehagelister from './sider/Barnehagelister/Barnehagelister';
-import { FagsakContainer } from './sider/Fagsak/FagsakContainer';
 import ManuellJournalføring from './sider/ManuellJournalføring/ManuellJournalføring';
-import { Oppgavebenk } from './sider/Oppgavebenk/Oppgavebenk';
 
 export function Container() {
     const { autentisert } = useAuthContext();
-    const { appInfoModal } = useAppContext();
     const { systemetLaster } = useHttp();
 
     return (
         <Router>
-            {appInfoModal.visModal && <AppInfoModal modal={appInfoModal} />}
             {autentisert ? (
                 <>
                     {systemetLaster() && <SystemetLaster />}
