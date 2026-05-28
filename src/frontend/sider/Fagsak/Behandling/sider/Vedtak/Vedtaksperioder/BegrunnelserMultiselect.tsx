@@ -103,6 +103,10 @@ export function BegrunnelserMultiselect() {
             Object.assign({}, provided, {
                 textTransform: 'none',
             }),
+        menuPortal: provided =>
+            Object.assign({}, provided, {
+                zIndex: 9999,
+            }),
         multiValue: (provided, props) => {
             const currentOption = props.data;
             const vedtakBegrunnelseType: BegrunnelseType | undefined = finnBegrunnelseType(
@@ -130,6 +134,7 @@ export function BegrunnelserMultiselect() {
             placeholder={'Velg begrunnelse(r)'}
             value={mapBegrunnelserTilSelectOptions(vedtaksperiodeMedBegrunnelser, alleBegrunnelser)}
             propSelectStyles={propSelectStyles}
+            menuPortalTarget={document.body}
             isLoading={oppdaterVedtaksperiodeMedBegrunnelserIsPending || oppdaterVedtaksperiodeMedFriteksterIsPending}
             isDisabled={
                 erRedigeringDeaktivert ||
@@ -141,7 +146,6 @@ export function BegrunnelserMultiselect() {
             erLesevisning={erRedigeringDeaktivert}
             isMulti={true}
             menuPosition={'fixed'}
-            menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
             onChange={(_, action: ActionMeta<OptionType>) => onChangeBegrunnelse(action)}
             formatOptionLabel={(option: OptionType, formatOptionLabelMeta: FormatOptionLabelMeta<OptionType>) => {
                 const begrunnelseType = finnBegrunnelseType(alleBegrunnelser, option.value as Begrunnelse);
