@@ -1,12 +1,13 @@
 import '@navikt/ds-css';
 import './index.css';
 
-import { AppProvider } from '@context/AppContext';
 import { AuthContextProvider } from '@context/AuthContext';
 import { FeatureTogglesProvider } from '@context/FeatureTogglesContext';
 import { HttpContextProvider } from '@context/HttpContext';
+import { ManglerTilgangModalProvider } from '@context/ManglerTilgangModalContext';
 import { ModalProvider } from '@context/ModalContext';
 import { SaksbehandlerProvider } from '@context/SaksbehandlerContext';
+import { TekniskFeilModalProvider } from '@context/TekniskFeilModalContext';
 import { ToastProvider } from '@context/ToastContext';
 import { ErrorBoundary, ErrorBoundaryMedSaksbehandler } from '@komponenter/ErrorBoundary/ErrorBoundary';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -25,27 +26,29 @@ const queryClient = new QueryClient({
 
 export function App() {
     return (
-        <ErrorBoundary>
-            <QueryClientProvider client={queryClient}>
-                {!erProd() && <ReactQueryDevtools position={'right'} initialIsOpen={false} />}
-                <SaksbehandlerProvider>
-                    <ErrorBoundaryMedSaksbehandler>
-                        <AuthContextProvider>
-                            <HttpContextProvider>
-                                <FeatureTogglesProvider>
-                                    <AppProvider>
-                                        <ModalProvider>
-                                            <ToastProvider>
-                                                <Container />
-                                            </ToastProvider>
-                                        </ModalProvider>
-                                    </AppProvider>
-                                </FeatureTogglesProvider>
-                            </HttpContextProvider>
-                        </AuthContextProvider>
-                    </ErrorBoundaryMedSaksbehandler>
-                </SaksbehandlerProvider>
-            </QueryClientProvider>
-        </ErrorBoundary>
+        <TekniskFeilModalProvider>
+            <ManglerTilgangModalProvider>
+                <ErrorBoundary>
+                    <QueryClientProvider client={queryClient}>
+                        {!erProd() && <ReactQueryDevtools position={'right'} initialIsOpen={false} />}
+                        <SaksbehandlerProvider>
+                            <ErrorBoundaryMedSaksbehandler>
+                                <AuthContextProvider>
+                                    <HttpContextProvider>
+                                        <FeatureTogglesProvider>
+                                            <ModalProvider>
+                                                <ToastProvider>
+                                                    <Container />
+                                                </ToastProvider>
+                                            </ModalProvider>
+                                        </FeatureTogglesProvider>
+                                    </HttpContextProvider>
+                                </AuthContextProvider>
+                            </ErrorBoundaryMedSaksbehandler>
+                        </SaksbehandlerProvider>
+                    </QueryClientProvider>
+                </ErrorBoundary>
+            </ManglerTilgangModalProvider>
+        </TekniskFeilModalProvider>
     );
 }
