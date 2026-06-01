@@ -1,11 +1,10 @@
 import { hentFagsak } from '@api/hentFagsak';
+import { MetaKey } from '@hooks/meta/metaKey';
 import { useSkalObfuskereData } from '@hooks/useSkalObfuskereData';
 import { useQuery } from '@tanstack/react-query';
 import type { IMinimalFagsak } from '@typer/fagsak';
 import { PersonType } from '@typer/person';
 import { sammenlignFødselsdato } from '@utils/obfuskerData';
-
-import { useHttp } from '@navikt/familie-http';
 
 function obfuskerFagsak(fagsak: IMinimalFagsak) {
     fagsak.gjeldendeUtbetalingsperioder.forEach(gup => {
@@ -24,16 +23,15 @@ export const HentFagsakQueryKeyFactory = {
     fagsak: (fagsakId: number | undefined) => ['fagsak', fagsakId],
 };
 
-export function useHentFagsak(fagsakId: number | undefined, påvirkerSystemLaster: boolean = true) {
-    const { request } = useHttp();
+export function useHentFagsak(fagsakId: number | undefined) {
     const skalObfuskereData = useSkalObfuskereData();
     return useQuery({
         queryKey: HentFagsakQueryKeyFactory.fagsak(fagsakId),
         queryFn: () => {
             if (fagsakId === undefined) {
-                return Promise.reject(new Error('Kan ikke hente fagsak uten fagsakId.'));
+                throw new Error('Kan ikke hente fagsak uten fagsakId.');
             }
-            return hentFagsak(request, fagsakId, påvirkerSystemLaster);
+            return hentFagsak(fagsakId);
         },
         select: fagsak => {
             if (skalObfuskereData) {
@@ -42,5 +40,6 @@ export function useHentFagsak(fagsakId: number | undefined, påvirkerSystemLaste
             return fagsak;
         },
         enabled: fagsakId !== undefined,
+        meta: { [MetaKey.VIS_SYSTEMET_LASTER]: true },
     });
 }
