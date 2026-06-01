@@ -16,10 +16,6 @@ import { RessursStatus } from '@navikt/familie-typer';
 
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
-interface Props extends PropsWithChildren {
-    åpenBehandling: IBehandling;
-}
-
 interface SøknadSkjema {
     barnaMedOpplysninger: IBarnMedOpplysninger[];
     endringAvOpplysningerBegrunnelse: string;
@@ -36,8 +32,8 @@ interface SøknadContextValue {
 
 const SøknadContext = createContext<SøknadContextValue | undefined>(undefined);
 
-export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
-    const { settÅpenBehandling } = useBehandlingContext();
+export const SøknadProvider = ({ children }: PropsWithChildren) => {
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const fagsak = useFagsak();
     const bruker = useBruker();
@@ -96,10 +92,10 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
     }, [bruker]);
 
     useEffect(() => {
-        if (åpenBehandling.søknadsgrunnlag) {
+        if (behandling.søknadsgrunnlag) {
             settSøknadErLastetFraBackend(true);
             skjema.felter.barnaMedOpplysninger.validerOgSettFelt(
-                åpenBehandling.søknadsgrunnlag.barnaMedOpplysninger.map(
+                behandling.søknadsgrunnlag.barnaMedOpplysninger.map(
                     (barnMedOpplysninger: IBarnMedOpplysningerBackend) => ({
                         ...barnMedOpplysninger,
                         merket: barnMedOpplysninger.inkludertISøknaden,
@@ -107,19 +103,19 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
                 )
             );
 
-            skjema.felter.målform.validerOgSettFelt(åpenBehandling.søknadsgrunnlag.søkerMedOpplysninger.målform);
+            skjema.felter.målform.validerOgSettFelt(behandling.søknadsgrunnlag.søkerMedOpplysninger.målform);
             skjema.felter.endringAvOpplysningerBegrunnelse.validerOgSettFelt(
-                åpenBehandling.søknadsgrunnlag.endringAvOpplysningerBegrunnelse
+                behandling.søknadsgrunnlag.endringAvOpplysningerBegrunnelse
             );
         } else {
             // Ny behandling er lastet som ikke har fullført søknad-steget.
             tilbakestillSøknad();
         }
-    }, [åpenBehandling]);
+    }, [behandling]);
 
     const nesteAction = (bekreftEndringerViaFrontend: boolean) => {
         if (erLesevisning) {
-            navigate(`/fagsak/${fagsak.id}/${åpenBehandling?.behandlingId}/vilkaarsvurdering`);
+            navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
         } else {
             onSubmit<IRestRegistrerSøknad>(
                 {
@@ -141,12 +137,12 @@ export const SøknadProvider = ({ åpenBehandling, children }: Props) => {
                         },
                         bekreftEndringerViaFrontend,
                     },
-                    url: `/familie-ks-sak/api/behandlinger/${åpenBehandling.behandlingId}/steg/registrer-søknad`,
+                    url: `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/steg/registrer-søknad`,
                 },
                 (response: Ressurs<IBehandling>) => {
                     if (response.status === RessursStatus.SUKSESS) {
                         settÅpenBehandling(response);
-                        navigate(`/fagsak/${fagsak.id}/${åpenBehandling.behandlingId}/vilkaarsvurdering`);
+                        navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
                     }
                 }
             );

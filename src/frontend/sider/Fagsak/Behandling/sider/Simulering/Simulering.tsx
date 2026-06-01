@@ -18,11 +18,7 @@ import TilbakekrevingSkjema from './TilbakekrevingSkjema';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
-interface ISimuleringProps {
-    åpenBehandling: IBehandling;
-}
-
-const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
+const Simulering = () => {
     const {
         hentSkjemadata,
         onSubmit,
@@ -32,26 +28,26 @@ const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
         erFeilutbetaling,
     } = useSimuleringContext();
 
-    const { settÅpenBehandling } = useBehandlingContext();
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const fagsakId = useFagsakId();
     const erLesevisning = useErLesevisning();
     const navigate = useNavigate();
 
     const nesteOnClick = () => {
-        if (erLesevisning || åpenBehandling?.resultat == BehandlingResultat.AVSLÅTT) {
-            navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/vedtak`);
+        if (erLesevisning || behandling.resultat == BehandlingResultat.AVSLÅTT) {
+            navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/vedtak`);
         } else {
             onSubmit<ITilbakekreving | undefined>(
                 {
                     data: hentSkjemadata(),
                     method: 'POST',
-                    url: `/familie-ks-sak/api/behandlinger/${åpenBehandling.behandlingId}/steg/simulering`,
+                    url: `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/steg/simulering`,
                 },
                 (ressurs: Ressurs<IBehandling>) => {
                     if (ressurs.status === RessursStatus.SUKSESS) {
                         settÅpenBehandling(ressurs);
-                        navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/vedtak`);
+                        navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/vedtak`);
                     }
                 }
             );
@@ -59,7 +55,7 @@ const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
     };
 
     const forrigeOnClick = () => {
-        navigate(`/fagsak/${fagsakId}/${åpenBehandling?.behandlingId}/tilkjent-ytelse`);
+        navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/tilkjent-ytelse`);
     };
 
     if (
@@ -92,7 +88,7 @@ const Simulering = ({ åpenBehandling }: ISimuleringProps) => {
                         <SimuleringTabell simulering={simuleringsresultat.data} />
                         {erFeilutbetaling && (
                             <TilbakekrevingSkjema
-                                søkerMålform={hentSøkersMålform(åpenBehandling)}
+                                søkerMålform={hentSøkersMålform(behandling)}
                                 harÅpenTilbakekrevingRessurs={harÅpenTilbakekrevingRessurs}
                             />
                         )}

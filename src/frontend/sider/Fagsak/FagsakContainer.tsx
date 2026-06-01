@@ -1,4 +1,11 @@
-import { Navigate, Route, Routes } from 'react-router';
+import { useFagsakIdParam } from '@hooks/useFagsakIdParam';
+import { useHentFagsak } from '@hooks/useHentFagsak';
+import { useHentPerson } from '@hooks/useHentPerson';
+import { useScrollTilAnker } from '@hooks/useScrollTilAnker';
+import { Personlinje } from '@komponenter/Personlinje/Personlinje';
+import { Fagsaklinje } from '@komponenter/Saklinje/Fagsaklinje';
+import { RedirectTilSaksoversikt } from '@sider/Fagsak/Saksoversikt/RedirectTilSaksoversikt';
+import { Route, Routes } from 'react-router';
 
 import { Box, GlobalAlert, HStack, Loader } from '@navikt/ds-react';
 
@@ -12,12 +19,6 @@ import { FagsakProvider } from './FagsakContext';
 import { JournalpostListe } from './journalposter/JournalpostListe';
 import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
 import { Saksoversikt } from './Saksoversikt/Saksoversikt';
-import { useFagsakIdParam } from '../../hooks/useFagsakIdParam';
-import { useHentFagsak } from '../../hooks/useHentFagsak';
-import { useHentPerson } from '../../hooks/useHentPerson';
-import { useScrollTilAnker } from '../../hooks/useScrollTilAnker';
-import { Personlinje } from '../../komponenter/Personlinje/Personlinje';
-import { Fagsaklinje } from '../../komponenter/Saklinje/Fagsaklinje';
 
 export function FagsakContainer() {
     const fagsakIdParam = useFagsakIdParam();
@@ -120,7 +121,7 @@ export function FagsakContainer() {
                                     </HentOgSettBehandlingProvider>
                                 }
                             />
-                            <Route path="/" element={<Navigate to={`/fagsak/${fagsak.id}/saksoversikt`} />} />
+                            <Route path="/" element={<RedirectTilSaksoversikt />} />
                         </Routes>
                     </ManuelleBrevmottakerePåFagsakProvider>
                 </BrukerProvider>
