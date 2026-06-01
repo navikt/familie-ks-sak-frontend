@@ -1,5 +1,15 @@
 import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
+import { useBehandling } from '@hooks/useBehandling';
+import { useFagsakId } from '@hooks/useFagsakId';
+import type { IBehandling } from '@typer/behandling';
+import {
+    type ISimuleringDTO,
+    type ISimuleringPeriode,
+    type ITilbakekreving,
+    Tilbakekrevingsvalg,
+} from '@typer/simulering';
+import { isoStringTilDateMedFallback, tidenesMorgen } from '@utils/dato';
 import { isAfter } from 'date-fns';
 
 import { type FamilieRequestConfig, useHttp } from '@navikt/familie-http';
@@ -7,20 +17,6 @@ import type { Avhengigheter, FeiloppsummeringFeil, ISkjema } from '@navikt/famil
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
-
-import { useFagsakId } from '../../../../../hooks/useFagsakId';
-import type { IBehandling } from '../../../../../typer/behandling';
-import {
-    type ISimuleringDTO,
-    type ISimuleringPeriode,
-    type ITilbakekreving,
-    Tilbakekrevingsvalg,
-} from '../../../../../typer/simulering';
-import { isoStringTilDateMedFallback, tidenesMorgen } from '../../../../../utils/dato';
-
-interface IProps extends PropsWithChildren {
-    åpenBehandling: IBehandling;
-}
 
 interface Tilbakekrevingsskjema {
     tilbakekrevingsvalg: Tilbakekrevingsvalg | undefined;
@@ -45,10 +41,11 @@ interface SimuleringContextValue {
 
 const SimuleringContext = createContext<SimuleringContextValue | undefined>(undefined);
 
-export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
+export const SimuleringProvider = ({ children }: PropsWithChildren) => {
     const { request } = useHttp();
 
     const fagsakId = useFagsakId();
+    const behandling = useBehandling();
 
     const [simuleringsresultat, settSimuleringresultat] = useState<Ressurs<ISimuleringDTO>>({
         status: RessursStatus.HENTER,
@@ -60,12 +57,12 @@ export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
 
     const maksLengdeTekst = 1500;
 
-    const vedtak = åpenBehandling.vedtak;
+    const vedtak = behandling.vedtak;
 
     useEffect(() => {
         request<IBehandling, ISimuleringDTO>({
             method: 'GET',
-            url: `/familie-ks-sak/api/behandlinger/${åpenBehandling.behandlingId}/simulering`,
+            url: `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/simulering`,
             påvirkerSystemLaster: true,
         }).then(response =>
             response.status === RessursStatus.SUKSESS
@@ -83,7 +80,7 @@ export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
                   })
                 : settSimuleringresultat(response)
         );
-    }, [åpenBehandling]);
+    }, [behandling]);
 
     useEffect(() => {
         if (erFeilutbetaling) {
@@ -104,7 +101,7 @@ export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
     const erFeilutbetaling = simResultat && simResultat.feilutbetaling > 0;
 
     const tilbakekrevingsvalg = useFelt<Tilbakekrevingsvalg | undefined>({
-        verdi: åpenBehandling.tilbakekreving?.valg,
+        verdi: behandling.tilbakekreving?.valg,
         avhengigheter: {
             erFeilutbetaling,
             harÅpenTilbakekreving,
@@ -119,7 +116,7 @@ export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
                 : ok(felt),
     });
     const fritekstVarsel = useFelt<string>({
-        verdi: åpenBehandling.tilbakekreving?.varsel ?? '',
+        verdi: behandling.tilbakekreving?.varsel ?? '',
         avhengigheter: {
             tilbakekreving: tilbakekrevingsvalg,
             erFeilutbetaling,
@@ -138,7 +135,7 @@ export const SimuleringProvider = ({ åpenBehandling, children }: IProps) => {
             avhengigheter?.tilbakekreving?.verdi === Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL,
     });
     const begrunnelse = useFelt<string>({
-        verdi: åpenBehandling.tilbakekreving?.begrunnelse ?? '',
+        verdi: behandling.tilbakekreving?.begrunnelse ?? '',
         avhengigheter: {
             erFeilutbetaling,
             maksLengdeTekst: maksLengdeTekst,

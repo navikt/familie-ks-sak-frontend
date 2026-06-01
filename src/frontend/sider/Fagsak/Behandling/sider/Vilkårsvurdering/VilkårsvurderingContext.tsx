@@ -1,15 +1,12 @@
 import { createContext, type PropsWithChildren, useContext } from 'react';
 
+import { hentFeilIVilkårsvurdering } from '@context/Vilkårsvurdering/hentFeilIVilkårsvurdering';
+import { useBehandling } from '@hooks/useBehandling';
+import type { IPersonResultat, IRestPersonResultat } from '@typer/vilkår';
+
 import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
 
 import { mapFraRestVilkårsvurderingTilUi } from './utils';
-import { hentFeilIVilkårsvurdering } from '../../../../../context/Vilkårsvurdering/hentFeilIVilkårsvurdering';
-import type { IBehandling } from '../../../../../typer/behandling';
-import type { IPersonResultat, IRestPersonResultat } from '../../../../../typer/vilkår';
-
-interface IProps extends PropsWithChildren {
-    åpenBehandling: IBehandling;
-}
 
 interface VilkårsvurderingContextValue {
     feiloppsummeringFeil: FeiloppsummeringFeil[];
@@ -19,12 +16,14 @@ interface VilkårsvurderingContextValue {
 
 const VilkårsvurderingContext = createContext<VilkårsvurderingContextValue | undefined>(undefined);
 
-export function VilkårsvurderingProvider({ åpenBehandling, children }: IProps) {
-    const vilkårsvurdering = åpenBehandling
-        ? mapFraRestVilkårsvurderingTilUi(åpenBehandling.personResultater, åpenBehandling.personer)
+export function VilkårsvurderingProvider({ children }: PropsWithChildren) {
+    const behandling = useBehandling();
+
+    const vilkårsvurdering = behandling
+        ? mapFraRestVilkårsvurderingTilUi(behandling.personResultater, behandling.personer)
         : [];
 
-    const personResultater = åpenBehandling.personResultater;
+    const personResultater = behandling.personResultater;
 
     const feiloppsummeringFeil: FeiloppsummeringFeil[] = hentFeilIVilkårsvurdering(vilkårsvurdering);
 

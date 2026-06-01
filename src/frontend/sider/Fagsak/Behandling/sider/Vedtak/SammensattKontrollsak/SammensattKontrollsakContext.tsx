@@ -8,28 +8,20 @@ import {
     useState,
 } from 'react';
 
-import { useHttp } from '@navikt/familie-http';
-import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
-
-import { useFeatureToggles } from '../../../../../../hooks/useFeatureToggles';
-import {
-    Behandlingstype,
-    erBehandlingAvslått,
-    erBehandlingFortsattInnvilget,
-    type IBehandling,
-} from '../../../../../../typer/behandling';
-import { FeatureToggle } from '../../../../../../typer/featureToggles';
+import { useBehandling } from '@hooks/useBehandling';
+import { useFeatureToggles } from '@hooks/useFeatureToggles';
+import { Behandlingstype, erBehandlingAvslått, erBehandlingFortsattInnvilget } from '@typer/behandling';
+import { FeatureToggle } from '@typer/featureToggles';
 import type {
     OppdaterSammensattKontrollsakDto,
     OpprettSammensattKontrollsakDto,
     SammensattKontrollsakDto,
     SlettSammensattKontrollsakDto,
-} from '../../../../../../typer/sammensatt-kontrollsak';
-import { erDefinert } from '../../../../../../utils/commons';
+} from '@typer/sammensatt-kontrollsak';
+import { erDefinert } from '@utils/commons';
 
-interface ISammensattKontrollsakProps extends PropsWithChildren {
-    åpenBehandling: IBehandling;
-}
+import { useHttp } from '@navikt/familie-http';
+import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 interface SammensattKontrollsakContextValue {
     opprettEllerOppdaterSammensattKontrollsak: (fritekst: string) => void;
@@ -43,8 +35,8 @@ interface SammensattKontrollsakContextValue {
 
 const SammensattKontrollsakContext = createContext<SammensattKontrollsakContextValue | undefined>(undefined);
 
-export const SammensattKontrollsakProvider = ({ åpenBehandling, children }: ISammensattKontrollsakProps) => {
-    const { behandlingId, type, resultat } = åpenBehandling;
+export const SammensattKontrollsakProvider = ({ children }: PropsWithChildren) => {
+    const { behandlingId, type, resultat } = useBehandling();
     const { request } = useHttp();
     const toggles = useFeatureToggles();
     const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);

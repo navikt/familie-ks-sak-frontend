@@ -4,7 +4,7 @@ import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
 import { useOppdaterBehandlingsresultat } from '@hooks/useOppdaterBehandlingsresultat';
 import { useTidslinjeContext } from '@komponenter/Tidslinje/TidslinjeContext';
-import { BehandlingResultat, BehandlingSteg, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
+import { BehandlingResultat, BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
 import { type IRestKompetanse, type IRestUtenlandskPeriodeBeløp, type IRestValutakurs } from '@typer/eøsPerioder';
 import { formaterIdent, slåSammenListeTilStreng } from '@utils/formatter';
 import { useNavigate } from 'react-router';
@@ -55,12 +55,8 @@ const StyledErrorSummary = styled(ErrorSummary)`
     margin-top: 5rem;
 `;
 
-interface IBehandlingsresultatProps {
-    åpenBehandling: IBehandling;
-}
-
-const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => {
-    const { settÅpenBehandling } = useBehandlingContext();
+const Behandlingsresultat = () => {
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const fagsakId = useFagsakId();
     const erLesevisning = useErLesevisning();
@@ -74,7 +70,7 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
         settVisFeilmeldinger,
         hentPersonerMedUgyldigEtterbetalingsperiode,
         personerMedUgyldigEtterbetalingsperiode,
-    } = useBehandlingContextsresultat(åpenBehandling);
+    } = useBehandlingContextsresultat(behandling);
 
     const {
         mutate: oppdaterBehandlingsresultat,
@@ -104,44 +100,44 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
         valutakurser,
         erValutakurserGyldige,
         hentValutakurserMedFeil,
-    } = useEøs(åpenBehandling);
+    } = useEøs(behandling);
 
     useEffect(() => {
         hentPersonerMedUgyldigEtterbetalingsperiode();
-    }, [åpenBehandling]);
+    }, [behandling]);
 
     const grunnlagPersoner = filterOgSorterGrunnlagPersonerMedAndeler(
-        åpenBehandling.personer,
-        åpenBehandling.personerMedAndelerTilkjentYtelse
+        behandling.personer,
+        behandling.personerMedAndelerTilkjentYtelse
     );
     const tidslinjePersoner = filterOgSorterAndelPersonerIGrunnlag(
         grunnlagPersoner,
-        åpenBehandling.personerMedAndelerTilkjentYtelse
+        behandling.personerMedAndelerTilkjentYtelse
     );
 
-    const harKompetanser = åpenBehandling.kompetanser?.length > 0;
-    const harUtenlandskeBeløper = åpenBehandling.utenlandskePeriodebeløp?.length > 0;
-    const harValutakurser = åpenBehandling.utenlandskePeriodebeløp?.length > 0;
+    const harKompetanser = behandling.kompetanser?.length > 0;
+    const harUtenlandskeBeløper = behandling.utenlandskePeriodebeløp?.length > 0;
+    const harValutakurser = behandling.utenlandskePeriodebeløp?.length > 0;
 
     const harEøs = harKompetanser || harUtenlandskeBeløper || harValutakurser;
 
     const skalViseNesteKnapp =
-        åpenBehandling.årsak !== BehandlingÅrsak.LOVENDRING_2024 ||
-        åpenBehandling.stegTilstand.some(steg => steg.behandlingSteg === BehandlingSteg.SIMULERING);
+        behandling.årsak !== BehandlingÅrsak.LOVENDRING_2024 ||
+        behandling.stegTilstand.some(steg => steg.behandlingSteg === BehandlingSteg.SIMULERING);
 
     return (
         <Skjemasteg
             senderInn={oppdaterBehandlingsresultatIsPending}
             tittel="Behandlingsresultat"
             className="behandlingsresultat"
-            forrigeOnClick={() => navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/vilkaarsvurdering`)}
+            forrigeOnClick={() => navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/vilkaarsvurdering`)}
             nesteOnClick={() => {
                 if (erLesevisning) {
-                    navigate(`/fagsak/${fagsakId}/${åpenBehandling.behandlingId}/simulering`);
+                    navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/simulering`);
                 } else if (harEøs && !erEøsInformasjonGyldig()) {
                     settVisFeilmeldinger(true);
                 } else {
-                    oppdaterBehandlingsresultat({ behandlingId: åpenBehandling.behandlingId });
+                    oppdaterBehandlingsresultat({ behandlingId: behandling.behandlingId });
                 }
             }}
             maxWidthStyle={'80rem'}
@@ -149,7 +145,7 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
             steg={BehandlingSteg.BEHANDLINGSRESULTAT}
             skalViseNesteKnapp={skalViseNesteKnapp}
         >
-            <FulltidBarnehageplassAugust2024Alert utbetalingsperioder={åpenBehandling.utbetalingsperioder} />
+            <FulltidBarnehageplassAugust2024Alert utbetalingsperioder={behandling.utbetalingsperioder} />
             {personerMedUgyldigEtterbetalingsperiode.length > 0 && (
                 <Box marginBlock={'space-0 space-16'}>
                     <LocalAlert status="warning">
@@ -178,21 +174,21 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
             )}
             {aktivEtikett && (
                 <Oppsummeringsboks
-                    åpenBehandling={åpenBehandling}
+                    åpenBehandling={behandling}
                     aktivEtikett={aktivEtikett}
                     kompetanser={kompetanser}
                     utbetaltAnnetLandBeløp={utbetaltAnnetLandBeløp}
                     valutakurser={valutakurser}
                 />
             )}
-            {åpenBehandling.endretUtbetalingAndeler.length > 0 && (
-                <EndretUtbetalingAndelTabell åpenBehandling={åpenBehandling} />
+            {behandling.endretUtbetalingAndeler.length > 0 && (
+                <EndretUtbetalingAndelTabell åpenBehandling={behandling} />
             )}
-            {(åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 ||
-                åpenBehandling.overgangsordningAndeler.length > 0) && (
+            {(behandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 ||
+                behandling.overgangsordningAndeler.length > 0) && (
                 <>
-                    <OvergangsordningAndelTabell åpenBehandling={åpenBehandling} />
-                    {åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 && !erLesevisning && (
+                    <OvergangsordningAndelTabell åpenBehandling={behandling} />
+                    {behandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 && !erLesevisning && (
                         <OvergangsordningAndel>
                             <Button
                                 variant="primary"
@@ -210,7 +206,7 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
                 <KompetanseSkjema
                     kompetanser={kompetanser}
                     visFeilmeldinger={visFeilmeldinger}
-                    åpenBehandling={åpenBehandling}
+                    åpenBehandling={behandling}
                 />
             )}
             {harUtenlandskeBeløper && (
@@ -218,7 +214,7 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
                     utbetaltAnnetLandBeløp={utbetaltAnnetLandBeløp}
                     erUtbetaltAnnetLandBeløpGyldige={erUtbetaltAnnetLandBeløpGyldige}
                     visFeilmeldinger={visFeilmeldinger}
-                    åpenBehandling={åpenBehandling}
+                    åpenBehandling={behandling}
                 />
             )}
             {harValutakurser && (
@@ -226,7 +222,7 @@ const Behandlingsresultat = ({ åpenBehandling }: IBehandlingsresultatProps) => 
                     valutakurser={valutakurser}
                     erValutakurserGyldige={erValutakurserGyldige}
                     visFeilmeldinger={visFeilmeldinger}
-                    åpenBehandling={åpenBehandling}
+                    åpenBehandling={behandling}
                 />
             )}
             {visFeilmeldinger && !erEøsInformasjonGyldig() && (
