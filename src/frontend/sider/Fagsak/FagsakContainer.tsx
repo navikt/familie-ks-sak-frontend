@@ -2,6 +2,7 @@ import { useFagsakIdParam } from '@hooks/useFagsakIdParam';
 import { useHentFagsak } from '@hooks/useHentFagsak';
 import { useHentPerson } from '@hooks/useHentPerson';
 import { useScrollTilAnker } from '@hooks/useScrollTilAnker';
+import { NotFound } from '@komponenter/Error/NotFound';
 import { Personlinje } from '@komponenter/Personlinje/Personlinje';
 import { Outlet } from 'react-router';
 
@@ -24,6 +25,10 @@ export function FagsakContainer() {
     } = useHentPerson({ ident: fagsak?.søkerFødselsnummer });
 
     useScrollTilAnker();
+
+    if (!fagsakIdParam) {
+        return <NotFound />;
+    }
 
     if (isPendingFagsak) {
         return (

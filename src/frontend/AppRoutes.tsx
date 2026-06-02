@@ -1,3 +1,4 @@
+import { NotFound } from '@komponenter/Error/NotFound';
 import { RouteError } from '@komponenter/Error/RouteError';
 import Barnehagelister from '@sider/Barnehagelister/Barnehagelister';
 import { FagsakContainer } from '@sider/Fagsak/FagsakContainer';
@@ -35,6 +36,10 @@ export const appRoutes = createBrowserRouter([
             {
                 path: 'barnehagelister',
                 element: <Barnehagelister />,
+            },
+            {
+                path: '*',
+                element: <NotFound />,
             },
         ],
     },

@@ -1,3 +1,4 @@
+import { NotFound } from '@komponenter/Error/NotFound';
 import { RouteError } from '@komponenter/Error/RouteError';
 import { Fagsaklinje } from '@komponenter/Saklinje/Fagsaklinje';
 import { BehandlingContainer } from '@sider/Fagsak/Behandling/BehandlingContainer';
@@ -53,5 +54,9 @@ export const fagsakRoutes: RouteObject[] = [
         ),
         errorElement: <RouteError />,
         children: behandlingRoutes,
+    },
+    {
+        path: '*',
+        element: <NotFound />,
     },
 ];

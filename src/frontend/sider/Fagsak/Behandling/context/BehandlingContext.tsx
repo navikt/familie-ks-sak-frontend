@@ -37,12 +37,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
     const sidevisning = hentSideHref(location.pathname);
 
     useEffect(() => {
-        if (sidevisning) {
-            leggTilBesøktSide(Object.entries(sider).find(([_, side]) => side.href === sidevisning)?.[0] as SideId);
-        }
-    }, [sidevisning]);
-
-    useEffect(() => {
         const siderPåBehandling = hentTrinnForBehandling(behandling);
 
         const sideHref = hentSideHref(location.pathname);
@@ -92,6 +86,12 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
         behandling.status === BehandlingStatus.FATTER_VEDTAK &&
         BehandlerRolle.BESLUTTER === saksbehandler.rolle &&
         saksbehandler.email !== behandling.endretAv;
+
+    useEffect(() => {
+        if (sidevisning) {
+            leggTilBesøktSide(Object.entries(sider).find(([_, side]) => side.href === sidevisning)?.[0] as SideId);
+        }
+    }, [sidevisning]);
 
     return (
         <BehandlingContext.Provider

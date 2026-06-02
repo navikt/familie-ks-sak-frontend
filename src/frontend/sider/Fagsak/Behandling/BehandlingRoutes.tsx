@@ -1,3 +1,4 @@
+import { NotFound } from '@komponenter/Error/NotFound';
 import { TidslinjeProvider } from '@komponenter/Tidslinje/TidslinjeContext';
 import Behandlingsresultat from '@sider/Fagsak/Behandling/sider/Behandlingsresultat/Behandlingsresultat';
 import RegistrerSøknad from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/RegistrerSøknad';
@@ -56,5 +57,9 @@ export const behandlingRoutes: RouteObject[] = [
                 </RefusjonEøsTabellProvider>
             </FeilutbetaltValutaTabellProvider>
         ),
+    },
+    {
+        path: '*',
+        element: <NotFound />,
     },
 ];
