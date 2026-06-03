@@ -19,6 +19,9 @@ export default defineConfig(({ mode }) => {
                 global: 'window',
             },
             server: {
+                hmr: {
+                    port: 24679,
+                },
                 port: 8000,
             },
             plugins: [
