@@ -1,24 +1,19 @@
-import styled from 'styled-components';
+import type { IBehandling } from '@typer/behandling';
 
-import { Heading, Table } from '@navikt/ds-react';
+import { Box, Heading, Table } from '@navikt/ds-react';
 
 import { OvergangsordningAndelProvider } from './OvergangsordningAndelContext';
 import OvergangsordningAndelRad from './OvergangsordningAndelRad';
-import type { IBehandling } from '../../../../../../typer/behandling';
 
 interface IOvergangsordningTabellProps {
     åpenBehandling: IBehandling;
 }
 
-const OvergangsordningPerioder = styled.div`
-    margin-top: 6rem;
-`;
-
 const OvergangsordningAndelTabell = ({ åpenBehandling }: IOvergangsordningTabellProps) => {
     const overgangsordningAndeler = åpenBehandling.overgangsordningAndeler;
 
     return (
-        <OvergangsordningPerioder>
+        <Box marginBlock={'space-96'}>
             <Heading spacing size="medium" level="3">
                 Overgangsordning
             </Heading>
@@ -42,7 +37,7 @@ const OvergangsordningAndelTabell = ({ åpenBehandling }: IOvergangsordningTabel
                     ))}
                 </Table.Body>
             </Table>
-        </OvergangsordningPerioder>
+        </Box>
     );
 };
 

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import { ChevronLeftIcon } from '@navikt/aksel-icons';
-import { Button, ErrorSummary, Heading, LocalAlert } from '@navikt/ds-react';
+import { Button, ErrorSummary, Heading, HStack, LocalAlert } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { AvsenderPanel } from './AvsenderPanel';
@@ -11,7 +11,6 @@ import { Dokumenter } from './Dokument/Dokumenter';
 import Journalpost from './Journalpost';
 import { KnyttJournalpostTilBehandling } from './KnyttJournalpostTilBehandling';
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
-import Knapperekke from '../../komponenter/Knapperekke';
 import type { OppgavetypeFilter } from '../../typer/oppgave';
 import { oppgaveTypeFilter } from '../../typer/oppgave';
 
@@ -59,7 +58,6 @@ export const JournalpostSkjema = () => {
                 <br />
                 <AvsenderPanel />
             </StyledSectionDiv>
-
             <StyledSectionDiv>
                 {kanKnytteJournalpostTilBehandling() && <KnyttJournalpostTilBehandling />}
                 <br />
@@ -82,8 +80,7 @@ export const JournalpostSkjema = () => {
                     </ErrorSummary>
                 )}
             </StyledSectionDiv>
-
-            <Knapperekke>
+            <HStack marginBlock={'space-16'} justify={'space-between'}>
                 <Button
                     size="small"
                     variant={'secondary'}
@@ -114,7 +111,7 @@ export const JournalpostSkjema = () => {
                         Ferdigstill oppgave
                     </Button>
                 )}
-            </Knapperekke>
+            </HStack>
         </Container>
     );
 };
