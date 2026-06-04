@@ -2,23 +2,16 @@ import { useFagsakIdParam } from '@hooks/useFagsakIdParam';
 import { useHentFagsak } from '@hooks/useHentFagsak';
 import { useHentPerson } from '@hooks/useHentPerson';
 import { useScrollTilAnker } from '@hooks/useScrollTilAnker';
+import { NotFound } from '@komponenter/Error/NotFound';
 import { Personlinje } from '@komponenter/Personlinje/Personlinje';
-import { Fagsaklinje } from '@komponenter/Saklinje/Fagsaklinje';
-import { RedirectTilSaksoversikt } from '@sider/Fagsak/Saksoversikt/RedirectTilSaksoversikt';
-import { Route, Routes } from 'react-router';
+import { Outlet } from 'react-router';
 
 import { Box, GlobalAlert, HStack, Loader } from '@navikt/ds-react';
 
-import { BehandlingContainer } from './Behandling/BehandlingContainer';
-import { HentOgSettBehandlingProvider } from './Behandling/context/HentOgSettBehandlingContext';
 import { BrukerProvider } from './BrukerContext';
-import { Dokumentutsending } from './Dokumentutsending/Dokumentutsending';
-import { DokumentutsendingProvider } from './Dokumentutsending/DokumentutsendingContext';
 import Styles from './FagsakContainer.module.css';
 import { FagsakProvider } from './FagsakContext';
-import { JournalpostListe } from './journalposter/JournalpostListe';
 import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
-import { Saksoversikt } from './Saksoversikt/Saksoversikt';
 
 export function FagsakContainer() {
     const fagsakIdParam = useFagsakIdParam();
@@ -32,6 +25,10 @@ export function FagsakContainer() {
     } = useHentPerson({ ident: fagsak?.søkerFødselsnummer });
 
     useScrollTilAnker();
+
+    if (!fagsakIdParam) {
+        return <NotFound />;
+    }
 
     if (isPendingFagsak) {
         return (
@@ -83,46 +80,7 @@ export function FagsakContainer() {
                 <BrukerProvider bruker={bruker}>
                     <ManuelleBrevmottakerePåFagsakProvider key={fagsak.id}>
                         <Personlinje bruker={bruker} />
-                        <Routes>
-                            <Route
-                                path="/saksoversikt"
-                                element={
-                                    <>
-                                        <Fagsaklinje />
-                                        <Saksoversikt />
-                                    </>
-                                }
-                            />
-                            <Route
-                                path="/dokumentutsending"
-                                element={
-                                    <>
-                                        <Fagsaklinje />
-                                        <DokumentutsendingProvider>
-                                            <Dokumentutsending />
-                                        </DokumentutsendingProvider>
-                                    </>
-                                }
-                            />
-                            <Route
-                                path="/dokumenter"
-                                element={
-                                    <>
-                                        <Fagsaklinje />
-                                        <JournalpostListe />
-                                    </>
-                                }
-                            />
-                            <Route
-                                path="/:behandlingId/*"
-                                element={
-                                    <HentOgSettBehandlingProvider>
-                                        <BehandlingContainer />
-                                    </HentOgSettBehandlingProvider>
-                                }
-                            />
-                            <Route path="/" element={<RedirectTilSaksoversikt />} />
-                        </Routes>
+                        <Outlet />
                     </ManuelleBrevmottakerePåFagsakProvider>
                 </BrukerProvider>
             </FagsakProvider>

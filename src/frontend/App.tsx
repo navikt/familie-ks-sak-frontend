@@ -9,12 +9,13 @@ import { ModalProvider } from '@context/ModalContext';
 import { SaksbehandlerProvider } from '@context/SaksbehandlerContext';
 import { TekniskFeilModalProvider } from '@context/TekniskFeilModalContext';
 import { ToastProvider } from '@context/ToastContext';
-import { ErrorBoundary } from '@komponenter/ErrorBoundary/ErrorBoundary';
+import { ErrorBoundary } from '@komponenter/Error/ErrorBoundary';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { erProd } from '@utils/miljø';
+import { RouterProvider } from 'react-router';
 
-import { Container } from './Container';
+import { appRoutes } from './AppRoutes';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -37,7 +38,7 @@ export function App() {
                                     <FeatureTogglesProvider>
                                         <ModalProvider>
                                             <ToastProvider>
-                                                <Container />
+                                                <RouterProvider router={appRoutes} />
                                             </ToastProvider>
                                         </ModalProvider>
                                     </FeatureTogglesProvider>
