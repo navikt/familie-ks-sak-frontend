@@ -1,3 +1,17 @@
+import { useFagsak } from '@hooks/useFagsak';
+import { Fagsaklinje } from '@komponenter/Saklinje/Fagsaklinje';
+import { BehandlingStatus, erBehandlingHenlagt } from '@typer/behandling';
+import { BehandlingKategori } from '@typer/behandlingstema';
+import { FagsakStatus } from '@typer/fagsak';
+import { Vedtaksperiodetype } from '@typer/vedtaksperiode';
+import {
+    dateTilFormatertString,
+    Datoformat,
+    hentDagensDato,
+    isoStringTilDate,
+    periodeOverlapperMedValgtDato,
+} from '@utils/dato';
+import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
 import { addMonths, differenceInMilliseconds, startOfMonth } from 'date-fns';
 import { Link as ReactRouterLink } from 'react-router';
 
@@ -8,22 +22,9 @@ import { Behandlinger } from './Behandlinger';
 import { FagsakLenkepanel, SaksoversiktPanelBredde } from './FagsakLenkepanel';
 import Utbetalinger from './Utbetalinger';
 import type { VisningBehandling } from './visningBehandling';
-import { BehandlingStatus, erBehandlingHenlagt } from '../../../typer/behandling';
-import { BehandlingKategori } from '../../../typer/behandlingstema';
-import { FagsakStatus } from '../../../typer/fagsak';
-import { Vedtaksperiodetype } from '../../../typer/vedtaksperiode';
-import {
-    dateTilFormatertString,
-    Datoformat,
-    hentDagensDato,
-    isoStringTilDate,
-    periodeOverlapperMedValgtDato,
-} from '../../../utils/dato';
-import { hentAktivBehandlingPåMinimalFagsak } from '../../../utils/fagsak';
-import { useFagsakContext } from '../FagsakContext';
 
 export function Saksoversikt() {
-    const { fagsak } = useFagsakContext();
+    const fagsak = useFagsak();
 
     const iverksatteBehandlinger = fagsak.behandlinger.filter(
         (behandling: VisningBehandling) =>
@@ -132,22 +133,25 @@ export function Saksoversikt() {
     };
 
     return (
-        <Box maxWidth="70rem" margin="space-64">
-            <Heading size={'large'} level={'1'} spacing>
-                Saksoversikt
-            </Heading>
-            <VStack gap="space-56">
-                <FagsakLenkepanel />
-                {fagsak.status === FagsakStatus.LØPENDE && (
-                    <div>
-                        <Heading size={'medium'} level={'2'} spacing>
-                            Løpende månedlig utbetaling
-                        </Heading>
-                        {løpendeMånedligUtbetaling()}
-                    </div>
-                )}
-                <Behandlinger />
-            </VStack>
-        </Box>
+        <>
+            <Fagsaklinje />
+            <Box maxWidth="70rem" margin="space-64">
+                <Heading size={'large'} level={'1'} spacing>
+                    Saksoversikt
+                </Heading>
+                <VStack gap="space-56">
+                    <FagsakLenkepanel />
+                    {fagsak.status === FagsakStatus.LØPENDE && (
+                        <div>
+                            <Heading size={'medium'} level={'2'} spacing>
+                                Løpende månedlig utbetaling
+                            </Heading>
+                            {løpendeMånedligUtbetaling()}
+                        </div>
+                    )}
+                    <Behandlinger />
+                </VStack>
+            </Box>
+        </>
     );
 }
