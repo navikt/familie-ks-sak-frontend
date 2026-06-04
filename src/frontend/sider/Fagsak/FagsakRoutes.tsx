@@ -1,12 +1,11 @@
 import { NotFound } from '@komponenter/Error/NotFound';
 import { RouteError } from '@komponenter/Error/RouteError';
-import { Fagsaklinje } from '@komponenter/Saklinje/Fagsaklinje';
-import { BehandlingContainer } from '@sider/Fagsak/Behandling/BehandlingContainer';
+import { Behandling } from '@sider/Fagsak/Behandling/Behandling';
 import { behandlingRoutes } from '@sider/Fagsak/Behandling/BehandlingRoutes';
 import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
+import { Dokumenter } from '@sider/Fagsak/Dokumenter/Dokumenter';
 import { Dokumentutsending } from '@sider/Fagsak/Dokumentutsending/Dokumentutsending';
 import { DokumentutsendingProvider } from '@sider/Fagsak/Dokumentutsending/DokumentutsendingContext';
-import { JournalpostListe } from '@sider/Fagsak/journalposter/JournalpostListe';
 import { RedirectTilSaksoversikt } from '@sider/Fagsak/Saksoversikt/RedirectTilSaksoversikt';
 import { Saksoversikt } from '@sider/Fagsak/Saksoversikt/Saksoversikt';
 import type { RouteObject } from 'react-router';
@@ -18,38 +17,25 @@ export const fagsakRoutes: RouteObject[] = [
     },
     {
         path: 'saksoversikt',
-        element: (
-            <>
-                <Fagsaklinje />
-                <Saksoversikt />
-            </>
-        ),
+        element: <Saksoversikt />,
     },
     {
         path: 'dokumentutsending',
         element: (
-            <>
-                <Fagsaklinje />
-                <DokumentutsendingProvider>
-                    <Dokumentutsending />
-                </DokumentutsendingProvider>
-            </>
+            <DokumentutsendingProvider>
+                <Dokumentutsending />
+            </DokumentutsendingProvider>
         ),
     },
     {
         path: 'dokumenter',
-        element: (
-            <>
-                <Fagsaklinje />
-                <JournalpostListe />
-            </>
-        ),
+        element: <Dokumenter />,
     },
     {
         path: ':behandlingId',
         element: (
             <HentOgSettBehandlingProvider>
-                <BehandlingContainer />
+                <Behandling />
             </HentOgSettBehandlingProvider>
         ),
         errorElement: <RouteError />,
