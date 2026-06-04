@@ -2,24 +2,20 @@ import { useState } from 'react';
 
 import { useVisManglerTilgangModal } from '@context/ManglerTilgangModalContext';
 import { useVisTekniskFeilModal } from '@context/TekniskFeilModalContext';
+import { useHentFagsakPaaPerson } from '@hooks/useHentFagsakPaaPerson';
 import { useSjekkSaksbehandlertilgangTilIdent } from '@hooks/useSjekkSaksbehandlertilgangTilIdent';
 import type { IOppgave } from '@typer/oppgave';
-import { oppgaveTypeFilter, OppgavetypeFilter } from '@typer/oppgave';
+import { OppgavetypeFilter, oppgaveTypeFilter } from '@typer/oppgave';
 import { hentFnrFraOppgaveIdenter } from '@utils/oppgave';
 import { useNavigate } from 'react-router';
 
 import { Button } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
-
-import useFagsakApi from '../../api/useFagsakApi';
 
 interface Props {
     oppgave: IOppgave;
 }
 
 export function OppgaveDirektelenke({ oppgave }: Props) {
-    const { hentFagsakForPerson } = useFagsakApi();
-
     const visTekniskFeilModal = useVisTekniskFeilModal();
     const visManglerTilgangModal = useVisManglerTilgangModal();
 
@@ -28,6 +24,7 @@ export function OppgaveDirektelenke({ oppgave }: Props) {
     const [laster, settLaster] = useState(false);
 
     const { mutateAsync: sjekkSaksbehandlertilgangTilIdent } = useSjekkSaksbehandlertilgangTilIdent();
+    const { mutateAsync: hentFagsakPaaPerson } = useHentFagsakPaaPerson();
 
     async function navigerTilJournalføring() {
         settLaster(true);
@@ -56,12 +53,8 @@ export function OppgaveDirektelenke({ oppgave }: Props) {
             try {
                 const tilgangsreusltat = await sjekkSaksbehandlertilgangTilIdent({ brukerIdent });
                 if (tilgangsreusltat.saksbehandlerHarTilgang) {
-                    const fagsakRessurs = await hentFagsakForPerson(brukerIdent);
-                    if (fagsakRessurs.status === RessursStatus.SUKSESS) {
-                        navigate(`/fagsak/${fagsakRessurs.data.id}/saksoversikt`);
-                    } else {
-                        visTekniskFeilModal('Fant ikke fagsak for bruker.');
-                    }
+                    const fagsak = await hentFagsakPaaPerson({ ident: brukerIdent });
+                    navigate(`/fagsak/${fagsak.id}/saksoversikt`);
                 } else {
                     visManglerTilgangModal(tilgangsreusltat);
                 }

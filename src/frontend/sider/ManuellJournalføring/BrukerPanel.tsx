@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
+import { useHentFagsakPaaPersonError } from '@hooks/useHentFagsakPaaPersonError';
 import styled from 'styled-components';
 
-import { Button, ExpansionCard, TextField } from '@navikt/ds-react';
+import { Button, ExpansionCard, LocalAlert, TextField, VStack } from '@navikt/ds-react';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
 
 import { DeltagerInfo } from './DeltagerInfo';
@@ -46,6 +47,9 @@ export const BrukerPanel = () => {
         verdi: '',
         valideringsfunksjon: identValidator,
     });
+
+    const hentFagsakPaaPersonError = useHentFagsakPaaPersonError(nyIdent.verdi);
+
     useEffect(() => {
         settFeilMelding('');
     }, [nyIdent.verdi]);
@@ -75,35 +79,45 @@ export const BrukerPanel = () => {
             </ExpansionCard.Header>
             <StyledExpansionContent>
                 {!erLesevisning() && (
-                    <FlexDiv>
-                        <TextField
-                            {...nyIdent.hentNavInputProps(!!feilMelding)}
-                            error={nyIdent.hentNavInputProps(!!feilMelding).feil || feilMelding}
-                            label={'Endre bruker'}
-                            description={'Skriv inn brukers/søkers fødselsnummer eller D-nummer'}
-                            size="small"
-                        />
-                        <StyledButton
-                            onClick={() => {
-                                if (nyIdent.valideringsstatus === Valideringsstatus.OK) {
-                                    settSpinner(true);
-                                    endreBruker(nyIdent.verdi)
-                                        .then((feilmelding: string) => {
-                                            settFeilMelding(feilmelding);
-                                        })
-                                        .finally(() => {
-                                            settSpinner(false);
-                                        });
-                                } else {
-                                    settFeilMelding('Person ident er ugyldig');
-                                }
-                            }}
-                            children={'Endre bruker'}
-                            loading={spinner}
-                            size="small"
-                            variant="secondary"
-                        />
-                    </FlexDiv>
+                    <VStack>
+                        <FlexDiv>
+                            <TextField
+                                {...nyIdent.hentNavInputProps(!!feilMelding)}
+                                error={nyIdent.hentNavInputProps(!!feilMelding).feil || feilMelding}
+                                label={'Endre bruker'}
+                                description={'Skriv inn brukers/søkers fødselsnummer eller D-nummer'}
+                                size="small"
+                            />
+                            <StyledButton
+                                onClick={() => {
+                                    if (nyIdent.valideringsstatus === Valideringsstatus.OK) {
+                                        settSpinner(true);
+                                        endreBruker(nyIdent.verdi)
+                                            .then((feilmelding: string) => {
+                                                settFeilMelding(feilmelding);
+                                            })
+                                            .finally(() => {
+                                                settSpinner(false);
+                                            });
+                                    } else {
+                                        settFeilMelding('Person ident er ugyldig');
+                                    }
+                                }}
+                                children={'Endre bruker'}
+                                loading={spinner}
+                                size="small"
+                                variant="secondary"
+                            />
+                        </FlexDiv>
+                        {hentFagsakPaaPersonError && (
+                            <LocalAlert status={'error'}>
+                                <LocalAlert.Header>
+                                    <LocalAlert.Title>Klarte ikke å endre bruker</LocalAlert.Title>
+                                </LocalAlert.Header>
+                                <LocalAlert.Content>{hentFagsakPaaPersonError?.message}</LocalAlert.Content>
+                            </LocalAlert>
+                        )}
+                    </VStack>
                 )}
             </StyledExpansionContent>
         </StyledExpansionCard>
