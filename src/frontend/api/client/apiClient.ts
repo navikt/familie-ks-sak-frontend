@@ -91,10 +91,11 @@ export class ApiClient {
             case RessursStatus.FEILET:
             case RessursStatus.FUNKSJONELL_FEIL:
             case RessursStatus.IKKE_TILGANG:
+                const frontendFeilmelding = ressurs.frontendFeilmelding ?? ressurs.melding;
                 const frontendFeilmeldingMedEllerUtenCallId = ressurs.callId
-                    ? `${ressurs.frontendFeilmelding} (CallId: ${ressurs.callId})`
-                    : ressurs.frontendFeilmelding;
-                return Promise.reject(frontendFeilmeldingMedEllerUtenCallId);
+                    ? `${frontendFeilmelding} (CallId: ${ressurs.callId})`
+                    : frontendFeilmelding;
+                return Promise.reject(new Error(frontendFeilmeldingMedEllerUtenCallId));
         }
     }
 }
