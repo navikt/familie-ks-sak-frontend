@@ -1,23 +1,17 @@
-import type { IBehandling } from '@typer/behandling';
+import { apiClient } from '@api/client/apiClient';
 import type { Begrunnelse } from '@typer/vedtak';
-
-import type { FamilieRequest } from '@navikt/familie-http/dist/HttpProvider';
-
-import { RessursResolver } from '../utils/ressursResolver';
+import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
 
 interface Payload {
     begrunnelser: Begrunnelse[];
 }
 
 export async function oppdaterVedtaksperiodeMedBegrunnelser(
-    request: FamilieRequest,
     vedtaksperiodeMedBegrunnelserId: number,
     payload: Payload
-) {
-    const ressurs = await request<Payload, IBehandling>({
-        method: 'PUT',
+): Promise<IVedtaksperiodeMedBegrunnelser[]> {
+    return apiClient.put<Payload, IVedtaksperiodeMedBegrunnelser[]>({
         url: `/familie-ks-sak/api/vedtaksperioder/begrunnelser/${vedtaksperiodeMedBegrunnelserId}`,
         data: payload,
     });
-    return RessursResolver.resolveToPromise(ressurs);
 }

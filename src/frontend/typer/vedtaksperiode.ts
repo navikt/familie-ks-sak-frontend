@@ -85,5 +85,13 @@ export const hentVedtaksperiodeTittel = (vedtaksperiodeMedBegrunnelser: IVedtaks
 };
 
 export function skalViseFritekstbegrunnelser(vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser) {
-    return vedtaksperiodeMedBegrunnelser.støtterFritekst || vedtaksperiodeMedBegrunnelser.fritekster.length > 0;
+    const ugyldigeVedtaksperiodetyper = [Vedtaksperiodetype.UTBETALING];
+
+    const harTillattVedtaksperiodetype = !ugyldigeVedtaksperiodetyper.includes(vedtaksperiodeMedBegrunnelser.type);
+
+    return (
+        harTillattVedtaksperiodetype ||
+        vedtaksperiodeMedBegrunnelser.støtterFritekst ||
+        vedtaksperiodeMedBegrunnelser.fritekster.length > 0
+    );
 }

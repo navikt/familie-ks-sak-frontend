@@ -1,13 +1,7 @@
 import { oppdaterVedtaksperiodeMedBegrunnelser } from '@api/oppdaterVedtaksperiodeMedBegrunnelser';
 import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import type { IBehandling } from '@typer/behandling';
 import type { Begrunnelse } from '@typer/vedtak';
-
-import { useHttp } from '@navikt/familie-http';
-
-interface Parameters {
-    begrunnelser: Begrunnelse[];
-}
+import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
 
 export const OppdaterVedtaksperiodeMedBegrunnelserMutationKeyFactory = {
     vedtaksperiodeMedBegrunnelser: (vedtaksperiodeMedBegrunnelserId: number) => [
@@ -16,15 +10,17 @@ export const OppdaterVedtaksperiodeMedBegrunnelserMutationKeyFactory = {
     ],
 };
 
-type Options = Omit<UseMutationOptions<IBehandling, DefaultError, Parameters>, 'mutationFn'>;
+type Options = Omit<UseMutationOptions<IVedtaksperiodeMedBegrunnelser[], DefaultError, Parameters>, 'mutationFn'>;
+
+interface Parameters {
+    begrunnelser: Begrunnelse[];
+}
 
 export function useOppdaterVedtaksperiodeMedBegrunnelser(vedtaksperiodeMedBegrunnelserId: number, options?: Options) {
-    const { request } = useHttp();
     return useMutation({
         mutationFn: (parameters: Parameters) => {
             const { begrunnelser } = parameters;
-            const payload = { begrunnelser };
-            return oppdaterVedtaksperiodeMedBegrunnelser(request, vedtaksperiodeMedBegrunnelserId, payload);
+            return oppdaterVedtaksperiodeMedBegrunnelser(vedtaksperiodeMedBegrunnelserId, { begrunnelser });
         },
         mutationKey: OppdaterVedtaksperiodeMedBegrunnelserMutationKeyFactory.vedtaksperiodeMedBegrunnelser(
             vedtaksperiodeMedBegrunnelserId

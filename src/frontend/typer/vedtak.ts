@@ -1,11 +1,9 @@
-import type { IVedtaksperiodeMedBegrunnelser } from './vedtaksperiode';
 import type { VilkårType } from './vilkår';
 import type { IsoDatoString } from '../utils/dato';
 
 export interface IVedtakForBehandling {
     aktiv: boolean;
     vedtaksdato: string;
-    vedtaksperioderMedBegrunnelser: IVedtaksperiodeMedBegrunnelser[];
     id: number;
 }
 

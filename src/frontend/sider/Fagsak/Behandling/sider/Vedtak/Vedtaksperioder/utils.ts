@@ -18,7 +18,7 @@ import { addMonths, differenceInMilliseconds, isAfter, isBefore, isSameMonth, st
 
 import type { GroupBase, OptionType } from '@navikt/familie-form-elements';
 
-export function grupperteBegrunnelser(
+export function grupperBegrunnelser(
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser,
     alleBegrunnelser: AlleBegrunnelser
 ) {

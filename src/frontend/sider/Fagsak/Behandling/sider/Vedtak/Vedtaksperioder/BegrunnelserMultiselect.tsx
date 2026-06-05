@@ -1,34 +1,29 @@
+import { useBehandlingId } from '@hooks/useBehandlingId';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { HentGenererteBrevbegrunnelserQueryKeyFactory } from '@hooks/useHentGenererteBrevbegrunnelser';
+import { HentVedtaksperioderQueryKeyFactory } from '@hooks/useHentVedtaksperioder';
 import { useOppdaterVedtaksperiodeMedBegrunnelser } from '@hooks/useOppdaterVedtaksperiodeMedBegrunnelser';
 import { useOppdaterVedtaksperiodeMedFriteksterIsPending } from '@hooks/useOppdaterVedtaksperiodeMedFriteksterIsPending';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { useQueryClient } from '@tanstack/react-query';
 import type { OptionType } from '@typer/common';
 import { type Begrunnelse, type BegrunnelseType, begrunnelseTyper, Standardbegrunnelse } from '@typer/vedtak';
 import { finnBegrunnelseType, hentBakgrunnsfarge, hentBorderfarge } from '@utils/vedtakUtils';
 
 import { BodyShort, Box, Label } from '@navikt/ds-react';
-import {
-    type ActionMeta,
-    FamilieReactSelect,
-    type FormatOptionLabelMeta,
-    type GroupBase,
-    type StylesConfig,
-} from '@navikt/familie-form-elements';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
+import type { ActionMeta, FormatOptionLabelMeta, GroupBase, StylesConfig } from '@navikt/familie-form-elements';
+import { FamilieReactSelect } from '@navikt/familie-form-elements';
 
 import { useAlleBegrunnelserContext } from './AlleBegrunnelserContext';
 import Styles from './BegrunnelserMultiselect.module.css';
-import { grupperteBegrunnelser, mapBegrunnelserTilSelectOptions } from './utils';
+import { grupperBegrunnelser, mapBegrunnelserTilSelectOptions } from './utils';
 import { useVedtaksperiodeContext } from './VedtaksperiodeContext';
 
 export function BegrunnelserMultiselect() {
-    const { settÅpenBehandling } = useBehandlingContext();
     const { vedtaksperiodeMedBegrunnelser } = useVedtaksperiodeContext();
     const { alleBegrunnelser } = useAlleBegrunnelserContext();
 
     const queryClient = useQueryClient();
+    const behandlingId = useBehandlingId();
     const erLesevisning = useErLesevisning();
     const oppdaterVedtaksperiodeMedFriteksterIsPending = useOppdaterVedtaksperiodeMedFriteksterIsPending(
         vedtaksperiodeMedBegrunnelser.id
@@ -39,11 +34,14 @@ export function BegrunnelserMultiselect() {
         isPending: oppdaterVedtaksperiodeMedBegrunnelserIsPending,
         error: oppdaterVedtaksperiodeMedBegrunnelserError,
     } = useOppdaterVedtaksperiodeMedBegrunnelser(vedtaksperiodeMedBegrunnelser.id, {
-        onSuccess: async behandling => {
+        onSuccess: async vedtaksperioderMedBegrunnelser => {
             await queryClient.invalidateQueries({
                 queryKey: HentGenererteBrevbegrunnelserQueryKeyFactory.vedtaksperiode(vedtaksperiodeMedBegrunnelser.id),
             });
-            settÅpenBehandling(byggSuksessRessurs(behandling));
+            queryClient.setQueryData(
+                HentVedtaksperioderQueryKeyFactory.behandling(behandlingId),
+                vedtaksperioderMedBegrunnelser
+            );
         },
     });
 
@@ -168,7 +166,7 @@ export function BegrunnelserMultiselect() {
                     </Box>
                 );
             }}
-            options={grupperteBegrunnelser(vedtaksperiodeMedBegrunnelser, alleBegrunnelser)}
+            options={grupperBegrunnelser(vedtaksperiodeMedBegrunnelser, alleBegrunnelser)}
         />
     );
 }

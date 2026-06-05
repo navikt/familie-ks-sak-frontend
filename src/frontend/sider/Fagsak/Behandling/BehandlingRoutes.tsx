@@ -9,6 +9,7 @@ import { FeilutbetaltValutaTabellProvider } from '@sider/Fagsak/Behandling/sider
 import { RefusjonEøsTabellProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
 import { SammensattKontrollsakProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/SammensattKontrollsak/SammensattKontrollsakContext';
 import { Vedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtak';
+import { VedtaksperioderProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/VedtaksperioderContext';
 import { Vilkårsvurdering } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { type RouteObject } from 'react-router';
@@ -52,7 +53,9 @@ export const behandlingRoutes: RouteObject[] = [
             <FeilutbetaltValutaTabellProvider>
                 <RefusjonEøsTabellProvider>
                     <SammensattKontrollsakProvider>
-                        <Vedtak />
+                        <VedtaksperioderProvider>
+                            <Vedtak />
+                        </VedtaksperioderProvider>
                     </SammensattKontrollsakProvider>
                 </RefusjonEøsTabellProvider>
             </FeilutbetaltValutaTabellProvider>
