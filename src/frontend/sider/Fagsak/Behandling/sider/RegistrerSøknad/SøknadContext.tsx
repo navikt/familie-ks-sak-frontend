@@ -1,5 +1,6 @@
 import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
+import { Path } from '@app/path';
 import { useBruker } from '@hooks/useBruker';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsak } from '@hooks/useFagsak';
@@ -115,7 +116,7 @@ export const SøknadProvider = ({ children }: PropsWithChildren) => {
 
     const nesteAction = (bekreftEndringerViaFrontend: boolean) => {
         if (erLesevisning) {
-            navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
+            navigate(Path.fagsak(fagsak.id).behandling(behandling.behandlingId).vilkårsvurdering);
         } else {
             onSubmit<IRestRegistrerSøknad>(
                 {
@@ -142,7 +143,7 @@ export const SøknadProvider = ({ children }: PropsWithChildren) => {
                 (response: Ressurs<IBehandling>) => {
                     if (response.status === RessursStatus.SUKSESS) {
                         settÅpenBehandling(response);
-                        navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
+                        navigate(Path.fagsak(fagsak.id).behandling(behandling.behandlingId).vilkårsvurdering);
                     }
                 }
             );

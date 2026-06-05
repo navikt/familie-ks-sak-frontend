@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { Path } from '@app/path';
 import { useHentFagsakPaaPerson } from '@hooks/useHentFagsakPaaPerson';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
@@ -429,9 +430,9 @@ export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
                 },
                 (fagsakId: Ressurs<string>) => {
                     if (fagsakId.status === RessursStatus.SUKSESS && fagsakId.data !== '') {
-                        navigate(`/fagsak/${fagsakId.data}/saksoversikt`);
+                        navigate(Path.fagsak(fagsakId.data).saksoversikt);
                     } else if (fagsakId.status === RessursStatus.SUKSESS) {
-                        navigate('/oppgaver');
+                        navigate(Path.oppgaver);
                     }
                 }
             );
@@ -455,7 +456,7 @@ export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
                     },
                     (respons: Ressurs<string>) => {
                         if (respons.status === RessursStatus.SUKSESS) {
-                            navigate('/oppgaver');
+                            navigate(Path.oppgaver);
                         }
                     }
                 );
@@ -487,9 +488,9 @@ export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
                     },
                     (fagsakId: Ressurs<string>) => {
                         if (fagsakId.status === RessursStatus.SUKSESS && fagsakId.data !== '') {
-                            navigate(`/fagsak/${fagsakId.data}/saksoversikt`);
+                            navigate(Path.fagsak(fagsakId.data).saksoversikt);
                         } else if (fagsakId.status === RessursStatus.SUKSESS) {
-                            navigate('/oppgaver');
+                            navigate(Path.oppgaver);
                         }
                     }
                 );

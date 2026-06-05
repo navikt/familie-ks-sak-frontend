@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { Path } from '@app/path';
 import { useVisManglerTilgangModal } from '@context/ManglerTilgangModalContext';
 import { useVisTekniskFeilModal } from '@context/TekniskFeilModalContext';
 import { useHentFagsakPaaPerson } from '@hooks/useHentFagsakPaaPerson';
@@ -33,7 +34,7 @@ export function OppgaveDirektelenke({ oppgave }: Props) {
             try {
                 const tilgangsreusltat = await sjekkSaksbehandlertilgangTilIdent({ brukerIdent });
                 if (tilgangsreusltat.saksbehandlerHarTilgang) {
-                    navigate(`/oppgaver/journalfor/${oppgave.id}`);
+                    navigate(Path.journalfør(oppgave.id));
                 } else {
                     visManglerTilgangModal(tilgangsreusltat);
                 }
@@ -41,7 +42,7 @@ export function OppgaveDirektelenke({ oppgave }: Props) {
                 visTekniskFeilModal(error);
             }
         } else {
-            navigate(`/oppgaver/journalfor/${oppgave.id}`);
+            navigate(Path.journalfør(oppgave.id));
         }
         settLaster(false);
     }
@@ -54,7 +55,7 @@ export function OppgaveDirektelenke({ oppgave }: Props) {
                 const tilgangsreusltat = await sjekkSaksbehandlertilgangTilIdent({ brukerIdent });
                 if (tilgangsreusltat.saksbehandlerHarTilgang) {
                     const fagsak = await hentFagsakPaaPerson({ ident: brukerIdent });
-                    navigate(`/fagsak/${fagsak.id}/saksoversikt`);
+                    navigate(Path.fagsak(fagsak.id).saksoversikt);
                 } else {
                     visManglerTilgangModal(tilgangsreusltat);
                 }

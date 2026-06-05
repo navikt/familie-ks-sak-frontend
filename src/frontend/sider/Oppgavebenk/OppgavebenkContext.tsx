@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
+import { Path } from '@app/path';
 import { useVisTekniskFeilModal } from '@context/TekniskFeilModalContext';
 import { useToastContext } from '@context/ToastContext';
 import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
@@ -74,9 +75,9 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
             queryClient.setQueryData(HentFagsakQueryKeyFactory.fagsak(fagsak.id), fagsak);
             const aktivBehandling = hentAktivBehandlingPåMinimalFagsak(fagsak);
             if (aktivBehandling) {
-                navigate(`/fagsak/${fagsak.id}/${aktivBehandling.behandlingId}`);
+                navigate(Path.fagsak(fagsak.id).behandling(aktivBehandling.behandlingId).root);
             } else {
-                navigate(`/fagsak/${fagsak.id}/saksoversikt`);
+                navigate(Path.fagsak(fagsak.id).saksoversikt);
             }
         },
     });
@@ -225,7 +226,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
                         oppgavetypeFilter === OppgavetypeFilter.JFR ||
                         oppgavetypeFilter === OppgavetypeFilter.BEH_SED
                     ) {
-                        navigate(`/oppgaver/journalfor/${oppgave.id}`);
+                        navigate(Path.journalfør(oppgave.id));
                     } else {
                         if (oppgave.behandlingstype === BehandlingstypeFilter.ae0161) {
                             // tilbakekreving

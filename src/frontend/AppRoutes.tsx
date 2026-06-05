@@ -1,3 +1,4 @@
+import { type Id, Path } from '@app/path';
 import { NotFound } from '@komponenter/Error/NotFound';
 import { RouteError } from '@komponenter/Error/RouteError';
 import Barnehagelister from '@sider/Barnehagelister/Barnehagelister';
@@ -9,6 +10,13 @@ import { createBrowserRouter, Navigate } from 'react-router';
 
 import { AppContainer } from './AppContainer';
 
+export const appPathFactory = {
+    root: '/',
+    oppgaver: '/oppgaver',
+    journalfør: (oppgaveId: Id) => `/oppgaver/journalfor/${oppgaveId}`,
+    barnehagelister: '/barnehagelister',
+} as const;
+
 export const appRoutes = createBrowserRouter([
     {
         path: '/',
@@ -17,7 +25,7 @@ export const appRoutes = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Navigate to={'/oppgaver'} replace={true} />,
+                element: <Navigate to={Path.oppgaver} replace={true} />,
             },
             {
                 path: 'fagsak/:fagsakId',

@@ -1,3 +1,4 @@
+import { Path } from '@app/path';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
@@ -207,7 +208,7 @@ const OppsummeringVedtakInnhold = ({
                             size={'medium'}
                             onClick={() => {
                                 settVisModal(false);
-                                navigate(`/fagsak/${fagsakId}/saksoversikt`);
+                                navigate(Path.fagsak(fagsakId).saksoversikt);
                             }}
                             children={'Gå til saksoversikten'}
                         />

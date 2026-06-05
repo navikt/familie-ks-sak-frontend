@@ -1,3 +1,4 @@
+import { Path } from '@app/path';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
 import type { IBehandling } from '@typer/behandling';
@@ -36,7 +37,7 @@ const Simulering = () => {
 
     const nesteOnClick = () => {
         if (erLesevisning || behandling.resultat == BehandlingResultat.AVSLÅTT) {
-            navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/vedtak`);
+            navigate(Path.fagsak(fagsakId).behandling(behandling.behandlingId).vedtak);
         } else {
             onSubmit<ITilbakekreving | undefined>(
                 {

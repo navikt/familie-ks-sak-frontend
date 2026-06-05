@@ -1,3 +1,4 @@
+import type { Id } from '@app/path';
 import { NotFound } from '@komponenter/Error/NotFound';
 import { TidslinjeProvider } from '@komponenter/Tidslinje/TidslinjeContext';
 import Behandlingsresultat from '@sider/Fagsak/Behandling/sider/Behandlingsresultat/Behandlingsresultat';
@@ -12,6 +13,20 @@ import { Vedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtak';
 import { Vilkårsvurdering } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { type RouteObject } from 'react-router';
+
+export function behandlingPathFactory(fagsakId: Id) {
+    return (behandlingId: Id) => {
+        const base = `/fagsak/${fagsakId}/${behandlingId}`;
+        return {
+            root: base,
+            registrerSøknad: `${base}/registrer-soknad`,
+            vilkårsvurdering: `${base}/vilkaarsvurdering`,
+            tilkjentYtelse: `${base}/tilkjent-ytelse`,
+            simulering: `${base}/simulering`,
+            vedtak: `${base}/vedtak`,
+        } as const;
+    };
+}
 
 export const behandlingRoutes: RouteObject[] = [
     {

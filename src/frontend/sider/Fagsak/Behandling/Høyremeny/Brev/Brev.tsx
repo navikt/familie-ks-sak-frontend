@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { Path } from '@app/path';
 import { useNavigate } from 'react-router';
 
 import { Button, Modal, VStack } from '@navikt/ds-react';
@@ -25,12 +26,12 @@ export function Brev() {
 
     function navigerTilSaksoversikt() {
         settVisInnsendtBrevModal(false);
-        navigate(`/fagsak/${fagsak.id}/saksoversikt`);
+        navigate(Path.fagsak(fagsak.id).saksoversikt);
     }
 
     function navigerTilOppgaver() {
         settVisInnsendtBrevModal(false);
-        navigate('/oppgaver');
+        navigate(Path.oppgaver);
     }
 
     return (

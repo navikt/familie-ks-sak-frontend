@@ -1,3 +1,4 @@
+import type { Id } from '@app/path';
 import { NotFound } from '@komponenter/Error/NotFound';
 import { RouteError } from '@komponenter/Error/RouteError';
 import { Behandling } from '@sider/Fagsak/Behandling/Behandling';
@@ -9,6 +10,16 @@ import { DokumentutsendingProvider } from '@sider/Fagsak/Dokumentutsending/Dokum
 import { RedirectTilSaksoversikt } from '@sider/Fagsak/Saksoversikt/RedirectTilSaksoversikt';
 import { Saksoversikt } from '@sider/Fagsak/Saksoversikt/Saksoversikt';
 import type { RouteObject } from 'react-router';
+
+export function fagsakPathFactory(fagsakId: Id) {
+    const base = `/fagsak/${fagsakId}`;
+    return {
+        root: base,
+        saksoversikt: `${base}/saksoversikt`,
+        dokumentutsending: `${base}/dokumentutsending`,
+        dokumenter: `${base}/dokumenter`,
+    } as const;
+}
 
 export const fagsakRoutes: RouteObject[] = [
     {

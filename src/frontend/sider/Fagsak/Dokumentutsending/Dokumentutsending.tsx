@@ -1,3 +1,4 @@
+import { Path } from '@app/path';
 import { Fagsaklinje } from '@komponenter/Saklinje/Fagsaklinje';
 import { fagsakHeaderHøydeRem } from '@typer/styling';
 import { useNavigate } from 'react-router';
@@ -40,7 +41,7 @@ export function Dokumentutsending() {
                                 key={'til saksoversikt'}
                                 size={'medium'}
                                 onClick={() => {
-                                    navigate(`/fagsak/${fagsak.id}/saksoversikt`);
+                                    navigate(Path.fagsak(fagsak.id).saksoversikt);
                                     settVisInnsendtBrevModal(false);
                                 }}
                                 children={'Se saksoversikt'}
