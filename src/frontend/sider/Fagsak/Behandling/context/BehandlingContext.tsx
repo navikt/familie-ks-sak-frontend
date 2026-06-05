@@ -9,13 +9,14 @@ import { useLocation } from 'react-router';
 import { type Ressurs } from '@navikt/familie-typer';
 
 import { useHentOgSettBehandlingContext } from './HentOgSettBehandlingContext';
-import { hentTrinnForBehandling, type ITrinn, KontrollertStatus, type SideId, sider } from '../sider/sider';
+import { hentTrinnForBehandling, type ITrinn, KontrollertStatus, type SideId } from '../sider/sider';
 
 interface Props extends PropsWithChildren {
     behandling: IBehandling;
 }
 
 interface BehandlingContextValue {
+    leggTilBesøktSide: (besøktSide: SideId) => void;
     settIkkeKontrollerteSiderTilManglerKontroll: () => void;
     trinnPåBehandling: { [sideId: string]: ITrinn };
     behandling: IBehandling;
@@ -33,8 +34,6 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
 
     const location = useLocation();
     const [trinnPåBehandling, settTrinnPåBehandling] = useState<{ [sideId: string]: ITrinn }>({});
-
-    const sidevisning = hentSideHref(location.pathname);
 
     useEffect(() => {
         const siderPåBehandling = hentTrinnForBehandling(behandling);
@@ -87,15 +86,10 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
         BehandlerRolle.BESLUTTER === saksbehandler.rolle &&
         saksbehandler.email !== behandling.endretAv;
 
-    useEffect(() => {
-        if (sidevisning) {
-            leggTilBesøktSide(Object.entries(sider).find(([_, side]) => side.href === sidevisning)?.[0] as SideId);
-        }
-    }, [sidevisning]);
-
     return (
         <BehandlingContext.Provider
             value={{
+                leggTilBesøktSide,
                 settIkkeKontrollerteSiderTilManglerKontroll,
                 trinnPåBehandling,
                 behandling,
