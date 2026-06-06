@@ -12,6 +12,7 @@ import {
     BehandlingÅrsak,
     type IBehandling,
 } from '@typer/behandling';
+import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
 import { useNavigate } from 'react-router';
 
 import { byggSuksessRessurs } from '@navikt/familie-typer';
@@ -20,11 +21,12 @@ import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/Feilutb
 import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
 import { useRefusjonEøsTabellContext } from './RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
+import { useVedtaksperioderContext } from './Vedtaksperioder/VedtaksperioderContext';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
-function kanForeslåVedtak(behandling: IBehandling) {
-    const minstEnPeriodeHarBegrunnelseEllerFritekst = (behandling.vedtak?.vedtaksperioderMedBegrunnelser ?? []).some(
+function kanForeslåVedtak(behandling: IBehandling, vedtaksperioder: IVedtaksperiodeMedBegrunnelser[]) {
+    const minstEnPeriodeHarBegrunnelseEllerFritekst = vedtaksperioder.some(
         vedtaksperioderMedBegrunnelse =>
             vedtaksperioderMedBegrunnelse.begrunnelser.length !== 0 ||
             vedtaksperioderMedBegrunnelse.eøsBegrunnelser.length !== 0 ||
@@ -44,6 +46,7 @@ export function Vedtak() {
     const { erLeggTilFeilutbetaltValutaFormÅpen } = useFeilutbetaltValutaTabellContext();
     const { erLeggTilRefusjonEøsFormÅpen } = useRefusjonEøsTabellContext();
     const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
+    const { vedtaksperioder } = useVedtaksperioderContext();
 
     const saksbehandler = useSaksbehandler();
     const fagsakId = useFagsakId();
@@ -78,7 +81,7 @@ export function Vedtak() {
             settFeilmelding(
                 'Det er lagt til en ny periode med refusjon EØS. Fyll ut periode og refusjonsbeløp, eller fjern perioden.'
             );
-        } else if (!kanForeslåVedtak(behandling) && !erSammensattKontrollsak) {
+        } else if (!kanForeslåVedtak(behandling, vedtaksperioder) && !erSammensattKontrollsak) {
             settFeilmelding('Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.');
         } else {
             settFeilmelding(undefined);

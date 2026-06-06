@@ -8,12 +8,14 @@ import { Heading, HelpText, HStack, VStack } from '@navikt/ds-react';
 import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
 import { Vedtaksperiode } from './Vedtaksperiode';
 import { VedtaksperiodeProvider } from './VedtaksperiodeContext';
+import { useVedtaksperioderContext } from './VedtaksperioderContext';
 
 export function Vedtaksperioder() {
+    const { vedtaksperioder } = useVedtaksperioderContext();
     const behandling = useBehandling();
 
     const sorterteVedtaksperioderSomSkalvises = filtrerOgSorterPerioderMedBegrunnelseBehov(
-        behandling.vedtak?.vedtaksperioderMedBegrunnelser ?? [],
+        vedtaksperioder,
         behandling.resultat,
         behandling.status,
         behandling.sisteVedtaksperiodeVisningDato
