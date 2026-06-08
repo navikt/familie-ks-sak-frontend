@@ -1,9 +1,10 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useHentAlleBegrunnelser } from '@hooks/useHentAlleBegrunnelser';
 import type { OptionType } from '@typer/common';
 import type { Begrunnelse } from '@typer/vedtak';
 import type { Regelverk, VilkårType } from '@typer/vilkår';
 
-import { UNSAFE_Combobox } from '@navikt/ds-react';
+import { ErrorMessage, LocalAlert, Stack, UNSAFE_Combobox } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import useAvslagBegrunnelseMultiselect from './useAvslagBegrunnelseMultiselect';
@@ -17,7 +18,13 @@ interface IProps {
 const AvslagBegrunnelseMultiselect = ({ vilkårType, begrunnelser, regelverk }: IProps) => {
     const erLesevisning = useErLesevisning();
 
-    const { grupperteAvslagsbegrunnelser } = useAvslagBegrunnelseMultiselect(vilkårType, regelverk);
+    const {
+        data: alleBegrunnelser,
+        isPending: hentAlleBegrunnelserIsPending,
+        error: hentAlleBegrunnelserError,
+    } = useHentAlleBegrunnelser();
+
+    const { grupperteAvslagsbegrunnelser } = useAvslagBegrunnelseMultiselect(vilkårType, alleBegrunnelser, regelverk);
 
     const valgteBegrunnlser = begrunnelser
         ? begrunnelser.verdi.map((valgtBegrunnelse: Begrunnelse) => ({
@@ -38,6 +45,22 @@ const AvslagBegrunnelseMultiselect = ({ vilkårType, begrunnelser, regelverk }: 
         }
     };
 
+    if (hentAlleBegrunnelserError) {
+        return (
+            <LocalAlert status={'error'}>
+                <LocalAlert.Header>
+                    <LocalAlert.Title>En teknisk feil oppstod.</LocalAlert.Title>
+                </LocalAlert.Header>
+                <LocalAlert.Content>
+                    <Stack direction={'column'} gap={'space-16'}>
+                        Klarte ikke å hente inn avslag begrunnelser for vilkår.
+                        <ErrorMessage>{hentAlleBegrunnelserError.message}</ErrorMessage>
+                    </Stack>
+                </LocalAlert.Content>
+            </LocalAlert>
+        );
+    }
+
     return (
         <UNSAFE_Combobox
             selectedOptions={valgteBegrunnlser}
@@ -46,6 +69,7 @@ const AvslagBegrunnelseMultiselect = ({ vilkårType, begrunnelser, regelverk }: 
             readOnly={erLesevisning}
             isMultiSelect
             onToggleSelected={onChangeBegrunnelse}
+            isLoading={hentAlleBegrunnelserIsPending}
             options={grupperteAvslagsbegrunnelser}
         />
     );

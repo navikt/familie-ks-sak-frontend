@@ -5,11 +5,8 @@ import RegistrerSøknad from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/Re
 import { SøknadProvider } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/SøknadContext';
 import Simulering from '@sider/Fagsak/Behandling/sider/Simulering/Simulering';
 import { SimuleringProvider } from '@sider/Fagsak/Behandling/sider/Simulering/SimuleringContext';
-import { FeilutbetaltValutaTabellProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
-import { RefusjonEøsTabellProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
-import { SammensattKontrollsakProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/SammensattKontrollsak/SammensattKontrollsakContext';
 import { Vedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtak';
-import { VedtaksperioderProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/VedtaksperioderContext';
+import { VedtakContainer } from '@sider/Fagsak/Behandling/sider/Vedtak/VedtakContainer';
 import { Vilkårsvurdering } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { type RouteObject } from 'react-router';
@@ -50,15 +47,9 @@ export const behandlingRoutes: RouteObject[] = [
     {
         path: 'vedtak',
         element: (
-            <FeilutbetaltValutaTabellProvider>
-                <RefusjonEøsTabellProvider>
-                    <SammensattKontrollsakProvider>
-                        <VedtaksperioderProvider>
-                            <Vedtak />
-                        </VedtaksperioderProvider>
-                    </SammensattKontrollsakProvider>
-                </RefusjonEøsTabellProvider>
-            </FeilutbetaltValutaTabellProvider>
+            <VedtakContainer>
+                <Vedtak />
+            </VedtakContainer>
         ),
     },
     {

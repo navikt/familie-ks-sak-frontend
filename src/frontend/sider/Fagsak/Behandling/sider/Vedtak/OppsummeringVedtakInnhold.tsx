@@ -1,6 +1,8 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
+import { useOpprettSammensattKontrollsakError } from '@hooks/useOpprettSammensattKontrollsakError';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
+import { useSlettSammensattKontrollsakError } from '@hooks/useSlettSammensattKontrollsakError';
 import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
 import {
     BehandlerRolle,
@@ -14,7 +16,7 @@ import type { IPersonInfo } from '@typer/person';
 import { useNavigate } from 'react-router';
 
 import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
-import { BodyShort, Box, Button, InfoCard, Modal } from '@navikt/ds-react';
+import { BodyShort, Box, Button, InfoCard, LocalAlert, Modal, VStack } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { FeilutbetaltValutaTabell } from './FeilutbetaltValuta/FeilutbetaltValutaTabell';
@@ -24,7 +26,6 @@ import { useRefusjonEøsTabellContext } from './RefusjonEøs/RefusjonEøsTabellC
 import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrollsak';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import { Vedtaksmeny } from './Vedtaksmeny/Vedtaksmeny';
-import { AlleBegrunnelserProvider } from './Vedtaksperioder/AlleBegrunnelserContext';
 import { Vedtaksperioder } from './Vedtaksperioder/Vedtaksperioder';
 import useDokument from '../../../../../hooks/useDokument';
 import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisningModal';
@@ -52,9 +53,12 @@ const OppsummeringVedtakInnhold = ({
     const { hentForhåndsvisning, nullstillDokument, visDokumentModal, hentetDokument, settVisDokumentModal } =
         useDokument();
 
-    const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
+    const { sammensattKontrollsak } = useSammensattKontrollsakContext();
     const { erFeilutbetaltValutaTabellSynlig } = useFeilutbetaltValutaTabellContext();
     const { erRefusjonEøsTabellSynlig } = useRefusjonEøsTabellContext();
+
+    const opprettSammensattKontrollsakError = useOpprettSammensattKontrollsakError(åpenBehandling.behandlingId);
+    const slettSammensattKontrollsakError = useSlettSammensattKontrollsakError(åpenBehandling.behandlingId);
 
     const hentVedtaksbrev = () => {
         const skalOgsåLagreBrevPåVedtak =
@@ -113,7 +117,23 @@ const OppsummeringVedtakInnhold = ({
 
     return (
         <>
-            <Vedtaksmeny erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending} />
+            <VStack gap={'space-12'}>
+                {slettSammensattKontrollsakError && (
+                    <LocalAlert status={'error'}>
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>{slettSammensattKontrollsakError.message}</LocalAlert.Title>
+                        </LocalAlert.Header>
+                    </LocalAlert>
+                )}
+                {opprettSammensattKontrollsakError && (
+                    <LocalAlert status={'error'}>
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>{opprettSammensattKontrollsakError.message}</LocalAlert.Title>
+                        </LocalAlert.Header>
+                    </LocalAlert>
+                )}
+                <Vedtaksmeny erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending} />
+            </VStack>
             {visDokumentModal && (
                 <PdfVisningModal
                     onRequestClose={() => {
@@ -161,13 +181,11 @@ const OppsummeringVedtakInnhold = ({
                     </Box>
                 ) : (
                     <>
-                        {erSammensattKontrollsak ? (
+                        {sammensattKontrollsak ? (
                             <SammensattKontrollsak />
                         ) : (
                             <>
-                                <AlleBegrunnelserProvider>
-                                    <Vedtaksperioder />
-                                </AlleBegrunnelserProvider>
+                                <Vedtaksperioder />
                                 {erFeilutbetaltValutaTabellSynlig && <FeilutbetaltValutaTabell />}
                                 {erRefusjonEøsTabellSynlig && <RefusjonEøsTabell />}
                             </>

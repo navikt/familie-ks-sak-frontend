@@ -1,57 +1,25 @@
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext } from 'react';
 
-import { useHentAlleBegrunnelser } from '@hooks/useHentAlleBegrunnelser';
 import type { AlleBegrunnelser } from '@typer/vilkår';
 
-import { BodyShort, Box, ErrorMessage, Loader, LocalAlert, Stack } from '@navikt/ds-react';
-
-interface AlleBegrunnelserContextValue {
+interface AlleBegrunnelserContext {
     alleBegrunnelser: AlleBegrunnelser;
 }
 
-const AlleBegrunnelserContext = createContext<AlleBegrunnelserContextValue | undefined>(undefined);
+const AlleBegrunnelserContext = createContext<AlleBegrunnelserContext | undefined>(undefined);
 
-export function AlleBegrunnelserProvider({ children }: PropsWithChildren) {
-    const { data, isPending, error } = useHentAlleBegrunnelser();
+interface Props extends PropsWithChildren {
+    alleBegrunnelser: AlleBegrunnelser;
+}
 
-    if (isPending) {
-        return (
-            <Stack direction={'row'} justify={'center'} align={'center'} gap={'space-8'}>
-                <Loader size={'medium'} />
-                <BodyShort weight={'semibold'}>Laster begrunnelser...</BodyShort>
-            </Stack>
-        );
-    }
-
-    if (error) {
-        return (
-            <Box marginBlock={'space-20 space-0'}>
-                <LocalAlert status={'error'}>
-                    <LocalAlert.Header>
-                        <LocalAlert.Title>En teknisk feil oppstod.</LocalAlert.Title>
-                    </LocalAlert.Header>
-                    <LocalAlert.Content>
-                        <Stack direction={'column'} gap={'space-16'}>
-                            Klarte ikke å hente inn begrunnelser for vedtak.
-                            <ErrorMessage>{error.message}</ErrorMessage>
-                        </Stack>
-                    </LocalAlert.Content>
-                </LocalAlert>
-            </Box>
-        );
-    }
-
-    return (
-        <AlleBegrunnelserContext.Provider value={{ alleBegrunnelser: data }}>
-            {children}
-        </AlleBegrunnelserContext.Provider>
-    );
+export function AlleBegrunnelserProvider({ alleBegrunnelser, children }: Props) {
+    return <AlleBegrunnelserContext.Provider value={{ alleBegrunnelser }}>{children}</AlleBegrunnelserContext.Provider>;
 }
 
 export function useAlleBegrunnelserContext() {
     const context = useContext(AlleBegrunnelserContext);
-    if (!context) {
+    if (context === undefined) {
         throw new Error('useAlleBegrunnelserContext må brukes innenfor en AlleBegrunnelserProvider');
     }
     return context;

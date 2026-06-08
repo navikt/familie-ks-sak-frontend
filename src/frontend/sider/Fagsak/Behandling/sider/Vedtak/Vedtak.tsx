@@ -13,6 +13,7 @@ import {
     type IBehandling,
 } from '@typer/behandling';
 import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
+import { erDefinert } from '@utils/commons';
 import { useNavigate } from 'react-router';
 
 import { byggSuksessRessurs } from '@navikt/familie-typer';
@@ -45,7 +46,7 @@ export function Vedtak() {
     const { behandling, settÅpenBehandling } = useBehandlingContext();
     const { erLeggTilFeilutbetaltValutaFormÅpen } = useFeilutbetaltValutaTabellContext();
     const { erLeggTilRefusjonEøsFormÅpen } = useRefusjonEøsTabellContext();
-    const { erSammensattKontrollsak } = useSammensattKontrollsakContext();
+    const { sammensattKontrollsak } = useSammensattKontrollsakContext();
     const { vedtaksperioder } = useVedtaksperioderContext();
 
     const saksbehandler = useSaksbehandler();
@@ -73,7 +74,9 @@ export function Vedtak() {
         behandling.type !== Behandlingstype.TEKNISK_ENDRING && behandling.årsak !== BehandlingÅrsak.SATSENDRING;
 
     function sendTilBeslutter() {
-        if (erLeggTilFeilutbetaltValutaFormÅpen) {
+        if (erDefinert(sammensattKontrollsak) && sammensattKontrollsak.fritekst.trim() === '') {
+            settFeilmelding('Sammensatt kontrollsak mangler en begrunnelse.');
+        } else if (erLeggTilFeilutbetaltValutaFormÅpen) {
             settFeilmelding(
                 'Det er lagt til en ny periode med feilutbetalt valuta. Fyll ut periode og beløp, eller fjern perioden.'
             );
@@ -81,7 +84,7 @@ export function Vedtak() {
             settFeilmelding(
                 'Det er lagt til en ny periode med refusjon EØS. Fyll ut periode og refusjonsbeløp, eller fjern perioden.'
             );
-        } else if (!kanForeslåVedtak(behandling, vedtaksperioder) && !erSammensattKontrollsak) {
+        } else if (!kanForeslåVedtak(behandling, vedtaksperioder) && !erDefinert(sammensattKontrollsak)) {
             settFeilmelding('Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.');
         } else {
             settFeilmelding(undefined);

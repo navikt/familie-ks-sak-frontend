@@ -1,12 +1,19 @@
-import type { OptionType } from '../../../../../../typer/common';
-import type { IRestBegrunnelseTilknyttetVilkår } from '../../../../../../typer/vedtak';
-import { BegrunnelseType } from '../../../../../../typer/vedtak';
-import type { VilkårType } from '../../../../../../typer/vilkår';
-import { Regelverk } from '../../../../../../typer/vilkår';
-import { useAlleBegrunnelserContext } from '../../Vedtak/Vedtaksperioder/AlleBegrunnelserContext';
+import type { OptionType } from '@typer/common';
+import type { IRestBegrunnelseTilknyttetVilkår } from '@typer/vedtak';
+import { BegrunnelseType } from '@typer/vedtak';
+import type { AlleBegrunnelser, VilkårType } from '@typer/vilkår';
+import { Regelverk } from '@typer/vilkår';
 
-const useAvslagBegrunnelseMultiselect = (vilkårType: VilkårType, regelverk?: Regelverk) => {
-    const { alleBegrunnelser } = useAlleBegrunnelserContext();
+const useAvslagBegrunnelseMultiselect = (
+    vilkårType: VilkårType,
+    alleBegrunnelser: AlleBegrunnelser | undefined,
+    regelverk?: Regelverk
+) => {
+    if (alleBegrunnelser === undefined) {
+        return {
+            grupperteAvslagsbegrunnelser: [],
+        };
+    }
 
     const gyldigeBegrunnelseTyper = [BegrunnelseType.AVSLAG];
 
