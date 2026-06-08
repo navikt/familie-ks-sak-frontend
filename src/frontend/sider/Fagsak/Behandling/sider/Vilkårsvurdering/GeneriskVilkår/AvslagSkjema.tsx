@@ -8,7 +8,6 @@ import { BodyShort, Checkbox, Fieldset } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
 
 import AvslagBegrunnelseMultiselect from './AvslagBegrunnelseMultiselect';
-import { AlleBegrunnelserProvider } from '../../Vedtak/Vedtaksperioder/AlleBegrunnelserContext';
 
 interface IProps {
     lagretVilkår: IVilkårResultat;
@@ -54,13 +53,11 @@ const AvslagSkjema = ({ erEksplisittAvslagPåSøknad, lagretVilkår, avslagBegru
                 </Checkbox>
             )}
             {erEksplisittAvslagPåSøknad.verdi && (
-                <AlleBegrunnelserProvider>
-                    <AvslagBegrunnelseMultiselect
-                        vilkårType={lagretVilkår.vilkårType}
-                        begrunnelser={avslagBegrunnelser}
-                        regelverk={lagretVilkår.vurderesEtter}
-                    />
-                </AlleBegrunnelserProvider>
+                <AvslagBegrunnelseMultiselect
+                    vilkårType={lagretVilkår.vilkårType}
+                    begrunnelser={avslagBegrunnelser}
+                    regelverk={lagretVilkår.vurderesEtter}
+                />
             )}
         </StyledFieldset>
     );

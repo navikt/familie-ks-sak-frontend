@@ -5,7 +5,7 @@ import { KorrigerVedtakModal } from '@sider/Fagsak/Behandling/sider/Vedtak/Korri
 import { BehandlingKategori } from '@typer/behandlingstema';
 import { vedtakHarFortsattUtbetaling } from '@utils/vedtakUtils';
 
-import { ArrowUndoIcon, CalculatorIcon, ChevronDownIcon, StarsEuIcon, TasklistStartIcon } from '@navikt/aksel-icons';
+import { CalculatorIcon, ChevronDownIcon, StarsEuIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button, Stack } from '@navikt/ds-react';
 
 import Styles from './Vedtaksmeny.module.css';
@@ -15,7 +15,10 @@ import { useFeilutbetaltValutaTabellContext } from '../FeilutbetaltValuta/Feilut
 import KorrigerEtterbetaling from '../KorrigerEtterbetaling/KorrigerEtterbetaling';
 import { KorrigerVedtak } from '../KorrigerVedtakModal/KorrigerVedtak';
 import { useRefusjonEøsTabellContext } from '../RefusjonEøs/RefusjonEøsTabellContext';
+import { AngreSammensattKontrollsak } from '../SammensattKontrollsak/AngreSammensattKontrollsak';
+import { OpprettSammensattKontrollsak } from '../SammensattKontrollsak/OpprettSammensattKontrollsak';
 import { useSammensattKontrollsakContext } from '../SammensattKontrollsak/SammensattKontrollsakContext';
+import { useSkalViseSammensattKontrollsakMenyvalg } from '../SammensattKontrollsak/useSkalViseSammensattKontrollsakMenyvalg';
 
 interface Props {
     erBehandlingMedVedtaksbrevutsending: boolean;
@@ -24,12 +27,8 @@ interface Props {
 export function Vedtaksmeny({ erBehandlingMedVedtaksbrevutsending }: Props) {
     const { erFeilutbetaltValutaTabellSynlig, visFeilutbetaltValutaTabell } = useFeilutbetaltValutaTabellContext();
     const { erRefusjonEøsTabellSynlig, visRefusjonEøsTabell } = useRefusjonEøsTabellContext();
-    const {
-        skalViseSammensattKontrollsakMenyvalg,
-        erSammensattKontrollsak,
-        settErSammensattKontrollsak,
-        slettSammensattKontrollsak,
-    } = useSammensattKontrollsakContext();
+    const { sammensattKontrollsak } = useSammensattKontrollsakContext();
+    const visSammensattKontrollsakMenyvalg = useSkalViseSammensattKontrollsakMenyvalg();
 
     const behandling = useBehandling();
 
@@ -70,17 +69,11 @@ export function Vedtaksmeny({ erBehandlingMedVedtaksbrevutsending }: Props) {
                             Legg til refusjon EØS
                         </ActionMenu.Item>
                     )}
-                    {skalViseSammensattKontrollsakMenyvalg &&
-                        (erSammensattKontrollsak ? (
-                            <ActionMenu.Item onClick={slettSammensattKontrollsak}>
-                                <ArrowUndoIcon fontSize={'1.4rem'} />
-                                Angre sammensatt kontrollsak
-                            </ActionMenu.Item>
+                    {visSammensattKontrollsakMenyvalg &&
+                        (sammensattKontrollsak ? (
+                            <AngreSammensattKontrollsak sammensattKontrollsak={sammensattKontrollsak} />
                         ) : (
-                            <ActionMenu.Item onClick={() => settErSammensattKontrollsak(true)}>
-                                <TasklistStartIcon fontSize={'1.4rem'} />
-                                Sammensatt kontrollsak
-                            </ActionMenu.Item>
+                            <OpprettSammensattKontrollsak />
                         ))}
                 </ActionMenu.Content>
             </ActionMenu>
