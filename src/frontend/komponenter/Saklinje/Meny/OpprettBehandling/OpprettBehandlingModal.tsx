@@ -1,4 +1,4 @@
-import useOpprettBehandlingSkjema from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
+import { useOpprettBehandlingSkjema } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
 import { useFagsakContext } from '@sider/Fagsak/FagsakContext';
 import { hentDagensDato } from '@utils/dato';
 import { hentFrontendFeilmelding } from '@utils/ressursUtils';
@@ -22,10 +22,7 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
 
     const { onBekreft, opprettBehandlingSkjema, nullstillSkjemaStatus } = useOpprettBehandlingSkjema({
         lukkModal,
-        onOpprettTilbakekrevingSuccess: () => {
-            lukkModal();
-            onTilbakekrevingsbehandlingOpprettet();
-        },
+        onTilbakekrevingsbehandlingOpprettet,
     });
 
     const lukkOpprettBehandlingModal = () => {
