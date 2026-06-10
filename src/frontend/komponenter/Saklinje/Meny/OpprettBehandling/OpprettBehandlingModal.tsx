@@ -1,3 +1,4 @@
+import useOpprettBehandlingSkjema from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
 import { useFagsakContext } from '@sider/Fagsak/FagsakContext';
 import { hentDagensDato } from '@utils/dato';
 import { hentFrontendFeilmelding } from '@utils/ressursUtils';
@@ -9,7 +10,6 @@ import { RessursStatus } from '@navikt/familie-typer';
 import BehandlingstypeFelt from './BehandlingstypeFelt';
 import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
 import { OpprettBehandlingBehandlingstemaSelect } from './OpprettBehandlingBehandlingstemaSelect';
-import useOpprettBehandling from './useOpprettBehandling';
 import Datovelger from '../../../Datovelger/Datovelger';
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
 export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingOpprettet }: Props) {
     const { fagsak } = useFagsakContext();
 
-    const { onBekreft, opprettBehandlingSkjema, nullstillSkjemaStatus } = useOpprettBehandling({
+    const { onBekreft, opprettBehandlingSkjema, nullstillSkjemaStatus } = useOpprettBehandlingSkjema({
         lukkModal,
         onOpprettTilbakekrevingSuccess: () => {
             lukkModal();

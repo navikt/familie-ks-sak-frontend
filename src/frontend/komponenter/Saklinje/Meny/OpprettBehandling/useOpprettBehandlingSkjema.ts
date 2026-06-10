@@ -1,26 +1,25 @@
 import { useEffect } from 'react';
 
+import { useFagsak } from '@hooks/useFagsak';
+import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
+import { HentKlagebehandlingerQueryKeyFactory } from '@hooks/useHentKlagebehandlinger';
+import { HentKontantstøttebehandlingerQueryKeyFactory } from '@hooks/useHentKontantstøttebehandlinger';
+import { HentTilbakekrevingsbehandlingerQueryKeyFactory } from '@hooks/useHentTilbakekrevingsbehandlinger';
+import { useSaksbehandler } from '@hooks/useSaksbehandler';
+import { useBrukerContext } from '@sider/Fagsak/BrukerContext';
 import { useQueryClient } from '@tanstack/react-query';
+import type { IBehandling, NyBehandling } from '@typer/behandling';
+import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
+import type { IBehandlingstema } from '@typer/behandlingstema';
+import { Klagebehandlingstype } from '@typer/klage';
+import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
+import type { IsoDatoString } from '@utils/dato';
+import { dateTilIsoDatoString, dateTilIsoDatoStringEllerUndefined, validerGyldigDato } from '@utils/dato';
 import { useNavigate } from 'react-router';
 
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
-import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
-
-import { useFagsak } from '../../../../hooks/useFagsak';
-import { HentFagsakQueryKeyFactory } from '../../../../hooks/useHentFagsak';
-import { HentKlagebehandlingerQueryKeyFactory } from '../../../../hooks/useHentKlagebehandlinger';
-import { HentKontantstøttebehandlingerQueryKeyFactory } from '../../../../hooks/useHentKontantstøttebehandlinger';
-import { HentTilbakekrevingsbehandlingerQueryKeyFactory } from '../../../../hooks/useHentTilbakekrevingsbehandlinger';
-import { useSaksbehandler } from '../../../../hooks/useSaksbehandler';
-import { useBrukerContext } from '../../../../sider/Fagsak/BrukerContext';
-import type { IBehandling, IRestNyBehandling } from '../../../../typer/behandling';
-import { Behandlingstype, BehandlingÅrsak } from '../../../../typer/behandling';
-import type { IBehandlingstema } from '../../../../typer/behandlingstema';
-import { Klagebehandlingstype } from '../../../../typer/klage';
-import { Tilbakekrevingsbehandlingstype } from '../../../../typer/tilbakekrevingsbehandling';
-import type { IsoDatoString } from '../../../../utils/dato';
-import { dateTilIsoDatoString, dateTilIsoDatoStringEllerUndefined, validerGyldigDato } from '../../../../utils/dato';
+import { byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 
 interface IOpprettBehandlingSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
@@ -30,7 +29,7 @@ interface IOpprettBehandlingSkjemaFelter {
     klageMottattDato: Date | undefined;
 }
 
-const useOpprettBehandling = ({
+const useOpprettBehandlingSkjema = ({
     lukkModal,
     onOpprettTilbakekrevingSuccess,
 }: {
@@ -163,7 +162,7 @@ const useOpprettBehandling = ({
     };
 
     const opprettKontantstøttebehandling = (søkersIdent: string) => {
-        onSubmit<IRestNyBehandling>(
+        onSubmit<NyBehandling>(
             {
                 data: {
                     kategori: skjema.felter.behandlingstema.verdi?.kategori ?? null,
@@ -201,6 +200,7 @@ const useOpprettBehandling = ({
 
     const onBekreft = (søkersIdent: string) => {
         if (kanSendeSkjema()) {
+            settSubmitRessurs(byggHenterRessurs());
             if (behandlingstype.verdi === Klagebehandlingstype.KLAGE) {
                 opprettKlagebehandling();
             } else if (behandlingstype.verdi === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) {
@@ -224,4 +224,4 @@ const useOpprettBehandling = ({
     };
 };
 
-export default useOpprettBehandling;
+export default useOpprettBehandlingSkjema;
