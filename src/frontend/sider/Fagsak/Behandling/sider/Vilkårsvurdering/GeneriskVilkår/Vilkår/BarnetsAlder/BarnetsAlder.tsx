@@ -1,4 +1,5 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { Lovverk } from '@typer/lovverk';
 import { Resultat } from '@typer/vilkår';
 import {
@@ -14,7 +15,6 @@ import { Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
 import Datovelger from '../../../../../../../../komponenter/Datovelger/Datovelger';
-import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
@@ -52,10 +52,11 @@ export const BarnetsAlder = ({
 
     const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBarnetsAlder(lagretVilkårResultat, person);
 
-    const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
-        lagretVilkårResultat,
-    });
+    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
+
+    function toggleForm(visAlert: boolean) {
+        toggleRad(visAlert && finnesEndringerSomIkkeErLagret());
+    }
 
     const skjema = vilkårSkjemaContext.skjema;
 
@@ -65,7 +66,7 @@ export const BarnetsAlder = ({
     return (
         <VilkårTabellRad
             lagretVilkårResultat={lagretVilkårResultat}
-            erVilkårEkspandert={erVilkårEkspandert}
+            erVilkårEkspandert={erRadEkspandert}
             toggleForm={toggleForm}
         >
             <VilkårSkjema

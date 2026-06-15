@@ -7,6 +7,7 @@ import Simulering from '@sider/Fagsak/Behandling/sider/Simulering/Simulering';
 import { SimuleringProvider } from '@sider/Fagsak/Behandling/sider/Simulering/SimuleringContext';
 import { Vedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtak';
 import { VedtakContainer } from '@sider/Fagsak/Behandling/sider/Vedtak/VedtakContainer';
+import { EkspanderbareVilkårResultatRaderProvider } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { Vilkårsvurdering } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { type RouteObject } from 'react-router';
@@ -24,7 +25,9 @@ export const behandlingRoutes: RouteObject[] = [
         path: 'vilkaarsvurdering',
         element: (
             <VilkårsvurderingProvider>
-                <Vilkårsvurdering />
+                <EkspanderbareVilkårResultatRaderProvider>
+                    <Vilkårsvurdering />
+                </EkspanderbareVilkårResultatRaderProvider>
             </VilkårsvurderingProvider>
         ),
     },
