@@ -131,12 +131,12 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
 
     const { mutate: opprettKlagebehandling } = useOpprettKlagebehandling({
         onSuccess: async behandling => {
-            await queryClient.invalidateQueries({
-                queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(fagsakId),
-            });
             lukkModal();
             nullstillSkjema();
             settSubmitRessurs(byggSuksessRessurs(behandling));
+            await queryClient.invalidateQueries({
+                queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(fagsakId),
+            });
         },
         onError: error => {
             settSubmitRessurs(byggFunksjonellFeilRessurs(error.message));
@@ -145,13 +145,13 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
 
     const { mutate: opprettTilbakekreving } = useOpprettTilbakekreving({
         onSuccess: async behandling => {
-            await queryClient.invalidateQueries({
-                queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsakId),
-            });
             lukkModal();
             nullstillSkjemaStatus();
             onTilbakekrevingsbehandlingOpprettet();
             settSubmitRessurs(byggSuksessRessurs(behandling));
+            await queryClient.invalidateQueries({
+                queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsakId),
+            });
         },
         onError: error => {
             settSubmitRessurs(byggFunksjonellFeilRessurs(error.message));
@@ -160,13 +160,6 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
 
     const { mutate: opprettBehandling } = useOpprettBehandling({
         onSuccess: async behandling => {
-            await Promise.all([
-                queryClient.invalidateQueries({
-                    queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsakId),
-                }),
-                queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsakId) }),
-            ]);
-
             lukkModal();
             nullstillSkjema();
             settSubmitRessurs(byggSuksessRessurs(behandling));
@@ -176,6 +169,13 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
             } else {
                 navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/vilkaarsvurdering`);
             }
+
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsakId),
+                }),
+                queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsakId) }),
+            ]);
         },
         onError: error => {
             settSubmitRessurs(byggFunksjonellFeilRessurs(error.message));

@@ -2,11 +2,13 @@ import { opprettTilbakekreving, type OpprettTilbakekrevingPayload } from '@api/o
 import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
 import type { IBehandling } from '@typer/behandling';
 
-type Options = Omit<UseMutationOptions<IBehandling, DefaultError, OpprettTilbakekrevingPayload>, 'mutationFn'>;
+type OpprettTilbakekrevingParameters = OpprettTilbakekrevingPayload;
+
+type Options = Omit<UseMutationOptions<IBehandling, DefaultError, OpprettTilbakekrevingParameters>, 'mutationFn'>;
 
 export function useOpprettTilbakekreving(options?: Options) {
-    return useMutation<IBehandling, Error, OpprettTilbakekrevingPayload>({
-        mutationFn: ({ fagsakId }: OpprettTilbakekrevingPayload): Promise<IBehandling> =>
+    return useMutation<IBehandling, Error, OpprettTilbakekrevingParameters>({
+        mutationFn: ({ fagsakId }: OpprettTilbakekrevingParameters): Promise<IBehandling> =>
             opprettTilbakekreving({ fagsakId }),
         ...options,
     });
