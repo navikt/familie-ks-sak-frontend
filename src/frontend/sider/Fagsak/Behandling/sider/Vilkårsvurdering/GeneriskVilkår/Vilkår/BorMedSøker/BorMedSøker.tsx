@@ -1,8 +1,8 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import type { Regelverk } from '@typer/vilkår';
 
 import { bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår, useBorMedSøker } from './BorMedSøkerContext';
-import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
@@ -24,15 +24,16 @@ export const BorMedSøker = ({
         settMuligeUtdypendeVilkårsvurderinger,
     } = useBorMedSøker(lagretVilkårResultat, person);
 
-    const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
-        lagretVilkårResultat: lagretVilkårResultat,
-    });
+    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
+
+    function toggleForm(visAlert: boolean) {
+        toggleRad(visAlert && finnesEndringerSomIkkeErLagret());
+    }
 
     return (
         <VilkårTabellRad
             lagretVilkårResultat={lagretVilkårResultat}
-            erVilkårEkspandert={erVilkårEkspandert}
+            erVilkårEkspandert={erRadEkspandert}
             toggleForm={toggleForm}
         >
             <VilkårSkjema
