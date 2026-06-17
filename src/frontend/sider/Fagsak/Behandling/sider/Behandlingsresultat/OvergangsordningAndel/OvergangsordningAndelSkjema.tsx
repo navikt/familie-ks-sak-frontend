@@ -6,17 +6,11 @@ import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Button, Checkbox, Fieldset, Label, Select, TextField } from '@navikt/ds-react';
+import { Button, Checkbox, Fieldset, HStack, Label, Select, TextField } from '@navikt/ds-react';
 import { BorderAccent } from '@navikt/ds-tokens/dist/tokens';
 
 import { useOvergangsordningAndelContext } from './OvergangsordningAndelContext';
 import Månedvelger, { DagIMåneden } from '../../../../../../komponenter/Datovelger/Månedvelger';
-import Knapperekke from '../../../../../../komponenter/Knapperekke';
-
-const KnapperekkeVenstre = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: 1rem;
@@ -39,15 +33,6 @@ const StyledTextField = styled(TextField)`
 
 const Feltmargin = styled.div`
     margin-bottom: 1rem;
-`;
-
-const StyledButton = styled(Button)`
-    margin-right: 0.5rem;
-`;
-
-const FlexDiv = styled.div`
-    display: flex;
-    gap: 1.125rem;
 `;
 
 interface IOvergangsordningAndelSkjemaProps {
@@ -93,10 +78,9 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                         ))}
                 </StyledSelect>
             </Feltmargin>
-
             <Feltmargin>
                 <Label>Fastsett periode</Label>
-                <FlexDiv>
+                <HStack gap={'space-16'}>
                     <Månedvelger
                         felt={skjema.felter.fom}
                         label={'F.o.m.'}
@@ -112,7 +96,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                         tilhørendeFomFelt={skjema.felter.fom}
                         readOnly={erRedigeringDeaktivert}
                     />
-                </FlexDiv>
+                </HStack>
             </Feltmargin>
             <Feltmargin>
                 <Checkbox
@@ -140,15 +124,15 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                 />
             </Feltmargin>
             {!erRedigeringDeaktivert && (
-                <Knapperekke>
-                    <KnapperekkeVenstre>
-                        <StyledButton size={'small'} variant={'primary'} onClick={oppdaterOvergangsordningAndel}>
+                <HStack marginBlock={'space-16'} justify={'space-between'}>
+                    <HStack gap={'space-8'}>
+                        <Button size={'small'} variant={'primary'} onClick={oppdaterOvergangsordningAndel}>
                             Bekreft
-                        </StyledButton>
+                        </Button>
                         <Button variant="tertiary" size="small" onClick={tilbakestillOgLukkOvergangsordningAndel}>
                             Avbryt
                         </Button>
-                    </KnapperekkeVenstre>
+                    </HStack>
 
                     {!erRedigeringDeaktivert && (
                         <Button
@@ -161,7 +145,7 @@ const OvergangsordningAndelSkjema = ({ åpenBehandling }: IOvergangsordningAndel
                             {'Fjern periode'}
                         </Button>
                     )}
-                </Knapperekke>
+                </HStack>
             )}
         </StyledFieldset>
     );

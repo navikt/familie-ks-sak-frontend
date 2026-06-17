@@ -1,12 +1,7 @@
 import type { PropsWithChildren } from 'react';
 
-import styled from 'styled-components';
+import styles from './SkjultLegend.module.css';
 
-const StyledLegend = styled.legend`
-    position: absolute;
-    clip: rect(0 0 0 0);
-`;
-
-const SkjultLegend = ({ children }: PropsWithChildren) => <StyledLegend>{children}</StyledLegend>;
+const SkjultLegend = ({ children }: PropsWithChildren) => <legend className={styles.skjultLegend}>{children}</legend>;
 
 export default SkjultLegend;

@@ -17,20 +17,25 @@ import classNames from 'classnames';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { BodyShort, Button, Checkbox, Fieldset, Label, Radio, RadioGroup, Select, Textarea } from '@navikt/ds-react';
+import {
+    BodyShort,
+    Button,
+    Checkbox,
+    Fieldset,
+    HStack,
+    Label,
+    Radio,
+    RadioGroup,
+    Select,
+    Textarea,
+} from '@navikt/ds-react';
 import { BorderAccent } from '@navikt/ds-tokens/dist/tokens';
 import type { ISkjema } from '@navikt/familie-skjema';
 
 import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
 import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
 import Datovelger from '../../../../../../komponenter/Datovelger/Datovelger';
-import Knapperekke from '../../../../../../komponenter/Knapperekke';
 import MånedÅrVelger from '../../../../../../komponenter/MånedÅrInput/MånedÅrVelger';
-
-const KnapperekkeVenstre = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: 1rem;
@@ -48,10 +53,6 @@ const StyledPersonvelger = styled(Select)`
 
 const Feltmargin = styled.div`
     margin-bottom: 1rem;
-`;
-
-const StyledFerdigKnapp = styled(Button)`
-    margin-right: 0.5rem;
 `;
 
 const StyledTextarea = styled(Textarea)`
@@ -161,7 +162,6 @@ const EndretUtbetalingAndelSkjema = ({
                             ))}
                     </StyledPersonvelger>
                 </Feltmargin>
-
                 <Feltmargin>
                     <Label>Fastsett periode</Label>
                     <Feltmargin>
@@ -197,7 +197,6 @@ const EndretUtbetalingAndelSkjema = ({
                         lesevisning={erLesevisning}
                     />
                 </Feltmargin>
-
                 <Feltmargin>
                     <Select
                         {...skjema.felter.årsak.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
@@ -216,7 +215,6 @@ const EndretUtbetalingAndelSkjema = ({
                         ))}
                     </Select>
                 </Feltmargin>
-
                 <Feltmargin>
                     {erLesevisning ? (
                         <>
@@ -261,14 +259,12 @@ const EndretUtbetalingAndelSkjema = ({
                               </Checkbox>
                           )}
                 </Feltmargin>
-
                 {skjema.felter.årsak.verdi === IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT &&
                     skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
                         <Feltmargin>
                             <EndretUtbetalingAvslagBegrunnelse skjema={skjema} />
                         </Feltmargin>
                     )}
-
                 <Feltmargin>
                     <Datovelger
                         felt={skjema.felter.søknadstidspunkt}
@@ -278,7 +274,6 @@ const EndretUtbetalingAndelSkjema = ({
                         kanKunVelgeFortid
                     />
                 </Feltmargin>
-
                 <Feltmargin>
                     <StyledTextarea
                         {...skjema.felter.begrunnelse.hentNavInputProps(skjema.visFeilmeldinger)}
@@ -296,15 +291,15 @@ const EndretUtbetalingAndelSkjema = ({
                     />
                 </Feltmargin>
                 {!erLesevisning && (
-                    <Knapperekke>
-                        <KnapperekkeVenstre>
-                            <StyledFerdigKnapp
+                    <HStack marginBlock={'space-16'} justify={'space-between'}>
+                        <HStack gap={'space-8'}>
+                            <Button
                                 size="small"
                                 variant="secondary"
                                 onClick={() => oppdaterEndretUtbetaling(lukkSkjema)}
                             >
                                 Bekreft
-                            </StyledFerdigKnapp>
+                            </Button>
                             <Button
                                 variant="tertiary"
                                 size="small"
@@ -315,7 +310,7 @@ const EndretUtbetalingAndelSkjema = ({
                             >
                                 Avbryt
                             </Button>
-                        </KnapperekkeVenstre>
+                        </HStack>
 
                         {!erLesevisning && (
                             <Button
@@ -327,7 +322,7 @@ const EndretUtbetalingAndelSkjema = ({
                                 Fjern periode
                             </Button>
                         )}
-                    </Knapperekke>
+                    </HStack>
                 )}
             </StyledFieldset>
         </>
