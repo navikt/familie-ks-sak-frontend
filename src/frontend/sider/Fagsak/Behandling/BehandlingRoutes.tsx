@@ -8,6 +8,7 @@ import { SimuleringProvider } from '@sider/Fagsak/Behandling/sider/Simulering/Si
 import { Vedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtak';
 import { VedtakContainer } from '@sider/Fagsak/Behandling/sider/Vedtak/VedtakContainer';
 import { EkspanderbareVilkårResultatRaderProvider } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
+import { EkspanderbareVilkårsvurderingPanelerProvider } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårsvurderingPanelerContext';
 import { Vilkårsvurdering } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/Vilkårsvurdering';
 import { VilkårsvurderingProvider } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { type RouteObject } from 'react-router';
@@ -25,9 +26,11 @@ export const behandlingRoutes: RouteObject[] = [
         path: 'vilkaarsvurdering',
         element: (
             <VilkårsvurderingProvider>
-                <EkspanderbareVilkårResultatRaderProvider>
-                    <Vilkårsvurdering />
-                </EkspanderbareVilkårResultatRaderProvider>
+                <EkspanderbareVilkårsvurderingPanelerProvider>
+                    <EkspanderbareVilkårResultatRaderProvider>
+                        <Vilkårsvurdering />
+                    </EkspanderbareVilkårResultatRaderProvider>
+                </EkspanderbareVilkårsvurderingPanelerProvider>
             </VilkårsvurderingProvider>
         ),
     },
