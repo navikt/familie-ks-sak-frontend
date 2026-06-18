@@ -1,34 +1,33 @@
-import type { ChangeEvent } from 'react';
+import {
+    OpprettBehandlingFelt,
+    type OpprettBehandlingFormValues,
+} from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
+import { behandlingÅrsak, BehandlingÅrsak, behandlingÅrsakerSomIkkeSkalSettesManuelt } from '@typer/behandling';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
-import type { Felt } from '@navikt/familie-skjema';
 
-import {
-    behandlingÅrsak,
-    BehandlingÅrsak,
-    behandlingÅrsakerSomIkkeSkalSettesManuelt,
-} from '../../../../typer/behandling';
+export function BehandlingsårsakFelt() {
+    const { control } = useFormContext<OpprettBehandlingFormValues>();
+    const {
+        field: { value, onChange },
+        fieldState: { error },
+        formState: { isSubmitting },
+    } = useController({
+        name: OpprettBehandlingFelt.BEHANDLINGSÅRSAK,
+        control,
+        rules: {
+            required: 'Velg årsak for opprettelse av behandlingen fra nedtrekkslisten.',
+        },
+    });
 
-interface BehandlingÅrsakSelect extends HTMLSelectElement {
-    value: BehandlingÅrsak | '';
-}
-
-interface IProps {
-    behandlingsårsak: Felt<BehandlingÅrsak | ''>;
-    visFeilmeldinger: boolean;
-    erLesevisning?: boolean;
-}
-
-export const BehandlingårsakFelt = ({ behandlingsårsak, visFeilmeldinger, erLesevisning = false }: IProps) => {
     return (
         <Select
-            {...behandlingsårsak.hentNavBaseSkjemaProps(visFeilmeldinger)}
-            readOnly={erLesevisning}
-            name={'Behandlingsårsak'}
-            label={'Velg årsak'}
-            onChange={(event: ChangeEvent<BehandlingÅrsakSelect>): void => {
-                behandlingsårsak.onChange(event.target.value);
-            }}
+            label={'Velg behandlingsårsak'}
+            readOnly={isSubmitting}
+            value={value}
+            onChange={onChange}
+            error={error?.message}
         >
             <option disabled={true} value={''}>
                 Velg
@@ -37,11 +36,11 @@ export const BehandlingårsakFelt = ({ behandlingsårsak, visFeilmeldinger, erLe
                 .filter(behandlingsårsak => !behandlingÅrsakerSomIkkeSkalSettesManuelt().includes(behandlingsårsak))
                 .map(årsak => {
                     return (
-                        <option key={årsak} aria-selected={behandlingsårsak.verdi === årsak} value={årsak}>
+                        <option key={årsak} aria-selected={value === årsak} value={årsak}>
                             {behandlingÅrsak[årsak]}
                         </option>
                     );
                 })}
         </Select>
     );
-};
+}

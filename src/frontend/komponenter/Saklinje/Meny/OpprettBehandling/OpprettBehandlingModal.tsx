@@ -1,17 +1,13 @@
+import { KlageMottattDatoFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/KlageMottattDatoFelt';
+import { SøknadMottattDatoFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/SøknadMottattDatoFelt';
 import { useOpprettBehandlingSkjema } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
-import { useFagsakContext } from '@sider/Fagsak/FagsakContext';
-import { hentDagensDato } from '@utils/dato';
-import { hentFrontendFeilmelding } from '@utils/ressursUtils';
-import { isBefore, subDays } from 'date-fns';
 import { FormProvider } from 'react-hook-form';
 
-import { Box, Button, Fieldset, LocalAlert, Modal, VStack } from '@navikt/ds-react';
-import { byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
+import { Button, Fieldset, Modal, VStack } from '@navikt/ds-react';
 
-import BehandlingstypeFelt from './BehandlingstypeFelt';
-import { BehandlingårsakFelt } from './BehandlingsårsakFelt';
+import { BehandlingstypeFelt } from './BehandlingstypeFelt';
+import { BehandlingsårsakFelt } from './BehandlingsårsakFelt';
 import { OpprettBehandlingBehandlingstemaSelect } from './OpprettBehandlingBehandlingstemaSelect';
-import Datovelger from '../../../Datovelger/Datovelger';
 
 interface Props {
     lukkModal: () => void;
@@ -19,9 +15,7 @@ interface Props {
 }
 
 export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingOpprettet }: Props) {
-    const { fagsak } = useFagsakContext();
-
-    const { form, onSubmit, opprettBehandlingSkjema, nullstillSkjema, settSubmitRessurs } = useOpprettBehandlingSkjema({
+    const { form, onSubmit } = useOpprettBehandlingSkjema({
         lukkModal,
         onTilbakekrevingsbehandlingOpprettet,
     });
@@ -31,96 +25,39 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
         formState: { isSubmitting, errors },
     } = form;
 
-    const lukkOpprettBehandlingModal = () => {
-        nullstillSkjema();
-        settSubmitRessurs(byggTomRessurs());
-        lukkModal();
-    };
-
-    const søknadMottattDatoErMerEnn360DagerSiden =
-        opprettBehandlingSkjema.felter.søknadMottattDato.verdi &&
-        isBefore(opprettBehandlingSkjema.felter.søknadMottattDato.verdi, subDays(hentDagensDato(), 360));
-
     return (
         <Modal
             open={true}
             portal={true}
             width={'35rem'}
             header={{ heading: 'Opprett ny behandling' }}
-            onClose={lukkOpprettBehandlingModal}
+            onClose={lukkModal}
         >
             <FormProvider {...form}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Modal.Body>
-                        <Fieldset
-                            error={hentFrontendFeilmelding(opprettBehandlingSkjema.submitRessurs)}
-                            legend={'Opprett ny behandling'}
-                            hideLegend
-                        >
+                        <Fieldset error={errors.root?.message} legend={'Opprett ny behandling'} hideLegend>
                             <VStack gap={'space-16'}>
-                                <BehandlingstypeFelt
-                                    behandlingstype={opprettBehandlingSkjema.felter.behandlingstype}
-                                    visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                                    minimalFagsak={fagsak}
-                                />
-                                {opprettBehandlingSkjema.felter.behandlingsårsak.erSynlig && (
-                                    <BehandlingårsakFelt
-                                        behandlingsårsak={opprettBehandlingSkjema.felter.behandlingsårsak}
-                                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                                    />
-                                )}
-                                {opprettBehandlingSkjema.felter.behandlingstema.erSynlig && (
-                                    <OpprettBehandlingBehandlingstemaSelect
-                                        behandlingstema={opprettBehandlingSkjema.felter.behandlingstema}
-                                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                                        name="Behandlingstema"
-                                        label="Velg behandlingstema"
-                                    />
-                                )}
-                                {opprettBehandlingSkjema.felter.klageMottattDato.erSynlig && (
-                                    <Datovelger
-                                        felt={opprettBehandlingSkjema.felter.klageMottattDato}
-                                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                                        label={'Klage mottatt'}
-                                        kanKunVelgeFortid
-                                    />
-                                )}
-                                {opprettBehandlingSkjema.felter.søknadMottattDato.erSynlig && (
-                                    <Datovelger
-                                        felt={opprettBehandlingSkjema.felter.søknadMottattDato}
-                                        visFeilmeldinger={opprettBehandlingSkjema.visFeilmeldinger}
-                                        label={'Mottatt dato'}
-                                        kanKunVelgeFortid
-                                    />
-                                )}
+                                {/* Vises alltid */}
+                                <BehandlingstypeFelt />
+                                {/* TODO: Vises ved Behandlingstype.REVURDERING */}
+                                <BehandlingsårsakFelt />
+                                {/* Vises ved Behandlingstype in Behandlingstype && Behandlingårsak.SØKNAD */}
+                                <OpprettBehandlingBehandlingstemaSelect />
+                                {/* Vises ved Klagebehandlingstype.KLAGE */}
+                                <KlageMottattDatoFelt />
+                                {/* Vises ved Behandlingstype.FØRSTEGANGSBEHANDLING eller ved Behandlingstype.REVURDERING && Behandlingsårsak.SØKNAD */}
+                                <SøknadMottattDatoFelt />
                             </VStack>
                         </Fieldset>
-                        {søknadMottattDatoErMerEnn360DagerSiden && (
-                            <Box marginBlock={'space-24 space-0'}>
-                                <LocalAlert status="warning">
-                                    <LocalAlert.Header>
-                                        <LocalAlert.Title>Er mottatt dato riktig?</LocalAlert.Title>
-                                    </LocalAlert.Header>
-                                    <LocalAlert.Content>
-                                        Det er mer enn 360 dager siden denne datoen.
-                                    </LocalAlert.Content>
-                                </LocalAlert>
-                            </Box>
-                        )}
                     </Modal.Body>
                 </form>
             </FormProvider>
             <Modal.Footer>
-                <Button
-                    type={'submit'}
-                    variant="primary"
-                    size="small"
-                    loading={opprettBehandlingSkjema.submitRessurs.status === RessursStatus.HENTER}
-                    disabled={opprettBehandlingSkjema.submitRessurs.status === RessursStatus.HENTER}
-                >
+                <Button type={'submit'} variant="primary" size="small" loading={isSubmitting}>
                     Bekreft
                 </Button>
-                <Button variant="tertiary" size="small" onClick={lukkOpprettBehandlingModal}>
+                <Button variant="tertiary" size="small" onClick={lukkModal}>
                     Avbryt
                 </Button>
             </Modal.Footer>
