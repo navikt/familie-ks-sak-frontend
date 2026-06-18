@@ -1,43 +1,53 @@
-import { Select, type SelectProps } from '@navikt/ds-react';
-import type { Felt } from '@navikt/familie-skjema';
+import {
+    OpprettBehandlingFelt,
+    type OpprettBehandlingFormValues,
+} from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
+import type { IBehandlingstema } from '@typer/behandlingstema';
+import { behandlingstemaer } from '@typer/behandlingstema';
+import { useController, useFormContext } from 'react-hook-form';
 
-import type { Behandlingstema, IBehandlingstema } from '../../../../typer/behandlingstema';
-import { behandlingstemaer } from '../../../../typer/behandlingstema';
+import { Select } from '@navikt/ds-react';
 
-interface EgneProps {
-    behandlingstema: Felt<IBehandlingstema | undefined>;
-    visFeilmeldinger?: boolean;
-}
+export function OpprettBehandlingBehandlingstemaSelect() {
+    const { control } = useFormContext<OpprettBehandlingFormValues>();
+    const {
+        field: { value, onChange },
+        fieldState: { error },
+        formState: { isSubmitting },
+    } = useController({
+        name: OpprettBehandlingFelt.BEHANDLINGSTEMA,
+        control,
+        rules: {
+            required: 'Behandlingstema må velges.',
+        },
+    });
 
-type Props = EgneProps & Omit<SelectProps, 'children'>;
+    const konverterTilBehandlingstema = (behandlingstemaId: string): IBehandlingstema => {
+        return behandlingstemaer[behandlingstemaId as keyof typeof behandlingstemaer];
+    };
 
-export const OpprettBehandlingBehandlingstemaSelect = ({
-    behandlingstema,
-    visFeilmeldinger = false,
-    ...selectProps
-}: Props) => {
-    const { verdi } = behandlingstema;
     return (
         <Select
-            {...selectProps}
-            {...behandlingstema.hentNavInputProps(visFeilmeldinger)}
-            value={verdi !== undefined ? verdi.id : ''}
-            onChange={evt => {
-                behandlingstema.validerOgSettFelt(behandlingstemaer[evt.target.value as Behandlingstema]);
+            label={'Velg behandlingstema'}
+            readOnly={isSubmitting}
+            value={value.id}
+            onChange={event => {
+                onChange(konverterTilBehandlingstema(event.target.value));
             }}
+            error={error?.message}
         >
-            {verdi === undefined && (
+            {value === undefined && (
                 <option disabled key={'behandlingstema-select-disabled'} value={''} aria-selected={true}>
                     Velg behandlingstema
                 </option>
             )}
             {Object.values(behandlingstemaer).map(tema => {
                 return (
-                    <option key={tema.id} aria-selected={verdi !== undefined && verdi.id === tema.id} value={tema.id}>
+                    <option key={tema.id} aria-selected={value !== undefined && value.id === tema.id} value={tema.id}>
                         {tema.navn}
                     </option>
                 );
             })}
         </Select>
     );
-};
+}

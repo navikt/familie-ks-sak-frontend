@@ -1,37 +1,36 @@
-import type { ChangeEvent } from 'react';
+import { useFeatureToggles } from '@hooks/useFeatureToggles';
+import {
+    OpprettBehandlingFelt,
+    type OpprettBehandlingFormValues,
+} from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
+import { behandlingÅrsak, BehandlingÅrsak, behandlingÅrsakerSomIkkeSkalSettesManuelt } from '@typer/behandling';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
-import type { Felt } from '@navikt/familie-skjema';
 
-import { useFeatureToggles } from '../../../../hooks/useFeatureToggles';
-import {
-    behandlingÅrsak,
-    BehandlingÅrsak,
-    behandlingÅrsakerSomIkkeSkalSettesManuelt,
-} from '../../../../typer/behandling';
-
-interface BehandlingÅrsakSelect extends HTMLSelectElement {
-    value: BehandlingÅrsak | '';
-}
-
-interface IProps {
-    behandlingsårsak: Felt<BehandlingÅrsak | ''>;
-    visFeilmeldinger: boolean;
-    erLesevisning?: boolean;
-}
-
-export const BehandlingårsakFelt = ({ behandlingsårsak, visFeilmeldinger, erLesevisning = false }: IProps) => {
+export function BehandlingsårsakFelt() {
     const toggles = useFeatureToggles();
+
+    const { control } = useFormContext<OpprettBehandlingFormValues>();
+    const {
+        field: { value, onChange },
+        fieldState: { error },
+        formState: { isSubmitting },
+    } = useController({
+        name: OpprettBehandlingFelt.BEHANDLINGSÅRSAK,
+        control,
+        rules: {
+            required: 'Velg årsak for opprettelse av behandlingen fra nedtrekkslisten.',
+        },
+    });
 
     return (
         <Select
-            {...behandlingsårsak.hentNavBaseSkjemaProps(visFeilmeldinger)}
-            readOnly={erLesevisning}
-            name={'Behandlingsårsak'}
-            label={'Velg årsak'}
-            onChange={(event: ChangeEvent<BehandlingÅrsakSelect>): void => {
-                behandlingsårsak.onChange(event.target.value);
-            }}
+            label={'Velg behandlingsårsak'}
+            readOnly={isSubmitting}
+            value={value}
+            onChange={onChange}
+            error={error?.message}
         >
             <option disabled={true} value={''}>
                 Velg
@@ -42,11 +41,11 @@ export const BehandlingårsakFelt = ({ behandlingsårsak, visFeilmeldinger, erLe
                 )
                 .map(årsak => {
                     return (
-                        <option key={årsak} aria-selected={behandlingsårsak.verdi === årsak} value={årsak}>
+                        <option key={årsak} aria-selected={value === årsak} value={årsak}>
                             {behandlingÅrsak[årsak]}
                         </option>
                     );
                 })}
         </Select>
     );
-};
+}
