@@ -36,6 +36,17 @@ backend(sessionConfig, prometheusTellere, appConfig).then(async ({ app, azureAut
     app.use(express.urlencoded({ limit: '200mb', extended: true }));
     app.use('/', await setupRouter(azureAuthClient, router));
 
+    // Error-handling middleware - må registreres etter alle andre routes
+    app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+        if (res.headersSent) {
+            return _next(err);
+        }
+        if (err.message?.includes('did not find expected authorization request details in session')) {
+            logInfo(`OIDC-sesjon mangler ved callback - brukeren omdirigeres til login. Detaljer: ${err.message}`);
+            res.redirect('/login');
+        }
+    });
+
     app.listen(port, '0.0.0.0', () => {
         logInfo(`Server startet på port ${port}. Build version: ${envVar('APP_VERSION')}.`);
     });
