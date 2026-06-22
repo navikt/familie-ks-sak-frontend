@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { useFagsak } from '@hooks/useFagsak';
 import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
 import { HentKlagebehandlingerQueryKeyFactory } from '@hooks/useHentKlagebehandlinger';
@@ -10,7 +8,8 @@ import { useOpprettKlagebehandling } from '@hooks/useOpprettKlagebehandling';
 import { useOpprettTilbakekreving } from '@hooks/useOpprettTilbakekreving';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useQueryClient } from '@tanstack/react-query';
-import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
+import type { Behandlingstype } from '@typer/behandling';
+import { BehandlingÅrsak } from '@typer/behandling';
 import type { IBehandlingstema } from '@typer/behandlingstema';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
@@ -18,12 +17,10 @@ import { dateTilIsoDatoString, dateTilIsoDatoStringEllerUndefined } from '@utils
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
-import { byggFunksjonellFeilRessurs, byggHenterRessurs, byggSuksessRessurs } from '@navikt/familie-typer';
-
 export enum OpprettBehandlingFelt {
     BEHANDLINGSTYPE = 'behandlingstype',
     BEHANDLINGSÅRSAK = 'behandlingsårsak',
-    BEHANDLINGSTEMA = 'behandlingstema',
+    BEHANDLINGSKATEGORI = 'behandlingstema', // TODO: rename til BEHANDLINGKATEGORI?
     SØKNAD_MOTTATT_DATO = 'søknadMottattDato',
     KLAGE_MOTTATT_DATO = 'klageMottattDato',
 }
@@ -35,15 +32,15 @@ export interface OpprettBehandlingFormValues {
         | Klagebehandlingstype
         | string;
     [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: BehandlingÅrsak | string;
-    [OpprettBehandlingFelt.BEHANDLINGSTEMA]: IBehandlingstema | undefined;
-    [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: Date | undefined;
-    [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: Date | undefined;
+    [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: IBehandlingstema | undefined;
+    [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: Date | null;
+    [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: Date | null;
 }
 
 export interface TransformedOpprettBehandlingFormValues {
     [OpprettBehandlingFelt.BEHANDLINGSTYPE]: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype;
     [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: BehandlingÅrsak;
-    [OpprettBehandlingFelt.BEHANDLINGSTEMA]: IBehandlingstema;
+    [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: IBehandlingstema;
     [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: Date;
     [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: Date;
 }
@@ -59,11 +56,20 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const form = useForm<OpprettBehandlingFormValues, unknown, TransformedOpprettBehandlingFormValues>();
+    const form = useForm<OpprettBehandlingFormValues, unknown, TransformedOpprettBehandlingFormValues>({
+        defaultValues: {
+            [OpprettBehandlingFelt.BEHANDLINGSTYPE]: '',
+            [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: '',
+            [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: undefined,
+            [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: null,
+            [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: null,
+        },
+    });
 
     const { setError } = form;
 
     // TODO: håndter dette ved omskriving
+    /*
     useEffect(() => {
         if (behandlingstype.verdi === Behandlingstype.FØRSTEGANGSBEHANDLING) {
             behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.SØKNAD);
@@ -71,35 +77,34 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
             behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.TEKNISK_ENDRING);
         }
     }, [behandlingstype.verdi]);
+     */
 
     const { mutate: opprettKlagebehandling } = useOpprettKlagebehandling({
-        onSuccess: async behandling => {
+        onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(fagsak.id),
             });
 
             lukkModal();
-            nullstillSkjema();
-            settSubmitRessurs(byggSuksessRessurs(behandling));
+            // settÅpenBehandling(byggSuksessRessurs(behandling));
         },
         onError: error => {
-            settSubmitRessurs(byggFunksjonellFeilRessurs(error.message));
+            setError('root', { message: error.message ?? 'Teknisk feil ved oppretting av klagebehandling.' });
         },
     });
 
     const { mutate: opprettTilbakekreving } = useOpprettTilbakekreving({
-        onSuccess: async behandling => {
+        onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsak.id),
             });
 
             lukkModal();
-            nullstillSkjema();
             onTilbakekrevingsbehandlingOpprettet();
-            settSubmitRessurs(byggSuksessRessurs(behandling));
+            // settÅpenBehandling(byggSuksessRessurs(behandling));
         },
         onError: error => {
-            settSubmitRessurs(byggFunksjonellFeilRessurs(error.message));
+            setError('root', { message: error.message ?? 'Teknisk feil ved oppretting av tilbakekreving.' });
         },
     });
 
@@ -113,8 +118,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
             ]);
 
             lukkModal();
-            nullstillSkjema();
-            settSubmitRessurs(byggSuksessRessurs(behandling));
+            // settÅpenBehandling(byggSuksessRessurs(behandling));
 
             if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
                 navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/registrer-soknad`);
@@ -123,38 +127,34 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
             }
         },
         onError: error => {
-            settSubmitRessurs(byggFunksjonellFeilRessurs(error.message));
+            setError('root', { message: error.message ?? 'Teknisk feil ved oppretting av behandling.' });
         },
     });
 
-    const onSubmit = async (values: OpprettBehandlingFormValues) => {
+    const onSubmit = async (values: TransformedOpprettBehandlingFormValues) => {
+        // TODO: det funker ikke å sende inn formet
+        console.log('values i onsubmit', values);
         const { behandlingstype, behandlingsårsak, behandlingstema, søknadMottattDato, klageMottattDato } = values;
 
-        try {
-            settSubmitRessurs(byggHenterRessurs());
-
-            if (behandlingstype === Klagebehandlingstype.KLAGE) {
-                opprettKlagebehandling({
-                    klageMottattDato: dateTilIsoDatoString(klageMottattDato),
-                    fagsakId: fagsak.id,
-                });
-            } else if (behandlingstype === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) {
-                opprettTilbakekreving({ fagsakId: fagsak.id });
-            } else {
-                const opprettBehandlingParameters = {
-                    behandlingType: behandlingstype, // TODO: as Behandlingstype?
-                    behandlingÅrsak: behandlingsårsak, // TODO: as BehandlingÅrsak?
-                    kategori: behandlingstema?.kategori ?? null,
-                    saksbehandlerIdent: saksbehandler.navIdent,
-                    søkersIdent: fagsak.søkerFødselsnummer,
-                    søknadMottattDato: dateTilIsoDatoStringEllerUndefined(søknadMottattDato),
-                };
-                opprettBehandling(opprettBehandlingParameters);
-            }
-        } catch (e: unknown) {
-            setError('root', {
-                message: e instanceof Error ? e.message : 'Teknisk feil ved opprettelse av behandling.', // TODO: ønskelig med melding basert på behandlingstype?
+        if (behandlingstype === Klagebehandlingstype.KLAGE) {
+            opprettKlagebehandling({
+                klageMottattDato: dateTilIsoDatoString(klageMottattDato),
+                fagsakId: fagsak.id,
             });
+        } else if (behandlingstype === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) {
+            opprettTilbakekreving({ fagsakId: fagsak.id });
+        } else if (behandlingstype === Tilbakekrevingsbehandlingstype.REVURDERING_TILBAKEKREVING) {
+            // TODO: hvordan skal denne typen håndteres?
+        } else {
+            const opprettBehandlingParameters = {
+                behandlingType: behandlingstype,
+                behandlingÅrsak: behandlingsårsak,
+                kategori: behandlingstema.kategori ?? null,
+                saksbehandlerIdent: saksbehandler.navIdent,
+                søkersIdent: fagsak.søkerFødselsnummer,
+                søknadMottattDato: dateTilIsoDatoStringEllerUndefined(søknadMottattDato),
+            };
+            opprettBehandling(opprettBehandlingParameters);
         }
     };
 

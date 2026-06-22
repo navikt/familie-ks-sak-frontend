@@ -16,11 +16,7 @@ import { Select } from '@navikt/ds-react';
 
 import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opprettBehandlingUtils';
 
-interface Props {
-    manuellJournalfør?: boolean;
-}
-
-export function BehandlingstypeFelt({ manuellJournalfør = false }: Props) {
+export function BehandlingstypeFelt() {
     const toggles = useFeatureToggles();
 
     const { fagsak } = useFagsakContext();
@@ -45,7 +41,7 @@ export function BehandlingstypeFelt({ manuellJournalfør = false }: Props) {
     const kanOppretteTekniskEndring =
         kanOppretteRevurdering(fagsak, aktivBehandling) && toggles[FeatureToggle.kanBehandleTekniskEndring];
 
-    const kanOppretteTilbakekreving = !manuellJournalfør;
+    console.log('behandlingstype value: ', value);
 
     return (
         <Select
@@ -81,14 +77,12 @@ export function BehandlingstypeFelt({ manuellJournalfør = false }: Props) {
                 </option>
             )}
 
-            {kanOppretteTilbakekreving && (
-                <option
-                    aria-selected={value === Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
-                    value={Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
-                >
-                    Tilbakekreving
-                </option>
-            )}
+            <option
+                aria-selected={value === Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
+                value={Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
+            >
+                Tilbakekreving
+            </option>
             {!fagsak?.finnesStrengtFortroligPersonIFagsak && (
                 <option aria-selected={value === Klagebehandlingstype.KLAGE} value={Klagebehandlingstype.KLAGE}>
                     Klage
