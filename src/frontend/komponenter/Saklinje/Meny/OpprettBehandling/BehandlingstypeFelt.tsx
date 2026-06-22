@@ -20,7 +20,6 @@ interface Props {
     manuellJournalfør?: boolean;
 }
 
-// TODO: OBS brukes i KnyttTilBehandling - så må håndtere det på noe vis
 export function BehandlingstypeFelt({ manuellJournalfør = false }: Props) {
     const toggles = useFeatureToggles();
 

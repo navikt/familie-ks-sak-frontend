@@ -59,9 +59,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const form = useForm<OpprettBehandlingFormValues, unknown, TransformedOpprettBehandlingFormValues>({
-        defaultValues: {}, // TODO: skal noe settes her?
-    });
+    const form = useForm<OpprettBehandlingFormValues, unknown, TransformedOpprettBehandlingFormValues>();
 
     const { setError } = form;
 
