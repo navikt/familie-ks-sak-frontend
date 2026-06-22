@@ -8,14 +8,14 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
 
-export function OpprettBehandlingBehandlingstemaSelect() {
+export function BehandlingstemaSelect() {
     const { control } = useFormContext<OpprettBehandlingFormValues>();
     const {
         field: { value, onChange },
         fieldState: { error },
         formState: { isSubmitting },
     } = useController({
-        name: OpprettBehandlingFelt.BEHANDLINGSTEMA,
+        name: OpprettBehandlingFelt.BEHANDLINGSKATEGORI,
         control,
         rules: {
             required: 'Behandlingstema må velges.',
@@ -30,17 +30,15 @@ export function OpprettBehandlingBehandlingstemaSelect() {
         <Select
             label={'Velg behandlingstema'}
             readOnly={isSubmitting}
-            value={value.id}
+            value={value?.id}
             onChange={event => {
                 onChange(konverterTilBehandlingstema(event.target.value));
             }}
             error={error?.message}
         >
-            {value === undefined && (
-                <option disabled key={'behandlingstema-select-disabled'} value={''} aria-selected={true}>
-                    Velg behandlingstema
-                </option>
-            )}
+            <option disabled={true} value={''} aria-selected={true}>
+                Velg behandlingstema
+            </option>
             {Object.values(behandlingstemaer).map(tema => {
                 return (
                     <option key={tema.id} aria-selected={value !== undefined && value.id === tema.id} value={tema.id}>

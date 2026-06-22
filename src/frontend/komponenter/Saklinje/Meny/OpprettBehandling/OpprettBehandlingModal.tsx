@@ -5,9 +5,9 @@ import { FormProvider } from 'react-hook-form';
 
 import { Button, Fieldset, Modal, VStack } from '@navikt/ds-react';
 
+import { BehandlingstemaSelect } from './BehandlingstemaSelect';
 import { BehandlingstypeFelt } from './BehandlingstypeFelt';
 import { BehandlingsårsakFelt } from './BehandlingsårsakFelt';
-import { OpprettBehandlingBehandlingstemaSelect } from './OpprettBehandlingBehandlingstemaSelect';
 
 interface Props {
     lukkModal: () => void;
@@ -43,7 +43,7 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
                                 {/* TODO: Vises ved Behandlingstype.REVURDERING */}
                                 <BehandlingsårsakFelt />
                                 {/* Vises ved Behandlingstype in Behandlingstype && Behandlingårsak.SØKNAD */}
-                                <OpprettBehandlingBehandlingstemaSelect />
+                                <BehandlingstemaSelect />
                                 {/* Vises ved Klagebehandlingstype.KLAGE */}
                                 <KlageMottattDatoFelt />
                                 {/* Vises ved Behandlingstype.FØRSTEGANGSBEHANDLING eller ved Behandlingstype.REVURDERING && Behandlingsårsak.SØKNAD */}
