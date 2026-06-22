@@ -1,7 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
 import { useBehandling } from '@hooks/useBehandling';
-import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { type IVilkårResultat, uiResultat } from '@typer/vilkår';
 import { Datoformat, isoDatoPeriodeTilFormatertString, isoStringTilFormatertString } from '@utils/dato';
 import { alleRegelverk } from '@utils/vilkår';
@@ -21,13 +20,11 @@ interface Props extends PropsWithChildren {
 
 export function VilkårTabellRad({ toggleForm, lagretVilkårResultat, erVilkårEkspandert, children }: Props) {
     const behandling = useBehandling();
-    const { erRadEkspandert } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
 
     const periodeErTom = !lagretVilkårResultat.periode.fom && !lagretVilkårResultat.periode.tom;
 
     return (
         <Table.ExpandableRow
-            key={`${lagretVilkårResultat.id}-${erRadEkspandert ? 'ekspandert' : 'lukket'}`} // Pga. React.Activity ikke fungerer så bra med Aksel her, se https://github.com/navikt/aksel/issues/4971
             open={erVilkårEkspandert}
             togglePlacement={'right'}
             onOpenChange={() => toggleForm(true)}
