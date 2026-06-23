@@ -41,8 +41,6 @@ export function BehandlingstypeFelt() {
     const kanOppretteTekniskEndring =
         kanOppretteRevurdering(fagsak, aktivBehandling) && toggles[FeatureToggle.kanBehandleTekniskEndring];
 
-    console.log('behandlingstype value: ', value);
-
     return (
         <Select
             label={'Velg type behandling'}

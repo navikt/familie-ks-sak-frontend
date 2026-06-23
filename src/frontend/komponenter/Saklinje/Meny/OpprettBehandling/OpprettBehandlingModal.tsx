@@ -1,6 +1,11 @@
 import { KlageMottattDatoFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/KlageMottattDatoFelt';
 import { SøknadMottattDatoFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/SøknadMottattDatoFelt';
-import { useOpprettBehandlingSkjema } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
+import {
+    OpprettBehandlingFelt,
+    useOpprettBehandlingSkjema,
+} from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
+import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
+import { Klagebehandlingstype } from '@typer/klage';
 import { FormProvider } from 'react-hook-form';
 
 import { Button, Fieldset, Modal, VStack } from '@navikt/ds-react';
@@ -23,7 +28,20 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
     const {
         handleSubmit,
         formState: { isSubmitting, errors },
+        watch,
     } = form;
+
+    console.log('form values: ', form.getValues());
+    const behandlingstype = watch(OpprettBehandlingFelt.BEHANDLINGSTYPE);
+    const behandlingsårsak = watch(OpprettBehandlingFelt.BEHANDLINGSÅRSAK);
+
+    const skalViseBehandlingsårsakFelt = behandlingstype === Behandlingstype.REVURDERING;
+    const skalViseBehandlingstemaSelect =
+        behandlingstype in Behandlingstype && behandlingsårsak === BehandlingÅrsak.SØKNAD;
+    const skalViseKlageMottattDatoFelt = behandlingstype === Klagebehandlingstype.KLAGE;
+    const skalViseSøknadMottattDatoFelt =
+        behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING ||
+        (behandlingstype === Behandlingstype.REVURDERING && behandlingsårsak === BehandlingÅrsak.SØKNAD);
 
     return (
         <Modal
@@ -38,16 +56,11 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
                     <Modal.Body>
                         <Fieldset error={errors.root?.message} legend={'Opprett ny behandling'} hideLegend>
                             <VStack gap={'space-16'}>
-                                {/* Vises alltid */}
                                 <BehandlingstypeFelt />
-                                {/* TODO: Vises ved Behandlingstype.REVURDERING */}
-                                <BehandlingsårsakFelt />
-                                {/* Vises ved Behandlingstype in Behandlingstype && Behandlingårsak.SØKNAD */}
-                                <BehandlingstemaSelect />
-                                {/* Vises ved Klagebehandlingstype.KLAGE */}
-                                <KlageMottattDatoFelt />
-                                {/* Vises ved Behandlingstype.FØRSTEGANGSBEHANDLING eller ved Behandlingstype.REVURDERING && Behandlingsårsak.SØKNAD */}
-                                <SøknadMottattDatoFelt />
+                                {skalViseBehandlingsårsakFelt && <BehandlingsårsakFelt />}
+                                {skalViseBehandlingstemaSelect && <BehandlingstemaSelect />}
+                                {skalViseKlageMottattDatoFelt && <KlageMottattDatoFelt />}
+                                {skalViseSøknadMottattDatoFelt && <SøknadMottattDatoFelt />}
                             </VStack>
                         </Fieldset>
                     </Modal.Body>
