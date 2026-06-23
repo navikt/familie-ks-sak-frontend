@@ -23,7 +23,6 @@ export function KlageMottattDatoFelt() {
         name: OpprettBehandlingFelt.KLAGE_MOTTATT_DATO,
         control,
         rules: {
-            // TODO: dobbeltsjekk at valideringen her er sufficient
             validate: value => {
                 const dateValidation = dateValidationRef.current;
 
@@ -56,7 +55,7 @@ export function KlageMottattDatoFelt() {
             }
         },
         fromDate: tidligsteRelevanteDato,
-        toDate: hentDagensDato(), // TODO: dobbeltsjekk at dette blir riktig
+        toDate: hentDagensDato(),
         required: true,
         onValidate: validation => {
             dateValidationRef.current = validation;

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useFagsak } from '@hooks/useFagsak';
 import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
 import { HentKlagebehandlingerQueryKeyFactory } from '@hooks/useHentKlagebehandlinger';
@@ -8,8 +10,7 @@ import { useOpprettKlagebehandling } from '@hooks/useOpprettKlagebehandling';
 import { useOpprettTilbakekreving } from '@hooks/useOpprettTilbakekreving';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useQueryClient } from '@tanstack/react-query';
-import type { Behandlingstype } from '@typer/behandling';
-import { BehandlingÅrsak } from '@typer/behandling';
+import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 import type { IBehandlingstema } from '@typer/behandlingstema';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
@@ -66,18 +67,16 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
         },
     });
 
-    const { setError } = form;
+    const { setError, setValue, watch } = form;
+    const behandlingstype = watch(OpprettBehandlingFelt.BEHANDLINGSTYPE);
 
-    // TODO: håndter dette ved omskriving
-    /*
     useEffect(() => {
-        if (behandlingstype.verdi === Behandlingstype.FØRSTEGANGSBEHANDLING) {
-            behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.SØKNAD);
-        } else if (behandlingstype.verdi === Behandlingstype.TEKNISK_ENDRING) {
-            behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.TEKNISK_ENDRING);
+        if (behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING) {
+            setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, BehandlingÅrsak.SØKNAD);
+        } else if (behandlingstype === Behandlingstype.TEKNISK_ENDRING) {
+            setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, BehandlingÅrsak.TEKNISK_ENDRING);
         }
-    }, [behandlingstype.verdi]);
-     */
+    }, [behandlingstype, setValue]);
 
     const { mutate: opprettKlagebehandling } = useOpprettKlagebehandling({
         onSuccess: async () => {
