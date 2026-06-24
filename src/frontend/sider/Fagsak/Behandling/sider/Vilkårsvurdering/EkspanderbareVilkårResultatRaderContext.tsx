@@ -2,12 +2,10 @@ import { createContext, type PropsWithChildren, useCallback, useContext, useMemo
 
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { IBehandling } from '@typer/behandling';
 import { Resultat } from '@typer/vilkår';
 
-function useInitielleEkspanderteIder(): Set<number> {
-    const behandling = useBehandling();
-    const erLesevisning = useErLesevisning();
-
+function finnInitielleEkspanderteIder(behandling: IBehandling, erLesevisning: boolean): Set<number> {
     const vilkårResultater = behandling.personResultater.flatMap(it => it.vilkårResultater);
 
     if (erLesevisning) {
@@ -32,11 +30,19 @@ interface EkspanderbareVilkårResultatRaderContext {
 const Context = createContext<EkspanderbareVilkårResultatRaderContext | undefined>(undefined);
 
 export function EkspanderbareVilkårResultatRaderProvider({ children }: PropsWithChildren) {
-    const initielleEkspanderteIdenter = useInitielleEkspanderteIder();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
 
-    const [ekspanderteIder, settEkspanderteIder] = useState(initielleEkspanderteIdenter);
+    const [ekspanderteIder, settEkspanderteIder] = useState(() =>
+        finnInitielleEkspanderteIder(behandling, erLesevisning)
+    );
 
-    const erRadEkspandert = useCallback((id: number) => ekspanderteIder.has(id), [ekspanderteIder]);
+    const erRadEkspandert = useCallback(
+        (id: number) => {
+            return ekspanderteIder.has(id);
+        },
+        [ekspanderteIder]
+    );
 
     const ekspanderRad = useCallback((id: number, isDirty: boolean = false) => {
         if (isDirty) {
