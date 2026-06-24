@@ -2,12 +2,10 @@ import { createContext, type PropsWithChildren, useCallback, useContext, useMemo
 
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { IBehandling } from '@typer/behandling';
 import { Resultat } from '@typer/vilkår';
 
-function useInitielleEkspanderteIdenter(): Set<string> {
-    const behandling = useBehandling();
-    const erLesevisning = useErLesevisning();
-
+function finnInitielleEkspanderteIdenter(behandling: IBehandling, erLesevisning: boolean): Set<string> {
     if (erLesevisning) {
         return new Set(behandling.personResultater.map(pr => pr.personIdent));
     }
@@ -37,11 +35,19 @@ interface EkspanderbareVilkårsvurderingPanelerContext {
 const Context = createContext<EkspanderbareVilkårsvurderingPanelerContext | undefined>(undefined);
 
 export function EkspanderbareVilkårsvurderingPanelerProvider({ children }: PropsWithChildren) {
-    const initielleEkspanderteIdenter = useInitielleEkspanderteIdenter();
+    const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
 
-    const [ekspanderteIdenter, settEkspanderteIdenter] = useState<Set<string>>(initielleEkspanderteIdenter);
+    const [ekspanderteIdenter, settEkspanderteIdenter] = useState(() =>
+        finnInitielleEkspanderteIdenter(behandling, erLesevisning)
+    );
 
-    const erPanelEkspandert = useCallback((ident: string) => ekspanderteIdenter.has(ident), [ekspanderteIdenter]);
+    const erPanelEkspandert = useCallback(
+        (ident: string) => {
+            return ekspanderteIdenter.has(ident);
+        },
+        [ekspanderteIdenter]
+    );
 
     const ekspanderPanel = useCallback((ident: string) => {
         settEkspanderteIdenter(forrige => {
