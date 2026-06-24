@@ -1,24 +1,25 @@
-import { mapFraRestPersonResultatTilPersonResultat } from './Vilkårsvurdering/utils';
-import { BehandlingSteg, BehandlingÅrsak, hentStegNummer, type IBehandling } from '../../../../typer/behandling';
-import type { IPersonResultat, IVilkårResultat } from '../../../../typer/vilkår';
-import { Resultat } from '../../../../typer/vilkår';
+import { BehandlingSteg, BehandlingÅrsak, hentStegNummer, type IBehandling } from '@typer/behandling';
+import { Resultat } from '@typer/vilkår';
 
-export interface ISide {
+import { mapFraRestPersonResultatTilPersonResultat } from './Vilkårsvurdering/utils';
+
+export interface Side {
+    id: SideId;
     href: string;
     navn: string;
     steg: BehandlingSteg;
-    undersider?: (åpenBehandling: IBehandling) => IUnderside[];
-    visSide?: (åpenBehandling: IBehandling) => boolean;
+    undersider?: (behandling: IBehandling) => Underside[];
+    visSide?: (behandling: IBehandling) => boolean;
 }
 
-export interface IUnderside {
+export interface Underside {
     navn: string;
     ident: string;
     antallAksjonspunkter: () => number;
     hash: string;
 }
 
-export interface ITrinn extends ISide {
+export interface Trinn extends Side {
     kontrollert: KontrollertStatus;
 }
 
@@ -36,68 +37,75 @@ export enum SideId {
     VEDTAK = 'VEDTAK',
 }
 
-export const sider: Record<SideId, ISide> = {
+export const sider: Record<SideId, Side> = {
     REGISTRERE_SØKNAD: {
+        id: SideId.REGISTRERE_SØKNAD,
         href: 'registrer-soknad',
         navn: 'Registrer søknad',
         steg: BehandlingSteg.REGISTRERE_SØKNAD,
-        visSide: (åpenBehandling: IBehandling) => {
-            return åpenBehandling.årsak === BehandlingÅrsak.SØKNAD;
+        visSide: behandling => {
+            return behandling.årsak === BehandlingÅrsak.SØKNAD;
         },
     },
     VILKÅRSVURDERING: {
+        id: SideId.VILKÅRSVURDERING,
         href: 'vilkaarsvurdering',
         navn: 'Vilkårsvurdering',
         steg: BehandlingSteg.VILKÅRSVURDERING,
-        undersider: (åpenBehandling: IBehandling) => {
+        undersider: behandling => {
             const personResultater = mapFraRestPersonResultatTilPersonResultat(
-                åpenBehandling.personResultater,
-                åpenBehandling.personer
+                behandling.personResultater,
+                behandling.personer
             );
 
-            return personResultater.map((personResultat: IPersonResultat, index: number): IUnderside => {
+            return personResultater.map((personResultat, index): Underside => {
                 return {
                     navn: personResultat.person.navn,
                     ident: personResultat.person.personIdent,
                     hash: `${index}_${personResultat.person.fødselsdato}`,
-                    antallAksjonspunkter: () =>
-                        personResultat.vilkårResultater.filter((vilkårResultat: IVilkårResultat) => {
-                            return vilkårResultat.resultat === Resultat.IKKE_VURDERT;
-                        }).length,
+                    antallAksjonspunkter: () => {
+                        const vilkårSomErIkkeVurdert = personResultat.vilkårResultater.filter(
+                            vilkårResultat => vilkårResultat.resultat === Resultat.IKKE_VURDERT
+                        );
+                        return vilkårSomErIkkeVurdert.length;
+                    },
                 };
             });
         },
     },
     BEHANDLINGRESULTAT: {
+        id: SideId.BEHANDLINGRESULTAT,
         href: 'tilkjent-ytelse',
         navn: 'Behandlingsresultat',
         steg: BehandlingSteg.BEHANDLINGSRESULTAT,
     },
     SIMULERING: {
+        id: SideId.SIMULERING,
         href: 'simulering',
         navn: 'Simulering',
         steg: BehandlingSteg.SIMULERING,
-        visSide: (åpenBehandling: IBehandling) => {
+        visSide: behandling => {
             const erLovendringUtenSimuleringsteg =
-                åpenBehandling.årsak === BehandlingÅrsak.LOVENDRING_2024 &&
-                åpenBehandling.stegTilstand.every(steg => steg.behandlingSteg !== BehandlingSteg.SIMULERING);
+                behandling.årsak === BehandlingÅrsak.LOVENDRING_2024 &&
+                behandling.stegTilstand.every(steg => steg.behandlingSteg !== BehandlingSteg.SIMULERING);
             return !erLovendringUtenSimuleringsteg;
         },
     },
     VEDTAK: {
+        id: SideId.VEDTAK,
         href: 'vedtak',
         navn: 'Vedtak',
         steg: BehandlingSteg.VEDTAK,
-        visSide: (åpenBehandling: IBehandling) => {
+        visSide: behandling => {
             const erLovendringUtenVedtaksteg =
-                åpenBehandling.årsak === BehandlingÅrsak.LOVENDRING_2024 &&
-                åpenBehandling.stegTilstand.every(steg => steg.behandlingSteg !== BehandlingSteg.VEDTAK);
-            return åpenBehandling.årsak !== BehandlingÅrsak.SATSENDRING && !erLovendringUtenVedtaksteg;
+                behandling.årsak === BehandlingÅrsak.LOVENDRING_2024 &&
+                behandling.stegTilstand.every(steg => steg.behandlingSteg !== BehandlingSteg.VEDTAK);
+            return behandling.årsak !== BehandlingÅrsak.SATSENDRING && !erLovendringUtenVedtaksteg;
         },
     },
 };
 
-export const erSidenAktiv = (side: ISide, behandling: IBehandling): boolean => {
+export function erSidenAktiv(side: Side, behandling: IBehandling): boolean {
     const steg = behandling.steg;
 
     if (!side.steg && side.steg !== 0) {
@@ -108,12 +116,16 @@ export const erSidenAktiv = (side: ISide, behandling: IBehandling): boolean => {
         return false;
     }
     return hentStegNummer(side.steg) <= hentStegNummer(steg);
-};
+}
 
-export const hentTrinnForBehandling = (åpenBehandling: IBehandling): { [sideId: string]: ISide } => {
-    const visSide = (side: ISide) => {
+export function finnSiderForBehandling(behandling: IBehandling) {
+    return Object.values(sider).filter(side => side.visSide?.(behandling) ?? true);
+}
+
+export function hentTrinnForBehandling(behandling: IBehandling): { [sideId: string]: Side } {
+    const visSide = (side: Side) => {
         if (side.visSide) {
-            return side.visSide(åpenBehandling);
+            return side.visSide(behandling);
         } else {
             return true;
         }
@@ -126,9 +138,9 @@ export const hentTrinnForBehandling = (åpenBehandling: IBehandling): { [sideId:
                 [sideId]: side,
             };
         }, {});
-};
+}
 
-export const finnSideForBehandlingssteg = (behandling: IBehandling): ISide | undefined => {
+export function finnSideForBehandlingssteg(behandling: IBehandling): Side | undefined {
     const steg = behandling.steg;
 
     if (hentStegNummer(steg) >= hentStegNummer(BehandlingSteg.VEDTAK)) {
@@ -144,20 +156,22 @@ export const finnSideForBehandlingssteg = (behandling: IBehandling): ISide | und
     const sideForSteg = Object.entries(sider).find(([_, side]) => side.steg === steg);
 
     return sideForSteg ? sideForSteg[1] : undefined;
-};
+}
 
-export const erViPåUdefinertFagsakSide = (pathname: string) => {
+export function erViPåUdefinertFagsakSide(pathname: string) {
     return (
-        Object.values(sider).filter((side: ISide) => pathname.includes(side.href)).length === 0 &&
+        Object.values(sider).filter((side: Side) => pathname.includes(side.href)).length === 0 &&
         !pathname.includes('saksoversikt') &&
         !pathname.includes('ny-behandling')
     );
-};
+}
 
-export const erViPåUlovligSteg = (pathname: string, behandlingSide?: ISide) => {
-    if (!behandlingSide) return false;
+export function erViPåUlovligSteg(pathname: string, behandlingSide?: Side) {
+    if (!behandlingSide) {
+        return false;
+    }
 
-    const ønsketSteg: ISide | undefined = Object.values(sider).find((side: ISide) => pathname.includes(side.href));
+    const ønsketSteg = Object.values(sider).find((side: Side) => pathname.includes(side.href));
 
     if (ønsketSteg) {
         if (hentStegNummer(ønsketSteg?.steg) > hentStegNummer(behandlingSide.steg)) {
@@ -166,4 +180,4 @@ export const erViPåUlovligSteg = (pathname: string, behandlingSide?: ISide) => 
     }
 
     return false;
-};
+}

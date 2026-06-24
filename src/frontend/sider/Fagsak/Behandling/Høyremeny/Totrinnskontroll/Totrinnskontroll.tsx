@@ -21,7 +21,7 @@ import type { ITotrinnskontrollData } from '../../../../../typer/totrinnskontrol
 import { TotrinnskontrollBeslutning } from '../../../../../typer/totrinnskontroll';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 import { KontrollertStatus } from '../../sider/sider';
-import type { ITrinn } from '../../sider/sider';
+import type { Trinn } from '../../sider/sider';
 import { Tab, useTabContext } from '../TabContextProvider';
 
 const Container = styled.div`
@@ -43,7 +43,7 @@ export function Totrinnskontroll() {
 
     const nullstillFeilmelding = () => {
         const erFørsteSjekk = Object.entries(forrigeState).some(([sideId, trinn]) => {
-            const oppdatertTrinn: ITrinn = Object.entries(trinnPåBehandling)
+            const oppdatertTrinn: Trinn = Object.entries(trinnPåBehandling)
                 .filter(([oppdatertSideId, _]) => sideId === oppdatertSideId)
                 .map(([_, aTrinn]) => aTrinn)[0];
             return (
