@@ -64,16 +64,22 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
                             </VStack>
                         </Fieldset>
                     </Modal.Body>
+                    <Modal.Footer>
+                        <Button type={'submit'} variant="primary" size="small" loading={isSubmitting}>
+                            Bekreft
+                        </Button>
+                        <Button
+                            type={'button'}
+                            variant="tertiary"
+                            size="small"
+                            disabled={isSubmitting}
+                            onClick={lukkModal}
+                        >
+                            Avbryt
+                        </Button>
+                    </Modal.Footer>
                 </form>
             </FormProvider>
-            <Modal.Footer>
-                <Button type={'submit'} variant="primary" size="small" loading={isSubmitting}>
-                    Bekreft
-                </Button>
-                <Button variant="tertiary" size="small" onClick={lukkModal}>
-                    Avbryt
-                </Button>
-            </Modal.Footer>
         </Modal>
     );
 }
