@@ -1,5 +1,12 @@
 import type { FocusEvent, ReactNode } from 'react';
 
+import { useBehandling } from '@hooks/useBehandling';
+import { BehandlingÅrsak } from '@typer/behandling';
+import type { IGrunnlagPerson } from '@typer/person';
+import { PersonType } from '@typer/person';
+import type { IVilkårConfig, IVilkårResultat, UtdypendeVilkårsvurdering } from '@typer/vilkår';
+import { Regelverk, Resultat, VilkårType } from '@typer/vilkår';
+import { alleRegelverk } from '@utils/vilkår';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
@@ -11,13 +18,6 @@ import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurder
 import VelgPeriode from './VelgPeriode';
 import type { IVilkårSkjemaContext, VilkårSkjemaContextValue } from './VilkårSkjemaContext';
 import { vilkårBegrunnelseFeilmeldingId, vilkårFeilmeldingId } from './VilkårTabell';
-import { BehandlingÅrsak } from '../../../../../../typer/behandling';
-import type { IGrunnlagPerson } from '../../../../../../typer/person';
-import { PersonType } from '../../../../../../typer/person';
-import type { IVilkårConfig, IVilkårResultat, UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
-import { Regelverk, Resultat, VilkårType } from '../../../../../../typer/vilkår';
-import { alleRegelverk } from '../../../../../../utils/vilkår';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
 
 export const FieldsetForVilkårSkjema = styled(Fieldset)<{
     $lesevisning: boolean;
@@ -78,7 +78,8 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     oppdaterMuligeUtdypendeVilkårsvurderinger,
     settFokusPåLeggTilPeriodeKnapp,
 }: IVilkårSkjema<T>) => {
-    const { behandling } = useBehandlingContext();
+    const behandling = useBehandling();
+
     const årsakErSøknad = behandling.årsak === BehandlingÅrsak.SØKNAD;
     const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding, nullstillSkjema } =
         vilkårSkjemaContext;

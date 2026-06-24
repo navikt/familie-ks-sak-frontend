@@ -1,6 +1,6 @@
 import { createContext, type PropsWithChildren, useCallback, useContext, useState } from 'react';
 
-import { useBehandlingContext } from '../../../context/BehandlingContext';
+import { useBehandling } from '@hooks/useBehandling';
 
 interface FeilutbetaltValutaTabellContext {
     erFeilutbetaltValutaTabellSynlig: boolean;
@@ -14,7 +14,7 @@ interface FeilutbetaltValutaTabellContext {
 const FeilutbetaltValutaTabellContext = createContext<FeilutbetaltValutaTabellContext | undefined>(undefined);
 
 export function FeilutbetaltValutaTabellProvider({ children }: PropsWithChildren) {
-    const { behandling } = useBehandlingContext();
+    const behandling = useBehandling();
 
     const harFeilutbetaltValuta = behandling.feilutbetaltValuta.length !== 0;
 

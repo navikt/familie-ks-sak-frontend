@@ -1,17 +1,16 @@
+import { useBehandling } from '@hooks/useBehandling';
+import { useFeatureToggles } from '@hooks/useFeatureToggles';
+import { erPåHenleggbartSteg, henleggÅrsak, HenleggÅrsak } from '@typer/behandling';
+import { FeatureToggle } from '@typer/featureToggles';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
 
 import { HenleggBehandlingFormFields, type HenleggBehandlingFormValues } from './useHenleggBehandlingForm';
-import { useFeatureToggles } from '../../../../hooks/useFeatureToggles';
-import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { erPåHenleggbartSteg, henleggÅrsak, HenleggÅrsak } from '../../../../typer/behandling';
-import { FeatureToggle } from '../../../../typer/featureToggles';
 
 export function ÅrsakFelt() {
-    const { behandling } = useBehandlingContext();
-
     const toggles = useFeatureToggles();
+    const behandling = useBehandling();
 
     const { control } = useFormContext<HenleggBehandlingFormValues>();
 

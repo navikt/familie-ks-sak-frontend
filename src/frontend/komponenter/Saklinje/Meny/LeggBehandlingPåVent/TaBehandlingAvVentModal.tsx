@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { useBehandling } from '@hooks/useBehandling';
 import type { IBehandling } from '@typer/behandling';
 import { settPåVentÅrsaker } from '@typer/behandling';
 import { defaultFunksjonellFeil } from '@typer/feilmeldinger';
@@ -16,7 +16,8 @@ interface Props {
 }
 
 export function TaBehandlingAvVentModal({ lukkModal }: Props) {
-    const { behandling } = useBehandlingContext();
+    const behandling = useBehandling();
+
     const { request } = useHttp();
 
     const [submitRessurs, settSubmitRessurs] = useState(byggTomRessurs());
