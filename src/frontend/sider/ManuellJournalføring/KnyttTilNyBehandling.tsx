@@ -1,12 +1,12 @@
+import { BehandlingstemaSelect } from '@sider/ManuellJournalføring/BehandlingstemaSelect';
+import BehandlingstypeFelt from '@sider/ManuellJournalføring/BehandlingstypeFelt';
+import { BehandlingårsakFelt } from '@sider/ManuellJournalføring/BehandlingsårsakFelt';
 import styled from 'styled-components';
 
 import { Checkbox, Fieldset, Heading } from '@navikt/ds-react';
 import { Space32 } from '@navikt/ds-tokens/dist/tokens';
 
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
-import BehandlingstypeFelt from '../../komponenter/Saklinje/Meny/OpprettBehandling/BehandlingstypeFelt';
-import { BehandlingårsakFelt } from '../../komponenter/Saklinje/Meny/OpprettBehandling/BehandlingsårsakFelt';
-import { OpprettBehandlingBehandlingstemaSelect } from '../../komponenter/Saklinje/Meny/OpprettBehandling/OpprettBehandlingBehandlingstemaSelect';
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: ${Space32};
@@ -55,7 +55,7 @@ export const KnyttTilNyBehandling = () => {
             )}
 
             {behandlingstema.erSynlig && (
-                <OpprettBehandlingBehandlingstemaSelect
+                <BehandlingstemaSelect
                     behandlingstema={behandlingstema}
                     readOnly={!kanKnytteJournalpostTilBehandling()}
                     visFeilmeldinger={skjema.visFeilmeldinger}

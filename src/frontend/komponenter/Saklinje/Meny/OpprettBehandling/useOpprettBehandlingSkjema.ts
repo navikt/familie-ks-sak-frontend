@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useFagsakId } from '@hooks/useFagsakId';
+import { useFagsak } from '@hooks/useFagsak';
 import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
 import { HentKlagebehandlingerQueryKeyFactory } from '@hooks/useHentKlagebehandlinger';
 import { HentKontantstøttebehandlingerQueryKeyFactory } from '@hooks/useHentKontantstøttebehandlinger';
@@ -9,31 +9,41 @@ import { useOpprettBehandling } from '@hooks/useOpprettBehandling';
 import { useOpprettKlagebehandling } from '@hooks/useOpprettKlagebehandling';
 import { useOpprettTilbakekreving } from '@hooks/useOpprettTilbakekreving';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
-import { useBrukerContext } from '@sider/Fagsak/BrukerContext';
 import { useQueryClient } from '@tanstack/react-query';
-import type { IBehandling } from '@typer/behandling';
 import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
-import type { IBehandlingstema } from '@typer/behandlingstema';
+import type { BehandlingKategori } from '@typer/behandlingstema';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
-import { dateTilIsoDatoString, dateTilIsoDatoStringEllerUndefined, validerGyldigDato } from '@utils/dato';
+import type { IsoDatoString } from '@utils/dato';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
-import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
-import {
-    byggFunksjonellFeilRessurs,
-    byggHenterRessurs,
-    byggSuksessRessurs,
-    byggTomRessurs,
-} from '@navikt/familie-typer';
+export enum OpprettBehandlingFelt {
+    BEHANDLINGSTYPE = 'behandlingstype',
+    BEHANDLINGSÅRSAK = 'behandlingsårsak',
+    BEHANDLINGSKATEGORI = 'behandlingskategori',
+    SØKNAD_MOTTATT_DATO = 'søknadMottattDato',
+    KLAGE_MOTTATT_DATO = 'klageMottattDato',
+}
 
-interface IOpprettBehandlingSkjemaFelter {
-    behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
-    behandlingsårsak: BehandlingÅrsak | '';
-    behandlingstema: IBehandlingstema | undefined;
-    søknadMottattDato: Date | undefined;
-    klageMottattDato: Date | undefined;
+export interface OpprettBehandlingFormValues {
+    [OpprettBehandlingFelt.BEHANDLINGSTYPE]:
+        | Behandlingstype
+        | Tilbakekrevingsbehandlingstype
+        | Klagebehandlingstype
+        | string;
+    [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: BehandlingÅrsak | string;
+    [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: BehandlingKategori | string;
+    [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: IsoDatoString;
+    [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: IsoDatoString;
+}
+
+interface TransformedOpprettBehandlingFormValues {
+    [OpprettBehandlingFelt.BEHANDLINGSTYPE]: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype;
+    [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: BehandlingÅrsak;
+    [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: BehandlingKategori;
+    [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: IsoDatoString;
+    [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: IsoDatoString;
 }
 
 interface Props {
@@ -42,182 +52,98 @@ interface Props {
 }
 
 export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandlingOpprettet }: Props) {
-    const { bruker } = useBrukerContext();
-
-    const fagsakId = useFagsakId();
+    const fagsak = useFagsak();
     const saksbehandler = useSaksbehandler();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const behandlingstype = useFelt<Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''>({
-        verdi: '',
-        valideringsfunksjon: felt => {
-            return felt.verdi !== ''
-                ? ok(felt)
-                : feil(felt, 'Velg type behandling som skal opprettes fra nedtrekkslisten');
+    const form = useForm<OpprettBehandlingFormValues, unknown, TransformedOpprettBehandlingFormValues>({
+        defaultValues: {
+            [OpprettBehandlingFelt.BEHANDLINGSTYPE]: '',
+            [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: '',
+            [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: '',
+            [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: '',
+            [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: '',
         },
     });
 
-    const behandlingsårsak = useFelt<BehandlingÅrsak | ''>({
-        verdi: '',
-        valideringsfunksjon: felt => {
-            return felt.verdi !== ''
-                ? ok(felt)
-                : feil(felt, 'Velg årsak for opprettelse av behandlingen fra nedtrekkslisten');
-        },
-        skalFeltetVises: (avhengigheter: Avhengigheter) => {
-            const behandlingstypeVerdi = avhengigheter.behandlingstype.verdi;
-            return behandlingstypeVerdi === Behandlingstype.REVURDERING;
-        },
-        avhengigheter: { behandlingstype },
-    });
-
-    const behandlingstema = useFelt<IBehandlingstema | undefined>({
-        verdi: undefined,
-        valideringsfunksjon: (felt: FeltState<IBehandlingstema | undefined>) =>
-            felt.verdi ? ok(felt) : feil(felt, 'Behandlingstema må settes.'),
-        avhengigheter: { behandlingstype, behandlingsårsak },
-        skalFeltetVises: avhengigheter => {
-            const { verdi: behandlingstypeVerdi } = avhengigheter.behandlingstype;
-            const { verdi: behandlingsårsakVerdi } = avhengigheter.behandlingsårsak;
-            return behandlingstypeVerdi in Behandlingstype && behandlingsårsakVerdi === BehandlingÅrsak.SØKNAD;
-        },
-    });
-
-    const søknadMottattDato = useFelt<Date | undefined>({
-        verdi: undefined,
-        valideringsfunksjon: validerGyldigDato,
-        avhengigheter: { behandlingstype, behandlingsårsak },
-        skalFeltetVises: avhengigheter => {
-            const { verdi: behandlingstypeVerdi } = avhengigheter.behandlingstype;
-            const { verdi: behandlingsårsakVerdi } = avhengigheter.behandlingsårsak;
-            return (
-                behandlingstypeVerdi === Behandlingstype.FØRSTEGANGSBEHANDLING ||
-                (behandlingstypeVerdi === Behandlingstype.REVURDERING &&
-                    behandlingsårsakVerdi === BehandlingÅrsak.SØKNAD)
-            );
-        },
-    });
-
-    const klageMottattDato = useFelt<Date | undefined>({
-        verdi: undefined,
-        valideringsfunksjon: validerGyldigDato,
-
-        avhengigheter: { behandlingstype },
-        skalFeltetVises: avhengigheter => avhengigheter.behandlingstype.verdi === Klagebehandlingstype.KLAGE,
-    });
-
-    const { skjema, nullstillSkjema, kanSendeSkjema, settSubmitRessurs } = useSkjema<
-        IOpprettBehandlingSkjemaFelter,
-        IBehandling
-    >({
-        felter: {
-            behandlingstype,
-            behandlingsårsak,
-            behandlingstema,
-            søknadMottattDato,
-            klageMottattDato,
-        },
-        skjemanavn: 'Opprett behandling modal',
-    });
+    const { setError, setValue, watch } = form;
+    const behandlingstypeVerdi = watch(OpprettBehandlingFelt.BEHANDLINGSTYPE);
 
     useEffect(() => {
-        if (behandlingstype.verdi === Behandlingstype.FØRSTEGANGSBEHANDLING) {
-            behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.SØKNAD);
-        } else if (behandlingstype.verdi === Behandlingstype.TEKNISK_ENDRING) {
-            behandlingsårsak.validerOgSettFelt(BehandlingÅrsak.TEKNISK_ENDRING);
+        if (behandlingstypeVerdi === Behandlingstype.FØRSTEGANGSBEHANDLING) {
+            setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, BehandlingÅrsak.SØKNAD);
+        } else if (behandlingstypeVerdi === Behandlingstype.TEKNISK_ENDRING) {
+            setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, BehandlingÅrsak.TEKNISK_ENDRING);
         }
-    }, [behandlingstype.verdi]);
+    }, [behandlingstypeVerdi, setValue]);
 
-    const { mutate: opprettKlagebehandling } = useOpprettKlagebehandling({
-        onSuccess: async behandling => {
-            await queryClient.invalidateQueries({
-                queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(fagsakId),
-            });
+    const { mutateAsync: opprettKlagebehandling } = useOpprettKlagebehandling();
 
-            lukkModal();
-            nullstillSkjema();
-            settSubmitRessurs(byggSuksessRessurs(behandling));
-        },
-        onError: error => {
-            settSubmitRessurs(byggFunksjonellFeilRessurs(error.message));
-        },
-    });
+    const { mutateAsync: opprettTilbakekreving } = useOpprettTilbakekreving();
 
-    const { mutate: opprettTilbakekreving } = useOpprettTilbakekreving({
-        onSuccess: async behandling => {
-            await queryClient.invalidateQueries({
-                queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsakId),
-            });
+    const { mutateAsync: opprettBehandling } = useOpprettBehandling();
 
-            lukkModal();
-            nullstillSkjemaStatus();
-            onTilbakekrevingsbehandlingOpprettet();
-            settSubmitRessurs(byggSuksessRessurs(behandling));
-        },
-        onError: error => {
-            settSubmitRessurs(byggFunksjonellFeilRessurs(error.message));
-        },
-    });
+    const onSubmit = async (values: TransformedOpprettBehandlingFormValues) => {
+        const { behandlingstype, behandlingsårsak, behandlingskategori, søknadMottattDato, klageMottattDato } = values;
 
-    const { mutate: opprettBehandling } = useOpprettBehandling({
-        onSuccess: async behandling => {
-            await Promise.all([
-                queryClient.invalidateQueries({
-                    queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsakId),
-                }),
-                queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsakId) }),
-            ]);
-
-            lukkModal();
-            nullstillSkjema();
-            settSubmitRessurs(byggSuksessRessurs(behandling));
-
-            if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
-                navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/registrer-soknad`);
-            } else {
-                navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/vilkaarsvurdering`);
-            }
-        },
-        onError: error => {
-            settSubmitRessurs(byggFunksjonellFeilRessurs(error.message));
-        },
-    });
-
-    const onBekreft = (søkersIdent: string) => {
-        if (kanSendeSkjema()) {
-            settSubmitRessurs(byggHenterRessurs());
-
-            if (behandlingstype.verdi === Klagebehandlingstype.KLAGE) {
-                opprettKlagebehandling({
-                    klageMottattDato: dateTilIsoDatoString(klageMottattDato.verdi),
-                    fagsakId,
+        if (behandlingstype === Klagebehandlingstype.KLAGE) {
+            try {
+                await opprettKlagebehandling({ klageMottattDato, fagsakId: fagsak.id });
+                await queryClient.invalidateQueries({
+                    queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(fagsak.id),
                 });
-            } else if (behandlingstype.verdi === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) {
-                opprettTilbakekreving({ fagsakId });
-            } else {
-                const payload = {
-                    kategori: skjema.felter.behandlingstema.verdi?.kategori ?? null,
-                    søkersIdent: søkersIdent,
-                    behandlingType: behandlingstype.verdi as Behandlingstype,
-                    behandlingÅrsak: behandlingsårsak.verdi as BehandlingÅrsak,
+                lukkModal();
+            } catch (error) {
+                setError('root', {
+                    message: error instanceof Error ? error.message : 'Teknisk feil ved oppretting av klagebehandling.',
+                });
+            }
+        } else if (behandlingstype === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) {
+            try {
+                await opprettTilbakekreving({ fagsakId: fagsak.id });
+                await queryClient.invalidateQueries({
+                    queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsak.id),
+                });
+                onTilbakekrevingsbehandlingOpprettet();
+                lukkModal();
+            } catch (error) {
+                setError('root', {
+                    message: error instanceof Error ? error.message : 'Teknisk feil ved oppretting av tilbakekreving.',
+                });
+            }
+        } else {
+            try {
+                const opprettBehandlingParameters = {
+                    behandlingType: behandlingstype,
+                    behandlingÅrsak: behandlingsårsak,
+                    kategori: behandlingskategori,
                     saksbehandlerIdent: saksbehandler.navIdent,
-                    søknadMottattDato: dateTilIsoDatoStringEllerUndefined(skjema.felter.søknadMottattDato.verdi),
+                    søkersIdent: fagsak.søkerFødselsnummer,
+                    søknadMottattDato: søknadMottattDato,
                 };
-                opprettBehandling(payload);
+                const behandling = await opprettBehandling(opprettBehandlingParameters);
+                queryClient.invalidateQueries({
+                    queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsak.id),
+                });
+                await queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
+                lukkModal();
+
+                if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
+                    navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/registrer-soknad`);
+                } else {
+                    navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
+                }
+            } catch (error) {
+                setError('root', {
+                    message: error instanceof Error ? error.message : 'Teknisk feil ved opprettelse av behandling.',
+                });
             }
         }
-    };
-
-    const nullstillSkjemaStatus = () => {
-        settSubmitRessurs(byggTomRessurs());
-        nullstillSkjema();
     };
 
     return {
-        onBekreft,
-        opprettBehandlingSkjema: skjema,
-        nullstillSkjemaStatus,
-        bruker,
+        form,
+        onSubmit,
     };
 }

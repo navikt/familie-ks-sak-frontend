@@ -1,8 +1,8 @@
+import type { Behandlingstema } from '@typer/behandlingstema';
+import { behandlingstemaer, type IBehandlingstema } from '@typer/behandlingstema';
+
 import { Select, type SelectProps } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
-
-import type { Behandlingstema, IBehandlingstema } from '../../../../typer/behandlingstema';
-import { behandlingstemaer } from '../../../../typer/behandlingstema';
 
 interface EgneProps {
     behandlingstema: Felt<IBehandlingstema | undefined>;
@@ -11,11 +11,7 @@ interface EgneProps {
 
 type Props = EgneProps & Omit<SelectProps, 'children'>;
 
-export const OpprettBehandlingBehandlingstemaSelect = ({
-    behandlingstema,
-    visFeilmeldinger = false,
-    ...selectProps
-}: Props) => {
+export const BehandlingstemaSelect = ({ behandlingstema, visFeilmeldinger = false, ...selectProps }: Props) => {
     const { verdi } = behandlingstema;
     return (
         <Select

@@ -1,105 +1,91 @@
-import type { ChangeEvent } from 'react';
+import { useFeatureToggles } from '@hooks/useFeatureToggles';
+import {
+    OpprettBehandlingFelt,
+    type OpprettBehandlingFormValues,
+} from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
+import { useFagsakContext } from '@sider/Fagsak/FagsakContext';
+import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
+import { Behandlingstype } from '@typer/behandling';
+import { FeatureToggle } from '@typer/featureToggles';
+import { Klagebehandlingstype } from '@typer/klage';
+import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
+import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
-import type { Felt } from '@navikt/familie-skjema';
 
 import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opprettBehandlingUtils';
-import { useFeatureToggles } from '../../../../hooks/useFeatureToggles';
-import type { VisningBehandling } from '../../../../sider/Fagsak/Saksoversikt/visningBehandling';
-import { Behandlingstype } from '../../../../typer/behandling';
-import type { IMinimalFagsak } from '../../../../typer/fagsak';
-import { FeatureToggle } from '../../../../typer/featureToggles';
-import { Klagebehandlingstype } from '../../../../typer/klage';
-import { Tilbakekrevingsbehandlingstype } from '../../../../typer/tilbakekrevingsbehandling';
-import { hentAktivBehandlingPåMinimalFagsak } from '../../../../utils/fagsak';
 
-interface IProps {
-    behandlingstype: Felt<Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''>;
-    visFeilmeldinger: boolean;
-    minimalFagsak?: IMinimalFagsak;
-    erLesevisning?: boolean;
-    manuellJournalfør?: boolean;
-}
-
-interface BehandlingstypeSelect extends HTMLSelectElement {
-    value: Behandlingstype | '';
-}
-
-const BehandlingstypeFelt = ({
-    behandlingstype,
-    visFeilmeldinger,
-    minimalFagsak,
-    erLesevisning = false,
-    manuellJournalfør = false,
-}: IProps) => {
+export function BehandlingstypeFelt() {
     const toggles = useFeatureToggles();
 
-    const aktivBehandling: VisningBehandling | undefined = minimalFagsak
-        ? hentAktivBehandlingPåMinimalFagsak(minimalFagsak)
+    const { fagsak } = useFagsakContext();
+    const { control } = useFormContext<OpprettBehandlingFormValues>();
+
+    const {
+        field: { value, onChange },
+        fieldState: { error },
+        formState: { isSubmitting },
+    } = useController({
+        name: OpprettBehandlingFelt.BEHANDLINGSTYPE,
+        control,
+        rules: {
+            required: 'Velg type behandling som skal opprettes fra nedtrykkslisten.',
+        },
+    });
+
+    const aktivBehandling: VisningBehandling | undefined = fagsak
+        ? hentAktivBehandlingPåMinimalFagsak(fagsak)
         : undefined;
 
     const kanOppretteTekniskEndring =
-        kanOppretteRevurdering(minimalFagsak, aktivBehandling) && toggles[FeatureToggle.kanBehandleTekniskEndring];
-
-    const kanOppretteTilbakekreving = !manuellJournalfør;
+        kanOppretteRevurdering(fagsak, aktivBehandling) && toggles[FeatureToggle.kanBehandleTekniskEndring];
 
     return (
         <Select
-            {...behandlingstype.hentNavBaseSkjemaProps(visFeilmeldinger)}
-            readOnly={erLesevisning}
-            name={'Behandling'}
             label={'Velg type behandling'}
-            onChange={(event: ChangeEvent<BehandlingstypeSelect>): void => {
-                behandlingstype.onChange(event.target.value);
-            }}
+            readOnly={isSubmitting}
+            value={value}
+            onChange={onChange}
+            error={error?.message}
         >
             <option disabled={true} value={''}>
                 Velg
             </option>
-            {kanOppretteFørstegangsbehandling(minimalFagsak, aktivBehandling) && (
+            {kanOppretteFørstegangsbehandling(fagsak, aktivBehandling) && (
                 <option
-                    aria-selected={behandlingstype.verdi === Behandlingstype.FØRSTEGANGSBEHANDLING}
+                    aria-selected={value === Behandlingstype.FØRSTEGANGSBEHANDLING}
                     value={Behandlingstype.FØRSTEGANGSBEHANDLING}
                 >
                     Førstegangsbehandling
                 </option>
             )}
-            {kanOppretteRevurdering(minimalFagsak, aktivBehandling) && (
-                <option
-                    aria-selected={behandlingstype.verdi === Behandlingstype.REVURDERING}
-                    value={Behandlingstype.REVURDERING}
-                >
+            {kanOppretteRevurdering(fagsak, aktivBehandling) && (
+                <option aria-selected={value === Behandlingstype.REVURDERING} value={Behandlingstype.REVURDERING}>
                     Revurdering
                 </option>
             )}
 
             {kanOppretteTekniskEndring && (
                 <option
-                    aria-selected={behandlingstype.verdi === Behandlingstype.TEKNISK_ENDRING}
+                    aria-selected={value === Behandlingstype.TEKNISK_ENDRING}
                     value={Behandlingstype.TEKNISK_ENDRING}
                 >
                     Teknisk endring
                 </option>
             )}
 
-            {kanOppretteTilbakekreving && (
-                <option
-                    aria-selected={behandlingstype.verdi === Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
-                    value={Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
-                >
-                    Tilbakekreving
-                </option>
-            )}
-            {!minimalFagsak?.finnesStrengtFortroligPersonIFagsak && (
-                <option
-                    aria-selected={behandlingstype.verdi === Klagebehandlingstype.KLAGE}
-                    value={Klagebehandlingstype.KLAGE}
-                >
+            <option
+                aria-selected={value === Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
+                value={Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
+            >
+                Tilbakekreving
+            </option>
+            {!fagsak?.finnesStrengtFortroligPersonIFagsak && (
+                <option aria-selected={value === Klagebehandlingstype.KLAGE} value={Klagebehandlingstype.KLAGE}>
                     Klage
                 </option>
             )}
         </Select>
     );
-};
-
-export default BehandlingstypeFelt;
+}

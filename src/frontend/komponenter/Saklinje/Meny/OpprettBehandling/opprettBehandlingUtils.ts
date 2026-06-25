@@ -1,7 +1,7 @@
-import type { VisningBehandling } from '../../../../sider/Fagsak/Saksoversikt/visningBehandling';
-import { BehandlingStatus, erBehandlingHenlagt } from '../../../../typer/behandling';
-import type { IMinimalFagsak } from '../../../../typer/fagsak';
-import { FagsakStatus } from '../../../../typer/fagsak';
+import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
+import { BehandlingStatus, erBehandlingHenlagt } from '@typer/behandling';
+import type { IMinimalFagsak } from '@typer/fagsak';
+import { FagsakStatus } from '@typer/fagsak';
 
 const kanOppretteNyBehandling = (aktivBehandling: VisningBehandling | undefined) =>
     !aktivBehandling || aktivBehandling?.status === BehandlingStatus.AVSLUTTET;
