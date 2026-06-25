@@ -9,7 +9,7 @@ import { useLocation } from 'react-router';
 import { type Ressurs } from '@navikt/familie-typer';
 
 import { useHentOgSettBehandlingContext } from './HentOgSettBehandlingContext';
-import { hentTrinnForBehandling, type ITrinn, KontrollertStatus, type SideId } from '../sider/sider';
+import { hentTrinnForBehandling, type Trinn, KontrollertStatus, type SideId } from '../sider/sider';
 
 interface Props extends PropsWithChildren {
     behandling: IBehandling;
@@ -18,7 +18,7 @@ interface Props extends PropsWithChildren {
 interface BehandlingContextValue {
     leggTilBesøktSide: (besøktSide: SideId) => void;
     settIkkeKontrollerteSiderTilManglerKontroll: () => void;
-    trinnPåBehandling: { [sideId: string]: ITrinn };
+    trinnPåBehandling: { [sideId: string]: Trinn };
     behandling: IBehandling;
     settÅpenBehandling: (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak?: boolean) => void;
 }
@@ -33,7 +33,7 @@ export const BehandlingProvider = ({ behandling, children }: Props) => {
     useNavigerAutomatiskTilSideForBehandlingssteg({ behandling });
 
     const location = useLocation();
-    const [trinnPåBehandling, settTrinnPåBehandling] = useState<{ [sideId: string]: ITrinn }>({});
+    const [trinnPåBehandling, settTrinnPåBehandling] = useState<{ [sideId: string]: Trinn }>({});
 
     useEffect(() => {
         const siderPåBehandling = hentTrinnForBehandling(behandling);
