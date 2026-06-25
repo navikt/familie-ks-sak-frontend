@@ -2,8 +2,7 @@ import {
     OpprettBehandlingFelt,
     type OpprettBehandlingFormValues,
 } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
-import type { IBehandlingstema } from '@typer/behandlingstema';
-import { behandlingstemaer } from '@typer/behandlingstema';
+import { BehandlingKategori } from '@typer/behandlingstema';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
@@ -22,30 +21,23 @@ export function BehandlingstemaSelect() {
         },
     });
 
-    const konverterTilBehandlingstema = (behandlingstemaId: string): IBehandlingstema => {
-        return behandlingstemaer[behandlingstemaId as keyof typeof behandlingstemaer];
-    };
-
     return (
         <Select
             label={'Velg behandlingstema'}
             readOnly={isSubmitting}
-            value={value?.id}
-            onChange={event => {
-                onChange(konverterTilBehandlingstema(event.target.value));
-            }}
+            value={value}
+            onChange={onChange}
             error={error?.message}
         >
             <option disabled={true} value={''} aria-selected={true}>
                 Velg behandlingstema
             </option>
-            {Object.values(behandlingstemaer).map(tema => {
-                return (
-                    <option key={tema.id} aria-selected={value !== undefined && value.id === tema.id} value={tema.id}>
-                        {tema.navn}
-                    </option>
-                );
-            })}
+            <option aria-selected={value === BehandlingKategori.NASJONAL} value={BehandlingKategori.NASJONAL}>
+                Nasjonal
+            </option>
+            <option aria-selected={value === BehandlingKategori.EØS} value={BehandlingKategori.EØS}>
+                EØS
+            </option>
         </Select>
     );
 }
