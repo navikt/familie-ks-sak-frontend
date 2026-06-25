@@ -31,7 +31,6 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
         watch,
     } = form;
 
-    console.log('form values: ', form.getValues());
     const behandlingstype = watch(OpprettBehandlingFelt.BEHANDLINGSTYPE);
     const behandlingsårsak = watch(OpprettBehandlingFelt.BEHANDLINGSÅRSAK);
 

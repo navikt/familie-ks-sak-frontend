@@ -11,7 +11,7 @@ import { useOpprettTilbakekreving } from '@hooks/useOpprettTilbakekreving';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useQueryClient } from '@tanstack/react-query';
 import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
-import type { IBehandlingstema } from '@typer/behandlingstema';
+import type { BehandlingKategori } from '@typer/behandlingstema';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
 import type { IsoDatoString } from '@utils/dato';
@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router';
 export enum OpprettBehandlingFelt {
     BEHANDLINGSTYPE = 'behandlingstype',
     BEHANDLINGSÅRSAK = 'behandlingsårsak',
-    BEHANDLINGSKATEGORI = 'behandlingstema', // TODO: rename til BEHANDLINGKATEGORI?
+    BEHANDLINGSKATEGORI = 'behandlingskategori',
     SØKNAD_MOTTATT_DATO = 'søknadMottattDato',
     KLAGE_MOTTATT_DATO = 'klageMottattDato',
 }
@@ -33,7 +33,7 @@ export interface OpprettBehandlingFormValues {
         | Klagebehandlingstype
         | string;
     [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: BehandlingÅrsak | string;
-    [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: IBehandlingstema; // TODO: trenger å fikse denne
+    [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: BehandlingKategori | string;
     [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: IsoDatoString;
     [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: IsoDatoString;
 }
@@ -41,7 +41,7 @@ export interface OpprettBehandlingFormValues {
 interface TransformedOpprettBehandlingFormValues {
     [OpprettBehandlingFelt.BEHANDLINGSTYPE]: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype;
     [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: BehandlingÅrsak;
-    [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: IBehandlingstema;
+    [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: BehandlingKategori;
     [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: IsoDatoString;
     [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: IsoDatoString;
 }
@@ -61,7 +61,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
         defaultValues: {
             [OpprettBehandlingFelt.BEHANDLINGSTYPE]: '',
             [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: '',
-            [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: {}, // TODO: fix
+            [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: '',
             [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: '',
             [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: '',
         },
@@ -85,7 +85,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
     const { mutateAsync: opprettBehandling } = useOpprettBehandling();
 
     const onSubmit = async (values: TransformedOpprettBehandlingFormValues) => {
-        const { behandlingstype, behandlingsårsak, behandlingstema, søknadMottattDato, klageMottattDato } = values;
+        const { behandlingstype, behandlingsårsak, behandlingskategori, søknadMottattDato, klageMottattDato } = values;
 
         if (behandlingstype === Klagebehandlingstype.KLAGE) {
             try {
@@ -117,26 +117,23 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
                 const opprettBehandlingParameters = {
                     behandlingType: behandlingstype,
                     behandlingÅrsak: behandlingsårsak,
-                    kategori: behandlingstema.kategori ?? null,
+                    kategori: behandlingskategori,
                     saksbehandlerIdent: saksbehandler.navIdent,
                     søkersIdent: fagsak.søkerFødselsnummer,
                     søknadMottattDato: søknadMottattDato,
                 };
-                await opprettBehandling(opprettBehandlingParameters).then(behandling => {
-                    Promise.all([
-                        queryClient.invalidateQueries({
-                            queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsak.id),
-                        }),
-                        queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) }),
-                    ]);
-                    lukkModal();
-
-                    if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
-                        navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/registrer-soknad`);
-                    } else {
-                        navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
-                    }
+                const behandling = await opprettBehandling(opprettBehandlingParameters);
+                queryClient.invalidateQueries({
+                    queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsak.id),
                 });
+                await queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
+                lukkModal();
+
+                if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
+                    navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/registrer-soknad`);
+                } else {
+                    navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
+                }
             } catch (error) {
                 setError('root', {
                     message: error instanceof Error ? error.message : 'Teknisk feil ved opprettelse av behandling.',
