@@ -78,70 +78,42 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
         }
     }, [behandlingstypeVerdi, setValue]);
 
-    const { mutateAsync: opprettKlagebehandling } = useOpprettKlagebehandling({
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(fagsak.id),
-            });
+    const { mutateAsync: opprettKlagebehandling } = useOpprettKlagebehandling();
 
-            lukkModal();
-        },
-        onError: error => {
-            setError('root', { message: error.message ?? 'Teknisk feil ved oppretting av klagebehandling.' });
-        },
-    });
+    const { mutateAsync: opprettTilbakekreving } = useOpprettTilbakekreving();
 
-    const { mutateAsync: opprettTilbakekreving } = useOpprettTilbakekreving({
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsak.id),
-            });
-
-            lukkModal();
-            onTilbakekrevingsbehandlingOpprettet();
-        },
-        onError: error => {
-            setError('root', { message: error.message ?? 'Teknisk feil ved oppretting av tilbakekreving.' });
-        },
-    });
-
-    const { mutateAsync: opprettBehandling } = useOpprettBehandling({
-        onSuccess: async behandling => {
-            await Promise.all([
-                queryClient.invalidateQueries({
-                    queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsak.id),
-                }),
-                queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) }),
-            ]);
-
-            lukkModal();
-
-            if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
-                navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/registrer-soknad`);
-            } else {
-                navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
-            }
-        },
-        onError: error => {
-            setError('root', { message: error.message ?? 'Teknisk feil ved oppretting av behandling.' });
-        },
-    });
+    const { mutateAsync: opprettBehandling } = useOpprettBehandling();
 
     const onSubmit = async (values: TransformedOpprettBehandlingFormValues) => {
-        console.log('values i onsubmit', values);
         const { behandlingstype, behandlingsårsak, behandlingstema, søknadMottattDato, klageMottattDato } = values;
 
-        switch (behandlingstype) {
-            case Klagebehandlingstype.KLAGE:
-                return await opprettKlagebehandling({
-                    klageMottattDato,
-                    fagsakId: fagsak.id,
+        if (behandlingstype === Klagebehandlingstype.KLAGE) {
+            try {
+                await opprettKlagebehandling({ klageMottattDato, fagsakId: fagsak.id });
+                await queryClient.invalidateQueries({
+                    queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(fagsak.id),
                 });
-            case Tilbakekrevingsbehandlingstype.TILBAKEKREVING:
-                return await opprettTilbakekreving({ fagsakId: fagsak.id });
-            case Tilbakekrevingsbehandlingstype.REVURDERING_TILBAKEKREVING:
-                return setError('root', { message: 'Oppretting av revurdering tilbakekreving er ikke implementert.' }); // TODO: fix
-            default:
+                lukkModal();
+            } catch (error) {
+                setError('root', {
+                    message: error instanceof Error ? error.message : 'Teknisk feil ved oppretting av klagebehandling.',
+                });
+            }
+        } else if (behandlingstype === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) {
+            try {
+                await opprettTilbakekreving({ fagsakId: fagsak.id });
+                await queryClient.invalidateQueries({
+                    queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsak.id),
+                });
+                onTilbakekrevingsbehandlingOpprettet();
+                lukkModal();
+            } catch (error) {
+                setError('root', {
+                    message: error instanceof Error ? error.message : 'Teknisk feil ved oppretting av tilbakekreving.',
+                });
+            }
+        } else {
+            try {
                 const opprettBehandlingParameters = {
                     behandlingType: behandlingstype,
                     behandlingÅrsak: behandlingsårsak,
@@ -150,7 +122,26 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
                     søkersIdent: fagsak.søkerFødselsnummer,
                     søknadMottattDato: søknadMottattDato,
                 };
-                return await opprettBehandling(opprettBehandlingParameters);
+                await opprettBehandling(opprettBehandlingParameters).then(behandling => {
+                    Promise.all([
+                        queryClient.invalidateQueries({
+                            queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsak.id),
+                        }),
+                        queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) }),
+                    ]);
+                    lukkModal();
+
+                    if (behandling.årsak === BehandlingÅrsak.SØKNAD) {
+                        navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/registrer-soknad`);
+                    } else {
+                        navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
+                    }
+                });
+            } catch (error) {
+                setError('root', {
+                    message: error instanceof Error ? error.message : 'Teknisk feil ved opprettelse av behandling.',
+                });
+            }
         }
     };
 
