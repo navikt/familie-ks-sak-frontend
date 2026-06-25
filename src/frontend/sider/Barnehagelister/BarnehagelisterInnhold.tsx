@@ -1,6 +1,4 @@
-import styled from 'styled-components';
-
-import { Heading } from '@navikt/ds-react';
+import { Box, Heading } from '@navikt/ds-react';
 
 import { BarnehagebarnTabell } from './BarnehagebarnTabell';
 import BarnehagebarnTabellNavigator from './BarnehagebarnTabellNavigator';
@@ -8,18 +6,11 @@ import BarnehagelisterFilterskjema from './BarnehagelisterFilterskjema';
 import { LasterNyttTabellInnholdSpinner } from './LasterNyttTabellInnholdSpinner';
 import { useBarnehagelister } from './useBarnehagelister';
 
-const Container = styled.div`
-    padding: 0.5rem;
-    width: 100vw;
-    overflow: auto;
-    height: calc(100vh - 116px - 1.1rem);
-`;
-
 const BarnehagelisterInnhold = () => {
     const barnehagelisterContext = useBarnehagelister();
 
     return (
-        <Container>
+        <Box padding={'space-8'} width={'100vw'} overflow={'auto'} height={'calc(100vh - 116px - 1.1rem)'}>
             <Heading size={'medium'} level={'2'}>
                 Barnehageliste KS sak
             </Heading>
@@ -29,7 +20,7 @@ const BarnehagelisterInnhold = () => {
                 barnehagebarnRequestParams={barnehagelisterContext.barnehagebarnRequestParams}
             />
             <BarnehagebarnTabell {...barnehagelisterContext} />
-        </Container>
+        </Box>
     );
 };
 
