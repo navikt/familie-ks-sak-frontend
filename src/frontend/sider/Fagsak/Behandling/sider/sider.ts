@@ -19,8 +19,10 @@ export interface Underside {
     hash: string;
 }
 
-export interface Trinn extends Side {
-    kontrollert: KontrollertStatus;
+export interface Kontrollside {
+    id: SideId;
+    navn: string;
+    kontrollertStatus: KontrollertStatus;
 }
 
 export enum KontrollertStatus {
@@ -120,24 +122,6 @@ export function erSidenAktiv(side: Side, behandling: IBehandling): boolean {
 
 export function finnSiderForBehandling(behandling: IBehandling) {
     return Object.values(sider).filter(side => side.visSide?.(behandling) ?? true);
-}
-
-export function hentTrinnForBehandling(behandling: IBehandling): { [sideId: string]: Side } {
-    const visSide = (side: Side) => {
-        if (side.visSide) {
-            return side.visSide(behandling);
-        } else {
-            return true;
-        }
-    };
-    return Object.entries(sider)
-        .filter(([_, side]) => visSide(side))
-        .reduce((acc, [sideId, side]) => {
-            return {
-                ...acc,
-                [sideId]: side,
-            };
-        }, {});
 }
 
 export function finnSideForBehandlingssteg(behandling: IBehandling): Side | undefined {
