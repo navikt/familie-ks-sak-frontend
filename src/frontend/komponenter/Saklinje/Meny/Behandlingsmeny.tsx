@@ -1,5 +1,8 @@
 import { useState } from 'react';
 
+import { useBehandling } from '@hooks/useBehandling';
+import { sjekkErBehandleneEnhetMidlertidig } from '@typer/behandling';
+
 import { ChevronDownIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button } from '@navikt/ds-react';
 
@@ -22,11 +25,9 @@ import { OpprettBehandling } from './OpprettBehandling/OpprettBehandling';
 import { OpprettBehandlingModal } from './OpprettBehandling/OpprettBehandlingModal';
 import { TilbakekrevingsbehandlingOpprettetModal } from './OpprettBehandling/TilbakekrevingsbehandlingOpprettetModal';
 import { SendInformasjonsbrev } from './SendInformasjonsbrev/SendInformasjonsbrev';
-import { useBehandlingContext } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { sjekkErBehandleneEnhetMidlertidig } from '../../../typer/behandling';
 
 export function Behandlingsmeny() {
-    const { behandling } = useBehandlingContext();
+    const behandling = useBehandling();
 
     const erBehandleneEnhetMidlertidig = sjekkErBehandleneEnhetMidlertidig(behandling);
     const erBehandlingPåVent = !!behandling.behandlingPåVent;

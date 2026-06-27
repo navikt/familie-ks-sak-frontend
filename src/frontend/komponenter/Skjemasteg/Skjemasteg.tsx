@@ -5,10 +5,8 @@ import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { BehandlingSteg } from '@typer/behandling';
 import { behandlingErEtterSteg } from '@utils/steg';
-import styled from 'styled-components';
 
-import { Box, Button, ErrorMessage, Heading, VStack } from '@navikt/ds-react';
-import { Space16, Space24, Space96 } from '@navikt/ds-tokens/dist/tokens';
+import { Box, Button, ErrorMessage, Heading, Stack, VStack } from '@navikt/ds-react';
 
 import { BehandlingPåVentAlert } from '../Alert/BehandlingPåVentAlert';
 import { MidlertidigEnhetAlert } from '../Alert/MidlertidigEnhetAlert';
@@ -29,21 +27,6 @@ interface IProps extends PropsWithChildren {
     feilmelding?: string;
     steg: BehandlingSteg;
 }
-
-const StyledErrorMessage = styled(ErrorMessage)`
-    margin-top: ${Space16};
-`;
-
-const Navigering = styled.div`
-    margin: ${Space96} 0 ${Space16};
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-
-    button:not(:first-child) {
-        margin-right: ${Space24};
-    }
-`;
 
 const Skjemasteg = ({
     children,
@@ -93,8 +76,17 @@ const Skjemasteg = ({
                         {tittel}
                     </Heading>
                     {children}
-                    {feilmelding !== '' && <StyledErrorMessage>{feilmelding}</StyledErrorMessage>}
-                    <Navigering>
+                    {feilmelding !== '' && (
+                        <Box marginBlock={'space-16 space-0'}>
+                            <ErrorMessage>{feilmelding}</ErrorMessage>
+                        </Box>
+                    )}
+                    <Stack
+                        direction={'row-reverse'}
+                        justify={'start'}
+                        marginBlock={'space-96 space-16'}
+                        gap={'space-24'}
+                    >
                         {nesteOnClick && skalViseNesteKnapp && (!erLesevisning || kanGåVidereILesevisning) && (
                             <Button variant={'primary'} onClick={onNesteClicked} loading={senderInn}>
                                 {nesteKnappTittel}
@@ -105,7 +97,7 @@ const Skjemasteg = ({
                                 {forrigeKnappTittel}
                             </Button>
                         )}
-                    </Navigering>
+                    </Stack>
                 </Box>
             </VStack>
         </Box>

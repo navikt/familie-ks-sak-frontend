@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react';
 
-import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
+import { useBehandling } from '@hooks/useBehandling';
+import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
+import { BehandlingKategori } from '@typer/behandlingstema';
+import type { IManueltBrevRequestPåBehandling } from '@typer/dokument';
+import type { IGrunnlagPerson } from '@typer/person';
+import { PersonType } from '@typer/person';
+import type { IBarnMedOpplysninger } from '@typer/søknad';
+import { Målform } from '@typer/søknad';
+import type { IFritekstFelt } from '@utils/fritekstfelter';
+import { genererIdBasertPåAndreFritekster, lagInitiellFritekst } from '@utils/fritekstfelter';
+
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
+import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 
 import type { ISelectOptionMedBrevtekst } from './typer';
 import { Brevmal } from './typer';
-import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '../../../../../typer/behandling';
-import { BehandlingKategori } from '../../../../../typer/behandlingstema';
-import type { IManueltBrevRequestPåBehandling } from '../../../../../typer/dokument';
-import type { IGrunnlagPerson } from '../../../../../typer/person';
-import { PersonType } from '../../../../../typer/person';
-import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
-import { Målform } from '../../../../../typer/søknad';
-import type { IFritekstFelt } from '../../../../../utils/fritekstfelter';
-import { genererIdBasertPåAndreFritekster, lagInitiellFritekst } from '../../../../../utils/fritekstfelter';
-import { useBehandlingContext } from '../../context/BehandlingContext';
 
 export const hentMuligeBrevmalerImplementering = (behandling: IBehandling): Brevmal[] => {
     const brevmaler: Brevmal[] = Object.keys(Brevmal) as Brevmal[];
@@ -79,7 +80,7 @@ export const mottakersMålformImplementering = (
     })?.målform ?? Målform.NB;
 
 export const useBrevModul = () => {
-    const { behandling } = useBehandlingContext();
+    const behandling = useBehandling();
 
     const maksAntallKulepunkter = 20;
     const makslengdeFritekstHvertKulepunkt = 220;

@@ -25,6 +25,7 @@ export function VilkårTabellRad({ toggleForm, lagretVilkårResultat, erVilkårE
 
     return (
         <Table.ExpandableRow
+            key={`${lagretVilkårResultat.id}-${erVilkårEkspandert ? 'ekspandert' : 'lukket'}`} // Pga. React.Activity ikke fungerer så bra med Aksel, se https://github.com/navikt/aksel/issues/5017
             open={erVilkårEkspandert}
             togglePlacement={'right'}
             onOpenChange={() => toggleForm(true)}

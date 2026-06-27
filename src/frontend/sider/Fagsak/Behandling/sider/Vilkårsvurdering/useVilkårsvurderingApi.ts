@@ -1,22 +1,27 @@
 import { useState } from 'react';
 
+import { useEkspanderbareVilkårResultatRader } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
+import type { IBehandling } from '@typer/behandling';
+import {
+    type IEndreVilkårResultat,
+    type IRestAnnenVurdering,
+    type IRestNyttVilkår,
+    Resultat,
+    type VilkårType,
+} from '@typer/vilkår';
+
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import type { IBehandling } from '../../../../../typer/behandling';
-import type {
-    IEndreVilkårResultat,
-    IRestAnnenVurdering,
-    IRestNyttVilkår,
-    VilkårType,
-} from '../../../../../typer/vilkår';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 export const useVilkårsvurderingApi = () => {
     const { request } = useHttp();
 
     const { behandling, settÅpenBehandling } = useBehandlingContext();
+
+    const { ekspanderRad } = useEkspanderbareVilkårResultatRader();
 
     const behandlingId = behandling.behandlingId;
 
@@ -111,7 +116,19 @@ export const useVilkårsvurderingApi = () => {
             });
     };
 
+    function åpneNyeIkkeVurdertVilkårResultat(behandling: IBehandling, eksisterendeVilkårResultatIder: number[]) {
+        // Dette er gjort slik siden APIet ikke returnerer IDen til det opprettede vilkår resultatet.
+        const nyeIkkeVurdertVilkårResultat = behandling.personResultater
+            .flatMap(it => it.vilkårResultater)
+            .filter(it => it.resultat === Resultat.IKKE_VURDERT)
+            .filter(it => !eksisterendeVilkårResultatIder.includes(it.id));
+        nyeIkkeVurdertVilkårResultat.forEach(it => ekspanderRad(it.id));
+    }
+
     const opprettVilkår = (personIdent: string, vilkårType: VilkårType, onFailure?: () => void) => {
+        const eksisterendeVilkårResultatIder = behandling.personResultater
+            .flatMap(it => it.vilkårResultater)
+            .map(it => it.id);
         settOppretterVilkår(true);
         settOpprettVilkårFeilmelding('');
         request<IRestNyttVilkår, IBehandling>({
@@ -123,6 +140,7 @@ export const useVilkårsvurderingApi = () => {
                 settOppretterVilkår(false);
                 if (response.status === RessursStatus.SUKSESS) {
                     settÅpenBehandling(response);
+                    åpneNyeIkkeVurdertVilkårResultat(response.data, eksisterendeVilkårResultatIder);
                 } else if (
                     response.status === RessursStatus.FEILET ||
                     response.status === RessursStatus.FUNKSJONELL_FEIL ||

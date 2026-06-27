@@ -50,12 +50,12 @@ const VilkårTabell = ({ person, vilkårFraConfig, vilkårResultater, settFokusP
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {vilkårResultater.map((vilkårResultat: IVilkårResultat, index: number) => {
+                    {vilkårResultater.map(vilkårResultat => {
                         switch (vilkårResultat.vilkårType) {
                             case VilkårType.BOSATT_I_RIKET:
                                 return (
                                     <BosattIRiket
-                                        key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                        key={vilkårResultat.id}
                                         lagretVilkårResultat={vilkårResultat}
                                         vilkårFraConfig={vilkårFraConfig}
                                         person={person}
@@ -65,7 +65,7 @@ const VilkårTabell = ({ person, vilkårFraConfig, vilkårResultater, settFokusP
                             case VilkårType.LOVLIG_OPPHOLD:
                                 return (
                                     <LovligOpphold
-                                        key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                        key={vilkårResultat.id}
                                         lagretVilkårResultat={vilkårResultat}
                                         vilkårFraConfig={vilkårFraConfig}
                                         person={person}
@@ -75,7 +75,7 @@ const VilkårTabell = ({ person, vilkårFraConfig, vilkårResultater, settFokusP
                             case VilkårType.MEDLEMSKAP:
                                 return (
                                     <Medlemskap
-                                        key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                        key={vilkårResultat.id}
                                         lagretVilkårResultat={vilkårResultat}
                                         vilkårFraConfig={vilkårFraConfig}
                                         person={person}
@@ -85,7 +85,7 @@ const VilkårTabell = ({ person, vilkårFraConfig, vilkårResultater, settFokusP
                             case VilkårType.BARNEHAGEPLASS:
                                 return (
                                     <Barnehageplass
-                                        key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                        key={vilkårResultat.id}
                                         lagretVilkårResultat={vilkårResultat}
                                         vilkårFraConfig={vilkårFraConfig}
                                         person={person}
@@ -95,7 +95,7 @@ const VilkårTabell = ({ person, vilkårFraConfig, vilkårResultater, settFokusP
                             case VilkårType.MEDLEMSKAP_ANNEN_FORELDER:
                                 return (
                                     <MedlemskapAnnenForelder
-                                        key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                        key={vilkårResultat.id}
                                         lagretVilkårResultat={vilkårResultat}
                                         vilkårFraConfig={vilkårFraConfig}
                                         person={person}
@@ -105,7 +105,7 @@ const VilkårTabell = ({ person, vilkårFraConfig, vilkårResultater, settFokusP
                             case VilkårType.BOR_MED_SØKER:
                                 return (
                                     <BorMedSøker
-                                        key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                        key={vilkårResultat.id}
                                         lagretVilkårResultat={vilkårResultat}
                                         vilkårFraConfig={vilkårFraConfig}
                                         person={person}
@@ -115,7 +115,7 @@ const VilkårTabell = ({ person, vilkårFraConfig, vilkårResultater, settFokusP
                             case VilkårType.BARNETS_ALDER:
                                 return (
                                     <BarnetsAlder
-                                        key={`${index}_${person.fødselsdato}_${vilkårResultat.vilkårType}_${vilkårResultat.id}`}
+                                        key={vilkårResultat.id}
                                         lagretVilkårResultat={vilkårResultat}
                                         vilkårFraConfig={vilkårFraConfig}
                                         person={person}

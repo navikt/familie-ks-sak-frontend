@@ -1,22 +1,17 @@
 import type { ChangeEvent } from 'react';
 
+import type { IBehandling } from '@typer/behandling';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import { useLocation } from 'react-router';
-import styled from 'styled-components';
 
-import { Fieldset, HStack, InlineMessage, Select, Spacer, TextField, VStack } from '@navikt/ds-react';
+import { Fieldset, HGrid, InlineMessage, Select, TextField, VStack } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
+import styles from './BrevmottakerSkjema.module.css';
 import type { ILeggTilFjernBrevmottakerSkjemaFelter } from './useBrevmottakerSkjema';
 import { Mottaker, mottakerVisningsnavn } from './useBrevmottakerSkjema';
-import type { IBehandling } from '../../../../typer/behandling';
-import { hentFrontendFeilmelding } from '../../../../utils/ressursUtils';
 import { ALLE_LAND_REGIONKODER, RegionCombobox, type Regionkode } from '../../../FlaggCombobox';
-
-const StyledTextField = styled(TextField)<{ $width: string }>`
-    width: ${props => props.$width};
-    height: fit-content;
-`;
 
 interface Props {
     skjema: ISkjema<ILeggTilFjernBrevmottakerSkjemaFelter, IBehandling>;
@@ -109,29 +104,28 @@ const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) =
                                     Ved utenlandsk adresse skal postnummer og poststed legges i adresselinjene.
                                 </InlineMessage>
                             )}
-                            <HStack>
-                                <StyledTextField
+                            <HGrid gap={'space-16'} columns={'10rem 1fr'}>
+                                <TextField
                                     {...skjema.felter.postnummer.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
+                                    className={styles.postInput}
                                     readOnly={erLesevisning}
                                     disabled={skjema.felter.land.verdi !== 'NO'}
                                     label={'Postnummer'}
                                     onChange={(event): void => {
                                         skjema.felter.postnummer.validerOgSettFelt(event.target.value);
                                     }}
-                                    $width={'10rem'}
                                 />
-                                <Spacer />
-                                <StyledTextField
+                                <TextField
                                     {...skjema.felter.poststed.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
+                                    className={styles.postInput}
                                     readOnly={erLesevisning}
                                     disabled={skjema.felter.land.verdi !== 'NO'}
                                     label={'Poststed'}
                                     onChange={(event): void => {
                                         skjema.felter.poststed.validerOgSettFelt(event.target.value);
                                     }}
-                                    $width={'19.5rem'}
                                 />
-                            </HStack>
+                            </HGrid>
                         </>
                     )}
                 </VStack>
