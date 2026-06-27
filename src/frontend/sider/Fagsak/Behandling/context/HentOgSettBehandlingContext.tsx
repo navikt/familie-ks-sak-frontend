@@ -43,14 +43,14 @@ export function HentOgSettBehandlingProvider({ children }: PropsWithChildren) {
         }
     }, [behandlingIdParam, erBehandlingDelAvFagsak]);
 
-    const settBehandlingRessurs = async (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak: boolean = true) => {
+    const settBehandlingRessurs = (behandling: Ressurs<IBehandling>, oppdaterMinimalFagsak: boolean = true) => {
         if (behandling.status === RessursStatus.SUKSESS) {
             queryClient.invalidateQueries({
                 queryKey: HentHistorikkinnslagQueryKeyFactory.historikkinnslag(behandling.data.behandlingId),
             });
         }
         if (oppdaterMinimalFagsak) {
-            await queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
+            queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
         }
         if (skalObfuskereData) {
             obfuskerBehandling(behandling);

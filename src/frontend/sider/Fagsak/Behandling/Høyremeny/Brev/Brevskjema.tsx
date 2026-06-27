@@ -40,7 +40,6 @@ import styles from './Brevskjema.module.css';
 import type { BrevtypeSelect } from './typer';
 import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import { useBrevModul } from './useBrevModul';
-import Knapperekke from '../../../../../komponenter/Knapperekke';
 import SkjultLegend from '../../../../../komponenter/SkjultLegend';
 
 interface IProps {
@@ -330,7 +329,7 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                     )}
                 </VStack>
             </Fieldset>
-            <Knapperekke>
+            <HStack marginBlock={'space-16'} justify={'space-between'}>
                 <Button
                     id={'forhandsvis-vedtaksbrev'}
                     variant={'secondary'}
@@ -372,7 +371,7 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                 >
                     Send brev
                 </Button>
-            </Knapperekke>
+            </HStack>
         </>
     );
 };

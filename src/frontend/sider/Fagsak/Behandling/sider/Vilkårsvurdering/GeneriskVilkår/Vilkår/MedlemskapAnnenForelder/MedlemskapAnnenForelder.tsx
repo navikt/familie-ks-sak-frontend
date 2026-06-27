@@ -1,10 +1,10 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { Regelverk, Resultat } from '@typer/vilkår';
 
 import { Box, InlineMessage, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
-import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
@@ -26,10 +26,11 @@ export const MedlemskapAnnenForelder = ({
 
     const skjema = vilkårSkjemaContext.skjema;
 
-    const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
-        lagretVilkårResultat,
-    });
+    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
+
+    function toggleForm(visAlert: boolean) {
+        toggleRad(visAlert && finnesEndringerSomIkkeErLagret());
+    }
 
     const nullstillAvslagBegrunnelser = () => {
         skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
@@ -39,7 +40,7 @@ export const MedlemskapAnnenForelder = ({
     return (
         <VilkårTabellRad
             lagretVilkårResultat={lagretVilkårResultat}
-            erVilkårEkspandert={erVilkårEkspandert}
+            erVilkårEkspandert={erRadEkspandert}
             toggleForm={toggleForm}
         >
             <VilkårSkjema

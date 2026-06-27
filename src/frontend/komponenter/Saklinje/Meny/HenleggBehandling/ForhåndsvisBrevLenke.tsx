@@ -1,15 +1,15 @@
-import { Link } from '@navikt/ds-react';
-
-import { ModalType } from '../../../../context/ModalContext';
-import { useModal } from '../../../../hooks/useModal';
+import { ModalType } from '@context/ModalContext';
+import { useBehandling } from '@hooks/useBehandling';
+import { useFagsak } from '@hooks/useFagsak';
+import { useModal } from '@hooks/useModal';
 import {
     mutationKey,
     useOpprettForhåndsvisbarBehandlingBrevPdf,
-} from '../../../../hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
-import { useBehandlingContext } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { Brevmal } from '../../../../sider/Fagsak/Behandling/Høyremeny/Brev/typer';
-import { useFagsakContext } from '../../../../sider/Fagsak/FagsakContext';
-import type { IManueltBrevRequestPåBehandling } from '../../../../typer/dokument';
+} from '@hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
+import { Brevmal } from '@sider/Fagsak/Behandling/Høyremeny/Brev/typer';
+import type { IManueltBrevRequestPåBehandling } from '@typer/dokument';
+
+import { Link } from '@navikt/ds-react';
 
 function lagRequestPayload(mottakerIdent: string): IManueltBrevRequestPåBehandling {
     return {
@@ -21,8 +21,8 @@ function lagRequestPayload(mottakerIdent: string): IManueltBrevRequestPåBehandl
 }
 
 export function ForhåndsvisBrevLenke() {
-    const { fagsak } = useFagsakContext();
-    const { behandling } = useBehandlingContext();
+    const fagsak = useFagsak();
+    const behandling = useBehandling();
 
     const { åpneModal: åpneForhåndsvisOpprettingAvPdfModal } = useModal(ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF);
 

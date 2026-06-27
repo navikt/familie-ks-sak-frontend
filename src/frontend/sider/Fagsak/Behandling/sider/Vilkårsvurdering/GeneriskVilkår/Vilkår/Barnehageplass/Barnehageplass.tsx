@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { Resultat, UtdypendeVilkårsvurderingGenerell } from '@typer/vilkår';
 import styled from 'styled-components';
 
@@ -8,7 +9,6 @@ import { BodyShort, Checkbox, Radio, RadioGroup, TextField } from '@navikt/ds-re
 
 import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
 import { antallTimerKvalifiserer } from './BarnehageplassUtils';
-import { useVilkårEkspanderbarRad } from '../../useVilkårEkspanderbarRad';
 import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
 import { VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
@@ -32,10 +32,11 @@ export const Barnehageplass = ({
 
     const skjema = vilkårSkjemaContext.skjema;
 
-    const { toggleForm, erVilkårEkspandert } = useVilkårEkspanderbarRad({
-        vilkårHarEndringerSomIkkeErLagret: finnesEndringerSomIkkeErLagret,
-        lagretVilkårResultat,
-    });
+    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
+
+    function toggleForm(visAlert: boolean) {
+        toggleRad(visAlert && finnesEndringerSomIkkeErLagret());
+    }
 
     const oppdaterResultat = (barnehageplass: boolean, antallTimer: string) => {
         if (!barnehageplass) {
@@ -73,7 +74,7 @@ export const Barnehageplass = ({
     return (
         <VilkårTabellRad
             lagretVilkårResultat={lagretVilkårResultat}
-            erVilkårEkspandert={erVilkårEkspandert}
+            erVilkårEkspandert={erRadEkspandert}
             toggleForm={toggleForm}
         >
             <VilkårSkjema
