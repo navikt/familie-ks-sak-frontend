@@ -1,103 +1,63 @@
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import type { IBehandling, IBehandlingPåVent } from '@typer/behandling';
-import { settPåVentÅrsaker } from '@typer/behandling';
-import { dateTilIsoDatoString } from '@utils/dato';
-import { hentFrontendFeilmelding } from '@utils/ressursUtils';
+import { FormProvider } from 'react-hook-form';
 
-import { BodyShort, Box, Button, Fieldset, Modal, Select, VStack } from '@navikt/ds-react';
-import type { Ressurs } from '@navikt/familie-typer';
-import { RessursStatus } from '@navikt/familie-typer';
+import { BodyShort, Box, Button, Fieldset, Modal, VStack } from '@navikt/ds-react';
 
-import { hentAlleÅrsaker } from './settPåVentUtils';
-import { useSettPåVentSkjema } from './useSettPåVentSkjema';
-import Datovelger from '../../../Datovelger/Datovelger';
+import { FristFelt } from './FristFelt';
+import { SETT_PÅ_VENT_FORM_ID, useSettPåVentSkjema } from './useSettPåVentSkjema';
+import { ÅrsakFelt } from './ÅrsakFelt';
 
-interface IProps {
+interface Props {
     lukkModal: () => void;
 }
 
-export const SettBehandlingPåVentModal = ({ lukkModal }: IProps) => {
-    const { behandling, settÅpenBehandling } = useBehandlingContext();
-    const årsaker = hentAlleÅrsaker();
-    const { skjema, kanSendeSkjema, onSubmit } = useSettPåVentSkjema(behandling.behandlingPåVent);
+export function SettBehandlingPåVentModal({ lukkModal }: Props) {
+    const { form, onSubmit, erBehandlingAlleredePåVent } = useSettPåVentSkjema({ lukkModal });
 
-    const { årsak, frist } = skjema.felter;
+    const {
+        handleSubmit,
+        formState: { isSubmitting, errors },
+    } = form;
 
-    const erBehandlingAlleredePåVent = !!behandling.behandlingPåVent;
-
-    const url = erBehandlingAlleredePåVent
-        ? `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent/oppdater`
-        : `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent`;
-
-    const settBehandlingPåVent = () => {
-        if (kanSendeSkjema() && årsak.verdi && frist.verdi) {
-            onSubmit<IBehandlingPåVent>(
-                {
-                    method: erBehandlingAlleredePåVent ? 'PUT' : 'POST',
-                    data: { frist: dateTilIsoDatoString(frist.verdi), årsak: årsak.verdi },
-                    url: url,
-                },
-                (ressurs: Ressurs<IBehandling>) => {
-                    settÅpenBehandling(ressurs);
-                    lukkModal();
-                }
-            );
-        }
-    };
+    const tittel = erBehandlingAlleredePåVent ? 'Endre ventende behandling' : 'Sett behandling på vent';
 
     return (
-        <Modal
-            open
-            onClose={lukkModal}
-            width={'35rem'}
-            header={{
-                heading: erBehandlingAlleredePåVent ? 'Endre ventende behandling' : 'Sett behandling på vent',
-                size: 'small',
-            }}
-            portal
-        >
+        <Modal open onClose={lukkModal} width={'35rem'} header={{ heading: tittel, size: 'small' }} portal>
             <Modal.Body>
                 <Fieldset
-                    error={hentFrontendFeilmelding(skjema.submitRessurs)}
-                    errorPropagation={false}
                     legend={'Sett behandling på vent'}
                     hideLegend
+                    errorPropagation={false}
+                    error={errors.root?.message}
                 >
                     {erBehandlingAlleredePåVent && (
                         <Box marginBlock={'space-8 space-40'}>
                             <BodyShort>Behandlingen er satt på vent.</BodyShort>
                         </Box>
                     )}
-                    <VStack gap={'space-32'}>
-                        <Datovelger
-                            felt={frist}
-                            label={'Frist'}
-                            visFeilmeldinger={skjema.visFeilmeldinger}
-                            kanKunVelgeFremtid
-                        />
-                        <Select {...skjema.felter.årsak.hentNavInputProps(skjema.visFeilmeldinger)} label={'Årsak'}>
-                            <option value={undefined}>Velg årsak</option>
-                            {årsaker.map(årsak => (
-                                <option value={årsak.valueOf()} key={årsak.valueOf()}>
-                                    {settPåVentÅrsaker[årsak]}
-                                </option>
-                            ))}
-                        </Select>
-                    </VStack>
+                    <FormProvider {...form}>
+                        <form id={SETT_PÅ_VENT_FORM_ID} onSubmit={handleSubmit(onSubmit)}>
+                            <VStack gap={'space-32'}>
+                                <FristFelt />
+                                <ÅrsakFelt />
+                            </VStack>
+                        </form>
+                    </FormProvider>
                 </Fieldset>
             </Modal.Body>
             <Modal.Footer>
                 <Button
+                    form={SETT_PÅ_VENT_FORM_ID}
+                    type={'submit'}
                     variant={'primary'}
-                    key={erBehandlingAlleredePåVent ? 'Oppdater' : 'Bekreft'}
                     size={'medium'}
-                    onClick={settBehandlingPåVent}
-                    children={erBehandlingAlleredePåVent ? 'Oppdater' : 'Bekreft'}
-                    loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                    disabled={skjema.submitRessurs.status === RessursStatus.HENTER}
-                />
-                <Button variant={'tertiary'} key={'Avbryt'} size="medium" onClick={lukkModal} children={'Avbryt'} />
+                    loading={isSubmitting}
+                >
+                    {erBehandlingAlleredePåVent ? 'Oppdater' : 'Bekreft'}
+                </Button>
+                <Button variant={'tertiary'} size={'medium'} onClick={lukkModal}>
+                    Avbryt
+                </Button>
             </Modal.Footer>
         </Modal>
     );
-};
+}
