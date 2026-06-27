@@ -1,58 +1,70 @@
-import { useEffect } from 'react';
-
+import { useSettPåVent } from '@hooks/useSettPåVent';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import type { SettPåVentÅrsak } from '@typer/behandling';
+import { dateTilIsoDatoString, hentDagensDato, type IsoDatoString } from '@utils/dato';
 import { addDays } from 'date-fns';
+import { useForm } from 'react-hook-form';
 
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
-
-import { hentAlleÅrsaker } from './settPåVentUtils';
-import type { IBehandling, IBehandlingPåVent, SettPåVentÅrsak } from '../../../../typer/behandling';
-import { hentDagensDato, validerGyldigDato } from '../../../../utils/dato';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 const STANDARD_ANTALL_DAGER_FRIST = 3 * 7;
 
-export const useSettPåVentSkjema = (behandlingPåVent: IBehandlingPåVent | undefined) => {
-    const standardfrist = addDays(hentDagensDato(), STANDARD_ANTALL_DAGER_FRIST);
-    const settPåVentFrist = behandlingPåVent?.frist ? new Date(behandlingPåVent?.frist) : undefined;
+export const SETT_PÅ_VENT_FORM_ID = 'sett_på_vent_form_id';
 
-    const årsaker = hentAlleÅrsaker();
+export enum SettPåVentFelt {
+    FRIST = 'frist',
+    ÅRSAK = 'årsak',
+}
 
-    const settPåVentSkjema = useSkjema<
-        {
-            frist: Date | undefined;
-            årsak: SettPåVentÅrsak | undefined;
+export interface SettPåVentFormValues {
+    [SettPåVentFelt.FRIST]: IsoDatoString | null;
+    [SettPåVentFelt.ÅRSAK]: SettPåVentÅrsak | '';
+}
+
+type TransformedSettPåVentFormValues = {
+    [SettPåVentFelt.FRIST]: IsoDatoString;
+    [SettPåVentFelt.ÅRSAK]: SettPåVentÅrsak;
+};
+
+interface Props {
+    lukkModal: () => void;
+}
+
+export function useSettPåVentSkjema({ lukkModal }: Props) {
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
+
+    const behandlingPåVent = behandling.behandlingPåVent;
+    const erBehandlingAlleredePåVent = !!behandlingPåVent;
+
+    const standardfrist = dateTilIsoDatoString(addDays(hentDagensDato(), STANDARD_ANTALL_DAGER_FRIST));
+
+    const { mutateAsync: settPåVent } = useSettPåVent({
+        onSuccess: behandling => {
+            settÅpenBehandling(byggSuksessRessurs(behandling));
+            lukkModal();
         },
-        IBehandling
-    >({
-        felter: {
-            frist: useFelt<Date | undefined>({
-                verdi: undefined,
-                valideringsfunksjon: validerGyldigDato,
-            }),
-            årsak: useFelt<SettPåVentÅrsak | undefined>({
-                verdi: behandlingPåVent?.årsak ?? undefined,
-                valideringsfunksjon: felt =>
-                    felt.verdi === undefined || !årsaker.includes(felt.verdi)
-                        ? feil(felt, 'Du må velge en årsak')
-                        : ok(felt),
-            }),
+        onError: error => {
+            setError('root', { message: error.message ?? 'Teknisk feil ved lagring av sett på vent.' });
         },
-        skjemanavn: 'Sett behandling på vent',
     });
 
-    const fyllInnStandardverdier = () => {
-        settPåVentSkjema.nullstillSkjema();
-        settPåVentSkjema.skjema.felter.frist.validerOgSettFelt(standardfrist);
-        settPåVentSkjema.skjema.felter.årsak.validerOgSettFelt(undefined);
-    };
+    const form = useForm<SettPåVentFormValues, unknown, TransformedSettPåVentFormValues>({
+        values: {
+            [SettPåVentFelt.FRIST]: behandlingPåVent?.frist ?? standardfrist,
+            [SettPåVentFelt.ÅRSAK]: behandlingPåVent?.årsak ?? '',
+        },
+    });
 
-    useEffect(() => {
-        if (behandlingPåVent) {
-            settPåVentSkjema.skjema.felter.frist.validerOgSettFelt(settPåVentFrist);
-            settPåVentSkjema.skjema.felter.årsak.validerOgSettFelt(behandlingPåVent.årsak);
-        } else {
-            fyllInnStandardverdier();
-        }
-    }, []);
+    const { setError } = form;
 
-    return settPåVentSkjema;
-};
+    function onSubmit(values: TransformedSettPåVentFormValues) {
+        return settPåVent({
+            frist: values.frist,
+            årsak: values.årsak,
+            behandlingId: behandling.behandlingId,
+            erBehandlingAlleredePåVent,
+        });
+    }
+
+    return { form, onSubmit, erBehandlingAlleredePåVent };
+}

@@ -1,42 +1,29 @@
-import { useState } from 'react';
-
-import { useBehandling } from '@hooks/useBehandling';
-import type { IBehandling } from '@typer/behandling';
+import { useTaBehandlingAvVent } from '@hooks/useTaBehandlingAvVent';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { settPåVentÅrsaker } from '@typer/behandling';
 import { defaultFunksjonellFeil } from '@typer/feilmeldinger';
 import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
 
 import { BodyShort, Box, Button, LocalAlert, Modal } from '@navikt/ds-react';
-import { useHttp } from '@navikt/familie-http';
-import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
-import type { Ressurs } from '@navikt/familie-typer';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 interface Props {
     lukkModal: () => void;
 }
 
 export function TaBehandlingAvVentModal({ lukkModal }: Props) {
-    const behandling = useBehandling();
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
 
-    const { request } = useHttp();
-
-    const [submitRessurs, settSubmitRessurs] = useState(byggTomRessurs());
-
-    const deaktiverVentingPåBehandling = () => {
-        settSubmitRessurs(byggHenterRessurs());
-
-        request<undefined, IBehandling>({
-            method: 'PUT',
-            url: `/familie-ks-sak/api/behandlinger/${behandling.behandlingId}/sett-på-vent/gjenoppta`,
-        })
-            .then((ressurs: Ressurs<IBehandling>) => {
-                settSubmitRessurs(ressurs);
-                window.location.reload();
-            })
-            .catch(() => {
-                settSubmitRessurs(byggFeiletRessurs(defaultFunksjonellFeil));
-            });
-    };
+    const {
+        mutate: taBehandlingAvVent,
+        isPending,
+        error,
+    } = useTaBehandlingAvVent({
+        onSuccess: behandling => {
+            settÅpenBehandling(byggSuksessRessurs(behandling));
+            lukkModal();
+        },
+    });
 
     return (
         <Modal
@@ -64,11 +51,11 @@ export function TaBehandlingAvVentModal({ lukkModal }: Props) {
                     <BodyShort>Ønsker du å fortsette behandlingen?</BodyShort>
                 </Box>
 
-                {submitRessurs.status === RessursStatus.FEILET && (
+                {error && (
                     <Box paddingBlock={'space-0 space-16'}>
                         <LocalAlert status="error">
                             <LocalAlert.Header>
-                                <LocalAlert.Title>{submitRessurs.frontendFeilmelding}</LocalAlert.Title>
+                                <LocalAlert.Title>{error.message || defaultFunksjonellFeil}</LocalAlert.Title>
                             </LocalAlert.Header>
                         </LocalAlert>
                     </Box>
@@ -79,11 +66,14 @@ export function TaBehandlingAvVentModal({ lukkModal }: Props) {
                     key={'Bekreft'}
                     variant="primary"
                     size="small"
-                    onClick={deaktiverVentingPåBehandling}
-                    children={'Ja, fortsett'}
-                    loading={submitRessurs.status === RessursStatus.HENTER}
-                />
-                <Button key={'Nei'} variant="tertiary" onClick={lukkModal} children={'Nei'} />
+                    onClick={() => taBehandlingAvVent(behandling.behandlingId)}
+                    loading={isPending}
+                >
+                    Ja, fortsett
+                </Button>
+                <Button key={'Nei'} variant="tertiary" onClick={lukkModal}>
+                    Nei
+                </Button>
             </Modal.Footer>
         </Modal>
     );
