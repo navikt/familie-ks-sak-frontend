@@ -4,7 +4,7 @@ import { BehandlingStatus, BehandlingSteg, BehandlingÅrsak, hentStegNummer } fr
 import { harTilgangTilEnhet } from '../typer/enhet';
 import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '../utils/behandling';
 
-const ÅRSAKER_ÅPEN_FOR_ALLE = new Set([BehandlingÅrsak.TEKNISK_ENDRING, BehandlingÅrsak.KORREKSJON_VEDTAKSBREV]);
+const ÅRSAKER_ÅPEN_FOR_ALLE = new Set([BehandlingÅrsak.TEKNISK_ENDRING]);
 
 interface Parameters {
     sjekkTilgangTilEnhet?: boolean;

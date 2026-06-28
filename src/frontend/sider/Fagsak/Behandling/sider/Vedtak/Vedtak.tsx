@@ -36,7 +36,6 @@ function kanForeslåVedtak(behandling: IBehandling, vedtaksperioder: IVedtaksper
     return (
         minstEnPeriodeHarBegrunnelseEllerFritekst ||
         behandling?.årsak === BehandlingÅrsak.TEKNISK_ENDRING ||
-        behandling?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
         behandling?.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
         behandling?.årsak === BehandlingÅrsak.DØDSFALL
     );

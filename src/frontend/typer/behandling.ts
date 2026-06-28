@@ -6,7 +6,6 @@ import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
 import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
-import { FeatureToggle, type FeatureToggles } from './featureToggles';
 import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { ManglendeSvalbardmerking } from './ManglendeSvalbardmerking';
 import type { IRestOvergangsordningAndel } from './overgangsordningAndel';
@@ -54,7 +53,6 @@ export enum BehandlingÅrsak {
     DØDSFALL = 'DØDSFALL',
     NYE_OPPLYSNINGER = 'NYE_OPPLYSNINGER',
     KLAGE = 'KLAGE',
-    KORREKSJON_VEDTAKSBREV = 'KORREKSJON_VEDTAKSBREV',
     SATSENDRING = 'SATSENDRING',
     BARNEHAGELISTE = 'BARNEHAGELISTE',
     TEKNISK_ENDRING = 'TEKNISK_ENDRING',
@@ -63,13 +61,10 @@ export enum BehandlingÅrsak {
     IVERKSETTE_KA_VEDTAK = 'IVERKSETTE_KA_VEDTAK',
 }
 
-export const behandlingÅrsakerSomIkkeSkalSettesManuelt = (toggles: FeatureToggles): BehandlingÅrsak[] =>
-    [
-        BehandlingÅrsak.KLAGE,
-        BehandlingÅrsak.LOVENDRING_2024,
-        BehandlingÅrsak.SATSENDRING,
-        toggles[FeatureToggle.kanManueltKorrigereMedVedtaksbrev] ? null : BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
-    ].filter(behandlingsårsak => behandlingsårsak !== null);
+export const behandlingÅrsakerSomIkkeSkalSettesManuelt = (): BehandlingÅrsak[] =>
+    [BehandlingÅrsak.KLAGE, BehandlingÅrsak.LOVENDRING_2024, BehandlingÅrsak.SATSENDRING].filter(
+        behandlingsårsak => behandlingsårsak !== null
+    );
 
 export const behandlingÅrsak: Record<BehandlingÅrsak | TilbakekrevingsbehandlingÅrsak | KlageÅrsak, string> = {
     SØKNAD: 'Søknad',
@@ -77,7 +72,6 @@ export const behandlingÅrsak: Record<BehandlingÅrsak | Tilbakekrevingsbehandli
     DØDSFALL: 'Dødsfall',
     NYE_OPPLYSNINGER: 'Nye opplysninger',
     KLAGE: 'Klage',
-    KORREKSJON_VEDTAKSBREV: 'Korrigere vedtak med egen brevmal',
     SATSENDRING: 'Satsendring',
     BARNEHAGELISTE: 'Barnehageliste',
     TEKNISK_ENDRING: 'Teknisk Endring',

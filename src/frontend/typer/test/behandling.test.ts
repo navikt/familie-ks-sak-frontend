@@ -4,7 +4,6 @@ import {
     behandlingÅrsakerSomIkkeSkalSettesManuelt,
     erBehandlingHenlagt,
 } from '../behandling';
-import { type FeatureToggles } from '../featureToggles';
 
 describe('Behandlingstester', () => {
     test('Alle henleggelsesresultater skal trigge erHenlagt', () => {
@@ -19,12 +18,8 @@ describe('Behandlingstester', () => {
 });
 
 describe('behandlingÅrsakerSomIkkeSkalSettesManuelt inneholde alle behandlingsårsaker som ikke skal kunne velges manuelt', () => {
-    test('Alle relevante toggles er skrudd på', () => {
+    test('Inneholder forventede behandlingsårsaker', () => {
         // Arrange
-        const toggles: FeatureToggles = {
-            kanManueltKorrigereMedVedtaksbrev: true,
-        };
-
         const forventedeBehandlingsårsaker = new Set([
             BehandlingÅrsak.KLAGE,
             BehandlingÅrsak.LOVENDRING_2024,
@@ -32,33 +27,7 @@ describe('behandlingÅrsakerSomIkkeSkalSettesManuelt inneholde alle behandlings�
         ]);
 
         // Act
-        const behandlingsårsaker = behandlingÅrsakerSomIkkeSkalSettesManuelt(toggles);
-
-        // Assert
-        const behandlingsårsakerSet = new Set(behandlingsårsaker);
-        const forventedeBehandlingsårsakerSet = new Set(forventedeBehandlingsårsaker);
-        expect(behandlingsårsakerSet.size == forventedeBehandlingsårsakerSet.size);
-        expect(
-            [...behandlingsårsakerSet].every(behandlingÅrsak =>
-                [...forventedeBehandlingsårsakerSet].includes(behandlingÅrsak)
-            )
-        );
-    });
-    test('Alle relevante toggles er skrudd av', () => {
-        // Arrange
-        const toggles: FeatureToggles = {
-            kanManueltKorrigereMedVedtaksbrev: false,
-        };
-
-        const forventedeBehandlingsårsaker = new Set([
-            BehandlingÅrsak.KLAGE,
-            BehandlingÅrsak.LOVENDRING_2024,
-            BehandlingÅrsak.SATSENDRING,
-            BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
-        ]);
-
-        // Act
-        const behandlingsårsaker = behandlingÅrsakerSomIkkeSkalSettesManuelt(toggles);
+        const behandlingsårsaker = behandlingÅrsakerSomIkkeSkalSettesManuelt();
 
         // Assert
         const behandlingsårsakerSet = new Set(behandlingsårsaker);
