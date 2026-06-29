@@ -1,7 +1,11 @@
 import type { FocusEvent, ReactNode } from 'react';
 
 import { useBehandling } from '@hooks/useBehandling';
+import { useFeatureToggles } from '@hooks/useFeatureToggles';
+import { useSlettVilkårResultatError } from '@hooks/useSlettVilkårResultatError';
+import { SlettVilkårResultat } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/SlettVilkårResultat';
 import { BehandlingÅrsak } from '@typer/behandling';
+import { FeatureToggle } from '@typer/featureToggles';
 import type { IGrunnlagPerson } from '@typer/person';
 import { PersonType } from '@typer/person';
 import type { IVilkårConfig, IVilkårResultat, UtdypendeVilkårsvurdering } from '@typer/vilkår';
@@ -10,7 +14,7 @@ import { alleRegelverk } from '@utils/vilkår';
 import styled from 'styled-components';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Button, Fieldset, Label, Radio, RadioGroup, Select, Textarea } from '@navikt/ds-react';
+import { Button, ErrorMessage, Fieldset, Label, Radio, RadioGroup, Select, Textarea, VStack } from '@navikt/ds-react';
 import { BorderNeutral, TextInfoSubtle, TextWarningSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 import AvslagSkjema from './AvslagSkjema';
@@ -78,15 +82,23 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     oppdaterMuligeUtdypendeVilkårsvurderinger,
     settFokusPåLeggTilPeriodeKnapp,
 }: IVilkårSkjema<T>) => {
+    const toggles = useFeatureToggles();
     const behandling = useBehandling();
 
+    const slettVilkårResultatError = useSlettVilkårResultatError(lagretVilkårResultat.id);
+
     const årsakErSøknad = behandling.årsak === BehandlingÅrsak.SØKNAD;
+
     const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding, nullstillSkjema } =
         vilkårSkjemaContext;
 
+    const errors = [feilmelding, slettVilkårResultatError?.message]
+        .filter((error): error is string => !!error)
+        .map((error, index) => <ErrorMessage key={index}>{error}</ErrorMessage>);
+
     return (
         <FieldsetForVilkårSkjema
-            error={feilmelding}
+            error={errors.length > 0 ? <VStack gap={'space-16'}>{errors}</VStack> : undefined}
             errorPropagation={false}
             legend={'Endre vilkår'}
             hideLegend
@@ -233,22 +245,25 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                             Avbryt
                         </Button>
                     </div>
-
-                    <Button
-                        onClick={() =>
-                            slettVilkår(person.personIdent, lagretVilkårResultat.id, () => {
-                                toggleForm(false);
-                                nullstillSkjema();
-                            })
-                        }
-                        id={vilkårFeilmeldingId(lagretVilkårResultat)}
-                        loading={sletterVilkår}
-                        size={'medium'}
-                        variant={'tertiary'}
-                        icon={<TrashIcon />}
-                    >
-                        {'Fjern'}
-                    </Button>
+                    {toggles[FeatureToggle.nySlettVilkaarLogikk] ? (
+                        <SlettVilkårResultat personIdent={person.personIdent} vilkårResultat={lagretVilkårResultat} />
+                    ) : (
+                        <Button
+                            onClick={() =>
+                                slettVilkår(person.personIdent, lagretVilkårResultat.id, () => {
+                                    toggleForm(false);
+                                    nullstillSkjema();
+                                })
+                            }
+                            id={vilkårFeilmeldingId(lagretVilkårResultat)}
+                            loading={sletterVilkår}
+                            size={'medium'}
+                            variant={'tertiary'}
+                            icon={<TrashIcon />}
+                        >
+                            {'Fjern'}
+                        </Button>
+                    )}
                 </Knapperad>
             )}
         </FieldsetForVilkårSkjema>
