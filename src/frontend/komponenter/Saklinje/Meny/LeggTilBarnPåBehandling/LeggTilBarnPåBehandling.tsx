@@ -8,7 +8,6 @@ const relevanteBehandlingsårsaker = [
     BehandlingÅrsak.NYE_OPPLYSNINGER,
     BehandlingÅrsak.KLAGE,
     BehandlingÅrsak.IVERKSETTE_KA_VEDTAK,
-    BehandlingÅrsak.KORREKSJON_VEDTAKSBREV,
 ];
 
 interface Props {
