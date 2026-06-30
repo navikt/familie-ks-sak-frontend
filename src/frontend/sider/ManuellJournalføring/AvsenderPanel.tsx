@@ -1,29 +1,15 @@
 import { useEffect, useState } from 'react';
 
+import { EmailIkon } from '@ikoner/EmailIkon';
+import { formaterIdent } from '@utils/formatter';
 import classNames from 'classnames';
-import styled from 'styled-components';
 
 import { BodyShort, Checkbox, ExpansionCard, TextField } from '@navikt/ds-react';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
+import styles from './AvsenderPanel.module.css';
 import { DeltagerInfo } from './DeltagerInfo';
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
-import { EmailIkon } from '../../ikoner/EmailIkon';
-import { formaterIdent } from '../../utils/formatter';
-
-const StyledExpansionContent = styled(ExpansionCard.Content)`
-    &[data-open='true'] {
-        padding: var(--ax-space-8) var(--ax-space-16) var(--ax-space-16);
-
-        & > div {
-            margin: var(--ax-space-16) var(--ax-space-64);
-        }
-    }
-`;
-
-const StyledExpansionCard = styled(ExpansionCard)`
-    margin-top: 1rem;
-`;
 
 export const AvsenderPanel = () => {
     const { skjema, erLesevisning, settAvsenderLikBruker, tilbakestillAvsender } = useManuellJournalføringContext();
@@ -45,7 +31,7 @@ export const AvsenderPanel = () => {
     ]);
 
     return (
-        <StyledExpansionCard
+        <ExpansionCard
             open={åpen}
             onToggle={() => {
                 settÅpen(!åpen);
@@ -61,7 +47,7 @@ export const AvsenderPanel = () => {
                     undertittel="Avsender"
                 />
             </ExpansionCard.Header>
-            <StyledExpansionContent>
+            <ExpansionCard.Content className={styles.innerContent}>
                 {erLesevisning() ? (
                     brukerErAvsender ? (
                         <BodyShort
@@ -105,7 +91,7 @@ export const AvsenderPanel = () => {
                     placeholder={'Fnr/dnr/orgnr'}
                     disabled={brukerErAvsender}
                 />
-            </StyledExpansionContent>
-        </StyledExpansionCard>
+            </ExpansionCard.Content>
+        </ExpansionCard>
     );
 };

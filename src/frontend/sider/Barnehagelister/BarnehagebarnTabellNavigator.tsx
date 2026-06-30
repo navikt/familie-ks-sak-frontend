@@ -40,35 +40,33 @@ const BarnehagebarnTabellNavigator = (props: BarnehagebarnTabellNavigatorProps) 
                         <option value="100">Vis 100 per side</option>
                         <option value="200">Vis 200 per side</option>
                     </Select>
-                    {data.totalElements > 0 && data?.totalPages > 0 && (
-                        <HStack>
-                            {data.totalElements > 0 ? (
-                                <HStack gap="space-8" align="center">
-                                    |
-                                    <span>
-                                        <b>
-                                            Side {data.number + 1} av {data.totalPages}{' '}
-                                        </b>
-                                        ({data.pageable.offset + 1} - {data.pageable.offset + data.numberOfElements} av{' '}
-                                        {data.totalElements} totalt)
-                                    </span>
-                                    |
-                                </HStack>
-                            ) : (
-                                <div>Ingen resultater</div>
-                            )}
-                            {data?.totalPages > 0 && (
-                                <Pagination
-                                    size="medium"
-                                    page={data.number + 1}
-                                    count={data.totalPages}
-                                    onPageChange={(side: number) => updateOffset(side - 1)}
-                                    boundaryCount={1}
-                                    siblingCount={1}
-                                />
-                            )}
-                        </HStack>
-                    )}
+                    <HStack>
+                        {data.totalElements > 0 ? (
+                            <HStack gap="space-8" align="center">
+                                |
+                                <span>
+                                    <b>
+                                        Side {data.number + 1} av {data.totalPages}{' '}
+                                    </b>
+                                    ({data.pageable.offset + 1} - {data.pageable.offset + data.numberOfElements} av{' '}
+                                    {data.totalElements} totalt)
+                                </span>
+                                |
+                            </HStack>
+                        ) : (
+                            <div>Ingen resultater</div>
+                        )}
+                        {data?.totalPages > 0 && (
+                            <Pagination
+                                size="medium"
+                                page={data.number + 1}
+                                count={data.totalPages}
+                                onPageChange={(side: number) => updateOffset(side - 1)}
+                                boundaryCount={1}
+                                siblingCount={1}
+                            />
+                        )}
+                    </HStack>
                 </HStack>
             )}
         </HStack>

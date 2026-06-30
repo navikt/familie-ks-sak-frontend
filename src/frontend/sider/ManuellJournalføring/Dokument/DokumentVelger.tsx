@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import styled from 'styled-components';
-
-import { ExpansionCard } from '@navikt/ds-react';
+import { Box, ExpansionCard } from '@navikt/ds-react';
 import type { IDokumentInfo } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
@@ -14,11 +12,6 @@ interface IDokumentVelgerProps {
     dokument: IDokumentInfo;
     visFeilmeldinger: boolean;
 }
-
-const StyledExpansionCard = styled(ExpansionCard)`
-    margin-top: 1rem;
-    width: 100%;
-`;
 
 export const DokumentVelger = ({ dokument, visFeilmeldinger }: IDokumentVelgerProps) => {
     const { dataForManuellJournalføring, valgtDokumentId, velgOgHentDokumentData } = useManuellJournalføringContext();
@@ -37,24 +30,26 @@ export const DokumentVelger = ({ dokument, visFeilmeldinger }: IDokumentVelgerPr
     }, [visFeilmeldinger]);
 
     return (
-        <StyledExpansionCard
-            open={åpen}
-            onToggle={() => {
-                settÅpen(!åpen);
-                if (!valgt && journalpostId && dokument.dokumentInfoId) {
-                    velgOgHentDokumentData(dokument.dokumentInfoId);
-                }
-            }}
-            aria-label={dokument.tittel || 'Ukjent'}
-        >
-            <ExpansionCard.Header>
-                <ExpansionCard.Title>
-                    <DokumentInfoStripe valgt={valgt} journalpostId={journalpostId} dokument={dokument} />
-                </ExpansionCard.Title>
-            </ExpansionCard.Header>
-            <ExpansionCard.Content>
-                <EndreDokumentInfoPanel dokument={dokument} visFeilmeldinger={visFeilmeldinger} />
-            </ExpansionCard.Content>
-        </StyledExpansionCard>
+        <Box marginBlock={'space-16 space-0'} width={'100%'}>
+            <ExpansionCard
+                open={åpen}
+                onToggle={() => {
+                    settÅpen(!åpen);
+                    if (!valgt && journalpostId && dokument.dokumentInfoId) {
+                        velgOgHentDokumentData(dokument.dokumentInfoId);
+                    }
+                }}
+                aria-label={dokument.tittel || 'Ukjent'}
+            >
+                <ExpansionCard.Header>
+                    <ExpansionCard.Title>
+                        <DokumentInfoStripe valgt={valgt} journalpostId={journalpostId} dokument={dokument} />
+                    </ExpansionCard.Title>
+                </ExpansionCard.Header>
+                <ExpansionCard.Content>
+                    <EndreDokumentInfoPanel dokument={dokument} visFeilmeldinger={visFeilmeldinger} />
+                </ExpansionCard.Content>
+            </ExpansionCard>
+        </Box>
     );
 };
