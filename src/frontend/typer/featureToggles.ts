@@ -8,6 +8,7 @@ export enum FeatureToggle {
     tekniskVedlikeholdHenleggelse = 'familie-ks-sak.teknisk-vedlikehold-henleggelse.tilgangsstyring',
     kanOppretteOgEndreSammensatteKontrollsaker = 'familie-ks-sak.kan-opprette-og-endre-sammensatte-kontrollsaker',
     skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
+    nySlettVilkaarLogikk = 'familie-ks-sak.ny-slett-vilkaar-logikk',
 
     // Release
 }
