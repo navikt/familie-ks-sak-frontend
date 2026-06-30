@@ -5,7 +5,7 @@ import {
     OpprettBehandlingFelt,
     type OpprettBehandlingFormValues,
 } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
-import { dateTilIsoDatoString, hentDagensDato } from '@utils/dato';
+import { dateTilIsoDatoString, hentDagensDato, isoStringTilDate } from '@utils/dato';
 import { format, startOfDay } from 'date-fns';
 import { useController, useFormContext } from 'react-hook-form';
 
@@ -16,7 +16,7 @@ export function KlageMottattDatoFelt() {
     const dateValidationRef = useRef<DateValidationT | undefined>(undefined);
 
     const {
-        field: { onChange },
+        field: { value, onChange },
         fieldState: { error },
         formState: { isSubmitting, isSubmitted },
     } = useController({
@@ -61,6 +61,7 @@ export function KlageMottattDatoFelt() {
             dateValidationRef.current = validation;
             trigger(OpprettBehandlingFelt.KLAGE_MOTTATT_DATO);
         },
+        defaultSelected: value ? isoStringTilDate(value) : undefined,
     });
 
     return (

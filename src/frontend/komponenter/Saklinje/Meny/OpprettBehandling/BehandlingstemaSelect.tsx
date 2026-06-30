@@ -29,7 +29,7 @@ export function BehandlingstemaSelect() {
             onChange={onChange}
             error={error?.message}
         >
-            <option disabled={true} value={''} aria-selected={true}>
+            <option disabled={true} value={''}>
                 Velg behandlingstema
             </option>
             <option aria-selected={value === BehandlingKategori.NASJONAL} value={BehandlingKategori.NASJONAL}>

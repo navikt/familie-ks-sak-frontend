@@ -1,11 +1,10 @@
+import { useFagsak } from '@hooks/useFagsak';
 import { useFeatureToggles } from '@hooks/useFeatureToggles';
 import {
     OpprettBehandlingFelt,
     type OpprettBehandlingFormValues,
 } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
-import { useFagsakContext } from '@sider/Fagsak/FagsakContext';
-import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
-import { Behandlingstype } from '@typer/behandling';
+import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 import { FeatureToggle } from '@typer/featureToggles';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
@@ -19,8 +18,9 @@ import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opp
 export function BehandlingstypeFelt() {
     const toggles = useFeatureToggles();
 
-    const { fagsak } = useFagsakContext();
-    const { control } = useFormContext<OpprettBehandlingFormValues>();
+    const fagsak = useFagsak();
+
+    const { control, setValue, reset } = useFormContext<OpprettBehandlingFormValues>();
 
     const {
         field: { value, onChange },
@@ -34,19 +34,32 @@ export function BehandlingstypeFelt() {
         },
     });
 
-    const aktivBehandling: VisningBehandling | undefined = fagsak
-        ? hentAktivBehandlingPåMinimalFagsak(fagsak)
-        : undefined;
+    const aktivBehandling = fagsak ? hentAktivBehandlingPåMinimalFagsak(fagsak) : undefined;
 
     const kanOppretteTekniskEndring =
         kanOppretteRevurdering(fagsak, aktivBehandling) && toggles[FeatureToggle.kanBehandleTekniskEndring];
+
+    function handleOnChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        reset();
+
+        const nyVerdi = event.target.value;
+        onChange(nyVerdi);
+
+        if (nyVerdi === Behandlingstype.FØRSTEGANGSBEHANDLING) {
+            setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, BehandlingÅrsak.SØKNAD);
+        } else if (nyVerdi === Behandlingstype.TEKNISK_ENDRING) {
+            setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, BehandlingÅrsak.TEKNISK_ENDRING);
+        } else {
+            setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, '');
+        }
+    }
 
     return (
         <Select
             label={'Velg type behandling'}
             readOnly={isSubmitting}
             value={value}
-            onChange={onChange}
+            onChange={handleOnChange}
             error={error?.message}
         >
             <option disabled={true} value={''}>
@@ -81,7 +94,7 @@ export function BehandlingstypeFelt() {
             >
                 Tilbakekreving
             </option>
-            {!fagsak?.finnesStrengtFortroligPersonIFagsak && (
+            {!fagsak.finnesStrengtFortroligPersonIFagsak && (
                 <option aria-selected={value === Klagebehandlingstype.KLAGE} value={Klagebehandlingstype.KLAGE}>
                     Klage
                 </option>

@@ -5,7 +5,7 @@ import {
     OpprettBehandlingFelt,
     type OpprettBehandlingFormValues,
 } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
-import { dateTilIsoDatoString, hentDagensDato } from '@utils/dato';
+import { dateTilIsoDatoString, hentDagensDato, isoStringTilDate } from '@utils/dato';
 import { format, isBefore, startOfDay, subDays } from 'date-fns';
 import { useController, useFormContext } from 'react-hook-form';
 
@@ -63,6 +63,7 @@ export function SøknadMottattDatoFelt() {
             dateValidationRef.current = validation;
             trigger(OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO);
         },
+        defaultSelected: value ? isoStringTilDate(value) : undefined,
     });
 
     return (

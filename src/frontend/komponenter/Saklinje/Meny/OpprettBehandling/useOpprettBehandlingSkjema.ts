@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { useFagsak } from '@hooks/useFagsak';
 import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
 import { HentKlagebehandlingerQueryKeyFactory } from '@hooks/useHentKlagebehandlinger';
@@ -10,7 +8,8 @@ import { useOpprettKlagebehandling } from '@hooks/useOpprettKlagebehandling';
 import { useOpprettTilbakekreving } from '@hooks/useOpprettTilbakekreving';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useQueryClient } from '@tanstack/react-query';
-import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
+import type { Behandlingstype } from '@typer/behandling';
+import { BehandlingÅrsak } from '@typer/behandling';
 import type { BehandlingKategori } from '@typer/behandlingstema';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
@@ -67,16 +66,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
         },
     });
 
-    const { setError, setValue, watch } = form;
-    const behandlingstypeVerdi = watch(OpprettBehandlingFelt.BEHANDLINGSTYPE);
-
-    useEffect(() => {
-        if (behandlingstypeVerdi === Behandlingstype.FØRSTEGANGSBEHANDLING) {
-            setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, BehandlingÅrsak.SØKNAD);
-        } else if (behandlingstypeVerdi === Behandlingstype.TEKNISK_ENDRING) {
-            setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, BehandlingÅrsak.TEKNISK_ENDRING);
-        }
-    }, [behandlingstypeVerdi, setValue]);
+    const { setError } = form;
 
     const { mutateAsync: opprettKlagebehandling } = useOpprettKlagebehandling();
 
@@ -84,7 +74,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
 
     const { mutateAsync: opprettBehandling } = useOpprettBehandling();
 
-    const onSubmit = async (values: TransformedOpprettBehandlingFormValues) => {
+    async function onSubmit(values: TransformedOpprettBehandlingFormValues) {
         const { behandlingstype, behandlingsårsak, behandlingskategori, søknadMottattDato, klageMottattDato } = values;
 
         if (behandlingstype === Klagebehandlingstype.KLAGE) {
@@ -140,7 +130,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
                 });
             }
         }
-    };
+    }
 
     return {
         form,
