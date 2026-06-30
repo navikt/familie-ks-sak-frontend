@@ -1,6 +1,5 @@
 import type { ChangeEvent } from 'react';
 
-import { useFeatureToggles } from '@hooks/useFeatureToggles';
 import { behandlingÅrsak, BehandlingÅrsak, behandlingÅrsakerSomIkkeSkalSettesManuelt } from '@typer/behandling';
 
 import { Select } from '@navikt/ds-react';
@@ -17,8 +16,6 @@ interface IProps {
 }
 
 export const BehandlingårsakFelt = ({ behandlingsårsak, visFeilmeldinger, erLesevisning = false }: IProps) => {
-    const toggles = useFeatureToggles();
-
     return (
         <Select
             {...behandlingsårsak.hentNavBaseSkjemaProps(visFeilmeldinger)}
@@ -33,9 +30,7 @@ export const BehandlingårsakFelt = ({ behandlingsårsak, visFeilmeldinger, erLe
                 Velg
             </option>
             {Object.values(BehandlingÅrsak)
-                .filter(
-                    behandlingsårsak => !behandlingÅrsakerSomIkkeSkalSettesManuelt(toggles).includes(behandlingsårsak)
-                )
+                .filter(behandlingsårsak => !behandlingÅrsakerSomIkkeSkalSettesManuelt().includes(behandlingsårsak))
                 .map(årsak => {
                     return (
                         <option key={årsak} aria-selected={behandlingsårsak.verdi === årsak} value={årsak}>
