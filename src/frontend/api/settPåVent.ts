@@ -12,14 +12,11 @@ export async function settPåVent(
     payload: SettPåVentPayload,
     erBehandlingAlleredePåVent: boolean
 ): Promise<IBehandling> {
-    if (erBehandlingAlleredePåVent) {
-        return apiClient.put<SettPåVentPayload, IBehandling>({
-            url: `/familie-ks-sak/api/behandlinger/${behandlingId}/sett-på-vent/oppdater`,
-            data: payload,
-        });
-    }
-    return apiClient.post<SettPåVentPayload, IBehandling>({
-        url: `/familie-ks-sak/api/behandlinger/${behandlingId}/sett-på-vent`,
+    return apiClient.request<SettPåVentPayload, IBehandling>({
+        method: erBehandlingAlleredePåVent ? 'PUT' : 'POST',
+        url: erBehandlingAlleredePåVent
+            ? `/familie-ks-sak/api/behandlinger/${behandlingId}/sett-på-vent/oppdater`
+            : `/familie-ks-sak/api/behandlinger/${behandlingId}/sett-på-vent`,
         data: payload,
     });
 }
