@@ -10,7 +10,7 @@ import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useQueryClient } from '@tanstack/react-query';
 import type { Behandlingstype } from '@typer/behandling';
 import { BehandlingÅrsak } from '@typer/behandling';
-import type { BehandlingKategori } from '@typer/behandlingstema';
+import type { Behandlingstema } from '@typer/behandlingstema';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
 import type { IsoDatoString } from '@utils/dato';
@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router';
 export enum OpprettBehandlingFelt {
     BEHANDLINGSTYPE = 'behandlingstype',
     BEHANDLINGSÅRSAK = 'behandlingsårsak',
-    BEHANDLINGSKATEGORI = 'behandlingskategori',
+    BEHANDLINGSTEMA = 'behandlingstema',
     SØKNAD_MOTTATT_DATO = 'søknadMottattDato',
     KLAGE_MOTTATT_DATO = 'klageMottattDato',
 }
@@ -32,7 +32,7 @@ export interface OpprettBehandlingFormValues {
         | Klagebehandlingstype
         | string;
     [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: BehandlingÅrsak | string;
-    [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: BehandlingKategori | string;
+    [OpprettBehandlingFelt.BEHANDLINGSTEMA]: Behandlingstema | string;
     [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: IsoDatoString;
     [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: IsoDatoString;
 }
@@ -40,7 +40,7 @@ export interface OpprettBehandlingFormValues {
 interface TransformedOpprettBehandlingFormValues {
     [OpprettBehandlingFelt.BEHANDLINGSTYPE]: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype;
     [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: BehandlingÅrsak;
-    [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: BehandlingKategori;
+    [OpprettBehandlingFelt.BEHANDLINGSTEMA]: Behandlingstema;
     [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: IsoDatoString;
     [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: IsoDatoString;
 }
@@ -60,7 +60,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
         defaultValues: {
             [OpprettBehandlingFelt.BEHANDLINGSTYPE]: '',
             [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: '',
-            [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: '',
+            [OpprettBehandlingFelt.BEHANDLINGSTEMA]: '',
             [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: '',
             [OpprettBehandlingFelt.KLAGE_MOTTATT_DATO]: '',
         },
@@ -75,7 +75,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
     const { mutateAsync: opprettBehandling } = useOpprettBehandling();
 
     async function onSubmit(values: TransformedOpprettBehandlingFormValues) {
-        const { behandlingstype, behandlingsårsak, behandlingskategori, søknadMottattDato, klageMottattDato } = values;
+        const { behandlingstype, behandlingsårsak, behandlingstema, søknadMottattDato, klageMottattDato } = values;
 
         if (behandlingstype === Klagebehandlingstype.KLAGE) {
             try {
@@ -107,10 +107,10 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
                 const opprettBehandlingParameters = {
                     behandlingType: behandlingstype,
                     behandlingÅrsak: behandlingsårsak,
-                    kategori: behandlingskategori,
+                    kategori: behandlingstema ?? null,
                     saksbehandlerIdent: saksbehandler.navIdent,
                     søkersIdent: fagsak.søkerFødselsnummer,
-                    søknadMottattDato: søknadMottattDato,
+                    søknadMottattDato: søknadMottattDato ?? undefined,
                 };
                 const behandling = await opprettBehandling(opprettBehandlingParameters);
                 queryClient.invalidateQueries({

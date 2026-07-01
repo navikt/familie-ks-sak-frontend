@@ -6,21 +6,21 @@ import {
     type OpprettBehandlingFormValues,
 } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
 import { dateTilIsoDatoString, hentDagensDato, isoStringTilDate } from '@utils/dato';
-import { format, isBefore, startOfDay, subDays } from 'date-fns';
+import { format, startOfDay } from 'date-fns';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { Box, DatePicker, type DateValidationT, LocalAlert, useDatepicker } from '@navikt/ds-react';
+import { DatePicker, type DateValidationT, useDatepicker } from '@navikt/ds-react';
 
-export function SøknadMottattDatoFelt() {
+export function KlageMottattDatoFelt() {
     const { control, trigger } = useFormContext<OpprettBehandlingFormValues>();
     const dateValidationRef = useRef<DateValidationT | undefined>(undefined);
 
     const {
-        field: { onChange, value },
+        field: { value, onChange },
         fieldState: { error },
         formState: { isSubmitting, isSubmitted },
     } = useController({
-        name: OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO,
+        name: OpprettBehandlingFelt.KLAGE_MOTTATT_DATO,
         control,
         rules: {
             validate: value => {
@@ -47,13 +47,11 @@ export function SøknadMottattDatoFelt() {
         },
     });
 
-    const søknadMottattDatoErMerEnn360DagerSiden = value && isBefore(value, subDays(hentDagensDato(), 360));
-
     const { datepickerProps, inputProps } = useDatepicker({
         onDateChange: dato => {
-            onChange(dato ? dateTilIsoDatoString(startOfDay(dato)) : null);
+            onChange(dato ? dateTilIsoDatoString(startOfDay(dato)) : '');
             if (isSubmitted) {
-                trigger(OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO);
+                trigger(OpprettBehandlingFelt.KLAGE_MOTTATT_DATO);
             }
         },
         fromDate: tidligsteRelevanteDato,
@@ -61,32 +59,20 @@ export function SøknadMottattDatoFelt() {
         required: true,
         onValidate: validation => {
             dateValidationRef.current = validation;
-            trigger(OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO);
+            trigger(OpprettBehandlingFelt.KLAGE_MOTTATT_DATO);
         },
         defaultSelected: value ? isoStringTilDate(value) : undefined,
     });
 
     return (
-        <>
-            <DatePicker {...datepickerProps}>
-                <DatePicker.Input
-                    {...inputProps}
-                    label={'Søknad mottatt dato'}
-                    placeholder={'DD.MM.ÅÅÅÅ'}
-                    error={error?.message}
-                    readOnly={isSubmitting}
-                />
-            </DatePicker>
-            {søknadMottattDatoErMerEnn360DagerSiden && (
-                <Box marginBlock={'space-24 space-0'}>
-                    <LocalAlert status={'warning'}>
-                        <LocalAlert.Header>
-                            <LocalAlert.Title>Er mottatt dato riktig?</LocalAlert.Title>
-                        </LocalAlert.Header>
-                        <LocalAlert.Content>Det er mer en 360 dager siden denne datoen.</LocalAlert.Content>
-                    </LocalAlert>
-                </Box>
-            )}
-        </>
+        <DatePicker {...datepickerProps}>
+            <DatePicker.Input
+                {...inputProps}
+                label={'Klage mottatt dato'}
+                placeholder={'DD.MM.ÅÅÅÅ'}
+                error={error?.message}
+                readOnly={isSubmitting}
+            />
+        </DatePicker>
     );
 }

@@ -1,5 +1,6 @@
-import { KlageMottattDatoFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/KlageMottattDatoFelt';
-import { SøknadMottattDatoFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/SøknadMottattDatoFelt';
+import { BehandlingstemaFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/felter/BehandlingstemaFelt';
+import { KlageMottattDatoFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/felter/KlageMottattDatoFelt';
+import { SøknadMottattDatoFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/felter/SøknadMottattDatoFelt';
 import {
     OpprettBehandlingFelt,
     useOpprettBehandlingSkjema,
@@ -10,9 +11,8 @@ import { FormProvider } from 'react-hook-form';
 
 import { Button, Fieldset, Modal, VStack } from '@navikt/ds-react';
 
-import { BehandlingstemaSelect } from './BehandlingstemaSelect';
-import { BehandlingstypeFelt } from './BehandlingstypeFelt';
-import { BehandlingsårsakFelt } from './BehandlingsårsakFelt';
+import { BehandlingstypeFelt } from './felter/BehandlingstypeFelt';
+import { BehandlingsårsakFelt } from './felter/BehandlingsårsakFelt';
 
 interface Props {
     lukkModal: () => void;
@@ -35,7 +35,7 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
     const behandlingsårsak = watch(OpprettBehandlingFelt.BEHANDLINGSÅRSAK);
 
     const skalViseBehandlingsårsakFelt = behandlingstype === Behandlingstype.REVURDERING;
-    const skalViseBehandlingstemaSelect =
+    const skalViseBehandlingstemaFelt =
         behandlingstype in Behandlingstype && behandlingsårsak === BehandlingÅrsak.SØKNAD;
     const skalViseKlageMottattDatoFelt = behandlingstype === Klagebehandlingstype.KLAGE;
     const skalViseSøknadMottattDatoFelt =
@@ -57,7 +57,7 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
                             <VStack gap={'space-16'}>
                                 <BehandlingstypeFelt />
                                 {skalViseBehandlingsårsakFelt && <BehandlingsårsakFelt />}
-                                {skalViseBehandlingstemaSelect && <BehandlingstemaSelect />}
+                                {skalViseBehandlingstemaFelt && <BehandlingstemaFelt />}
                                 {skalViseKlageMottattDatoFelt && <KlageMottattDatoFelt />}
                                 {skalViseSøknadMottattDatoFelt && <SøknadMottattDatoFelt />}
                             </VStack>

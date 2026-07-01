@@ -13,7 +13,7 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
 
-import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opprettBehandlingUtils';
+import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from '../opprettBehandlingUtils';
 
 export function BehandlingstypeFelt() {
     const toggles = useFeatureToggles();
@@ -30,7 +30,7 @@ export function BehandlingstypeFelt() {
         name: OpprettBehandlingFelt.BEHANDLINGSTYPE,
         control,
         rules: {
-            required: 'Velg type behandling som skal opprettes fra nedtrykkslisten.',
+            required: 'Velg type behandling som skal opprettes fra nedtrekkslisten.',
         },
     });
 
@@ -49,8 +49,6 @@ export function BehandlingstypeFelt() {
             setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, BehandlingÅrsak.SØKNAD);
         } else if (nyVerdi === Behandlingstype.TEKNISK_ENDRING) {
             setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, BehandlingÅrsak.TEKNISK_ENDRING);
-        } else {
-            setValue(OpprettBehandlingFelt.BEHANDLINGSÅRSAK, '');
         }
     }
 

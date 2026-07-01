@@ -1,7 +1,8 @@
 import type { IRestBrevmottaker } from '@komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IsoDatoString } from '@utils/dato';
 
-import type { BehandlingKategori } from './behandlingstema';
+import type { Behandlingstema } from './behandlingstema';
+import { type BehandlingKategori } from './behandlingstema';
 import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
 import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
@@ -28,7 +29,7 @@ import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 export const MIDLERTIDIG_BEHANDLENDE_ENHET_ID = '4863';
 
 export interface NyBehandling {
-    kategori: BehandlingKategori | null;
+    kategori: Behandlingstema | null;
     søkersIdent: string;
     behandlingType: Behandlingstype | Tilbakekrevingsbehandlingstype.REVURDERING_TILBAKEKREVING;
     behandlingÅrsak: BehandlingÅrsak;
