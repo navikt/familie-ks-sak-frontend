@@ -1,4 +1,4 @@
-import { BehandlingstemaFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/felter/BehandlingstemaFelt';
+import { BehandlingskategoriFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/felter/BehandlingskategoriFelt';
 import { KlageMottattDatoFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/felter/KlageMottattDatoFelt';
 import { SøknadMottattDatoFelt } from '@komponenter/Saklinje/Meny/OpprettBehandling/felter/SøknadMottattDatoFelt';
 import {
@@ -35,7 +35,7 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
     const behandlingsårsak = watch(OpprettBehandlingFelt.BEHANDLINGSÅRSAK);
 
     const skalViseBehandlingsårsakFelt = behandlingstype === Behandlingstype.REVURDERING;
-    const skalViseBehandlingstemaFelt =
+    const skalViseBehandlingskategoriFelt =
         behandlingstype in Behandlingstype && behandlingsårsak === BehandlingÅrsak.SØKNAD;
     const skalViseKlageMottattDatoFelt = behandlingstype === Klagebehandlingstype.KLAGE;
     const skalViseSøknadMottattDatoFelt =
@@ -57,7 +57,7 @@ export function OpprettBehandlingModal({ lukkModal, onTilbakekrevingsbehandlingO
                             <VStack gap={'space-16'}>
                                 <BehandlingstypeFelt />
                                 {skalViseBehandlingsårsakFelt && <BehandlingsårsakFelt />}
-                                {skalViseBehandlingstemaFelt && <BehandlingstemaFelt />}
+                                {skalViseBehandlingskategoriFelt && <BehandlingskategoriFelt />}
                                 {skalViseKlageMottattDatoFelt && <KlageMottattDatoFelt />}
                                 {skalViseSøknadMottattDatoFelt && <SøknadMottattDatoFelt />}
                             </VStack>
