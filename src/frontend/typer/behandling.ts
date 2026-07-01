@@ -1,7 +1,7 @@
 import type { IRestBrevmottaker } from '@komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { IsoDatoString } from '@utils/dato';
 
-import type { BehandlingKategori } from './behandlingstema';
+import { type BehandlingKategori } from './behandlingstema';
 import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
 import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
@@ -13,10 +13,11 @@ import { type IGrunnlagPerson, PersonType } from './person';
 import type { IRestRefusjonEøs } from './refusjon-eøs';
 import type { ITilbakekreving } from './simulering';
 import { type ISøknadDTO, Målform } from './søknad';
-import type {
-    Behandlingsstatus,
-    TilbakekrevingsbehandlingResultat,
-    TilbakekrevingsbehandlingÅrsak,
+import type { Tilbakekrevingsbehandlingstype } from './tilbakekrevingsbehandling';
+import {
+    type Behandlingsstatus,
+    type TilbakekrevingsbehandlingResultat,
+    type TilbakekrevingsbehandlingÅrsak,
 } from './tilbakekrevingsbehandling';
 import type { ITotrinnskontroll } from './totrinnskontroll';
 import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
@@ -29,7 +30,7 @@ export const MIDLERTIDIG_BEHANDLENDE_ENHET_ID = '4863';
 export interface NyBehandling {
     kategori: BehandlingKategori | null;
     søkersIdent: string;
-    behandlingType: Behandlingstype;
+    behandlingType: Behandlingstype | Tilbakekrevingsbehandlingstype.REVURDERING_TILBAKEKREVING;
     behandlingÅrsak: BehandlingÅrsak;
     saksbehandlerIdent?: string;
     søknadMottattDato?: IsoDatoString;
