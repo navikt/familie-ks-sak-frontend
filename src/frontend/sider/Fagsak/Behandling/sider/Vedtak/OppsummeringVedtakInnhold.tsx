@@ -2,21 +2,13 @@ import { useBehandling } from '@hooks/useBehandling';
 import { useBruker } from '@hooks/useBruker';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useOpprettSammensattKontrollsakError } from '@hooks/useOpprettSammensattKontrollsakError';
-import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useSlettSammensattKontrollsakError } from '@hooks/useSlettSammensattKontrollsakError';
 import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
-import {
-    BehandlerRolle,
-    BehandlingStatus,
-    BehandlingSteg,
-    Behandlingstype,
-    BehandlingÅrsak,
-    hentStegNummer,
-} from '@typer/behandling';
+import { ForhåndsvisVedtaksbrev } from '@sider/Fagsak/Behandling/sider/Vedtak/ForhåndsvisVedtaksbrev';
+import { BehandlingStatus, Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 
-import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
-import { Box, Button, InfoCard, LocalAlert, VStack } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { InformationSquareIcon } from '@navikt/aksel-icons';
+import { Box, InfoCard, LocalAlert, VStack } from '@navikt/ds-react';
 
 import { FeilutbetaltValutaTabell } from './FeilutbetaltValuta/FeilutbetaltValutaTabell';
 import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
@@ -26,17 +18,11 @@ import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrol
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import { Vedtaksmeny } from './Vedtaksmeny/Vedtaksmeny';
 import { Vedtaksperioder } from './Vedtaksperioder/Vedtaksperioder';
-import useDokument from '../../../../../hooks/useDokument';
-import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisningModal';
 
 export function OppsummeringVedtakInnhold() {
-    const saksbehandler = useSaksbehandler();
     const erLesevisning = useErLesevisning();
     const bruker = useBruker();
     const behandling = useBehandling();
-
-    const { hentForhåndsvisning, nullstillDokument, visDokumentModal, hentetDokument, settVisDokumentModal } =
-        useDokument();
 
     const { sammensattKontrollsak } = useSammensattKontrollsakContext();
     const { erFeilutbetaltValutaTabellSynlig } = useFeilutbetaltValutaTabellContext();
@@ -47,24 +33,6 @@ export function OppsummeringVedtakInnhold() {
 
     const erBehandlingMedVedtaksbrevutsending =
         behandling.type !== Behandlingstype.TEKNISK_ENDRING && behandling.årsak !== BehandlingÅrsak.SATSENDRING;
-
-    const hentVedtaksbrev = () => {
-        const skalOgsåLagreBrevPåVedtak =
-            saksbehandler.rolle > BehandlerRolle.VEILEDER &&
-            hentStegNummer(behandling.steg) <= hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK);
-
-        if (skalOgsåLagreBrevPåVedtak) {
-            hentForhåndsvisning({
-                method: 'POST',
-                url: `/familie-ks-sak/api/brev/forhaandsvis-og-lagre-vedtaksbrev/${behandling.behandlingId}`,
-            });
-        } else {
-            hentForhåndsvisning({
-                method: 'GET',
-                url: `/familie-ks-sak/api/brev/forhaandsvis-vedtaksbrev/${behandling.behandlingId}`,
-            });
-        }
-    };
 
     const hentInfostripeTekst = (årsak: BehandlingÅrsak, status: BehandlingStatus): string => {
         if (status === BehandlingStatus.AVSLUTTET) {
@@ -120,15 +88,6 @@ export function OppsummeringVedtakInnhold() {
                 )}
                 <Vedtaksmeny erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending} />
             </VStack>
-            {visDokumentModal && (
-                <PdfVisningModal
-                    onRequestClose={() => {
-                        settVisDokumentModal(false);
-                        nullstillDokument();
-                    }}
-                    pdfdata={hentetDokument}
-                />
-            )}
             <div>
                 {behandling.korrigertEtterbetaling && (
                     <Box marginBlock={'space-0 space-24'}>
@@ -176,19 +135,7 @@ export function OppsummeringVedtakInnhold() {
                         )}
                     </>
                 )}
-                <Button
-                    id={'forhandsvis-vedtaksbrev'}
-                    variant={'secondary'}
-                    size={'medium'}
-                    onClick={() => {
-                        settVisDokumentModal(true);
-                        hentVedtaksbrev();
-                    }}
-                    loading={hentetDokument.status === RessursStatus.HENTER}
-                    icon={<FileTextIcon aria-hidden />}
-                >
-                    Vis vedtaksbrev
-                </Button>
+                <ForhåndsvisVedtaksbrev />
             </div>
         </>
     );
