@@ -107,10 +107,10 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
                 const opprettBehandlingParameters = {
                     behandlingType: behandlingstype,
                     behandlingÅrsak: behandlingsårsak,
-                    kategori: behandlingskategori ?? null,
+                    kategori: behandlingskategori || null,
                     saksbehandlerIdent: saksbehandler.navIdent,
                     søkersIdent: fagsak.søkerFødselsnummer,
-                    søknadMottattDato: søknadMottattDato ?? undefined,
+                    søknadMottattDato: søknadMottattDato || undefined,
                 };
                 const behandling = await opprettBehandling(opprettBehandlingParameters);
                 queryClient.invalidateQueries({
