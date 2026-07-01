@@ -1,42 +1,16 @@
 import { useEffect, useState } from 'react';
 
 import { useHentFagsakPaaPersonError } from '@hooks/useHentFagsakPaaPersonError';
-import styled from 'styled-components';
+import { KontoSirkel } from '@ikoner/KontoSirkel';
+import { formaterIdent } from '@utils/formatter';
+import { identValidator } from '@utils/validators';
 
-import { Button, ExpansionCard, LocalAlert, TextField, VStack } from '@navikt/ds-react';
+import { Box, Button, ExpansionCard, HStack, LocalAlert, TextField, VStack } from '@navikt/ds-react';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
 
+import styles from './BrukerPanel.module.css';
 import { DeltagerInfo } from './DeltagerInfo';
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
-import { KontoSirkel } from '../../ikoner/KontoSirkel';
-import { formaterIdent } from '../../utils/formatter';
-import { identValidator } from '../../utils/validators';
-
-const FlexDiv = styled.div`
-    display: flex;
-    margin-bottom: 1.5rem;
-`;
-
-const StyledExpansionCard = styled(ExpansionCard)`
-    margin-top: 1rem;
-    width: 100%;
-`;
-
-const StyledButton = styled(Button)`
-    margin-left: 1rem;
-    margin-top: auto;
-    width: 10rem;
-`;
-
-const StyledExpansionContent = styled(ExpansionCard.Content)`
-    &[data-open='true'] {
-        padding: var(--ax-space-8) var(--ax-space-16) var(--ax-space-16);
-
-        & > div {
-            margin: var(--ax-space-16) var(--ax-space-64);
-        }
-    }
-`;
 
 export const BrukerPanel = () => {
     const { skjema, endreBruker, erLesevisning } = useManuellJournalføringContext();
@@ -61,7 +35,7 @@ export const BrukerPanel = () => {
     }, [skjema.visFeilmeldinger, skjema.felter.bruker.valideringsstatus]);
 
     return (
-        <StyledExpansionCard
+        <ExpansionCard
             open={åpen}
             onToggle={() => {
                 settÅpen(!åpen);
@@ -77,10 +51,10 @@ export const BrukerPanel = () => {
                     ident={formaterIdent(skjema.felter.bruker.verdi?.personIdent ?? '')}
                 />
             </ExpansionCard.Header>
-            <StyledExpansionContent>
+            <ExpansionCard.Content className={styles.innerContent}>
                 {!erLesevisning() && (
                     <VStack>
-                        <FlexDiv>
+                        <HStack marginBlock={'space-24'} wrap={false} gap={'space-16'}>
                             <TextField
                                 {...nyIdent.hentNavInputProps(!!feilMelding)}
                                 error={nyIdent.hentNavInputProps(!!feilMelding).feil || feilMelding}
@@ -88,27 +62,36 @@ export const BrukerPanel = () => {
                                 description={'Skriv inn brukers/søkers fødselsnummer eller D-nummer'}
                                 size="small"
                             />
-                            <StyledButton
-                                onClick={() => {
-                                    if (nyIdent.valideringsstatus === Valideringsstatus.OK) {
-                                        settSpinner(true);
-                                        endreBruker(nyIdent.verdi)
-                                            .then((feilmelding: string) => {
-                                                settFeilMelding(feilmelding);
-                                            })
-                                            .finally(() => {
-                                                settSpinner(false);
-                                            });
-                                    } else {
-                                        settFeilMelding('Person ident er ugyldig');
-                                    }
-                                }}
-                                children={'Endre bruker'}
-                                loading={spinner}
-                                size="small"
-                                variant="secondary"
-                            />
-                        </FlexDiv>
+                            <Box
+                                marginBlock={
+                                    nyIdent.hentNavInputProps(!!feilMelding).feil || feilMelding
+                                        ? 'auto space-28'
+                                        : 'auto space-0'
+                                }
+                                width={'10rem'}
+                            >
+                                <Button
+                                    onClick={() => {
+                                        if (nyIdent.valideringsstatus === Valideringsstatus.OK) {
+                                            settSpinner(true);
+                                            endreBruker(nyIdent.verdi)
+                                                .then((feilmelding: string) => {
+                                                    settFeilMelding(feilmelding);
+                                                })
+                                                .finally(() => {
+                                                    settSpinner(false);
+                                                });
+                                        } else {
+                                            settFeilMelding('Person ident er ugyldig');
+                                        }
+                                    }}
+                                    children={'Endre bruker'}
+                                    loading={spinner}
+                                    size="small"
+                                    variant="secondary"
+                                />
+                            </Box>
+                        </HStack>
                         {hentFagsakPaaPersonError && (
                             <LocalAlert status={'error'}>
                                 <LocalAlert.Header>
@@ -119,7 +102,7 @@ export const BrukerPanel = () => {
                         )}
                     </VStack>
                 )}
-            </StyledExpansionContent>
-        </StyledExpansionCard>
+            </ExpansionCard.Content>
+        </ExpansionCard>
     );
 };

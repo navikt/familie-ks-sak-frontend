@@ -1,17 +1,7 @@
-import styled from 'styled-components';
+import { useHentBarnehagebarn } from '@hooks/useHentBarnehagebarn';
+import type { BarnehagebarnRequestParams } from '@typer/barnehagebarn';
 
 import { HStack, Pagination, Select } from '@navikt/ds-react';
-
-import { useHentBarnehagebarn } from '../../hooks/useHentBarnehagebarn';
-import type { BarnehagebarnRequestParams } from '../../typer/barnehagebarn';
-
-const StyledHStack = styled(HStack)`
-    margin-bottom: 1rem;
-`;
-
-const StyledSelect = styled(Select)`
-    margin-right: auto;
-`;
 
 interface BarnehagebarnTabellNavigatorProps {
     barnehagebarnRequestParams: BarnehagebarnRequestParams;
@@ -30,10 +20,10 @@ const BarnehagebarnTabellNavigator = (props: BarnehagebarnTabellNavigatorProps) 
     }
 
     return (
-        <StyledHStack>
+        <HStack marginBlock={'space-0 space-16'}>
             {data.content.length >= 0 && (
-                <>
-                    <StyledSelect
+                <HStack justify={'space-between'} width={'100%'}>
+                    <Select
                         hideLabel
                         label="Antall per side"
                         size="medium"
@@ -49,35 +39,37 @@ const BarnehagebarnTabellNavigator = (props: BarnehagebarnTabellNavigatorProps) 
                         <option value="50">Vis 50 per side</option>
                         <option value="100">Vis 100 per side</option>
                         <option value="200">Vis 200 per side</option>
-                    </StyledSelect>
-                    {data.totalElements > 0 ? (
-                        <HStack gap="space-8" align="center">
-                            |
-                            <span>
-                                <b>
-                                    Side {data.number + 1} av {data.totalPages}{' '}
-                                </b>
-                                ({data.pageable.offset + 1} - {data.pageable.offset + data.numberOfElements} av{' '}
-                                {data.totalElements} totalt)
-                            </span>
-                            |
-                        </HStack>
-                    ) : (
-                        <div>Ingen resultater</div>
-                    )}
-                    {data?.totalPages > 0 && (
-                        <Pagination
-                            size="medium"
-                            page={data.number + 1}
-                            count={data.totalPages}
-                            onPageChange={(side: number) => updateOffset(side - 1)}
-                            boundaryCount={1}
-                            siblingCount={1}
-                        />
-                    )}
-                </>
+                    </Select>
+                    <HStack>
+                        {data.totalElements > 0 ? (
+                            <HStack gap="space-8" align="center">
+                                |
+                                <span>
+                                    <b>
+                                        Side {data.number + 1} av {data.totalPages}{' '}
+                                    </b>
+                                    ({data.pageable.offset + 1} - {data.pageable.offset + data.numberOfElements} av{' '}
+                                    {data.totalElements} totalt)
+                                </span>
+                                |
+                            </HStack>
+                        ) : (
+                            <div>Ingen resultater</div>
+                        )}
+                        {data?.totalPages > 0 && (
+                            <Pagination
+                                size="medium"
+                                page={data.number + 1}
+                                count={data.totalPages}
+                                onPageChange={(side: number) => updateOffset(side - 1)}
+                                boundaryCount={1}
+                                siblingCount={1}
+                            />
+                        )}
+                    </HStack>
+                </HStack>
             )}
-        </StyledHStack>
+        </HStack>
     );
 };
 
