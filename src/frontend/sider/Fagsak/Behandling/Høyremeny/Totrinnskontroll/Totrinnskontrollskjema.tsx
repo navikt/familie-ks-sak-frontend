@@ -1,20 +1,21 @@
 import { useState } from 'react';
 
+import { useBehandling } from '@hooks/useBehandling';
+import { useSaksbehandler } from '@hooks/useSaksbehandler';
+import { useKontrollsiderContext } from '@sider/Fagsak/Behandling/KontrollsiderContext';
+import type { IBehandling } from '@typer/behandling';
+import { TotrinnskontrollBeslutning } from '@typer/totrinnskontroll';
+import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import styled from 'styled-components';
 
 import { BodyShort, Button, Detail, Fieldset, Heading, HStack, Radio, RadioGroup, Textarea } from '@navikt/ds-react';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
 
-import { useSaksbehandler } from '../../../../../hooks/useSaksbehandler';
 import ØyeGrå from '../../../../../ikoner/ØyeGrå';
 import ØyeGrønn from '../../../../../ikoner/ØyeGrønn';
 import ØyeRød from '../../../../../ikoner/ØyeRød';
-import type { IBehandling } from '../../../../../typer/behandling';
-import { TotrinnskontrollBeslutning } from '../../../../../typer/totrinnskontroll';
-import { Datoformat, isoStringTilFormatertString } from '../../../../../utils/dato';
-import { hentFrontendFeilmelding } from '../../../../../utils/ressursUtils';
-import { useBehandlingContext } from '../../context/BehandlingContext';
 import { KontrollertStatus } from '../../sider/sider';
 
 interface Props {
@@ -27,8 +28,10 @@ const StyledButton = styled(Button)`
 `;
 
 export function Totrinnskontrollskjema({ innsendtVedtak, sendInnVedtak }: Props) {
-    const { behandling, trinnPåBehandling } = useBehandlingContext();
     const saksbehandler = useSaksbehandler();
+    const behandling = useBehandling();
+
+    const { kontrollsider } = useKontrollsiderContext();
 
     const [beslutning, settBeslutning] = useState<TotrinnskontrollBeslutning>(TotrinnskontrollBeslutning.IKKE_VURDERT);
     const [begrunnelse, settBegrunnelse] = useState<string>('');
@@ -70,10 +73,13 @@ export function Totrinnskontrollskjema({ innsendtVedtak, sendInnVedtak }: Props)
             ) : (
                 <div>
                     <BodyShort weight={'semibold'}>Kontrollerte trinn</BodyShort>
-
-                    {Object.entries(trinnPåBehandling).map(([_, trinn], index) => {
+                    {kontrollsider.map((side, index) => {
                         return (
-                            <TrinnStatus kontrollertStatus={trinn.kontrollert} navn={`${index + 1}. ${trinn.navn}`} />
+                            <TrinnStatus
+                                key={side.id}
+                                kontrollertStatus={side.kontrollertStatus}
+                                navn={`${index + 1}. ${side.navn}`}
+                            />
                         );
                     })}
                 </div>

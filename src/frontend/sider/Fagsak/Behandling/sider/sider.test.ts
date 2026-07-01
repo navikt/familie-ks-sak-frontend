@@ -1,30 +1,88 @@
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
-import { BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
+import { BehandlingSteg, BehandlingStegStatus, BehandlingÅrsak } from '@typer/behandling';
 
 import {
     erViPåUdefinertFagsakSide,
     erViPåUlovligSteg,
     finnSideForBehandlingssteg,
-    hentTrinnForBehandling,
+    finnSiderForBehandling,
     SideId,
     sider,
 } from './sider';
 
-describe('sider.ts', () => {
-    describe('siderForBehandling', () => {
-        test('REGISTRERE_SØKNAD returneres ved årsak SØKNAD', () => {
-            const behandling = lagBehandling({ årsak: BehandlingÅrsak.SØKNAD });
-            expect(Object.keys(hentTrinnForBehandling(behandling))).toContain(SideId.REGISTRERE_SØKNAD);
+describe('Sider', () => {
+    describe('finnSiderForBehandling', () => {
+        test('viser alle sider for en ordinær søknadsbehandling', () => {
+            const behandling = lagBehandling();
+
+            const sideIder = finnSiderForBehandling(behandling).map(side => side.id);
+
+            expect(sideIder).toEqual([
+                SideId.REGISTRERE_SØKNAD,
+                SideId.VILKÅRSVURDERING,
+                SideId.BEHANDLINGRESULTAT,
+                SideId.SIMULERING,
+                SideId.VEDTAK,
+            ]);
         });
-        test('VEDTAK returneres ikke ved årsak SATSENDRING', () => {
+
+        test('skjuler registrer søknad og vedtak ved satsendring', () => {
             const behandling = lagBehandling({ årsak: BehandlingÅrsak.SATSENDRING });
-            expect(Object.keys(hentTrinnForBehandling(behandling))).not.toContain(SideId.VEDTAK);
+
+            const sideIder = finnSiderForBehandling(behandling).map(side => side.id);
+
+            expect(sideIder).toEqual([SideId.VILKÅRSVURDERING, SideId.BEHANDLINGRESULTAT, SideId.SIMULERING]);
         });
-        test('Standard revurdering uten søknad viser alle sider bortsett fra REGISTRERE_SØKNAD', () => {
-            const behandling = lagBehandling({ årsak: BehandlingÅrsak.NYE_OPPLYSNINGER });
-            expect(Object.keys(hentTrinnForBehandling(behandling))).toEqual(
-                Object.values(SideId).filter(side => side !== SideId.REGISTRERE_SØKNAD)
-            );
+
+        test('skjuler simulering og vedtak ved lovendring 2024 hvor behandling mangler stegene for simulering og vedtak', () => {
+            const behandling = lagBehandling({
+                årsak: BehandlingÅrsak.LOVENDRING_2024,
+                stegTilstand: [
+                    {
+                        behandlingSteg: BehandlingSteg.REGISTRERE_SØKNAD,
+                        behandlingStegStatus: BehandlingStegStatus.IKKE_UTFØRT,
+                    },
+                ],
+            });
+
+            const sideIder = finnSiderForBehandling(behandling).map(side => side.id);
+
+            expect(sideIder).toEqual([SideId.VILKÅRSVURDERING, SideId.BEHANDLINGRESULTAT]);
+        });
+
+        test('viser simulering og vedtak ved lovendring 2024 når behandlingen har stegene for simulering og vedtak', () => {
+            const behandling = lagBehandling({
+                årsak: BehandlingÅrsak.LOVENDRING_2024,
+                stegTilstand: [
+                    { behandlingSteg: BehandlingSteg.SIMULERING, behandlingStegStatus: BehandlingStegStatus.UTFØRT },
+                    { behandlingSteg: BehandlingSteg.VEDTAK, behandlingStegStatus: BehandlingStegStatus.UTFØRT },
+                ],
+            });
+
+            const sideIder = finnSiderForBehandling(behandling).map(side => side.id);
+
+            expect(sideIder).toEqual([
+                SideId.VILKÅRSVURDERING,
+                SideId.BEHANDLINGRESULTAT,
+                SideId.SIMULERING,
+                SideId.VEDTAK,
+            ]);
+        });
+
+        test('viser simulering, men skjuler vedtak, ved lovendring 2024 når kun simuleringssteget finnes', () => {
+            const behandling = lagBehandling({
+                årsak: BehandlingÅrsak.LOVENDRING_2024,
+                stegTilstand: [
+                    {
+                        behandlingSteg: BehandlingSteg.SIMULERING,
+                        behandlingStegStatus: BehandlingStegStatus.UTFØRT,
+                    },
+                ],
+            });
+
+            const sideIder = finnSiderForBehandling(behandling).map(side => side.id);
+
+            expect(sideIder).toEqual([SideId.VILKÅRSVURDERING, SideId.BEHANDLINGRESULTAT, SideId.SIMULERING]);
         });
     });
 
