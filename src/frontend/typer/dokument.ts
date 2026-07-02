@@ -12,6 +12,7 @@ export interface IManueltBrevRequestPåBehandling {
     behandlingKategori?: BehandlingKategori | undefined;
     antallUkerSvarfrist?: number;
     fritekstAvsnitt?: string;
+    mottakerlandSed?: string[];
 }
 
 export interface IManueltBrevRequestPåFagsak {
@@ -25,4 +26,5 @@ export interface IManueltBrevRequestPåFagsak {
     antallUkerSvarfrist?: undefined;
     manuelleBrevmottakere: SkjemaBrevmottaker[];
     fritekstAvsnitt?: string;
+    mottakerlandSed?: undefined;
 }

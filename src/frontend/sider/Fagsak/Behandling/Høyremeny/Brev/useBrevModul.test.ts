@@ -1,11 +1,17 @@
+import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
+import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
+import { BehandlingKategori } from '@typer/behandlingstema';
+import { Målform } from '@typer/søknad';
+import { mockBarn, mockSøker } from '@utils/test/person/person.mock';
+
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
 import { Brevmal } from './typer';
-import { hentMuligeBrevmalerImplementering, mottakersMålformImplementering } from './useBrevModul';
-import { lagBehandling } from '../../../../../testutils/testdata/behandlingTestdata';
-import { Behandlingstype, BehandlingÅrsak } from '../../../../../typer/behandling';
-import { Målform } from '../../../../../typer/søknad';
-import { mockBarn, mockSøker } from '../../../../../utils/test/person/person.mock';
+import {
+    hentMuligeBrevmalerImplementering,
+    mottakersMålformImplementering,
+    skalMottakerlandSedVisesImplementering,
+} from './useBrevModul';
 
 describe('useBrevModul', () => {
     describe('hentMuligeBrevmalerImplementering', () => {
@@ -60,6 +66,30 @@ describe('useBrevModul', () => {
 
         test('Skal returnere NN når søkers målform er NN', () => {
             expect(mottakersMålformImplementering(personerNN, Valideringsstatus.OK, personIdent)).toEqual(Målform.NN);
+        });
+    });
+
+    describe('skalMottakerlandSedVisesImplementering', () => {
+        test('Skal vise feltet når brevmalen er SVARTIDSBREV og behandlingen er EØS', () => {
+            expect(skalMottakerlandSedVisesImplementering(Brevmal.SVARTIDSBREV, BehandlingKategori.EØS)).toBe(true);
+        });
+
+        test('Skal ikke vise feltet når brevmalen er SVARTIDSBREV og behandlingen er NASJONAL', () => {
+            expect(skalMottakerlandSedVisesImplementering(Brevmal.SVARTIDSBREV, BehandlingKategori.NASJONAL)).toBe(
+                false
+            );
+        });
+
+        test('Skal ikke vise feltet for andre brevmaler uavhengig av behandlingskategori', () => {
+            const andreBrevmaler = Object.values(Brevmal).filter(brevmal => brevmal !== Brevmal.SVARTIDSBREV);
+            andreBrevmaler.forEach(brevmal => {
+                expect(skalMottakerlandSedVisesImplementering(brevmal, BehandlingKategori.EØS)).toBe(false);
+                expect(skalMottakerlandSedVisesImplementering(brevmal, BehandlingKategori.NASJONAL)).toBe(false);
+            });
+        });
+
+        test('Skal ikke vise feltet når brevmal ikke er valgt', () => {
+            expect(skalMottakerlandSedVisesImplementering('', BehandlingKategori.EØS)).toBe(false);
         });
     });
 });
