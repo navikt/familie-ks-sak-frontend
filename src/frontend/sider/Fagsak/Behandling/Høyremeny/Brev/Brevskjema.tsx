@@ -7,6 +7,7 @@ import {
     mutationKey,
     useOpprettForhåndsvisbarBehandlingBrevPdf,
 } from '@hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
+import { EØS_LAND_REGIONKODER, RegionCombobox, type Regionkode } from '@komponenter/FlaggCombobox';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IBehandling } from '@typer/behandling';
 import type { IManueltBrevRequestPåBehandling } from '@typer/dokument';
@@ -30,6 +31,7 @@ import {
     UNSAFE_Combobox,
     VStack,
 } from '@navikt/ds-react';
+import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { FeltState } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -151,6 +153,27 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                             );
                         })}
                     </Select>
+                    {skjema.felter.mottakerlandSed.erSynlig && (
+                        <RegionCombobox
+                            label={'SED er sendt til'}
+                            value={skjema.felter.mottakerlandSed.verdi as Regionkode[]}
+                            options={EØS_LAND_REGIONKODER}
+                            isMulti
+                            onChange={verdier => {
+                                if (verdier.length) {
+                                    skjema.felter.mottakerlandSed.validerOgSettFelt(verdier);
+                                } else {
+                                    skjema.felter.mottakerlandSed.nullstill();
+                                }
+                            }}
+                            error={
+                                skjema.visFeilmeldinger &&
+                                skjema.felter.mottakerlandSed.valideringsstatus === Valideringsstatus.FEIL
+                                    ? skjema.felter.mottakerlandSed.feilmelding?.toString()
+                                    : ''
+                            }
+                        />
+                    )}
                     {skjema.felter.dokumenter.erSynlig && (
                         <UNSAFE_Combobox
                             error={skjema.felter.dokumenter.hentNavInputProps(skjema.visFeilmeldinger).error}

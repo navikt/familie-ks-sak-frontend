@@ -79,6 +79,11 @@ export const mottakersMålformImplementering = (
         }
     })?.målform ?? Målform.NB;
 
+export const skalMottakerlandSedVisesImplementering = (
+    brevmalVerdi: Brevmal | '',
+    behandlingKategori: BehandlingKategori
+): boolean => brevmalVerdi === Brevmal.SVARTIDSBREV && behandlingKategori === BehandlingKategori.EØS;
+
 export const useBrevModul = () => {
     const behandling = useBehandling();
 
@@ -216,6 +221,15 @@ export const useBrevModul = () => {
         nullstillVedAvhengighetEndring: false,
     });
 
+    const mottakerlandSed = useFelt<string[]>({
+        verdi: [],
+        // På svartidsbrev er det valgfritt å oppgi land SED er sendt til.
+        valideringsfunksjon: (felt: FeltState<string[]>) => ok(felt),
+        skalFeltetVises: (avhengigheter: Avhengigheter) =>
+            skalMottakerlandSedVisesImplementering(avhengigheter?.brevmal.verdi, behandlingKategori),
+        avhengigheter: { brevmal },
+    });
+
     const { kanSendeSkjema, onSubmit, skjema, settVisfeilmeldinger } = useSkjema<
         {
             mottakerIdent: string;
@@ -225,6 +239,7 @@ export const useBrevModul = () => {
             fritekstAvsnitt: string | undefined;
             barnBrevetGjelder: IBarnMedOpplysninger[];
             antallUkerSvarfrist: number;
+            mottakerlandSed: string[];
         },
         IBehandling
     >({
@@ -236,6 +251,7 @@ export const useBrevModul = () => {
             fritekstAvsnitt,
             barnBrevetGjelder,
             antallUkerSvarfrist,
+            mottakerlandSed,
         },
         skjemanavn: 'brevmodul',
     });
@@ -262,6 +278,7 @@ export const useBrevModul = () => {
      */
     useEffect(() => {
         skjema.felter.dokumenter.nullstill();
+        skjema.felter.mottakerlandSed.nullstill();
         nullstillBarnBrevetGjelder();
     }, [behandling]);
 
@@ -334,6 +351,7 @@ export const useBrevModul = () => {
             behandlingKategori,
             antallUkerSvarfrist: skjema.felter.antallUkerSvarfrist.verdi,
             fritekstAvsnitt: skjema.felter.fritekstAvsnitt.verdi,
+            mottakerlandSed: skjema.felter.mottakerlandSed.verdi,
         };
     };
 
