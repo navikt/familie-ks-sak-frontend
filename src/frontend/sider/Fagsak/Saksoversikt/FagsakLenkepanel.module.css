@@ -1,0 +1,7 @@
+.header {
+    font-size: var(--ax-font-size-xlarge);
+}
+
+.body {
+    font-size: var(--ax-font-size-heading-medium);
+}
