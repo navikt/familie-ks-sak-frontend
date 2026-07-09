@@ -1,17 +1,20 @@
 import type { ChangeEvent } from 'react';
 
+import { useFeatureToggles } from '@hooks/useFeatureToggles';
+import {
+    kanOppretteFørstegangsbehandling,
+    kanOppretteRevurdering,
+} from '@komponenter/Saklinje/Meny/OpprettBehandling/opprettBehandlingUtils';
+import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
+import { Behandlingstype } from '@typer/behandling';
+import type { IMinimalFagsak } from '@typer/fagsak';
+import { FeatureToggle } from '@typer/featureToggles';
+import { Klagebehandlingstype } from '@typer/klage';
+import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
+import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
+
 import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
-
-import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from './opprettBehandlingUtils';
-import { useFeatureToggles } from '../../../../hooks/useFeatureToggles';
-import type { VisningBehandling } from '../../../../sider/Fagsak/Saksoversikt/visningBehandling';
-import { Behandlingstype } from '../../../../typer/behandling';
-import type { IMinimalFagsak } from '../../../../typer/fagsak';
-import { FeatureToggle } from '../../../../typer/featureToggles';
-import { Klagebehandlingstype } from '../../../../typer/klage';
-import { Tilbakekrevingsbehandlingstype } from '../../../../typer/tilbakekrevingsbehandling';
-import { hentAktivBehandlingPåMinimalFagsak } from '../../../../utils/fagsak';
 
 interface IProps {
     behandlingstype: Felt<Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''>;

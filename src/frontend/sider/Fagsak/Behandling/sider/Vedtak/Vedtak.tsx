@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { useBruker } from '@hooks/useBruker';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
+import { HentVedtaksperioderQueryKeyFactory } from '@hooks/useHentVedtaksperioder';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useSendVedtakTilBeslutter } from '@hooks/useSendVedtakTilBeslutter';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     BehandlingStatus,
     BehandlingSteg,
@@ -36,7 +38,6 @@ function kanForeslåVedtak(behandling: IBehandling, vedtaksperioder: IVedtaksper
     return (
         minstEnPeriodeHarBegrunnelseEllerFritekst ||
         behandling?.årsak === BehandlingÅrsak.TEKNISK_ENDRING ||
-        behandling?.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
         behandling?.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK ||
         behandling?.årsak === BehandlingÅrsak.DØDSFALL
     );
@@ -54,6 +55,7 @@ export function Vedtak() {
     const bruker = useBruker();
     const erLesevisning = useErLesevisning();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     const [visModal, settVisModal] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
@@ -63,7 +65,10 @@ export function Vedtak() {
         isPending: sendVedtakTilBeslutterIsPending,
         error: sendVedtakTilBeslutterError,
     } = useSendVedtakTilBeslutter({
-        onSuccess: behandling => {
+        onSuccess: async behandling => {
+            await queryClient.invalidateQueries({
+                queryKey: HentVedtaksperioderQueryKeyFactory.behandling(behandling.behandlingId),
+            });
             settÅpenBehandling(byggSuksessRessurs(behandling));
             settVisModal(true);
         },

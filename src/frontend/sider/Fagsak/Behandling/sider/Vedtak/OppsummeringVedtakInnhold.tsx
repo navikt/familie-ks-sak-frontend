@@ -83,8 +83,6 @@ const OppsummeringVedtakInnhold = ({
             return 'Behandlingen er avsluttet. Du kan se vedtaksbrevet ved å trykke på "Vis vedtaksbrev".';
         } else if (årsak === BehandlingÅrsak.DØDSFALL) {
             return 'Vedtak om opphør på grunn av dødsfall er automatisk generert.';
-        } else if (årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV) {
-            return 'Behandling bruker manuelt skrevet vedtaksbrev. Forhåndsvis for å se brevet.';
         } else return '';
     };
 
@@ -170,7 +168,6 @@ const OppsummeringVedtakInnhold = ({
                     brevmottakere={åpenBehandling.brevmottakere}
                 />
                 {åpenBehandling.årsak === BehandlingÅrsak.DØDSFALL ||
-                åpenBehandling.årsak === BehandlingÅrsak.KORREKSJON_VEDTAKSBREV ||
                 åpenBehandling.status === BehandlingStatus.AVSLUTTET ? (
                     <Box marginBlock={'space-32 space-16'}>
                         <InfoCard data-color="info">

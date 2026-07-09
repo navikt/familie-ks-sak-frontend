@@ -1,8 +1,9 @@
+import type { OppgavetypeFilter } from '@typer/oppgave';
+import { oppgaveTypeFilter } from '@typer/oppgave';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 
 import { ChevronLeftIcon } from '@navikt/aksel-icons';
-import { Button, ErrorSummary, Heading, HStack, LocalAlert } from '@navikt/ds-react';
+import { Box, Button, ErrorSummary, Heading, HStack, LocalAlert, VStack } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { AvsenderPanel } from './AvsenderPanel';
@@ -11,17 +12,6 @@ import { Dokumenter } from './Dokument/Dokumenter';
 import Journalpost from './Journalpost';
 import { KnyttJournalpostTilBehandling } from './KnyttJournalpostTilBehandling';
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
-import type { OppgavetypeFilter } from '../../typer/oppgave';
-import { oppgaveTypeFilter } from '../../typer/oppgave';
-
-const Container = styled.div`
-    padding: 2rem;
-    overflow: auto;
-`;
-
-const StyledSectionDiv = styled.div`
-    margin-top: 2.5rem;
-`;
 
 export const JournalpostSkjema = () => {
     const {
@@ -37,7 +27,7 @@ export const JournalpostSkjema = () => {
     const navigate = useNavigate();
 
     return (
-        <Container>
+        <Box overflow={'auto'} padding={'space-32'}>
             {dataForManuellJournalføring.status === RessursStatus.SUKSESS && (
                 <Heading spacing size="medium" level="2">
                     {
@@ -47,39 +37,40 @@ export const JournalpostSkjema = () => {
                     }
                 </Heading>
             )}
-            <Journalpost />
-            <StyledSectionDiv>
-                <Heading size={'small'} level={'2'} children={'Dokumenter'} />
-                <Dokumenter />
-            </StyledSectionDiv>
-            <StyledSectionDiv>
-                <Heading size={'small'} level={'2'} children={'Bruker og avsender'} />
-                <BrukerPanel />
-                <br />
-                <AvsenderPanel />
-            </StyledSectionDiv>
-            <StyledSectionDiv>
-                {kanKnytteJournalpostTilBehandling() && <KnyttJournalpostTilBehandling />}
-                <br />
-                {(skjema.submitRessurs.status === RessursStatus.FEILET ||
-                    skjema.submitRessurs.status === RessursStatus.FUNKSJONELL_FEIL ||
-                    skjema.submitRessurs.status === RessursStatus.IKKE_TILGANG) && (
-                    <LocalAlert status="error">
-                        <LocalAlert.Header>
-                            <LocalAlert.Title>{skjema.submitRessurs.frontendFeilmelding}</LocalAlert.Title>
-                        </LocalAlert.Header>
-                    </LocalAlert>
-                )}
-                {skjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
-                    <ErrorSummary heading={'For å gå videre må du rette opp følgende'}>
-                        {hentFeilTilOppsummering().map(item => (
-                            <ErrorSummary.Item href={`#${item.skjemaelementId}`} key={item.skjemaelementId}>
-                                {item.feilmelding}
-                            </ErrorSummary.Item>
-                        ))}
-                    </ErrorSummary>
-                )}
-            </StyledSectionDiv>
+            <VStack gap={'space-40'}>
+                <Journalpost />
+                <VStack>
+                    <Heading size={'small'} level={'2'} children={'Dokumenter'} />
+                    <Dokumenter />
+                </VStack>
+                <VStack gap={'space-16'}>
+                    <Heading size={'small'} level={'2'} children={'Bruker og avsender'} />
+                    <BrukerPanel />
+                    <AvsenderPanel />
+                </VStack>
+                <VStack gap={'space-28'}>
+                    {kanKnytteJournalpostTilBehandling() && <KnyttJournalpostTilBehandling />}
+
+                    {(skjema.submitRessurs.status === RessursStatus.FEILET ||
+                        skjema.submitRessurs.status === RessursStatus.FUNKSJONELL_FEIL ||
+                        skjema.submitRessurs.status === RessursStatus.IKKE_TILGANG) && (
+                        <LocalAlert status="error">
+                            <LocalAlert.Header>
+                                <LocalAlert.Title>{skjema.submitRessurs.frontendFeilmelding}</LocalAlert.Title>
+                            </LocalAlert.Header>
+                        </LocalAlert>
+                    )}
+                    {skjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
+                        <ErrorSummary heading={'For å gå videre må du rette opp følgende'}>
+                            {hentFeilTilOppsummering().map(item => (
+                                <ErrorSummary.Item href={`#${item.skjemaelementId}`} key={item.skjemaelementId}>
+                                    {item.feilmelding}
+                                </ErrorSummary.Item>
+                            ))}
+                        </ErrorSummary>
+                    )}
+                </VStack>
+            </VStack>
             <HStack marginBlock={'space-16'} justify={'space-between'}>
                 <Button
                     size="small"
@@ -112,6 +103,6 @@ export const JournalpostSkjema = () => {
                     </Button>
                 )}
             </HStack>
-        </Container>
+        </Box>
     );
 };
