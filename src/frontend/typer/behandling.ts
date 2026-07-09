@@ -273,10 +273,6 @@ export const behandlingstyper: INøkkelPar = {
         id: 'REVURDERING',
         navn: 'Revurdering',
     },
-    TEKNISK_OPPHØR: {
-        id: 'TEKNISK_OPPHØR',
-        navn: 'Teknisk opphør',
-    },
     TEKNISK_ENDRING: {
         id: 'TEKNISK_ENDRING',
         navn: 'Teknisk endring',
