@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import styled from 'styled-components';
+import type { ITilgangsstyrtJournalpost } from '@typer/journalpost';
+import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
 
 import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
-import { BodyShort, GlobalAlert, Heading, Table } from '@navikt/ds-react';
+import { BodyShort, Box, GlobalAlert, Heading, HStack, Table, VStack } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import type { IJournalpost, Ressurs } from '@navikt/familie-typer';
 import {
@@ -24,85 +25,8 @@ import {
 } from './journalpostUtils';
 import useDokument from '../../../hooks/useDokument';
 import PdfVisningModal from '../../../komponenter/PdfVisningModal/PdfVisningModal';
-import type { ITilgangsstyrtJournalpost } from '../../../typer/journalpost';
-import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
 import { useBrukerContext } from '../BrukerContext';
-
-const Container = styled.div`
-    padding: 2rem;
-    overflow: auto;
-`;
-
-const InnUtWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-`;
-
-const IkonWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    margin-right: 0.5rem;
-`;
-
-const StyledTable = styled(Table)`
-    table-layout: fixed;
-`;
-
-const StyledDataCell = styled(Table.DataCell)`
-    vertical-align: top;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const StyledHeaderCell = styled(Table.HeaderCell)`
-    white-space: nowrap;
-
-    &:nth-of-type(1) {
-        width: 3.5rem;
-    }
-
-    &:nth-of-type(3) {
-        width: 25%;
-    }
-
-    &:nth-of-type(4) {
-        width: 15%;
-    }
-
-    &:nth-of-type(5) {
-        width: 20%;
-    }
-
-    &:nth-of-type(6) {
-        width: 22%;
-    }
-
-    &:nth-of-type(7) {
-        width: 8%;
-    }
-`;
-
-const StyledColumnHeader = styled(Table.ColumnHeader)`
-    white-space: nowrap;
-    width: 10rem;
-`;
-
-export const Vedleggsliste = styled.ul`
-    list-style-type: none;
-    margin: 0;
-
-    &:first-child {
-        padding-inline-start: 0;
-    }
-`;
-
-export const EllipsisBodyShort = styled(BodyShort)`
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
+import styles from './JournalpostListe.module.css';
 
 const hentIkonForJournalpostType = (journalposttype: Journalposttype) => {
     switch (journalposttype) {
@@ -168,13 +92,13 @@ export function JournalpostListe() {
         journalposterRessurs.status === RessursStatus.IKKE_TILGANG
     ) {
         return (
-            <Container>
+            <Box padding={'space-32'} overflow={'auto'}>
                 <GlobalAlert status={'error'}>
                     <GlobalAlert.Header>
                         <GlobalAlert.Title>Klarte ikke å hente inn journalposter for fagsak.</GlobalAlert.Title>
                     </GlobalAlert.Header>
                 </GlobalAlert>
-            </Container>
+            </Box>
         );
     }
 
@@ -188,71 +112,75 @@ export function JournalpostListe() {
         });
         const sorterteJournalPoster = hentSorterteJournalposter(journalposterMedOverstyrtDato, sortering);
         return (
-            <Container>
+            <Box padding={'space-32'} overflow={'auto'}>
                 <Heading level="2" size="large" spacing>
                     Dokumentoversikt
                 </Heading>
 
-                <StyledTable
+                <Table
+                    className={styles.table}
                     size="small"
                     zebraStripes
                     sort={hentSortState(sortering, 'datoRegistrertSendt')}
                     onSortChange={settNesteSorteringsrekkefølge}
                 >
                     <Table.Header>
-                        <Table.Row>
-                            <StyledHeaderCell>Inn/ut</StyledHeaderCell>
-                            <StyledColumnHeader sortKey="datoRegistrertSendt" sortable>
+                        <Table.Row className={styles.headerRow}>
+                            <Table.HeaderCell>Inn/ut</Table.HeaderCell>
+                            <Table.ColumnHeader sortKey="datoRegistrertSendt" sortable>
                                 Registrert/sendt
-                            </StyledColumnHeader>
+                            </Table.ColumnHeader>
 
-                            <StyledHeaderCell>Dokumenter</StyledHeaderCell>
-                            <StyledHeaderCell>Fagsystem | Saksid</StyledHeaderCell>
-                            <StyledHeaderCell>Avsender/Mottaker</StyledHeaderCell>
-                            <StyledHeaderCell>Journalpost</StyledHeaderCell>
-                            <StyledHeaderCell>Status</StyledHeaderCell>
+                            <Table.HeaderCell>Dokumenter</Table.HeaderCell>
+                            <Table.HeaderCell>Fagsystem | Saksid</Table.HeaderCell>
+                            <Table.HeaderCell>Avsender/Mottaker</Table.HeaderCell>
+                            <Table.HeaderCell>Journalpost</Table.HeaderCell>
+                            <Table.HeaderCell>Status</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
                         {sorterteJournalPoster.map(tilgangsstyrtJournalpost => (
                             <Table.Row key={tilgangsstyrtJournalpost.journalpost.journalpostId}>
-                                <StyledDataCell>
-                                    <InnUtWrapper>
-                                        <IkonWrapper>
-                                            {hentIkonForJournalpostType(
-                                                tilgangsstyrtJournalpost.journalpost.journalposttype
-                                            )}{' '}
-                                        </IkonWrapper>
-                                        {tilgangsstyrtJournalpost.journalpost.journalposttype}
-                                    </InnUtWrapper>
-                                </StyledDataCell>
-                                <StyledDataCell>
+                                <Table.DataCell className={styles.dataCell}>
+                                    <HStack align={'center'} gap={'space-8'} justify={'center'} wrap={false}>
+                                        {hentIkonForJournalpostType(
+                                            tilgangsstyrtJournalpost.journalpost.journalposttype
+                                        )}
+                                        <BodyShort weight={'semibold'}>
+                                            {tilgangsstyrtJournalpost.journalpost.journalposttype}
+                                        </BodyShort>
+                                    </HStack>
+                                </Table.DataCell>
+                                <Table.DataCell className={styles.dataCell}>
                                     {isoStringTilFormatertString({
                                         isoString: tilgangsstyrtJournalpost.journalpost.datoMottatt,
                                         tilFormat: Datoformat.DATO_TID,
                                         defaultString: '-',
                                     })}
-                                </StyledDataCell>
+                                </Table.DataCell>
 
-                                <StyledDataCell>
+                                <Table.DataCell className={styles.dataCell}>
                                     {(tilgangsstyrtJournalpost.journalpost.dokumenter?.length ?? 0) > 0 ? (
-                                        <Vedleggsliste>
-                                            {tilgangsstyrtJournalpost.journalpost.dokumenter?.map(dokument => (
-                                                <JournalpostDokument
-                                                    dokument={dokument}
-                                                    key={dokument.dokumentInfoId}
-                                                    hentForhåndsvisning={hentForhåndsvisning}
-                                                    tilgangsstyrtJournalpost={tilgangsstyrtJournalpost}
-                                                />
-                                            ))}
-                                        </Vedleggsliste>
+                                        <ul className={styles.vedleggListe}>
+                                            <VStack gap={'space-16'}>
+                                                {tilgangsstyrtJournalpost.journalpost.dokumenter?.map(dokument => (
+                                                    <JournalpostDokument
+                                                        dokument={dokument}
+                                                        key={dokument.dokumentInfoId}
+                                                        hentForhåndsvisning={hentForhåndsvisning}
+                                                        tilgangsstyrtJournalpost={tilgangsstyrtJournalpost}
+                                                    />
+                                                ))}
+                                            </VStack>
+                                        </ul>
                                     ) : (
                                         <BodyShort>Ingen dokumenter</BodyShort>
                                     )}
-                                </StyledDataCell>
+                                </Table.DataCell>
 
-                                <StyledDataCell>
-                                    <EllipsisBodyShort
+                                <Table.DataCell className={styles.dataCell}>
+                                    <BodyShort
+                                        className={styles.text}
                                         size="small"
                                         title={formaterFagsak(
                                             tilgangsstyrtJournalpost.journalpost.sak?.fagsaksystem,
@@ -263,37 +191,43 @@ export function JournalpostListe() {
                                             tilgangsstyrtJournalpost.journalpost.sak?.fagsaksystem,
                                             tilgangsstyrtJournalpost.journalpost.sak?.fagsakId
                                         )}
-                                    </EllipsisBodyShort>
-                                </StyledDataCell>
-                                <StyledDataCell>
-                                    <EllipsisBodyShort
+                                    </BodyShort>
+                                </Table.DataCell>
+                                <Table.DataCell className={styles.dataCell}>
+                                    <BodyShort
+                                        className={styles.text}
                                         size="small"
                                         title={tilgangsstyrtJournalpost.journalpost.avsenderMottaker?.navn}
                                     >
                                         {tilgangsstyrtJournalpost.journalpost.avsenderMottaker?.navn}
-                                    </EllipsisBodyShort>
-                                </StyledDataCell>
-                                <StyledDataCell>
-                                    <EllipsisBodyShort size="small" title={tilgangsstyrtJournalpost.journalpost.tittel}>
+                                    </BodyShort>
+                                </Table.DataCell>
+                                <Table.DataCell className={styles.dataCell}>
+                                    <BodyShort
+                                        className={styles.text}
+                                        size="small"
+                                        title={tilgangsstyrtJournalpost.journalpost.tittel}
+                                    >
                                         {tilgangsstyrtJournalpost.journalpost.tittel}
-                                    </EllipsisBodyShort>
-                                </StyledDataCell>
-                                <StyledDataCell>
-                                    <EllipsisBodyShort
+                                    </BodyShort>
+                                </Table.DataCell>
+                                <Table.DataCell className={styles.dataCell}>
+                                    <BodyShort
+                                        className={styles.text}
                                         size="small"
                                         title={journalpoststatus[tilgangsstyrtJournalpost.journalpost.journalstatus]}
                                     >
                                         {journalpoststatus[tilgangsstyrtJournalpost.journalpost.journalstatus]}
-                                    </EllipsisBodyShort>
-                                </StyledDataCell>
+                                    </BodyShort>
+                                </Table.DataCell>
                             </Table.Row>
                         ))}
                     </Table.Body>
-                </StyledTable>
+                </Table>
                 {visDokumentModal && (
                     <PdfVisningModal onRequestClose={() => settVisDokumentModal(false)} pdfdata={hentetDokument} />
                 )}
-            </Container>
+            </Box>
         );
     } else {
         return null;
