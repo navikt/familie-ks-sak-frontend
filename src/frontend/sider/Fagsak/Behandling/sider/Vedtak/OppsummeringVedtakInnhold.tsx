@@ -1,5 +1,6 @@
+import { useBehandling } from '@hooks/useBehandling';
+import { useBruker } from '@hooks/useBruker';
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useFagsakId } from '@hooks/useFagsakId';
 import { useOpprettSammensattKontrollsakError } from '@hooks/useOpprettSammensattKontrollsakError';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useSlettSammensattKontrollsakError } from '@hooks/useSlettSammensattKontrollsakError';
@@ -8,15 +9,13 @@ import {
     BehandlerRolle,
     BehandlingStatus,
     BehandlingSteg,
+    Behandlingstype,
     BehandlingÅrsak,
     hentStegNummer,
-    type IBehandling,
 } from '@typer/behandling';
-import type { IPersonInfo } from '@typer/person';
-import { useNavigate } from 'react-router';
 
 import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
-import { BodyShort, Box, Button, InfoCard, LocalAlert, Modal, VStack } from '@navikt/ds-react';
+import { Box, Button, InfoCard, LocalAlert, VStack } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import { FeilutbetaltValutaTabell } from './FeilutbetaltValuta/FeilutbetaltValutaTabell';
@@ -30,25 +29,11 @@ import { Vedtaksperioder } from './Vedtaksperioder/Vedtaksperioder';
 import useDokument from '../../../../../hooks/useDokument';
 import PdfVisningModal from '../../../../../komponenter/PdfVisningModal/PdfVisningModal';
 
-interface IOppsummeringVedtakInnholdProps {
-    åpenBehandling: IBehandling;
-    visModal: boolean;
-    settVisModal: (erUlagretNyFeilutbetaltValuta: boolean) => void;
-    erBehandlingMedVedtaksbrevutsending: boolean;
-    bruker: IPersonInfo;
-}
-
-const OppsummeringVedtakInnhold = ({
-    åpenBehandling,
-    erBehandlingMedVedtaksbrevutsending,
-    visModal,
-    settVisModal,
-    bruker,
-}: IOppsummeringVedtakInnholdProps) => {
+export function OppsummeringVedtakInnhold() {
     const saksbehandler = useSaksbehandler();
-    const fagsakId = useFagsakId();
     const erLesevisning = useErLesevisning();
-    const navigate = useNavigate();
+    const bruker = useBruker();
+    const behandling = useBehandling();
 
     const { hentForhåndsvisning, nullstillDokument, visDokumentModal, hentetDokument, settVisDokumentModal } =
         useDokument();
@@ -57,23 +42,26 @@ const OppsummeringVedtakInnhold = ({
     const { erFeilutbetaltValutaTabellSynlig } = useFeilutbetaltValutaTabellContext();
     const { erRefusjonEøsTabellSynlig } = useRefusjonEøsTabellContext();
 
-    const opprettSammensattKontrollsakError = useOpprettSammensattKontrollsakError(åpenBehandling.behandlingId);
-    const slettSammensattKontrollsakError = useSlettSammensattKontrollsakError(åpenBehandling.behandlingId);
+    const opprettSammensattKontrollsakError = useOpprettSammensattKontrollsakError(behandling.behandlingId);
+    const slettSammensattKontrollsakError = useSlettSammensattKontrollsakError(behandling.behandlingId);
+
+    const erBehandlingMedVedtaksbrevutsending =
+        behandling.type !== Behandlingstype.TEKNISK_ENDRING && behandling.årsak !== BehandlingÅrsak.SATSENDRING;
 
     const hentVedtaksbrev = () => {
         const skalOgsåLagreBrevPåVedtak =
             saksbehandler.rolle > BehandlerRolle.VEILEDER &&
-            hentStegNummer(åpenBehandling.steg) <= hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK);
+            hentStegNummer(behandling.steg) <= hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK);
 
         if (skalOgsåLagreBrevPåVedtak) {
             hentForhåndsvisning({
                 method: 'POST',
-                url: `/familie-ks-sak/api/brev/forhaandsvis-og-lagre-vedtaksbrev/${åpenBehandling.behandlingId}`,
+                url: `/familie-ks-sak/api/brev/forhaandsvis-og-lagre-vedtaksbrev/${behandling.behandlingId}`,
             });
         } else {
             hentForhåndsvisning({
                 method: 'GET',
-                url: `/familie-ks-sak/api/brev/forhaandsvis-vedtaksbrev/${åpenBehandling.behandlingId}`,
+                url: `/familie-ks-sak/api/brev/forhaandsvis-vedtaksbrev/${behandling.behandlingId}`,
             });
         }
     };
@@ -96,7 +84,7 @@ const OppsummeringVedtakInnhold = ({
         );
     }
 
-    if (åpenBehandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK) {
+    if (behandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK) {
         return (
             <InfoCard data-color="info">
                 <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
@@ -142,7 +130,7 @@ const OppsummeringVedtakInnhold = ({
                 />
             )}
             <div>
-                {åpenBehandling.korrigertEtterbetaling && (
+                {behandling.korrigertEtterbetaling && (
                     <Box marginBlock={'space-0 space-24'}>
                         <InfoCard data-color="info">
                             <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
@@ -151,7 +139,7 @@ const OppsummeringVedtakInnhold = ({
                         </InfoCard>
                     </Box>
                 )}
-                {åpenBehandling.korrigertVedtak && (
+                {behandling.korrigertVedtak && (
                     <Box marginBlock={'space-0 space-24'}>
                         <InfoCard data-color="info">
                             <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
@@ -164,15 +152,14 @@ const OppsummeringVedtakInnhold = ({
                     bruker={bruker}
                     erPåBehandling={true}
                     erLesevisning={erLesevisning}
-                    åpenBehandling={åpenBehandling}
-                    brevmottakere={åpenBehandling.brevmottakere}
+                    åpenBehandling={behandling}
+                    brevmottakere={behandling.brevmottakere}
                 />
-                {åpenBehandling.årsak === BehandlingÅrsak.DØDSFALL ||
-                åpenBehandling.status === BehandlingStatus.AVSLUTTET ? (
+                {behandling.årsak === BehandlingÅrsak.DØDSFALL || behandling.status === BehandlingStatus.AVSLUTTET ? (
                     <Box marginBlock={'space-32 space-16'}>
                         <InfoCard data-color="info">
                             <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                                {hentInfostripeTekst(åpenBehandling.årsak, åpenBehandling.status)}
+                                {hentInfostripeTekst(behandling.årsak, behandling.status)}
                             </InfoCard.Message>
                         </InfoCard>
                     </Box>
@@ -203,44 +190,6 @@ const OppsummeringVedtakInnhold = ({
                     Vis vedtaksbrev
                 </Button>
             </div>
-            {visModal && (
-                <Modal
-                    open
-                    onClose={() => settVisModal(false)}
-                    header={{ heading: 'Totrinnskontroll', size: 'medium' }}
-                    portal
-                >
-                    <Modal.Body>
-                        <Box marginBlock={'space-32'}>
-                            <BodyShort>Behandlingen er nå sendt til totrinnskontroll</BodyShort>
-                        </Box>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            key={'saksoversikt'}
-                            variant={'secondary'}
-                            size={'medium'}
-                            onClick={() => {
-                                settVisModal(false);
-                                navigate(`/fagsak/${fagsakId}/saksoversikt`);
-                            }}
-                            children={'Gå til saksoversikten'}
-                        />
-                        <Button
-                            key={'oppgavebenk'}
-                            variant={'primary'}
-                            size={'medium'}
-                            onClick={() => {
-                                settVisModal(false);
-                                navigate('/oppgaver');
-                            }}
-                            children={'Gå til oppgavebenken'}
-                        />
-                    </Modal.Footer>
-                </Modal>
-            )}
         </>
     );
-};
-
-export default OppsummeringVedtakInnhold;
+}

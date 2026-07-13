@@ -1,19 +1,13 @@
 import { useState } from 'react';
 
-import { useBruker } from '@hooks/useBruker';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
 import { HentVedtaksperioderQueryKeyFactory } from '@hooks/useHentVedtaksperioder';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useSendVedtakTilBeslutter } from '@hooks/useSendVedtakTilBeslutter';
+import { SendtTilTotrinnskontrollModal } from '@sider/Fagsak/Behandling/sider/Vedtak/SendtTilTotrinnskontrollModal';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-    BehandlingStatus,
-    BehandlingSteg,
-    Behandlingstype,
-    BehandlingÅrsak,
-    type IBehandling,
-} from '@typer/behandling';
+import { BehandlingStatus, BehandlingSteg, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
 import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
 import { erDefinert } from '@utils/commons';
 import { useNavigate } from 'react-router';
@@ -21,7 +15,7 @@ import { useNavigate } from 'react-router';
 import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
-import OppsummeringVedtakInnhold from './OppsummeringVedtakInnhold';
+import { OppsummeringVedtakInnhold } from './OppsummeringVedtakInnhold';
 import { useRefusjonEøsTabellContext } from './RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import { useVedtaksperioderContext } from './Vedtaksperioder/VedtaksperioderContext';
@@ -52,12 +46,11 @@ export function Vedtak() {
 
     const saksbehandler = useSaksbehandler();
     const fagsakId = useFagsakId();
-    const bruker = useBruker();
     const erLesevisning = useErLesevisning();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const [visModal, settVisModal] = useState<boolean>(false);
+    const [visSendtTilTotrinnskontrollModal, settVisSendtTilTotrinnskontrollModal] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
 
     const {
@@ -70,13 +63,11 @@ export function Vedtak() {
                 queryKey: HentVedtaksperioderQueryKeyFactory.behandling(behandling.behandlingId),
             });
             settÅpenBehandling(byggSuksessRessurs(behandling));
-            settVisModal(true);
+            settVisSendtTilTotrinnskontrollModal(true);
         },
     });
 
     const visSubmitKnapp = !erLesevisning && behandling.status === BehandlingStatus.UTREDES;
-    const erBehandlingMedVedtaksbrevutsending =
-        behandling.type !== Behandlingstype.TEKNISK_ENDRING && behandling.årsak !== BehandlingÅrsak.SATSENDRING;
 
     function sendTilBeslutter() {
         if (erDefinert(sammensattKontrollsak) && sammensattKontrollsak.fritekst.trim() === '') {
@@ -109,13 +100,10 @@ export function Vedtak() {
             feilmelding={feilmelding ?? sendVedtakTilBeslutterError?.message}
             steg={BehandlingSteg.BESLUTTE_VEDTAK}
         >
-            <OppsummeringVedtakInnhold
-                åpenBehandling={behandling}
-                erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending}
-                visModal={visModal}
-                settVisModal={settVisModal}
-                bruker={bruker}
-            />
+            {visSendtTilTotrinnskontrollModal && (
+                <SendtTilTotrinnskontrollModal lukkModal={() => settVisSendtTilTotrinnskontrollModal(false)} />
+            )}
+            <OppsummeringVedtakInnhold />
         </Skjemasteg>
     );
 }
