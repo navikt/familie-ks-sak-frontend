@@ -1,23 +1,15 @@
+import { BehandlingStatus } from '@typer/behandling';
+import type { IBehandlingstema } from '@typer/behandlingstema';
+import { tilBehandlingstema } from '@typer/behandlingstema';
+import { hentAktivBehandlingPåMinimalFagsak, hentFagsakStatusVisning } from '@utils/fagsak';
 import { Link as ReactRouterLink } from 'react-router';
-import styled from 'styled-components';
 
 import { BodyShort, Box, HStack, Link, LinkCard, VStack } from '@navikt/ds-react';
-import { FontSizeHeadingMedium, FontSizeXlarge, Space16, Space64 } from '@navikt/ds-tokens/dist/tokens';
+import { Space64 } from '@navikt/ds-tokens/dist/tokens';
 
 import type { VisningBehandling } from './visningBehandling';
-import { BehandlingStatus } from '../../../typer/behandling';
-import type { IBehandlingstema } from '../../../typer/behandlingstema';
-import { tilBehandlingstema } from '../../../typer/behandlingstema';
-import { hentAktivBehandlingPåMinimalFagsak, hentFagsakStatusVisning } from '../../../utils/fagsak';
 import { useFagsakContext } from '../FagsakContext';
-
-const HeaderTekst = styled(BodyShort)`
-    font-size: ${FontSizeXlarge};
-`;
-
-const BodyTekst = styled(BodyShort)`
-    font-size: ${FontSizeHeadingMedium};
-`;
+import styles from './FagsakLenkepanel.module.css';
 
 function Innholdstabell() {
     const { fagsak } = useFagsakContext();
@@ -27,31 +19,26 @@ function Innholdstabell() {
     return (
         <HStack gap="space-80">
             <div>
-                <HeaderTekst for={'behandlingstema'} spacing>
+                <BodyShort className={styles.header} spacing>
                     Behandlingstema
-                </HeaderTekst>
-                <BodyTekst name={'behandlingstema'} weight="semibold">
+                </BodyShort>
+                <BodyShort className={styles.body} weight="semibold">
                     {behandlingstema ? behandlingstema.navn : '-'}
-                </BodyTekst>
+                </BodyShort>
             </div>
             <div>
-                <HeaderTekst for={'status'} spacing>
+                <BodyShort className={styles.header} spacing>
                     Status
-                </HeaderTekst>
-                <BodyTekst name={'status'} weight="semibold">
+                </BodyShort>
+                <BodyShort className={styles.body} weight="semibold">
                     {hentFagsakStatusVisning(fagsak)}
-                </BodyTekst>
+                </BodyShort>
             </div>
         </HStack>
     );
 }
 
 export const SaksoversiktPanelBredde = `calc(10 * ${Space64})`;
-
-const FagsakPanel = styled(Box)`
-    width: ${SaksoversiktPanelBredde};
-    margin-top: ${Space16};
-`;
 
 const genererLinkTekst = (behandling: VisningBehandling) => {
     return behandling.status === BehandlingStatus.AVSLUTTET ? 'Gå til gjeldende vedtak' : 'Gå til åpen behandling';
@@ -79,8 +66,15 @@ export function FagsakLenkepanel() {
             </LinkCard>
         </Box>
     ) : (
-        <FagsakPanel borderColor="neutral-strong" borderWidth="1" borderRadius="2" padding="space-32">
+        <Box
+            width={SaksoversiktPanelBredde}
+            marginBlock={'space-16 space-0'}
+            borderColor="neutral-strong"
+            borderWidth="1"
+            borderRadius="2"
+            padding="space-32"
+        >
             <Innholdstabell />
-        </FagsakPanel>
+        </Box>
     );
 }

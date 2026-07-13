@@ -1,41 +1,9 @@
-import styled from 'styled-components';
+import type { IBarnMedOpplysninger } from '@typer/søknad';
+import { lagBarnLabel } from '@utils/formatter';
 
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Box, Button, Checkbox } from '@navikt/ds-react';
+import { BodyShort, Box, Button, Checkbox, HStack } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
-
-import type { IBarnMedOpplysninger } from '../../../../typer/søknad';
-import { lagBarnLabel } from '../../../../utils/formatter';
-
-const CheckboxOgSlettknapp = styled.div`
-    display: flex;
-    align-items: flex-start;
-
-    .knapp {
-        height: 2rem;
-    }
-`;
-
-const StyledCheckbox = styled(Checkbox)`
-    > label {
-        width: 100%;
-    }
-`;
-
-const LabelContent = styled.div`
-    display: flex;
-    white-space: nowrap;
-`;
-
-const LabelTekst = styled.p`
-    margin: 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-`;
-
-const FjernBarnKnapp = styled(Button)`
-    margin-left: 1rem;
-`;
 
 interface IProps {
     barn: IBarnMedOpplysninger;
@@ -46,17 +14,17 @@ const BarnCheckbox = ({ barn, barnIBrevFelt }: IProps) => {
     const navnOgIdentTekst = lagBarnLabel(barn);
 
     return (
-        <div>
-            <CheckboxOgSlettknapp>
-                <Box marginInline={'space-16 space-0'}>
-                    <StyledCheckbox value={barn.ident}>
-                        <LabelContent>
-                            <LabelTekst title={navnOgIdentTekst}>{navnOgIdentTekst}</LabelTekst>
-                        </LabelContent>
-                    </StyledCheckbox>
-                </Box>
-                {barn.manueltRegistrert && (
-                    <FjernBarnKnapp
+        <HStack wrap={false} gap={'space-16'}>
+            <Box marginInline={'space-16 space-0'}>
+                <Checkbox value={barn.ident}>
+                    <BodyShort truncate title={navnOgIdentTekst}>
+                        {navnOgIdentTekst}
+                    </BodyShort>
+                </Checkbox>
+            </Box>
+            {barn.manueltRegistrert && (
+                <Box asChild height={'space-32'}>
+                    <Button
                         variant={'tertiary'}
                         id={`fjern__${barn.ident}`}
                         size={'small'}
@@ -73,10 +41,10 @@ const BarnCheckbox = ({ barn, barnIBrevFelt }: IProps) => {
                         icon={<TrashIcon />}
                     >
                         {'Fjern barn'}
-                    </FjernBarnKnapp>
-                )}
-            </CheckboxOgSlettknapp>
-        </div>
+                    </Button>
+                </Box>
+            )}
+        </HStack>
     );
 };
 
