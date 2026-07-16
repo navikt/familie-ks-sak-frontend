@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
+import { useHentPersonerMedUgyldigEtterbetalingsperiode } from '@hooks/useHentPersonerMedUgyldigEtterbetalingsperiode';
 import { useOppdaterBehandlingsresultat } from '@hooks/useOppdaterBehandlingsresultat';
+import { useOpprettEndretUtbetalingAndel } from '@hooks/useOpprettEndretUtbetalingAndel';
+import { useOpprettOvergangsordningAndel } from '@hooks/useOpprettOvergangsordningAndel';
 import { useTidslinjeContext } from '@komponenter/Tidslinje/TidslinjeContext';
 import { BehandlingResultat, BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
 import { type IRestKompetanse, type IRestUtenlandskPeriodeBeløp, type IRestValutakurs } from '@typer/eøsPerioder';
@@ -26,7 +29,6 @@ import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAug
 import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
-import { useBehandlingContextsresultat } from './useBehandlingsresultat';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
@@ -62,15 +64,44 @@ const Behandlingsresultat = () => {
     const erLesevisning = useErLesevisning();
     const navigate = useNavigate();
 
+    const [visFeilmeldinger, settVisFeilmeldinger] = useState(false);
+
     const {
-        opprettEndretUtbetaling,
-        opprettOvergangsordningAndel,
-        opprettEndretUtbetalingFeilmelding,
-        visFeilmeldinger,
-        settVisFeilmeldinger,
-        hentPersonerMedUgyldigEtterbetalingsperiode,
-        personerMedUgyldigEtterbetalingsperiode,
-    } = useBehandlingContextsresultat(behandling);
+        data: personerMedUgyldigEtterbetalingsperiode = [],
+        refetch: refetchPersonerMedUgyldigEtterbetalingsperiode,
+    } = useHentPersonerMedUgyldigEtterbetalingsperiode(behandling.behandlingId);
+
+    // Behandlingen kan endres på dette steget (f.eks. endret utbetaling og overgangsordning),
+    // og hvilke personer som har ugyldig etterbetalingsperiode må da hentes på nytt.
+    const erFørsteRender = useRef(true);
+    useEffect(() => {
+        if (erFørsteRender.current) {
+            erFørsteRender.current = false;
+            return;
+        }
+        refetchPersonerMedUgyldigEtterbetalingsperiode();
+    }, [behandling, refetchPersonerMedUgyldigEtterbetalingsperiode]);
+
+    const {
+        mutate: opprettEndretUtbetalingAndel,
+        isPending: opprettEndretUtbetalingAndelIsPending,
+        error: opprettEndretUtbetalingAndelError,
+    } = useOpprettEndretUtbetalingAndel({
+        onSuccess: oppdatertBehandling => {
+            settVisFeilmeldinger(false);
+            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+        },
+        onError: () => settVisFeilmeldinger(true),
+    });
+
+    const { mutate: opprettOvergangsordningAndel, isPending: opprettOvergangsordningAndelIsPending } =
+        useOpprettOvergangsordningAndel({
+            onSuccess: oppdatertBehandling => {
+                settVisFeilmeldinger(false);
+                settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+            },
+            onError: () => settVisFeilmeldinger(true),
+        });
 
     const {
         mutate: oppdaterBehandlingsresultat,
@@ -101,10 +132,6 @@ const Behandlingsresultat = () => {
         erValutakurserGyldige,
         hentValutakurserMedFeil,
     } = useEøs(behandling);
-
-    useEffect(() => {
-        hentPersonerMedUgyldigEtterbetalingsperiode();
-    }, [behandling]);
 
     const grunnlagPersoner = filterOgSorterGrunnlagPersonerMedAndeler(
         behandling.personer,
@@ -164,11 +191,18 @@ const Behandlingsresultat = () => {
             <TilkjentYtelseTidslinje grunnlagPersoner={grunnlagPersoner} tidslinjePersoner={tidslinjePersoner} />
             {!erLesevisning && (
                 <EndretUtbetalingAndel>
-                    <Button variant="tertiary" size="small" onClick={opprettEndretUtbetaling} icon={<StyledEditIkon />}>
+                    <Button
+                        variant="tertiary"
+                        size="small"
+                        onClick={() => opprettEndretUtbetalingAndel({ behandlingId: behandling.behandlingId })}
+                        icon={<StyledEditIkon />}
+                        disabled={opprettEndretUtbetalingAndelIsPending}
+                        loading={opprettEndretUtbetalingAndelIsPending}
+                    >
                         <Label>Endre utbetalingsperiode</Label>
                     </Button>
-                    {visFeilmeldinger && opprettEndretUtbetalingFeilmelding !== '' && (
-                        <ErrorMessage>{opprettEndretUtbetalingFeilmelding}</ErrorMessage>
+                    {opprettEndretUtbetalingAndelError && (
+                        <ErrorMessage>{opprettEndretUtbetalingAndelError.message}</ErrorMessage>
                     )}
                 </EndretUtbetalingAndel>
             )}
@@ -193,8 +227,10 @@ const Behandlingsresultat = () => {
                             <Button
                                 variant="primary"
                                 size="medium"
-                                onClick={opprettOvergangsordningAndel}
+                                onClick={() => opprettOvergangsordningAndel({ behandlingId: behandling.behandlingId })}
                                 icon={<StyledPlusIkon />}
+                                disabled={opprettOvergangsordningAndelIsPending}
+                                loading={opprettOvergangsordningAndelIsPending}
                             >
                                 <Label>Legg til periode</Label>
                             </Button>
