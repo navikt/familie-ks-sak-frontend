@@ -94,14 +94,17 @@ const Behandlingsresultat = () => {
         onError: () => settVisFeilmeldinger(true),
     });
 
-    const { mutate: opprettOvergangsordningAndel, isPending: opprettOvergangsordningAndelIsPending } =
-        useOpprettOvergangsordningAndel({
-            onSuccess: oppdatertBehandling => {
-                settVisFeilmeldinger(false);
-                settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
-            },
-            onError: () => settVisFeilmeldinger(true),
-        });
+    const {
+        mutate: opprettOvergangsordningAndel,
+        isPending: opprettOvergangsordningAndelIsPending,
+        error: opprettOvergangsordningAndelError,
+    } = useOpprettOvergangsordningAndel({
+        onSuccess: oppdatertBehandling => {
+            settVisFeilmeldinger(false);
+            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+        },
+        onError: () => settVisFeilmeldinger(true),
+    });
 
     const {
         mutate: oppdaterBehandlingsresultat,
@@ -234,6 +237,9 @@ const Behandlingsresultat = () => {
                             >
                                 <Label>Legg til periode</Label>
                             </Button>
+                            {opprettOvergangsordningAndelError && (
+                                <ErrorMessage>{opprettOvergangsordningAndelError.message}</ErrorMessage>
+                            )}
                         </OvergangsordningAndel>
                     )}
                 </>
