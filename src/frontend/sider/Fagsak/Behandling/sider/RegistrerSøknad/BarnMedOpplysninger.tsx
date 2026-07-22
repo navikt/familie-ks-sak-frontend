@@ -2,27 +2,43 @@ import { useErLesevisning } from '@hooks/useErLesevisning';
 import type { IBarnMedOpplysninger } from '@typer/søknad';
 import { formaterIdent, hentAlderSomString } from '@utils/formatter';
 import classNames from 'classnames';
+import { useFormContext } from 'react-hook-form';
 
 import { BodyShort, Box, Button, Checkbox, HStack } from '@navikt/ds-react';
 
 import styles from './BarnMedOpplysninger.module.css';
-import { useSøknadContext } from './SøknadContext';
+import { RegistrerSøknadFelt, type RegistrerSøknadFormValues, useSøknadContext } from './SøknadContext';
 import Slett from '../../../../../ikoner/Slett';
 
 interface IProps {
     barn: IBarnMedOpplysninger;
 }
 
-const BarnMedOpplysninger = ({ barn }: IProps) => {
-    const { skjema, barnMedLøpendeUtbetaling } = useSøknadContext();
+export const BarnMedOpplysninger = ({ barn }: IProps) => {
+    const { barnMedLøpendeUtbetaling } = useSøknadContext();
 
     const erLesevisning = useErLesevisning();
+
+    const { getValues, setValue } = useFormContext<RegistrerSøknadFormValues>();
 
     const barnetHarLøpendeUtbetaling = barnMedLøpendeUtbetaling.has(barn.ident);
 
     const navnOgIdentTekst = `${barn.navn ?? 'Navn ukjent'} (${hentAlderSomString(
         barn.fødselsdato
     )}) | ${formaterIdent(barn.ident)} ${barnetHarLøpendeUtbetaling ? '(løpende)' : ''}`;
+
+    const fjernBarn = () => {
+        setValue(
+            RegistrerSøknadFelt.BARNA_MED_OPPLYSNINGER,
+            getValues(RegistrerSøknadFelt.BARNA_MED_OPPLYSNINGER).filter(
+                barnMedOpplysninger =>
+                    barnMedOpplysninger.ident !== barn.ident ||
+                    barnMedOpplysninger.navn !== barn.navn ||
+                    barnMedOpplysninger.fødselsdato !== barn.fødselsdato
+            ),
+            { shouldValidate: true, shouldDirty: true }
+        );
+    };
 
     return (
         <HStack gap={'space-16'}>
@@ -49,16 +65,7 @@ const BarnMedOpplysninger = ({ barn }: IProps) => {
                     id={`fjern__${barn.ident}`}
                     size={'small'}
                     icon={<Slett />}
-                    onClick={() => {
-                        skjema.felter.barnaMedOpplysninger.validerOgSettFelt([
-                            ...skjema.felter.barnaMedOpplysninger.verdi.filter(
-                                barnMedOpplysninger =>
-                                    barnMedOpplysninger.ident !== barn.ident ||
-                                    barnMedOpplysninger.navn !== barn.navn ||
-                                    barnMedOpplysninger.fødselsdato !== barn.fødselsdato
-                            ),
-                        ]);
-                    }}
+                    onClick={fjernBarn}
                 >
                     {'Fjern barn'}
                 </Button>
@@ -66,4 +73,3 @@ const BarnMedOpplysninger = ({ barn }: IProps) => {
         </HStack>
     );
 };
-export default BarnMedOpplysninger;

@@ -4,32 +4,59 @@ import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModa
 import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
 import { BehandlingSteg } from '@typer/behandling';
 import type { IBarnMedOpplysninger } from '@typer/søknad';
+import { useFormContext } from 'react-hook-form';
 
 import { ErrorSummary, LocalAlert } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
 
-import Annet from './Annet';
-import Barna from './Barna';
+import { Annet } from './Annet';
+import { Barna, BARN_CHECKBOX_GROUP_ID } from './Barna';
 import { LeggTilBarnKnapp } from './LeggTilBarnKnapp';
-import { useSøknadContext } from './SøknadContext';
-import MålformVelger from '../../../../../komponenter/MålformVelger';
+import { MÅLFORM_RADIOGROUP_ID, MålformFelt } from './MålformFelt';
+import { RegistrerSøknadFelt, type RegistrerSøknadFormValues, useSøknadContext } from './SøknadContext';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 
 const RegistrerSøknad = () => {
     const behandling = useBehandling();
     const erLesevisning = useErLesevisning();
 
-    const { hentFeilTilOppsummering, nesteAction, skjema, søknadErLastetFraBackend } = useSøknadContext();
+    const { erSenderInn, nesteAction, søknadErLastetFraBackend } = useSøknadContext();
+
+    const {
+        getValues,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useFormContext<RegistrerSøknadFormValues>();
 
     const harBrevmottaker = behandling.brevmottakere.length > 0;
 
+    const barnaMedOpplysninger = watch(RegistrerSøknadFelt.BARNA_MED_OPPLYSNINGER);
+
     function onLeggTilBarn(barn: IBarnMedOpplysninger) {
-        skjema.felter.barnaMedOpplysninger.validerOgSettFelt([...skjema.felter.barnaMedOpplysninger.verdi, barn]);
+        setValue(
+            RegistrerSøknadFelt.BARNA_MED_OPPLYSNINGER,
+            [...getValues(RegistrerSøknadFelt.BARNA_MED_OPPLYSNINGER), barn],
+            {
+                shouldValidate: true,
+                shouldDirty: true,
+            }
+        );
     }
+
+    const feiloppsummering = [
+        errors.barnaMedOpplysninger?.message && {
+            id: BARN_CHECKBOX_GROUP_ID,
+            feilmelding: errors.barnaMedOpplysninger.message,
+        },
+        errors.målform?.message && {
+            id: MÅLFORM_RADIOGROUP_ID,
+            feilmelding: errors.målform.message,
+        },
+    ].filter((feil): feil is { id: string; feilmelding: string } => Boolean(feil));
 
     return (
         <LeggTilBarnModalContextProvider
-            barn={skjema.felter.barnaMedOpplysninger.verdi}
+            barn={barnaMedOpplysninger}
             onLeggTilBarn={onLeggTilBarn}
             harBrevmottaker={harBrevmottaker}
         >
@@ -41,7 +68,7 @@ const RegistrerSøknad = () => {
                     nesteAction(false);
                 }}
                 nesteKnappTittel={erLesevisning ? 'Neste' : 'Bekreft og fortsett'}
-                senderInn={skjema.submitRessurs.status === RessursStatus.HENTER}
+                senderInn={erSenderInn}
                 steg={BehandlingSteg.REGISTRERE_SØKNAD}
             >
                 {søknadErLastetFraBackend && !erLesevisning && (
@@ -63,26 +90,21 @@ const RegistrerSøknad = () => {
 
                 {!erLesevisning && <LeggTilBarnKnapp />}
 
-                <MålformVelger
-                    målformFelt={skjema.felter.målform}
-                    visFeilmeldinger={skjema.visFeilmeldinger}
-                    erLesevisning={erLesevisning}
-                />
+                <MålformFelt />
 
                 <Annet />
 
-                {(skjema.submitRessurs.status === RessursStatus.FEILET ||
-                    skjema.submitRessurs.status === RessursStatus.IKKE_TILGANG) && (
+                {errors.root?.message && (
                     <LocalAlert status="error">
                         <LocalAlert.Header>
-                            <LocalAlert.Title>{skjema.submitRessurs.frontendFeilmelding}</LocalAlert.Title>
+                            <LocalAlert.Title>{errors.root.message}</LocalAlert.Title>
                         </LocalAlert.Header>
                     </LocalAlert>
                 )}
-                {skjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
+                {feiloppsummering.length > 0 && (
                     <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
-                        {hentFeilTilOppsummering().map(item => (
-                            <ErrorSummary.Item key={item.skjemaelementId} href={`#${item.skjemaelementId}`}>
+                        {feiloppsummering.map(item => (
+                            <ErrorSummary.Item key={item.id} href={`#${item.id}`}>
                                 {item.feilmelding}
                             </ErrorSummary.Item>
                         ))}
