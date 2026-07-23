@@ -3,26 +3,10 @@ import { hentDagensDato, isoStringTilDate } from '@utils/dato';
 import { isEmpty } from '@utils/eøsValidators';
 import { addMonths, endOfMonth, isAfter } from 'date-fns';
 import { useController, useFormContext } from 'react-hook-form';
-import styled from 'styled-components';
 
-import { Fieldset } from '@navikt/ds-react';
+import { Fieldset, HStack } from '@navikt/ds-react';
 
 import { ValutakursFelt, type ValutakursFormValues } from './useValutakursSkjema';
-
-const FlexDiv = styled.div`
-    width: 32rem;
-    display: flex;
-    justify-content: space-between;
-    font-size: 1rem;
-
-    div {
-        z-index: 0;
-    }
-
-    div div.skjemaelement {
-        margin-bottom: 0;
-    }
-`;
 
 const valgtDatoErNesteMånedEllerSenere = (valgtDato: string) =>
     isAfter(isoStringTilDate(valgtDato), endOfMonth(hentDagensDato()));
@@ -31,14 +15,14 @@ const valgtDatoErSenereEnnNesteMåned = (valgtDato: string) =>
     isAfter(isoStringTilDate(valgtDato), endOfMonth(addMonths(hentDagensDato(), 1)));
 
 interface Props {
-    initielFom: string;
+    initiellFom: string;
     periodeFeilmeldingId: string;
     lesevisning: boolean;
     behandlingsÅrsakErOvergangsordning: boolean;
 }
 
 export function ValutakursPeriodeFelt({
-    initielFom,
+    initiellFom,
     periodeFeilmeldingId,
     lesevisning,
     behandlingsÅrsakErOvergangsordning,
@@ -62,8 +46,8 @@ export function ValutakursPeriodeFelt({
                 if (fom && valgtDatoErSenereEnnNesteMåned(fom) && !behandlingsÅrsakErOvergangsordning) {
                     return 'Du kan ikke sette fra og med (f.o.m.) til måneden etter neste måned eller senere';
                 }
-                if (initielFom && !isAfter(isoStringTilDate(fom), isoStringTilDate(initielFom))) {
-                    return `Du kan ikke legge inn fra og med måned som er før: ${initielFom}`;
+                if (initiellFom && !isAfter(isoStringTilDate(fom), isoStringTilDate(initiellFom))) {
+                    return `Du kan ikke legge inn fra og med måned som er før: ${initiellFom}`;
                 }
                 if (tom && valgtDatoErNesteMånedEllerSenere(tom) && !behandlingsÅrsakErOvergangsordning) {
                     return 'Du kan ikke sette til og med (t.o.m.) til neste måned eller senere';
@@ -73,7 +57,7 @@ export function ValutakursPeriodeFelt({
         },
     });
 
-    const finnÅrTilbakeTil = (): number => new Date().getFullYear() - new Date(initielFom).getFullYear();
+    const finnÅrTilbakeTil = (): number => new Date().getFullYear() - new Date(initiellFom).getFullYear();
     const antallÅrFrem = behandlingsÅrsakErOvergangsordning ? 1 : 0;
 
     return (
@@ -84,7 +68,7 @@ export function ValutakursPeriodeFelt({
             legend="Periode"
             size="medium"
         >
-            <FlexDiv>
+            <HStack justify={'space-between'} gap={'space-16'} width={'32rem'}>
                 <MånedÅrVelger
                     lesevisning={lesevisning}
                     id={'periode_fom'}
@@ -113,7 +97,7 @@ export function ValutakursPeriodeFelt({
                         onChange({ ...value, tom: årMåned });
                     }}
                 />
-            </FlexDiv>
+            </HStack>
         </Fieldset>
     );
 }

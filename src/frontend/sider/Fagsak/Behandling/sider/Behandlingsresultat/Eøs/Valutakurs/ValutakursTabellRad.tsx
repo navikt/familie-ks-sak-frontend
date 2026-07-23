@@ -33,7 +33,7 @@ const ValutakursTabellRad = ({ valutakurs, åpenBehandling, visFeilmeldinger }: 
         slettValutakurs,
         sletterValutakurs,
         erManuellInputAvKurs,
-        initielFom,
+        initiellFom,
         behandlingsÅrsakErOvergangsordning,
     } = useValutakursSkjema({
         valutakurs,
@@ -68,7 +68,7 @@ const ValutakursTabellRad = ({ valutakurs, åpenBehandling, visFeilmeldinger }: 
                         <ValutakursTabellRadEndre
                             valutakurs={valutakurs}
                             tilgjengeligeBarn={barn}
-                            initielFom={initielFom}
+                            initiellFom={initiellFom}
                             erManuellInputAvKurs={erManuellInputAvKurs}
                             behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
                             onAvbryt={() => toggleForm(false)}
