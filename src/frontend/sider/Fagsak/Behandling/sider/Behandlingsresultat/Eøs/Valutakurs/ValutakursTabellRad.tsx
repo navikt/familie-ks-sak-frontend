@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { FormProvider } from 'react-hook-form';
 
 import { Table } from '@navikt/ds-react';
 
 import { useValutakursSkjema, valutakursFeilmeldingId } from './useValutakursSkjema';
 import ValutakursTabellRadEndre from './ValutakursTabellRadEndre';
-import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
+import type { IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import type { IRestValutakurs } from '../../../../../../../typer/eøsPerioder';
 import { Datoformat, isoStringTilFormatertString } from '../../../../../../../utils/dato';
@@ -18,40 +20,39 @@ interface IProps {
 }
 
 const ValutakursTabellRad = ({ valutakurs, åpenBehandling, visFeilmeldinger }: IProps) => {
+    const [erValutakursEkspandert, settErValutakursEkspandert] = useState(false);
+
     const barn: OptionType[] = valutakurs.barnIdenter.map(barn => ({
         value: barn,
         label: lagPersonLabel(barn, åpenBehandling.personer),
     }));
 
     const {
-        erValutakursEkspandert,
-        settErValutakursEkspandert,
-        skjema,
-        valideringErOk,
-        sendInnSkjema,
-        tilbakestillFelterTilDefault,
-        kanSendeSkjema,
-        erValutakursSkjemaEndret,
+        form,
+        onSubmit,
         slettValutakurs,
         sletterValutakurs,
         erManuellInputAvKurs,
+        initiellFom,
+        behandlingsÅrsakErOvergangsordning,
     } = useValutakursSkjema({
         valutakurs,
         barnIValutakurs: barn,
+        lukkSkjema: () => settErValutakursEkspandert(false),
     });
 
     useEffect(() => {
         if (visFeilmeldinger && erValutakursEkspandert) {
-            kanSendeSkjema();
+            form.trigger();
         }
     }, [visFeilmeldinger, erValutakursEkspandert]);
 
     const toggleForm = (visAlert: boolean) => {
-        if (erValutakursEkspandert && visAlert && erValutakursSkjemaEndret()) {
+        if (erValutakursEkspandert && visAlert && form.formState.isDirty) {
             alert('Valutakurs har endringer som ikke er lagret!');
         } else {
             settErValutakursEkspandert(!erValutakursEkspandert);
-            tilbakestillFelterTilDefault();
+            form.reset();
         }
     };
 
@@ -62,19 +63,20 @@ const ValutakursTabellRad = ({ valutakurs, åpenBehandling, visFeilmeldinger }: 
             onOpenChange={() => toggleForm(true)}
             id={valutakursFeilmeldingId(valutakurs)}
             content={
-                <ValutakursTabellRadEndre
-                    skjema={skjema}
-                    tilgjengeligeBarn={barn}
-                    status={valutakurs.status}
-                    valideringErOk={valideringErOk}
-                    sendInnSkjema={sendInnSkjema}
-                    toggleForm={toggleForm}
-                    slettValutakurs={slettValutakurs}
-                    sletterValutakurs={sletterValutakurs}
-                    erManuellInputAvKurs={erManuellInputAvKurs}
-                    key={`${valutakurs.id}-${erValutakursEkspandert ? 'ekspandert' : 'lukket'}`}
-                    behandlingsÅrsakErOvergangsordning={åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024}
-                />
+                <FormProvider {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <ValutakursTabellRadEndre
+                            valutakurs={valutakurs}
+                            tilgjengeligeBarn={barn}
+                            initiellFom={initiellFom}
+                            erManuellInputAvKurs={erManuellInputAvKurs}
+                            behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
+                            onAvbryt={() => toggleForm(false)}
+                            slettValutakurs={slettValutakurs}
+                            sletterValutakurs={sletterValutakurs}
+                        />
+                    </form>
+                </FormProvider>
             }
         >
             <StatusBarnCelleOgPeriodeCelle
