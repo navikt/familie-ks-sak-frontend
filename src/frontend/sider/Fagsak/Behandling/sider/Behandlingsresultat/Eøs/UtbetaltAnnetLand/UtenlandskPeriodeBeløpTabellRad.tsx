@@ -1,4 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { FormProvider } from 'react-hook-form';
 
 import { Table } from '@navikt/ds-react';
 
@@ -7,7 +9,7 @@ import {
     utenlandskPeriodeBeløpFeilmeldingId,
 } from './useUtenlandskPeriodeBeløpSkjema';
 import UtenlandskPeriodeBeløpTabellRadEndre from './UtenlandskPeriodeBeløpTabellRadEndre';
-import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
+import type { IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import type { IRestUtenlandskPeriodeBeløp } from '../../../../../../../typer/eøsPerioder';
 import { lagPersonLabel } from '../../../../../../../utils/formatter';
@@ -20,45 +22,38 @@ interface IProps {
 }
 
 const UtenlandskPeriodeBeløpRad = ({ utenlandskPeriodeBeløp, åpenBehandling, visFeilmeldinger }: IProps) => {
+    const [erUtenlandskPeriodeBeløpEkspandert, settErUtenlandskPeriodeBeløpEkspandert] = useState(false);
+
     const barn: OptionType[] = utenlandskPeriodeBeløp.barnIdenter.map(barn => ({
         value: barn,
         label: lagPersonLabel(barn, åpenBehandling.personer),
     }));
 
     const {
-        erUtenlandskPeriodeBeløpEkspandert,
-        settErUtenlandskPeriodeBeløpEkspandert,
-        skjema,
-        valideringErOk,
-        sendInnSkjema,
+        form,
+        onSubmit,
         slettUtenlandskPeriodeBeløp,
-        nullstillSkjema,
-        kanSendeSkjema,
-        erUtenlandskPeriodeBeløpSkjemaEndret,
+        sletterUtenlandskPeriodeBeløp,
+        initiellFom,
+        behandlingsÅrsakErOvergangsordning,
     } = useUtenlandskPeriodeBeløpSkjema({
         utenlandskPeriodeBeløp,
         barnIUtenlandskPeriodeBeløp: barn,
+        lukkSkjema: () => settErUtenlandskPeriodeBeløpEkspandert(false),
     });
 
     useEffect(() => {
-        if (åpenBehandling) {
-            nullstillSkjema();
-            settErUtenlandskPeriodeBeløpEkspandert(false);
-        }
-    }, [åpenBehandling]);
-
-    useEffect(() => {
         if (visFeilmeldinger && erUtenlandskPeriodeBeløpEkspandert) {
-            kanSendeSkjema();
+            form.trigger();
         }
     }, [visFeilmeldinger, erUtenlandskPeriodeBeløpEkspandert]);
 
     const toggleForm = (visAlert: boolean) => {
-        if (erUtenlandskPeriodeBeløpEkspandert && visAlert && erUtenlandskPeriodeBeløpSkjemaEndret()) {
+        if (erUtenlandskPeriodeBeløpEkspandert && visAlert && form.formState.isDirty) {
             alert('Utenlandsk beløp har endringer som ikke er lagret!');
         } else {
             settErUtenlandskPeriodeBeløpEkspandert(!erUtenlandskPeriodeBeløpEkspandert);
-            nullstillSkjema();
+            form.reset();
         }
     };
 
@@ -77,16 +72,19 @@ const UtenlandskPeriodeBeløpRad = ({ utenlandskPeriodeBeløp, åpenBehandling, 
             onOpenChange={() => toggleForm(true)}
             id={utenlandskPeriodeBeløpFeilmeldingId(utenlandskPeriodeBeløp)}
             content={
-                <UtenlandskPeriodeBeløpTabellRadEndre
-                    skjema={skjema}
-                    tilgjengeligeBarn={barn}
-                    valideringErOk={valideringErOk}
-                    sendInnSkjema={sendInnSkjema}
-                    toggleForm={toggleForm}
-                    slettUtenlandskPeriodeBeløp={slettUtenlandskPeriodeBeløp}
-                    status={utenlandskPeriodeBeløp.status}
-                    behandlingsÅrsakErOvergangsordning={åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024}
-                />
+                <FormProvider {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <UtenlandskPeriodeBeløpTabellRadEndre
+                            utenlandskPeriodeBeløp={utenlandskPeriodeBeløp}
+                            tilgjengeligeBarn={barn}
+                            initiellFom={initiellFom}
+                            behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
+                            onAvbryt={() => toggleForm(false)}
+                            slettUtenlandskPeriodeBeløp={slettUtenlandskPeriodeBeløp}
+                            sletterUtenlandskPeriodeBeløp={sletterUtenlandskPeriodeBeløp}
+                        />
+                    </form>
+                </FormProvider>
             }
         >
             <StatusBarnCelleOgPeriodeCelle
