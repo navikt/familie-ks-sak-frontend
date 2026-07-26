@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 
 import { hentDagensDato } from '@utils/dato';
 import { useController, useFormContext } from 'react-hook-form';
@@ -14,17 +14,19 @@ interface Props {
 export function ValutakursDatoFelt({ readOnly }: Props) {
     const { control, trigger, setValue } = useFormContext<ValutakursFormValues>();
 
-    const [dateValidation, setDateValidation] = useState<DateValidationT | undefined>(undefined);
+    const dateValidationRef = useRef<DateValidationT | undefined>(undefined);
 
     const {
-        field: { value, onChange },
+        field: { value, onChange, ref },
         fieldState: { error },
-        formState: { isSubmitted },
+        formState: { isSubmitting, isSubmitted },
     } = useController({
         name: ValutakursFelt.VALUTAKURSDATO,
         control,
         rules: {
             validate: valgtDato => {
+                const dateValidation = dateValidationRef.current;
+
                 if (dateValidation?.isWeekend) {
                     return 'Du må velge en dato som er en ukedag';
                 }
@@ -39,7 +41,7 @@ export function ValutakursDatoFelt({ readOnly }: Props) {
         },
     });
 
-    const { datepickerProps, inputProps, setSelected, selectedDay } = useDatepicker({
+    const { datepickerProps, inputProps } = useDatepicker({
         defaultSelected: value,
         toDate: hentDagensDato(),
         disableWeekends: true,
@@ -52,21 +54,12 @@ export function ValutakursDatoFelt({ readOnly }: Props) {
             }
         },
         onValidate: validation => {
-            setDateValidation(validation);
+            dateValidationRef.current = validation;
             if (isSubmitted) {
                 trigger(ValutakursFelt.VALUTAKURSDATO);
             }
         },
     });
-
-    // Synkroniser datovelgeren dersom feltverdien endres uten at det er datovelgeren som trigget endringen.
-    const [forrigeVerdi, settForrigeVerdi] = useState<Date | undefined>(value);
-    if (value !== forrigeVerdi) {
-        settForrigeVerdi(value);
-        if (value !== selectedDay) {
-            setSelected(value);
-        }
-    }
 
     return (
         <DatePicker dropdownCaption {...datepickerProps}>
@@ -74,7 +67,8 @@ export function ValutakursDatoFelt({ readOnly }: Props) {
                 {...inputProps}
                 label={'Valutakursdato'}
                 placeholder={'DD.MM.ÅÅÅÅ'}
-                readOnly={readOnly}
+                ref={ref}
+                readOnly={readOnly || isSubmitting}
                 error={error?.message}
             />
         </DatePicker>

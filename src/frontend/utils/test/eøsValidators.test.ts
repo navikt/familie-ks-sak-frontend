@@ -55,6 +55,16 @@ describe('utils/eøsValidators', () => {
         expect(valideringsresultat.feilmelding).toEqual('Du kan ikke legge inn fra og med måned som er før: 2011-10');
     });
 
+    test('erEøsPeriodeGyldig skal returnere OK hvis fom dato er lik initielFom dato', () => {
+        const eøsPeriode: FeltState<IIsoMånedPeriode> = nyFeltState(nyIsoMånedPeriode('2011-10', '2012-05'));
+
+        const valideringsresultat = erEøsPeriodeGyldig(false, eøsPeriode, {
+            initielFom: '2011-10',
+        });
+
+        expect(valideringsresultat.valideringsstatus).toEqual(Valideringsstatus.OK);
+    });
+
     test('erEøsPeriodeGyldig skal ikke kaste feilmelding hvis tom dato er mer enn 1mnd senere enn dagens dato og årsak er OVERGANGSORDNING_2024', () => {
         const eøsPeriode: FeltState<IIsoMånedPeriode> = nyFeltState(nyIsoMånedPeriode('2010-12', '2100-05'));
 
