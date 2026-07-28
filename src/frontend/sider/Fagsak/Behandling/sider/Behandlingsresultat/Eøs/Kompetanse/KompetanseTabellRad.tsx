@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { FormProvider } from 'react-hook-form';
 
 import { BodyShort, Table } from '@navikt/ds-react';
 
 import { KompetanseTabellRadEndre } from './KompetanseTabellRadEndre';
 import { kompetanseFeilmeldingId, useKompetansePeriodeSkjema } from './useKompetansePeriodeSkjema';
-import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
+import type { IBehandling } from '../../../../../../../typer/behandling';
 import type { OptionType } from '../../../../../../../typer/common';
 import { type IRestKompetanse, KompetanseResultat } from '../../../../../../../typer/eøsPerioder';
 import { lagPersonLabel } from '../../../../../../../utils/formatter';
@@ -17,42 +19,32 @@ interface IProps {
 }
 
 const KompetanseTabellRad = ({ kompetanse, åpenBehandling, visFeilmeldinger }: IProps) => {
+    const [erKompetanseEkspandert, settErKompetanseEkspandert] = useState(false);
+
     const barn: OptionType[] = kompetanse.barnIdenter.map(barn => ({
         value: barn,
         label: lagPersonLabel(barn, åpenBehandling.personer),
     }));
 
-    const {
-        erKompetanseEkspandert,
-        settErKompetanseEkspandert,
-        skjema,
-        valideringErOk,
-        sendInnSkjema,
-        slettKompetanse,
-        nullstillSkjema,
-        kanSendeSkjema,
-        erKompetanseSkjemaEndret,
-    } = useKompetansePeriodeSkjema({ barnIKompetanse: barn, kompetanse });
-
-    useEffect(() => {
-        if (åpenBehandling) {
-            nullstillSkjema();
-            settErKompetanseEkspandert(false);
-        }
-    }, [åpenBehandling]);
+    const { form, onSubmit, slettKompetanse, sletterKompetanse, initiellFom, behandlingsÅrsakErOvergangsordning } =
+        useKompetansePeriodeSkjema({
+            kompetanse,
+            barnIKompetanse: barn,
+            lukkSkjema: () => settErKompetanseEkspandert(false),
+        });
 
     useEffect(() => {
         if (visFeilmeldinger && erKompetanseEkspandert) {
-            kanSendeSkjema();
+            form.trigger();
         }
     }, [visFeilmeldinger, erKompetanseEkspandert]);
 
     const toggleForm = (visAlert: boolean) => {
-        if (erKompetanseEkspandert && visAlert && erKompetanseSkjemaEndret()) {
+        if (erKompetanseEkspandert && visAlert && form.formState.isDirty) {
             alert('Kompetansen har endringer som ikke er lagret!');
         } else {
             settErKompetanseEkspandert(!erKompetanseEkspandert);
-            nullstillSkjema();
+            form.reset();
         }
     };
 
@@ -78,16 +70,19 @@ const KompetanseTabellRad = ({ kompetanse, åpenBehandling, visFeilmeldinger }: 
             onOpenChange={() => toggleForm(true)}
             id={kompetanseFeilmeldingId(kompetanse)}
             content={
-                <KompetanseTabellRadEndre
-                    skjema={skjema}
-                    tilgjengeligeBarn={barn}
-                    valideringErOk={valideringErOk}
-                    sendInnSkjema={sendInnSkjema}
-                    toggleForm={toggleForm}
-                    slettKompetanse={slettKompetanse}
-                    behandlingsÅrsakErOvergangsordning={åpenBehandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024}
-                    erAnnenForelderOmfattetAvNorskLovgivning={kompetanse.erAnnenForelderOmfattetAvNorskLovgivning}
-                />
+                <FormProvider {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <KompetanseTabellRadEndre
+                            kompetanse={kompetanse}
+                            tilgjengeligeBarn={barn}
+                            initiellFom={initiellFom}
+                            behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
+                            onAvbryt={() => toggleForm(false)}
+                            slettKompetanse={slettKompetanse}
+                            sletterKompetanse={sletterKompetanse}
+                        />
+                    </form>
+                </FormProvider>
             }
         >
             <StatusBarnCelleOgPeriodeCelle
