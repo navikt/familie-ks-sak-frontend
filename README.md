@@ -4,17 +4,18 @@ Frontend app for kontantstøtte
 
 # Kom i gang med utvikling
 
-* Sikre at du kjører node og yarn med riktig versjon for repoet. Vi bruker nyeste LTS: `nvm install --lts`
+* Sikre at du kjører node og pnpm med riktig versjon for repoet. Vi bruker nyeste LTS: `nvm install --lts`
 * Logg deg på naisdevice og Google Cloud (`nais login`)
 * Installer [NVM] (https://github.com/nvm-sh/nvm).
 * Kjør `nvm use`
-* Installere avhengigheter `yarn`
-* Starte dev-server `yarn start:dev` Se ([Miljøvariabler](#milj%C3%B8variabler)) for andre måter å kjøre appen.
+* Aktiver riktig pnpm-versjon med `corepack enable` (henter versjonen fra `packageManager` i package.json)
+* Installere avhengigheter `pnpm install`
+* Starte dev-server `pnpm start:dev` Se ([Miljøvariabler](#milj%C3%B8variabler)) for andre måter å kjøre appen.
 * Åpne `http://localhost:8000` i nettleseren din
 
-For å kjøre tester, kjør: `yarn test`.
+For å kjøre tester, kjør: `pnpm test`.
 
-For å bygge prodversjon, kjør: `yarn build`. `dist_backend` og `dist_frontend` blir da generert.
+For å bygge prodversjon, kjør: `pnpm build`. `dist_backend` og `dist_frontend` blir da generert.
 Prodversjonen vil ikke kjøre lokalt pga. manglende secrets, men gir innblikk i hva som blir produsert.
 
 ## Få token mot ks-sak
@@ -44,10 +45,10 @@ Appen bruker .env filer for håndtering av miljøvariabler. Hver fil representer
 Verdiene kan hentes via `process.env.X` i backend og `import.meta.env.VITE_X` i frontend. 
 Merk: `VITE_` prefiks er påkrevd for å kunne eksponere verdiene til frontend.
 
-De lokale profilene kan kjøres med sine tilsvarende yarn-kommandoer.
-- `yarn start:lokal`
-- `yarn start:hybrid`
-- `yarn start:lokalt-mot-preprod` (kan også kjøre `yarn start:dev`)
+De lokale profilene kan kjøres med sine tilsvarende pnpm-kommandoer.
+- `pnpm start:lokal`
+- `pnpm start:hybrid`
+- `pnpm start:lokalt-mot-preprod` (kan også kjøre `pnpm start:dev`)
 
 ### Secrets
 For lokal kjøring er scriptet: [hent-og-lagre-miljøvariabler.sh](hent-og-lagre-milj%C3%B8variabler.sh) bakt inn.
