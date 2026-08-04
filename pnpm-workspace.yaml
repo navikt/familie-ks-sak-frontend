@@ -1,0 +1,10 @@
+# Flat node_modules (som yarn) slik at Docker-imaget, som kopierer inn hele
+# node_modules, får en resolverbar struktur i produksjon. Strict/isolated
+# linking legger avhengigheter kun under .pnpm/ uten topp-nivå-oppslag, noe
+# som gjør at Node ikke finner dem fra dist_backend/server.js i containeren.
+nodeLinker: hoisted
+# Avhengigheter får ikke kjøre (pre|post)install-scripts (sikkerhetstiltak).
+# Tilsvarer 'ignore-scripts true' som lå i .yarnrc.
+allowBuilds:
+  '@sentry/cli': false
+  msw: false
