@@ -1,8 +1,7 @@
 import { NotFound } from '@komponenter/Error/NotFound';
 import { TidslinjeProvider } from '@komponenter/Tidslinje/TidslinjeContext';
 import Behandlingsresultat from '@sider/Fagsak/Behandling/sider/Behandlingsresultat/Behandlingsresultat';
-import RegistrerSøknad from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/RegistrerSøknad';
-import { SøknadProvider } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/SøknadContext';
+import { RegistrerSøknad } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/RegistrerSøknad';
 import Simulering from '@sider/Fagsak/Behandling/sider/Simulering/Simulering';
 import { SimuleringProvider } from '@sider/Fagsak/Behandling/sider/Simulering/SimuleringContext';
 import { Vedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtak';
@@ -13,11 +12,7 @@ import { type RouteObject } from 'react-router';
 export const behandlingRoutes: RouteObject[] = [
     {
         path: 'registrer-soknad',
-        element: (
-            <SøknadProvider>
-                <RegistrerSøknad />
-            </SøknadProvider>
-        ),
+        element: <RegistrerSøknad />,
     },
     {
         path: 'vilkaarsvurdering',
