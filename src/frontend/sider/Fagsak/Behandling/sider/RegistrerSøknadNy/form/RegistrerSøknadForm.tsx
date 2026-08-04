@@ -4,8 +4,6 @@ import { useFagsak } from '@hooks/useFagsak';
 import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
 import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
 import { BarnaFieldArrayProvider } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/BarnaFieldArrayContext';
-import { BekreftEndringModal } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/BekreftEndringModal';
-import { useBekreftEndringModalContext } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/BekreftEndringModalContext';
 import { Feilsammendrag } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/Feilsammendrag';
 import { BarnaField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/field/BarnaField';
 import { BegrunnelseField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/field/BegrunnelseField';
@@ -25,8 +23,6 @@ export function RegistrerSøknadForm() {
     const fagsak = useFagsak();
     const behandling = useBehandling();
     const erLesevisning = useErLesevisning();
-
-    const { erBekreftEndringModalÅpen } = useBekreftEndringModalContext();
 
     const form = useRegistrerSøknadForm();
 
@@ -49,7 +45,7 @@ export function RegistrerSøknadForm() {
             navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/vilkaarsvurdering`);
             return;
         }
-        return handleSubmit(data => onSubmit(data, 'ubekreftet'))(event);
+        return handleSubmit(data => onSubmit(data))(event);
     }
 
     return (
@@ -63,7 +59,6 @@ export function RegistrerSøknadForm() {
                     {!erLesevisning && <LeggTilBarnModal />}
                     <FormProvider {...form}>
                         <form id={id} onSubmit={submitEllerNaviger}>
-                            {erBekreftEndringModalÅpen && <BekreftEndringModal onSubmit={onSubmit} />}
                             <VStack gap={'space-20'}>
                                 <Fieldset
                                     error={errors.root?.message}
