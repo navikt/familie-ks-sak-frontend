@@ -11,3 +11,5 @@ export async function opprettTilbakekreving(payload: OpprettTilbakekrevingPayloa
         url: `/familie-ks-sak/api/tilbakekreving/manuell`,
     });
 }
+
+// TODO: finn ut hva som er return-typen i KS
