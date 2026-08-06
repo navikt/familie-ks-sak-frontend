@@ -14,10 +14,9 @@ afterEach(() => {
 
 describe('opprettTilbakekreving', () => {
     test('skal sende forespørsel om opprettelse av tilbakekreving', async () => {
-        const fagsakId = 123;
-        const payload = { fagsakId };
+        const payload = { fagsakId: 123 };
 
-        vi.mocked(apiClient.post).mockResolvedValueOnce(fagsakId); // TODO: finn ut hva som returneres fra KS BE
+        vi.mocked(apiClient.post).mockResolvedValueOnce(undefined);
 
         const svar = await opprettTilbakekreving(payload);
 
@@ -26,14 +25,13 @@ describe('opprettTilbakekreving', () => {
             data: payload,
             url: `/familie-ks-sak/api/tilbakekreving/manuell`,
         });
-        expect(svar).toEqual(fagsakId);
+        expect(svar).toBeUndefined();
     });
 
     test('skal håndtere feil', async () => {
         vi.mocked(apiClient.post).mockRejectedValue(new Error('Noe gikk galt'));
 
-        const fagsakId = 123;
-        const payload = { fagsakId };
+        const payload = { fagsakId: 123 };
 
         await expect(opprettTilbakekreving(payload)).rejects.toThrow('Noe gikk galt');
     });

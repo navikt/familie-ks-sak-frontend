@@ -1,15 +1,12 @@
 import { apiClient } from '@api/client/apiClient';
-import type { IBehandling } from '@typer/behandling';
 
 export interface OpprettTilbakekrevingPayload {
     fagsakId: number;
 }
 
 export async function opprettTilbakekreving(payload: OpprettTilbakekrevingPayload) {
-    return apiClient.post<OpprettTilbakekrevingPayload, IBehandling>({
+    return apiClient.post<OpprettTilbakekrevingPayload, void>({
         data: payload,
         url: `/familie-ks-sak/api/tilbakekreving/manuell`,
     });
 }
-
-// TODO: finn ut hva som er return-typen i KS
