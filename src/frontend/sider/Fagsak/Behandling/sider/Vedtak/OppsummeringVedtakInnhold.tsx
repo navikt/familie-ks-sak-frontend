@@ -1,10 +1,10 @@
 import { useBehandling } from '@hooks/useBehandling';
-import { useBruker } from '@hooks/useBruker';
-import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useOpprettSammensattKontrollsakError } from '@hooks/useOpprettSammensattKontrollsakError';
 import { useSlettSammensattKontrollsakError } from '@hooks/useSlettSammensattKontrollsakError';
-import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
+import { BrevmottakereBehandlingAdvarsel } from '@komponenter/Brevmottaker/BrevmottakereBehandlingAdvarsel';
 import { ForhåndsvisVedtaksbrev } from '@sider/Fagsak/Behandling/sider/Vedtak/ForhåndsvisVedtaksbrev';
+import { KorrigertEtterbetalingAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigertEtterbetalingAdvarsel';
+import { KorrigertVedtakAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigertVedtakAdvarsel';
 import { BehandlingStatus, Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 
 import { InformationSquareIcon } from '@navikt/aksel-icons';
@@ -20,8 +20,6 @@ import { Vedtaksmeny } from './Vedtaksmeny/Vedtaksmeny';
 import { Vedtaksperioder } from './Vedtaksperioder/Vedtaksperioder';
 
 export function OppsummeringVedtakInnhold() {
-    const erLesevisning = useErLesevisning();
-    const bruker = useBruker();
     const behandling = useBehandling();
 
     const { sammensattKontrollsak } = useSammensattKontrollsakContext();
@@ -89,31 +87,9 @@ export function OppsummeringVedtakInnhold() {
                 <Vedtaksmeny erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending} />
             </VStack>
             <div>
-                {behandling.korrigertEtterbetaling && (
-                    <Box marginBlock={'space-0 space-24'}>
-                        <InfoCard data-color="info">
-                            <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                                Etterbetalingsbeløp i brevet er manuelt korrigert
-                            </InfoCard.Message>
-                        </InfoCard>
-                    </Box>
-                )}
-                {behandling.korrigertVedtak && (
-                    <Box marginBlock={'space-0 space-24'}>
-                        <InfoCard data-color="info">
-                            <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                                Vedtaket er korrigert etter § 35
-                            </InfoCard.Message>
-                        </InfoCard>
-                    </Box>
-                )}
-                <BrevmottakereAlert
-                    bruker={bruker}
-                    erPåBehandling={true}
-                    erLesevisning={erLesevisning}
-                    åpenBehandling={behandling}
-                    brevmottakere={behandling.brevmottakere}
-                />
+                {behandling.korrigertEtterbetaling && <KorrigertEtterbetalingAdvarsel />}
+                {behandling.korrigertVedtak && <KorrigertVedtakAdvarsel />}
+                <BrevmottakereBehandlingAdvarsel kilde={'vedtak'} />
                 {behandling.årsak === BehandlingÅrsak.DØDSFALL || behandling.status === BehandlingStatus.AVSLUTTET ? (
                     <Box marginBlock={'space-32 space-16'}>
                         <InfoCard data-color="info">
