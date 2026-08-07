@@ -2,13 +2,15 @@ import { useBehandling } from '@hooks/useBehandling';
 import { useOpprettSammensattKontrollsakError } from '@hooks/useOpprettSammensattKontrollsakError';
 import { useSlettSammensattKontrollsakError } from '@hooks/useSlettSammensattKontrollsakError';
 import { BrevmottakereBehandlingAdvarsel } from '@komponenter/Brevmottaker/BrevmottakereBehandlingAdvarsel';
+import { BehandlingUtenVedtaksbrevAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/BehandlingUtenVedtaksbrevAdvarsel';
 import { ForhåndsvisVedtaksbrev } from '@sider/Fagsak/Behandling/sider/Vedtak/ForhåndsvisVedtaksbrev';
+import { IngenVedtaksbrevbyggerAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/IngenVedtaksbrevbyggerAdvarsel';
+import { IverksetteKaVedtakAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/IverksetteKaVedtakAdvarsel';
 import { KorrigertEtterbetalingAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigertEtterbetalingAdvarsel';
 import { KorrigertVedtakAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigertVedtakAdvarsel';
 import { BehandlingStatus, Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 
-import { InformationSquareIcon } from '@navikt/aksel-icons';
-import { Box, InfoCard, LocalAlert, VStack } from '@navikt/ds-react';
+import { LocalAlert, VStack } from '@navikt/ds-react';
 
 import { FeilutbetaltValutaTabell } from './FeilutbetaltValuta/FeilutbetaltValutaTabell';
 import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
@@ -32,39 +34,15 @@ export function OppsummeringVedtakInnhold() {
     const erBehandlingMedVedtaksbrevutsending =
         behandling.type !== Behandlingstype.TEKNISK_ENDRING && behandling.årsak !== BehandlingÅrsak.SATSENDRING;
 
-    const hentInfostripeTekst = (årsak: BehandlingÅrsak, status: BehandlingStatus): string => {
-        if (status === BehandlingStatus.AVSLUTTET) {
-            return 'Behandlingen er avsluttet. Du kan se vedtaksbrevet ved å trykke på "Vis vedtaksbrev".';
-        } else if (årsak === BehandlingÅrsak.DØDSFALL) {
-            return 'Vedtak om opphør på grunn av dødsfall er automatisk generert.';
-        } else return '';
-    };
+    const erBehandlingMedVedtaksbrevbygger =
+        behandling.årsak !== BehandlingÅrsak.DØDSFALL && behandling.status !== BehandlingStatus.AVSLUTTET;
 
     if (!erBehandlingMedVedtaksbrevutsending) {
-        return (
-            <InfoCard data-color="info">
-                <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                    Du er inne på en teknisk behandling og det finnes ingen vedtaksbrev.
-                </InfoCard.Message>
-            </InfoCard>
-        );
+        return <BehandlingUtenVedtaksbrevAdvarsel />;
     }
 
     if (behandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK) {
-        return (
-            <InfoCard data-color="info">
-                <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
-                    <InfoCard.Title>Du er i en iverksette KA-vedtak behandling.</InfoCard.Title>
-                </InfoCard.Header>
-                <InfoCard.Content>
-                    Det skal ikke sendes vedtaksbrev. Bruk "Send brev" hvis du skal informere bruker om:
-                    <ul>
-                        <li>Utbetaling</li>
-                        <li>EØS-kompetanse</li>
-                    </ul>
-                </InfoCard.Content>
-            </InfoCard>
-        );
+        return <IverksetteKaVedtakAdvarsel />;
     }
 
     return (
@@ -90,19 +68,11 @@ export function OppsummeringVedtakInnhold() {
                 {behandling.korrigertEtterbetaling && <KorrigertEtterbetalingAdvarsel />}
                 {behandling.korrigertVedtak && <KorrigertVedtakAdvarsel />}
                 <BrevmottakereBehandlingAdvarsel kilde={'vedtak'} />
-                {behandling.årsak === BehandlingÅrsak.DØDSFALL || behandling.status === BehandlingStatus.AVSLUTTET ? (
-                    <Box marginBlock={'space-32 space-16'}>
-                        <InfoCard data-color="info">
-                            <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                                {hentInfostripeTekst(behandling.årsak, behandling.status)}
-                            </InfoCard.Message>
-                        </InfoCard>
-                    </Box>
-                ) : (
+                {!erBehandlingMedVedtaksbrevbygger && <IngenVedtaksbrevbyggerAdvarsel />}
+                {erBehandlingMedVedtaksbrevbygger && (
                     <>
-                        {sammensattKontrollsak ? (
-                            <SammensattKontrollsak />
-                        ) : (
+                        {sammensattKontrollsak && <SammensattKontrollsak />}
+                        {!sammensattKontrollsak && (
                             <>
                                 <Vedtaksperioder />
                                 {erFeilutbetaltValutaTabellSynlig && <FeilutbetaltValutaTabell />}
