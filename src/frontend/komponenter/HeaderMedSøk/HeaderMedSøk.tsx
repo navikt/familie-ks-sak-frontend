@@ -1,5 +1,6 @@
 import { Header } from '@navikt/familie-header';
 
+import { DeployetBranch } from './DeployetBranch';
 import FagsakDeltagerSøk from './FagsakDeltagerSøk';
 import { useSaksbehandler } from '../../hooks/useSaksbehandler';
 
@@ -31,6 +32,7 @@ export function HeaderMedSøk() {
             brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
             eksterneLenker={eksterneLenker}
         >
+            <DeployetBranch />
             <FagsakDeltagerSøk />
         </Header>
     );
