@@ -65,7 +65,7 @@ describe('useOpprettBehandling', () => {
         expect(onSuccess).toHaveBeenCalledWith(behandling, payload, undefined, expect.any(Object));
     });
 
-    test('skal sette isError dersom opprettKlagebehandling feiler', async () => {
+    test('skal sette isError dersom opprettBehandling feiler', async () => {
         // Arrange
         const feilmelding = new Error('Noe gikk galt');
         vi.mocked(opprettBehandling).mockRejectedValueOnce(feilmelding);
