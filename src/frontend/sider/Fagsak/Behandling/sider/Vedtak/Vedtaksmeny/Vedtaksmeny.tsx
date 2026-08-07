@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import { useBehandling } from '@hooks/useBehandling';
+import { EndreEndringstidspunkt } from '@sider/Fagsak/Behandling/sider/Vedtak/Endringstidspunkt/EndreEndringstidspunkt';
+import { OppdaterEndringstidspunktModal } from '@sider/Fagsak/Behandling/sider/Vedtak/Endringstidspunkt/OppdaterEndringstidspunktModal';
 import { KorrigerVedtakModal } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtakModal/KorrigerVedtakModal';
 import { BehandlingKategori } from '@typer/behandlingstema';
 import { vedtakHarFortsattUtbetaling } from '@utils/vedtakUtils';
@@ -9,8 +11,6 @@ import { CalculatorIcon, ChevronDownIcon, StarsEuIcon } from '@navikt/aksel-icon
 import { ActionMenu, Button, Stack } from '@navikt/ds-react';
 
 import Styles from './Vedtaksmeny.module.css';
-import EndreEndringstidspunkt from '../endringstidspunkt/EndreEndringstidspunkt';
-import { OppdaterEndringstidspunktModal } from '../endringstidspunkt/OppdaterEndringstidspunktModal';
 import { useFeilutbetaltValutaTabellContext } from '../FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import KorrigerEtterbetaling from '../KorrigerEtterbetaling/KorrigerEtterbetaling';
 import { KorrigerVedtak } from '../KorrigerVedtakModal/KorrigerVedtak';
