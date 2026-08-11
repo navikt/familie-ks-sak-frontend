@@ -2,11 +2,11 @@ import { OpprettBehandlingModal } from '@komponenter/Saklinje/Meny/OpprettBehand
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
-import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
+import { lagBehandling, lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
 import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
 import { render, TestProviders } from '@testutils/testrender';
 import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
-import type { IMinimalFagsak } from '@typer/fagsak';
+import { FagsakStatus, type IMinimalFagsak } from '@typer/fagsak';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
 import { describe, expect, test, vi } from 'vitest';
@@ -65,7 +65,6 @@ describe('OpprettBehandlingModal', () => {
         await user.selectOptions(behandlingstypeFelt, Behandlingstype.FØRSTEGANGSBEHANDLING);
         expect(behandlingstypeFelt).toHaveValue(Behandlingstype.FØRSTEGANGSBEHANDLING);
 
-        // Når Førstegangsbehandling velges som type skal felter for behandlingstema og søknad mottatt dato vises
         expect(screen.getByLabelText('Velg behandlingstema')).toBeInTheDocument();
         expect(screen.getByLabelText('Søknad mottatt dato')).toBeInTheDocument();
         // Årsaksfeltet skal ikke vises siden årsaken automatisk settes ved førstegangsbehandling
@@ -91,17 +90,24 @@ describe('OpprettBehandlingModal', () => {
         expect(screen.getByText('Det er mer enn 360 dager siden denne datoen.')).toBeInTheDocument();
     });
 
-    test.todo('skal rendre riktige felter ved revurdering', async () => {
+    test('skal rendre riktige felter ved revurdering', async () => {
         const { screen, user } = render(
             <OpprettBehandlingModal
                 lukkModal={lukkModal}
                 onTilbakekrevingsbehandlingOpprettet={onTilbakekrevingsbehandlingOpprettet}
             />,
             {
-                wrapper: Wrapper,
+                wrapper: props => (
+                    <Wrapper
+                        {...props}
+                        fagsak={lagFagsak({
+                            status: FagsakStatus.LØPENDE,
+                            behandlinger: [lagVisningBehandling()],
+                        })}
+                    />
+                ),
             }
         );
-        // TODO: kan vi overstyre aktivBehandling el.l. manuelt sånn at REVURDERING-valget vises i lista? Ev. fjern testen
         const behandlingstypeFelt = screen.getByRole('combobox', { name: 'Velg type behandling' });
         await user.selectOptions(behandlingstypeFelt, Behandlingstype.REVURDERING);
         expect(behandlingstypeFelt).toHaveValue(Behandlingstype.REVURDERING);
