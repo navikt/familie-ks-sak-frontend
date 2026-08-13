@@ -1,13 +1,9 @@
 import type { ChangeEvent } from 'react';
 
 import { useFeatureToggles } from '@hooks/useFeatureToggles';
-import {
-    kanOppretteFørstegangsbehandling,
-    kanOppretteRevurdering,
-} from '@komponenter/Saklinje/Meny/OpprettBehandling/opprettBehandlingUtils';
 import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
-import { Behandlingstype } from '@typer/behandling';
-import type { IMinimalFagsak } from '@typer/fagsak';
+import { BehandlingStatus, Behandlingstype, erBehandlingHenlagt } from '@typer/behandling';
+import { FagsakStatus, type IMinimalFagsak } from '@typer/fagsak';
 import { FeatureToggle } from '@typer/featureToggles';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
@@ -40,6 +36,25 @@ const BehandlingstypeFelt = ({
     const aktivBehandling: VisningBehandling | undefined = minimalFagsak
         ? hentAktivBehandlingPåMinimalFagsak(minimalFagsak)
         : undefined;
+
+    const kanOppretteNyBehandling = (aktivBehandling: VisningBehandling | undefined) =>
+        !aktivBehandling || aktivBehandling?.status === BehandlingStatus.AVSLUTTET;
+
+    const kanOppretteFørstegangsbehandling = (
+        minimalFagsak: IMinimalFagsak | undefined,
+        aktivBehandling: VisningBehandling | undefined
+    ) => !minimalFagsak || (minimalFagsak.status !== FagsakStatus.LØPENDE && kanOppretteNyBehandling(aktivBehandling));
+
+    const kanOppretteRevurdering = (
+        minimalFagsak: IMinimalFagsak | undefined,
+        aktivBehandling: VisningBehandling | undefined
+    ) => {
+        const alleBehandlingerErHenlagt = minimalFagsak?.behandlinger.every(behandling =>
+            erBehandlingHenlagt(behandling.resultat)
+        );
+
+        return minimalFagsak && !alleBehandlingerErHenlagt && kanOppretteNyBehandling(aktivBehandling);
+    };
 
     const kanOppretteTekniskEndring =
         kanOppretteRevurdering(minimalFagsak, aktivBehandling) && toggles[FeatureToggle.kanBehandleTekniskEndring];

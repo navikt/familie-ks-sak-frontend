@@ -4,20 +4,14 @@ import {
     OpprettBehandlingFelt,
     type OpprettBehandlingFormValues,
 } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
-import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
-import { FeatureToggle } from '@typer/featureToggles';
-import { Klagebehandlingstype } from '@typer/klage';
-import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
-import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
+import { Behandlingstype, behandlingstyper, BehandlingÅrsak } from '@typer/behandling';
+import { hentTilgjengeligeBehandlingstyper } from '@utils/behandling';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
 
-import { kanOppretteFørstegangsbehandling, kanOppretteRevurdering } from '../opprettBehandlingUtils';
-
 export function BehandlingstypeFelt() {
     const toggles = useFeatureToggles();
-
     const fagsak = useFagsak();
 
     const { control, setValue, reset } = useFormContext<OpprettBehandlingFormValues>();
@@ -33,11 +27,6 @@ export function BehandlingstypeFelt() {
             required: 'Velg type behandling som skal opprettes fra nedtrekkslisten.',
         },
     });
-
-    const aktivBehandling = fagsak ? hentAktivBehandlingPåMinimalFagsak(fagsak) : undefined;
-
-    const kanOppretteTekniskEndring =
-        kanOppretteRevurdering(fagsak, aktivBehandling) && toggles[FeatureToggle.kanBehandleTekniskEndring];
 
     function handleOnChange(event: React.ChangeEvent<HTMLSelectElement>) {
         reset();
@@ -63,40 +52,11 @@ export function BehandlingstypeFelt() {
             <option disabled={true} value={''}>
                 Velg
             </option>
-            {kanOppretteFørstegangsbehandling(fagsak, aktivBehandling) && (
-                <option
-                    aria-selected={value === Behandlingstype.FØRSTEGANGSBEHANDLING}
-                    value={Behandlingstype.FØRSTEGANGSBEHANDLING}
-                >
-                    Førstegangsbehandling
+            {hentTilgjengeligeBehandlingstyper(fagsak, toggles).map(type => (
+                <option key={type} aria-selected={value === type} value={type}>
+                    {behandlingstyper[type].navn}
                 </option>
-            )}
-            {kanOppretteRevurdering(fagsak, aktivBehandling) && (
-                <option aria-selected={value === Behandlingstype.REVURDERING} value={Behandlingstype.REVURDERING}>
-                    Revurdering
-                </option>
-            )}
-
-            {kanOppretteTekniskEndring && (
-                <option
-                    aria-selected={value === Behandlingstype.TEKNISK_ENDRING}
-                    value={Behandlingstype.TEKNISK_ENDRING}
-                >
-                    Teknisk endring
-                </option>
-            )}
-
-            <option
-                aria-selected={value === Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
-                value={Tilbakekrevingsbehandlingstype.TILBAKEKREVING}
-            >
-                Tilbakekreving
-            </option>
-            {!fagsak.finnesStrengtFortroligPersonIFagsak && (
-                <option aria-selected={value === Klagebehandlingstype.KLAGE} value={Klagebehandlingstype.KLAGE}>
-                    Klage
-                </option>
-            )}
+            ))}
         </Select>
     );
 }
