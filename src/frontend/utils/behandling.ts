@@ -24,15 +24,12 @@ const TILGJENGELIGE_BEHANDLINGSTYPER = [
 ];
 
 export function hentTilgjengeligeBehandlingstyper(fagsak: IMinimalFagsak, toggles: FeatureToggles) {
-    const behandling = fagsak ? hentAktivBehandlingPåMinimalFagsak(fagsak) : undefined;
-    const alleBehandlingerErHenlagt = fagsak?.behandlinger.every(behandling =>
-        erBehandlingHenlagt(behandling.resultat)
-    );
+    const behandling = hentAktivBehandlingPåMinimalFagsak(fagsak);
+    const alleBehandlingerErHenlagt = fagsak.behandlinger.every(behandling => erBehandlingHenlagt(behandling.resultat));
 
     const kanOppretteNyBehandling = !behandling || behandling?.status === BehandlingStatus.AVSLUTTET;
-    const kanOppretteFørstegangsbehandling =
-        !fagsak || (fagsak.status !== FagsakStatus.LØPENDE && kanOppretteNyBehandling);
-    const kanOppretteRevurdering = fagsak && !alleBehandlingerErHenlagt && kanOppretteNyBehandling;
+    const kanOppretteFørstegangsbehandling = fagsak.status !== FagsakStatus.LØPENDE && kanOppretteNyBehandling;
+    const kanOppretteRevurdering = !alleBehandlingerErHenlagt && kanOppretteNyBehandling;
     const kanOppretteTekniskEndring = kanOppretteRevurdering && toggles[FeatureToggle.kanBehandleTekniskEndring];
     const kanOppretteKlagebehandling = !fagsak.finnesStrengtFortroligPersonIFagsak;
 
