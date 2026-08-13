@@ -83,7 +83,7 @@ export function SøknadMottattDatoFelt() {
                         <LocalAlert.Header>
                             <LocalAlert.Title>Er mottatt dato riktig?</LocalAlert.Title>
                         </LocalAlert.Header>
-                        <LocalAlert.Content>Det er mer en 360 dager siden denne datoen.</LocalAlert.Content>
+                        <LocalAlert.Content>Det er mer enn 360 dager siden denne datoen.</LocalAlert.Content>
                     </LocalAlert>
                 </Box>
             )}
