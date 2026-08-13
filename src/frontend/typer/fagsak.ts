@@ -8,6 +8,7 @@ export enum FagsakStatus {
     OPPRETTET = 'OPPRETTET',
     LØPENDE = 'LØPENDE',
     AVSLUTTET = 'AVSLUTTET',
+    LÅST = 'LÅST',
 }
 
 // Interface
@@ -19,6 +20,7 @@ interface IBaseFagsak {
     søkerFødselsnummer: string;
     underBehandling: boolean;
     løpendeKategori?: BehandlingKategori;
+    låstTidspunkt?: string;
 }
 
 export interface IMinimalFagsak extends IBaseFagsak {
@@ -39,5 +41,9 @@ export const fagsakStatus: INøkkelPar = {
     AVSLUTTET: {
         id: 'AVSLUTTET',
         navn: 'Avsluttet',
+    },
+    LÅST: {
+        id: 'LÅST',
+        navn: 'Låst',
     },
 };

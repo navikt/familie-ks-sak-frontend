@@ -1,7 +1,8 @@
 import { BehandlingStatus } from '@typer/behandling';
 import type { IBehandlingstema } from '@typer/behandlingstema';
 import { tilBehandlingstema } from '@typer/behandlingstema';
-import { hentAktivBehandlingPåMinimalFagsak, hentFagsakStatusVisning } from '@utils/fagsak';
+import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
+import { erFagsakLåst, hentAktivBehandlingPåMinimalFagsak, hentFagsakStatusVisning } from '@utils/fagsak';
 import { Link as ReactRouterLink } from 'react-router';
 
 import { BodyShort, Box, HStack, Link, LinkCard, VStack } from '@navikt/ds-react';
@@ -15,6 +16,7 @@ function Innholdstabell() {
     const { fagsak } = useFagsakContext();
     const behandlingstema: IBehandlingstema | undefined =
         fagsak.løpendeKategori && tilBehandlingstema(fagsak.løpendeKategori);
+    const fagsakErLåst = erFagsakLåst(fagsak);
 
     return (
         <HStack gap="space-80">
@@ -34,6 +36,19 @@ function Innholdstabell() {
                     {hentFagsakStatusVisning(fagsak)}
                 </BodyShort>
             </div>
+            {fagsakErLåst && fagsak.låstTidspunkt && (
+                <div>
+                    <BodyShort className={styles.header} spacing>
+                        Låst dato
+                    </BodyShort>
+                    <BodyShort className={styles.body} weight="semibold">
+                        {isoStringTilFormatertString({
+                            isoString: fagsak.låstTidspunkt,
+                            tilFormat: Datoformat.DATO,
+                        })}
+                    </BodyShort>
+                </div>
+            )}
         </HStack>
     );
 }

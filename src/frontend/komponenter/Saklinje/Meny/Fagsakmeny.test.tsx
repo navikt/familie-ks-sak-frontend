@@ -12,15 +12,21 @@ import { ManuelleBrevmottakerePåFagsakProvider } from '../../../sider/Fagsak/Ma
 import { FagsakTestdata } from '../../../testutils/testdata/fagsakTestdata';
 import { lagPerson } from '../../../testutils/testdata/personTestdata';
 import { render, TestProviders } from '../../../testutils/testrender';
+import { FagsakStatus, type IMinimalFagsak } from '../../../typer/fagsak';
 
 interface WrapperProps extends PropsWithChildren {
     initialEntries?: [{ pathname: string }];
+    fagsak?: IMinimalFagsak;
 }
 
-function Wrapper({ initialEntries = [{ pathname: '/fagsak/1' }], children }: WrapperProps) {
+function Wrapper({
+    initialEntries = [{ pathname: '/fagsak/1' }],
+    fagsak = FagsakTestdata.lagFagsak(),
+    children,
+}: WrapperProps) {
     return (
         <TestProviders initialEntries={initialEntries}>
-            <FagsakProvider fagsak={FagsakTestdata.lagFagsak()}>
+            <FagsakProvider fagsak={fagsak}>
                 <BrukerProvider bruker={lagPerson()}>
                     <ManuelleBrevmottakerePåFagsakProvider>
                         <Routes>
@@ -116,5 +122,27 @@ describe('Fagsakmeny', () => {
         await user.click(menuitem);
 
         expect(screen.getByRole('dialog', { name: 'Legg til brevmottaker' })).toBeInTheDocument();
+    });
+
+    test('skal kun vise lås opp fagsak når fagsaken er låst', async () => {
+        const { screen, user } = render(<Fagsakmeny />, {
+            wrapper: props => <Wrapper {...props} fagsak={FagsakTestdata.lagFagsak({ status: FagsakStatus.LÅST })} />,
+        });
+
+        const meny = screen.getByRole('button', { name: 'Meny' });
+        await user.click(meny);
+
+        expect(screen.getByRole('menuitem', { name: 'Lås opp fagsak' })).toBeInTheDocument();
+        expect(screen.queryByRole('menuitem', { name: 'Opprett behandling' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('menuitem', { name: 'Send informasjonsbrev' })).not.toBeInTheDocument();
+    });
+
+    test('skal ikke vise lås opp fagsak når fagsaken ikke er låst', async () => {
+        const { screen, user } = render(<Fagsakmeny />, { wrapper: Wrapper });
+
+        const meny = screen.getByRole('button', { name: 'Meny' });
+        await user.click(meny);
+
+        expect(screen.queryByRole('menuitem', { name: 'Lås opp fagsak' })).not.toBeInTheDocument();
     });
 });
