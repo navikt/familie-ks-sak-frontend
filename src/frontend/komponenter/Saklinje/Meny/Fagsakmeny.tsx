@@ -41,7 +41,7 @@ export function Fagsakmeny() {
             {visLeggTilBrevmottakerModal && (
                 <LeggTilBrevmottakerModalFagsak lukkModal={() => settVisLeggTilBrevmottakerModal(false)} />
             )}
-            {fagsakErLåst && <LåsOppFagsakModal />}
+            <LåsOppFagsakModal />
             <ActionMenu>
                 <ActionMenu.Trigger>
                     <Button variant={'secondary'} size={'small'} iconPosition={'right'} icon={<ChevronDownIcon />}>

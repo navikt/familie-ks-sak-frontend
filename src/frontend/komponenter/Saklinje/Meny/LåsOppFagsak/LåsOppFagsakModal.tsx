@@ -8,7 +8,6 @@ import { Button, Fieldset, InfoCard, Modal, Textarea, VStack } from '@navikt/ds-
 import {
     LÅS_OPP_FAGSAK_FORM_ID,
     LåsOppFagsakFormFields,
-    LåsOppFagsakServerErrors,
     type LåsOppFagsakFormValues,
     useLåsOppFagsakForm,
 } from './useLåsOppFagsakForm';
@@ -48,11 +47,7 @@ function Innhold() {
                     </InfoCard>
                     <FormProvider {...form}>
                         <form id={LÅS_OPP_FAGSAK_FORM_ID} onSubmit={handleSubmit(onSubmit)}>
-                            <Fieldset
-                                legend={'Lås opp fagsak'}
-                                hideLegend={true}
-                                error={LåsOppFagsakServerErrors.onSubmitError.lookup(errors)}
-                            >
+                            <Fieldset legend={'Lås opp fagsak'} hideLegend={true} error={errors?.root?.message}>
                                 <BegrunnelseFelt />
                             </Fieldset>
                         </form>

@@ -4,20 +4,7 @@ import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
 import { useLåsOppFagsak } from '@hooks/useLåsOppFagsak';
 import { useModal } from '@hooks/useModal';
 import { useQueryClient } from '@tanstack/react-query';
-import { type FieldErrors, useForm } from 'react-hook-form';
-
-export const LåsOppFagsakServerErrors: Record<
-    'onSubmitError',
-    {
-        id: `root.${string}`;
-        lookup: (errors: FieldErrors<LåsOppFagsakFormValues>) => string | undefined;
-    }
-> = {
-    onSubmitError: {
-        id: 'root.onSubmitError',
-        lookup: errors => errors?.root?.onSubmitError?.message,
-    },
-};
+import { useForm } from 'react-hook-form';
 
 export enum LåsOppFagsakFormFields {
     BEGRUNNELSE = 'begrunnelse',
@@ -53,8 +40,8 @@ export function useLåsOppFagsakForm() {
                 lukkModal();
             })
             .catch(error =>
-                setError(LåsOppFagsakServerErrors.onSubmitError.id, {
-                    message: error.message ?? 'En feil oppstod.',
+                setError('root', {
+                    message: error.message,
                 })
             );
     }
