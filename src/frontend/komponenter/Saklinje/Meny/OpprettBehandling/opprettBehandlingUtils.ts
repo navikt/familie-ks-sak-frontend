@@ -2,6 +2,7 @@ import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehand
 import { BehandlingStatus, erBehandlingHenlagt } from '@typer/behandling';
 import type { IMinimalFagsak } from '@typer/fagsak';
 import { FagsakStatus } from '@typer/fagsak';
+import { erFagsakLåst } from '@utils/fagsak';
 
 const kanOppretteNyBehandling = (aktivBehandling: VisningBehandling | undefined) =>
     !aktivBehandling || aktivBehandling?.status === BehandlingStatus.AVSLUTTET;
@@ -9,7 +10,11 @@ const kanOppretteNyBehandling = (aktivBehandling: VisningBehandling | undefined)
 export const kanOppretteFørstegangsbehandling = (
     minimalFagsak: IMinimalFagsak | undefined,
     aktivBehandling: VisningBehandling | undefined
-) => !minimalFagsak || (minimalFagsak.status !== FagsakStatus.LØPENDE && kanOppretteNyBehandling(aktivBehandling));
+) =>
+    !minimalFagsak ||
+    (!erFagsakLåst(minimalFagsak) &&
+        minimalFagsak.status !== FagsakStatus.LØPENDE &&
+        kanOppretteNyBehandling(aktivBehandling));
 
 export const kanOppretteRevurdering = (
     minimalFagsak: IMinimalFagsak | undefined,
@@ -19,5 +24,10 @@ export const kanOppretteRevurdering = (
         erBehandlingHenlagt(behandling.resultat)
     );
 
-    return minimalFagsak && !alleBehandlingerErHenlagt && kanOppretteNyBehandling(aktivBehandling);
+    return (
+        minimalFagsak &&
+        !erFagsakLåst(minimalFagsak) &&
+        !alleBehandlingerErHenlagt &&
+        kanOppretteNyBehandling(aktivBehandling)
+    );
 };

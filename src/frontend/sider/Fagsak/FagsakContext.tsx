@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 
 import type { IMinimalFagsak } from '../../typer/fagsak';
 
@@ -14,7 +14,9 @@ interface Props extends PropsWithChildren {
 }
 
 export function FagsakProvider({ fagsak, children }: Props) {
-    return <Context.Provider value={{ fagsak }}>{children}</Context.Provider>;
+    const value = useMemo(() => ({ fagsak }), [fagsak]);
+
+    return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 
 export function useFagsakContext() {

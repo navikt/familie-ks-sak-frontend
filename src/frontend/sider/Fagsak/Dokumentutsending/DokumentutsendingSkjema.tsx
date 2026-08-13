@@ -1,13 +1,15 @@
 import type { ChangeEvent } from 'react';
 
+import { useFagsak } from '@hooks/useFagsak';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
 import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
 import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
 import type { IBarnMedOpplysninger } from '@typer/søknad';
+import { erFagsakLåst } from '@utils/fagsak';
 
 import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
-import { Box, Button, Fieldset, Heading, HStack, InfoCard, Label, Select } from '@navikt/ds-react';
+import { Alert, Box, Button, Fieldset, Heading, HStack, InfoCard, Label, Select } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnIBrevSkjema from './BarnIBrev/BarnIBrevSkjema';
@@ -27,6 +29,8 @@ export function DokumentutsendingSkjema() {
     const { bruker } = useBrukerContext();
 
     const saksbehandler = useSaksbehandler();
+
+    const fagsak = useFagsak();
 
     const {
         hentForhåndsvisningPåFagsak,
@@ -68,7 +72,7 @@ export function DokumentutsendingSkjema() {
 
     const skalViseFritekstAvsnitt = årsakVerdi === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE;
 
-    const erLesevisning = !saksbehandler.harSkrivetilgang;
+    const erLesevisning = !saksbehandler.harSkrivetilgang || erFagsakLåst(fagsak);
 
     function onLeggTilBarn(barn: IBarnMedOpplysninger) {
         skjema.felter.barnIBrev.validerOgSettFelt([...skjema.felter.barnIBrev.verdi, barn]);
@@ -83,6 +87,14 @@ export function DokumentutsendingSkjema() {
             {!erLesevisning && <LeggTilBarnModal />}
             <Box padding={'space-32'} overflow={'auto'}>
                 <Heading size={'large'} level={'1'} children={'Send informasjonsbrev'} />
+                {erFagsakLåst(fagsak) && (
+                    <Box marginBlock={'space-16'}>
+                        <Alert variant={'info'}>
+                            Fagsaken er låst etter arkivlovens kasseringsregler, og det er ikke mulig å sende brev. Lås
+                            opp fagsaken fra menyen i saksoversikten hvis du likevel skal sende brev.
+                        </Alert>
+                    </Box>
+                )}
                 {manuelleBrevmottakerePåFagsak.length > 0 && (
                     <Box marginBlock={'space-16'}>
                         <BrevmottakereAlert
@@ -162,7 +174,7 @@ export function DokumentutsendingSkjema() {
                             size="medium"
                             variant="primary"
                             loading={senderBrev()}
-                            disabled={skjemaErLåst()}
+                            disabled={skjemaErLåst() || erLesevisning}
                             onClick={sendBrevPåFagsak}
                         >
                             Send brev

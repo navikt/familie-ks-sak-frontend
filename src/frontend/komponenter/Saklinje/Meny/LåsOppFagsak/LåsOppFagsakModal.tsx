@@ -1,5 +1,8 @@
 import { ModalType } from '@context/ModalContext';
+import { useFagsak } from '@hooks/useFagsak';
+import { LåsOppFagsakMutationKeyFactory } from '@hooks/useLåsOppFagsak';
 import { useModal } from '@hooks/useModal';
+import { useIsMutating } from '@tanstack/react-query';
 import { FormProvider, useController, useFormContext } from 'react-hook-form';
 
 import { InformationSquareIcon } from '@navikt/aksel-icons';
@@ -13,12 +16,20 @@ import {
 } from './useLåsOppFagsakForm';
 
 export function LåsOppFagsakModal() {
+    const fagsak = useFagsak();
     const { erModalÅpen, tittel, lukkModal, bredde } = useModal(ModalType.LÅS_OPP_FAGSAK);
+
+    const antallPågåendeOpplåsinger = useIsMutating({
+        mutationKey: LåsOppFagsakMutationKeyFactory.låsOppFagsak(fagsak.id),
+    });
+
     return (
         <Modal
             open={erModalÅpen}
             width={bredde}
             onClose={lukkModal}
+            // Hindrer at Escape og lukkeknappen avmonterer skjemaet mens opplåsingen er underveis.
+            onBeforeClose={() => antallPågåendeOpplåsinger === 0}
             header={{ heading: tittel, size: 'medium' }}
             portal={true}
         >
@@ -76,7 +87,7 @@ function BegrunnelseFelt() {
     const { control } = useFormContext<LåsOppFagsakFormValues>();
 
     const {
-        field: { value, onBlur, onChange },
+        field: { name, ref, value, onBlur, onChange },
         fieldState: { error },
         formState: { isSubmitting },
     } = useController({
@@ -97,13 +108,16 @@ function BegrunnelseFelt() {
 
     return (
         <Textarea
+            ref={ref}
+            id={name}
+            name={name}
             label={'Begrunnelse'}
             maxLength={4000}
             value={value}
             onBlur={onBlur}
             onChange={onChange}
             error={error?.message}
-            disabled={isSubmitting}
+            readOnly={isSubmitting}
         />
     );
 }

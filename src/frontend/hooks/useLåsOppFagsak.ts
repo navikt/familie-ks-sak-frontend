@@ -2,18 +2,18 @@ import { låsOppFagsak, type LåsOppFagsakPayload } from '@api/låsOppFagsak';
 import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
 import type { IMinimalFagsak } from '@typer/fagsak';
 
-interface Parameters extends LåsOppFagsakPayload {
-    fagsakId: number;
-}
+type Parameters = LåsOppFagsakPayload;
 
-type Options = Omit<UseMutationOptions<IMinimalFagsak, DefaultError, Parameters>, 'mutationFn'>;
+type Options = Omit<UseMutationOptions<IMinimalFagsak, DefaultError, Parameters>, 'mutationKey' | 'mutationFn'>;
 
-export function useLåsOppFagsak(options?: Options) {
+export const LåsOppFagsakMutationKeyFactory = {
+    låsOppFagsak: (fagsakId: number) => ['låsOppFagsak', fagsakId],
+};
+
+export function useLåsOppFagsak(fagsakId: number, options?: Options) {
     return useMutation({
-        mutationFn: (parameters: Parameters) => {
-            const { fagsakId, begrunnelse } = parameters;
-            return låsOppFagsak(fagsakId, { begrunnelse });
-        },
+        mutationKey: LåsOppFagsakMutationKeyFactory.låsOppFagsak(fagsakId),
+        mutationFn: (parameters: Parameters) => låsOppFagsak(fagsakId, parameters),
         ...options,
     });
 }

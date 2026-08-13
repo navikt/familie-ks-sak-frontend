@@ -1,8 +1,5 @@
 import { useState } from 'react';
 
-import { useFagsak } from '@hooks/useFagsak';
-import { erFagsakLåst } from '@utils/fagsak';
-
 import { ChevronDownIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button } from '@navikt/ds-react';
 
@@ -17,9 +14,6 @@ import { TilbakekrevingsbehandlingOpprettetModal } from './OpprettBehandling/Til
 import { SendInformasjonsbrev } from './SendInformasjonsbrev/SendInformasjonsbrev';
 
 export function Fagsakmeny() {
-    const fagsak = useFagsak();
-    const fagsakErLåst = erFagsakLåst(fagsak);
-
     const [visOpprettBehandlingModal, settVisOpprettBehandlingModal] = useState(false);
     const [visTilbakekrevingsbehandlingOpprettetModal, settVisTilbakekrevingsbehandlingOpprettetModal] =
         useState(false);
@@ -50,16 +44,12 @@ export function Fagsakmeny() {
                 </ActionMenu.Trigger>
                 <ActionMenu.Content>
                     <ActionMenu.Group className={Styles.group} aria-label={'Fagsak'}>
-                        {!fagsakErLåst && (
-                            <>
-                                <OpprettBehandling åpneModal={() => settVisOpprettBehandlingModal(true)} />
-                                <LeggTilEllerFjernBrevmottakerePåFagsak
-                                    åpneModal={() => settVisLeggTilBrevmottakerModal(true)}
-                                />
-                                <SendInformasjonsbrev />
-                            </>
-                        )}
-                        {fagsakErLåst && <LåsOppFagsak />}
+                        <OpprettBehandling åpneModal={() => settVisOpprettBehandlingModal(true)} />
+                        <LeggTilEllerFjernBrevmottakerePåFagsak
+                            åpneModal={() => settVisLeggTilBrevmottakerModal(true)}
+                        />
+                        <SendInformasjonsbrev />
+                        <LåsOppFagsak />
                     </ActionMenu.Group>
                 </ActionMenu.Content>
             </ActionMenu>

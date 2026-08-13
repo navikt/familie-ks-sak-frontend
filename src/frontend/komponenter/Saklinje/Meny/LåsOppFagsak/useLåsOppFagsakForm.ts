@@ -19,7 +19,7 @@ export const LÅS_OPP_FAGSAK_FORM_ID = 'las_opp_fagsak_modal_form';
 export function useLåsOppFagsakForm() {
     const fagsak = useFagsak();
     const { lukkModal } = useModal(ModalType.LÅS_OPP_FAGSAK);
-    const { mutateAsync } = useLåsOppFagsak();
+    const { mutateAsync } = useLåsOppFagsak(fagsak.id);
     const queryClient = useQueryClient();
 
     const form = useForm<LåsOppFagsakFormValues>({
@@ -32,18 +32,17 @@ export function useLåsOppFagsakForm() {
 
     async function onSubmit(values: LåsOppFagsakFormValues) {
         const { begrunnelse } = values;
-        return mutateAsync({ fagsakId: fagsak.id, begrunnelse: begrunnelse.trim() })
-            .then(async () => {
-                await queryClient.invalidateQueries({
-                    queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id),
-                });
-                lukkModal();
-            })
-            .catch(error =>
-                setError('root', {
-                    message: error.message,
-                })
-            );
+        try {
+            await mutateAsync({ begrunnelse: begrunnelse.trim() });
+        } catch (error) {
+            // Kun feil fra selve opplåsingen skal rapporteres som en mislykket opplåsing.
+            setError('root', { message: (error as Error).message });
+            return;
+        }
+        await queryClient.invalidateQueries({
+            queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id),
+        });
+        lukkModal();
     }
 
     return { form, onSubmit };
