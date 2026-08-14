@@ -7,7 +7,7 @@ import { FagsakStatus, type IMinimalFagsak } from '@typer/fagsak';
 import { FeatureToggle } from '@typer/featureToggles';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
-import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
+import { erFagsakLåst, hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
 
 import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
@@ -43,7 +43,11 @@ const BehandlingstypeFelt = ({
     const kanOppretteFørstegangsbehandling = (
         minimalFagsak: IMinimalFagsak | undefined,
         aktivBehandling: VisningBehandling | undefined
-    ) => !minimalFagsak || (minimalFagsak.status !== FagsakStatus.LØPENDE && kanOppretteNyBehandling(aktivBehandling));
+    ) =>
+        !minimalFagsak ||
+        (!erFagsakLåst(minimalFagsak) &&
+            minimalFagsak.status !== FagsakStatus.LØPENDE &&
+            kanOppretteNyBehandling(aktivBehandling));
 
     const kanOppretteRevurdering = (
         minimalFagsak: IMinimalFagsak | undefined,
@@ -53,7 +57,12 @@ const BehandlingstypeFelt = ({
             erBehandlingHenlagt(behandling.resultat)
         );
 
-        return minimalFagsak && !alleBehandlingerErHenlagt && kanOppretteNyBehandling(aktivBehandling);
+        return (
+            minimalFagsak &&
+            !erFagsakLåst(minimalFagsak) &&
+            !alleBehandlingerErHenlagt &&
+            kanOppretteNyBehandling(aktivBehandling)
+        );
     };
 
     const kanOppretteTekniskEndring =

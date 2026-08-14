@@ -6,7 +6,7 @@ import type { IGrunnlagPerson } from '@typer/person';
 import { PersonType } from '@typer/person';
 import { Målform } from '@typer/søknad';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
-import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
+import { erFagsakLåst, hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
 
 export const hentSøkersMålform = (behandling: IBehandling) =>
     behandling.personer.find((person: IGrunnlagPerson) => {
@@ -28,8 +28,9 @@ export function hentTilgjengeligeBehandlingstyper(fagsak: IMinimalFagsak, toggle
     const alleBehandlingerErHenlagt = fagsak.behandlinger.every(behandling => erBehandlingHenlagt(behandling.resultat));
 
     const kanOppretteNyBehandling = !behandling || behandling?.status === BehandlingStatus.AVSLUTTET;
-    const kanOppretteFørstegangsbehandling = fagsak.status !== FagsakStatus.LØPENDE && kanOppretteNyBehandling;
-    const kanOppretteRevurdering = !alleBehandlingerErHenlagt && kanOppretteNyBehandling;
+    const kanOppretteFørstegangsbehandling =
+        !erFagsakLåst(fagsak) && fagsak.status !== FagsakStatus.LØPENDE && kanOppretteNyBehandling;
+    const kanOppretteRevurdering = !erFagsakLåst(fagsak) && !alleBehandlingerErHenlagt && kanOppretteNyBehandling;
     const kanOppretteTekniskEndring = kanOppretteRevurdering && toggles[FeatureToggle.kanBehandleTekniskEndring];
     const kanOppretteKlagebehandling = !fagsak.finnesStrengtFortroligPersonIFagsak;
 
