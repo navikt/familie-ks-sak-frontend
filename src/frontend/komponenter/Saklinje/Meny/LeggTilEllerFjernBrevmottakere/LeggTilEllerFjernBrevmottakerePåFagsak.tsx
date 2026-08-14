@@ -3,7 +3,9 @@ import { useLocation } from 'react-router';
 import { ActionMenu } from '@navikt/ds-react';
 
 import type { SkjemaBrevmottaker } from './useBrevmottakerSkjema';
+import { useFagsakContext } from '../../../../sider/Fagsak/FagsakContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../../../../sider/Fagsak/ManuelleBrevmottakerePåFagsakContext';
+import { erFagsakLåst } from '../../../../utils/fagsak';
 
 function utledLabel(brevmottakere: SkjemaBrevmottaker[]) {
     if (brevmottakere.length === 0) {
@@ -18,11 +20,12 @@ interface Props {
 
 export function LeggTilEllerFjernBrevmottakerePåFagsak({ åpneModal }: Props) {
     const { manuelleBrevmottakerePåFagsak } = useManuelleBrevmottakerePåFagsakContext();
+    const { fagsak } = useFagsakContext();
     const location = useLocation();
 
     const erPåDokumentutsending = location.pathname.includes('dokumentutsending');
 
-    if (!erPåDokumentutsending) {
+    if (!erPåDokumentutsending || erFagsakLåst(fagsak)) {
         return null;
     }
 

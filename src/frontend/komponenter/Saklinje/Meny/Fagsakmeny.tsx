@@ -6,6 +6,8 @@ import { ActionMenu, Button } from '@navikt/ds-react';
 import Styles from './Fagsakmeny.module.css';
 import { LeggTilBrevmottakerModalFagsak } from './LeggTilEllerFjernBrevmottakere/LeggTilBrevmottakerModalFagsak';
 import { LeggTilEllerFjernBrevmottakerePåFagsak } from './LeggTilEllerFjernBrevmottakere/LeggTilEllerFjernBrevmottakerePåFagsak';
+import { LåsOppFagsak } from './LåsOppFagsak/LåsOppFagsak';
+import { LåsOppFagsakModal } from './LåsOppFagsak/LåsOppFagsakModal';
 import { OpprettBehandling } from './OpprettBehandling/OpprettBehandling';
 import { OpprettBehandlingModal } from './OpprettBehandling/OpprettBehandlingModal';
 import { TilbakekrevingsbehandlingOpprettetModal } from './OpprettBehandling/TilbakekrevingsbehandlingOpprettetModal';
@@ -33,6 +35,7 @@ export function Fagsakmeny() {
             {visLeggTilBrevmottakerModal && (
                 <LeggTilBrevmottakerModalFagsak lukkModal={() => settVisLeggTilBrevmottakerModal(false)} />
             )}
+            <LåsOppFagsakModal />
             <ActionMenu>
                 <ActionMenu.Trigger>
                     <Button variant={'secondary'} size={'small'} iconPosition={'right'} icon={<ChevronDownIcon />}>
@@ -46,6 +49,7 @@ export function Fagsakmeny() {
                             åpneModal={() => settVisLeggTilBrevmottakerModal(true)}
                         />
                         <SendInformasjonsbrev />
+                        <LåsOppFagsak />
                     </ActionMenu.Group>
                 </ActionMenu.Content>
             </ActionMenu>

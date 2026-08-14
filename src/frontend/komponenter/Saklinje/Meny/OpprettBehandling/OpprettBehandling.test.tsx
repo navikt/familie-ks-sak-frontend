@@ -5,13 +5,23 @@ import { expect } from 'vitest';
 import { ActionMenu } from '@navikt/ds-react';
 
 import { OpprettBehandling } from './OpprettBehandling';
+import { FagsakProvider } from '../../../../sider/Fagsak/FagsakContext';
+import { lagFagsak } from '../../../../testutils/testdata/fagsakTestdata';
 import { render } from '../../../../testutils/testrender';
+import type { IMinimalFagsak } from '../../../../typer/fagsak';
+import { FagsakStatus } from '../../../../typer/fagsak';
 
-function Wrapper({ children }: PropsWithChildren) {
+interface WrapperProps extends PropsWithChildren {
+    fagsak?: IMinimalFagsak;
+}
+
+function Wrapper({ fagsak = lagFagsak(), children }: WrapperProps) {
     return (
-        <ActionMenu open={true}>
-            <ActionMenu.Content>{children}</ActionMenu.Content>
-        </ActionMenu>
+        <FagsakProvider fagsak={fagsak}>
+            <ActionMenu open={true}>
+                <ActionMenu.Content>{children}</ActionMenu.Content>
+            </ActionMenu>
+        </FagsakProvider>
     );
 }
 
@@ -33,5 +43,15 @@ describe('OpprettBehandling', () => {
         await user.click(knapp);
 
         expect(åpneModal).toHaveBeenCalledOnce();
+    });
+
+    test('skal ikke rendre komponenten når fagsaken er låst', () => {
+        const åpneModal = vi.fn();
+
+        const { screen } = render(<OpprettBehandling åpneModal={åpneModal} />, {
+            wrapper: props => <Wrapper {...props} fagsak={lagFagsak({ status: FagsakStatus.LÅST })} />,
+        });
+
+        expect(screen.queryByRole('menuitem', { name: 'Opprett behandling' })).not.toBeInTheDocument();
     });
 });

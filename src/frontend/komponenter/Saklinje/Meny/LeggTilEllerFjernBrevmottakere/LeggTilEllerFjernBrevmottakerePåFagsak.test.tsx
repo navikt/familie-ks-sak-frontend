@@ -7,43 +7,55 @@ import { ActionMenu, Heading } from '@navikt/ds-react';
 
 import { LeggTilEllerFjernBrevmottakerePåFagsak } from './LeggTilEllerFjernBrevmottakerePåFagsak';
 import type { SkjemaBrevmottaker } from './useBrevmottakerSkjema';
+import { FagsakProvider } from '../../../../sider/Fagsak/FagsakContext';
 import { ManuelleBrevmottakerePåFagsakProvider } from '../../../../sider/Fagsak/ManuelleBrevmottakerePåFagsakContext';
 import { BrevmottakerTestdata } from '../../../../testutils/testdata/brevmottakerTestdata';
+import { lagFagsak } from '../../../../testutils/testdata/fagsakTestdata';
 import { render, TestProviders } from '../../../../testutils/testrender';
+import type { IMinimalFagsak } from '../../../../typer/fagsak';
+import { FagsakStatus } from '../../../../typer/fagsak';
 
 interface WrapperProps extends PropsWithChildren {
     initialEntries?: [{ pathname: string }];
     brevmottakere?: SkjemaBrevmottaker[];
+    fagsak?: IMinimalFagsak;
 }
 
-function Wrapper({ initialEntries = [{ pathname: '/fagsak/1' }], brevmottakere = [], children }: WrapperProps) {
+function Wrapper({
+    initialEntries = [{ pathname: '/fagsak/1' }],
+    brevmottakere = [],
+    fagsak = lagFagsak(),
+    children,
+}: WrapperProps) {
     return (
         <TestProviders initialEntries={initialEntries}>
-            <ManuelleBrevmottakerePåFagsakProvider brevmottakere={brevmottakere}>
-                <Routes>
-                    <Route
-                        path={'/fagsak/:fagsakId/dokumentutsending'}
-                        element={
-                            <>
-                                <Heading level={'1'} size={'medium'}>
-                                    Dokumentutsending
-                                </Heading>
+            <FagsakProvider fagsak={fagsak}>
+                <ManuelleBrevmottakerePåFagsakProvider brevmottakere={brevmottakere}>
+                    <Routes>
+                        <Route
+                            path={'/fagsak/:fagsakId/dokumentutsending'}
+                            element={
+                                <>
+                                    <Heading level={'1'} size={'medium'}>
+                                        Dokumentutsending
+                                    </Heading>
+                                    <ActionMenu open={true}>
+                                        <ActionMenu.Content>{children}</ActionMenu.Content>
+                                    </ActionMenu>
+                                </>
+                            }
+                        />
+                        <Route
+                            path={'/fagsak/:fagsakId'}
+                            element={
                                 <ActionMenu open={true}>
                                     <ActionMenu.Content>{children}</ActionMenu.Content>
                                 </ActionMenu>
-                            </>
-                        }
-                    />
-                    <Route
-                        path={'/fagsak/:fagsakId'}
-                        element={
-                            <ActionMenu open={true}>
-                                <ActionMenu.Content>{children}</ActionMenu.Content>
-                            </ActionMenu>
-                        }
-                    />
-                </Routes>
-            </ManuelleBrevmottakerePåFagsakProvider>
+                            }
+                        />
+                    </Routes>
+                </ManuelleBrevmottakerePåFagsakProvider>
+            </FagsakProvider>
         </TestProviders>
     );
 }
@@ -114,5 +126,21 @@ describe('LeggTilEllerFjernBrevmottakerePåFagsak', () => {
         await user.click(knapp);
 
         expect(åpneModal).toHaveBeenCalledOnce();
+    });
+
+    test('skal ikke rendre komponenten når fagsaken er låst', () => {
+        const åpneModal = vi.fn();
+
+        const { screen } = render(<LeggTilEllerFjernBrevmottakerePåFagsak åpneModal={åpneModal} />, {
+            wrapper: props => (
+                <Wrapper
+                    {...props}
+                    initialEntries={[{ pathname: '/fagsak/1/dokumentutsending' }]}
+                    fagsak={lagFagsak({ status: FagsakStatus.LÅST })}
+                />
+            ),
+        });
+
+        expect(screen.queryByRole('menuitem', { name: 'Legg til brevmottaker' })).not.toBeInTheDocument();
     });
 });

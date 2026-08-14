@@ -6,6 +6,7 @@ import { Box, Button, HStack } from '@navikt/ds-react';
 import { Behandlingsmeny } from './Meny/Behandlingsmeny';
 import { useSaksbehandler } from '../../hooks/useSaksbehandler';
 import { useFagsakContext } from '../../sider/Fagsak/FagsakContext';
+import { erFagsakLåst } from '../../utils/fagsak';
 
 function lagAktivFaneStyle(fanenavn: string, pathname: string) {
     const urlSplit = pathname.split('/');
@@ -44,7 +45,7 @@ export function Behandlingslinje() {
                         Dokumenter
                     </Button>
                 </HStack>
-                {saksbehandler.harSkrivetilgang && <Behandlingsmeny />}
+                {saksbehandler.harSkrivetilgang && !erFagsakLåst(fagsak) && <Behandlingsmeny />}
             </HStack>
         </Box>
     );

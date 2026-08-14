@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { ActionMenu } from '@navikt/ds-react';
 
 import { useFagsakContext } from '../../../../sider/Fagsak/FagsakContext';
+import { erFagsakLåst } from '../../../../utils/fagsak';
 
 export function SendInformasjonsbrev() {
     const { fagsak } = useFagsakContext();
@@ -12,7 +13,7 @@ export function SendInformasjonsbrev() {
 
     const erPåDokumentutsending = location.pathname.includes('dokumentutsending');
 
-    if (erPåDokumentutsending) {
+    if (erPåDokumentutsending || erFagsakLåst(fagsak)) {
         return null;
     }
 

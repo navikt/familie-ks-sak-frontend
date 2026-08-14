@@ -13,7 +13,7 @@ import { lagFagsak } from '../../testutils/testdata/fagsakTestdata';
 import { lagSaksbehandler } from '../../testutils/testdata/saksbehandlerTestdata';
 import { render, TestProviders } from '../../testutils/testrender';
 import type { IBehandling } from '../../typer/behandling';
-import type { IMinimalFagsak } from '../../typer/fagsak';
+import { FagsakStatus, type IMinimalFagsak } from '../../typer/fagsak';
 import type { Saksbehandler } from '../../typer/saksbehandler';
 
 interface WrapperProps extends PropsWithChildren {
@@ -101,6 +101,21 @@ describe('Behandlingslinje', () => {
                 <Wrapper
                     {...props}
                     saksbehandler={lagSaksbehandler({ groups: ['71f503a2-c28f-4394-a05a-8da263ceca4a'] })}
+                />
+            ),
+        });
+
+        expect(screen.getByRole('button', { name: 'Saksoversikt' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Dokumenter' })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Meny' })).not.toBeInTheDocument();
+    });
+
+    test('skal ikke vise behandlingsmeny når fagsaken er låst', () => {
+        const { screen } = render(<Behandlingslinje />, {
+            wrapper: props => (
+                <Wrapper
+                    {...props}
+                    fagsak={lagFagsak({ status: FagsakStatus.LÅST, behandlinger: [lagVisningBehandling()] })}
                 />
             ),
         });
