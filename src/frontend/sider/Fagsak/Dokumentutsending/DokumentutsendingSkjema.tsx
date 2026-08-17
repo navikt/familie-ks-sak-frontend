@@ -13,17 +13,14 @@ import { Alert, Box, Button, Fieldset, Heading, HStack, InfoCard, Label, Select 
 import { RessursStatus } from '@navikt/familie-typer';
 
 import BarnIBrevSkjema from './BarnIBrev/BarnIBrevSkjema';
-import { dokumentÅrsak, DokumentÅrsak, useDokumentutsendingContext } from './DokumentutsendingContext';
+import { barnIBrevÅrsakTilTittel, finnBarnIBrevÅrsak } from './barnIBrevÅrsak';
+import { useDokumentutsendingContext } from './DokumentutsendingContext';
+import { dokumentÅrsak, DokumentÅrsak } from './dokumentÅrsakTyper';
 import { LeggTilBarnKnapp } from './LeggTilBarnKnapp';
 import FritekstAvsnitt from '../../../komponenter/FritekstAvsnitt';
 import MålformVelger from '../../../komponenter/MålformVelger';
 import { useBrukerContext } from '../BrukerContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
-
-enum BarnIBrevÅrsak {
-    BARN_SØKT_FOR,
-    BARN_BOSATT_MED_SØKER,
-}
 
 export function DokumentutsendingSkjema() {
     const { bruker } = useBrukerContext();
@@ -48,25 +45,6 @@ export function DokumentutsendingSkjema() {
     const { manuelleBrevmottakerePåFagsak } = useManuelleBrevmottakerePåFagsakContext();
 
     const årsakVerdi = skjema.felter.årsak.verdi;
-
-    const finnBarnIBrevÅrsak = (årsak: DokumentÅrsak | undefined): BarnIBrevÅrsak | undefined => {
-        switch (årsak) {
-            case DokumentÅrsak.KAN_SØKE_EØS:
-            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER:
-            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING:
-            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER:
-                return BarnIBrevÅrsak.BARN_SØKT_FOR;
-            case DokumentÅrsak.KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV:
-                return BarnIBrevÅrsak.BARN_BOSATT_MED_SØKER;
-            default:
-                return undefined;
-        }
-    };
-
-    const barnIBrevÅrsakTilTittel: Record<BarnIBrevÅrsak, string> = {
-        [BarnIBrevÅrsak.BARN_SØKT_FOR]: 'Hvilke barn er søkt for?',
-        [BarnIBrevÅrsak.BARN_BOSATT_MED_SØKER]: 'Hvilke barn er bosatt med søker?',
-    };
 
     const barnIBrevÅrsak = finnBarnIBrevÅrsak(årsakVerdi);
 

@@ -6,6 +6,7 @@ import type { FeltState, ISkjema } from '@navikt/familie-skjema';
 import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
 
+import { DokumentÅrsak } from './dokumentÅrsakTyper';
 import { hentEnkeltInformasjonsbrevRequest } from './Informasjonsbrev/enkeltInformasjonsbrevUtils';
 import useDokument from '../../../hooks/useDokument';
 import type { IManueltBrevRequestPåFagsak } from '../../../typer/dokument';
@@ -17,27 +18,6 @@ import { Informasjonsbrev } from '../Behandling/Høyremeny/Brev/typer';
 import { useBrukerContext } from '../BrukerContext';
 import { useFagsakContext } from '../FagsakContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
-
-export enum DokumentÅrsak {
-    KAN_SØKE_EØS = 'KAN_SØKE_EØS',
-    TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER = 'TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER',
-    TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING = 'TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING',
-    TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER = 'TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER',
-    KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV = 'KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV',
-    INNHENTE_OPPLYSNINGER_KLAGE = 'INNHENTE_OPPLYSNINGER_KLAGE',
-}
-
-export const dokumentÅrsak: Record<DokumentÅrsak, string> = {
-    KAN_SØKE_EØS: 'Kan søke EØS',
-    TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER:
-        'Informasjon til forelder omfattet norsk lovgivning - har fått en søknad fra annen forelder',
-    TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING:
-        'Informasjon til forelder omfattet av norsk lovgivning - varsel om revurdering',
-    TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER:
-        'Informasjon til forelder omfattet av norsk lovgivning - henter ikke registeropplysninger',
-    KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV: 'Kan ha rett til pengestøtte fra Nav',
-    INNHENTE_OPPLYSNINGER_KLAGE: 'Innhente opplysninger klage',
-};
 
 const hentBarnMedOpplysningerFraBruker = () => {
     const { bruker } = useBrukerContext();
