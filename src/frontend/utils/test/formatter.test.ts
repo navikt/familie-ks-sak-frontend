@@ -2,7 +2,7 @@ import { addDays, setDefaultOptions, subDays, subYears } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
 import { dateTilIsoDatoString, hentDagensDato } from '../dato';
-import { formaterIdent, formaterIdenter, hentAlder, kunSiffer } from '../formatter';
+import { formaterIdent, formaterIdenter, hentAlder, kunSiffer, sorterBarnEtterFødselsdato } from '../formatter';
 
 describe('utils/formatter', () => {
     beforeAll(() => {
@@ -66,5 +66,49 @@ describe('utils/formatter', () => {
         const toÅrSiden = subYears(hentDagensDato(), 2);
         expect(hentAlder(dateTilIsoDatoString(subDays(toÅrSiden, 1)))).toBe(2);
         expect(hentAlder(dateTilIsoDatoString(addDays(toÅrSiden, 1)))).toBe(1);
+    });
+
+    test('sorterBarnEtterFødselsdato skal sortere barn med yngst først', () => {
+        const eldstBarn = {
+            ident: '1',
+            fødselsdato: '2010-01-01',
+            merket: false,
+            manueltRegistrert: false,
+            erFolkeregistrert: true,
+        };
+        const yngstBarn = {
+            ident: '2',
+            fødselsdato: '2015-01-01',
+            merket: false,
+            manueltRegistrert: false,
+            erFolkeregistrert: true,
+        };
+
+        const sortert = sorterBarnEtterFødselsdato([eldstBarn, yngstBarn]);
+
+        expect(sortert[0].ident).toBe(yngstBarn.ident);
+        expect(sortert[1].ident).toBe(eldstBarn.ident);
+    });
+
+    test('sorterBarnEtterFødselsdato skal plassere barn uten fødselsdato sist', () => {
+        const barnUtenFødselsdato = {
+            ident: '1',
+            fødselsdato: undefined,
+            merket: false,
+            manueltRegistrert: false,
+            erFolkeregistrert: true,
+        };
+        const barnMedFødselsdato = {
+            ident: '2',
+            fødselsdato: '2015-01-01',
+            merket: false,
+            manueltRegistrert: false,
+            erFolkeregistrert: true,
+        };
+
+        const sortert = sorterBarnEtterFødselsdato([barnUtenFødselsdato, barnMedFødselsdato]);
+
+        expect(sortert[0].ident).toBe(barnMedFødselsdato.ident);
+        expect(sortert[1].ident).toBe(barnUtenFødselsdato.ident);
     });
 });
