@@ -93,3 +93,17 @@ export const slåSammenListeTilStreng = (liste: string[]) => {
 
 export const lagBrukerLabel = (bruker: IPersonInfo): string =>
     `${bruker.navn} (${hentAlder(bruker.fødselsdato)} år) ${formaterIdent(bruker.personIdent)}`;
+
+export const sorterBarnEtterFødselsdato = <T extends IBarnMedOpplysninger>(barn: T[]): T[] =>
+    [...barn].sort((a, b) => {
+        if (!a.fødselsdato && !b.fødselsdato) {
+            return 0;
+        }
+        if (!a.fødselsdato) {
+            return 1;
+        }
+        if (!b.fødselsdato) {
+            return -1;
+        }
+        return differenceInMilliseconds(isoStringTilDate(b.fødselsdato), isoStringTilDate(a.fødselsdato));
+    });
