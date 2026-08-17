@@ -1,282 +1,126 @@
-import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
+import { useBruker } from '@hooks/useBruker';
+import { useFagsak } from '@hooks/useFagsak';
+import { useForhåndsvisBrevPåFagsak } from '@hooks/useForhåndsvisBrevPåFagsak';
+import { useSendInformasjonsbrev } from '@hooks/useSendInformasjonsbrev';
+import type { IManueltBrevRequestPåFagsak } from '@typer/dokument';
 import deepEqual from 'deep-equal';
+import { FormProvider, useWatch } from 'react-hook-form';
 
-import type { FeltState, ISkjema } from '@navikt/familie-skjema';
-import { feil, ok, useFelt, useSkjema, Valideringsstatus } from '@navikt/familie-skjema';
-import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
-
-import { DokumentÅrsak } from './dokumentÅrsakTyper';
-import { hentEnkeltInformasjonsbrevRequest } from './Informasjonsbrev/enkeltInformasjonsbrevUtils';
-import useDokument from '../../../hooks/useDokument';
-import type { IManueltBrevRequestPåFagsak } from '../../../typer/dokument';
-import { ForelderBarnRelasjonRolle, type IForelderBarnRelasjon } from '../../../typer/person';
-import { type IBarnMedOpplysninger, Målform } from '../../../typer/søknad';
-import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
-import { hentFrontendFeilmelding } from '../../../utils/ressursUtils';
-import { Informasjonsbrev } from '../Behandling/Høyremeny/Brev/typer';
-import { useBrukerContext } from '../BrukerContext';
-import { useFagsakContext } from '../FagsakContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
-
-const hentBarnMedOpplysningerFraBruker = () => {
-    const { bruker } = useBrukerContext();
-
-    return (
-        bruker.forelderBarnRelasjon
-            .filter((relasjon: IForelderBarnRelasjon) => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN)
-            .map(
-                (relasjon: IForelderBarnRelasjon): IBarnMedOpplysninger => ({
-                    merket: false,
-                    ident: relasjon.personIdent,
-                    navn: relasjon.navn,
-                    fødselsdato: relasjon.fødselsdato,
-                    manueltRegistrert: false,
-                    erFolkeregistrert: true,
-                })
-            ) ?? []
-    );
-};
-
-interface DokumentutsendingSkjema {
-    årsak: DokumentÅrsak | undefined;
-    målform: Målform | undefined;
-    barnIBrev: IBarnMedOpplysninger[];
-    fritekstAvsnitt: string;
-}
+import { transformerSkjemaData } from './skjema/transformerSkjemaData';
+import {
+    DokumentutsendingFeltnavn,
+    type DokumentutsendingFormValues,
+    useDokumentutsendingSkjema,
+} from './skjema/useDokumentutsendingSkjema';
 
 interface DokumentutsendingContextValue {
-    hentForhåndsvisningPåFagsak: () => void;
-    hentBarnMedOpplysningerFraBruker: () => IBarnMedOpplysninger[];
-    hentSkjemaFeilmelding: () => string | undefined;
-    hentetDokument: Ressurs<string>;
-    sendBrevPåFagsak: () => void;
-    senderBrev: () => boolean;
-    settVisInnsendtBrevModal: (vis: boolean) => void;
-    settVisfeilmeldinger: (vis: boolean) => void;
-    skjemaErLåst: () => boolean;
+    forhåndsvisningUrl: string | undefined;
+    forhåndsvisningLaster: boolean;
+    hentForhåndsvisning: () => void;
     visForhåndsvisningBeskjed: () => boolean;
+    sendBrev: (skjemaverdier: DokumentutsendingFormValues) => void;
+    senderBrev: boolean;
+    skjemaErLåst: boolean;
+    skjemaFeilmelding: string | undefined;
     visInnsendtBrevModal: boolean;
-    skjema: ISkjema<DokumentutsendingSkjema, string>;
-    nullstillSkjema: () => void;
+    settVisInnsendtBrevModal: (vis: boolean) => void;
 }
 
 const DokumentutsendingContext = createContext<DokumentutsendingContextValue | undefined>(undefined);
 
 export function DokumentutsendingProvider({ children }: PropsWithChildren) {
-    const { fagsak } = useFagsakContext();
-    const { bruker } = useBrukerContext();
+    const fagsak = useFagsak();
+    const bruker = useBruker();
     const { manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak } =
         useManuelleBrevmottakerePåFagsakContext();
+
+    const skjema = useDokumentutsendingSkjema();
+    const { control, getValues, nullstillSkjemaMedÅrsak, trigger } = skjema;
+
     const [visInnsendtBrevModal, settVisInnsendtBrevModal] = useState(false);
-    const { hentForhåndsvisning, hentetDokument } = useDokument();
-
-    const [sistBrukteDataVedForhåndsvisning, settSistBrukteDataVedForhåndsvisning] = useState<
-        IManueltBrevRequestPåFagsak | undefined
-    >(undefined);
-
-    const målform = useFelt<Målform | undefined>({
-        verdi: Målform.NB,
-    });
-
-    const årsak = useFelt<DokumentÅrsak | undefined>({
-        verdi: undefined,
-        valideringsfunksjon: (felt: FeltState<DokumentÅrsak | undefined>) => {
-            return felt.verdi ? ok(felt) : feil(felt, 'Du må velge en årsak');
-        },
-    });
-
-    const barnMedOpplysningerFraBruker = hentBarnMedOpplysningerFraBruker();
-
-    const barnIBrev = useFelt<IBarnMedOpplysninger[]>({
-        verdi: barnMedOpplysningerFraBruker,
-        valideringsfunksjon: felt => {
-            return felt.verdi.some((barn: IBarnMedOpplysninger) => barn.merket)
-                ? ok(felt)
-                : feil(felt, 'Du må velge barn');
-        },
-        avhengigheter: { årsakFelt: årsak },
-        skalFeltetVises: avhengigheter =>
-            [
-                DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
-                DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING,
-                DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER,
-                DokumentÅrsak.KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV,
-            ].includes(avhengigheter.årsakFelt.verdi),
-        nullstillVedAvhengighetEndring: false,
-    });
-
-    const fritekstAvsnitt = useFelt({
-        verdi: '',
-        valideringsfunksjon: (felt: FeltState<string>) => {
-            return felt.valideringsstatus === Valideringsstatus.FEIL || felt.verdi.length === 0
-                ? feil(felt, 'Fritekst avsnitt mangler.')
-                : ok(felt);
-        },
-        avhengigheter: { årsakFelt: årsak },
-        skalFeltetVises: avhengigheter => {
-            return avhengigheter.årsakFelt.verdi === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE;
-        },
-    });
+    const [sistForhåndsvisteData, settSistForhåndsvisteData] = useState<IManueltBrevRequestPåFagsak | undefined>(
+        undefined
+    );
 
     const {
-        skjema,
-        kanSendeSkjema,
-        onSubmit,
-        nullstillSkjema: nullstillHeleSkjema,
-        settVisfeilmeldinger,
-    } = useSkjema<DokumentutsendingSkjema, string>({
-        felter: {
-            årsak: årsak,
-            målform: målform,
-            barnIBrev: barnIBrev,
-            fritekstAvsnitt: fritekstAvsnitt,
-        },
-        skjemanavn: 'Dokumentutsending',
-    });
+        mutate: forhåndsvisBrev,
+        data: forhåndsvisningUrl,
+        isPending: forhåndsvisningLaster,
+        error: forhåndsvisningError,
+    } = useForhåndsvisBrevPåFagsak(fagsak.id);
 
-    const nullstillSkjemaUtenomÅrsak = () => {
-        skjema.felter.målform.nullstill();
-        skjema.felter.barnIBrev.nullstill();
-        skjema.felter.fritekstAvsnitt.nullstill();
-    };
+    const {
+        mutateAsync: sendInformasjonsbrev,
+        isPending: senderBrev,
+        error: sendBrevError,
+    } = useSendInformasjonsbrev(fagsak.id);
 
-    const nullstillSkjema = () => {
-        nullstillHeleSkjema();
-    };
+    const årsak = useWatch({ control, name: DokumentutsendingFeltnavn.ÅRSAK });
+    const forrigeÅrsakRef = useRef(årsak);
+    const forrigeBrukerRef = useRef(bruker);
 
     useEffect(() => {
-        nullstillSkjemaUtenomÅrsak();
-    }, [årsak.verdi, bruker]);
-
-    const hentSkjemaData = (): IManueltBrevRequestPåFagsak => {
-        const dokumentÅrsak = skjema.felter.årsak.verdi;
-
-        switch (dokumentÅrsak) {
-            case DokumentÅrsak.KAN_SØKE_EØS:
-                return hentEnkeltInformasjonsbrevRequest({
-                    bruker: bruker,
-                    målform: målform.verdi ?? Målform.NB,
-                    brevmal: Informasjonsbrev.INFORMASJONSBREV_KAN_SØKE_EØS,
-                    manuelleBrevmottakerePåFagsak,
-                });
-            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING:
-                return hentBarnIBrevSkjemaData(
-                    Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING,
-                    målform.verdi ?? Målform.NB
-                );
-            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER:
-                return hentBarnIBrevSkjemaData(
-                    Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER,
-                    målform.verdi ?? Målform.NB
-                );
-            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER:
-                return hentBarnIBrevSkjemaData(
-                    Informasjonsbrev.INFORMASJONSBREV_TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER,
-                    målform.verdi ?? Målform.NB
-                );
-            case DokumentÅrsak.KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV:
-                return hentBarnIBrevSkjemaData(
-                    Informasjonsbrev.INFORMASJONSBREV_KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV,
-                    målform.verdi ?? Målform.NB
-                );
-            case DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE:
-                return hentInnhenteOpplysningerKlageSkjemaData(målform.verdi ?? Målform.NB);
-            case undefined:
-                throw Error('Bruker ikke hentet inn og vi kan ikke sende inn skjema');
+        if (forrigeÅrsakRef.current === årsak && forrigeBrukerRef.current === bruker) {
+            return;
         }
-    };
+        forrigeÅrsakRef.current = årsak;
+        forrigeBrukerRef.current = bruker;
+        nullstillSkjemaMedÅrsak(årsak);
+        settSistForhåndsvisteData(undefined);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [årsak, bruker]);
 
-    const skjemaErLåst = () =>
-        skjema.submitRessurs.status === RessursStatus.HENTER || hentetDokument.status === RessursStatus.HENTER;
+    const byggBrevRequest = (): IManueltBrevRequestPåFagsak =>
+        transformerSkjemaData({ skjemaverdier: getValues(), bruker, manuelleBrevmottakerePåFagsak });
 
-    const senderBrev = () => skjema.submitRessurs.status === RessursStatus.HENTER;
-
-    const hentForhåndsvisningPåFagsak = () => {
-        const skjemaData = hentSkjemaData();
-        settSistBrukteDataVedForhåndsvisning(skjemaData);
-        hentForhåndsvisning<IManueltBrevRequestPåFagsak>({
-            method: 'POST',
-            data: skjemaData,
-            url: `/familie-ks-sak/api/brev/fagsak/${fagsak.id}/forhaandsvis-brev`,
+    const hentForhåndsvisning = () =>
+        trigger().then(skjemaErGyldig => {
+            if (skjemaErGyldig) {
+                const brevRequest = byggBrevRequest();
+                settSistForhåndsvisteData(brevRequest);
+                forhåndsvisBrev(brevRequest);
+            }
         });
-    };
 
-    const sendBrevPåFagsak = () => {
-        if (kanSendeSkjema()) {
-            onSubmit(
-                {
-                    method: 'POST',
-                    data: hentSkjemaData(),
-                    url: `/familie-ks-sak/api/brev/fagsak/${fagsak.id}/send-brev`,
-                },
-                () => {
-                    settVisInnsendtBrevModal(true);
-                    settManuelleBrevmottakerePåFagsak([]);
-                    nullstillSkjema();
-                }
-            );
+    const sendBrev = (skjemaverdier: DokumentutsendingFormValues) =>
+        sendInformasjonsbrev(transformerSkjemaData({ skjemaverdier, bruker, manuelleBrevmottakerePåFagsak })).then(
+            () => {
+                settVisInnsendtBrevModal(true);
+                settManuelleBrevmottakerePåFagsak([]);
+                settSistForhåndsvisteData(undefined);
+            }
+        );
+
+    const visForhåndsvisningBeskjed = () => {
+        if (!getValues(DokumentutsendingFeltnavn.ÅRSAK)) {
+            return false;
         }
+        return !deepEqual(byggBrevRequest(), sistForhåndsvisteData);
     };
-
-    const hentBarnIBrevSkjemaData = (brevmal: Informasjonsbrev, målform: Målform): IManueltBrevRequestPåFagsak => {
-        const barnIBrev = skjema.felter.barnIBrev.verdi.filter(barn => barn.merket);
-
-        return {
-            mottakerIdent: bruker.personIdent,
-            multiselectVerdier: barnIBrev.map(
-                barn =>
-                    `Barn født ${isoStringTilFormatertString({
-                        isoString: barn.fødselsdato,
-                        tilFormat: Datoformat.DATO,
-                    })}.`
-            ),
-            barnIBrev: barnIBrev
-                .map(barn => barn.ident)
-                .filter((ident): ident is string => ident !== undefined && ident !== null),
-            mottakerMålform: målform,
-            mottakerNavn: bruker.navn,
-            brevmal: brevmal,
-            manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
-        };
-    };
-
-    const hentInnhenteOpplysningerKlageSkjemaData = (målform: Målform): IManueltBrevRequestPåFagsak => {
-        return {
-            mottakerIdent: bruker.personIdent,
-            mottakerNavn: bruker.navn,
-            mottakerMålform: målform,
-            multiselectVerdier: [],
-            barnIBrev: [],
-            brevmal: Informasjonsbrev.INFORMASJONSBREV_INNHENTE_OPPLYSNINGER_KLAGE,
-            manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
-            fritekstAvsnitt: fritekstAvsnitt.verdi,
-        };
-    };
-
-    const hentSkjemaFeilmelding = () =>
-        hentFrontendFeilmelding(hentetDokument) || hentFrontendFeilmelding(skjema.submitRessurs);
 
     return (
-        <DokumentutsendingContext.Provider
-            value={{
-                hentForhåndsvisningPåFagsak,
-                hentBarnMedOpplysningerFraBruker,
-                hentSkjemaFeilmelding,
-                hentetDokument,
-                sendBrevPåFagsak,
-                senderBrev,
-                settVisInnsendtBrevModal,
-                settVisfeilmeldinger,
-                skjemaErLåst,
-                visForhåndsvisningBeskjed: () => !deepEqual(hentSkjemaData(), sistBrukteDataVedForhåndsvisning),
-                visInnsendtBrevModal,
-                skjema,
-                nullstillSkjema,
-            }}
-        >
-            {children}
-        </DokumentutsendingContext.Provider>
+        <FormProvider {...skjema}>
+            <DokumentutsendingContext.Provider
+                value={{
+                    forhåndsvisningUrl,
+                    forhåndsvisningLaster,
+                    hentForhåndsvisning,
+                    visForhåndsvisningBeskjed,
+                    sendBrev,
+                    senderBrev,
+                    skjemaErLåst: senderBrev || forhåndsvisningLaster,
+                    skjemaFeilmelding: forhåndsvisningError?.message ?? sendBrevError?.message,
+                    visInnsendtBrevModal,
+                    settVisInnsendtBrevModal,
+                }}
+            >
+                {children}
+            </DokumentutsendingContext.Provider>
+        </FormProvider>
     );
 }
 
