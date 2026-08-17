@@ -5,7 +5,6 @@ import { behandlingRoutes } from '@sider/Fagsak/Behandling/BehandlingRoutes';
 import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { Dokumenter } from '@sider/Fagsak/Dokumenter/Dokumenter';
 import { Dokumentutsending } from '@sider/Fagsak/Dokumentutsending/Dokumentutsending';
-import { DokumentutsendingProvider } from '@sider/Fagsak/Dokumentutsending/DokumentutsendingContext';
 import { RedirectTilSaksoversikt } from '@sider/Fagsak/Saksoversikt/RedirectTilSaksoversikt';
 import { Saksoversikt } from '@sider/Fagsak/Saksoversikt/Saksoversikt';
 import type { RouteObject } from 'react-router';
@@ -21,11 +20,7 @@ export const fagsakRoutes: RouteObject[] = [
     },
     {
         path: 'dokumentutsending',
-        element: (
-            <DokumentutsendingProvider>
-                <Dokumentutsending />
-            </DokumentutsendingProvider>
-        ),
+        element: <Dokumentutsending />,
     },
     {
         path: 'dokumenter',
