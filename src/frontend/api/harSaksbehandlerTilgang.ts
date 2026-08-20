@@ -1,17 +1,13 @@
-import type { FamilieRequest } from '@navikt/familie-http/dist/HttpProvider';
-
-import type { IRestTilgang } from '../typer/person';
-import { RessursResolver } from '../utils/ressursResolver';
+import { apiClient } from '@api/client/apiClient';
+import type { IRestTilgang } from '@typer/person';
 
 export interface HarSaksbehandlerTilgangPayload {
     brukerIdent: string;
 }
 
-export async function harSaksbehandlerTilgang(request: FamilieRequest, brukerIdent: string) {
-    const ressurs = await request<HarSaksbehandlerTilgangPayload, IRestTilgang>({
-        data: { brukerIdent: brukerIdent },
-        method: 'POST',
+export async function harSaksbehandlerTilgang(payload: HarSaksbehandlerTilgangPayload) {
+    return apiClient.post<HarSaksbehandlerTilgangPayload, IRestTilgang>({
+        data: payload,
         url: '/familie-ks-sak/api/tilgang',
     });
-    return RessursResolver.resolveToPromise(ressurs);
 }
