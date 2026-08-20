@@ -77,3 +77,6 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: nodejs
+  frontend:
+    generatedConfig:
+      mountPath: /app/dist_backend/nais.js
