@@ -14,7 +14,13 @@ export function LeggTilBarnKnapp() {
     }
 
     return (
-        <Button variant={'tertiary'} size={'medium'} onClick={() => åpneModal()} icon={<PlusCircleIcon />}>
+        <Button
+            variant={'tertiary'}
+            size={'medium'}
+            type={'button'}
+            onClick={() => åpneModal()}
+            icon={<PlusCircleIcon />}
+        >
             Legg til barn
         </Button>
     );

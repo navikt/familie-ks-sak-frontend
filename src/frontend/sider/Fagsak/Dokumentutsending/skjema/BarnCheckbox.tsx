@@ -1,17 +1,34 @@
 import type { IBarnMedOpplysninger } from '@typer/søknad';
 import { lagBarnLabel } from '@utils/formatter';
+import { useFormContext } from 'react-hook-form';
 
 import { TrashIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, Button, Checkbox, HStack } from '@navikt/ds-react';
-import type { Felt } from '@navikt/familie-skjema';
 
-interface IProps {
+import type { DokumentutsendingFormValues } from './useDokumentutsendingSkjema';
+import { DokumentutsendingFeltnavn } from './useDokumentutsendingSkjema';
+
+interface Props {
     barn: IBarnMedOpplysninger;
-    barnIBrevFelt: Felt<IBarnMedOpplysninger[]>;
 }
 
-const BarnCheckbox = ({ barn, barnIBrevFelt }: IProps) => {
+export function BarnCheckbox({ barn }: Props) {
+    const { getValues, setValue } = useFormContext<DokumentutsendingFormValues>();
+
     const navnOgIdentTekst = lagBarnLabel(barn);
+
+    const fjernBarn = () => {
+        setValue(
+            DokumentutsendingFeltnavn.VALGTE_BARN,
+            getValues(DokumentutsendingFeltnavn.VALGTE_BARN).filter(
+                (barnMedOpplysninger: IBarnMedOpplysninger) =>
+                    barnMedOpplysninger.ident !== barn.ident ||
+                    barnMedOpplysninger.navn !== barn.navn ||
+                    barnMedOpplysninger.fødselsdato !== barn.fødselsdato
+            ),
+            { shouldValidate: true }
+        );
+    };
 
     return (
         <HStack wrap={false} gap={'space-16'}>
@@ -28,16 +45,8 @@ const BarnCheckbox = ({ barn, barnIBrevFelt }: IProps) => {
                         variant={'tertiary'}
                         id={`fjern__${barn.ident}`}
                         size={'small'}
-                        onClick={() => {
-                            barnIBrevFelt.validerOgSettFelt([
-                                ...barnIBrevFelt.verdi.filter(
-                                    barnIBrev =>
-                                        barnIBrev.ident !== barn.ident ||
-                                        barnIBrev.navn !== barn.navn ||
-                                        barnIBrev.fødselsdato !== barn.fødselsdato
-                                ),
-                            ]);
-                        }}
+                        type={'button'}
+                        onClick={fjernBarn}
                         icon={<TrashIcon />}
                     >
                         {'Fjern barn'}
@@ -46,6 +55,4 @@ const BarnCheckbox = ({ barn, barnIBrevFelt }: IProps) => {
             )}
         </HStack>
     );
-};
-
-export default BarnCheckbox;
+}
