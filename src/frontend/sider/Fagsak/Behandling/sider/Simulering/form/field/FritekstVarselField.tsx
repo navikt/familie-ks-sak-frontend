@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { ModalType } from '@context/ModalContext';
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
@@ -30,7 +32,13 @@ export function FritekstVarselField() {
             onMutate: () => åpneForhåndsvisOpprettingAvPdfModal({ mutationKey }),
         });
 
-    const { control } = useFormContext<TilbakekrevingFormValues>();
+    const { control, clearErrors } = useFormContext<TilbakekrevingFormValues>();
+
+    // Feltet demonteres når saksbehandler bytter tilbakekrevingsvalg. Uten opprydding
+    // blir feilmeldingen stående igjen i feilsammendraget frem til neste innsending.
+    useEffect(() => {
+        return () => clearErrors(TilbakekrevingFormField.FRITEKST_VARSEL);
+    }, [clearErrors]);
 
     const {
         field: { name, value, onChange, onBlur },
