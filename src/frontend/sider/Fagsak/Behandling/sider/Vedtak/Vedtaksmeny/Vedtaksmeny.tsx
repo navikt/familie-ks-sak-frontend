@@ -3,18 +3,18 @@ import { useState } from 'react';
 import { useBehandling } from '@hooks/useBehandling';
 import { EndreEndringstidspunkt } from '@sider/Fagsak/Behandling/sider/Vedtak/Endringstidspunkt/EndreEndringstidspunkt';
 import { OppdaterEndringstidspunktModal } from '@sider/Fagsak/Behandling/sider/Vedtak/Endringstidspunkt/OppdaterEndringstidspunktModal';
+import { FeilutbetaltValuta } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValuta';
+import { useSkalViseFeilutbetaltValutaMenyvalg } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/useSkalViseFeilutbetaltValutaMenyvalg';
+import { KorrigerEtterbetaling } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetaling';
 import { KorrigerVedtakModal } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtakModal/KorrigerVedtakModal';
-import { BehandlingKategori } from '@typer/behandlingstema';
-import { vedtakHarFortsattUtbetaling } from '@utils/vedtakUtils';
+import { RefusjonEøs } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøs';
+import { useSkalViseRefusjonEøsMenyvalg } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/useSkalViseRefusjonEøsMenyvalg';
 
-import { CalculatorIcon, ChevronDownIcon, StarsEuIcon } from '@navikt/aksel-icons';
+import { ChevronDownIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button, Stack } from '@navikt/ds-react';
 
 import Styles from './Vedtaksmeny.module.css';
-import { useFeilutbetaltValutaTabellContext } from '../FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
-import KorrigerEtterbetaling from '../KorrigerEtterbetaling/KorrigerEtterbetaling';
 import { KorrigerVedtak } from '../KorrigerVedtakModal/KorrigerVedtak';
-import { useRefusjonEøsTabellContext } from '../RefusjonEøs/RefusjonEøsTabellContext';
 import { AngreSammensattKontrollsak } from '../SammensattKontrollsak/AngreSammensattKontrollsak';
 import { OpprettSammensattKontrollsak } from '../SammensattKontrollsak/OpprettSammensattKontrollsak';
 import { useSammensattKontrollsakContext } from '../SammensattKontrollsak/SammensattKontrollsakContext';
@@ -25,9 +25,10 @@ interface Props {
 }
 
 export function Vedtaksmeny({ erBehandlingMedVedtaksbrevutsending }: Props) {
-    const { erFeilutbetaltValutaTabellSynlig, visFeilutbetaltValutaTabell } = useFeilutbetaltValutaTabellContext();
-    const { erRefusjonEøsTabellSynlig, visRefusjonEøsTabell } = useRefusjonEøsTabellContext();
     const { sammensattKontrollsak } = useSammensattKontrollsakContext();
+
+    const visRefusjonEøsMenyvalg = useSkalViseRefusjonEøsMenyvalg();
+    const visFeilutbetaltValutaMenyvalg = useSkalViseFeilutbetaltValutaMenyvalg();
     const visSammensattKontrollsakMenyvalg = useSkalViseSammensattKontrollsakMenyvalg();
 
     const behandling = useBehandling();
@@ -50,25 +51,15 @@ export function Vedtaksmeny({ erBehandlingMedVedtaksbrevutsending }: Props) {
                 <ActionMenu.Content className={Styles.menu}>
                     {erBehandlingMedVedtaksbrevutsending && (
                         <>
-                            <KorrigerEtterbetaling korrigertEtterbetaling={behandling.korrigertEtterbetaling} />
+                            <KorrigerEtterbetaling />
                             <KorrigerVedtak åpneModal={() => settVisKorrigerVedtakModal(true)} />
                         </>
                     )}
                     {behandling.endringstidspunkt && (
                         <EndreEndringstidspunkt åpneModal={() => settVisEndreEndringstidspunktModal(true)} />
                     )}
-                    {!erFeilutbetaltValutaTabellSynlig && behandling.kategori === BehandlingKategori.EØS && (
-                        <ActionMenu.Item onClick={visFeilutbetaltValutaTabell}>
-                            <CalculatorIcon fontSize={'1.4rem'} />
-                            Legg til feilutbetalt valuta
-                        </ActionMenu.Item>
-                    )}
-                    {!erRefusjonEøsTabellSynlig && vedtakHarFortsattUtbetaling(behandling.resultat) && (
-                        <ActionMenu.Item onClick={visRefusjonEøsTabell}>
-                            <StarsEuIcon fontSize={'1.4rem'} />
-                            Legg til refusjon EØS
-                        </ActionMenu.Item>
-                    )}
+                    {visFeilutbetaltValutaMenyvalg && <FeilutbetaltValuta />}
+                    {visRefusjonEøsMenyvalg && <RefusjonEøs />}
                     {visSammensattKontrollsakMenyvalg &&
                         (sammensattKontrollsak ? (
                             <AngreSammensattKontrollsak sammensattKontrollsak={sammensattKontrollsak} />
