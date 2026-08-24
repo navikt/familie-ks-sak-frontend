@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
+import { renderNaisMetaTags } from '@nais/apm';
 import type { Response, Request, Router, NextFunction } from 'express';
 import { type ViteDevServer } from 'vite';
 
@@ -75,11 +76,15 @@ export default async (authClient: Client, router: Router) => {
                 if (!vite) {
                     throw new Error('Vite er ikke initialisert.');
                 }
-                const htmlInnhold = await fs.promises.readFile(htmlPath, 'utf-8');
+                const htmlInnhold = (await fs.promises.readFile(htmlPath, 'utf-8')).replace(
+                    '{{{NAIS_META_TAGS}}}',
+                    renderNaisMetaTags()
+                );
                 const transformed = await vite.transformIndexHtml(req.url, htmlInnhold);
                 res.status(200).type('html').send(transformed);
             } else {
-                res.sendFile(htmlPath);
+                const htmlInnhold = await fs.promises.readFile(htmlPath, 'utf-8');
+                res.status(200).type('html').send(htmlInnhold.replace('{{{NAIS_META_TAGS}}}', renderNaisMetaTags()));
             }
         }
     );
