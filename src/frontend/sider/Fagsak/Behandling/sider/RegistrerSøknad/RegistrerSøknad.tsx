@@ -1,7 +1,7 @@
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { RegistrerSøknadForm } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/RegistrerSøknadForm';
-import { SøknadRegistrert } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/SøknadRegistrert';
+import { RegistrerSøknadForm } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/RegistrerSøknadForm';
+import { SøknadRegistrert } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/SøknadRegistrert';
 import { Steg } from '@sider/Fagsak/Behandling/sider/Steg';
 
 export function RegistrerSøknad() {

@@ -5,7 +5,7 @@ import {
     RegistrerSøknadFormField,
     type RegistrerSøknadFormValues,
     type TransformedRegistrerSøknadFormValues,
-} from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/useRegistrerSøknadForm';
+} from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useRegistrerSøknadForm';
 import type { IBarnMedOpplysninger } from '@typer/søknad';
 import { hentBarnMedLøpendeUtbetaling } from '@utils/fagsak';
 import { type Control, useFieldArray, useWatch } from 'react-hook-form';
