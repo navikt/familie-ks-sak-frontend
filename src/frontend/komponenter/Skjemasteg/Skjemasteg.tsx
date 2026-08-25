@@ -28,6 +28,9 @@ interface IProps extends PropsWithChildren {
     steg: BehandlingSteg;
 }
 
+/**
+ * @deprecated Bruk heller {@link Steg}
+ */
 const Skjemasteg = ({
     children,
     className,
