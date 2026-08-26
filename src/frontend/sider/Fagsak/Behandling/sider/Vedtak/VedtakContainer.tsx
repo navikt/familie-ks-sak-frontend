@@ -7,6 +7,7 @@ import { useHentVedtaksperioder } from '@hooks/useHentVedtaksperioder';
 import { FeilutbetaltValutaTabellProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import { RefusjonEøsTabellProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
 import { SammensattKontrollsakProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/SammensattKontrollsak/SammensattKontrollsakContext';
+import { SendtTilTotrinnskontrollModalProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/Totrinnskontroll/SendtTilTotrinnskontrollModalContext';
 import { AlleBegrunnelserProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/AlleBegrunnelserContext';
 import { VedtaksperioderProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/VedtaksperioderContext';
 import { erDefinert } from '@utils/commons';
@@ -72,9 +73,11 @@ export function VedtakContainer({ children }: PropsWithChildren) {
         <SammensattKontrollsakProvider sammensattKontrollsak={sammensattKontrollsak ?? undefined}>
             <AlleBegrunnelserProvider alleBegrunnelser={alleBegrunnelser}>
                 <VedtaksperioderProvider vedtaksperioder={vedtaksperioder}>
-                    <FeilutbetaltValutaTabellProvider>
-                        <RefusjonEøsTabellProvider>{children}</RefusjonEøsTabellProvider>
-                    </FeilutbetaltValutaTabellProvider>
+                    <SendtTilTotrinnskontrollModalProvider>
+                        <FeilutbetaltValutaTabellProvider>
+                            <RefusjonEøsTabellProvider>{children}</RefusjonEøsTabellProvider>
+                        </FeilutbetaltValutaTabellProvider>
+                    </SendtTilTotrinnskontrollModalProvider>
                 </VedtaksperioderProvider>
             </AlleBegrunnelserProvider>
         </SammensattKontrollsakProvider>
