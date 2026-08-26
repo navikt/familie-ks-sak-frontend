@@ -35,8 +35,6 @@ export interface VilkårSkjemaContextValue<T extends IVilkårSkjemaContext> {
     skjema: ISkjema<T, IBehandling>;
     lagreVilkår: (onSuccess?: () => void) => void;
     lagrerVilkår: boolean;
-    slettVilkår: (personIdent: string, vilkårId: number, onSuccess?: () => void) => void;
-    sletterVilkår: boolean;
     feilmelding: string;
     nullstillSkjema: () => void;
 }
@@ -110,13 +108,6 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
         }
     };
 
-    const slettVilkår = (personIdent: string, vilkårId: number, onSuccess?: () => void) => {
-        settVisfeilmeldinger(false);
-        vilkårsvurderingApi.slettVilkår(personIdent, vilkårId, onSuccess, slettVilkårFeilmelding =>
-            settFeilmelding(slettVilkårFeilmelding)
-        );
-    };
-
     const finnesEndringerSomIkkeErLagret = (vilkårSkjemaMedLagredeVerdier: IVilkårSkjemaContext) => {
         const endretVilkår: IVilkårSkjemaContext = mapSkjemaTilVilkårSkjemaContext();
 
@@ -136,8 +127,6 @@ export const useVilkårSkjema = <T extends IVilkårSkjemaContext>(
         skjema,
         lagreVilkår,
         lagrerVilkår: vilkårsvurderingApi.lagrerVilkår,
-        slettVilkår,
-        sletterVilkår: vilkårsvurderingApi.sletterVilkår,
         feilmelding,
         nullstillSkjema,
         finnesEndringerSomIkkeErLagret,

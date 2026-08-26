@@ -72,24 +72,14 @@ export const useMedlemskap = (lagretVilkår: IVilkårResultat, person: IGrunnlag
         }),
     };
 
-    const {
-        skjema,
-        lagreVilkår,
-        lagrerVilkår,
-        slettVilkår,
-        sletterVilkår,
-        feilmelding,
-        nullstillSkjema,
-        finnesEndringerSomIkkeErLagret,
-    } = useVilkårSkjema(lagretVilkår, felter, person);
+    const { skjema, lagreVilkår, lagrerVilkår, feilmelding, nullstillSkjema, finnesEndringerSomIkkeErLagret } =
+        useVilkårSkjema(lagretVilkår, felter, person);
 
     return {
         vilkårSkjemaContext: {
             skjema,
             lagreVilkår,
             lagrerVilkår,
-            slettVilkår,
-            sletterVilkår,
             feilmelding,
             nullstillSkjema,
         },

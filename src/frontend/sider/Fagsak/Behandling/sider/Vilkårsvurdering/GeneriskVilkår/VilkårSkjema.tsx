@@ -1,11 +1,9 @@
 import type { FocusEvent, ReactNode } from 'react';
 
 import { useBehandling } from '@hooks/useBehandling';
-import { useFeatureToggles } from '@hooks/useFeatureToggles';
 import { useSlettVilkårResultatError } from '@hooks/useSlettVilkårResultatError';
 import { SlettVilkårResultat } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/SlettVilkårResultat';
 import { BehandlingÅrsak } from '@typer/behandling';
-import { FeatureToggle } from '@typer/featureToggles';
 import type { IGrunnlagPerson } from '@typer/person';
 import { PersonType } from '@typer/person';
 import type { IVilkårConfig, IVilkårResultat, UtdypendeVilkårsvurdering } from '@typer/vilkår';
@@ -13,7 +11,6 @@ import { Regelverk, Resultat, VilkårType } from '@typer/vilkår';
 import { alleRegelverk } from '@utils/vilkår';
 import styled from 'styled-components';
 
-import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, ErrorMessage, Fieldset, Label, Radio, RadioGroup, Select, Textarea, VStack } from '@navikt/ds-react';
 import { BorderNeutral, TextInfoSubtle, TextWarningSubtle } from '@navikt/ds-tokens/dist/tokens';
 
@@ -21,7 +18,7 @@ import AvslagSkjema from './AvslagSkjema';
 import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
 import VelgPeriode from './VelgPeriode';
 import type { IVilkårSkjemaContext, VilkårSkjemaContextValue } from './VilkårSkjemaContext';
-import { vilkårBegrunnelseFeilmeldingId, vilkårFeilmeldingId } from './VilkårTabell';
+import { vilkårBegrunnelseFeilmeldingId } from './VilkårTabell';
 
 export const FieldsetForVilkårSkjema = styled(Fieldset)<{
     $lesevisning: boolean;
@@ -82,15 +79,13 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
     oppdaterMuligeUtdypendeVilkårsvurderinger,
     settFokusPåLeggTilPeriodeKnapp,
 }: IVilkårSkjema<T>) => {
-    const toggles = useFeatureToggles();
     const behandling = useBehandling();
 
     const slettVilkårResultatError = useSlettVilkårResultatError(lagretVilkårResultat.id);
 
     const årsakErSøknad = behandling.årsak === BehandlingÅrsak.SØKNAD;
 
-    const { skjema, lagreVilkår, lagrerVilkår, slettVilkår, sletterVilkår, feilmelding, nullstillSkjema } =
-        vilkårSkjemaContext;
+    const { skjema, lagreVilkår, lagrerVilkår, feilmelding, nullstillSkjema } = vilkårSkjemaContext;
 
     const errors = [feilmelding, slettVilkårResultatError?.message]
         .filter((error): error is string => !!error)
@@ -245,25 +240,7 @@ export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
                             Avbryt
                         </Button>
                     </div>
-                    {toggles[FeatureToggle.nySlettVilkaarLogikk] ? (
-                        <SlettVilkårResultat personIdent={person.personIdent} vilkårResultat={lagretVilkårResultat} />
-                    ) : (
-                        <Button
-                            onClick={() =>
-                                slettVilkår(person.personIdent, lagretVilkårResultat.id, () => {
-                                    toggleForm(false);
-                                    nullstillSkjema();
-                                })
-                            }
-                            id={vilkårFeilmeldingId(lagretVilkårResultat)}
-                            loading={sletterVilkår}
-                            size={'medium'}
-                            variant={'tertiary'}
-                            icon={<TrashIcon />}
-                        >
-                            {'Fjern'}
-                        </Button>
-                    )}
+                    <SlettVilkårResultat personIdent={person.personIdent} vilkårResultat={lagretVilkårResultat} />
                 </Knapperad>
             )}
         </FieldsetForVilkårSkjema>

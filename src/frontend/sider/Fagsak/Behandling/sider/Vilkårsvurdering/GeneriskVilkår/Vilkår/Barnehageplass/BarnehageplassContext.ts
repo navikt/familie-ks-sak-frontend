@@ -117,16 +117,8 @@ export const useBarnehageplass = (lagretVilkår: IVilkårResultat, person: IGrun
         }
     }, [periode.verdi.tom]);
 
-    const {
-        skjema,
-        lagreVilkår,
-        lagrerVilkår,
-        slettVilkår,
-        sletterVilkår,
-        feilmelding,
-        nullstillSkjema,
-        finnesEndringerSomIkkeErLagret,
-    } = useVilkårSkjema(lagretVilkår, felter, person);
+    const { skjema, lagreVilkår, lagrerVilkår, feilmelding, nullstillSkjema, finnesEndringerSomIkkeErLagret } =
+        useVilkårSkjema(lagretVilkår, felter, person);
 
     const initiellHarBarnehageplass =
         vilkårIkkeOppfyltOgUtdypendeIkkeSommerferie(
@@ -145,8 +137,6 @@ export const useBarnehageplass = (lagretVilkår: IVilkårResultat, person: IGrun
             skjema,
             lagreVilkår,
             lagrerVilkår,
-            slettVilkår,
-            sletterVilkår,
             feilmelding,
             nullstillSkjema: () => {
                 nullstillSkjema();

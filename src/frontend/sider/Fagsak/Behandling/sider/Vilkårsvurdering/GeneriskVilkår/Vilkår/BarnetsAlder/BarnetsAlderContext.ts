@@ -146,23 +146,17 @@ export const useBarnetsAlder = (lagretVilkår: IVilkårResultat, person: IGrunnl
         }
     }, [felter.utdypendeVilkårsvurdering.verdi]);
 
-    const {
-        skjema,
-        lagreVilkår,
-        lagrerVilkår,
-        slettVilkår,
-        sletterVilkår,
-        feilmelding,
-        finnesEndringerSomIkkeErLagret,
-    } = useVilkårSkjema(lagretVilkår, felter, person);
+    const { skjema, lagreVilkår, lagrerVilkår, feilmelding, finnesEndringerSomIkkeErLagret } = useVilkårSkjema(
+        lagretVilkår,
+        felter,
+        person
+    );
 
     return {
         vilkårSkjemaContext: {
             skjema,
             lagreVilkår,
             lagrerVilkår,
-            slettVilkår,
-            sletterVilkår,
             feilmelding,
             nullstillSkjema: () => {
                 felter.avslagBegrunnelser.nullstill();

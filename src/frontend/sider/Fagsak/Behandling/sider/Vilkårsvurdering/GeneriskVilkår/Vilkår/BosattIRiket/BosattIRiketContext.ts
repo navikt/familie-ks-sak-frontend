@@ -99,24 +99,14 @@ export const useBosattIRiket = (lagretVilkår: IVilkårResultat, person: IGrunnl
         UtdypendeVilkårsvurdering[]
     >(initielleMuligeUtdypendeVilkårsvurderinger);
 
-    const {
-        skjema,
-        lagreVilkår,
-        lagrerVilkår,
-        slettVilkår,
-        sletterVilkår,
-        feilmelding,
-        nullstillSkjema,
-        finnesEndringerSomIkkeErLagret,
-    } = useVilkårSkjema(lagretVilkår, felter, person);
+    const { skjema, lagreVilkår, lagrerVilkår, feilmelding, nullstillSkjema, finnesEndringerSomIkkeErLagret } =
+        useVilkårSkjema(lagretVilkår, felter, person);
 
     return {
         vilkårSkjemaContext: {
             skjema,
             lagreVilkår,
             lagrerVilkår,
-            slettVilkår,
-            sletterVilkår,
             feilmelding,
             nullstillSkjema: () => {
                 nullstillSkjema();
