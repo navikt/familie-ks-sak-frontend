@@ -5,13 +5,15 @@ import { useFagsakId } from '@hooks/useFagsakId';
 import { HentVedtaksperioderQueryKeyFactory } from '@hooks/useHentVedtaksperioder';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useSendVedtakTilBeslutter } from '@hooks/useSendVedtakTilBeslutter';
+import { Steg } from '@sider/Fagsak/Behandling/sider/Steg';
 import { SendtTilTotrinnskontrollModal } from '@sider/Fagsak/Behandling/sider/Vedtak/SendtTilTotrinnskontrollModal';
 import { useQueryClient } from '@tanstack/react-query';
-import { BehandlingStatus, BehandlingSteg, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
+import { BehandlingStatus, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
 import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
 import { erDefinert } from '@utils/commons';
 import { useNavigate } from 'react-router';
 
+import { Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
 import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
@@ -19,7 +21,6 @@ import { OppsummeringVedtakInnhold } from './OppsummeringVedtakInnhold';
 import { useRefusjonEøsTabellContext } from './RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from './SammensattKontrollsak/SammensattKontrollsakContext';
 import { useVedtaksperioderContext } from './Vedtaksperioder/VedtaksperioderContext';
-import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 
 function kanForeslåVedtak(behandling: IBehandling, vedtaksperioder: IVedtaksperiodeMedBegrunnelser[]) {
@@ -51,7 +52,7 @@ export function Vedtak() {
     const queryClient = useQueryClient();
 
     const [visSendtTilTotrinnskontrollModal, settVisSendtTilTotrinnskontrollModal] = useState<boolean>(false);
-    const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
+    const [tilGodkjenningFeilmelding, settTilGodkjenningFeilmelding] = useState<string | undefined>(undefined);
 
     const {
         mutate: sendVedtakTilBeslutter,
@@ -67,43 +68,55 @@ export function Vedtak() {
         },
     });
 
-    const visSubmitKnapp = !erLesevisning && behandling.status === BehandlingStatus.UTREDES;
+    const visTilGodkjenningKnapp = !erLesevisning && behandling.status === BehandlingStatus.UTREDES;
+    const feilmelding = tilGodkjenningFeilmelding || sendVedtakTilBeslutterError?.message;
 
-    function sendTilBeslutter() {
+    function onTilGodkjenningClicked() {
         if (erDefinert(sammensattKontrollsak) && sammensattKontrollsak.fritekst.trim() === '') {
-            settFeilmelding('Sammensatt kontrollsak mangler en begrunnelse.');
+            settTilGodkjenningFeilmelding('Sammensatt kontrollsak mangler en begrunnelse.');
         } else if (erLeggTilFeilutbetaltValutaFormÅpen) {
-            settFeilmelding(
+            settTilGodkjenningFeilmelding(
                 'Det er lagt til en ny periode med feilutbetalt valuta. Fyll ut periode og beløp, eller fjern perioden.'
             );
         } else if (erLeggTilRefusjonEøsFormÅpen) {
-            settFeilmelding(
+            settTilGodkjenningFeilmelding(
                 'Det er lagt til en ny periode med refusjon EØS. Fyll ut periode og refusjonsbeløp, eller fjern perioden.'
             );
         } else if (!kanForeslåVedtak(behandling, vedtaksperioder) && !erDefinert(sammensattKontrollsak)) {
-            settFeilmelding('Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.');
+            settTilGodkjenningFeilmelding('Vedtaksbrevet mangler begrunnelse. Du må legge til minst én begrunnelse.');
         } else {
-            settFeilmelding(undefined);
+            settTilGodkjenningFeilmelding(undefined);
             sendVedtakTilBeslutter({ behandlingId: behandling.behandlingId, behandlendeEnhet: saksbehandler.enhet });
         }
     }
 
+    function onForrigeStegClicked() {
+        navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/simulering`);
+    }
+
     return (
-        <Skjemasteg
-            tittel="Vedtak"
-            forrigeOnClick={() => navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/simulering`)}
-            nesteOnClick={visSubmitKnapp ? sendTilBeslutter : undefined}
-            nesteKnappTittel={'Til godkjenning'}
-            senderInn={sendVedtakTilBeslutterIsPending}
-            maxWidthStyle="54rem"
-            className={'vedtak'}
-            feilmelding={feilmelding ?? sendVedtakTilBeslutterError?.message}
-            steg={BehandlingSteg.BESLUTTE_VEDTAK}
-        >
+        <Steg tittel={'Vedtak'} maxWidth={'60rem'}>
             {visSendtTilTotrinnskontrollModal && (
                 <SendtTilTotrinnskontrollModal lukkModal={() => settVisSendtTilTotrinnskontrollModal(false)} />
             )}
-            <OppsummeringVedtakInnhold />
-        </Skjemasteg>
+            <VStack gap={'space-40'}>
+                <OppsummeringVedtakInnhold />
+                {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+                <HStack gap={'space-12'}>
+                    <Button variant={'tertiary'} onClick={onForrigeStegClicked}>
+                        Forrige steg
+                    </Button>
+                    {visTilGodkjenningKnapp && (
+                        <Button
+                            variant={'primary'}
+                            onClick={onTilGodkjenningClicked}
+                            loading={sendVedtakTilBeslutterIsPending}
+                        >
+                            Til godkjenning
+                        </Button>
+                    )}
+                </HStack>
+            </VStack>
+        </Steg>
     );
 }
