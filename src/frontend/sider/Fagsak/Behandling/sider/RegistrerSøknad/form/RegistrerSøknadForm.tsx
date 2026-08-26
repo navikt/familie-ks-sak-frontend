@@ -3,16 +3,16 @@ import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsak } from '@hooks/useFagsak';
 import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
 import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
-import { BarnaFieldArrayProvider } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/BarnaFieldArrayContext';
-import { Feilsammendrag } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/Feilsammendrag';
-import { BarnaField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/field/BarnaField';
-import { BegrunnelseField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/field/BegrunnelseField';
-import { MålformField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/field/MålformField';
-import { LeggTilBarnKnapp } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/LeggTilBarnKnapp';
+import { BarnaFieldArrayProvider } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/BarnaFieldArrayContext';
+import { Feilsammendrag } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/Feilsammendrag';
+import { BarnaField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/BarnaField';
+import { BegrunnelseField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/BegrunnelseField';
+import { MålformField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/MålformField';
+import { LeggTilBarnKnapp } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/LeggTilBarnKnapp';
 import {
     RegistrerSøknadFormField,
     useRegistrerSøknadForm,
-} from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/useRegistrerSøknadForm';
+} from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useRegistrerSøknadForm';
 import { FormProvider } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 

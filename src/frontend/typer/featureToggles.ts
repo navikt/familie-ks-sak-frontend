@@ -11,5 +11,4 @@ export enum FeatureToggle {
     nySlettVilkaarLogikk = 'familie-ks-sak.ny-slett-vilkaar-logikk',
 
     // Release
-    brukNyRegistrerSøknad = 'familie-ks-sak.bruk-ny-registrer-soknad',
 }

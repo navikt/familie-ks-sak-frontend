@@ -6,7 +6,7 @@ import { useFagsak } from '@hooks/useFagsak';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useRegistrerSøknad } from '@hooks/useRegistrerSøknad';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import { useValgbareBarn } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/useValgbareBarn';
+import { useValgbareBarn } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useValgbareBarn';
 import type { IBarnMedOpplysninger, Målform } from '@typer/søknad';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';

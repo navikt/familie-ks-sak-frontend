@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsak } from '@hooks/useFagsak';
-import { useBarnaFieldArray } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/BarnaFieldArrayContext';
-import type { RegistrerSøknadFormValues } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/useRegistrerSøknadForm';
+import { useBarnaFieldArray } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/BarnaFieldArrayContext';
+import type { RegistrerSøknadFormValues } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useRegistrerSøknadForm';
 import type { IBarnMedOpplysninger } from '@typer/søknad';
 import { hentBarnMedLøpendeUtbetaling } from '@utils/fagsak';
 import { formaterIdent, hentAlderSomString } from '@utils/formatter';

@@ -1,8 +1,3 @@
-export interface IRestRegistrerSøknad {
-    søknad: ISøknadDTO;
-    bekreftEndringerViaFrontend: boolean;
-}
-
 export interface ISøknadDTO {
     søkerMedOpplysninger: ISøkerMedOpplysninger;
     barnaMedOpplysninger: IBarnMedOpplysningerBackend[];

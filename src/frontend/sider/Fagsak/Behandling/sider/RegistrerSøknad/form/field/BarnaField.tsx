@@ -1,13 +1,13 @@
 import { useBruker } from '@hooks/useBruker';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import StatusIkon, { Status } from '@ikoner/StatusIkon';
-import { useBarnaFieldArray } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/BarnaFieldArrayContext';
-import { BarnCheckbox } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/field/BarnCheckbox';
-import { FieldLabel } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/field/FieldLabel';
+import { useBarnaFieldArray } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/BarnaFieldArrayContext';
+import { BarnCheckbox } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/BarnCheckbox';
+import { FieldLabel } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/FieldLabel';
 import {
     RegistrerSøknadFormField,
     type RegistrerSøknadFormValues,
-} from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/useRegistrerSøknadForm';
+} from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useRegistrerSøknadForm';
 import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '@typer/person';
 import { useFormContext } from 'react-hook-form';
 

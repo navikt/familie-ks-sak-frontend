@@ -1,96 +1,17 @@
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
-import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
-import { BehandlingSteg } from '@typer/behandling';
-import type { IBarnMedOpplysninger } from '@typer/søknad';
+import { RegistrerSøknadForm } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/RegistrerSøknadForm';
+import { SøknadRegistrert } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/SøknadRegistrert';
+import { Steg } from '@sider/Fagsak/Behandling/sider/Steg';
 
-import { ErrorSummary, LocalAlert } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
-
-import Annet from './Annet';
-import Barna from './Barna';
-import { LeggTilBarnKnapp } from './LeggTilBarnKnapp';
-import { useSøknadContext } from './SøknadContext';
-import MålformVelger from '../../../../../komponenter/MålformVelger';
-import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
-
-const RegistrerSøknad = () => {
+export function RegistrerSøknad() {
     const behandling = useBehandling();
     const erLesevisning = useErLesevisning();
 
-    const { hentFeilTilOppsummering, nesteAction, skjema, søknadErLastetFraBackend } = useSøknadContext();
-
-    const harBrevmottaker = behandling.brevmottakere.length > 0;
-
-    function onLeggTilBarn(barn: IBarnMedOpplysninger) {
-        skjema.felter.barnaMedOpplysninger.validerOgSettFelt([...skjema.felter.barnaMedOpplysninger.verdi, barn]);
-    }
-
     return (
-        <LeggTilBarnModalContextProvider
-            barn={skjema.felter.barnaMedOpplysninger.verdi}
-            onLeggTilBarn={onLeggTilBarn}
-            harBrevmottaker={harBrevmottaker}
-        >
-            {!erLesevisning && <LeggTilBarnModal />}
-            <Skjemasteg
-                className={'søknad'}
-                tittel={'Registrer opplysninger fra søknaden'}
-                nesteOnClick={() => {
-                    nesteAction(false);
-                }}
-                nesteKnappTittel={erLesevisning ? 'Neste' : 'Bekreft og fortsett'}
-                senderInn={skjema.submitRessurs.status === RessursStatus.HENTER}
-                steg={BehandlingSteg.REGISTRERE_SØKNAD}
-            >
-                {søknadErLastetFraBackend && !erLesevisning && (
-                    <>
-                        <br />
-                        <LocalAlert status="warning">
-                            <LocalAlert.Header>
-                                <LocalAlert.Title>Søknad registrert</LocalAlert.Title>
-                            </LocalAlert.Header>
-                            <LocalAlert.Content>
-                                En søknad er allerede registrert på behandlingen. Vi har fylt ut søknaden i skjemaet.
-                            </LocalAlert.Content>
-                        </LocalAlert>
-                        <br />
-                    </>
-                )}
-
-                <Barna />
-
-                {!erLesevisning && <LeggTilBarnKnapp />}
-
-                <MålformVelger
-                    målformFelt={skjema.felter.målform}
-                    visFeilmeldinger={skjema.visFeilmeldinger}
-                    erLesevisning={erLesevisning}
-                />
-
-                <Annet />
-
-                {(skjema.submitRessurs.status === RessursStatus.FEILET ||
-                    skjema.submitRessurs.status === RessursStatus.IKKE_TILGANG) && (
-                    <LocalAlert status="error">
-                        <LocalAlert.Header>
-                            <LocalAlert.Title>{skjema.submitRessurs.frontendFeilmelding}</LocalAlert.Title>
-                        </LocalAlert.Header>
-                    </LocalAlert>
-                )}
-                {skjema.visFeilmeldinger && hentFeilTilOppsummering().length > 0 && (
-                    <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
-                        {hentFeilTilOppsummering().map(item => (
-                            <ErrorSummary.Item key={item.skjemaelementId} href={`#${item.skjemaelementId}`}>
-                                {item.feilmelding}
-                            </ErrorSummary.Item>
-                        ))}
-                    </ErrorSummary>
-                )}
-            </Skjemasteg>
-        </LeggTilBarnModalContextProvider>
+        <Steg tittel={'Registrer opplysninger fra søknaden'} maxWidth={'60rem'}>
+            {behandling.søknadsgrunnlag && !erLesevisning && <SøknadRegistrert />}
+            <RegistrerSøknadForm />
+        </Steg>
     );
-};
-
-export default RegistrerSøknad;
+}

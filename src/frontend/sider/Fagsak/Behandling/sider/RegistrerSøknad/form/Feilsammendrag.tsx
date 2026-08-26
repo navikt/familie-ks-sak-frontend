@@ -1,4 +1,4 @@
-import type { RegistrerSøknadFormValues } from '@sider/Fagsak/Behandling/sider/RegistrerSøknadNy/form/useRegistrerSøknadForm';
+import type { RegistrerSøknadFormValues } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useRegistrerSøknadForm';
 import { useFormState } from 'react-hook-form';
 
 import { Box, ErrorSummary } from '@navikt/ds-react';
