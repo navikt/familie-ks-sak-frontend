@@ -31,9 +31,6 @@ export const useVilkårsvurderingApi = () => {
     const [oppretterVilkår, settOppretterVilkår] = useState<boolean>(false);
     const [opprettVilkårFeilmelding, settOpprettVilkårFeilmelding] = useState<string>('');
 
-    const [sletterVilkår, settSletterVilkår] = useState<boolean>(false);
-    const [slettVilkårFeilmelding, settSlettVilkårFeilmelding] = useState<string>('');
-
     const [lagrerAnnenVurdering, settLagrerAnnenVurdering] = useState<boolean>(false);
     const [lagreAnnenVurderingFeilmelding, settLagreAnnenVurderingFeilmelding] = useState<string>('');
 
@@ -72,46 +69,6 @@ export const useVilkårsvurderingApi = () => {
                 settLagreVilkårFeilmelding('En ukjent feil har oppstått, vi har ikke klart å lagre vilkåret.');
                 if (onFailure) {
                     onFailure(lagreVilkårFeilmelding);
-                }
-            });
-    };
-
-    const slettVilkår = (
-        personIdent: string,
-        vilkårId: number,
-        onSuccess?: () => void,
-        onFailure?: (feilmelding: string) => void
-    ) => {
-        settSletterVilkår(true);
-        settSlettVilkårFeilmelding('');
-        request<string, IBehandling>({
-            method: 'DELETE',
-            url: `/familie-ks-sak/api/vilkårsvurdering/${behandlingId}/${vilkårId}`,
-            data: personIdent,
-        })
-            .then((response: Ressurs<IBehandling>) => {
-                settSletterVilkår(false);
-                if (response.status === RessursStatus.SUKSESS) {
-                    settÅpenBehandling(response);
-                    if (onSuccess) {
-                        onSuccess();
-                    }
-                } else if (
-                    response.status === RessursStatus.FEILET ||
-                    response.status === RessursStatus.FUNKSJONELL_FEIL ||
-                    response.status === RessursStatus.IKKE_TILGANG
-                ) {
-                    settSlettVilkårFeilmelding(response.frontendFeilmelding);
-                    if (onFailure) {
-                        onFailure(response.frontendFeilmelding);
-                    }
-                }
-            })
-            .catch(() => {
-                settSlettVilkårFeilmelding('En ukjent feil har oppstått, vi har ikke klart å slette vilkåret.');
-                settSletterVilkår(false);
-                if (onFailure) {
-                    onFailure(slettVilkårFeilmelding);
                 }
             });
     };
@@ -194,9 +151,6 @@ export const useVilkårsvurderingApi = () => {
         opprettVilkår,
         oppretterVilkår,
         opprettVilkårFeilmelding,
-        slettVilkår,
-        sletterVilkår,
-        slettVilkårFeilmelding,
         lagreAnnenVurdering,
         lagrerAnnenVurdering,
         lagreAnnenVurderingFeilmelding,
