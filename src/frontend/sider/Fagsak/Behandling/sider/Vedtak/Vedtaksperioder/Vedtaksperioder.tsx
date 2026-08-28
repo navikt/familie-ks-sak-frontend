@@ -31,7 +31,7 @@ export function Vedtaksperioder() {
     }
 
     return (
-        <VStack gap={'space-32'} marginBlock={'space-32'}>
+        <VStack gap={'space-32'}>
             <GrupperteVedtaksperioder
                 vedtaksperioderMedBegrunnelser={sorterteAndreVedtaksperioder}
                 overskrift={'Begrunnelser i vedtaksbrev'}

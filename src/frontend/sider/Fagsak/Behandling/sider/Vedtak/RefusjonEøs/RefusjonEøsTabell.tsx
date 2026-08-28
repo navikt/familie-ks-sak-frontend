@@ -47,7 +47,7 @@ export function RefusjonEøsTabell() {
         useRefusjonEøsTabellContext();
 
     return (
-        <Stack direction={'column'} gap={'space-20'} marginBlock={'space-48 space-48'}>
+        <Stack direction={'column'} gap={'space-20'}>
             <Heading level={'2'} size={'small'} spacing={false}>
                 Refusjon EØS
             </Heading>
