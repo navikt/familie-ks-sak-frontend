@@ -2,8 +2,8 @@ import { NotFound } from '@komponenter/Error/NotFound';
 import { TidslinjeProvider } from '@komponenter/Tidslinje/TidslinjeContext';
 import Behandlingsresultat from '@sider/Fagsak/Behandling/sider/Behandlingsresultat/Behandlingsresultat';
 import { RegistrerSøknad } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/RegistrerSøknad';
-import Simulering from '@sider/Fagsak/Behandling/sider/Simulering/Simulering';
-import { SimuleringProvider } from '@sider/Fagsak/Behandling/sider/Simulering/SimuleringContext';
+import { Simulering } from '@sider/Fagsak/Behandling/sider/Simulering/Simulering';
+import { SimuleringContainer } from '@sider/Fagsak/Behandling/sider/Simulering/SimuleringContainer';
 import { Vedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtak';
 import { VedtakContainer } from '@sider/Fagsak/Behandling/sider/Vedtak/VedtakContainer';
 import { VilkårsvurderingContainer } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/VilkårsvurderingContainer';
@@ -29,9 +29,9 @@ export const behandlingRoutes: RouteObject[] = [
     {
         path: 'simulering',
         element: (
-            <SimuleringProvider>
+            <SimuleringContainer>
                 <Simulering />
-            </SimuleringProvider>
+            </SimuleringContainer>
         ),
     },
     {
