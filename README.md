@@ -5,7 +5,7 @@ Frontend app for kontantstøtte
 # Kom i gang med utvikling
 
 * Sikre at du kjører node og pnpm med riktig versjon for repoet. Vi bruker nyeste LTS: `nvm install --lts`
-* Logg deg på naisdevice og Google Cloud (`nais login`)
+* Logg deg på naisdevice og kjør `nais login -y`
 * Installer [NVM] (https://github.com/nvm-sh/nvm).
 * Kjør `nvm use`
 * Aktiver riktig pnpm-versjon med `corepack enable` (henter versjonen fra `packageManager` i package.json)
@@ -54,7 +54,14 @@ De lokale profilene kan kjøres med sine tilsvarende pnpm-kommandoer.
 For lokal kjøring er scriptet: [hent-og-lagre-miljøvariabler.sh](hent-og-lagre-milj%C3%B8variabler.sh) bakt inn.
 Dette scriptet henter secrets man trenger for utvikling og lagrer det i `.secrets.env`. Denne skal ikke lagres i git.
 
-Scriptet krever at man er pålogget naisdevice og Google Cloud (`nais login`).
+Scriptet bruker [nais-cli](https://cli.nais.io) og krever at man er pålogget naisdevice og har kjørt `nais login -y`.
+Uthenting av secret-verdier logges, og scriptet oppgir en begrunnelse (`--reason`) automatisk.
+
+Vil du hente secreten manuelt:
+```
+nais secret get azuread-familie-ks-sak-frontend-lokal -e dev-gcp -t teamfamilie --with-values --reason "Lokal utvikling"
+```
+Merk at `nais secret get` uten `--with-values` ikke finner plattform-secrets som denne.
 
 I kjørende miljø (preprod og prod) er secrets definert i Nais Console, under "Secrets" (pluss et lite dryss i nais-filene).
 Andre secrets injectes automatisk av Nais, eksempelvis verdier for Redis, Azure og Kubernetes. Se Nais doc for mer info.
