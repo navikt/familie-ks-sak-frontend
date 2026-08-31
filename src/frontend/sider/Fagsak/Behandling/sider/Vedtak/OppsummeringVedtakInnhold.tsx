@@ -10,7 +10,7 @@ import { KorrigertEtterbetalingAdvarsel } from '@sider/Fagsak/Behandling/sider/V
 import { KorrigertVedtakAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigertVedtakAdvarsel';
 import { BehandlingStatus, Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 
-import { LocalAlert, VStack } from '@navikt/ds-react';
+import { Box, LocalAlert, VStack } from '@navikt/ds-react';
 
 import { FeilutbetaltValutaTabell } from './FeilutbetaltValuta/FeilutbetaltValutaTabell';
 import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
@@ -46,7 +46,8 @@ export function OppsummeringVedtakInnhold() {
     }
 
     return (
-        <>
+        <VStack gap={'space-24'}>
+            <Vedtaksmeny erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending} />
             <VStack gap={'space-12'}>
                 {slettSammensattKontrollsakError && (
                     <LocalAlert status={'error'}>
@@ -62,27 +63,24 @@ export function OppsummeringVedtakInnhold() {
                         </LocalAlert.Header>
                     </LocalAlert>
                 )}
-                <Vedtaksmeny erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending} />
-            </VStack>
-            <div>
                 {behandling.korrigertEtterbetaling && <KorrigertEtterbetalingAdvarsel />}
                 {behandling.korrigertVedtak && <KorrigertVedtakAdvarsel />}
                 <BrevmottakereBehandlingAdvarsel kilde={'vedtak'} />
                 {!erBehandlingMedVedtaksbrevbygger && <IngenVedtaksbrevbyggerAdvarsel />}
                 {erBehandlingMedVedtaksbrevbygger && (
-                    <>
+                    <Box marginBlock={'space-12 space-40'}>
                         {sammensattKontrollsak && <SammensattKontrollsak />}
                         {!sammensattKontrollsak && (
-                            <>
+                            <VStack gap={'space-40'}>
                                 <Vedtaksperioder />
                                 {erFeilutbetaltValutaTabellSynlig && <FeilutbetaltValutaTabell />}
                                 {erRefusjonEøsTabellSynlig && <RefusjonEøsTabell />}
-                            </>
+                            </VStack>
                         )}
-                    </>
+                    </Box>
                 )}
                 <ForhåndsvisVedtaksbrev />
-            </div>
-        </>
+            </VStack>
+        </VStack>
     );
 }
