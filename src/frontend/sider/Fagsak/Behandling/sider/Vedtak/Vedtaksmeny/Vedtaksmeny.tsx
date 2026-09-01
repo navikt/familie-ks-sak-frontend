@@ -6,7 +6,8 @@ import { OppdaterEndringstidspunktModal } from '@sider/Fagsak/Behandling/sider/V
 import { FeilutbetaltValuta } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValuta';
 import { useSkalViseFeilutbetaltValutaMenyvalg } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/useSkalViseFeilutbetaltValutaMenyvalg';
 import { KorrigerEtterbetaling } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetaling';
-import { KorrigerVedtakModal } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtakModal/KorrigerVedtakModal';
+import { KorrigerVedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/KorrigerVedtak';
+import { KorrigerVedtakModal } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/KorrigerVedtakModal';
 import { RefusjonEøs } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøs';
 import { useSkalViseRefusjonEøsMenyvalg } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/useSkalViseRefusjonEøsMenyvalg';
 
@@ -14,7 +15,6 @@ import { ChevronDownIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button, Stack } from '@navikt/ds-react';
 
 import Styles from './Vedtaksmeny.module.css';
-import { KorrigerVedtak } from '../KorrigerVedtakModal/KorrigerVedtak';
 import { AngreSammensattKontrollsak } from '../SammensattKontrollsak/AngreSammensattKontrollsak';
 import { OpprettSammensattKontrollsak } from '../SammensattKontrollsak/OpprettSammensattKontrollsak';
 import { useSammensattKontrollsakContext } from '../SammensattKontrollsak/SammensattKontrollsakContext';

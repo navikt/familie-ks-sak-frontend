@@ -6,8 +6,8 @@ import { BehandlingUtenVedtaksbrevAdvarsel } from '@sider/Fagsak/Behandling/side
 import { ForhåndsvisVedtaksbrev } from '@sider/Fagsak/Behandling/sider/Vedtak/ForhåndsvisVedtaksbrev';
 import { IngenVedtaksbrevbyggerAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/IngenVedtaksbrevbyggerAdvarsel';
 import { IverksetteKaVedtakAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/IverksetteKaVedtakAdvarsel';
-import { KorrigertEtterbetalingAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigertEtterbetalingAdvarsel';
-import { KorrigertVedtakAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigertVedtakAdvarsel';
+import { KorrigertEtterbetalingAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerEtterbetaling/KorrigertEtterbetalingAdvarsel';
+import { KorrigertVedtakAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/KorrigertVedtakAdvarsel';
 import { BehandlingStatus, Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 
 import { Box, LocalAlert, VStack } from '@navikt/ds-react';

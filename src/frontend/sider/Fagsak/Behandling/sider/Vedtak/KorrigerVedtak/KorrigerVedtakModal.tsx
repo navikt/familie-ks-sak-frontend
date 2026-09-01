@@ -1,8 +1,8 @@
 import { useAngreKorrigertVedtak } from '@hooks/useAngreKorrigertVedtak';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import { BegrunnelseFelt } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtakModal/BegrunnelseFelt';
-import { VedtaksdatoFelt } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtakModal/VedtaksdatoFelt';
+import { BegrunnelseFelt } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/BegrunnelseFelt';
+import { VedtaksdatoFelt } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/VedtaksdatoFelt';
 import { FormProvider } from 'react-hook-form';
 
 import { ArrowUndoIcon } from '@navikt/aksel-icons';

@@ -4,7 +4,7 @@ import { tidligsteRelevanteDato } from '@komponenter/Datovelger/utils';
 import {
     KorrigerVedtakFelt,
     type KorrigerVedtakFormValues,
-} from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtakModal/useKorrigerVedtakSkjema';
+} from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/useKorrigerVedtakSkjema';
 import { dateTilIsoDatoString, isoStringTilDate } from '@utils/dato';
 import { format, startOfDay } from 'date-fns';
 import { useController, useFormContext } from 'react-hook-form';
