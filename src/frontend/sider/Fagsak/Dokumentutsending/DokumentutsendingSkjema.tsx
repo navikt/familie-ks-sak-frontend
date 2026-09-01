@@ -1,204 +1,158 @@
-import type { ChangeEvent } from 'react';
-
+import { useBruker } from '@hooks/useBruker';
+import { useErLesevisningFagsak } from '@hooks/useErLesevisningFagsak';
 import { useFagsak } from '@hooks/useFagsak';
-import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
 import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
 import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
-import type { IBarnMedOpplysninger } from '@typer/søknad';
 import { erFagsakLåst } from '@utils/fagsak';
+import { FormProvider } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
 import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
-import { Alert, Box, Button, Fieldset, Heading, HStack, InfoCard, Label, Select } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { Alert, Box, Button, Fieldset, Heading, HStack, InfoCard, VStack } from '@navikt/ds-react';
 
-import BarnIBrevSkjema from './BarnIBrev/BarnIBrevSkjema';
-import { dokumentÅrsak, DokumentÅrsak, useDokumentutsendingContext } from './DokumentutsendingContext';
+import { finnBarnIBrevÅrsak } from './barnIBrevÅrsak';
+import { DokumentÅrsak } from './dokumentÅrsakTyper';
 import { LeggTilBarnKnapp } from './LeggTilBarnKnapp';
-import FritekstAvsnitt from '../../../komponenter/FritekstAvsnitt';
-import MålformVelger from '../../../komponenter/MålformVelger';
-import { useBrukerContext } from '../BrukerContext';
 import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
+import { BarnCheckboxGruppe } from './skjema/BarnCheckboxGruppe';
+import { FritekstAvsnitt } from './skjema/FritekstAvsnitt';
+import { MålformVelger } from './skjema/MålformVelger';
+import { ValgteBarnFieldArrayProvider } from './skjema/ValgteBarnFieldArrayContext';
+import { ÅrsakVelger } from './skjema/ÅrsakVelger';
+import { DokumentutsendingFeltnavn, useDokumentutsendingSkjema } from './useDokumentutsendingSkjema';
 
-enum BarnIBrevÅrsak {
-    BARN_SØKT_FOR,
-    BARN_BOSATT_MED_SØKER,
+interface Props {
+    åpneBrevSendtDialog: () => void;
+    settForhåndsvisningUrl: (url: string) => void;
 }
 
-export function DokumentutsendingSkjema() {
-    const { bruker } = useBrukerContext();
-
-    const saksbehandler = useSaksbehandler();
-
+export function DokumentutsendingSkjema({ åpneBrevSendtDialog, settForhåndsvisningUrl }: Props) {
+    const bruker = useBruker();
     const fagsak = useFagsak();
-
-    const {
-        hentForhåndsvisningPåFagsak,
-        hentetDokument,
-        skjema,
-        nullstillSkjema,
-        senderBrev,
-        sendBrevPåFagsak,
-        skjemaErLåst,
-        hentSkjemaFeilmelding,
-        settVisfeilmeldinger,
-        visForhåndsvisningBeskjed,
-    } = useDokumentutsendingContext();
+    const navigate = useNavigate();
 
     const { manuelleBrevmottakerePåFagsak } = useManuelleBrevmottakerePåFagsakContext();
 
-    const årsakVerdi = skjema.felter.årsak.verdi;
+    const { form, onSubmit, hentForhåndsvisning, forhåndsvisningLaster, visForhåndsvisningBeskjed } =
+        useDokumentutsendingSkjema({ åpneBrevSendtDialog, settForhåndsvisningUrl });
 
-    const finnBarnIBrevÅrsak = (årsak: DokumentÅrsak | undefined): BarnIBrevÅrsak | undefined => {
-        switch (årsak) {
-            case DokumentÅrsak.KAN_SØKE_EØS:
-            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HAR_FÅTT_EN_SØKNAD_FRA_ANNEN_FORELDER:
-            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_VARSEL_OM_REVURDERING:
-            case DokumentÅrsak.TIL_FORELDER_OMFATTET_NORSK_LOVGIVNING_HENTER_IKKE_REGISTEROPPLYSNINGER:
-                return BarnIBrevÅrsak.BARN_SØKT_FOR;
-            case DokumentÅrsak.KAN_HA_RETT_TIL_PENGESTØTTE_FRA_NAV:
-                return BarnIBrevÅrsak.BARN_BOSATT_MED_SØKER;
-            default:
-                return undefined;
-        }
-    };
+    const {
+        control,
+        watch,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = form;
 
-    const barnIBrevÅrsakTilTittel: Record<BarnIBrevÅrsak, string> = {
-        [BarnIBrevÅrsak.BARN_SØKT_FOR]: 'Hvilke barn er søkt for?',
-        [BarnIBrevÅrsak.BARN_BOSATT_MED_SØKER]: 'Hvilke barn er bosatt med søker?',
-    };
-
-    const barnIBrevÅrsak = finnBarnIBrevÅrsak(årsakVerdi);
-
-    const skalViseFritekstAvsnitt = årsakVerdi === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE;
-
-    const erLesevisning = !saksbehandler.harSkrivetilgang || erFagsakLåst(fagsak);
-
-    function onLeggTilBarn(barn: IBarnMedOpplysninger) {
-        skjema.felter.barnIBrev.validerOgSettFelt([...skjema.felter.barnIBrev.verdi, barn]);
-    }
+    const årsak = watch(DokumentutsendingFeltnavn.ÅRSAK);
+    const barnIBrevÅrsak = finnBarnIBrevÅrsak(årsak || undefined);
+    const erLesevisning = useErLesevisningFagsak();
+    const skjemaErLåst = erLesevisning || isSubmitting || forhåndsvisningLaster;
 
     return (
-        <LeggTilBarnModalContextProvider
-            barn={skjema.felter.barnIBrev.verdi}
-            onLeggTilBarn={onLeggTilBarn}
-            harBrevmottaker={manuelleBrevmottakerePåFagsak.length > 0}
-        >
-            {!erLesevisning && <LeggTilBarnModal />}
-            <Box padding={'space-32'} overflow={'auto'}>
-                <Heading size={'large'} level={'1'} children={'Send informasjonsbrev'} />
-                {erFagsakLåst(fagsak) && (
-                    <Box marginBlock={'space-16'}>
-                        <Alert variant={'info'}>
-                            Fagsaken er låst etter arkivlovens kasseringsregler, og det er ikke mulig å sende brev. Lås
-                            opp fagsaken fra menyen i saksoversikten hvis du likevel skal sende brev.
-                        </Alert>
-                    </Box>
-                )}
-                {manuelleBrevmottakerePåFagsak.length > 0 && (
-                    <Box marginBlock={'space-16'}>
-                        <BrevmottakereAlert
-                            erPåBehandling={false}
-                            brevmottakere={manuelleBrevmottakerePåFagsak}
-                            bruker={bruker}
-                        />
-                    </Box>
-                )}
-                <Box asChild maxWidth={'30rem'} marginBlock={'space-32 space-0'}>
-                    <Fieldset
-                        error={hentSkjemaFeilmelding()}
-                        errorPropagation={false}
-                        legend="Send informasjonsbrev"
-                        hideLegend
-                    >
-                        <Select
-                            {...skjema.felter.årsak.hentNavBaseSkjemaProps(skjema.visFeilmeldinger)}
-                            label={'Velg årsak'}
-                            value={skjema.felter.årsak.verdi || ''}
-                            onChange={(event: ChangeEvent<HTMLSelectElement>): void => {
-                                skjema.felter.årsak.onChange(event.target.value as DokumentÅrsak);
-                            }}
-                            size={'medium'}
-                        >
-                            <option value="">Velg</option>
-                            {Object.values(DokumentÅrsak).map(årsak => {
-                                return (
-                                    <option
-                                        key={årsak}
-                                        aria-selected={skjema.felter.årsak.verdi === årsak}
-                                        value={årsak}
+        <ValgteBarnFieldArrayProvider control={control}>
+            {({ valgteBarn, leggTilBarn }) => (
+                <LeggTilBarnModalContextProvider
+                    barn={valgteBarn}
+                    onLeggTilBarn={barn => leggTilBarn(barn, { shouldFocus: false })}
+                    harBrevmottaker={manuelleBrevmottakerePåFagsak.length > 0}
+                >
+                    <LeggTilBarnModal />
+                    <Box padding={'space-32'} overflow={'auto'}>
+                        <FormProvider {...form}>
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <Heading size={'large'} level={'1'}>
+                                    Send informasjonsbrev
+                                </Heading>
+                                {erFagsakLåst(fagsak) && (
+                                    <Box marginBlock={'space-16'}>
+                                        <Alert variant={'info'}>
+                                            Fagsaken er låst etter arkivlovens kasseringsregler, og det er ikke mulig å
+                                            sende brev. Lås opp fagsaken fra menyen i saksoversikten hvis du likevel
+                                            skal sende brev.
+                                        </Alert>
+                                    </Box>
+                                )}
+                                {manuelleBrevmottakerePåFagsak.length > 0 && (
+                                    <Box marginBlock={'space-16'}>
+                                        <BrevmottakereAlert
+                                            erPåBehandling={false}
+                                            brevmottakere={manuelleBrevmottakerePåFagsak}
+                                            bruker={bruker}
+                                        />
+                                    </Box>
+                                )}
+                                <Box asChild maxWidth={'30rem'} marginBlock={'space-32 space-0'}>
+                                    <Fieldset
+                                        error={errors.root?.message}
+                                        errorPropagation={false}
+                                        legend="Send informasjonsbrev"
+                                        hideLegend
                                     >
-                                        {dokumentÅrsak[årsak]}
-                                    </option>
-                                );
-                            })}
-                        </Select>
-                        {skalViseFritekstAvsnitt && (
-                            <Box paddingBlock={'space-4 space-0'}>
-                                <FritekstAvsnitt />
-                            </Box>
-                        )}
-                        <Box marginBlock={'space-8 space-32'}>
-                            {barnIBrevÅrsak != undefined && (
-                                <>
-                                    <BarnIBrevSkjema
-                                        barnIBrevFelt={skjema.felter.barnIBrev}
-                                        visFeilmeldinger={skjema.visFeilmeldinger}
-                                        settVisFeilmeldinger={settVisfeilmeldinger}
-                                        tittel={barnIBrevÅrsakTilTittel[barnIBrevÅrsak]}
-                                    />
-                                    {!erLesevisning && <LeggTilBarnKnapp />}
-                                </>
-                            )}
-                        </Box>
-                        <MålformVelger
-                            målformFelt={skjema.felter.målform}
-                            visFeilmeldinger={skjema.visFeilmeldinger}
-                            erLesevisning={false}
-                            Legend={<Label children={'Målform'} />}
-                        />
-                        {årsakVerdi && visForhåndsvisningBeskjed() && (
-                            <Box marginBlock={'space-16'}>
-                                <InfoCard data-color="info">
-                                    <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                                        Du har gjort endringer i brevet som ikke er forhåndsvist
-                                    </InfoCard.Message>
-                                </InfoCard>
-                            </Box>
-                        )}
-                    </Fieldset>
-                </Box>
-                <HStack justify={'space-between'} marginBlock={'space-24 space-0'}>
-                    <HStack gap={'space-16'}>
-                        <Button
-                            size="medium"
-                            variant="primary"
-                            loading={senderBrev()}
-                            disabled={skjemaErLåst() || erLesevisning}
-                            onClick={sendBrevPåFagsak}
-                        >
-                            Send brev
-                        </Button>
+                                        <VStack gap="space-16">
+                                            <ÅrsakVelger />
 
-                        <Button size="medium" variant="tertiary" onClick={nullstillSkjema}>
-                            Avbryt
-                        </Button>
-                    </HStack>
-                    {skjema.felter.årsak.verdi && (
-                        <Button
-                            variant={'tertiary'}
-                            id={'forhandsvis-vedtaksbrev'}
-                            size={'medium'}
-                            loading={hentetDokument.status === RessursStatus.HENTER}
-                            disabled={skjemaErLåst()}
-                            onClick={hentForhåndsvisningPåFagsak}
-                            icon={<FileTextIcon />}
-                        >
-                            {'Forhåndsvis'}
-                        </Button>
-                    )}
-                </HStack>
-            </Box>
-        </LeggTilBarnModalContextProvider>
+                                            {barnIBrevÅrsak !== undefined && (
+                                                <Box>
+                                                    <BarnCheckboxGruppe barnIBrevÅrsak={barnIBrevÅrsak} />
+                                                    <LeggTilBarnKnapp />
+                                                </Box>
+                                            )}
+
+                                            {årsak === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE && <FritekstAvsnitt />}
+
+                                            <MålformVelger />
+
+                                            {visForhåndsvisningBeskjed && (
+                                                <InfoCard data-color="info">
+                                                    <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                                                        Du har gjort endringer i brevet som ikke er forhåndsvist
+                                                    </InfoCard.Message>
+                                                </InfoCard>
+                                            )}
+                                        </VStack>
+                                    </Fieldset>
+                                </Box>
+                                <HStack justify={'space-between'} marginBlock={'space-24 space-0'}>
+                                    <HStack gap={'space-16'}>
+                                        <Button
+                                            size="medium"
+                                            variant="primary"
+                                            type={'submit'}
+                                            loading={isSubmitting}
+                                            disabled={skjemaErLåst}
+                                        >
+                                            Send brev
+                                        </Button>
+
+                                        <Button
+                                            size="medium"
+                                            variant="tertiary"
+                                            type={'button'}
+                                            disabled={isSubmitting || forhåndsvisningLaster}
+                                            onClick={() => navigate(`/fagsak/${fagsak.id}/saksoversikt`)}
+                                        >
+                                            Avbryt
+                                        </Button>
+                                    </HStack>
+                                    <Button
+                                        variant={'tertiary'}
+                                        type={'button'}
+                                        id={'forhandsvis-vedtaksbrev'}
+                                        size={'medium'}
+                                        loading={forhåndsvisningLaster}
+                                        disabled={skjemaErLåst}
+                                        onClick={hentForhåndsvisning}
+                                        icon={<FileTextIcon />}
+                                    >
+                                        Forhåndsvis
+                                    </Button>
+                                </HStack>
+                            </form>
+                        </FormProvider>
+                    </Box>
+                </LeggTilBarnModalContextProvider>
+            )}
+        </ValgteBarnFieldArrayProvider>
     );
 }
