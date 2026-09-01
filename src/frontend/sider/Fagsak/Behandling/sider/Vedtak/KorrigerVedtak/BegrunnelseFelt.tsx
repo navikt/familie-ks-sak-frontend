@@ -1,7 +1,7 @@
 import {
     KorrigerVedtakFelt,
     type KorrigerVedtakFormValues,
-} from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtakModal/useKorrigerVedtakSkjema';
+} from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/useKorrigerVedtakSkjema';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Textarea } from '@navikt/ds-react';
