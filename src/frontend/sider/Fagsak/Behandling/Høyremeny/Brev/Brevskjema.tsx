@@ -1,12 +1,8 @@
 import type { ChangeEvent } from 'react';
+import { useState } from 'react';
 
-import { ModalType } from '@context/ModalContext';
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useModal } from '@hooks/useModal';
-import {
-    mutationKey,
-    useOpprettForhåndsvisbarBehandlingBrevPdf,
-} from '@hooks/useOpprettForhåndsvisbarBehandlingBrevPdf';
+import { useOpprettManueltBrevPdf } from '@hooks/useOpprettManueltBrevPdf';
 import { EØS_LAND_REGIONKODER, RegionCombobox, type Regionkode } from '@komponenter/FlaggCombobox';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IBehandling } from '@typer/behandling';
@@ -18,12 +14,16 @@ import { lagPersonLabel } from '@utils/formatter';
 import type { IFritekstFelt } from '@utils/fritekstfelter';
 import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 
-import { FileTextIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
+import { FileTextIcon, PlusCircleIcon, TrashIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
 import {
     Button,
+    Dialog,
+    ErrorMessage,
     Fieldset,
+    Heading,
     HStack,
     Label,
+    Loader,
     Select,
     Tag,
     Textarea,
@@ -72,15 +72,17 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
         settVisFritekstAvsnittTekstboks,
     } = useBrevModul();
 
-    const { åpneModal: åpneForhåndsvisOpprettingAvPdfModal } = useModal(ModalType.FORHÅNDSVIS_OPPRETTING_AV_PDF);
+    const [visForhåndsvisningDialog, settVisForhåndsvisningDialog] = useState(false);
 
-    const { mutate: opprettForhåndsvisbarBrevPdf, isPending: isOpprettForhåndsvisbarBrevPdfPending } =
-        useOpprettForhåndsvisbarBehandlingBrevPdf({
-            onMutate: () => åpneForhåndsvisOpprettingAvPdfModal({ mutationKey }),
-        });
+    const {
+        data: manueltBrevPdf,
+        mutate: opprettManueltBrevPdf,
+        isPending: opprettManueltBrevPdfIsPending,
+        error: opprettManueltBrevPdfError,
+    } = useOpprettManueltBrevPdf();
 
     const brevMaler = hentMuligeBrevMaler();
-    const skjemaErLåst = skjema.submitRessurs.status === RessursStatus.HENTER || isOpprettForhåndsvisbarBrevPdfPending;
+    const skjemaErLåst = skjema.submitRessurs.status === RessursStatus.HENTER || opprettManueltBrevPdfIsPending;
 
     const fieldsetId = 'Fritekster-brev';
     const erMaksAntallKulepunkter = skjema.felter.friteksterKulepunkter.verdi.length >= maksAntallKulepunkter;
@@ -353,26 +355,58 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                 </VStack>
             </Fieldset>
             <HStack marginBlock={'space-16'} justify={'space-between'}>
-                <Button
-                    id={'forhandsvis-vedtaksbrev'}
-                    variant={'secondary'}
-                    size={'small'}
-                    disabled={skjemaErLåst}
-                    onClick={() => {
-                        if (behandling.behandlingId === undefined) {
-                            return; // Dette skal aldri skje
-                        }
-                        if (kanSendeSkjema()) {
-                            opprettForhåndsvisbarBrevPdf({
-                                behandlingId: behandling.behandlingId,
-                                payload: hentSkjemaData(),
-                            });
-                        }
-                    }}
-                    icon={<FileTextIcon />}
-                >
-                    Forhåndsvis
-                </Button>
+                <>
+                    <Button
+                        id={'forhandsvis-vedtaksbrev'}
+                        variant={'secondary'}
+                        size={'small'}
+                        disabled={skjemaErLåst}
+                        onClick={() => {
+                            if (behandling.behandlingId === undefined) {
+                                return; // Dette skal aldri skje
+                            }
+                            if (kanSendeSkjema()) {
+                                opprettManueltBrevPdf({
+                                    behandlingId: behandling.behandlingId,
+                                    payload: hentSkjemaData(),
+                                });
+                                settVisForhåndsvisningDialog(true);
+                            }
+                        }}
+                        icon={<FileTextIcon />}
+                    >
+                        Forhåndsvis
+                    </Button>
+                    <Dialog open={visForhåndsvisningDialog} onOpenChange={settVisForhåndsvisningDialog}>
+                        <Dialog.Popup width={'max(100rem, 60vw)'} height={'80vh'}>
+                            <Dialog.Header>
+                                <Dialog.Title>Forhåndsvisning av brev</Dialog.Title>
+                            </Dialog.Header>
+                            <Dialog.Body className={styles.body}>
+                                {opprettManueltBrevPdfIsPending && (
+                                    <HStack height={'100%'} justify={'center'} align={'center'} gap={'space-8'}>
+                                        <Loader size={'small'} title={'Laster dokument...'} />
+                                        <Heading size={'small'} level={'2'}>
+                                            Laster dokument...
+                                        </Heading>
+                                    </HStack>
+                                )}
+                                {opprettManueltBrevPdfError && (
+                                    <HStack height={'100%'} justify={'center'} align={'center'} gap={'space-8'}>
+                                        <XMarkOctagonFillIcon
+                                            color={'var(--ax-text-danger-subtle)'}
+                                            fontSize={'1.2rem'}
+                                        />
+                                        <ErrorMessage>{opprettManueltBrevPdfError.message}</ErrorMessage>
+                                    </HStack>
+                                )}
+                                {!opprettManueltBrevPdfIsPending && !opprettManueltBrevPdfError && (
+                                    <iframe className={styles.iframe} title={'Dokument'} src={manueltBrevPdf} />
+                                )}
+                            </Dialog.Body>
+                        </Dialog.Popup>
+                    </Dialog>
+                </>
                 <Button
                     variant={'primary'}
                     size={'small'}
