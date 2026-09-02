@@ -23,8 +23,6 @@ import {
     hentSortState,
     Sorteringsrekkefølge,
 } from './journalpostUtils';
-import useDokument from '../../../hooks/useDokument';
-import PdfVisningModal from '../../../komponenter/PdfVisningModal/PdfVisningModal';
 import { useBrukerContext } from '../BrukerContext';
 import styles from './JournalpostListe.module.css';
 
@@ -54,7 +52,6 @@ export function JournalpostListe() {
     const [journalposterRessurs, settJournalposterRessurs] =
         useState<Ressurs<ITilgangsstyrtJournalpost[]>>(byggTomRessurs());
     const [sortering, settSortering] = useState<Sorteringsrekkefølge>(Sorteringsrekkefølge.INGEN_SORTERING);
-    const { visDokumentModal, hentetDokument, settVisDokumentModal, hentForhåndsvisning } = useDokument();
 
     useEffect(() => {
         settJournalposterRessurs(byggHenterRessurs());
@@ -167,7 +164,6 @@ export function JournalpostListe() {
                                                     <JournalpostDokument
                                                         dokument={dokument}
                                                         key={dokument.dokumentInfoId}
-                                                        hentForhåndsvisning={hentForhåndsvisning}
                                                         tilgangsstyrtJournalpost={tilgangsstyrtJournalpost}
                                                     />
                                                 ))}
@@ -224,9 +220,6 @@ export function JournalpostListe() {
                         ))}
                     </Table.Body>
                 </Table>
-                {visDokumentModal && (
-                    <PdfVisningModal onRequestClose={() => settVisDokumentModal(false)} pdfdata={hentetDokument} />
-                )}
             </Box>
         );
     } else {
