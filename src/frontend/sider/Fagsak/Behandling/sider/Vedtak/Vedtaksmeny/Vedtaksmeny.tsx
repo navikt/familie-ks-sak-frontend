@@ -20,11 +20,7 @@ import { OpprettSammensattKontrollsak } from '../SammensattKontrollsak/OpprettSa
 import { useSammensattKontrollsakContext } from '../SammensattKontrollsak/SammensattKontrollsakContext';
 import { useSkalViseSammensattKontrollsakMenyvalg } from '../SammensattKontrollsak/useSkalViseSammensattKontrollsakMenyvalg';
 
-interface Props {
-    erBehandlingMedVedtaksbrevutsending: boolean;
-}
-
-export function Vedtaksmeny({ erBehandlingMedVedtaksbrevutsending }: Props) {
+export function Vedtaksmeny() {
     const { sammensattKontrollsak } = useSammensattKontrollsakContext();
 
     const visRefusjonEøsMenyvalg = useSkalViseRefusjonEøsMenyvalg();
@@ -49,12 +45,8 @@ export function Vedtaksmeny({ erBehandlingMedVedtaksbrevutsending }: Props) {
                     </Button>
                 </ActionMenu.Trigger>
                 <ActionMenu.Content className={Styles.menu}>
-                    {erBehandlingMedVedtaksbrevutsending && (
-                        <>
-                            <KorrigerEtterbetaling />
-                            <KorrigerVedtak åpneModal={() => settVisKorrigerVedtakModal(true)} />
-                        </>
-                    )}
+                    <KorrigerEtterbetaling />
+                    <KorrigerVedtak åpneModal={() => settVisKorrigerVedtakModal(true)} />
                     {behandling.endringstidspunkt && (
                         <EndreEndringstidspunkt åpneModal={() => settVisEndreEndringstidspunktModal(true)} />
                     )}

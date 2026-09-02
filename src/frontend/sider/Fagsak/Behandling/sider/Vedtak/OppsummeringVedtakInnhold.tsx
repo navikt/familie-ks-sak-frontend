@@ -2,13 +2,11 @@ import { useBehandling } from '@hooks/useBehandling';
 import { useOpprettSammensattKontrollsakError } from '@hooks/useOpprettSammensattKontrollsakError';
 import { useSlettSammensattKontrollsakError } from '@hooks/useSlettSammensattKontrollsakError';
 import { BrevmottakereBehandlingAdvarsel } from '@komponenter/Brevmottaker/BrevmottakereBehandlingAdvarsel';
-import { BehandlingUtenVedtaksbrevAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/BehandlingUtenVedtaksbrevAdvarsel';
 import { ForhåndsvisVedtaksbrev } from '@sider/Fagsak/Behandling/sider/Vedtak/ForhåndsvisVedtaksbrev';
 import { IngenVedtaksbrevbyggerAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/IngenVedtaksbrevbyggerAdvarsel';
-import { IverksetteKaVedtakAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/IverksetteKaVedtakAdvarsel';
 import { KorrigertEtterbetalingAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerEtterbetaling/KorrigertEtterbetalingAdvarsel';
 import { KorrigertVedtakAdvarsel } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/KorrigertVedtakAdvarsel';
-import { BehandlingStatus, Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
+import { BehandlingStatus, BehandlingÅrsak } from '@typer/behandling';
 
 import { Box, LocalAlert, VStack } from '@navikt/ds-react';
 
@@ -31,23 +29,12 @@ export function OppsummeringVedtakInnhold() {
     const opprettSammensattKontrollsakError = useOpprettSammensattKontrollsakError(behandling.behandlingId);
     const slettSammensattKontrollsakError = useSlettSammensattKontrollsakError(behandling.behandlingId);
 
-    const erBehandlingMedVedtaksbrevutsending =
-        behandling.type !== Behandlingstype.TEKNISK_ENDRING && behandling.årsak !== BehandlingÅrsak.SATSENDRING;
-
     const erBehandlingMedVedtaksbrevbygger =
         behandling.årsak !== BehandlingÅrsak.DØDSFALL && behandling.status !== BehandlingStatus.AVSLUTTET;
 
-    if (!erBehandlingMedVedtaksbrevutsending) {
-        return <BehandlingUtenVedtaksbrevAdvarsel />;
-    }
-
-    if (behandling.årsak === BehandlingÅrsak.IVERKSETTE_KA_VEDTAK) {
-        return <IverksetteKaVedtakAdvarsel />;
-    }
-
     return (
         <VStack gap={'space-24'}>
-            <Vedtaksmeny erBehandlingMedVedtaksbrevutsending={erBehandlingMedVedtaksbrevutsending} />
+            <Vedtaksmeny />
             <VStack gap={'space-12'}>
                 {slettSammensattKontrollsakError && (
                     <LocalAlert status={'error'}>
