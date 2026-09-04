@@ -1,17 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
+import { hentKontantstøtteBehandlinger } from '@api/hentKontantstøtteBehandlinger';
+import { MetaKey } from '@hooks/meta/metaKey';
+import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
+import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
 
-import { useHttp } from '@navikt/familie-http';
-
-import { hentKontantstøtteBehandlinger } from '../api/hentKontantstøtteBehandlinger';
+type Options = Omit<UseQueryOptions<VisningBehandling[]>, 'queryKey' | 'queryFn'>;
 
 export const HentKontantstøttebehandlingerQueryKeyFactory = {
     kontantstøttebehandlinger: (fagsakId: number) => ['kontantstøttebehandlinger', fagsakId],
 };
 
-export function useHentKontantstøttebehandlinger(fagsakId: number, påvirkerSystemLaster: boolean = true) {
-    const { request } = useHttp();
+export function useHentKontantstøttebehandlinger(fagsakId: number, options?: Options) {
     return useQuery({
         queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsakId),
-        queryFn: () => hentKontantstøtteBehandlinger(request, fagsakId, påvirkerSystemLaster),
+        queryFn: () => hentKontantstøtteBehandlinger(fagsakId),
+        meta: { [MetaKey.VIS_SYSTEMET_LASTER]: true },
+        ...options,
     });
 }
