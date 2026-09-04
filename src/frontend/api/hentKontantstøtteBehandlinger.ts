@@ -1,17 +1,8 @@
-import type { FamilieRequest } from '@navikt/familie-http/dist/HttpProvider';
+import { apiClient } from '@api/client/apiClient';
+import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
 
-import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
-import { RessursResolver } from '../utils/ressursResolver';
-
-export async function hentKontantstøtteBehandlinger(
-    request: FamilieRequest,
-    fagsakId: number,
-    påvirkerSystemLaster: boolean = true
-): Promise<VisningBehandling[]> {
-    const ressurs = await request<void, VisningBehandling[]>({
-        method: 'GET',
+export async function hentKontantstøtteBehandlinger(fagsakId: number): Promise<VisningBehandling[]> {
+    return apiClient.get<void, VisningBehandling[]>({
         url: `/familie-ks-sak/api/behandlinger/fagsak/${fagsakId}`,
-        påvirkerSystemLaster,
     });
-    return RessursResolver.resolveToPromise(ressurs);
 }
