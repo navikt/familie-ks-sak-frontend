@@ -1,112 +1,49 @@
-import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { Regelverk, Resultat } from '@typer/vilkår';
+import { useWatch } from 'react-hook-form';
 
-import { Box, InlineMessage, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { InlineMessage } from '@navikt/ds-react';
 
-import { useMedlemskapAnnenForelder } from './MedlemskapAnnenForelderContext';
-import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
-import { VilkårSkjema } from '../../VilkårSkjema';
+import { JA_NEI_ALTERNATIVER, ResultatFelt } from '../../ResultatFelt';
+import { useVilkårResultatSkjema, VilkårResultatFelt } from '../../useVilkårResultatSkjema';
+import { VilkårSkjema, type VilkårProps } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
 
-type MedlemskapAnnenForelderProps = IVilkårSkjemaBaseProps;
-
-export const MedlemskapAnnenForelder = ({
+export function MedlemskapAnnenForelder({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
     settFokusPåLeggTilPeriodeKnapp,
-}: MedlemskapAnnenForelderProps) => {
-    const erLesevisning = useErLesevisning();
-
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useMedlemskapAnnenForelder(
+}: VilkårProps) {
+    const { form, onSubmit } = useVilkårResultatSkjema({
         lagretVilkårResultat,
-        person
-    );
+        person,
+        settFokusPåLeggTilPeriodeKnapp,
+    });
 
-    const skjema = vilkårSkjemaContext.skjema;
-
-    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
-
-    function toggleForm(visAlert: boolean) {
-        toggleRad(visAlert && finnesEndringerSomIkkeErLagret());
-    }
-
-    const nullstillAvslagBegrunnelser = () => {
-        skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
-        skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
-    };
+    const vurderesEtter = useWatch({ control: form.control, name: VilkårResultatFelt.VURDERES_ETTER });
 
     return (
-        <VilkårTabellRad
-            lagretVilkårResultat={lagretVilkårResultat}
-            erVilkårEkspandert={erRadEkspandert}
-            toggleForm={toggleForm}
-        >
+        <VilkårTabellRad lagretVilkårResultat={lagretVilkårResultat} form={form} onSubmit={onSubmit}>
             <VilkårSkjema
-                vilkårSkjemaContext={vilkårSkjemaContext}
-                visVurderesEtter={true}
-                visSpørsmål={false}
                 lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
-                toggleForm={toggleForm}
                 person={person}
-                lesevisning={erLesevisning}
-                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
+                visVurderesEtter
             >
-                <br />
-
-                {skjema.felter.vurderesEtter.verdi === Regelverk.EØS_FORORDNINGEN && (
-                    <Box marginBlock={'space-16 space-0'}>
-                        <InlineMessage status="info">
-                            Du må vurdere dette vilkåret når den andre forelderen er omfattet av norsk lovgivning og
-                            søker har selvstendig rett
-                        </InlineMessage>
-                        <br />
-                    </Box>
+                {vurderesEtter === Regelverk.EØS_FORORDNINGEN && (
+                    <InlineMessage status="info">
+                        Du må vurdere dette vilkåret når den andre forelderen er omfattet av norsk lovgivning og søker
+                        har selvstendig rett
+                    </InlineMessage>
                 )}
-
-                <RadioGroup
-                    legend={
-                        <Label>
-                            {vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
-                        </Label>
-                    }
-                    value={skjema.felter.resultat.verdi}
-                    error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
-                    readOnly={erLesevisning}
-                >
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.OPPFYLT}
-                        onChange={() => {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
-                            nullstillAvslagBegrunnelser();
-                        }}
-                    >
-                        Ja
-                    </Radio>
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.IKKE_OPPFYLT}
-                        onChange={() => {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
-                        }}
-                    >
-                        Nei
-                    </Radio>
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.IKKE_AKTUELT}
-                        onChange={() => {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_AKTUELT);
-                            nullstillAvslagBegrunnelser();
-                        }}
-                    >
-                        Ikke aktuelt - Bor ikke sammen
-                    </Radio>
-                </RadioGroup>
+                <ResultatFelt
+                    legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
+                    alternativer={[
+                        ...JA_NEI_ALTERNATIVER,
+                        { verdi: Resultat.IKKE_AKTUELT, label: 'Ikke aktuelt - Bor ikke sammen' },
+                    ]}
+                />
             </VilkårSkjema>
         </VilkårTabellRad>
     );
-};
+}

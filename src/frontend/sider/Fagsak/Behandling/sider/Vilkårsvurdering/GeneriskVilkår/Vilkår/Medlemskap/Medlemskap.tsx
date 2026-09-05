@@ -1,57 +1,43 @@
-import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { Regelverk, Resultat } from '@typer/vilkår';
+import { useWatch } from 'react-hook-form';
 
-import { Box, InlineMessage, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { Box, InlineMessage } from '@navikt/ds-react';
 
-import { useMedlemskap } from './MedlemskapContext';
-import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
-import { VilkårSkjema } from '../../VilkårSkjema';
+import { IKKE_AKTUELT_ALTERNATIV, JA_NEI_ALTERNATIVER, ResultatFelt } from '../../ResultatFelt';
+import { useVilkårResultatSkjema, VilkårResultatFelt } from '../../useVilkårResultatSkjema';
+import { VilkårSkjema, type VilkårProps } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
 
-type MedlemskapProps = IVilkårSkjemaBaseProps;
-
-export const Medlemskap = ({
+export function Medlemskap({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
     settFokusPåLeggTilPeriodeKnapp,
-}: MedlemskapProps) => {
-    const erLesevisning = useErLesevisning();
-
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } = useMedlemskap(
+}: VilkårProps) {
+    const { form, onSubmit } = useVilkårResultatSkjema({
         lagretVilkårResultat,
-        person
-    );
+        person,
+        settFokusPåLeggTilPeriodeKnapp,
+    });
 
-    const skjema = vilkårSkjemaContext.skjema;
+    const vurderesEtter = useWatch({ control: form.control, name: VilkårResultatFelt.VURDERES_ETTER });
+    const vurderesEtterEøs = vurderesEtter === Regelverk.EØS_FORORDNINGEN;
 
-    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
+    const skalViseDatoVarsel =
+        lagretVilkårResultat.resultat === Resultat.IKKE_VURDERT && lagretVilkårResultat.periode.fom !== undefined;
 
-    function toggleForm(visAlert: boolean) {
-        toggleRad(visAlert && finnesEndringerSomIkkeErLagret());
-    }
-
-    const nullstillAvslagBegrunnelser = () => {
-        skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
-        skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
-    };
     return (
-        <VilkårTabellRad
-            lagretVilkårResultat={lagretVilkårResultat}
-            erVilkårEkspandert={erRadEkspandert}
-            toggleForm={toggleForm}
-        >
+        <VilkårTabellRad lagretVilkårResultat={lagretVilkårResultat} form={form} onSubmit={onSubmit}>
             <VilkårSkjema
-                vilkårSkjemaContext={vilkårSkjemaContext}
-                visVurderesEtter={true}
-                visSpørsmål={false}
                 lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
-                toggleForm={toggleForm}
                 person={person}
-                lesevisning={erLesevisning}
-                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
+                visVurderesEtter
+                onVurderesEtterEndret={nyttRegelverk => {
+                    if (nyttRegelverk === Regelverk.NASJONALE_REGLER) {
+                        form.setValue(VilkårResultatFelt.RESULTAT, Resultat.IKKE_VURDERT, { shouldDirty: true });
+                    }
+                }}
                 periodeChildren={
                     skalViseDatoVarsel && (
                         <Box marginBlock={'space-16 space-0'}>
@@ -62,60 +48,18 @@ export const Medlemskap = ({
                     )
                 }
             >
-                <br />
-
-                {skjema.felter.vurderesEtter.verdi === Regelverk.EØS_FORORDNINGEN && (
-                    <Box marginBlock={'space-16 space-0'}>
-                        <InlineMessage status="info">
-                            Du må vurdere dette vilkåret når søker er omfattet av norsk lovgivning
-                        </InlineMessage>
-                        <br />
-                    </Box>
+                {vurderesEtterEøs && (
+                    <InlineMessage status="info">
+                        Du må vurdere dette vilkåret når søker er omfattet av norsk lovgivning
+                    </InlineMessage>
                 )}
-
-                <RadioGroup
-                    legend={
-                        <Label>
-                            {vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
-                        </Label>
+                <ResultatFelt
+                    legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
+                    alternativer={
+                        vurderesEtterEøs ? [...JA_NEI_ALTERNATIVER, IKKE_AKTUELT_ALTERNATIV] : JA_NEI_ALTERNATIVER
                     }
-                    value={skjema.felter.resultat.verdi}
-                    error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
-                    readOnly={erLesevisning}
-                >
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.OPPFYLT}
-                        onChange={() => {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
-                            nullstillAvslagBegrunnelser();
-                        }}
-                    >
-                        Ja
-                    </Radio>
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.IKKE_OPPFYLT}
-                        onChange={() => {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
-                        }}
-                    >
-                        Nei
-                    </Radio>
-                    {skjema.felter.vurderesEtter.verdi === Regelverk.EØS_FORORDNINGEN && (
-                        <Radio
-                            name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                            value={Resultat.IKKE_AKTUELT}
-                            onChange={() => {
-                                skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_AKTUELT);
-                                nullstillAvslagBegrunnelser();
-                            }}
-                        >
-                            Ikke aktuelt
-                        </Radio>
-                    )}
-                </RadioGroup>
+                />
             </VilkårSkjema>
         </VilkårTabellRad>
     );
-};
+}

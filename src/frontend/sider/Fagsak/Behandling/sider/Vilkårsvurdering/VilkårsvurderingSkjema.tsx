@@ -10,7 +10,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { Box, Button, LocalAlert, Stack } from '@navikt/ds-react';
 
 import { GeneriskAnnenVurdering } from './GeneriskAnnenVurdering/GeneriskAnnenVurdering';
-import GeneriskVilkår from './GeneriskVilkår/GeneriskVilkår';
+import { GeneriskVilkår } from './GeneriskVilkår/GeneriskVilkår';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import styles from './VilkårsvurderingSkjema.module.css';

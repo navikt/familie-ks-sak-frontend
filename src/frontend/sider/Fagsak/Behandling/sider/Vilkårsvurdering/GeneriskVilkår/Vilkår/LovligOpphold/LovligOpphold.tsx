@@ -1,58 +1,34 @@
-import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { Resultat } from '@typer/vilkår';
 
-import { Box, InlineMessage, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { Box, InlineMessage } from '@navikt/ds-react';
 
-import { useLovligOpphold } from './LovligOppholdContext';
-import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
-import { VilkårSkjema } from '../../VilkårSkjema';
+import { IKKE_AKTUELT_ALTERNATIV, JA_NEI_ALTERNATIVER, ResultatFelt } from '../../ResultatFelt';
+import { useVilkårResultatSkjema } from '../../useVilkårResultatSkjema';
+import { VilkårSkjema, type VilkårProps } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
 
-type LovligOppholdProps = IVilkårSkjemaBaseProps;
-
-export const LovligOpphold = ({
+export function LovligOpphold({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
     settFokusPåLeggTilPeriodeKnapp,
-}: LovligOppholdProps) => {
-    const erLesevisning = useErLesevisning();
-
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, skalViseDatoVarsel } = useLovligOpphold(
+}: VilkårProps) {
+    const { form, onSubmit } = useVilkårResultatSkjema({
         lagretVilkårResultat,
-        person
-    );
+        person,
+        settFokusPåLeggTilPeriodeKnapp,
+    });
 
-    const skjema = vilkårSkjemaContext.skjema;
-
-    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
-
-    function toggleForm(visAlert: boolean) {
-        toggleRad(visAlert && finnesEndringerSomIkkeErLagret());
-    }
-
-    const nullstillAvslagBegrunnelser = () => {
-        skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
-        skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
-    };
+    const skalViseDatoVarsel =
+        lagretVilkårResultat.resultat === Resultat.IKKE_VURDERT && lagretVilkårResultat.periode.fom !== undefined;
 
     return (
-        <VilkårTabellRad
-            lagretVilkårResultat={lagretVilkårResultat}
-            erVilkårEkspandert={erRadEkspandert}
-            toggleForm={toggleForm}
-        >
+        <VilkårTabellRad lagretVilkårResultat={lagretVilkårResultat} form={form} onSubmit={onSubmit}>
             <VilkårSkjema
-                vilkårSkjemaContext={vilkårSkjemaContext}
-                visVurderesEtter={true}
-                visSpørsmål={false}
                 lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
-                toggleForm={toggleForm}
                 person={person}
-                lesevisning={erLesevisning}
-                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
+                visVurderesEtter
                 periodeChildren={
                     skalViseDatoVarsel && (
                         <Box marginBlock={'space-16 space-0'}>
@@ -63,49 +39,11 @@ export const LovligOpphold = ({
                     )
                 }
             >
-                <br />
-
-                <RadioGroup
-                    legend={
-                        <Label>
-                            {vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
-                        </Label>
-                    }
-                    value={skjema.felter.resultat.verdi}
-                    error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
-                    readOnly={erLesevisning}
-                >
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.OPPFYLT}
-                        onChange={() => {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
-                            nullstillAvslagBegrunnelser();
-                        }}
-                    >
-                        Ja
-                    </Radio>
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.IKKE_OPPFYLT}
-                        onChange={() => {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
-                        }}
-                    >
-                        Nei
-                    </Radio>
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.IKKE_AKTUELT}
-                        onChange={() => {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_AKTUELT);
-                            nullstillAvslagBegrunnelser();
-                        }}
-                    >
-                        Ikke aktuelt
-                    </Radio>
-                </RadioGroup>
+                <ResultatFelt
+                    legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
+                    alternativer={[...JA_NEI_ALTERNATIVER, IKKE_AKTUELT_ALTERNATIV]}
+                />
             </VilkårSkjema>
         </VilkårTabellRad>
     );
-};
+}

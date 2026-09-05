@@ -1,36 +1,60 @@
 import type { PropsWithChildren } from 'react';
 
-import { useBehandling } from '@hooks/useBehandling';
+import { useBehandlingId } from '@hooks/useBehandlingId';
+import VilkårResultatIkon from '@ikoner/VilkårResultatIkon';
+import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { type IVilkårResultat, uiResultat } from '@typer/vilkår';
 import { Datoformat, isoDatoPeriodeTilFormatertString, isoStringTilFormatertString } from '@utils/dato';
 import { alleRegelverk } from '@utils/vilkår';
+import { FormProvider, type SubmitHandler, type UseFormReturn } from 'react-hook-form';
 
 import { CogIcon, CogRotationIcon, PersonIcon } from '@navikt/aksel-icons';
 import { BodyShort, HStack, Table, Tooltip } from '@navikt/ds-react';
 
+import type { VilkårResultatFormValues } from './useVilkårResultatSkjema';
 import { vilkårFeilmeldingId } from './VilkårTabell';
 import Styles from './VilkårTabellRad.module.css';
-import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
 
 interface Props extends PropsWithChildren {
-    toggleForm: (visAlert: boolean) => void;
     lagretVilkårResultat: IVilkårResultat;
-    erVilkårEkspandert: boolean;
+    form: UseFormReturn<VilkårResultatFormValues>;
+    onSubmit: SubmitHandler<VilkårResultatFormValues>;
 }
 
-export function VilkårTabellRad({ toggleForm, lagretVilkårResultat, erVilkårEkspandert, children }: Props) {
-    const behandling = useBehandling();
+export function VilkårTabellRad({ lagretVilkårResultat, form, onSubmit, children }: Props) {
+    const behandlingId = useBehandlingId();
+    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
+
+    const {
+        handleSubmit,
+        reset,
+        formState: { isDirty },
+    } = form;
+
+    const toggleForm = () => {
+        const harUlagredeEndringer = erRadEkspandert && isDirty;
+        toggleRad(harUlagredeEndringer);
+        if (!harUlagredeEndringer) {
+            reset();
+        }
+    };
 
     const periodeErTom = !lagretVilkårResultat.periode.fom && !lagretVilkårResultat.periode.tom;
 
     return (
         <Table.ExpandableRow
-            key={`${lagretVilkårResultat.id}-${erVilkårEkspandert ? 'ekspandert' : 'lukket'}`} // Pga. React.Activity ikke fungerer så bra med Aksel, se https://github.com/navikt/aksel/issues/5017
-            open={erVilkårEkspandert}
+            key={`${lagretVilkårResultat.id}-${erRadEkspandert ? 'ekspandert' : 'lukket'}`} // Pga. React.Activity ikke fungerer så bra med Aksel, se https://github.com/navikt/aksel/issues/5017
+            open={erRadEkspandert}
             togglePlacement={'right'}
-            onOpenChange={() => toggleForm(true)}
+            onOpenChange={toggleForm}
             id={vilkårFeilmeldingId(lagretVilkårResultat)}
-            content={children}
+            content={
+                erRadEkspandert ? (
+                    <FormProvider {...form}>
+                        <form onSubmit={handleSubmit(onSubmit)}>{children}</form>
+                    </FormProvider>
+                ) : null
+            }
         >
             <Table.DataCell className={Styles.celle}>
                 <HStack justify={'start'} align={'center'} gap={'space-6'} wrap={false}>
@@ -74,7 +98,7 @@ export function VilkårTabellRad({ toggleForm, lagretVilkårResultat, erVilkårE
                     )}
                     <BodyShort>
                         {lagretVilkårResultat.erVurdert
-                            ? lagretVilkårResultat.behandlingId === behandling.behandlingId
+                            ? lagretVilkårResultat.behandlingId === behandlingId
                                 ? 'Vurdert i denne behandlingen'
                                 : `Vurdert ${isoStringTilFormatertString({
                                       isoString: lagretVilkårResultat.endretTidspunkt,
