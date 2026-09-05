@@ -9,7 +9,7 @@ import { annenVurderingConfig, type IVilk책rConfig, type IVilk책rResultat, vilk�
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { Box, Button, LocalAlert, Stack } from '@navikt/ds-react';
 
-import GeneriskAnnenVurdering from './GeneriskAnnenVurdering/GeneriskAnnenVurdering';
+import { GeneriskAnnenVurdering } from './GeneriskAnnenVurdering/GeneriskAnnenVurdering';
 import GeneriskVilk책r from './GeneriskVilk책r/GeneriskVilk책r';
 import Registeropplysninger from './Registeropplysninger/Registeropplysninger';
 import { useVilk책rsvurderingContext } from './Vilk책rsvurderingContext';
