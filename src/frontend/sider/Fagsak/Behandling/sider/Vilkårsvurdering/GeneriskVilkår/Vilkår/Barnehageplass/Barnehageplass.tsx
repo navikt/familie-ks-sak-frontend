@@ -1,155 +1,72 @@
-import { useEffect } from 'react';
+import { type UtdypendeVilkårsvurdering, UtdypendeVilkårsvurderingGenerell } from '@typer/vilkår';
+import { useWatch } from 'react-hook-form';
 
-import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
-import { Resultat, UtdypendeVilkårsvurderingGenerell } from '@typer/vilkår';
-import styled from 'styled-components';
-
-import { BodyShort, Checkbox, Radio, RadioGroup, TextField } from '@navikt/ds-react';
-
-import { muligeUtdypendeVilkårsvurderinger, useBarnehageplass } from './BarnehageplassContext';
-import { antallTimerKvalifiserer } from './BarnehageplassUtils';
-import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
-import { VilkårSkjema } from '../../VilkårSkjema';
+import { AntallTimerFelt } from './AntallTimerFelt';
+import { utledBarnehageplassResultat } from './BarnehageplassUtils';
+import { HarBarnehageplassFelt } from './HarBarnehageplassFelt';
+import { SøkerHarMeldtFraOmBarnehageplassFelt } from './SøkerHarMeldtFraOmBarnehageplassFelt';
+import { useVilkårResultatSkjema, VilkårResultatFelt } from '../../useVilkårResultatSkjema';
+import { VilkårSkjema, type VilkårProps } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
 
-const StyledTextField = styled(TextField)`
-    margin-bottom: 1rem;
-`;
+const MULIGE_UTDYPENDE_VILKÅRSVURDERINGER: UtdypendeVilkårsvurdering[] = [
+    UtdypendeVilkårsvurderingGenerell.SOMMERFERIE,
+];
 
-type BarnehageplassProps = IVilkårSkjemaBaseProps;
-
-export const Barnehageplass = ({
+export function Barnehageplass({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
     settFokusPåLeggTilPeriodeKnapp,
-}: BarnehageplassProps) => {
-    const erLesevisning = useErLesevisning();
+}: VilkårProps) {
+    const { form, onSubmit } = useVilkårResultatSkjema({
+        lagretVilkårResultat,
+        person,
+        settFokusPåLeggTilPeriodeKnapp,
+    });
 
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret, harBarnehageplass, settHarBarnehageplass } =
-        useBarnehageplass(lagretVilkårResultat, person);
+    const { control, getValues, setValue } = form;
 
-    const skjema = vilkårSkjemaContext.skjema;
+    const harBarnehageplass = useWatch({ control, name: VilkårResultatFelt.HAR_BARNEHAGEPLASS });
+    const periode = useWatch({ control, name: VilkårResultatFelt.PERIODE });
 
-    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
-
-    function toggleForm(visAlert: boolean) {
-        toggleRad(visAlert && finnesEndringerSomIkkeErLagret());
-    }
-
-    const oppdaterResultat = (barnehageplass: boolean, antallTimer: string) => {
-        if (!barnehageplass) {
-            if (
-                skjema.felter.utdypendeVilkårsvurdering.verdi.find(
-                    utdypende => utdypende === UtdypendeVilkårsvurderingGenerell.SOMMERFERIE
-                )
-            ) {
-                skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
-            } else {
-                skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
-            }
-        } else {
-            if (antallTimerKvalifiserer(Number(antallTimer))) {
-                skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
-            } else {
-                skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT);
-            }
-        }
+    const oppdaterResultat = () => {
+        const nyttResultat = utledBarnehageplassResultat(
+            getValues(VilkårResultatFelt.HAR_BARNEHAGEPLASS),
+            getValues(VilkårResultatFelt.ANTALL_TIMER),
+            getValues(VilkårResultatFelt.UTDYPENDE_VILKÅRSVURDERINGER)
+        );
+        setValue(VilkårResultatFelt.RESULTAT, nyttResultat, { shouldDirty: true });
     };
-
-    const onAntallTimerOppdatert = (antallTimer: string) => {
-        oppdaterResultat(harBarnehageplass, antallTimer);
-    };
-
-    const onBarnehageplassOppdatert = (barnehageplass: boolean) => {
-        settHarBarnehageplass(barnehageplass);
-        oppdaterResultat(barnehageplass, skjema.felter.antallTimer.verdi);
-    };
-
-    useEffect(() => {
-        oppdaterResultat(harBarnehageplass, skjema.felter.antallTimer.verdi);
-    }, [skjema.felter.utdypendeVilkårsvurdering]);
 
     return (
-        <VilkårTabellRad
-            lagretVilkårResultat={lagretVilkårResultat}
-            erVilkårEkspandert={erRadEkspandert}
-            toggleForm={toggleForm}
-        >
+        <VilkårTabellRad lagretVilkårResultat={lagretVilkårResultat} form={form} onSubmit={onSubmit}>
             <VilkårSkjema
-                vilkårSkjemaContext={vilkårSkjemaContext}
-                visVurderesEtter={false}
-                visSpørsmål={false}
-                muligeUtdypendeVilkårsvurderinger={harBarnehageplass ? [] : muligeUtdypendeVilkårsvurderinger}
                 lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
-                toggleForm={toggleForm}
                 person={person}
-                lesevisning={erLesevisning}
-                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
-                periodeChildren={
-                    skjema.felter.periode.verdi.tom && (
-                        <>
-                            {skjema.felter.søkerHarMeldtFraOmBarnehageplass.verdi && (
-                                <BodyShort as={'em'} size="small">
-                                    Merk at tom-dato skal være dagen før barnehagestart
-                                </BodyShort>
-                            )}
-                            <Checkbox
-                                defaultChecked={skjema.felter.søkerHarMeldtFraOmBarnehageplass.verdi}
-                                onChange={event => {
-                                    skjema.felter.søkerHarMeldtFraOmBarnehageplass.validerOgSettFelt(
-                                        event.target.checked
-                                    );
-                                }}
-                            >
-                                Søker har meldt fra om barnehageplass
-                            </Checkbox>
-                        </>
-                    )
-                }
+                muligeUtdypendeVilkårsvurderinger={harBarnehageplass ? [] : MULIGE_UTDYPENDE_VILKÅRSVURDERINGER}
+                onUtdypendeVilkårsvurderingerEndret={oppdaterResultat}
+                periodeChildren={periode.tom ? <SøkerHarMeldtFraOmBarnehageplassFelt /> : null}
+                onPeriodeEndret={nyPeriode => {
+                    if (!nyPeriode.tom) {
+                        setValue(VilkårResultatFelt.SØKER_HAR_MELDT_FRA_OM_BARNEHAGEPLASS, false, {
+                            shouldDirty: true,
+                        });
+                    }
+                }}
             >
-                <RadioGroup
+                <HarBarnehageplassFelt
                     legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål() : ''}
-                    value={skjema.felter.resultat.verdi !== Resultat.IKKE_VURDERT ? harBarnehageplass : undefined}
-                    error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
-                    readOnly={erLesevisning}
-                >
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={true}
-                        onChange={() => {
-                            onBarnehageplassOppdatert(true);
-                        }}
-                    >
-                        Ja
-                    </Radio>
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={false}
-                        onChange={() => {
-                            skjema.felter.antallTimer.validerOgSettFelt('');
-                            onBarnehageplassOppdatert(false);
-                        }}
-                    >
-                        Nei
-                    </Radio>
-                </RadioGroup>
-                {harBarnehageplass && (
-                    <StyledTextField
-                        label={'Antall timer'}
-                        type={'number'}
-                        readOnly={erLesevisning}
-                        value={skjema.felter.antallTimer.verdi}
-                        onChange={event => {
-                            skjema.felter.antallTimer.validerOgSettFelt(event.target.value);
-                            onAntallTimerOppdatert(event.target.value);
-                        }}
-                        error={skjema.visFeilmeldinger ? skjema.felter.antallTimer.feilmelding : ''}
-                    />
-                )}
+                    onEndret={nyHarBarnehageplass => {
+                        if (!nyHarBarnehageplass) {
+                            setValue(VilkårResultatFelt.ANTALL_TIMER, '', { shouldDirty: true });
+                        }
+                        oppdaterResultat();
+                    }}
+                />
+                {harBarnehageplass && <AntallTimerFelt onEndret={oppdaterResultat} />}
             </VilkårSkjema>
         </VilkårTabellRad>
     );
-};
+}

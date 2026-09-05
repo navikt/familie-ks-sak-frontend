@@ -1,58 +1,65 @@
-import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
-import type { Regelverk } from '@typer/vilkår';
+import {
+    Regelverk,
+    type UtdypendeVilkårsvurdering,
+    UtdypendeVilkårsvurderingDeltBosted,
+    UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
+    UtdypendeVilkårsvurderingGenerell,
+} from '@typer/vilkår';
+import { useWatch } from 'react-hook-form';
 
-import { bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår, useBorMedSøker } from './BorMedSøkerContext';
-import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
-import { VilkårSkjema } from '../../VilkårSkjema';
+import { useVilkårResultatSkjema, VilkårResultatFelt } from '../../useVilkårResultatSkjema';
+import { VilkårSkjema, type VilkårProps } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
 
-type BosattIRiketProps = IVilkårSkjemaBaseProps;
+function bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(
+    vurderesEtter: Regelverk | null | undefined
+): UtdypendeVilkårsvurdering[] {
+    if (vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
+        return [
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_SØKER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_ANNEN_FORELDER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_ALENE_I_ANNET_EØS_LAND,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_NORGE_MED_SØKER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_STORBRITANNIA_MED_SØKER,
+            UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_STORBRITANNIA_MED_ANNEN_FORELDER,
+            UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED,
+            UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED_SKAL_IKKE_DELES,
+            UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
+        ];
+    }
+    return [
+        UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG,
+        UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED,
+        UtdypendeVilkårsvurderingDeltBosted.DELT_BOSTED_SKAL_IKKE_DELES,
+    ];
+}
 
-export const BorMedSøker = ({
+export function BorMedSøker({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
     settFokusPåLeggTilPeriodeKnapp,
-}: BosattIRiketProps) => {
-    const erLesevisning = useErLesevisning();
+}: VilkårProps) {
+    const { form, onSubmit } = useVilkårResultatSkjema({
+        lagretVilkårResultat,
+        person,
+        settFokusPåLeggTilPeriodeKnapp,
+    });
 
-    const {
-        vilkårSkjemaContext,
-        finnesEndringerSomIkkeErLagret,
-        muligeUtdypendeVilkårsvurderinger,
-        settMuligeUtdypendeVilkårsvurderinger,
-    } = useBorMedSøker(lagretVilkårResultat, person);
-
-    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
-
-    function toggleForm(visAlert: boolean) {
-        toggleRad(visAlert && finnesEndringerSomIkkeErLagret());
-    }
+    const vurderesEtter = useWatch({ control: form.control, name: VilkårResultatFelt.VURDERES_ETTER });
 
     return (
-        <VilkårTabellRad
-            lagretVilkårResultat={lagretVilkårResultat}
-            erVilkårEkspandert={erRadEkspandert}
-            toggleForm={toggleForm}
-        >
+        <VilkårTabellRad lagretVilkårResultat={lagretVilkårResultat} form={form} onSubmit={onSubmit}>
             <VilkårSkjema
-                vilkårSkjemaContext={vilkårSkjemaContext}
-                visVurderesEtter={true}
-                visSpørsmål={true}
-                muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
                 lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
-                toggleForm={toggleForm}
                 person={person}
-                lesevisning={erLesevisning}
-                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
-                oppdaterMuligeUtdypendeVilkårsvurderinger={(vurderesEtter: Regelverk): void => {
-                    settMuligeUtdypendeVilkårsvurderinger(
-                        bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vurderesEtter)
-                    );
-                }}
+                visVurderesEtter
+                visSpørsmål
+                muligeUtdypendeVilkårsvurderinger={bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(
+                    vurderesEtter
+                )}
             />
         </VilkårTabellRad>
     );
-};
+}

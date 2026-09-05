@@ -1,123 +1,112 @@
-import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
+import { useBehandling } from '@hooks/useBehandling';
 import { Lovverk } from '@typer/lovverk';
-import { Resultat } from '@typer/vilkår';
+import { type UtdypendeVilkårsvurdering, UtdypendeVilkårsvurderingGenerell, VilkårType } from '@typer/vilkår';
 import {
     datoForLovendringAugust24,
     type IIsoDatoPeriode,
     isoStringTilDate,
     isoStringTilDateEllerUndefinedHvisUgyldigDato,
 } from '@utils/dato';
+import { sorterPåDato } from '@utils/formatter';
 import { utledLovverk } from '@utils/lovverk';
 import { isBefore } from 'date-fns';
+import { useWatch } from 'react-hook-form';
 
-import { Label, Radio, RadioGroup } from '@navikt/ds-react';
-
-import { muligeUtdypendeVilkårsvurderinger, useBarnetsAlder } from './BarnetsAlderContext';
-import Datovelger from '../../../../../../../../komponenter/Datovelger/Datovelger';
-import type { IVilkårSkjemaBaseProps } from '../../VilkårSkjema';
-import { VilkårSkjema } from '../../VilkårSkjema';
+import { AdopsjonsdatoFelt } from './AdopsjonsdatoFelt';
+import { validerBegrunnelseForBarnetsAlder } from '../../../validering';
+import { ResultatFelt } from '../../ResultatFelt';
+import {
+    useVilkårResultatSkjema,
+    utledAdopsjonsdatoFraPerson,
+    VilkårResultatFelt,
+} from '../../useVilkårResultatSkjema';
+import { VilkårSkjema, type VilkårProps } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
+
+const MULIGE_UTDYPENDE_VILKÅRSVURDERINGER: UtdypendeVilkårsvurdering[] = [UtdypendeVilkårsvurderingGenerell.ADOPSJON];
 
 const hentSpørsmålForLovverkFør2025 = (periode: IIsoDatoPeriode) => {
     const fraOgMedDato = isoStringTilDateEllerUndefinedHvisUgyldigDato(periode.fom);
     const fraOgMedErFørLovendring = fraOgMedDato && isBefore(fraOgMedDato, datoForLovendringAugust24);
-    if (fraOgMedErFørLovendring) {
-        return 'Er barnet mellom 1 og 2 år eller adoptert?';
-    } else {
-        return 'Er barnet mellom 13 og 19 måneder eller adoptert?';
-    }
+    return fraOgMedErFørLovendring
+        ? 'Er barnet mellom 1 og 2 år eller adoptert?'
+        : 'Er barnet mellom 13 og 19 måneder eller adoptert?';
 };
 
-const hentSpørsmålForLovverk = (lovverk: Lovverk | undefined, periode: IIsoDatoPeriode) => {
-    if (!lovverk) {
-        throw Error('Lovverk skal finnes på barnets alder');
-    }
-    if (lovverk === Lovverk.LOVENDRING_FEBRUAR_2025) {
-        return 'Er barnet mellom 12 og 20 måneder eller adoptert?';
-    } else {
-        return hentSpørsmålForLovverkFør2025(periode);
-    }
-};
+const hentSpørsmålForLovverk = (lovverk: Lovverk, periode: IIsoDatoPeriode) =>
+    lovverk === Lovverk.LOVENDRING_FEBRUAR_2025
+        ? 'Er barnet mellom 12 og 20 måneder eller adoptert?'
+        : hentSpørsmålForLovverkFør2025(periode);
 
-type BarnetsAlderProps = IVilkårSkjemaBaseProps;
-
-export const BarnetsAlder = ({
+export function BarnetsAlder({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
     settFokusPåLeggTilPeriodeKnapp,
-}: BarnetsAlderProps) => {
-    const erLesevisning = useErLesevisning();
+}: VilkårProps) {
+    const { personResultater } = useBehandling();
 
-    const { vilkårSkjemaContext, finnesEndringerSomIkkeErLagret } = useBarnetsAlder(lagretVilkårResultat, person);
+    const { form, onSubmit } = useVilkårResultatSkjema({
+        lagretVilkårResultat,
+        person,
+        settFokusPåLeggTilPeriodeKnapp,
+    });
 
-    const { erRadEkspandert, toggleRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
+    const { control, setValue } = form;
 
-    function toggleForm(visAlert: boolean) {
-        toggleRad(visAlert && finnesEndringerSomIkkeErLagret());
-    }
+    const utdypendeVilkårsvurderinger = useWatch({ control, name: VilkårResultatFelt.UTDYPENDE_VILKÅRSVURDERINGER });
+    const adopsjonsdato = useWatch({ control, name: VilkårResultatFelt.ADOPSJONSDATO });
+    const periode = useWatch({ control, name: VilkårResultatFelt.PERIODE });
 
-    const skjema = vilkårSkjemaContext.skjema;
+    const erAdopsjon = utdypendeVilkårsvurderinger.includes(UtdypendeVilkårsvurderingGenerell.ADOPSJON);
 
-    const lovverk = utledLovverk(isoStringTilDate(person.fødselsdato), skjema.felter.adopsjonsdato.verdi);
-    const spørsmål = hentSpørsmålForLovverk(lovverk, skjema.felter.periode.verdi);
+    const førsteLagredeFom = personResultater
+        .find(personResultat => personResultat.personIdent === person.personIdent)
+        ?.vilkårResultater.filter(vilkårResultat => vilkårResultat.vilkårType === VilkårType.BARNETS_ALDER)
+        .toSorted((a, b) => {
+            if (!a.periodeFom || !b.periodeFom) {
+                return 1; // Perioder som ikke har fom skal sorteres sist i lista
+            }
+            return sorterPåDato(b.periodeFom, a.periodeFom);
+        })[0]?.periodeFom;
+
+    const lovverk = utledLovverk(
+        isoStringTilDate(person.fødselsdato),
+        erAdopsjon ? (adopsjonsdato ?? undefined) : undefined
+    );
 
     return (
-        <VilkårTabellRad
-            lagretVilkårResultat={lagretVilkårResultat}
-            erVilkårEkspandert={erRadEkspandert}
-            toggleForm={toggleForm}
-        >
+        <VilkårTabellRad lagretVilkårResultat={lagretVilkårResultat} form={form} onSubmit={onSubmit}>
             <VilkårSkjema
-                vilkårSkjemaContext={vilkårSkjemaContext}
-                visVurderesEtter={false}
-                visSpørsmål={false}
-                muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
                 lagretVilkårResultat={lagretVilkårResultat}
                 vilkårFraConfig={vilkårFraConfig}
-                toggleForm={toggleForm}
                 person={person}
-                lesevisning={erLesevisning}
-                settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
+                muligeUtdypendeVilkårsvurderinger={MULIGE_UTDYPENDE_VILKÅRSVURDERINGER}
+                onUtdypendeVilkårsvurderingerEndret={nyeUtdypendeVilkårsvurderinger => {
+                    if (!nyeUtdypendeVilkårsvurderinger.includes(UtdypendeVilkårsvurderingGenerell.ADOPSJON)) {
+                        setValue(VilkårResultatFelt.ADOPSJONSDATO, utledAdopsjonsdatoFraPerson(person), {
+                            shouldDirty: true,
+                        });
+                    }
+                }}
                 utdypendeVilkårsvurderingChildren={
-                    skjema.felter.adopsjonsdato.erSynlig ? (
-                        <Datovelger
-                            felt={skjema.felter.adopsjonsdato}
-                            label="Adopsjonsdato"
-                            visFeilmeldinger={skjema.visFeilmeldinger}
-                            kanKunVelgeFortid
-                            readOnly={erLesevisning}
+                    erAdopsjon && (
+                        <AdopsjonsdatoFelt
+                            key={person.adopsjonsdato}
+                            fødselsdato={isoStringTilDate(person.fødselsdato)}
                         />
-                    ) : null
+                    )
+                }
+                førsteLagredeFom={førsteLagredeFom}
+                validerBegrunnelse={(begrunnelse, formValues) =>
+                    validerBegrunnelseForBarnetsAlder(begrunnelse, {
+                        vurderesEtter: formValues.vurderesEtter,
+                        utdypendeVilkårsvurderinger: formValues.utdypendeVilkårsvurderinger,
+                    })
                 }
             >
-                <RadioGroup
-                    readOnly={erLesevisning}
-                    value={skjema.felter.resultat.verdi}
-                    legend={<Label>{spørsmål}</Label>}
-                    error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
-                >
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.OPPFYLT}
-                        onChange={() => {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
-                            skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
-                            skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
-                        }}
-                    >
-                        Ja
-                    </Radio>
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.IKKE_OPPFYLT}
-                        onChange={() => skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)}
-                    >
-                        Nei
-                    </Radio>
-                </RadioGroup>
+                <ResultatFelt legend={hentSpørsmålForLovverk(lovverk, periode)} />
             </VilkårSkjema>
         </VilkårTabellRad>
     );
-};
+}

@@ -46,6 +46,7 @@ export function SlettVilkårResultat({ personIdent, vilkårResultat }: Props) {
 
     return (
         <Button
+            type={'button'}
             variant={'tertiary'}
             onClick={() => onSlettClicked()}
             loading={slettVilkårResultatIsPending}
