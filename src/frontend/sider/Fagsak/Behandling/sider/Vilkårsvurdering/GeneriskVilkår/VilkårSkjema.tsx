@@ -1,264 +1,171 @@
-import type { FocusEvent, ReactNode } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 
 import { useBehandling } from '@hooks/useBehandling';
+import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useSlettVilkårResultatError } from '@hooks/useSlettVilkårResultatError';
-import { SlettVilkårResultat } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/SlettVilkårResultat';
+import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { BehandlingÅrsak } from '@typer/behandling';
 import type { IGrunnlagPerson } from '@typer/person';
-import { PersonType } from '@typer/person';
-import type { IVilkårConfig, IVilkårResultat, UtdypendeVilkårsvurdering } from '@typer/vilkår';
-import { Regelverk, Resultat, VilkårType } from '@typer/vilkår';
-import { alleRegelverk } from '@utils/vilkår';
-import styled from 'styled-components';
+import {
+    type IVilkårConfig,
+    type IVilkårResultat,
+    type Regelverk,
+    Resultat,
+    type UtdypendeVilkårsvurdering,
+} from '@typer/vilkår';
+import type { IIsoDatoPeriode, IsoDatoString } from '@utils/dato';
+import { useFormContext, useWatch } from 'react-hook-form';
 
-import { Button, ErrorMessage, Fieldset, Label, Radio, RadioGroup, Select, Textarea, VStack } from '@navikt/ds-react';
-import { BorderNeutral, TextInfoSubtle, TextWarningSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { Button, ErrorMessage, Fieldset, HStack, VStack } from '@navikt/ds-react';
 
-import AvslagSkjema from './AvslagSkjema';
-import { UtdypendeVilkårsvurderingMultiselect } from './UtdypendeVilkårsvurderingMultiselect';
-import VelgPeriode from './VelgPeriode';
-import type { IVilkårSkjemaContext, VilkårSkjemaContextValue } from './VilkårSkjemaContext';
-import { vilkårBegrunnelseFeilmeldingId } from './VilkårTabell';
+import { AvslagBegrunnelserFelt } from './AvslagBegrunnelserFelt';
+import { BegrunnelseFelt } from './BegrunnelseFelt';
+import { ErEksplisittAvslagPåSøknadFelt } from './ErEksplisittAvslagPåSøknadFelt';
+import { PeriodeFelt } from './PeriodeFelt';
+import { ResultatFelt } from './ResultatFelt';
+import { SlettVilkårResultat } from './SlettVilkårResultat';
+import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';
+import { UtdypendeVilkårsvurderingerFelt } from './UtdypendeVilkårsvurderingerFelt';
+import { VurderesEtterFelt } from './VurderesEtterFelt';
+import { SkjemaRamme } from '../SkjemaRamme';
 
-export const FieldsetForVilkårSkjema = styled(Fieldset)<{
-    $lesevisning: boolean;
-    $ikkeVurdert: boolean;
-}>`
-    max-width: 30rem;
-    border-left: 0.125rem solid
-        ${props => {
-            if (props.$lesevisning) {
-                return BorderNeutral;
-            } else if (props.$ikkeVurdert) {
-                return TextWarningSubtle;
-            }
-            return TextInfoSubtle;
-        }};
-    padding-left: 2rem;
-`;
-
-const Knapperad = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin: 1rem 0;
-`;
-
-export interface IVilkårSkjemaBaseProps {
+export interface VilkårProps {
     lagretVilkårResultat: IVilkårResultat;
     vilkårFraConfig: IVilkårConfig;
     person: IGrunnlagPerson;
     settFokusPåLeggTilPeriodeKnapp: () => void;
 }
 
-interface IVilkårSkjema<T extends IVilkårSkjemaContext> extends IVilkårSkjemaBaseProps {
-    vilkårSkjemaContext: VilkårSkjemaContextValue<T>;
+interface Props extends PropsWithChildren {
+    lagretVilkårResultat: IVilkårResultat;
+    vilkårFraConfig: IVilkårConfig;
+    person: IGrunnlagPerson;
     visVurderesEtter?: boolean;
+    onVurderesEtterEndret?: (vurderesEtter: Regelverk) => void;
     visSpørsmål?: boolean;
     muligeUtdypendeVilkårsvurderinger?: UtdypendeVilkårsvurdering[];
+    onUtdypendeVilkårsvurderingerEndret?: (utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[]) => void;
     utdypendeVilkårsvurderingChildren?: ReactNode;
     periodeChildren?: ReactNode;
-    children?: ReactNode;
-    oppdaterMuligeUtdypendeVilkårsvurderinger?: (vurderesEtter: Regelverk) => void;
-    toggleForm: (visSkjema: boolean) => void;
-    lesevisning: boolean;
+    onPeriodeEndret?: (periode: IIsoDatoPeriode) => void;
+    førsteLagredeFom?: IsoDatoString;
+    validerBegrunnelse?: (begrunnelse: string, formValues: VilkårResultatFormValues) => string | undefined;
 }
 
-export const VilkårSkjema = <T extends IVilkårSkjemaContext>({
-    vilkårSkjemaContext,
-    visVurderesEtter,
-    visSpørsmål,
-    muligeUtdypendeVilkårsvurderinger,
-    lesevisning,
+export function VilkårSkjema({
     lagretVilkårResultat,
     vilkårFraConfig,
     person,
-    toggleForm,
-    children,
-    periodeChildren,
+    visVurderesEtter = false,
+    onVurderesEtterEndret,
+    visSpørsmål = false,
+    muligeUtdypendeVilkårsvurderinger = [],
+    onUtdypendeVilkårsvurderingerEndret,
     utdypendeVilkårsvurderingChildren,
-    oppdaterMuligeUtdypendeVilkårsvurderinger,
-    settFokusPåLeggTilPeriodeKnapp,
-}: IVilkårSkjema<T>) => {
+    periodeChildren,
+    onPeriodeEndret,
+    førsteLagredeFom,
+    validerBegrunnelse,
+    children,
+}: Props) {
     const behandling = useBehandling();
+    const erLesevisning = useErLesevisning();
 
     const slettVilkårResultatError = useSlettVilkårResultatError(lagretVilkårResultat.id);
+    const { kollapsRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
+
+    const {
+        control,
+        reset,
+        formState: { isSubmitting, errors },
+    } = useFormContext<VilkårResultatFormValues>();
+
+    const resultat = useWatch({ control, name: VilkårResultatFelt.RESULTAT });
+    const erEksplisittAvslagPåSøknad = useWatch({ control, name: VilkårResultatFelt.ER_EKSPLISITT_AVSLAG_PÅ_SØKNAD });
 
     const årsakErSøknad = behandling.årsak === BehandlingÅrsak.SØKNAD;
 
-    const { skjema, lagreVilkår, lagrerVilkår, feilmelding, nullstillSkjema } = vilkårSkjemaContext;
-
-    const errors = [feilmelding, slettVilkårResultatError?.message]
-        .filter((error): error is string => !!error)
-        .map((error, index) => <ErrorMessage key={index}>{error}</ErrorMessage>);
+    const feilmeldinger = [
+        { id: 'lagre', feilmelding: errors.root?.message },
+        { id: 'slett', feilmelding: slettVilkårResultatError?.message },
+    ].filter(({ feilmelding }) => !!feilmelding);
 
     return (
-        <FieldsetForVilkårSkjema
-            error={errors.length > 0 ? <VStack gap={'space-16'}>{errors}</VStack> : undefined}
-            errorPropagation={false}
+        <Fieldset
             legend={'Endre vilkår'}
             hideLegend
-            $lesevisning={false}
-            $ikkeVurdert={lagretVilkårResultat.resultat === Resultat.IKKE_VURDERT}
+            error={
+                feilmeldinger.length > 0 ? (
+                    <VStack gap={'space-16'}>
+                        {feilmeldinger.map(({ id, feilmelding }) => (
+                            <ErrorMessage key={id}>{feilmelding}</ErrorMessage>
+                        ))}
+                    </VStack>
+                ) : undefined
+            }
+            errorPropagation={false}
         >
-            {visVurderesEtter && (
-                <Select
-                    readOnly={lesevisning}
-                    value={skjema.felter.vurderesEtter.verdi}
-                    label={'Vurderes etter'}
-                    onChange={event => {
-                        skjema.felter.vurderesEtter.validerOgSettFelt(event.target.value as Regelverk);
-                        if (oppdaterMuligeUtdypendeVilkårsvurderinger) {
-                            oppdaterMuligeUtdypendeVilkårsvurderinger(event.target.value as Regelverk);
-                        }
-
-                        if (
-                            (event.target.value as Regelverk) === Regelverk.NASJONALE_REGLER &&
-                            VilkårType.MEDLEMSKAP === lagretVilkårResultat.vilkårType
-                        ) {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_VURDERT);
-                        }
-                    }}
-                >
-                    {Object.entries(alleRegelverk).map(
-                        ([regelverk, { tekst }]: [string, { tekst: string; symbol: ReactNode }]) => {
-                            return (
-                                <option
-                                    key={regelverk}
-                                    aria-selected={skjema.felter.vurderesEtter.verdi === regelverk}
-                                    value={regelverk}
-                                >
-                                    {tekst}
-                                </option>
-                            );
-                        }
-                    )}
-                </Select>
-            )}
-            {visSpørsmål && (
-                <RadioGroup
-                    readOnly={lesevisning}
-                    value={skjema.felter.resultat.verdi}
-                    legend={
-                        <Label>
-                            {vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
-                        </Label>
-                    }
-                    error={skjema.visFeilmeldinger ? skjema.felter.resultat.feilmelding : ''}
-                >
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.OPPFYLT}
-                        onChange={() => {
-                            skjema.felter.resultat.validerOgSettFelt(Resultat.OPPFYLT);
-                            vilkårSkjemaContext.skjema.felter.erEksplisittAvslagPåSøknad.validerOgSettFelt(false);
-                            vilkårSkjemaContext.skjema.felter.avslagBegrunnelser.validerOgSettFelt([]);
-                        }}
-                    >
-                        Ja
-                    </Radio>
-                    <Radio
-                        name={`${lagretVilkårResultat.vilkårType}_${lagretVilkårResultat.id}`}
-                        value={Resultat.IKKE_OPPFYLT}
-                        onChange={() => skjema.felter.resultat.validerOgSettFelt(Resultat.IKKE_OPPFYLT)}
-                    >
-                        Nei
-                    </Radio>
-                </RadioGroup>
-            )}
-            {children}
-            <UtdypendeVilkårsvurderingMultiselect
-                utdypendeVilkårsvurderinger={skjema.felter.utdypendeVilkårsvurdering}
-                muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
-                erLesevisning={lesevisning}
-                feilhåndtering={skjema.visFeilmeldinger ? skjema.felter.utdypendeVilkårsvurdering.feilmelding : ''}
-                children={utdypendeVilkårsvurderingChildren}
-            />
-            {skjema.felter.resultat.verdi === Resultat.IKKE_OPPFYLT && årsakErSøknad && (
-                <AvslagSkjema
-                    lagretVilkår={lagretVilkårResultat}
-                    erEksplisittAvslagPåSøknad={skjema.felter.erEksplisittAvslagPåSøknad}
-                    avslagBegrunnelser={skjema.felter.avslagBegrunnelser}
-                    visFeilmeldinger={skjema.visFeilmeldinger}
+            <SkjemaRamme lesevisning={erLesevisning} resultat={lagretVilkårResultat.resultat}>
+                {visVurderesEtter && <VurderesEtterFelt onEndret={onVurderesEtterEndret} />}
+                {visSpørsmål && (
+                    <ResultatFelt
+                        legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
+                    />
+                )}
+                {children}
+                <UtdypendeVilkårsvurderingerFelt
+                    vilkårType={lagretVilkårResultat.vilkårType}
+                    muligeUtdypendeVilkårsvurderinger={muligeUtdypendeVilkårsvurderinger}
+                    onEndret={onUtdypendeVilkårsvurderingerEndret}
                 />
-            )}
-            <VelgPeriode
-                periode={skjema.felter.periode}
-                erEksplisittAvslagPåSøknad={skjema.felter.erEksplisittAvslagPåSøknad}
-                resultat={skjema.felter.resultat}
-                visFeilmeldinger={skjema.visFeilmeldinger}
-                children={periodeChildren}
-                tomErPåkrevd={lagretVilkårResultat.vilkårType === VilkårType.BARNETS_ALDER}
-            />
-            <Textarea
-                readOnly={lesevisning}
-                id={vilkårBegrunnelseFeilmeldingId(lagretVilkårResultat)}
-                label={`Begrunnelse ${
-                    erBegrunnelsePåkrevd(
-                        skjema.felter.vurderesEtter.verdi,
-                        skjema.felter.utdypendeVilkårsvurdering.verdi,
-                        person.type,
-                        lagretVilkårResultat.vilkårType,
-                        skjema.felter.søkerHarMeldtFraOmBarnehageplass?.verdi
-                    )
-                        ? ''
-                        : '(valgfri)'
-                }`}
-                className={'begrunnelse-textarea'}
-                placeholder={'Begrunn hvorfor det er gjort endringer på vilkåret.'}
-                value={skjema.felter.begrunnelse.verdi}
-                error={skjema.visFeilmeldinger ? skjema.felter.begrunnelse.feilmelding : ''}
-                onChange={(event: FocusEvent<HTMLTextAreaElement>) => {
-                    skjema.felter.begrunnelse.validerOgSettFelt(event.target.value);
-                }}
-            />
-            {!lesevisning && (
-                <Knapperad>
-                    <div>
-                        <Button
-                            onClick={() => {
-                                lagreVilkår(() => {
-                                    toggleForm(false);
-                                    nullstillSkjema();
-                                    settFokusPåLeggTilPeriodeKnapp();
-                                });
-                            }}
-                            size="medium"
-                            variant="secondary"
-                            loading={lagrerVilkår}
-                        >
-                            Ferdig
-                        </Button>
-                        <Button
-                            style={{ marginLeft: '1rem' }}
-                            onClick={() => {
-                                toggleForm(false);
-                                nullstillSkjema();
-                            }}
-                            size="medium"
-                            variant="tertiary"
-                        >
-                            Avbryt
-                        </Button>
-                    </div>
-                    <SlettVilkårResultat personIdent={person.personIdent} vilkårResultat={lagretVilkårResultat} />
-                </Knapperad>
-            )}
-        </FieldsetForVilkårSkjema>
+                {utdypendeVilkårsvurderingChildren}
+                {resultat === Resultat.IKKE_OPPFYLT && årsakErSøknad && (
+                    <>
+                        <ErEksplisittAvslagPåSøknadFelt />
+                        {erEksplisittAvslagPåSøknad && (
+                            <AvslagBegrunnelserFelt
+                                vilkårResultatId={lagretVilkårResultat.id}
+                                vilkårType={lagretVilkårResultat.vilkårType}
+                            />
+                        )}
+                    </>
+                )}
+                <PeriodeFelt
+                    key={`${lagretVilkårResultat.endretTidspunkt}_${lagretVilkårResultat.periode.fom}_${lagretVilkårResultat.periode.tom}`}
+                    person={person}
+                    vilkårType={lagretVilkårResultat.vilkårType}
+                    førsteLagredeFom={førsteLagredeFom}
+                    onEndret={onPeriodeEndret}
+                >
+                    {periodeChildren}
+                </PeriodeFelt>
+                <BegrunnelseFelt
+                    personType={person.type}
+                    vilkårType={lagretVilkårResultat.vilkårType}
+                    valider={validerBegrunnelse}
+                />
+                {!erLesevisning && (
+                    <HStack justify={'space-between'} marginBlock={'space-16'}>
+                        <HStack gap={'space-16'}>
+                            <Button type={'submit'} size={'medium'} variant={'secondary'} loading={isSubmitting}>
+                                Ferdig
+                            </Button>
+                            <Button
+                                type={'button'}
+                                onClick={() => {
+                                    reset();
+                                    kollapsRad();
+                                }}
+                                size={'medium'}
+                                variant={'tertiary'}
+                            >
+                                Avbryt
+                            </Button>
+                        </HStack>
+                        <SlettVilkårResultat personIdent={person.personIdent} vilkårResultat={lagretVilkårResultat} />
+                    </HStack>
+                )}
+            </SkjemaRamme>
+        </Fieldset>
     );
-};
-
-export const erBegrunnelsePåkrevd = (
-    vurderesEtter: Regelverk | undefined,
-    utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[],
-    personType: PersonType,
-    vilkårType: VilkårType,
-    søkerHarMeldtFraOmBarnehageplass?: boolean
-): boolean => {
-    return (
-        (vilkårType == VilkårType.BARNEHAGEPLASS && søkerHarMeldtFraOmBarnehageplass) ||
-        (vurderesEtter === Regelverk.NASJONALE_REGLER && utdypendeVilkårsvurderinger.length > 0) ||
-        (vurderesEtter === Regelverk.EØS_FORORDNINGEN &&
-            personType === PersonType.SØKER &&
-            vilkårType === VilkårType.BOSATT_I_RIKET)
-    );
-};
+}

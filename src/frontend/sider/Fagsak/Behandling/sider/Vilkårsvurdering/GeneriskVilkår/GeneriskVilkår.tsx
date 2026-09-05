@@ -1,64 +1,68 @@
-import { useState } from 'react';
-
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { useOpprettVilkårResultat } from '@hooks/useOpprettVilkårResultat';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { useEkspanderbareVilkårResultatRader } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
+import type { IBehandling } from '@typer/behandling';
 import type { IGrunnlagPerson } from '@typer/person';
-import type { IVilkårConfig, IVilkårResultat, VilkårType } from '@typer/vilkår';
-import { Resultat } from '@typer/vilkår';
-import styled from 'styled-components';
+import { type IVilkårConfig, type IVilkårResultat, Resultat } from '@typer/vilkår';
 
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { Button, Fieldset, Heading } from '@navikt/ds-react';
-import { Space20, Space32, Space64 } from '@navikt/ds-tokens/dist/tokens';
+import { Box, Button, Fieldset, Heading } from '@navikt/ds-react';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 
-import VilkårTabell from './VilkårTabell';
-import { useVilkårsvurderingApi } from '../useVilkårsvurderingApi';
+import styles from './GeneriskVilkår.module.css';
+import { VilkårTabell } from './VilkårTabell';
 
-interface IProps {
+interface Props {
     person: IGrunnlagPerson;
     vilkårResultater: IVilkårResultat[];
     vilkårFraConfig: IVilkårConfig;
     generiskVilkårKey: string;
 }
 
-const Container = styled.div`
-    margin-top: ${Space64};
-
-    &:last-child {
-        margin-bottom: ${Space32};
-    }
-`;
-
-const UtførKnapp = styled(Button)`
-    margin-top: ${Space20};
-`;
-
-const GeneriskVilkår = ({ person, vilkårFraConfig, vilkårResultater, generiskVilkårKey }: IProps) => {
-    const vilkårsvurderingApi = useVilkårsvurderingApi();
+export function GeneriskVilkår({ person, vilkårFraConfig, vilkårResultater, generiskVilkårKey }: Props) {
+    const { behandling, settÅpenBehandling } = useBehandlingContext();
+    const { ekspanderRad } = useEkspanderbareVilkårResultatRader();
     const erLesevisning = useErLesevisning();
 
-    const [visFeilmeldingerForVilkår, settVisFeilmeldingerForVilkår] = useState(false);
-
-    const leggTilPeriodeKnappId = generiskVilkårKey + '__legg_til_periode';
+    const leggTilPeriodeKnappId = `${generiskVilkårKey}__legg_til_periode`;
 
     const settFokusPåLeggTilPeriodeKnapp = () => {
         document.getElementById(leggTilPeriodeKnappId)?.focus();
     };
 
-    const skalViseLeggTilKnapp = () => {
-        if (erLesevisning) {
-            return false;
-        }
-        const uvurdertPeriodePåVilkår = vilkårResultater.find(vilkår => vilkår.resultat === Resultat.IKKE_VURDERT);
-        return uvurdertPeriodePåVilkår === undefined;
-    };
+    function åpneNyeIkkeVurdertVilkårResultat(oppdatertBehandling: IBehandling) {
+        // Dette er gjort slik siden APIet ikke returnerer IDen til det opprettede vilkår resultatet.
+        const eksisterendeVilkårResultatIder = behandling.personResultater
+            .flatMap(it => it.vilkårResultater)
+            .map(it => it.id);
+
+        oppdatertBehandling.personResultater
+            .flatMap(it => it.vilkårResultater)
+            .filter(it => it.resultat === Resultat.IKKE_VURDERT)
+            .filter(it => !eksisterendeVilkårResultatIder.includes(it.id))
+            .forEach(it => {
+                ekspanderRad(it.id);
+            });
+    }
+
+    const {
+        mutate: opprettVilkårResultat,
+        isPending: opprettVilkårResultatIsPending,
+        error: opprettVilkårResultatError,
+    } = useOpprettVilkårResultat({
+        onSuccess: oppdatertBehandling => {
+            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+            åpneNyeIkkeVurdertVilkårResultat(oppdatertBehandling);
+        },
+    });
+
+    const skalViseLeggTilKnapp =
+        !erLesevisning && vilkårResultater.every(vilkårResultat => vilkårResultat.resultat !== Resultat.IKKE_VURDERT);
 
     return (
-        <Container>
-            <Fieldset
-                legend={vilkårFraConfig.tittel}
-                hideLegend
-                error={visFeilmeldingerForVilkår ? vilkårsvurderingApi.opprettVilkårFeilmelding : undefined}
-            >
+        <div className={styles.container}>
+            <Fieldset legend={vilkårFraConfig.tittel} hideLegend error={opprettVilkårResultatError?.message}>
                 <Heading size="medium" level="3">
                     {vilkårFraConfig.tittel}
                 </Heading>
@@ -68,29 +72,27 @@ const GeneriskVilkår = ({ person, vilkårFraConfig, vilkårResultater, generisk
                     vilkårResultater={vilkårResultater}
                     settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                 />
-                {skalViseLeggTilKnapp() && (
-                    <UtførKnapp
-                        onClick={() => {
-                            vilkårsvurderingApi.opprettVilkår(
-                                person.personIdent,
-                                vilkårFraConfig.key as VilkårType,
-                                () => {
-                                    settVisFeilmeldingerForVilkår(true);
-                                }
-                            );
-                        }}
-                        id={leggTilPeriodeKnappId}
-                        loading={vilkårsvurderingApi.oppretterVilkår}
-                        variant="tertiary"
-                        size="medium"
-                        icon={<PlusCircleIcon />}
-                    >
-                        Legg til periode
-                    </UtførKnapp>
+                {skalViseLeggTilKnapp && (
+                    <Box marginBlock={'space-20 space-0'}>
+                        <Button
+                            onClick={() =>
+                                opprettVilkårResultat({
+                                    behandlingId: behandling.behandlingId,
+                                    personIdent: person.personIdent,
+                                    vilkårType: vilkårFraConfig.key,
+                                })
+                            }
+                            id={leggTilPeriodeKnappId}
+                            loading={opprettVilkårResultatIsPending}
+                            variant="tertiary"
+                            size="medium"
+                            icon={<PlusCircleIcon />}
+                        >
+                            Legg til periode
+                        </Button>
+                    </Box>
                 )}
             </Fieldset>
-        </Container>
+        </div>
     );
-};
-
-export default GeneriskVilkår;
+}

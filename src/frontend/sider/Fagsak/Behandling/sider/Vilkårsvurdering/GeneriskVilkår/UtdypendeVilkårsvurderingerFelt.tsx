@@ -1,25 +1,20 @@
-import type { ReactNode } from 'react';
-
-import { UNSAFE_Combobox } from '@navikt/ds-react';
-import type { Felt } from '@navikt/familie-skjema';
-
-import type { OptionType } from '../../../../../../typer/common';
-import type { UtdypendeVilkårsvurdering } from '../../../../../../typer/vilkår';
+import { useErLesevisning } from '@hooks/useErLesevisning';
+import type { OptionType } from '@typer/common';
 import {
+    type UtdypendeVilkårsvurdering,
+    type VilkårType,
     UtdypendeVilkårsvurderingDeltBosted,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
     UtdypendeVilkårsvurderingEøsBarnBosattIRiket,
     UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
     UtdypendeVilkårsvurderingGenerell,
-} from '../../../../../../typer/vilkår';
+} from '@typer/vilkår';
+import { useController, useFormContext } from 'react-hook-form';
 
-interface Props {
-    utdypendeVilkårsvurderinger: Felt<UtdypendeVilkårsvurdering[]>;
-    muligeUtdypendeVilkårsvurderinger?: UtdypendeVilkårsvurdering[];
-    erLesevisning: boolean;
-    feilhåndtering: ReactNode;
-    children?: ReactNode;
-}
+import { UNSAFE_Combobox } from '@navikt/ds-react';
+
+import { validerUtdypendeVilkårsvurderinger } from '../validering';
+import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';
 
 const utdypendeVilkårsvurderingTekst: Record<UtdypendeVilkårsvurdering, string> = {
     [UtdypendeVilkårsvurderingGenerell.VURDERING_ANNET_GRUNNLAG]: 'Vurdering annet grunnlag',
@@ -50,47 +45,64 @@ const utdypendeVilkårsvurderingTekst: Record<UtdypendeVilkårsvurdering, string
     [UtdypendeVilkårsvurderingEøsBarnBosattIRiket.BARN_BOR_I_STORBRITANNIA]: 'Barn bor i Storbritannia',
 };
 
-const mapUtdypendeVilkårsvurderingTilOption = (utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering): OptionType => ({
+const tilOption = (utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering): OptionType => ({
     value: utdypendeVilkårsvurdering,
     label: utdypendeVilkårsvurderingTekst[utdypendeVilkårsvurdering],
 });
 
-export const UtdypendeVilkårsvurderingMultiselect = ({
-    utdypendeVilkårsvurderinger,
-    muligeUtdypendeVilkårsvurderinger,
-    erLesevisning,
-    feilhåndtering,
-    children,
-}: Props) => {
-    const håndterEndring = (option: string, isSelected: boolean) => {
-        if (isSelected) {
-            utdypendeVilkårsvurderinger.validerOgSettFelt([
-                ...utdypendeVilkårsvurderinger.verdi,
-                option as UtdypendeVilkårsvurdering,
-            ]);
-        } else {
-            utdypendeVilkårsvurderinger.validerOgSettFelt(
-                utdypendeVilkårsvurderinger.verdi.filter(utdypendeVurdering => utdypendeVurdering !== option)
-            );
-        }
-    };
+interface Props {
+    vilkårType: VilkårType;
+    muligeUtdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[];
+    onEndret?: (utdypendeVilkårsvurderinger: UtdypendeVilkårsvurdering[]) => void;
+}
 
-    if (!muligeUtdypendeVilkårsvurderinger || muligeUtdypendeVilkårsvurderinger.length === 0) {
+export function UtdypendeVilkårsvurderingerFelt({ vilkårType, muligeUtdypendeVilkårsvurderinger, onEndret }: Props) {
+    const erLesevisning = useErLesevisning();
+
+    const { control } = useFormContext<VilkårResultatFormValues>();
+
+    const {
+        field: { value, onChange, onBlur, ref },
+        fieldState: { error },
+        formState: { isSubmitting },
+    } = useController({
+        name: VilkårResultatFelt.UTDYPENDE_VILKÅRSVURDERINGER,
+        control,
+        rules: {
+            deps: [VilkårResultatFelt.BEGRUNNELSE],
+            validate: (utdypendeVilkårsvurderinger, formValues) =>
+                validerUtdypendeVilkårsvurderinger(utdypendeVilkårsvurderinger, {
+                    vilkårType,
+                    muligeUtdypendeVilkårsvurderinger,
+                    vurderesEtter: formValues.vurderesEtter,
+                }),
+        },
+    });
+
+    if (muligeUtdypendeVilkårsvurderinger.length === 0) {
         return null;
     }
 
+    const onToggleSelected = (optionValue: string, isSelected: boolean) => {
+        const valg = optionValue as UtdypendeVilkårsvurdering;
+        const nyeUtdypendeVilkårsvurderinger = isSelected
+            ? [...value, valg]
+            : value.filter(utdypendeVilkårsvurdering => utdypendeVilkårsvurdering !== valg);
+        onChange(nyeUtdypendeVilkårsvurderinger);
+        onEndret?.(nyeUtdypendeVilkårsvurderinger);
+    };
+
     return (
-        <>
-            <UNSAFE_Combobox
-                label="Utdypende vilkårsvurdering"
-                selectedOptions={utdypendeVilkårsvurderinger.verdi.map(mapUtdypendeVilkårsvurderingTilOption)}
-                readOnly={erLesevisning}
-                isMultiSelect
-                onToggleSelected={håndterEndring}
-                options={muligeUtdypendeVilkårsvurderinger.map(mapUtdypendeVilkårsvurderingTilOption)}
-                error={feilhåndtering}
-            />
-            {children}
-        </>
+        <UNSAFE_Combobox
+            isMultiSelect
+            label={'Utdypende vilkårsvurdering'}
+            options={muligeUtdypendeVilkårsvurderinger.map(tilOption)}
+            selectedOptions={value.map(tilOption)}
+            onToggleSelected={onToggleSelected}
+            onBlur={onBlur}
+            ref={ref}
+            readOnly={erLesevisning || isSubmitting}
+            error={error?.message}
+        />
     );
-};
+}
