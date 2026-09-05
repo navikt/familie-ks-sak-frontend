@@ -1,42 +1,26 @@
-import styled from 'styled-components';
+import { useFyllUtVilkårsvurderingITestmiljø } from '@hooks/useFyllUtVilkårsvurderingITestmiljø';
+import { erProd } from '@utils/miljø';
 
-import { Button } from '@navikt/ds-react';
-import { useHttp } from '@navikt/familie-http';
-import type { Ressurs } from '@navikt/familie-typer';
-import { RessursStatus } from '@navikt/familie-typer';
+import { Box, Button } from '@navikt/ds-react';
 
-import { erProd } from '../../../../../utils/miljø';
-
-const StyledButton = styled(Button)`
-    margin-top: 2rem;
-`;
-
-interface IProps {
+interface Props {
     behandlingId: number;
 }
 
-export const FyllUtVilkårsvurderingITestmiljøKnapp = ({ behandlingId }: IProps) => {
-    const { request } = useHttp();
+export function FyllUtVilkårsvurderingITestmiljøKnapp({ behandlingId }: Props) {
+    const { mutate: fyllUtVilkårsvurdering, isPending } = useFyllUtVilkårsvurderingITestmiljø({
+        onSuccess: () => window.location.reload(),
+    });
 
-    const fyllUtSatsendring = () => {
-        if (erProd()) {
-            return;
-        }
-
-        request<undefined, string>({
-            method: 'PUT',
-            url: `/familie-ks-sak/api/forvaltning/${behandlingId}/fyll-ut-vilkarsvurdering`,
-            påvirkerSystemLaster: true,
-        }).then((kjørFyllUtVilkårsvurderingRessurs: Ressurs<string>) => {
-            if (kjørFyllUtVilkårsvurderingRessurs.status === RessursStatus.SUKSESS) {
-                window.location.reload();
-            }
-        });
-    };
+    if (erProd()) {
+        return null;
+    }
 
     return (
-        <StyledButton size={'small'} onClick={fyllUtSatsendring}>
-            Fyll ut vilkårsvurdering
-        </StyledButton>
+        <Box marginBlock={'space-32 space-0'}>
+            <Button size={'small'} loading={isPending} onClick={() => fyllUtVilkårsvurdering({ behandlingId })}>
+                Fyll ut vilkårsvurdering
+            </Button>
+        </Box>
     );
-};
+}
