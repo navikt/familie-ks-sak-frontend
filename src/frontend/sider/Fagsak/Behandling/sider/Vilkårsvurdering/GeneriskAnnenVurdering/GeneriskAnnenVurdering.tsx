@@ -1,25 +1,19 @@
 import type { IGrunnlagPerson } from '@typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '@typer/vilkår';
-import styled from 'styled-components';
 
-import { Fieldset, Heading } from '@navikt/ds-react';
-import { Space64 } from '@navikt/ds-tokens/dist/tokens';
+import { Box, Heading } from '@navikt/ds-react';
 
 import { AnnenVurderingTabell } from './AnnenVurderingTabell';
 
-interface IProps {
+interface Props {
     person: IGrunnlagPerson;
     andreVurderinger: IAnnenVurdering[];
     annenVurderingConfig: IAnnenVurderingConfig;
 }
 
-const StyledFieldset = styled(Fieldset)`
-    margin-top: ${Space64};
-`;
-
-const GeneriskAnnenVurdering = ({ person, annenVurderingConfig, andreVurderinger }: IProps) => {
+export function GeneriskAnnenVurdering({ person, annenVurderingConfig, andreVurderinger }: Props) {
     return (
-        <StyledFieldset legend={annenVurderingConfig.tittel} hideLegend>
+        <Box marginBlock={'space-64 space-0'}>
             <Heading size="medium" level="3">
                 {annenVurderingConfig.tittel}
             </Heading>
@@ -28,8 +22,6 @@ const GeneriskAnnenVurdering = ({ person, annenVurderingConfig, andreVurderinger
                 annenVurderingConfig={annenVurderingConfig}
                 andreVurderinger={andreVurderinger}
             />
-        </StyledFieldset>
+        </Box>
     );
-};
-
-export default GeneriskAnnenVurdering;
+}

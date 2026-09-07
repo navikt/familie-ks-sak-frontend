@@ -2,13 +2,7 @@ import { useState } from 'react';
 
 import { useEkspanderbareVilkårResultatRader } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import type { IBehandling } from '@typer/behandling';
-import {
-    type IEndreVilkårResultat,
-    type IRestAnnenVurdering,
-    type IRestNyttVilkår,
-    Resultat,
-    type VilkårType,
-} from '@typer/vilkår';
+import { type IEndreVilkårResultat, type IRestNyttVilkår, Resultat, type VilkårType } from '@typer/vilkår';
 
 import { useHttp } from '@navikt/familie-http';
 import type { Ressurs } from '@navikt/familie-typer';
@@ -30,9 +24,6 @@ export const useVilkårsvurderingApi = () => {
 
     const [oppretterVilkår, settOppretterVilkår] = useState<boolean>(false);
     const [opprettVilkårFeilmelding, settOpprettVilkårFeilmelding] = useState<string>('');
-
-    const [lagrerAnnenVurdering, settLagrerAnnenVurdering] = useState<boolean>(false);
-    const [lagreAnnenVurderingFeilmelding, settLagreAnnenVurderingFeilmelding] = useState<string>('');
 
     const lagreVilkår = (
         endreVilkårResultat: IEndreVilkårResultat,
@@ -115,35 +106,6 @@ export const useVilkårsvurderingApi = () => {
             });
     };
 
-    const lagreAnnenVurdering = (restAnnenVurdering: IRestAnnenVurdering, onSuccess?: () => void) => {
-        settLagrerAnnenVurdering(true);
-        settLagreAnnenVurderingFeilmelding('');
-        request<IRestAnnenVurdering, IBehandling>({
-            method: 'PUT',
-            url: `/familie-ks-sak/api/vilkårsvurdering/${behandlingId}/annenvurdering`,
-            data: restAnnenVurdering,
-        })
-            .then((response: Ressurs<IBehandling>) => {
-                settLagrerAnnenVurdering(false);
-                if (response.status === RessursStatus.SUKSESS) {
-                    settÅpenBehandling(response);
-                    if (onSuccess) {
-                        onSuccess();
-                    }
-                } else if (
-                    response.status === RessursStatus.FEILET ||
-                    response.status === RessursStatus.FUNKSJONELL_FEIL ||
-                    response.status === RessursStatus.IKKE_TILGANG
-                ) {
-                    settLagreAnnenVurderingFeilmelding(response.frontendFeilmelding);
-                }
-            })
-            .catch(() => {
-                settLagrerAnnenVurdering(false);
-                settLagreAnnenVurderingFeilmelding('En ukjent feil har oppstått, vi har ikke klart å lagre endringen.');
-            });
-    };
-
     return {
         lagreVilkår,
         lagrerVilkår,
@@ -151,8 +113,5 @@ export const useVilkårsvurderingApi = () => {
         opprettVilkår,
         oppretterVilkår,
         opprettVilkårFeilmelding,
-        lagreAnnenVurdering,
-        lagrerAnnenVurdering,
-        lagreAnnenVurderingFeilmelding,
     };
 };

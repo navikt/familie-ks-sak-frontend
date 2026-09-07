@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import VilkårResultatIkon from '@ikoner/VilkårResultatIkon';
 import type { IGrunnlagPerson } from '@typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '@typer/vilkår';
 import { Resultat, uiResultat } from '@typer/vilkår';
-import deepEqual from 'deep-equal';
+import { FormProvider } from 'react-hook-form';
 
 import { PersonIcon } from '@navikt/aksel-icons';
 import { BodyShort, HStack, Table, Tooltip } from '@navikt/ds-react';
@@ -12,7 +13,7 @@ import { BodyShort, HStack, Table, Tooltip } from '@navikt/ds-react';
 import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
 import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';
 import Styles from './AnnenVurderingTabellRad.module.css';
-import VilkårResultatIkon from '../../../../../../ikoner/VilkårResultatIkon';
+import { useAnnenVurderingSkjema } from './useAnnenVurderingSkjema';
 
 interface Props {
     person: IGrunnlagPerson;
@@ -23,34 +24,46 @@ interface Props {
 export function AnnenVurderingTabellRad({ person, annenVurderingConfig, annenVurdering }: Props) {
     const erLesevisning = useErLesevisning();
 
-    const [ekspandertAnnenVurdering, settEkspandertAnnenVurdering] = useState(
+    const [erEkspandert, settErEkspandert] = useState(
         erLesevisning || annenVurdering.resultat === Resultat.IKKE_VURDERT
     );
-    const [redigerbartAnnenVurdering, settRedigerbartAnnenVurdering] = useState<IAnnenVurdering>(annenVurdering);
+
+    const { form, onSubmit } = useAnnenVurderingSkjema({ annenVurdering, lukkSkjema: () => settErEkspandert(false) });
+
+    const {
+        handleSubmit,
+        reset,
+        formState: { isDirty },
+    } = form;
 
     const toggleForm = (visAlert: boolean) => {
-        if (ekspandertAnnenVurdering && visAlert && !deepEqual(annenVurdering, redigerbartAnnenVurdering)) {
+        if (erEkspandert && visAlert && isDirty) {
             alert('Vurderingen har endringer som ikke er lagret!');
         } else {
-            settEkspandertAnnenVurdering(!ekspandertAnnenVurdering);
-            settRedigerbartAnnenVurdering(annenVurdering);
+            settErEkspandert(!erEkspandert);
+            reset();
         }
     };
 
     return (
         <Table.ExpandableRow
-            open={ekspandertAnnenVurdering}
+            open={erEkspandert}
             togglePlacement={'right'}
             id={annenVurderingFeilmeldingId(annenVurdering)}
             onOpenChange={() => toggleForm(true)}
             content={
-                <AnnenVurderingSkjema
-                    person={person}
-                    annenVurderingConfig={annenVurderingConfig}
-                    annenVurdering={annenVurdering}
-                    toggleForm={toggleForm}
-                    erLesevisning={erLesevisning}
-                />
+                erEkspandert ? (
+                    <FormProvider {...form}>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <AnnenVurderingSkjema
+                                person={person}
+                                annenVurderingConfig={annenVurderingConfig}
+                                annenVurdering={annenVurdering}
+                                onAvbryt={() => toggleForm(false)}
+                            />
+                        </form>
+                    </FormProvider>
+                ) : null
             }
         >
             <Table.DataCell>
