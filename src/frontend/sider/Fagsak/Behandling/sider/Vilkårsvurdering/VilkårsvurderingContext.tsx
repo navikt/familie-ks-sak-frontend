@@ -1,17 +1,17 @@
-import { createContext, type PropsWithChildren, useContext } from 'react';
+import { createContext, type PropsWithChildren, useContext, useMemo } from 'react';
 
-import { hentFeilIVilkårsvurdering } from '@context/Vilkårsvurdering/hentFeilIVilkårsvurdering';
+import {
+    type FeiloppsummeringFeil,
+    hentFeilIVilkårsvurdering,
+} from '@context/Vilkårsvurdering/hentFeilIVilkårsvurdering';
 import { useBehandling } from '@hooks/useBehandling';
-import type { IPersonResultat, IRestPersonResultat } from '@typer/vilkår';
-
-import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
+import type { IPersonResultat } from '@typer/vilkår';
 
 import { mapFraRestVilkårsvurderingTilUi } from './utils';
 
 interface VilkårsvurderingContextValue {
     feiloppsummeringFeil: FeiloppsummeringFeil[];
     vilkårsvurdering: IPersonResultat[];
-    personResultater: IRestPersonResultat[];
 }
 
 const VilkårsvurderingContext = createContext<VilkårsvurderingContextValue | undefined>(undefined);
@@ -19,32 +19,22 @@ const VilkårsvurderingContext = createContext<VilkårsvurderingContextValue | u
 export function VilkårsvurderingProvider({ children }: PropsWithChildren) {
     const behandling = useBehandling();
 
-    const vilkårsvurdering = behandling
-        ? mapFraRestVilkårsvurderingTilUi(behandling.personResultater, behandling.personer)
-        : [];
+    const value = useMemo<VilkårsvurderingContextValue>(() => {
+        const vilkårsvurdering = mapFraRestVilkårsvurderingTilUi(behandling.personResultater, behandling.personer);
+        return {
+            vilkårsvurdering,
+            feiloppsummeringFeil: hentFeilIVilkårsvurdering(vilkårsvurdering),
+        };
+    }, [behandling]);
 
-    const personResultater = behandling.personResultater;
-
-    const feiloppsummeringFeil: FeiloppsummeringFeil[] = hentFeilIVilkårsvurdering(vilkårsvurdering);
-
-    return (
-        <VilkårsvurderingContext.Provider
-            value={{
-                feiloppsummeringFeil,
-                vilkårsvurdering,
-                personResultater,
-            }}
-        >
-            {children}
-        </VilkårsvurderingContext.Provider>
-    );
+    return <VilkårsvurderingContext.Provider value={value}>{children}</VilkårsvurderingContext.Provider>;
 }
 
-export const useVilkårsvurderingContext = () => {
+export function useVilkårsvurderingContext() {
     const context = useContext(VilkårsvurderingContext);
 
     if (context === undefined) {
         throw new Error('useVilkårsvurderingContext må brukes innenfor en VilkårsvurderingProvider');
     }
     return context;
-};
+}

@@ -1,7 +1,5 @@
 import { addDays, addMonths, endOfMonth, isAfter, isSameDay, startOfMonth } from 'date-fns';
 
-import type { FeiloppsummeringFeil } from '@navikt/familie-skjema';
-
 import { annenVurderingFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskAnnenVurdering/AnnenVurderingTabell';
 import { vilkårFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
 import type { IAnnenVurdering, IPersonResultat, IVilkårResultat } from '../../typer/vilkår';
@@ -16,6 +14,11 @@ import {
     tidenesEnde,
     tidenesMorgen,
 } from '../../utils/dato';
+
+export interface FeiloppsummeringFeil {
+    skjemaelementId: string;
+    feilmelding: string;
+}
 
 export const hentFeilIVilkårsvurdering = (personResultater: IPersonResultat[]): FeiloppsummeringFeil[] => {
     return personResultater.flatMap(personResultat => {

@@ -1,4 +1,5 @@
-import { type IRestVilkårResultat, Resultat, VilkårType } from '@typer/vilkår';
+import { type IRestVilkårResultat, type IVilkårResultat, Resultat, VilkårType } from '@typer/vilkår';
+import { nyIsoDatoPeriode } from '@utils/dato';
 
 export function lagVilkårResultat(vilkårResultat: Partial<IRestVilkårResultat>): IRestVilkårResultat {
     return {
@@ -21,4 +22,9 @@ export function lagVilkårResultat(vilkårResultat: Partial<IRestVilkårResultat
         søkerHarMeldtFraOmBarnehageplass: undefined,
         ...vilkårResultat,
     };
+}
+
+export function lagVilkårResultatUi(vilkårResultat: Partial<IRestVilkårResultat> = {}): IVilkårResultat {
+    const { periodeFom, periodeTom, ...rest } = lagVilkårResultat(vilkårResultat);
+    return { ...rest, periode: nyIsoDatoPeriode(periodeFom, periodeTom) };
 }
