@@ -1,36 +1,23 @@
-import { useState } from 'react';
+import { Layout } from '@sider/Fagsak/Behandling/sider/Vedtak/Layout/Layout';
 
-import { useBehandling } from '@hooks/useBehandling';
-import { useErLesevisning } from '@hooks/useErLesevisning';
-import { Steg } from '@sider/Fagsak/Behandling/sider/Steg';
-import { TilForrigeSteg } from '@sider/Fagsak/Behandling/sider/Vedtak/TilForrigeSteg';
-import { TilGodkjenning } from '@sider/Fagsak/Behandling/sider/Vedtak/TilGodkjenning';
-import { SendtTilTotrinnskontrollModal } from '@sider/Fagsak/Behandling/sider/Vedtak/Totrinnskontroll/SendtTilTotrinnskontrollModal';
-import { BehandlingStatus } from '@typer/behandling';
-
-import { ErrorMessage, HStack, VStack } from '@navikt/ds-react';
-
+import { BehandlingUtenVedtaksbrevAdvarsel } from './BehandlingUtenVedtaksbrevAdvarsel';
 import { OppsummeringVedtakInnhold } from './OppsummeringVedtakInnhold';
+import { useErBehandlingMedVedtaksbrev } from './useErBehandlingMedVedtaksbrev';
 
 export function Vedtak() {
-    const erLesevisning = useErLesevisning();
-    const behandling = useBehandling();
+    const erBehandlingMedVedtaksbrev = useErBehandlingMedVedtaksbrev();
 
-    const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
-
-    const visTilGodkjenningKnapp = !erLesevisning && behandling.status === BehandlingStatus.UTREDES;
+    if (!erBehandlingMedVedtaksbrev) {
+        return (
+            <Layout>
+                <BehandlingUtenVedtaksbrevAdvarsel />
+            </Layout>
+        );
+    }
 
     return (
-        <Steg tittel={'Vedtak'} maxWidth={'60rem'}>
-            <SendtTilTotrinnskontrollModal />
-            <VStack gap={'space-40'}>
-                <OppsummeringVedtakInnhold />
-                {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
-                <HStack gap={'space-12'}>
-                    <TilForrigeSteg />
-                    {visTilGodkjenningKnapp && <TilGodkjenning settFeilmelding={settFeilmelding} />}
-                </HStack>
-            </VStack>
-        </Steg>
+        <Layout>
+            <OppsummeringVedtakInnhold />
+        </Layout>
     );
 }
