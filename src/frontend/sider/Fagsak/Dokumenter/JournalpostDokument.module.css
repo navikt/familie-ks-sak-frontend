@@ -12,3 +12,12 @@
         padding-inline-start: 0;
     }
 }
+
+.dialogBody {
+    height: 100%;
+}
+
+.iframe {
+    height: 100%;
+    width: 100%;
+}

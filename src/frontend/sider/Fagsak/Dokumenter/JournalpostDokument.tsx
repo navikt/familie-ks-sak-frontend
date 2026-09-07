@@ -1,31 +1,41 @@
-import type { FamilieAxiosRequestConfig } from '@hooks/useDokument';
+import { useState } from 'react';
+
+import { useHentJournalpostDokumentPdf } from '@hooks/useHentJournalpostDokumentPdf';
 import type { ITilgangsstyrtJournalpost } from '@typer/journalpost';
 
-import { ExternalLinkIcon, PadlockLockedIcon } from '@navikt/aksel-icons';
-import { BodyShort, HStack, Link, VStack } from '@navikt/ds-react';
+import { ExternalLinkIcon, PadlockLockedIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
+import { BodyShort, Dialog, ErrorMessage, Heading, HStack, Link, Loader, VStack } from '@navikt/ds-react';
 import type { IDokumentInfo } from '@navikt/familie-typer';
 
 import styles from './JournalpostDokument.module.css';
 
-interface IProps {
+interface Props {
     dokument: IDokumentInfo;
-    hentForhåndsvisning: <D>(familieAxiosRequestConfig: FamilieAxiosRequestConfig<D>) => void;
     tilgangsstyrtJournalpost: ITilgangsstyrtJournalpost;
 }
 
-export const JournalpostDokument = ({ dokument, hentForhåndsvisning, tilgangsstyrtJournalpost }: IProps) => {
+export function JournalpostDokument({ dokument, tilgangsstyrtJournalpost }: Props) {
     const { journalpost, journalpostTilgang } = tilgangsstyrtJournalpost;
 
-    const hentPdfDokument = (dokumentId: string | undefined) => {
-        if (dokumentId !== undefined) {
-            hentForhåndsvisning({
-                method: 'GET',
-                url: `/familie-ks-sak/api/journalpost/${journalpost.journalpostId}/dokument/${dokumentId}`,
-            });
-        } else {
+    const [visDialog, settVisDialog] = useState(false);
+
+    const {
+        data: journalpostDokumentPdf,
+        mutate: hentJournalpostDokumentPdf,
+        isPending: hentJournalpostDokumentPdfIsPending,
+        error: hentJournalpostDokumentPdfError,
+    } = useHentJournalpostDokumentPdf();
+
+    function onHentJournalpostDokumentClicked() {
+        const journalpostId = journalpost.journalpostId;
+        const dokumentId = dokument.dokumentInfoId;
+        if (!dokumentId) {
             alert('Klarer ikke å åpne dokument. Ta kontakt med teamet.');
+            return;
         }
-    };
+        hentJournalpostDokumentPdf({ journalpostId, dokumentId });
+        settVisDialog(true);
+    }
 
     const dokumentTittel = dokument.tittel || 'Uten tittel';
 
@@ -35,11 +45,10 @@ export const JournalpostDokument = ({ dokument, hentForhåndsvisning, tilgangsst
                 {journalpostTilgang.harTilgang ? (
                     <>
                         <BodyShort className={styles.text} size="small" title={dokumentTittel}>
-                            <Link href="#" onClick={() => hentPdfDokument(dokument.dokumentInfoId)}>
+                            <Link href="#" onClick={onHentJournalpostDokumentClicked}>
                                 {dokumentTittel}
                             </Link>
                         </BodyShort>
-
                         <Link
                             href={`/familie-ks-sak/api/journalpost/${journalpost.journalpostId}/dokument/${dokument.dokumentInfoId}/pdf`}
                             target="_blank"
@@ -58,7 +67,6 @@ export const JournalpostDokument = ({ dokument, hentForhåndsvisning, tilgangsst
                     </>
                 )}
             </HStack>
-
             {dokument.logiskeVedlegg && dokument.logiskeVedlegg.length > 0 && (
                 <ul className={styles.vedleggListe}>
                     <VStack gap={'space-16'}>
@@ -72,6 +80,32 @@ export const JournalpostDokument = ({ dokument, hentForhåndsvisning, tilgangsst
                     </VStack>
                 </ul>
             )}
+            <Dialog open={visDialog} onOpenChange={settVisDialog}>
+                <Dialog.Popup width={'max(100rem, 60vw)'} height={'80vh'}>
+                    <Dialog.Header>
+                        <Dialog.Title>{dokumentTittel}</Dialog.Title>
+                    </Dialog.Header>
+                    <Dialog.Body className={styles.dialogBody}>
+                        {hentJournalpostDokumentPdfIsPending && (
+                            <HStack height={'100%'} justify={'center'} align={'center'} gap={'space-8'}>
+                                <Loader size={'small'} title={'Laster dokument...'} />
+                                <Heading size={'small'} level={'2'}>
+                                    Laster dokument...
+                                </Heading>
+                            </HStack>
+                        )}
+                        {hentJournalpostDokumentPdfError && (
+                            <HStack height={'100%'} justify={'center'} align={'center'} gap={'space-8'}>
+                                <XMarkOctagonFillIcon color={'var(--ax-text-danger-subtle)'} fontSize={'1.2rem'} />
+                                <ErrorMessage>{hentJournalpostDokumentPdfError.message}</ErrorMessage>
+                            </HStack>
+                        )}
+                        {!hentJournalpostDokumentPdfIsPending && !hentJournalpostDokumentPdfError && (
+                            <iframe className={styles.iframe} title={dokumentTittel} src={journalpostDokumentPdf} />
+                        )}
+                    </Dialog.Body>
+                </Dialog.Popup>
+            </Dialog>
         </li>
     );
-};
+}
