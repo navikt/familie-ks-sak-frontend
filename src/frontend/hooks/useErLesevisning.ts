@@ -1,9 +1,10 @@
+import { BehandlingStatus, BehandlingSteg, BehandlingÅrsak, hentStegNummer } from '@typer/behandling';
+import { harTilgangTilEnhet } from '@typer/enhet';
+import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '@utils/behandling';
+
 import { useBehandling } from './useBehandling';
 import { useErLesevisningFagsak } from './useErLesevisningFagsak';
 import { useSaksbehandler } from './useSaksbehandler';
-import { BehandlingStatus, BehandlingSteg, BehandlingÅrsak, hentStegNummer } from '../typer/behandling';
-import { harTilgangTilEnhet } from '../typer/enhet';
-import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '../utils/behandling';
 
 const ÅRSAKER_ÅPEN_FOR_ALLE = new Set([BehandlingÅrsak.TEKNISK_ENDRING]);
 

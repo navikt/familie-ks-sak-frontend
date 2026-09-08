@@ -17,7 +17,7 @@ interface Props {
 export function EndreBehandlendeEnhetModal({ lukkModal }: Props) {
     const saksbehandler = useSaksbehandler();
     const behandling = useBehandling();
-    const erLesevisning = useErLesevisning({ sjekkTilgangTilEnhet: false });
+    const erLesevisning = useErLesevisning({ sjekkTilgangTilEnhet: false, skalIgnorereOmEnhetErMidlertidig: true });
 
     const { form, onSubmit } = useEndreBehandlendeEnhetForm({ lukkModal });
 
@@ -51,25 +51,19 @@ export function EndreBehandlendeEnhetModal({ lukkModal }: Props) {
                     </Modal.Body>
                     <Modal.Footer>
                         {!erRedigeringDeaktivert && (
-                            <>
-                                <Button type={'submit'} variant={'primary'} size={'small'} loading={isSubmitting}>
-                                    Bekreft
-                                </Button>
-                                <Button
-                                    variant={'secondary'}
-                                    size={'small'}
-                                    onClick={lukkModal}
-                                    disabled={isSubmitting}
-                                >
-                                    Avbryt
-                                </Button>
-                            </>
-                        )}
-                        {erRedigeringDeaktivert && (
-                            <Button size={'small'} variant={'secondary'} onClick={lukkModal}>
-                                Avbryt
+                            <Button type={'submit'} variant={'primary'} size={'small'} loading={isSubmitting}>
+                                Bekreft
                             </Button>
                         )}
+                        <Button
+                            type={'button'}
+                            variant={'secondary'}
+                            size={'small'}
+                            onClick={lukkModal}
+                            disabled={isSubmitting}
+                        >
+                            Avbryt
+                        </Button>
                     </Modal.Footer>
                 </form>
             </FormProvider>
