@@ -1,48 +1,33 @@
-import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useOpprettManueltBrevPdf } from '@hooks/useOpprettManueltBrevPdf';
-import { EØS_LAND_REGIONKODER, RegionCombobox, type Regionkode } from '@komponenter/FlaggCombobox';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import type { IBehandling } from '@typer/behandling';
-import type { IManueltBrevRequestPåBehandling } from '@typer/dokument';
-import type { IGrunnlagPerson, IPersonInfo } from '@typer/person';
-import { PersonType } from '@typer/person';
-import { målform } from '@typer/søknad';
-import { lagPersonLabel } from '@utils/formatter';
-import type { IFritekstFelt } from '@utils/fritekstfelter';
-import { hentFrontendFeilmelding } from '@utils/ressursUtils';
+import type { IPersonInfo } from '@typer/person';
+import { FormProvider } from 'react-hook-form';
 
-import { FileTextIcon, PlusCircleIcon, TrashIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
+import { FileTextIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
+import { Button, Dialog, ErrorMessage, Fieldset, Heading, HStack, Label, Loader, VStack } from '@navikt/ds-react';
+
+import { AntallUkerSvarfristField } from './AntallUkerSvarfristField';
+import { BarnBrevetGjelderField } from './BarnBrevetGjelderField';
 import {
-    Button,
-    Dialog,
-    ErrorMessage,
-    Fieldset,
-    Heading,
-    HStack,
-    Label,
-    Loader,
-    Select,
-    Tag,
-    Textarea,
-    TextField,
-    UNSAFE_Combobox,
-    VStack,
-} from '@navikt/ds-react';
-import { Valideringsstatus } from '@navikt/familie-skjema';
-import type { FeltState } from '@navikt/familie-skjema';
-import type { Ressurs } from '@navikt/familie-typer';
-import { RessursStatus } from '@navikt/familie-typer';
-
-import { BarnBrevetGjelder } from './BarnBrevetGjelder';
+    skalViseAntallUkerSvarfrist,
+    skalViseBarnBrevetGjelder,
+    skalViseDokumenter,
+    skalViseFritekstAvsnitt,
+    skalViseFritekstKulepunkter,
+    skalViseMottakerlandSed,
+} from './brevmalRegler';
+import { BrevmalSelect } from './BrevmalSelect';
 import BrevmottakerListe from './BrevmottakerListe';
 import styles from './Brevskjema.module.css';
-import type { BrevtypeSelect } from './typer';
-import { Brevmal, brevmaler, leggTilValuePåOption, opplysningsdokumenter } from './typer';
-import { useBrevModul } from './useBrevModul';
-import SkjultLegend from '../../../../../komponenter/SkjultLegend';
+import { DokumenterField } from './DokumenterField';
+import { FritekstAvsnittField } from './FritekstAvsnittField';
+import { FritekstKulepunkterField } from './FritekstKulepunkterField';
+import { MottakerlandSedField } from './MottakerlandSedField';
+import { MottakerSelect } from './MottakerSelect';
+import { BrevmodulFeltnavn, useBrevModul } from './useBrevModul';
 
 interface IProps {
     onSubmitSuccess: () => void;
@@ -50,27 +35,28 @@ interface IProps {
 }
 
 export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
-    const { behandling, settÅpenBehandling } = useBehandlingContext();
+    const { behandling } = useBehandlingContext();
     const erLesevisning = useErLesevisning();
 
     const {
-        skjema,
-        hentSkjemaData,
-        kanSendeSkjema,
-        mottakersMålform,
+        form,
         onSubmit,
-        personer,
+        hentSkjemaData,
+        mottakersMålform,
         hentMuligeBrevMaler,
-        makslengdeFritekstHvertKulepunkt,
-        maksAntallKulepunkter,
-        maksLengdeFritekstAvsnitt,
-        leggTilFritekst,
-        settVisfeilmeldinger,
-        erBrevmalMedObligatoriskFritekst,
+        onEndreBrevmal,
+        leggTilFritekstKulepunkt,
+        personer,
         brevmottakere,
         visFritekstAvsnittTekstboks,
         settVisFritekstAvsnittTekstboks,
-    } = useBrevModul();
+    } = useBrevModul({ onSubmitSuccess });
+
+    const {
+        handleSubmit,
+        watch,
+        formState: { isSubmitting, errors },
+    } = form;
 
     const [visForhåndsvisningDialog, settVisForhåndsvisningDialog] = useState(false);
 
@@ -81,354 +67,100 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
         error: opprettManueltBrevPdfError,
     } = useOpprettManueltBrevPdf();
 
+    const brevmal = watch(BrevmodulFeltnavn.BREVMAL);
     const brevMaler = hentMuligeBrevMaler();
-    const skjemaErLåst = skjema.submitRessurs.status === RessursStatus.HENTER || opprettManueltBrevPdfIsPending;
-
-    const fieldsetId = 'Fritekster-brev';
-    const erMaksAntallKulepunkter = skjema.felter.friteksterKulepunkter.verdi.length >= maksAntallKulepunkter;
-
-    const onChangeFritekst = (event: ChangeEvent<HTMLTextAreaElement>, fritekstId: number) =>
-        skjema.felter.friteksterKulepunkter.validerOgSettFelt([
-            ...skjema.felter.friteksterKulepunkter.verdi.map(mapFritekst => {
-                if (mapFritekst.verdi.id === fritekstId) {
-                    return mapFritekst.valider({
-                        ...mapFritekst,
-                        verdi: {
-                            ...mapFritekst.verdi,
-                            tekst: event.target.value,
-                        },
-                    });
-                } else {
-                    return mapFritekst;
-                }
-            }),
-        ]);
+    const skjemaErLåst = erLesevisning || isSubmitting || opprettManueltBrevPdfIsPending;
 
     if (erLesevisning) {
         return null;
     }
 
-    const dokumenterOptions = opplysningsdokumenter.map(leggTilValuePåOption);
-
     return (
-        <>
-            <Fieldset error={hentFrontendFeilmelding(skjema.submitRessurs)} legend={'Send brev'} hideLegend>
-                <Label>Brev sendes til</Label>
-                <BrevmottakerListe bruker={bruker} brevmottakere={brevmottakere} />
-                <VStack gap={'space-16'}>
-                    <Select
-                        {...skjema.felter.mottakerIdent.hentNavInputProps(skjema.visFeilmeldinger)}
-                        label={'Velg mottaker'}
-                        onChange={(event: ChangeEvent<HTMLSelectElement>): void => {
-                            skjema.felter.mottakerIdent.onChange(event.target.value);
-                        }}
-                    >
-                        <option value={''}>Velg</option>
-                        {personer
-                            .filter((person: IGrunnlagPerson) => person.type !== PersonType.BARN)
-                            .map((person, index) => {
-                                return (
-                                    <option
-                                        aria-selected={person.personIdent === skjema.felter.mottakerIdent.verdi}
-                                        key={`${index}_${person.fødselsdato}`}
-                                        value={person.personIdent}
-                                    >
-                                        {lagPersonLabel(person.personIdent, personer)}
-                                    </option>
-                                );
-                            })}
-                    </Select>
-                    <Select
-                        {...skjema.felter.brevmal.hentNavInputProps(skjema.visFeilmeldinger)}
-                        label={'Velg brevmal'}
-                        onChange={(event: ChangeEvent<BrevtypeSelect>): void => {
-                            skjema.felter.brevmal.onChange(event.target.value);
-                            skjema.felter.dokumenter.nullstill();
-                        }}
-                    >
-                        <option value={''}>Velg</option>
-                        {brevMaler.map(mal => {
-                            return (
-                                <option aria-selected={mal === skjema.felter.brevmal.verdi} key={mal} value={mal}>
-                                    {brevmaler[mal]}
-                                </option>
-                            );
-                        })}
-                    </Select>
-                    {skjema.felter.mottakerlandSed.erSynlig && (
-                        <RegionCombobox
-                            label={'SED er sendt til'}
-                            value={skjema.felter.mottakerlandSed.verdi as Regionkode[]}
-                            options={EØS_LAND_REGIONKODER}
-                            isMulti
-                            onChange={verdier => {
-                                if (verdier.length) {
-                                    skjema.felter.mottakerlandSed.validerOgSettFelt(verdier);
-                                } else {
-                                    skjema.felter.mottakerlandSed.nullstill();
-                                }
-                            }}
-                            error={
-                                skjema.visFeilmeldinger &&
-                                skjema.felter.mottakerlandSed.valideringsstatus === Valideringsstatus.FEIL
-                                    ? skjema.felter.mottakerlandSed.feilmelding?.toString()
-                                    : ''
-                            }
-                        />
-                    )}
-                    {skjema.felter.dokumenter.erSynlig && (
-                        <UNSAFE_Combobox
-                            error={skjema.felter.dokumenter.hentNavInputProps(skjema.visFeilmeldinger).error}
-                            id={skjema.felter.dokumenter.hentNavInputProps(skjema.visFeilmeldinger).id}
-                            selectedOptions={skjema.felter.dokumenter.verdi}
-                            className={styles.documentsCombobox}
-                            label={
-                                <HStack marginBlock={'space-16 space-8'} justify={'space-between'}>
-                                    Velg dokumenter
-                                    <Tag variant="neutral" size="small">
-                                        Skriv {målform[mottakersMålform()].toLowerCase()}
-                                    </Tag>
-                                </HStack>
-                            }
-                            isMultiSelect
-                            onToggleSelected={(option, isSelected) => {
-                                if (isSelected) {
-                                    skjema.felter.dokumenter.onChange([
-                                        ...skjema.felter.dokumenter.verdi,
-                                        dokumenterOptions.find(dokument => dokument.value === option)!,
-                                    ]);
-                                } else {
-                                    skjema.felter.dokumenter.onChange(
-                                        skjema.felter.dokumenter.verdi.filter(dokument => dokument.value !== option)
-                                    );
-                                }
-                            }}
-                            options={dokumenterOptions}
-                        />
-                    )}
-                    {skjema.felter.friteksterKulepunkter.erSynlig && (
-                        <>
-                            <Label htmlFor={fieldsetId}>Legg til kulepunkt</Label>
-                            <>
-                                <Fieldset
-                                    id={fieldsetId}
-                                    error={skjema.visFeilmeldinger && hentFrontendFeilmelding(skjema.submitRessurs)}
-                                    hideLegend
-                                    legend={'Legg til kulepunkt'}
-                                >
-                                    {skjema.felter.friteksterKulepunkter.verdi.map(
-                                        (fritekst: FeltState<IFritekstFelt>, index: number) => {
-                                            const fritekstId = fritekst.verdi.id;
-
-                                            return (
-                                                <HStack key={`fritekst-${fritekstId}`}>
-                                                    <SkjultLegend>{`Kulepunkt ${fritekstId}`}</SkjultLegend>
-                                                    <Textarea
-                                                        key={`fritekst-${fritekstId}`}
-                                                        id={`${fritekstId}`}
-                                                        label={`Kulepunkt ${fritekstId}`}
-                                                        hideLabel
-                                                        size={'small'}
-                                                        className={styles.textarea}
-                                                        value={fritekst.verdi.tekst}
-                                                        maxLength={makslengdeFritekstHvertKulepunkt}
-                                                        onChange={event => onChangeFritekst(event, fritekstId)}
-                                                        error={skjema.visFeilmeldinger && fritekst.feilmelding}
-                                                        /* eslint-disable-next-line jsx-a11y/no-autofocus */
-                                                        autoFocus
-                                                    />
-                                                    {!(
-                                                        erBrevmalMedObligatoriskFritekst(
-                                                            skjema.felter.brevmal.verdi as Brevmal
-                                                        ) && index === 0
-                                                    ) && (
-                                                        <Button
-                                                            onClick={() => {
-                                                                skjema.felter.friteksterKulepunkter.validerOgSettFelt([
-                                                                    ...skjema.felter.friteksterKulepunkter.verdi.filter(
-                                                                        mapFritekst =>
-                                                                            mapFritekst.verdi.id !== fritekst.verdi.id
-                                                                    ),
-                                                                ]);
-                                                            }}
-                                                            id={`fjern_fritekst-${fritekstId}`}
-                                                            size={'small'}
-                                                            variant={'tertiary'}
-                                                            aria-label={'Fjern fritekst'}
-                                                            icon={<TrashIcon />}
-                                                            className={styles.removeButton}
-                                                        >
-                                                            {'Fjern'}
-                                                        </Button>
-                                                    )}
-                                                </HStack>
-                                            );
-                                        }
-                                    )}
-                                </Fieldset>
-                                {!erMaksAntallKulepunkter && (
-                                    <Button
-                                        onClick={() => leggTilFritekst()}
-                                        id={`legg-til-fritekst`}
-                                        size={'small'}
-                                        variant={'tertiary'}
-                                        icon={<PlusCircleIcon />}
-                                        className={styles.addButton}
-                                    >
-                                        {'Legg til kulepunkt'}
-                                    </Button>
-                                )}
-                            </>
-                        </>
-                    )}
-                    {skjema.felter.fritekstAvsnitt.erSynlig && (
-                        <>
-                            <Label htmlFor={fieldsetId}>Legg til fritekst avsnitt</Label>
-                            {visFritekstAvsnittTekstboks ? (
-                                <Fieldset legend="Legg til fritekst avsnitt" hideLegend id={fieldsetId}>
-                                    <HStack>
-                                        <Textarea
-                                            label="Skriv inn fritekstavsnitt"
-                                            className={styles.freetext}
-                                            hideLabel
-                                            size={'small'}
-                                            value={skjema.felter.fritekstAvsnitt.verdi}
-                                            maxLength={maksLengdeFritekstAvsnitt}
-                                            onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                                                skjema.felter.fritekstAvsnitt.validerOgSettFelt(event.target.value)
-                                            }
-                                            error={
-                                                skjema.visFeilmeldinger && skjema.felter.fritekstAvsnitt?.feilmelding
-                                            }
-                                            /* eslint-disable-next-line jsx-a11y/no-autofocus */
-                                            autoFocus
-                                        />
-                                        <Button
-                                            variant={'tertiary'}
-                                            className={styles.removeButton}
-                                            onClick={() => {
-                                                skjema.felter.fritekstAvsnitt.nullstill();
-                                                settVisFritekstAvsnittTekstboks(false);
-                                            }}
-                                            id={`fjern_fritekst`}
-                                            size={'small'}
-                                            aria-label={'Fjern fritekst'}
-                                            icon={<TrashIcon />}
-                                        >
-                                            {'Fjern'}
-                                        </Button>
-                                    </HStack>
-                                </Fieldset>
-                            ) : (
-                                skjema.felter.fritekstAvsnitt &&
-                                !erLesevisning && (
-                                    <Button
-                                        variant={'tertiary'}
-                                        onClick={() => settVisFritekstAvsnittTekstboks(true)}
-                                        id={`legg-til-fritekst-avsnitt`}
-                                        size={'small'}
-                                        className={styles.addButton}
-                                        icon={<PlusCircleIcon />}
-                                    >
-                                        {'Legg til fritekst avsnitt'}
-                                    </Button>
-                                )
-                            )}
-                        </>
-                    )}
-                    {skjema.felter.barnBrevetGjelder.erSynlig && (
-                        <BarnBrevetGjelder
-                            barnBrevetGjelderFelt={skjema.felter.barnBrevetGjelder}
-                            behandlingsSteg={behandling.steg}
-                            visFeilmeldinger={skjema.visFeilmeldinger}
-                            settVisFeilmeldinger={settVisfeilmeldinger}
-                        />
-                    )}
-                    {skjema.felter.brevmal.verdi === Brevmal.FORLENGET_SVARTIDSBREV && (
-                        <TextField
-                            className={styles.textField}
-                            {...skjema.felter.antallUkerSvarfrist.hentNavInputProps(skjema.visFeilmeldinger)}
-                            label={'Antall uker svarfrist'}
+        <FormProvider {...form}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Fieldset error={errors.root?.message} legend={'Send brev'} hideLegend>
+                    <Label>Brev sendes til</Label>
+                    <BrevmottakerListe bruker={bruker} brevmottakere={brevmottakere} />
+                    <VStack gap={'space-16'}>
+                        <MottakerSelect personer={personer} />
+                        <BrevmalSelect brevMaler={brevMaler} onEndreBrevmal={onEndreBrevmal} />
+                        {skalViseMottakerlandSed(brevmal, behandling.kategori) && <MottakerlandSedField />}
+                        {skalViseDokumenter(brevmal) && <DokumenterField mottakersMålform={mottakersMålform} />}
+                        {skalViseFritekstKulepunkter(brevmal) && (
+                            <FritekstKulepunkterField leggTilFritekstKulepunkt={leggTilFritekstKulepunkt} />
+                        )}
+                        {skalViseFritekstAvsnitt(brevmal) && (
+                            <FritekstAvsnittField
+                                visFritekstAvsnittTekstboks={visFritekstAvsnittTekstboks}
+                                settVisFritekstAvsnittTekstboks={settVisFritekstAvsnittTekstboks}
+                            />
+                        )}
+                        {skalViseBarnBrevetGjelder(brevmal) && (
+                            <BarnBrevetGjelderField behandlingSteg={behandling.steg} />
+                        )}
+                        {skalViseAntallUkerSvarfrist(brevmal) && <AntallUkerSvarfristField />}
+                    </VStack>
+                </Fieldset>
+                <HStack marginBlock={'space-16'} justify={'space-between'}>
+                    <>
+                        <Button
+                            id={'forhandsvis-vedtaksbrev'}
+                            type={'button'}
+                            variant={'secondary'}
                             size={'small'}
-                        />
-                    )}
-                </VStack>
-            </Fieldset>
-            <HStack marginBlock={'space-16'} justify={'space-between'}>
-                <>
-                    <Button
-                        id={'forhandsvis-vedtaksbrev'}
-                        variant={'secondary'}
-                        size={'small'}
-                        disabled={skjemaErLåst}
-                        onClick={() => {
-                            if (behandling.behandlingId === undefined) {
-                                return; // Dette skal aldri skje
-                            }
-                            if (kanSendeSkjema()) {
+                            disabled={skjemaErLåst}
+                            onClick={handleSubmit(values => {
                                 opprettManueltBrevPdf({
                                     behandlingId: behandling.behandlingId,
-                                    payload: hentSkjemaData(),
+                                    payload: hentSkjemaData(values),
                                 });
                                 settVisForhåndsvisningDialog(true);
-                            }
-                        }}
-                        icon={<FileTextIcon />}
+                            })}
+                            icon={<FileTextIcon />}
+                        >
+                            Forhåndsvis
+                        </Button>
+                        <Dialog open={visForhåndsvisningDialog} onOpenChange={settVisForhåndsvisningDialog}>
+                            <Dialog.Popup width={'max(100rem, 60vw)'} height={'80vh'}>
+                                <Dialog.Header>
+                                    <Dialog.Title>Forhåndsvisning av brev</Dialog.Title>
+                                </Dialog.Header>
+                                <Dialog.Body className={styles.body}>
+                                    {opprettManueltBrevPdfIsPending && (
+                                        <HStack height={'100%'} justify={'center'} align={'center'} gap={'space-8'}>
+                                            <Loader size={'small'} title={'Laster dokument...'} />
+                                            <Heading size={'small'} level={'2'}>
+                                                Laster dokument...
+                                            </Heading>
+                                        </HStack>
+                                    )}
+                                    {opprettManueltBrevPdfError && (
+                                        <HStack height={'100%'} justify={'center'} align={'center'} gap={'space-8'}>
+                                            <XMarkOctagonFillIcon
+                                                color={'var(--ax-text-danger-subtle)'}
+                                                fontSize={'1.2rem'}
+                                            />
+                                            <ErrorMessage>{opprettManueltBrevPdfError.message}</ErrorMessage>
+                                        </HStack>
+                                    )}
+                                    {!opprettManueltBrevPdfIsPending && !opprettManueltBrevPdfError && (
+                                        <iframe className={styles.iframe} title={'Dokument'} src={manueltBrevPdf} />
+                                    )}
+                                </Dialog.Body>
+                            </Dialog.Popup>
+                        </Dialog>
+                    </>
+                    <Button
+                        type={'submit'}
+                        variant={'primary'}
+                        size={'small'}
+                        loading={isSubmitting}
+                        disabled={skjemaErLåst}
                     >
-                        Forhåndsvis
+                        Send brev
                     </Button>
-                    <Dialog open={visForhåndsvisningDialog} onOpenChange={settVisForhåndsvisningDialog}>
-                        <Dialog.Popup width={'max(100rem, 60vw)'} height={'80vh'}>
-                            <Dialog.Header>
-                                <Dialog.Title>Forhåndsvisning av brev</Dialog.Title>
-                            </Dialog.Header>
-                            <Dialog.Body className={styles.body}>
-                                {opprettManueltBrevPdfIsPending && (
-                                    <HStack height={'100%'} justify={'center'} align={'center'} gap={'space-8'}>
-                                        <Loader size={'small'} title={'Laster dokument...'} />
-                                        <Heading size={'small'} level={'2'}>
-                                            Laster dokument...
-                                        </Heading>
-                                    </HStack>
-                                )}
-                                {opprettManueltBrevPdfError && (
-                                    <HStack height={'100%'} justify={'center'} align={'center'} gap={'space-8'}>
-                                        <XMarkOctagonFillIcon
-                                            color={'var(--ax-text-danger-subtle)'}
-                                            fontSize={'1.2rem'}
-                                        />
-                                        <ErrorMessage>{opprettManueltBrevPdfError.message}</ErrorMessage>
-                                    </HStack>
-                                )}
-                                {!opprettManueltBrevPdfIsPending && !opprettManueltBrevPdfError && (
-                                    <iframe className={styles.iframe} title={'Dokument'} src={manueltBrevPdf} />
-                                )}
-                            </Dialog.Body>
-                        </Dialog.Popup>
-                    </Dialog>
-                </>
-                <Button
-                    variant={'primary'}
-                    size={'small'}
-                    loading={skjema.submitRessurs.status === RessursStatus.HENTER}
-                    disabled={skjemaErLåst}
-                    onClick={() => {
-                        onSubmit<IManueltBrevRequestPåBehandling>(
-                            {
-                                method: 'POST',
-                                data: hentSkjemaData(),
-                                url: `/familie-ks-sak/api/brev/send-brev/${behandling.behandlingId}`,
-                            },
-                            (ressurs: Ressurs<IBehandling>) => {
-                                onSubmitSuccess();
-                                settÅpenBehandling(ressurs);
-                            }
-                        );
-                    }}
-                >
-                    Send brev
-                </Button>
-            </HStack>
-        </>
+                </HStack>
+            </form>
+        </FormProvider>
     );
 };
