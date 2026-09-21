@@ -1,7 +1,8 @@
+import { BrevkodeMap, DokumentTittel, JournalpostTittel } from '@typer/manuell-journalføring';
+
 import { UNSAFE_Combobox } from '@navikt/ds-react';
 import type { IDokumentInfo, ILogiskVedlegg } from '@navikt/familie-typer';
 
-import { BrevkodeMap, DokumentTittel, JournalpostTittel } from '../../../typer/manuell-journalføring';
 import { useManuellJournalføringContext } from '../ManuellJournalføringContext';
 
 const tittelList = (Object.values(JournalpostTittel) as string[]).concat(Object.values(DokumentTittel));
@@ -11,7 +12,7 @@ interface IProps {
     visFeilmeldinger: boolean;
 }
 
-export const EndreDokumentInfoPanel = ({ dokument, visFeilmeldinger }: IProps) => {
+export function EndreDokumentInfoPanel({ dokument, visFeilmeldinger }: IProps) {
     const { skjema, erLesevisning } = useManuellJournalføringContext();
 
     const dokumentFraSkjema: IDokumentInfo | undefined = skjema.felter.dokumenter.verdi.find(
@@ -96,4 +97,4 @@ export const EndreDokumentInfoPanel = ({ dokument, visFeilmeldinger }: IProps) =
             />
         </>
     );
-};
+}

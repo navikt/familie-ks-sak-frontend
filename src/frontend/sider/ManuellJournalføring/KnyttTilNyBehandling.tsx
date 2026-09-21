@@ -10,7 +10,7 @@ import { useManuellJournalføringContext } from './ManuellJournalføringContext'
  * så kan man kanskje sjekke hvilken behandling
  * journalposten er journalført på slik at man kan klikke seg inn på behandlingen
  */
-export const KnyttTilNyBehandling = () => {
+export function KnyttTilNyBehandling() {
     const { skjema, minimalFagsak, kanKnytteJournalpostTilBehandling } = useManuellJournalføringContext();
     const { knyttTilNyBehandling, behandlingstype, behandlingstema } = skjema.felter;
     return (
@@ -60,4 +60,4 @@ export const KnyttTilNyBehandling = () => {
             </Fieldset>
         </Box>
     );
-};
+}

@@ -1,9 +1,9 @@
-import { ErrorMessage, LocalAlert } from '@navikt/ds-react';
+import { Box, ErrorMessage, Heading, LocalAlert } from '@navikt/ds-react';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { useManuellJournalføringContext } from '../ManuellJournalføringContext';
 import { DokumentVelger } from './DokumentVelger';
 
-export const Dokumenter = () => {
+export function Dokumenter() {
     const { skjema } = useManuellJournalføringContext();
 
     return skjema.felter.dokumenter.verdi.length === 0 ? (
@@ -13,23 +13,29 @@ export const Dokumenter = () => {
             </LocalAlert.Header>
         </LocalAlert>
     ) : (
-        <div id={skjema.felter.dokumenter.id}>
-            {skjema.felter.dokumenter.verdi.map((dokument, index) => (
-                <DokumentVelger
-                    dokument={dokument}
-                    key={index}
-                    visFeilmeldinger={
-                        skjema.visFeilmeldinger && skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL
-                    }
-                />
-            ))}
+        <Box id={skjema.felter.dokumenter.id} marginBlock={'space-40 space-0'}>
+            <Heading size={'small'} level={'2'}>
+                Dokumenter
+            </Heading>
+            <div id={skjema.felter.dokumenter.id}>
+                {skjema.felter.dokumenter.verdi.map((dokument, index) => (
+                    <DokumentVelger
+                        dokument={dokument}
+                        key={index}
+                        visFeilmeldinger={
+                            skjema.visFeilmeldinger &&
+                            skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL
+                        }
+                    />
+                ))}
 
-            {skjema.visFeilmeldinger && skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL && (
-                <>
-                    <br />
-                    <ErrorMessage>{skjema.felter.dokumenter.feilmelding}</ErrorMessage>
-                </>
-            )}
-        </div>
+                {skjema.visFeilmeldinger && skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL && (
+                    <>
+                        <br />
+                        <ErrorMessage>{skjema.felter.dokumenter.feilmelding}</ErrorMessage>
+                    </>
+                )}
+            </div>
+        </Box>
     );
-};
+}
