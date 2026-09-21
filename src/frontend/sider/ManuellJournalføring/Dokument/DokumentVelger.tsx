@@ -13,7 +13,7 @@ interface IDokumentVelgerProps {
     visFeilmeldinger: boolean;
 }
 
-export const DokumentVelger = ({ dokument, visFeilmeldinger }: IDokumentVelgerProps) => {
+export function DokumentVelger({ dokument, visFeilmeldinger }: IDokumentVelgerProps) {
     const { dataForManuellJournalføring, valgtDokumentId, velgOgHentDokumentData } = useManuellJournalføringContext();
     const [åpen, settÅpen] = useState(false);
 
@@ -52,4 +52,4 @@ export const DokumentVelger = ({ dokument, visFeilmeldinger }: IDokumentVelgerPr
             </ExpansionCard>
         </Box>
     );
-};
+}
