@@ -15,17 +15,14 @@ import Styles from './VilkårTabell.module.css';
 export const vilkårFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
     `vilkår_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
 
-export const vilkårBegrunnelseFeilmeldingId = (vilkårResultat: IVilkårResultat) =>
-    `vilkår-begrunnelse_${vilkårResultat.vilkårType}_${vilkårResultat.id}`;
-
-interface IProps {
+interface Props {
     person: IGrunnlagPerson;
     vilkårResultater: IVilkårResultat[];
     vilkårFraConfig: IVilkårConfig;
     settFokusPåLeggTilPeriodeKnapp: () => void;
 }
 
-const VilkårTabell = ({ person, vilkårFraConfig, vilkårResultater, settFokusPåLeggTilPeriodeKnapp }: IProps) => {
+export function VilkårTabell({ person, vilkårFraConfig, vilkårResultater, settFokusPåLeggTilPeriodeKnapp }: Props) {
     return (
         <Box className={Styles.wrapper}>
             <Table className={Styles.table}>
@@ -128,6 +125,4 @@ const VilkårTabell = ({ person, vilkårFraConfig, vilkårResultater, settFokusP
             </Table>
         </Box>
     );
-};
-
-export default VilkårTabell;
+}
