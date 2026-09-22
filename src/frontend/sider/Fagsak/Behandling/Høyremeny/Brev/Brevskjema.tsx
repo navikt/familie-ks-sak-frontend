@@ -42,7 +42,6 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
         form,
         onSubmit,
         hentSkjemaData,
-        mottakersMålform,
         hentMuligeBrevMaler,
         onEndreBrevmal,
         leggTilFritekstKulepunkt,
@@ -85,7 +84,7 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
                         <MottakerSelect personer={personer} />
                         <BrevmalSelect brevMaler={brevMaler} onEndreBrevmal={onEndreBrevmal} />
                         {skalViseMottakerlandSed(brevmal, behandling.kategori) && <MottakerlandSedField />}
-                        {skalViseDokumenter(brevmal) && <DokumenterField mottakersMålform={mottakersMålform} />}
+                        {skalViseDokumenter(brevmal) && <DokumenterField />}
                         {skalViseFritekstKulepunkter(brevmal) && (
                             <FritekstKulepunkterField leggTilFritekstKulepunkt={leggTilFritekstKulepunkt} />
                         )}

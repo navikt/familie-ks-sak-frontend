@@ -1,4 +1,4 @@
-import { type Målform, målform } from '@typer/søknad';
+import { målform } from '@typer/søknad';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { HStack, Tag, UNSAFE_Combobox } from '@navikt/ds-react';
@@ -6,16 +6,13 @@ import { HStack, Tag, UNSAFE_Combobox } from '@navikt/ds-react';
 import styles from './Brevskjema.module.css';
 import { leggTilValuePåOption, opplysningsdokumenter } from './typer';
 import { type BrevModulFormValues, BrevmodulFeltnavn } from './useBrevModul';
+import { useMottakersMålform } from './useMottakersMålform';
 import { useSkjemaErLåst } from './useSkjemaErLåst';
 
-interface Props {
-    mottakersMålform: (mottakerIdent: string) => Målform;
-}
-
-export function DokumenterField({ mottakersMålform }: Props) {
-    const { control, watch } = useFormContext<BrevModulFormValues>();
+export function DokumenterField() {
+    const { control } = useFormContext<BrevModulFormValues>();
     const skjemaErLåst = useSkjemaErLåst();
-    const mottakerIdent = watch(BrevmodulFeltnavn.MOTTAKER_IDENT);
+    const mottakersMålform = useMottakersMålform();
 
     const dokumenterOptions = opplysningsdokumenter.map(leggTilValuePåOption);
 
@@ -39,7 +36,7 @@ export function DokumenterField({ mottakersMålform }: Props) {
                 <HStack marginBlock={'space-16 space-8'} justify={'space-between'}>
                     Velg dokumenter
                     <Tag variant="neutral" size="small">
-                        Skriv {målform[mottakersMålform(mottakerIdent)].toLowerCase()}
+                        Skriv {målform[mottakersMålform].toLowerCase()}
                     </Tag>
                 </HStack>
             }

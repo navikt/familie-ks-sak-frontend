@@ -6,7 +6,8 @@ import { mockBarn, mockSøker } from '@utils/test/person/person.mock';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
 import { Brevmal } from './typer';
-import { hentMuligeBrevmalerImplementering, mottakersMålformImplementering } from './useBrevModul';
+import { hentMuligeBrevmalerImplementering } from './useBrevModul';
+import { mottakersMålformImplementering } from './useMottakersMålform';
 
 describe('useBrevModul', () => {
     describe('hentMuligeBrevmalerImplementering', () => {
