@@ -36,18 +36,17 @@ export function SlettVilkårResultat({ personIdent, vilkårResultat }: Props) {
         },
     });
 
-    function onSlettClicked() {
-        slettVilkårResultat({
-            behandlingId: behandling.behandlingId,
-            vilkårResultatId: vilkårResultat.id,
-            personIdent: personIdent,
-        });
-    }
-
     return (
         <Button
+            type={'button'}
             variant={'tertiary'}
-            onClick={() => onSlettClicked()}
+            onClick={() =>
+                slettVilkårResultat({
+                    behandlingId: behandling.behandlingId,
+                    vilkårResultatId: vilkårResultat.id,
+                    personIdent,
+                })
+            }
             loading={slettVilkårResultatIsPending}
             size={'medium'}
             icon={<TrashIcon />}
