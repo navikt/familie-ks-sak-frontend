@@ -113,10 +113,7 @@ interface SettBreddeAction {
 }
 
 type Action<T extends keyof typeof ModalType> =
-    | ÅpneModalAction<T>
-    | LukkModalAction
-    | SettBreddeAction
-    | SettTittelAction;
+    ÅpneModalAction<T> | LukkModalAction | SettBreddeAction | SettTittelAction;
 
 function reducer<T extends keyof typeof ModalType>(state: State, action: Action<T>) {
     const { type, payload } = action;

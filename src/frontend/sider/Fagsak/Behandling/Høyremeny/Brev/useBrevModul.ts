@@ -93,16 +93,14 @@ export interface BrevModulFormValues {
 const hentBarnBrevetGjelder = (personer: IGrunnlagPerson[]): IBarnMedOpplysninger[] =>
     personer
         .filter(person => person.type === PersonType.BARN)
-        .map(
-            (person: IGrunnlagPerson): IBarnMedOpplysninger => ({
-                ident: person.personIdent,
-                fødselsdato: person.fødselsdato,
-                navn: person.navn,
-                merket: false,
-                manueltRegistrert: false,
-                erFolkeregistrert: true,
-            })
-        );
+        .map((person: IGrunnlagPerson): IBarnMedOpplysninger => ({
+            ident: person.personIdent,
+            fødselsdato: person.fødselsdato,
+            navn: person.navn,
+            merket: false,
+            manueltRegistrert: false,
+            erFolkeregistrert: true,
+        }));
 
 export const brevmodulSkjemaStandardverdier = (behandling: IBehandling): BrevModulFormValues => ({
     [BrevmodulFeltnavn.MOTTAKER_IDENT]: '',

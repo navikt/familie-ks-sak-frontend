@@ -33,16 +33,14 @@ export interface DokumentutsendingFormValues {
 const hentBarnMedOpplysningerFraBruker = (bruker: IPersonInfo): IBarnMedOpplysninger[] =>
     bruker.forelderBarnRelasjon
         .filter(relasjon => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN)
-        .map(
-            (relasjon): IBarnMedOpplysninger => ({
-                merket: false,
-                ident: relasjon.personIdent,
-                navn: relasjon.navn,
-                fødselsdato: relasjon.fødselsdato,
-                manueltRegistrert: false,
-                erFolkeregistrert: true,
-            })
-        );
+        .map((relasjon): IBarnMedOpplysninger => ({
+            merket: false,
+            ident: relasjon.personIdent,
+            navn: relasjon.navn,
+            fødselsdato: relasjon.fødselsdato,
+            manueltRegistrert: false,
+            erFolkeregistrert: true,
+        }));
 
 export const dokumentutsendingSkjemaStandardverdier = (bruker: IPersonInfo): DokumentutsendingFormValues => ({
     [DokumentutsendingFeltnavn.ÅRSAK]: '',

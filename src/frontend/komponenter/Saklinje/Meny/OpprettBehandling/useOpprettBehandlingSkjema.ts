@@ -27,10 +27,7 @@ export enum OpprettBehandlingFelt {
 
 export interface OpprettBehandlingFormValues {
     [OpprettBehandlingFelt.BEHANDLINGSTYPE]:
-        | Behandlingstype
-        | Tilbakekrevingsbehandlingstype
-        | Klagebehandlingstype
-        | string;
+        Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | string;
     [OpprettBehandlingFelt.BEHANDLINGSÅRSAK]: BehandlingÅrsak | string;
     [OpprettBehandlingFelt.BEHANDLINGSKATEGORI]: BehandlingKategori | string;
     [OpprettBehandlingFelt.SØKNAD_MOTTATT_DATO]: IsoDatoString;

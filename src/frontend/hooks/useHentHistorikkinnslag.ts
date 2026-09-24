@@ -36,19 +36,17 @@ export function useHentHistorikkinnslag(behandlingId: number, options?: Options)
             if (skalObfuskereData) {
                 historikkinnslagKopi = obfuskerHistorikkinnslag(historikkinnslag);
             }
-            return historikkinnslagKopi.map(
-                (dto: HistorikkinnslagDto): Historikkinnslag => ({
-                    id: dto.id.toString(),
-                    dato: isoStringTilFormatertString({
-                        isoString: dto.opprettetTidspunkt,
-                        tilFormat: Datoformat.DATO_TID,
-                    }),
-                    utførtAv: dto.opprettetAv,
-                    rolle: dto.rolle,
-                    tittel: dto.tittel,
-                    beskrivelse: dto.tekst,
-                })
-            );
+            return historikkinnslagKopi.map((dto: HistorikkinnslagDto): Historikkinnslag => ({
+                id: dto.id.toString(),
+                dato: isoStringTilFormatertString({
+                    isoString: dto.opprettetTidspunkt,
+                    tilFormat: Datoformat.DATO_TID,
+                }),
+                utførtAv: dto.opprettetAv,
+                rolle: dto.rolle,
+                tittel: dto.tittel,
+                beskrivelse: dto.tekst,
+            }));
         },
         ...options,
     });
