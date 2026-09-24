@@ -48,8 +48,8 @@ importers:
         specifier: 8.2.50
         version: 8.2.50(axios@1.19.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.2.8)
       '@navikt/familie-tidslinje':
-        specifier: 11.0.3
-        version: 11.0.3(@navikt/ds-css@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react@19.2.18)(dayjs@1.11.21)(react@19.2.8)(styled-components@6.5.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
+        specifier: 11.0.5
+        version: 11.0.5(@navikt/ds-css@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react@19.2.18)(dayjs@1.11.21)(react@19.2.8)(styled-components@6.5.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
       '@navikt/familie-typer':
         specifier: 8.0.6
         version: 8.0.6
@@ -662,8 +662,8 @@ packages:
     peerDependencies:
       react: 18.x || 19.x
 
-  '@navikt/familie-tidslinje@11.0.3':
-    resolution: {integrity: sha512-IuHjxLksr/FjVXqJ7Zuanqe0yncIcVcM241rmoTA3rHu8WBWt8RpXxVUo5huY+ONm6H6H2atb5bLeU/c4CNdPA==, tarball: https://npm.pkg.github.com/download/@navikt/familie-tidslinje/11.0.3/3f6ee70db22b47b251f8a7c200aeca11daf074d6}
+  '@navikt/familie-tidslinje@11.0.5':
+    resolution: {integrity: sha512-faK+tV7FeQ9X0ANUw0QW2K2KWcKXzofRCGRIq3mmIcHGHuYHCuz2G+93k6ZcZJLn0GaC0jNN5OTut9ka5JNLbA==, tarball: https://npm.pkg.github.com/download/@navikt/familie-tidslinje/11.0.5/4e865cccc79acdc5f8575d9cf126d0becbc5aa36}
     peerDependencies:
       '@navikt/ds-css': 8.x
       '@navikt/ds-react': 8.x
@@ -2580,8 +2580,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanoid@5.1.5:
-    resolution: {integrity: sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==}
+  nanoid@5.1.16:
+    resolution: {integrity: sha512-kVrnsrJqMR8+oLJnGEmSWw9BivK5mt7H3FZatVRjrc5wGqFYuBxX1yG7+A7Gi5AefkX6t/oCkizcQgpu0cY1dQ==}
     engines: {node: ^18 || >=20}
     hasBin: true
 
@@ -4133,14 +4133,14 @@ snapshots:
     transitivePeerDependencies:
       - axios
 
-  '@navikt/familie-tidslinje@11.0.3(@navikt/ds-css@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react@19.2.18)(dayjs@1.11.21)(react@19.2.8)(styled-components@6.5.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))':
+  '@navikt/familie-tidslinje@11.0.5(@navikt/ds-css@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react@19.2.18)(dayjs@1.11.21)(react@19.2.8)(styled-components@6.5.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))':
     dependencies:
       '@navikt/ds-css': 8.16.1
       '@navikt/ds-react': 8.16.1(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@types/react': 19.2.18
       classnames: 2.5.1
       dayjs: 1.11.21
-      nanoid: 5.1.5
+      nanoid: 5.1.16
       react: 19.2.8
       styled-components: 6.5.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
 
@@ -6185,7 +6185,7 @@ snapshots:
 
   nanoid@3.3.19: {}
 
-  nanoid@5.1.5: {}
+  nanoid@5.1.16: {}
 
   natural-compare@1.4.0: {}
 
