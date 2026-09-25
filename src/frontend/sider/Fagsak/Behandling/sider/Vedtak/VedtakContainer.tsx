@@ -4,6 +4,7 @@ import { useBehandling } from '@hooks/useBehandling';
 import { useHentAlleBegrunnelser } from '@hooks/useHentAlleBegrunnelser';
 import { useHentSammensattKontrollsak } from '@hooks/useHentSammensattKontrollsak';
 import { useHentVedtaksperioder } from '@hooks/useHentVedtaksperioder';
+import { EndringstidspunktDialogProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/Endringstidspunkt/EndringstidspunktDialogContext';
 import { FeilutbetaltValutaTabellProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import { RefusjonEøsTabellProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
 import { SammensattKontrollsakProvider } from '@sider/Fagsak/Behandling/sider/Vedtak/SammensattKontrollsak/SammensattKontrollsakContext';
@@ -75,7 +76,9 @@ export function VedtakContainer({ children }: PropsWithChildren) {
                 <VedtaksperioderProvider vedtaksperioder={vedtaksperioder}>
                     <SendtTilTotrinnskontrollModalProvider>
                         <FeilutbetaltValutaTabellProvider>
-                            <RefusjonEøsTabellProvider>{children}</RefusjonEøsTabellProvider>
+                            <RefusjonEøsTabellProvider>
+                                <EndringstidspunktDialogProvider>{children}</EndringstidspunktDialogProvider>
+                            </RefusjonEøsTabellProvider>
                         </FeilutbetaltValutaTabellProvider>
                     </SendtTilTotrinnskontrollModalProvider>
                 </VedtaksperioderProvider>
