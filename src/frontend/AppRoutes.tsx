@@ -3,7 +3,7 @@ import { RouteError } from '@komponenter/Error/RouteError';
 import Barnehagelister from '@sider/Barnehagelister/Barnehagelister';
 import { Fagsak } from '@sider/Fagsak/Fagsak';
 import { fagsakRoutes } from '@sider/Fagsak/FagsakRoutes';
-import ManuellJournalføring from '@sider/ManuellJournalføring/ManuellJournalføring';
+import { ManuellJournalføring } from '@sider/ManuellJournalføring/ManuellJournalføring';
 import { Oppgavebenk } from '@sider/Oppgavebenk/Oppgavebenk';
 import { createBrowserRouter, Navigate } from 'react-router';
 
