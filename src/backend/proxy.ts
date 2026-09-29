@@ -3,7 +3,7 @@ import type { ClientRequest } from 'http';
 import type { NextFunction, Request, Response } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
-import type { Client } from '@navikt/familie-backend';
+import type { Configuration } from '@navikt/familie-backend';
 import { getOnBehalfOfAccessToken } from '@navikt/familie-backend';
 import { stdoutLogger } from '@navikt/familie-logging';
 
@@ -44,9 +44,9 @@ export const doRedirectProxy = () => {
     };
 };
 
-export const attachToken = (authClient: Client) => {
+export const attachToken = (authConfig: Configuration) => {
     return async (req: Request, _res: Response, next: NextFunction) => {
-        getOnBehalfOfAccessToken(authClient, req, oboConfig).then((accessToken: string) => {
+        getOnBehalfOfAccessToken(authConfig, req, oboConfig).then((accessToken: string) => {
             req.headers.Authorization = `Bearer ${accessToken}`;
             return next();
         });
