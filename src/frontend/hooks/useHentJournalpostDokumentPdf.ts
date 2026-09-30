@@ -1,5 +1,5 @@
 import { hentJournalpostDokumentPdf } from '@api/hentJournalpostDokumentPdf';
-import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import { opprettPdfBlob } from '@utils/blob';
 
 interface HentJournalpostDokumentParameters {

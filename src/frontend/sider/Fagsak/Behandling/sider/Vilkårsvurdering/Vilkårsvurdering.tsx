@@ -1,25 +1,22 @@
-import { useState } from 'react';
-
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsak } from '@hooks/useFagsak';
 import { useOppdaterVilkårsvurdering } from '@hooks/useOppdaterVilkårsvurdering';
+import { InformationSquareIcon } from '@navikt/aksel-icons';
+import { BodyShort, ErrorMessage, ErrorSummary, InfoCard, List } from '@navikt/ds-react';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
 import { defaultFunksjonellFeil } from '@typer/feilmeldinger';
 import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
 import { erProd } from '@utils/miljø';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
-
-import { InformationSquareIcon } from '@navikt/aksel-icons';
-import { BodyShort, ErrorMessage, ErrorSummary, InfoCard, List } from '@navikt/ds-react';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
-
+import Skjemasteg, { MAX_SKJEMASTEG_BREDDE } from '../../../../../komponenter/Skjemasteg/Skjemasteg';
+import { useBehandlingContext } from '../../context/BehandlingContext';
 import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderingITestmiljøKnapp';
 import { OppdaterRegisteropplysninger } from './OppdaterRegisteropplysninger';
 import { ManglendeSvalbardmerkingVarsel } from './Varsel/ManglendeSvalbardmerkingVarsel';
 import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
-import Skjemasteg, { MAX_SKJEMASTEG_BREDDE } from '../../../../../komponenter/Skjemasteg/Skjemasteg';
-import { useBehandlingContext } from '../../context/BehandlingContext';
 
 export function Vilkårsvurdering() {
     const { behandling, settÅpenBehandling } = useBehandlingContext();

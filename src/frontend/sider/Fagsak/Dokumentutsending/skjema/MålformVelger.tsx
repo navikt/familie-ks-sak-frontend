@@ -1,8 +1,7 @@
 import { useErLesevisningFagsak } from '@hooks/useErLesevisningFagsak';
+import { Box, Radio, RadioGroup } from '@navikt/ds-react';
 import { Målform, målform } from '@typer/søknad';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { Box, Radio, RadioGroup } from '@navikt/ds-react';
 
 import type { DokumentutsendingFormValues } from '../useDokumentutsendingSkjema';
 import { DokumentutsendingFeltnavn } from '../useDokumentutsendingSkjema';

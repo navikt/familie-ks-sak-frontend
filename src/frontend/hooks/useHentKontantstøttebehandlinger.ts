@@ -1,7 +1,7 @@
 import { hentKontantstøtteBehandlinger } from '@api/hentKontantstøtteBehandlinger';
 import { MetaKey } from '@hooks/meta/metaKey';
 import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
-import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
+import { type UseQueryOptions, useQuery } from '@tanstack/react-query';
 
 type Options = Omit<UseQueryOptions<VisningBehandling[]>, 'queryKey' | 'queryFn'>;
 

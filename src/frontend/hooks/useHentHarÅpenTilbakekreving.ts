@@ -1,6 +1,6 @@
 import { hentHarÅpenTilbakekreving } from '@api/hentHarÅpenTilbakekreving';
 import { MetaKey } from '@hooks/meta/metaKey';
-import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
+import { type UseQueryOptions, useQuery } from '@tanstack/react-query';
 
 type Options = Omit<UseQueryOptions<boolean>, 'queryKey' | 'queryFn'>;
 

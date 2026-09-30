@@ -1,9 +1,8 @@
+import { Valideringsstatus } from '@navikt/familie-skjema';
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 import { Målform } from '@typer/søknad';
 import { mockBarn, mockSøker } from '@utils/test/person/person.mock';
-
-import { Valideringsstatus } from '@navikt/familie-skjema';
 
 import { Brevmal } from './typer';
 import { hentMuligeBrevmalerImplementering } from './useBrevModul';

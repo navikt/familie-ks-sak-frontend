@@ -1,6 +1,3 @@
-import type { BarnehagebarnFilter, BarnehagebarnRequestParams, Barnehagekommune } from '@typer/barnehagebarn';
-import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
-
 import { FileResetIcon, FunnelIcon } from '@navikt/aksel-icons';
 import {
     Box,
@@ -13,6 +10,8 @@ import {
     UNSAFE_Combobox,
     VStack,
 } from '@navikt/ds-react';
+import type { BarnehagebarnFilter, BarnehagebarnRequestParams, Barnehagekommune } from '@typer/barnehagebarn';
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 
 interface BarnehagebarnFilterSkjemaProps {
     oppdaterFiltrering: (filter: BarnehagebarnFilter) => void;

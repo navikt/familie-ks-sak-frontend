@@ -1,16 +1,14 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import type { IBehandling } from '@typer/behandling';
-import type { OptionType } from '@typer/common';
-import { IEndretUtbetalingAndelÅrsak } from '@typer/utbetalingAndel';
-import { type Begrunnelse, BegrunnelseType, begrunnelseTyper } from '@typer/vedtak';
-
 import { LocalAlert, Select } from '@navikt/ds-react';
 import type { GroupBase } from '@navikt/familie-form-elements';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { RessursStatus } from '@navikt/familie-typer';
-
-import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
+import type { IBehandling } from '@typer/behandling';
+import type { OptionType } from '@typer/common';
+import { IEndretUtbetalingAndelÅrsak } from '@typer/utbetalingAndel';
+import { type Begrunnelse, BegrunnelseType, begrunnelseTyper } from '@typer/vedtak';
 import { useHentEndretUtbetalingBegrunnelser } from '../useHentEndretUtbetalingBegrunnelser';
+import type { IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
 
 interface IProps {
     skjema: ISkjema<IEndretUtbetalingAndelSkjema, IBehandling>;

@@ -1,6 +1,8 @@
 import { useBruker } from '@hooks/useBruker';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import StatusIkon, { Status } from '@ikoner/StatusIkon';
+import { InformationSquareIcon } from '@navikt/aksel-icons';
+import { BodyShort, CheckboxGroup, HStack, InfoCard, VStack } from '@navikt/ds-react';
 import { useBarnaFieldArray } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/BarnaFieldArrayContext';
 import { BarnCheckbox } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/BarnCheckbox';
 import { FieldLabel } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/FieldLabel';
@@ -10,9 +12,6 @@ import {
 } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useRegistrerSøknadForm';
 import { adressebeskyttelsestyper, ForelderBarnRelasjonRolle } from '@typer/person';
 import { useFormContext } from 'react-hook-form';
-
-import { InformationSquareIcon } from '@navikt/aksel-icons';
-import { BodyShort, CheckboxGroup, HStack, InfoCard, VStack } from '@navikt/ds-react';
 
 export function BarnaField() {
     const bruker = useBruker();

@@ -1,5 +1,5 @@
-import { opprettTilbakekreving, type OpprettTilbakekrevingPayload } from '@api/opprettTilbakekreving';
-import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import { type OpprettTilbakekrevingPayload, opprettTilbakekreving } from '@api/opprettTilbakekreving';
+import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 
 type OpprettTilbakekrevingParameters = OpprettTilbakekrevingPayload;
 

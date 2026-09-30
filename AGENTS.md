@@ -18,13 +18,14 @@ pnpm start:lokal                                                                
 pnpm start:hybrid                                                                    # local frontend + local backend against preprod
 
 # Validate before finishing a task
-pnpm validate                                                                        # typecheck + lint + prettier
+pnpm validate                                                                        # typecheck + Biome check
 pnpm typecheck                                                                       # tsc --noEmit on both src/backend and src/frontend
 pnpm test                                                                            # test:backend + test:frontend (vitest)
 pnpm test:frontend                                                                   # vitest -c src/frontend/vitest.config.ts --run
 pnpm exec vitest --config src/frontend/vitest.config.ts --run path/to/file.test.tsx  # single file
 pnpm lint:fix
-pnpm prettier:fix
+pnpm format:fix
+pnpm check:fix
 
 # Build
 pnpm build                                                                           # = build:prod
@@ -66,15 +67,13 @@ Path aliases (use these in new code): `@api/*`, `@context/*`, `@hooks/*`, `@ikon
 
 - **Language**: Norwegian for identifiers, filenames, comments, commit messages, and PR text (æøå is fine).
   Technical keywords and framework APIs stay in English (`fun`, `class`, `useQuery`, etc.).
-- **Formatting**: Prettier — 4-space indent, 120 char width, single quotes, `es5` trailing commas,
-  `arrowParens: avoid`. Enforced as an ESLint rule (`prettier/prettier: error`), so `pnpm lint` catches
-  formatting issues too.
+- **Linting and formatting**: Biome recommended rules and formatter defaults, with custom
+  preferences used: 4-space indent, 120 char width, single quotes, `es5` trailing commas,
+  and arrow parentheses only when needed. `pnpm check` checks linting, formatting, and import organization.
 - **React imports**: never `import React from 'react'` or `React.*` member access — use named imports only.
   Never use `React.FC` / `React.FunctionComponent` / `React.VFC` — annotate props on the function parameter.
-  Enforced by `no-restricted-syntax` / `no-restricted-types` ESLint rules.
-- **Types**: `import type { ... }` is required for type-only imports (`consistent-type-imports`).
-- **Import order**: alphabetical within groups (builtin, external, internal, parent/sibling, index), blank line
-  between groups. `react` first among external imports; `@navikt/**` first among internal imports.
+- **Types**: use `import type { ... }` for type-only imports.
+- **Import order**: imports are organized by Biome.
 - **Path aliases**: prefer the aliases listed above over long relative (`../../..`) imports.
 - **Exports**: named exports (`export function Komponent(...)`), not default exports.
 - **Dependencies**: `save-exact=true` in `.npmrc` — pin exact versions, no `^` ranges.

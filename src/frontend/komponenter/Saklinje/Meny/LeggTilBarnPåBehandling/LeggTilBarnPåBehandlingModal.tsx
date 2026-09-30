@@ -1,10 +1,9 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { LeggTilBarnFelt } from '@komponenter/Saklinje/Meny/LeggTilBarnPåBehandling/LeggTilBarnFelt';
 import { useLeggTilBarnPåBehandlingSkjema } from '@komponenter/Saklinje/Meny/LeggTilBarnPåBehandling/useLeggTilBarnPåBehandlingSkjema';
-import { FormProvider } from 'react-hook-form';
-
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, Heading, HelpText, HStack, InfoCard, Modal } from '@navikt/ds-react';
+import { FormProvider } from 'react-hook-form';
 
 interface Props {
     lukkModal: () => void;

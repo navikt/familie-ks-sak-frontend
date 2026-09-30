@@ -1,5 +1,5 @@
 import { apiClient } from '@api/client/apiClient';
-import { harSaksbehandlerTilgang, type HarSaksbehandlerTilgangPayload } from '@api/harSaksbehandlerTilgang';
+import { type HarSaksbehandlerTilgangPayload, harSaksbehandlerTilgang } from '@api/harSaksbehandlerTilgang';
 import { Adressebeskyttelsegradering, type IRestTilgang } from '@typer/person';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 

@@ -1,5 +1,3 @@
-import { type PropsWithChildren } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import {
@@ -11,6 +9,7 @@ import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { lagPersonResultat } from '@testutils/testdata/personResultatTestdata';
 import { lagVilkårResultat } from '@testutils/testdata/vilkårResultatTestdata';
 import { Resultat } from '@typer/vilkår';
+import type { PropsWithChildren } from 'react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 vi.mock('@hooks/useBehandling', () => ({ useBehandling: vi.fn() }));

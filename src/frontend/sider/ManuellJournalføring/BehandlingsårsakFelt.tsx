@@ -1,9 +1,7 @@
-import type { ChangeEvent } from 'react';
-
-import { behandlingÅrsak, BehandlingÅrsak, behandlingÅrsakerSomIkkeSkalSettesManuelt } from '@typer/behandling';
-
 import { Select } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
+import { BehandlingÅrsak, behandlingÅrsak, behandlingÅrsakerSomIkkeSkalSettesManuelt } from '@typer/behandling';
+import type { ChangeEvent } from 'react';
 
 interface BehandlingÅrsakSelect extends HTMLSelectElement {
     value: BehandlingÅrsak | '';

@@ -1,12 +1,11 @@
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterUtenlandskPeriodeBeløp } from '@hooks/useOppdaterUtenlandskPeriodeBeløp';
 import { useSlettUtenlandskPeriodeBeløp } from '@hooks/useSlettUtenlandskPeriodeBeløp';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import type { OptionType } from '@typer/common';
 import type { IRestUtenlandskPeriodeBeløp, UtenlandskPeriodeBeløpIntervall } from '@typer/eøsPerioder';
 import { type IIsoMånedPeriode, nyIsoMånedPeriode } from '@utils/dato';
 import { useForm } from 'react-hook-form';
-
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { BehandlingÅrsak } from '../../../../../../../typer/behandling';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';

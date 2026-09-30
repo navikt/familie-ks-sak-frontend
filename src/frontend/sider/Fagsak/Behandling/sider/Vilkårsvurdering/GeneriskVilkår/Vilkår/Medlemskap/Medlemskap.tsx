@@ -1,11 +1,10 @@
+import { Box, InlineMessage } from '@navikt/ds-react';
 import { Regelverk, Resultat } from '@typer/vilkår';
 import { useWatch } from 'react-hook-form';
 
-import { Box, InlineMessage } from '@navikt/ds-react';
-
 import { IKKE_AKTUELT_ALTERNATIV, JA_NEI_ALTERNATIVER, ResultatFelt } from '../../ResultatFelt';
 import { useVilkårResultatSkjema, VilkårResultatFelt } from '../../useVilkårResultatSkjema';
-import { VilkårSkjema, type VilkårProps } from '../../VilkårSkjema';
+import { type VilkårProps, VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 export function Medlemskap({

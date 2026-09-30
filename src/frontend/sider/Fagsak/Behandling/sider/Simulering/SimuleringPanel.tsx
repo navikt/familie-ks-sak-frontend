@@ -1,6 +1,3 @@
-import { isBefore } from 'date-fns';
-import styled from 'styled-components';
-
 import { BodyShort, Box, HStack, Spacer, VStack } from '@navikt/ds-react';
 import {
     BorderNeutral,
@@ -10,6 +7,8 @@ import {
     TextNeutral,
     TextSuccessSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
+import { isBefore } from 'date-fns';
+import styled from 'styled-components';
 
 import type { ISimuleringDTO, ISimuleringPeriode } from '../../../../../typer/simulering';
 import {

@@ -1,12 +1,10 @@
-import { useState } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
 import { useHentEllerOpprettVedtaksbrevPdf } from '@hooks/useHentEllerOpprettVedtaksbrevPdf';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
-import { BehandlerRolle, BehandlingSteg, hentStegNummer } from '@typer/behandling';
-
 import { FileTextIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
 import { Button, Dialog, ErrorMessage, Heading, HStack, Loader } from '@navikt/ds-react';
+import { BehandlerRolle, BehandlingSteg, hentStegNummer } from '@typer/behandling';
+import { useState } from 'react';
 
 import Styles from './ForhåndsvisVedtaksbrev.module.css';
 

@@ -1,7 +1,7 @@
-import type { BehandlingKategori } from './behandlingstema';
-import type { Målform } from './søknad';
 import type { SkjemaBrevmottaker } from '../komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import type { Brevmal, Informasjonsbrev } from '../sider/Fagsak/Behandling/Høyremeny/Brev/typer';
+import type { BehandlingKategori } from './behandlingstema';
+import type { Målform } from './søknad';
 
 export interface IManueltBrevRequestPåBehandling {
     mottakerIdent: string;

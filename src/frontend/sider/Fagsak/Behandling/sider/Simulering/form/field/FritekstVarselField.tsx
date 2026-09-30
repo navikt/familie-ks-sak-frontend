@@ -6,6 +6,8 @@ import {
     mutationKey,
     useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf,
 } from '@hooks/useOpprettForhåndsvisbarTilbakekrevingVarselbrevPdf';
+import { ExternalLinkIcon, FileTextIcon } from '@navikt/aksel-icons';
+import { BodyLong, Box, Button, HelpText, HStack, Link, Spacer, Tag, Textarea } from '@navikt/ds-react';
 import styles from '@sider/Fagsak/Behandling/sider/Simulering/form/TilbakekrevingForm.module.css';
 import {
     MAKS_LENGDE_TEKST,
@@ -15,9 +17,6 @@ import {
 import { målform } from '@typer/søknad';
 import { hentSøkersMålform } from '@utils/behandling';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { ExternalLinkIcon, FileTextIcon } from '@navikt/aksel-icons';
-import { BodyLong, Box, Button, HelpText, HStack, Link, Spacer, Tag, Textarea } from '@navikt/ds-react';
 
 export function FritekstVarselField() {
     const behandling = useBehandling();

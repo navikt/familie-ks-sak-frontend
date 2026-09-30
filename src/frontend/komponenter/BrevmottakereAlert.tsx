@@ -1,9 +1,7 @@
-import { useState } from 'react';
-
-import { useLocation } from 'react-router';
-
 import { InformationSquareIcon, MagnifyingGlassIcon } from '@navikt/aksel-icons';
 import { Box, Button, InfoCard } from '@navikt/ds-react';
+import { useState } from 'react';
+import { useLocation } from 'react-router';
 
 import BrevmottakerListe from '../sider/Fagsak/Behandling/Høyremeny/Brev/BrevmottakerListe';
 import { sider } from '../sider/Fagsak/Behandling/sider/sider';

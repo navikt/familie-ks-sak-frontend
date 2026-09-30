@@ -1,18 +1,16 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { TrashIcon } from '@navikt/aksel-icons';
+import { Box, Button, Fieldset, HGrid, Link, LocalAlert } from '@navikt/ds-react';
 import type { OptionType } from '@typer/common';
 import { EøsPeriodeStatus, type IRestValutakurs } from '@typer/eøsPerioder';
 import { useFormContext } from 'react-hook-form';
-
-import { TrashIcon } from '@navikt/aksel-icons';
-import { Box, Button, Fieldset, HGrid, Link, LocalAlert } from '@navikt/ds-react';
-
-import { type ValutakursFormValues } from './useValutakursSkjema';
+import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
+import type { ValutakursFormValues } from './useValutakursSkjema';
 import { ValutakursBarnFelt } from './ValutakursBarnFelt';
 import { ValutakursDatoFelt } from './ValutakursDatoFelt';
 import { ValutakursKursFelt } from './ValutakursKursFelt';
 import { ValutakursPeriodeFelt } from './ValutakursPeriodeFelt';
 import { ValutakursValutaFelt } from './ValutakursValutaFelt';
-import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
 
 interface Props {
     valutakurs: IRestValutakurs;

@@ -1,9 +1,8 @@
 import { useBehandling } from '@hooks/useBehandling';
+import { Heading, HelpText, HStack, VStack } from '@navikt/ds-react';
 import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
 import { Vedtaksperiodetype } from '@typer/vedtaksperiode';
 import { partition } from '@utils/commons';
-
-import { Heading, HelpText, HStack, VStack } from '@navikt/ds-react';
 
 import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
 import { Vedtaksperiode } from './Vedtaksperiode';

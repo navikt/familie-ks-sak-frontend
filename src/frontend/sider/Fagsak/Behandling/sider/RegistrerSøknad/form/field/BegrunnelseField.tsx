@@ -1,12 +1,11 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Textarea } from '@navikt/ds-react';
 import { FieldLabel } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/FieldLabel';
 import {
     RegistrerSøknadFormField,
     type RegistrerSøknadFormValues,
 } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useRegistrerSøknadForm';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { Textarea } from '@navikt/ds-react';
 
 import Styles from './BegrunnelseField.module.css';
 

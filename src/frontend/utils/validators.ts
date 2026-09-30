@@ -1,10 +1,9 @@
-import { Adressebeskyttelsegradering } from '@typer/person';
-import { IEndretUtbetalingAndelÅrsak } from '@typer/utbetalingAndel';
-import type { Begrunnelse } from '@typer/vedtak';
-
 import type { Avhengigheter, FeltState } from '@navikt/familie-skjema';
 import { feil, ok, Valideringsstatus } from '@navikt/familie-skjema';
 import { idnr } from '@navikt/fnrvalidator';
+import { Adressebeskyttelsegradering } from '@typer/person';
+import { IEndretUtbetalingAndelÅrsak } from '@typer/utbetalingAndel';
+import type { Begrunnelse } from '@typer/vedtak';
 
 const harFyltInnIdent = (felt: FeltState<string>): FeltState<string> => {
     return /^\d{11}$/.test(felt.verdi.replace(' ', '')) ? ok(felt) : feil(felt, 'Identen har ikke 11 tall');

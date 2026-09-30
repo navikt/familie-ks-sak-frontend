@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
-
 import { useHentFagsakPaaPersonError } from '@hooks/useHentFagsakPaaPersonError';
 import { KontoSirkel } from '@ikoner/KontoSirkel';
-import { formaterIdent } from '@utils/formatter';
-import { identValidator } from '@utils/validators';
-
 import { Box, Button, ExpansionCard, HStack, LocalAlert, TextField, VStack } from '@navikt/ds-react';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
+import { formaterIdent } from '@utils/formatter';
+import { identValidator } from '@utils/validators';
+import { useEffect, useState } from 'react';
 
 import styles from './BrukerPanel.module.css';
 import { DeltagerInfo } from './DeltagerInfo';

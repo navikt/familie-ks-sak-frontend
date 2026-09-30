@@ -1,12 +1,10 @@
-import { useState } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
 import { useBruker } from '@hooks/useBruker';
 import { LeggTilBrevmottakerModalBehandling } from '@komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/LeggTilBrevmottakerModalBehandling';
-import BrevmottakerListe from '@sider/Fagsak/Behandling/Høyremeny/Brev/BrevmottakerListe';
-
 import { InformationSquareIcon, MagnifyingGlassIcon } from '@navikt/aksel-icons';
 import { Button, InfoCard } from '@navikt/ds-react';
+import BrevmottakerListe from '@sider/Fagsak/Behandling/Høyremeny/Brev/BrevmottakerListe';
+import { useState } from 'react';
 
 type Kilde = 'vedtak' | 'simulering';
 

@@ -1,8 +1,7 @@
+import { Box, Checkbox, Fieldset, Heading } from '@navikt/ds-react';
 import { BehandlingstemaSelect } from '@sider/ManuellJournalføring/BehandlingstemaSelect';
 import BehandlingstypeFelt from '@sider/ManuellJournalføring/BehandlingstypeFelt';
 import { BehandlingårsakFelt } from '@sider/ManuellJournalføring/BehandlingsårsakFelt';
-
-import { Box, Checkbox, Fieldset, Heading } from '@navikt/ds-react';
 
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 

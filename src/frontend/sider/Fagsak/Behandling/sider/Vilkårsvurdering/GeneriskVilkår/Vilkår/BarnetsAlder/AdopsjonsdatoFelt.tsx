@@ -1,19 +1,16 @@
-import { useRef } from 'react';
-
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { tidligsteRelevanteDato } from '@komponenter/Datovelger/utils';
+import { DatePicker, type DateValidationT, useDatepicker } from '@navikt/ds-react';
 import type { IGrunnlagPerson } from '@typer/person';
 import { hentDagensDato, isoStringTilDate } from '@utils/dato';
+import { useRef } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { DatePicker, type DateValidationT, useDatepicker } from '@navikt/ds-react';
-
-import { validerAdopsjonsdato } from './BarnetsAlderValidering';
 import {
     utledAdopsjonsdatoFraPerson,
     VilkårResultatFelt,
     type VilkårResultatFormValues,
 } from '../../useVilkårResultatSkjema';
+import { validerAdopsjonsdato } from './BarnetsAlderValidering';
 
 interface Props {
     person: IGrunnlagPerson;

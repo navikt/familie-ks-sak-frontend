@@ -1,16 +1,12 @@
-import { useEffect, useState } from 'react';
-
-import styled from 'styled-components';
-
 import { XMarkIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, Button, Heading, HGrid, InlineMessage, VStack } from '@navikt/ds-react';
 import { Space16 } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
-
-import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
-import { type IBehandling } from '../../../../../typer/behandling';
-import { ytelsetype, YtelseType } from '../../../../../typer/beregning';
+import type { IBehandling } from '../../../../../typer/behandling';
+import { YtelseType, ytelsetype } from '../../../../../typer/beregning';
 import type {
     IEøsPeriodeStatus,
     IRestEøsPeriode,
@@ -20,8 +16,9 @@ import type {
 } from '../../../../../typer/eøsPerioder';
 import { EøsPeriodeStatus, KompetanseResultat } from '../../../../../typer/eøsPerioder';
 import type { Utbetalingsperiode } from '../../../../../typer/utbetalingsperiode';
-import { dateTilFormatertString, Datoformat, periodeOverlapperMedValgtDato } from '../../../../../utils/dato';
+import { Datoformat, dateTilFormatertString, periodeOverlapperMedValgtDato } from '../../../../../utils/dato';
 import { formaterBeløp, formaterIdent, hentAlderSomString, sorterUtbetaling } from '../../../../../utils/formatter';
+import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
 
 const TotaltUtbetaltRad = styled(HGrid)`
     border-top: 1px dashed;
@@ -194,4 +191,5 @@ const Oppsummeringsboks = ({
         </Box>
     );
 };
+
 export { Oppsummeringsboks };

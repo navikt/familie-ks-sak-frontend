@@ -1,13 +1,11 @@
-import { useRef } from 'react';
+import { MonthPicker, type MonthValidationT, useMonthpicker } from '@navikt/ds-react';
 
 import { format, startOfMonth } from 'date-fns';
+import { useRef } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { MonthPicker, useMonthpicker, type MonthValidationT } from '@navikt/ds-react';
-
-import { Fields, type FormValues } from './useRefusjonEøsForm';
 import { tidligsteRelevanteDato } from '../../../../../../../komponenter/Datovelger/utils';
 import { dateTilIsoDatoString, hentDagensDato, isoStringTilDate } from '../../../../../../../utils/dato';
+import { Fields, type FormValues } from './useRefusjonEøsForm';
 
 interface Props {
     readOnly?: boolean;

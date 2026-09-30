@@ -1,16 +1,17 @@
-import { useState } from 'react';
-
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useOpprettManueltBrevPdf } from '@hooks/useOpprettManueltBrevPdf';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import type { IPersonInfo } from '@typer/person';
-import { FormProvider } from 'react-hook-form';
-
 import { FileTextIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
 import { Button, Dialog, ErrorMessage, Fieldset, Heading, HStack, Label, Loader, VStack } from '@navikt/ds-react';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import type { IPersonInfo } from '@typer/person';
+import { useState } from 'react';
+import { FormProvider } from 'react-hook-form';
 
 import { AntallUkerSvarfristField } from './AntallUkerSvarfristField';
 import { BarnBrevetGjelderField } from './BarnBrevetGjelderField';
+import { BrevmalSelect } from './BrevmalSelect';
+import BrevmottakerListe from './BrevmottakerListe';
+import styles from './Brevskjema.module.css';
 import {
     skalViseAntallUkerSvarfrist,
     skalViseBarnBrevetGjelder,
@@ -19,9 +20,6 @@ import {
     skalViseFritekstKulepunkter,
     skalViseMottakerlandSed,
 } from './brevmalRegler';
-import { BrevmalSelect } from './BrevmalSelect';
-import BrevmottakerListe from './BrevmottakerListe';
-import styles from './Brevskjema.module.css';
 import { DokumenterField } from './DokumenterField';
 import { FritekstAvsnittField } from './FritekstAvsnittField';
 import { FritekstKulepunkterField } from './FritekstKulepunkterField';

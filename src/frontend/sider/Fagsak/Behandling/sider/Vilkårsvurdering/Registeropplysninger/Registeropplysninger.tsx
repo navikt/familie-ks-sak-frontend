@@ -9,12 +9,11 @@ import {
 } from '@navikt/aksel-icons';
 import { Box, Detail, Heading, InfoCard } from '@navikt/ds-react';
 import { Space16 } from '@navikt/ds-tokens/dist/tokens';
-
-import styles from './Registeropplysninger.module.css';
-import RegisteropplysningerTabell from './RegisteropplysningerTabell';
 import type { IRestRegisterhistorikk } from '../../../../../../typer/person';
 import { Registeropplysning } from '../../../../../../typer/registeropplysning';
 import { Datoformat, isoStringTilFormatertString } from '../../../../../../utils/dato';
+import styles from './Registeropplysninger.module.css';
+import RegisteropplysningerTabell from './RegisteropplysningerTabell';
 
 interface IRegisteropplysningerProps {
     opplysninger: IRestRegisterhistorikk;

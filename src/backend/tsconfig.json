@@ -1,15 +1,15 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    /* Language and Environment */
-    "lib": ["ES2022"],
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        /* Language and Environment */
+        "lib": ["ES2022"],
 
-    /* Emit */
-    "importHelpers": true, // tslib dependency påkrevd
-    "outDir": "../../dist_backend",
+        /* Emit */
+        "importHelpers": true, // tslib dependency påkrevd
+        "outDir": "../../dist_backend",
 
-    /* Modules */
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-  }
+        /* Modules */
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext"
+    }
 }

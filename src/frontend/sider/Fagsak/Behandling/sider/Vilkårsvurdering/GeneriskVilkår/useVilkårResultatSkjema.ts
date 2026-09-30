@@ -1,6 +1,7 @@
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterVilkårResultat } from '@hooks/useOppdaterVilkårResultat';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import type { IGrunnlagPerson } from '@typer/person';
@@ -17,8 +18,6 @@ import {
 import { dateTilIsoDatoStringEllerUndefined, type IIsoDatoPeriode } from '@utils/dato';
 import { startOfDay } from 'date-fns';
 import { useForm } from 'react-hook-form';
-
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { utledHarBarnehageplass } from './Vilkår/Barnehageplass/BarnehageplassUtils';
 

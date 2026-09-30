@@ -1,7 +1,6 @@
 import { useFagsak } from '@hooks/useFagsak';
-import { erFagsakLåst } from '@utils/fagsak';
-
 import { ActionMenu } from '@navikt/ds-react';
+import { erFagsakLåst } from '@utils/fagsak';
 
 interface Props {
     åpneModal: () => void;

@@ -1,6 +1,5 @@
-import type { ReactNode } from 'react';
-
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
+import type { ReactNode } from 'react';
 
 interface DeltagerProps {
     ikon: ReactNode;

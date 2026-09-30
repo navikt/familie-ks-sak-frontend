@@ -1,5 +1,5 @@
-import type { Begrunnelse } from './vedtak';
 import type { IsoDatoString, IsoMånedString } from '../utils/dato';
+import type { Begrunnelse } from './vedtak';
 
 export interface IRestEndretUtbetalingAndel {
     id?: number;

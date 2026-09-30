@@ -1,6 +1,8 @@
 import { HentVedtaksperioderQueryKeyFactory } from '@hooks/useHentVedtaksperioder';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useSendVedtakTilBeslutter } from '@hooks/useSendVedtakTilBeslutter';
+import { Button } from '@navikt/ds-react';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { useFeilutbetaltValutaTabellContext } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import { useRefusjonEøsTabellContext } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
@@ -11,9 +13,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { BehandlingÅrsak, type IBehandling } from '@typer/behandling';
 import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
 import { erDefinert } from '@utils/commons';
-
-import { Button } from '@navikt/ds-react';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 function kanForeslåVedtak(behandling: IBehandling, vedtaksperioder: IVedtaksperiodeMedBegrunnelser[]) {
     const minstEnPeriodeHarBegrunnelseEllerFritekst = vedtaksperioder.some(

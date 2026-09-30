@@ -1,9 +1,8 @@
-import { createContext, type PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import type { IBehandling } from '@typer/behandling';
 import { Resultat } from '@typer/vilkår';
+import { createContext, type PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 
 function finnInitielleEkspanderteIdenter(behandling: IBehandling, erLesevisning: boolean): Set<string> {
     if (erLesevisning) {

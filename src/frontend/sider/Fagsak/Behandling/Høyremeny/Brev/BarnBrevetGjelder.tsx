@@ -1,9 +1,8 @@
 import { Box, Checkbox, CheckboxGroup, InlineMessage } from '@navikt/ds-react';
-
-import styles from './BarnBrevetGjelder.module.css';
 import { BehandlingSteg, hentStegNummer } from '../../../../../typer/behandling';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
 import { lagBarnLabel, sorterBarnEtterFødselsdato } from '../../../../../utils/formatter';
+import styles from './BarnBrevetGjelder.module.css';
 
 interface IProps {
     barnBrevetGjelder: IBarnMedOpplysninger[];

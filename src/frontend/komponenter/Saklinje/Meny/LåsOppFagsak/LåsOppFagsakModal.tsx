@@ -2,11 +2,10 @@ import { ModalType } from '@context/ModalContext';
 import { useFagsak } from '@hooks/useFagsak';
 import { LåsOppFagsakMutationKeyFactory } from '@hooks/useLåsOppFagsak';
 import { useModal } from '@hooks/useModal';
-import { useIsMutating } from '@tanstack/react-query';
-import { FormProvider, useController, useFormContext } from 'react-hook-form';
-
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, InfoCard, Modal, Textarea, VStack } from '@navikt/ds-react';
+import { useIsMutating } from '@tanstack/react-query';
+import { FormProvider, useController, useFormContext } from 'react-hook-form';
 
 import {
     LÅS_OPP_FAGSAK_FORM_ID,

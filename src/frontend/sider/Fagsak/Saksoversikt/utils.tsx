@@ -1,16 +1,12 @@
-import type { ReactNode } from 'react';
-
-import { differenceInMilliseconds } from 'date-fns';
-import { Link as ReactRouterLink } from 'react-router';
-
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { HStack, Link, Tooltip } from '@navikt/ds-react';
-
-import type { VisningBehandling } from './visningBehandling';
+import { differenceInMilliseconds } from 'date-fns';
+import type { ReactNode } from 'react';
+import { Link as ReactRouterLink } from 'react-router';
 import StatusIkon, { Status } from '../../../ikoner/StatusIkon';
 import {
-    behandlingsresultater,
     BehandlingStatus,
+    behandlingsresultater,
     behandlingstyper,
     behandlingÅrsak,
     erBehandlingHenlagt,
@@ -27,6 +23,7 @@ import {
 import type { ITilbakekrevingsbehandling } from '../../../typer/tilbakekrevingsbehandling';
 import { Behandlingsresultatstype, Tilbakekrevingsbehandlingstype } from '../../../typer/tilbakekrevingsbehandling';
 import { isoStringTilDate } from '../../../utils/dato';
+import type { VisningBehandling } from './visningBehandling';
 
 enum Saksoversiktstype {
     KONTANTSTØTTE = 'KONTANTSTØTTE',

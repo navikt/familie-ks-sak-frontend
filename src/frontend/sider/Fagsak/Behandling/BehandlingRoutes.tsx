@@ -7,7 +7,7 @@ import { SimuleringContainer } from '@sider/Fagsak/Behandling/sider/Simulering/S
 import { Vedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtak';
 import { VedtakContainer } from '@sider/Fagsak/Behandling/sider/Vedtak/VedtakContainer';
 import { VilkårsvurderingContainer } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/VilkårsvurderingContainer';
-import { type RouteObject } from 'react-router';
+import type { RouteObject } from 'react-router';
 
 export const behandlingRoutes: RouteObject[] = [
     {

@@ -1,8 +1,7 @@
 import { Personlinje } from '@komponenter/Personlinje/Personlinje';
-import classNames from 'classnames';
-
 import { GlobalAlert } from '@navikt/ds-react';
 import { Journalstatus, RessursStatus } from '@navikt/familie-typer';
+import classNames from 'classnames';
 
 import { DokumentPanel } from './Dokument/DokumentPanel';
 import { JournalpostSkjema } from './JournalpostSkjema';

@@ -1,5 +1,7 @@
 import { Table } from '@navikt/ds-react';
-
+import { behandlingsstatuser } from '../../../typer/behandling';
+import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
+import { useFagsakContext } from '../FagsakContext';
 import type { Saksoversiktsbehandling } from './utils';
 import {
     finnÅrsak,
@@ -9,9 +11,6 @@ import {
     lagLenkePåResultat,
     lagLenkePåType,
 } from './utils';
-import { behandlingsstatuser } from '../../../typer/behandling';
-import { Datoformat, isoStringTilFormatertString } from '../../../utils/dato';
-import { useFagsakContext } from '../FagsakContext';
 
 interface Props {
     saksoversiktsbehandling: Saksoversiktsbehandling;

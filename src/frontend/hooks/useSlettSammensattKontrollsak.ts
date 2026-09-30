@@ -1,5 +1,5 @@
 import { slettSammensattKontrollsak } from '@api/slettSammensattKontrollsak';
-import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { SammensattKontrollsakDto } from '@typer/sammensatt-kontrollsak';
 
 type Options = Omit<UseMutationOptions<number, DefaultError, SammensattKontrollsakDto>, 'mutationKey' | 'mutationFn'>;

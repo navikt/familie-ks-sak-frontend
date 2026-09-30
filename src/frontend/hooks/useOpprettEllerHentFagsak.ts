@@ -1,6 +1,6 @@
 import { opprettEllerHentFagsak } from '@api/opprettEllerHentFagsak';
 import { MetaKey } from '@hooks/meta/metaKey';
-import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { IMinimalFagsak } from '@typer/fagsak';
 
 export const OpprettEllerHentFagsakMutationKeyFactory = {

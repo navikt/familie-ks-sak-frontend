@@ -1,12 +1,11 @@
+import { Valideringsstatus } from '@navikt/familie-skjema';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IGrunnlagPerson } from '@typer/person';
 import { PersonType } from '@typer/person';
 import { Målform } from '@typer/søknad';
 import { useFormContext } from 'react-hook-form';
 
-import { Valideringsstatus } from '@navikt/familie-skjema';
-
-import { BrevmodulFeltnavn, type BrevModulFormValues } from './useBrevModul';
+import { type BrevModulFormValues, BrevmodulFeltnavn } from './useBrevModul';
 
 export const mottakersMålformImplementering = (
     personer: IGrunnlagPerson[],

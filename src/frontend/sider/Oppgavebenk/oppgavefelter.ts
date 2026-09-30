@@ -1,3 +1,4 @@
+import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { INøkkelPar, IPar } from '@typer/common';
 import { hentPar } from '@typer/common';
 import { harTilgangTilEnhet } from '@typer/enhet';
@@ -12,8 +13,6 @@ import {
     saksbehandlerFilter,
 } from '@typer/oppgave';
 import type { Saksbehandler } from '@typer/saksbehandler';
-
-import { Valideringsstatus } from '@navikt/familie-skjema';
 
 enum FeltSortOrder {
     NONE = 'NONE',

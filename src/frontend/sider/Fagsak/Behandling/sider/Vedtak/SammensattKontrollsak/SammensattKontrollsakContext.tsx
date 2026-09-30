@@ -1,7 +1,6 @@
+import type { SammensattKontrollsakDto } from '@typer/sammensatt-kontrollsak';
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext } from 'react';
-
-import type { SammensattKontrollsakDto } from '@typer/sammensatt-kontrollsak';
 
 interface Props extends PropsWithChildren {
     sammensattKontrollsak?: SammensattKontrollsakDto;

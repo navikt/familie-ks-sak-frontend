@@ -1,5 +1,5 @@
 import { apiClient } from '@api/client/apiClient';
-import { leggTilBarnPåBehandling, type LeggTilBarnPåBehandlingPayload } from '@api/leggTilBarnPåBehandling';
+import { type LeggTilBarnPåBehandlingPayload, leggTilBarnPåBehandling } from '@api/leggTilBarnPåBehandling';
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 

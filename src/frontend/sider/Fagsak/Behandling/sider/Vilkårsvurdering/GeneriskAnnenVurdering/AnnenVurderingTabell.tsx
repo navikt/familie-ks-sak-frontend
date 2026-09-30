@@ -1,7 +1,6 @@
+import { Table } from '@navikt/ds-react';
 import type { IGrunnlagPerson } from '@typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '@typer/vilkår';
-
-import { Table } from '@navikt/ds-react';
 
 import Styles from './AnnenVurderingTabell.module.css';
 import { AnnenVurderingTabellRad } from './AnnenVurderingTabellRad';

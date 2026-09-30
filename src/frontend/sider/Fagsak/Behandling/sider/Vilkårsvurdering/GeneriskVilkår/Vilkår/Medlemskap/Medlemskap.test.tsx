@@ -7,7 +7,7 @@ import { lagGrunnlagPerson } from '@testutils/testdata/personTestdata';
 import { lagVilkårResultat, lagVilkårResultatUi } from '@testutils/testdata/vilkårResultatTestdata';
 import { BehandlingSteg } from '@typer/behandling';
 import { PersonType } from '@typer/person';
-import { Regelverk, Resultat, vilkårConfig, VilkårType } from '@typer/vilkår';
+import { Regelverk, Resultat, VilkårType, vilkårConfig } from '@typer/vilkår';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import { Medlemskap } from './Medlemskap';

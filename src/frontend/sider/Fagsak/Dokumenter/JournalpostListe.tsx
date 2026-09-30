@@ -1,8 +1,3 @@
-import { useEffect, useState } from 'react';
-
-import type { ITilgangsstyrtJournalpost } from '@typer/journalpost';
-import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
-
 import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, GlobalAlert, Heading, HStack, Table, VStack } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
@@ -10,12 +5,16 @@ import type { IJournalpost, Ressurs } from '@navikt/familie-typer';
 import {
     byggHenterRessurs,
     byggTomRessurs,
-    journalpoststatus,
     Journalposttype,
+    journalpoststatus,
     RessursStatus,
 } from '@navikt/familie-typer';
-
+import type { ITilgangsstyrtJournalpost } from '@typer/journalpost';
+import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
+import { useEffect, useState } from 'react';
+import { useBrukerContext } from '../BrukerContext';
 import { JournalpostDokument } from './JournalpostDokument';
+import styles from './JournalpostListe.module.css';
 import {
     formaterFagsak,
     hentDatoRegistrertSendt,
@@ -23,8 +22,6 @@ import {
     hentSortState,
     Sorteringsrekkefølge,
 } from './journalpostUtils';
-import { useBrukerContext } from '../BrukerContext';
-import styles from './JournalpostListe.module.css';
 
 const hentIkonForJournalpostType = (journalposttype: Journalposttype) => {
     switch (journalposttype) {
@@ -49,8 +46,9 @@ const settRiktigDatoMottatForJournalpost = (journalpost: IJournalpost): IJournal
 export function JournalpostListe() {
     const { bruker } = useBrukerContext();
     const { request } = useHttp();
-    const [journalposterRessurs, settJournalposterRessurs] =
-        useState<Ressurs<ITilgangsstyrtJournalpost[]>>(byggTomRessurs());
+    const [journalposterRessurs, settJournalposterRessurs] = useState<Ressurs<ITilgangsstyrtJournalpost[]>>(
+        byggTomRessurs()
+    );
     const [sortering, settSortering] = useState<Sorteringsrekkefølge>(Sorteringsrekkefølge.INGEN_SORTERING);
 
     useEffect(() => {

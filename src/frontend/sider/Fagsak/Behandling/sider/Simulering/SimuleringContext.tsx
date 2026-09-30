@@ -1,6 +1,5 @@
-import { createContext, type PropsWithChildren, useContext, useMemo } from 'react';
-
 import type { ISimuleringDTO } from '@typer/simulering';
+import { createContext, type PropsWithChildren, useContext, useMemo } from 'react';
 
 interface Props extends PropsWithChildren {
     simulering: ISimuleringDTO;

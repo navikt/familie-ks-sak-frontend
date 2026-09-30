@@ -1,7 +1,6 @@
+import { VStack } from '@navikt/ds-react';
 import { GenererteBrevbegrunnelser } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/GenererteBrevbegrunnelser';
 import { skalViseFritekstbegrunnelser, Vedtaksperiodetype } from '@typer/vedtaksperiode';
-
-import { VStack } from '@navikt/ds-react';
 
 import { BegrunnelserMultiselect } from './BegrunnelserMultiselect';
 import { EkspanderbarVedtaksperiode } from './EkspanderbarVedtaksperiode';

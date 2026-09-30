@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-import { useErLesevisningFagsak } from './useErLesevisningFagsak';
-import { useFagsak } from './useFagsak';
-import { useSaksbehandler } from './useSaksbehandler';
 import { lagFagsak } from '../testutils/testdata/fagsakTestdata';
 import { lagSaksbehandler } from '../testutils/testdata/saksbehandlerTestdata';
 import { FagsakStatus } from '../typer/fagsak';
+import { useErLesevisningFagsak } from './useErLesevisningFagsak';
+import { useFagsak } from './useFagsak';
+import { useSaksbehandler } from './useSaksbehandler';
 
 vi.mock('./useSaksbehandler');
 vi.mock('./useFagsak');

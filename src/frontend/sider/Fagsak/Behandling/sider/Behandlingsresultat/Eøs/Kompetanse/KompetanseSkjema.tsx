@@ -1,10 +1,8 @@
-import styled from 'styled-components';
-
 import { Heading, LocalAlert, Table } from '@navikt/ds-react';
-
-import KompetanseTabellRad from './KompetanseTabellRad';
+import styled from 'styled-components';
 import type { IBehandling } from '../../../../../../../typer/behandling';
 import { EøsPeriodeStatus, type IRestKompetanse } from '../../../../../../../typer/eøsPerioder';
+import KompetanseTabellRad from './KompetanseTabellRad';
 
 const KompetanseContainer = styled.div`
     margin-top: 5rem;

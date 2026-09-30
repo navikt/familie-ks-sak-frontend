@@ -1,12 +1,10 @@
-import styled from 'styled-components';
-
 import { Table } from '@navikt/ds-react';
-
-import { useOvergangsordningAndelContext } from './OvergangsordningAndelContext';
-import OvergangsordningAndelSkjema from './OvergangsordningAndelSkjema';
+import styled from 'styled-components';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../../../utils/dato';
 import { lagPersonLabel } from '../../../../../../utils/formatter';
+import { useOvergangsordningAndelContext } from './OvergangsordningAndelContext';
+import OvergangsordningAndelSkjema from './OvergangsordningAndelSkjema';
 
 interface IOvergangsordningRadProps {
     åpenBehandling: IBehandling;

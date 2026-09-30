@@ -1,12 +1,9 @@
-import type { ReactNode } from 'react';
-import { useState } from 'react';
-
-import { differenceInMilliseconds } from 'date-fns';
-
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { Button, HStack, Table } from '@navikt/ds-react';
 
-import styles from './RegisteropplysningerTabell.module.css';
+import { differenceInMilliseconds } from 'date-fns';
+import type { ReactNode } from 'react';
+import { useState } from 'react';
 import type { IRestRegisteropplysning } from '../../../../../../typer/person';
 import { Registeropplysning, registeropplysning } from '../../../../../../typer/registeropplysning';
 import {
@@ -16,6 +13,7 @@ import {
     isoStringTilFormatertString,
     tidenesMorgen,
 } from '../../../../../../utils/dato';
+import styles from './RegisteropplysningerTabell.module.css';
 
 interface IRegisteropplysningerTabellProps {
     opplysningstype: Registeropplysning;

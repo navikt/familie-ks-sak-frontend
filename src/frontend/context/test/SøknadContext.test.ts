@@ -1,6 +1,5 @@
-import { addYears } from 'date-fns';
-
 import { kjønnType } from '@navikt/familie-typer';
+import { addYears } from 'date-fns';
 
 import { YtelseType } from '../../typer/beregning';
 import { PersonType } from '../../typer/person';

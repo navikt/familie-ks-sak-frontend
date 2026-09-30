@@ -5,11 +5,10 @@ import {
     OpprettBehandlingFelt,
     useOpprettBehandlingSkjema,
 } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
+import { Button, Fieldset, Modal, VStack } from '@navikt/ds-react';
 import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 import { Klagebehandlingstype } from '@typer/klage';
 import { FormProvider } from 'react-hook-form';
-
-import { Button, Fieldset, Modal, VStack } from '@navikt/ds-react';
 
 import { BehandlingstypeFelt } from './felter/BehandlingstypeFelt';
 import { BehandlingsårsakFelt } from './felter/BehandlingsårsakFelt';

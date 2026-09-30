@@ -1,9 +1,8 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Textarea } from '@navikt/ds-react';
 import type { PersonType } from '@typer/person';
 import type { VilkårType } from '@typer/vilkår';
 import { useController, useFormContext, useWatch } from 'react-hook-form';
-
-import { Textarea } from '@navikt/ds-react';
 
 import { erBegrunnelsePåkrevd, validerBegrunnelse } from '../validering';
 import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';

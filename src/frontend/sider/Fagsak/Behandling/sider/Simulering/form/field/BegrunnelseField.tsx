@@ -1,12 +1,11 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { BodyLong, Box, Heading, HelpText, HStack, Textarea } from '@navikt/ds-react';
 import {
     MAKS_LENGDE_TEKST,
     TilbakekrevingFormField,
     type TilbakekrevingFormValues,
 } from '@sider/Fagsak/Behandling/sider/Simulering/form/useTilbakekrevingForm';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { BodyLong, Box, Heading, HelpText, HStack, Textarea } from '@navikt/ds-react';
 
 export function BegrunnelseField() {
     const erLesevisning = useErLesevisning();

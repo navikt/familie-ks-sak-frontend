@@ -1,14 +1,13 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useOpprettVilkårResultat } from '@hooks/useOpprettVilkårResultat';
+import { PlusCircleIcon } from '@navikt/aksel-icons';
+import { Box, Button, Fieldset, Heading } from '@navikt/ds-react';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { useEkspanderbareVilkårResultatRader } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import type { IBehandling } from '@typer/behandling';
 import type { IGrunnlagPerson } from '@typer/person';
 import { type IVilkårConfig, type IVilkårResultat, Resultat } from '@typer/vilkår';
-
-import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { Box, Button, Fieldset, Heading } from '@navikt/ds-react';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import styles from './GeneriskVilkår.module.css';
 import { VilkårTabell } from './VilkårTabell';

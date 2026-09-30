@@ -7,8 +7,8 @@ import { describe, expect, test } from 'vitest';
 
 import { BarnIBrevÅrsak } from '../barnIBrevÅrsak';
 import { DokumentÅrsak } from '../dokumentÅrsakTyper';
-import { BarnCheckboxGruppe } from './BarnCheckboxGruppe';
 import type { DokumentutsendingFormValues } from '../useDokumentutsendingSkjema';
+import { BarnCheckboxGruppe } from './BarnCheckboxGruppe';
 import { ValgteBarnFieldArrayProvider } from './ValgteBarnFieldArrayContext';
 
 function BarnCheckboxGruppeMedFieldArray() {

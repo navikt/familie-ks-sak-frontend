@@ -4,7 +4,7 @@ import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { lagSaksbehandler } from '@testutils/testdata/saksbehandlerTestdata';
 import { lagVedtaksperiodeMedBegrunnelser } from '@testutils/testdata/vedtaksperiodeTestdata';
 import { BehandlingÅrsak } from '@typer/behandling';
-import { describe, test, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { TilGodkjenning } from './TilGodkjenning';
 

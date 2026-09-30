@@ -1,7 +1,6 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { FormProvider } from 'react-hook-form';
-
 import { Box, Button, Fieldset, LocalAlert, VStack } from '@navikt/ds-react';
+import { FormProvider } from 'react-hook-form';
 
 import { FritekstFelt } from './FritekstFelt';
 import { useSammensattKontrollsakForm } from './useSammensattKontrollsakForm';

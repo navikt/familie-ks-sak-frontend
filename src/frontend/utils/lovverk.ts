@@ -1,7 +1,6 @@
 import { isBefore } from 'date-fns';
-
-import { fødselsdatoGrenseLovendringFebruar2025 } from './dato';
 import { Lovverk } from '../typer/lovverk';
+import { fødselsdatoGrenseLovendringFebruar2025 } from './dato';
 
 export const utledLovverk = (fødselsdato: Date, adopsjonsdato?: Date): Lovverk => {
     const fødselsdatoEllerAdopsjonsdato = adopsjonsdato ?? fødselsdato;

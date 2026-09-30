@@ -1,12 +1,9 @@
-import { useState } from 'react';
-
-import { endOfMonth, isBefore, isSameDay, startOfMonth } from 'date-fns';
-
 import { MonthPicker, useMonthpicker } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
-
+import { endOfMonth, isBefore, isSameDay, startOfMonth } from 'date-fns';
+import { useState } from 'react';
+import { Datoformat, dateTilFormatertString, hentDagensDato } from '../../utils/dato';
 import { senesteRelevanteDato, tidligsteRelevanteDato } from './utils';
-import { dateTilFormatertString, Datoformat, hentDagensDato } from '../../utils/dato';
 
 interface IProps {
     felt: Felt<Date | undefined>;

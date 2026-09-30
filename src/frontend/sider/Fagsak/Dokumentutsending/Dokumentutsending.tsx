@@ -1,8 +1,6 @@
-import { useState } from 'react';
-
 import { Fagsaklinje } from '@komponenter/Saklinje/Fagsaklinje';
-
 import { HGrid } from '@navikt/ds-react';
+import { useState } from 'react';
 
 import { BrevSendtDialog } from './BrevSendtDialog';
 import { DokumentutsendingSkjema } from './DokumentutsendingSkjema';

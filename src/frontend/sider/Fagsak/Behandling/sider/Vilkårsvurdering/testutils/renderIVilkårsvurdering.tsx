@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import { Table } from '@navikt/ds-react';
 
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
@@ -8,8 +8,7 @@ import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
 import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
 import { render, TestProviders } from '@testutils/testrender';
 import type { IBehandling } from '@typer/behandling';
-
-import { Table } from '@navikt/ds-react';
+import type { ReactElement, ReactNode } from 'react';
 
 interface Options {
     behandling: IBehandling;

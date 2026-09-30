@@ -1,11 +1,10 @@
-import { createContext, type PropsWithChildren, useContext, useMemo } from 'react';
-
 import {
     type FeiloppsummeringFeil,
     hentFeilIVilkårsvurdering,
 } from '@context/Vilkårsvurdering/hentFeilIVilkårsvurdering';
 import { useBehandling } from '@hooks/useBehandling';
 import type { IPersonResultat } from '@typer/vilkår';
+import { createContext, type PropsWithChildren, useContext, useMemo } from 'react';
 
 import { mapFraRestVilkårsvurderingTilUi } from './utils';
 

@@ -1,20 +1,19 @@
-import type { PropsWithChildren } from 'react';
+import { BodyShort, ExpansionCard, HGrid, Label } from '@navikt/ds-react';
 
 import { useVedtaksperiodeContext } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/VedtaksperiodeContext';
 import { Standardbegrunnelse } from '@typer/vedtak';
 import { hentVedtaksperiodeTittel, Vedtaksperiodetype } from '@typer/vedtaksperiode';
 import {
     hentDagensDato,
-    isoDatoPeriodeTilFormatertString,
     type IsoDatoString,
+    isoDatoPeriodeTilFormatertString,
     isoStringTilDateMedFallback,
     parseFraOgMedDato,
     tidenesEnde,
 } from '@utils/dato';
 import { formaterBeløp, summer } from '@utils/formatter';
 import { endOfMonth, isAfter, isSameDay } from 'date-fns';
-
-import { BodyShort, ExpansionCard, HGrid, Label } from '@navikt/ds-react';
+import type { PropsWithChildren } from 'react';
 
 interface Props extends PropsWithChildren {
     sisteVedtaksperiodeFom?: string;

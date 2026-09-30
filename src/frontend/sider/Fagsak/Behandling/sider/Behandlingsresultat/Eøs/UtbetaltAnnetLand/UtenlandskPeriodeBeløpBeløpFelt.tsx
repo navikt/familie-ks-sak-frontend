@@ -1,10 +1,8 @@
+import { TextField } from '@navikt/ds-react';
 import { isEmpty, isNumeric } from '@utils/eøsValidators';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { TextField } from '@navikt/ds-react';
-
-import { UtenlandskPeriodeBeløpFelt, type UtenlandskPeriodeBeløpFormValues } from './useUtenlandskPeriodeBeløpSkjema';
 import { konverterSkjemaverdiTilDesimal } from '../utils';
+import { UtenlandskPeriodeBeløpFelt, type UtenlandskPeriodeBeløpFormValues } from './useUtenlandskPeriodeBeløpSkjema';
 
 const validerBeløp = (verdi: string | undefined): string | undefined => {
     if (!verdi || isEmpty(verdi) || typeof verdi != 'string') {

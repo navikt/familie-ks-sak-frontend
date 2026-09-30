@@ -4,10 +4,9 @@ import { HeaderMedSøk } from '@komponenter/HeaderMedSøk/HeaderMedSøk';
 import { FeilmeldingModal } from '@komponenter/Modal/FeilmeldingModal';
 import { UgyldigSesjon } from '@komponenter/Modal/SesjonUtløpt';
 import { ForhåndsvisOpprettingAvPdfModal } from '@komponenter/PdfVisningModal/ForhåndsvisOpprettingAvPdfModal';
+import { Box } from '@navikt/ds-react';
 import classNames from 'classnames';
 import { Outlet } from 'react-router';
-
-import { Box } from '@navikt/ds-react';
 
 import Styles from './AppContainer.module.css';
 import OpprettFagsakModal from './komponenter/Modal/Fagsak/OpprettFagsakModal';

@@ -1,7 +1,6 @@
 import { useHentBarnehagebarn } from '@hooks/useHentBarnehagebarn';
-import type { BarnehagebarnRequestParams } from '@typer/barnehagebarn';
-
 import { HStack, Pagination, Select } from '@navikt/ds-react';
+import type { BarnehagebarnRequestParams } from '@typer/barnehagebarn';
 
 interface BarnehagebarnTabellNavigatorProps {
     barnehagebarnRequestParams: BarnehagebarnRequestParams;

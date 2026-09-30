@@ -1,11 +1,9 @@
-import { useId } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
-import { FormProvider } from 'react-hook-form';
-
 import { BodyShort, Button, Fieldset, InlineMessage, Label, Modal, VStack } from '@navikt/ds-react';
+import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
+import { useId } from 'react';
+import { FormProvider } from 'react-hook-form';
 
 import { EndringstidspunktFelt } from './EndringstidspunktFelt';
 import { useEndringstidspunktForm } from './useEndringstidspunktForm';

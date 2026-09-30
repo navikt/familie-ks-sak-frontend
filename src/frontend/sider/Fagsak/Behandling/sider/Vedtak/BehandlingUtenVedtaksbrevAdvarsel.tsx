@@ -1,8 +1,7 @@
 import { useBehandling } from '@hooks/useBehandling';
-import { BehandlingÅrsak } from '@typer/behandling';
-
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { Box, InfoCard } from '@navikt/ds-react';
+import { BehandlingÅrsak } from '@typer/behandling';
 
 export function BehandlingUtenVedtaksbrevAdvarsel() {
     const behandling = useBehandling();

@@ -4,9 +4,8 @@ import { useHentPerson } from '@hooks/useHentPerson';
 import { useScrollTilAnker } from '@hooks/useScrollTilAnker';
 import { NotFound } from '@komponenter/Error/NotFound';
 import { Personlinje } from '@komponenter/Personlinje/Personlinje';
-import { Outlet } from 'react-router';
-
 import { Box, GlobalAlert, HStack, Loader } from '@navikt/ds-react';
+import { Outlet } from 'react-router';
 
 import { BrukerProvider } from './BrukerContext';
 import Styles from './Fagsak.module.css';

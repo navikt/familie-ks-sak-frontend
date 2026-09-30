@@ -2,6 +2,7 @@ import { useBehandling } from '@hooks/useBehandling';
 import { useBruker } from '@hooks/useBruker';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
+import { BodyLong, Box, Heading, HelpText, HStack, Radio, RadioGroup } from '@navikt/ds-react';
 import { FritekstVarselField } from '@sider/Fagsak/Behandling/sider/Simulering/form/field/FritekstVarselField';
 import styles from '@sider/Fagsak/Behandling/sider/Simulering/form/TilbakekrevingForm.module.css';
 import {
@@ -10,8 +11,6 @@ import {
 } from '@sider/Fagsak/Behandling/sider/Simulering/form/useTilbakekrevingForm';
 import { Tilbakekrevingsvalg } from '@typer/simulering';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { BodyLong, Box, Heading, HelpText, HStack, Radio, RadioGroup } from '@navikt/ds-react';
 
 export function TilbakekrevingsvalgField() {
     const behandling = useBehandling();

@@ -3,7 +3,7 @@ import { addDays, addMonths, endOfMonth, isAfter, isSameDay, startOfMonth } from
 import { annenVurderingFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskAnnenVurdering/AnnenVurderingTabell';
 import { vilkårFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
 import type { IAnnenVurdering, IPersonResultat, IVilkårResultat } from '../../typer/vilkår';
-import { annenVurderingConfig, Resultat, vilkårConfig, VilkårType } from '../../typer/vilkår';
+import { annenVurderingConfig, Resultat, VilkårType, vilkårConfig } from '../../typer/vilkår';
 import {
     erEtterEllerSammeDato,
     erFørEllerSammeDato,

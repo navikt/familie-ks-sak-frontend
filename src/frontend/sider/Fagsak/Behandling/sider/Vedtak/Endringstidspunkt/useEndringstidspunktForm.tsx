@@ -1,9 +1,8 @@
 import { useOppdaterEndringstidspunkt } from '@hooks/useOppdaterEndringstidspunkt';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IsoDatoString } from '@utils/dato';
 import { useForm } from 'react-hook-form';
-
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 export interface FormValues {
     [Feltnavn.ENDRINGSTIDSPUNKT]: IsoDatoString | undefined;

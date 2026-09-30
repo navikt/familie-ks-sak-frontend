@@ -1,8 +1,8 @@
-import { type IsoDatoString } from '@utils/dato';
+import type { IsoDatoString } from '@utils/dato';
 
 import type { YtelseType } from './beregning';
 import { ytelsetype } from './beregning';
-import { type IGrunnlagPerson } from './person';
+import type { IGrunnlagPerson } from './person';
 import type { Begrunnelse, BegrunnelseType } from './vedtak';
 
 export interface IVedtaksperiodeMedBegrunnelser {

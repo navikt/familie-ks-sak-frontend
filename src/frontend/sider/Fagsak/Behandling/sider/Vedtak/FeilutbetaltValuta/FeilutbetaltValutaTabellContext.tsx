@@ -1,6 +1,5 @@
-import { createContext, type PropsWithChildren, useCallback, useContext, useState } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
+import { createContext, type PropsWithChildren, useCallback, useContext, useState } from 'react';
 
 interface FeilutbetaltValutaTabellContext {
     erFeilutbetaltValutaTabellSynlig: boolean;

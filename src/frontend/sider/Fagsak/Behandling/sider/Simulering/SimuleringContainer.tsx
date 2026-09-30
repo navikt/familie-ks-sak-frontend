@@ -1,13 +1,11 @@
-import type { PropsWithChildren } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
 import { useFagsakId } from '@hooks/useFagsakId';
 import { useHentHarÅpenTilbakekreving } from '@hooks/useHentHarÅpenTilbakekreving';
 import { useHentSimulering } from '@hooks/useHentSimulering';
+import { BodyShort, Box, ErrorMessage, Loader, LocalAlert, Stack, VStack } from '@navikt/ds-react';
 import { SimuleringProvider } from '@sider/Fagsak/Behandling/sider/Simulering/SimuleringContext';
 import { erDefinert } from '@utils/commons';
-
-import { BodyShort, Box, ErrorMessage, Loader, LocalAlert, Stack, VStack } from '@navikt/ds-react';
+import type { PropsWithChildren } from 'react';
 
 export function SimuleringContainer({ children }: PropsWithChildren) {
     const fagsakId = useFagsakId();

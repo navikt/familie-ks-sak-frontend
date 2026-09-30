@@ -1,7 +1,6 @@
 import { useFyllUtVilkårsvurderingITestmiljø } from '@hooks/useFyllUtVilkårsvurderingITestmiljø';
-import { erProd } from '@utils/miljø';
-
 import { Box, Button } from '@navikt/ds-react';
+import { erProd } from '@utils/miljø';
 
 interface Props {
     behandlingId: number;
