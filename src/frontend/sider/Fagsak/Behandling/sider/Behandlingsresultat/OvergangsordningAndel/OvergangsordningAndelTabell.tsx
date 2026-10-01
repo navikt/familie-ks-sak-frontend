@@ -1,6 +1,5 @@
-import type { IBehandling } from '@typer/behandling';
-
 import { Box, Heading, Table } from '@navikt/ds-react';
+import type { IBehandling } from '@typer/behandling';
 
 import { OvergangsordningAndelProvider } from './OvergangsordningAndelContext';
 import OvergangsordningAndelRad from './OvergangsordningAndelRad';

@@ -1,13 +1,12 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Radio, RadioGroup } from '@navikt/ds-react';
 import { FieldLabel } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/FieldLabel';
 import {
     RegistrerSøknadFormField,
     type RegistrerSøknadFormValues,
 } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useRegistrerSøknadForm';
-import { målform, Målform } from '@typer/søknad';
+import { Målform, målform } from '@typer/søknad';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { Radio, RadioGroup } from '@navikt/ds-react';
 
 export function MålformField() {
     const erLesevisning = useErLesevisning();

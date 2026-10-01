@@ -1,12 +1,10 @@
 import './konfigurerApp.js'; // Må importeres først
 
-import path from 'path';
-
-import express, { type NextFunction, type Request, type Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-
 import { default as backend, ensureAuthenticated, type IApp } from '@navikt/familie-backend';
 import { logInfo } from '@navikt/familie-logging';
+import express, { type NextFunction, type Request, type Response } from 'express';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 import { appConfig, frontendPath, sessionConfig } from './config.js';
 import { envVar, erLokal } from './env.js';

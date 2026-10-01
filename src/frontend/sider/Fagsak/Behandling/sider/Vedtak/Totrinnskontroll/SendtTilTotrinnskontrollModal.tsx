@@ -1,8 +1,7 @@
 import { useFagsakId } from '@hooks/useFagsakId';
+import { BodyShort, Box, Button, Modal } from '@navikt/ds-react';
 import { useSendtTilTotrinnskontrollModalContext } from '@sider/Fagsak/Behandling/sider/Vedtak/Totrinnskontroll/SendtTilTotrinnskontrollModalContext';
 import { useNavigate } from 'react-router';
-
-import { BodyShort, Box, Button, Modal } from '@navikt/ds-react';
 
 export function SendtTilTotrinnskontrollModal() {
     const { erModalÅpen, lukkModal } = useSendtTilTotrinnskontrollModalContext();

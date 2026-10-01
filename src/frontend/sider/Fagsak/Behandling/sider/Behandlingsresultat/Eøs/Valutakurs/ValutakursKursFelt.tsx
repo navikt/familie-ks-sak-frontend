@@ -1,10 +1,8 @@
+import { TextField } from '@navikt/ds-react';
 import { isEmpty, isNumeric, tellAntallDesimaler } from '@utils/eøsValidators';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { TextField } from '@navikt/ds-react';
-
-import { ValutakursFelt, type ValutakursFormValues } from './useValutakursSkjema';
 import { konverterSkjemaverdiTilDesimal } from '../utils';
+import { ValutakursFelt, type ValutakursFormValues } from './useValutakursSkjema';
 
 const validerKurs = (verdi: string | undefined): string | undefined => {
     if (!verdi || isEmpty(verdi) || typeof verdi != 'string') {

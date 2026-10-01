@@ -1,10 +1,9 @@
 import { useErLesevisningFagsak } from '@hooks/useErLesevisningFagsak';
 import { useLeggTilBarnModalContext } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
-import type { DokumentutsendingFormValues } from '@sider/Fagsak/Dokumentutsending/useDokumentutsendingSkjema';
-import { useFormContext } from 'react-hook-form';
-
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
+import type { DokumentutsendingFormValues } from '@sider/Fagsak/Dokumentutsending/useDokumentutsendingSkjema';
+import { useFormContext } from 'react-hook-form';
 
 export function LeggTilBarnKnapp() {
     const { åpneModal } = useLeggTilBarnModalContext();

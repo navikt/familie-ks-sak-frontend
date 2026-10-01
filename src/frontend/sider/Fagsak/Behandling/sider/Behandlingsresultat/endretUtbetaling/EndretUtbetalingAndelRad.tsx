@@ -1,11 +1,6 @@
-import { useState } from 'react';
-
-import styled from 'styled-components';
-
 import { Table } from '@navikt/ds-react';
-
-import EndretUtbetalingAndelSkjema from './EndretUtbetalingAndelSkjema';
-import { useEndretUtbetalingAndel } from './useEndretUtbetalingAndel';
+import { useState } from 'react';
+import styled from 'styled-components';
 import StatusIkon, { Status } from '../../../../../../ikoner/StatusIkon';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import {
@@ -15,6 +10,8 @@ import {
 } from '../../../../../../typer/utbetalingAndel';
 import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../../../utils/dato';
 import { lagPersonLabel } from '../../../../../../utils/formatter';
+import EndretUtbetalingAndelSkjema from './EndretUtbetalingAndelSkjema';
+import { useEndretUtbetalingAndel } from './useEndretUtbetalingAndel';
 
 interface IEndretUtbetalingAndelRadProps {
     lagretEndretUtbetalingAndel: IRestEndretUtbetalingAndel;

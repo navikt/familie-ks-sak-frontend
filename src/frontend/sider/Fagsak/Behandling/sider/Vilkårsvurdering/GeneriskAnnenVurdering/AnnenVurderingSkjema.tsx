@@ -1,14 +1,12 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Button, Fieldset, HStack } from '@navikt/ds-react';
 import type { IGrunnlagPerson } from '@typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '@typer/vilkår';
 import { useFormContext } from 'react-hook-form';
-
-import { Button, Fieldset, HStack } from '@navikt/ds-react';
-
+import { SkjemaRamme } from '../SkjemaRamme';
 import { AnnenVurderingBegrunnelseFelt } from './AnnenVurderingBegrunnelseFelt';
 import { AnnenVurderingResultatFelt } from './AnnenVurderingResultatFelt';
 import type { AnnenVurderingFormValues } from './useAnnenVurderingSkjema';
-import { SkjemaRamme } from '../SkjemaRamme';
 
 interface Props {
     annenVurdering: IAnnenVurdering;

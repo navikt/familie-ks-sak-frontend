@@ -1,6 +1,6 @@
 import { hentTilbakekrevingsbehandlinger } from '@api/hentTilbakekrevingsbehandlinger';
 import { MetaKey } from '@hooks/meta/metaKey';
-import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
+import { type UseQueryOptions, useQuery } from '@tanstack/react-query';
 import type { ITilbakekrevingsbehandling } from '@typer/tilbakekrevingsbehandling';
 
 type Options = Omit<UseQueryOptions<ITilbakekrevingsbehandling[]>, 'queryKey' | 'queryFn'>;

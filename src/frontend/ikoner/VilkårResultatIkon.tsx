@@ -1,5 +1,5 @@
-import StatusIkon, { Status } from './StatusIkon';
 import { Resultat } from '../typer/vilkår';
+import StatusIkon, { Status } from './StatusIkon';
 
 interface IVilkårResultatIkon {
     height?: number;

@@ -1,11 +1,9 @@
-import type { ClientRequest } from 'http';
-
-import type { NextFunction, Request, Response } from 'express';
-import { createProxyMiddleware } from 'http-proxy-middleware';
-
 import type { Client } from '@navikt/familie-backend';
 import { getOnBehalfOfAccessToken } from '@navikt/familie-backend';
 import { stdoutLogger } from '@navikt/familie-logging';
+import type { NextFunction, Request, Response } from 'express';
+import type { ClientRequest } from 'http';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import { oboConfig, proxyUrl, redirectRecords } from './config.js';
 
@@ -18,7 +16,7 @@ const restream = (proxyReq: ClientRequest, req: Request, _res: Response) => {
     }
 };
 
-// eslint-disable-next-line
+// biome-ignore lint/suspicious/noExplicitAny: createProxyMiddleware exposes a dynamic Express middleware type.
 export const doProxy: any = () => {
     return createProxyMiddleware({
         changeOrigin: true,

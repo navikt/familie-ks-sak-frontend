@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
-
-import classNames from 'classnames';
-
 import { Button } from '@navikt/ds-react';
 import type { Etikett } from '@navikt/familie-tidslinje';
+import classNames from 'classnames';
+import { useEffect } from 'react';
 
 import { TidslinjeVindu, useTidslinjeContext } from './TidslinjeContext';
 import styles from './TidslinjeEtikett.module.css';

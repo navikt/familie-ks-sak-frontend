@@ -40,6 +40,6 @@ export function mergeRefs<T>(...refs: PossibleRef<T>[]): RefCallback<T> {
 }
 
 export function useMergedRef<T>(...refs: PossibleRef<T>[]) {
-    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/use-memo
+    // biome-ignore lint/correctness/useExhaustiveDependencies: Ref-list identity intentionally controls memoization.
     return useMemo(() => mergeRefs(...refs), refs);
 }

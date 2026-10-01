@@ -1,11 +1,10 @@
-import type { ChangeEvent } from 'react';
+import { Select } from '@navikt/ds-react';
 
 import type { IGrunnlagPerson } from '@typer/person';
 import { PersonType } from '@typer/person';
 import { lagPersonLabel } from '@utils/formatter';
+import type { ChangeEvent } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { Select } from '@navikt/ds-react';
 
 import { type BrevModulFormValues, BrevmodulFeltnavn } from './useBrevModul';
 import { useSkjemaErLåst } from './useSkjemaErLåst';

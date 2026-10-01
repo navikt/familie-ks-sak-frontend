@@ -1,7 +1,6 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useController, useFormContext } from 'react-hook-form';
-
 import { TextField } from '@navikt/ds-react';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { validerAntallTimer } from '../../../validering';
 import { VilkårResultatFelt, type VilkårResultatFormValues } from '../../useVilkårResultatSkjema';

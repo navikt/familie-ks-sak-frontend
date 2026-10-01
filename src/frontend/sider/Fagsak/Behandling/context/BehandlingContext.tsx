@@ -1,9 +1,7 @@
-import { createContext, type PropsWithChildren, useContext } from 'react';
-
 import { useNavigerAutomatiskTilSideForBehandlingssteg } from '@hooks/useNavigerAutomatiskTilSideForBehandlingssteg';
-import { type IBehandling } from '@typer/behandling';
-
-import { type Ressurs } from '@navikt/familie-typer';
+import type { Ressurs } from '@navikt/familie-typer';
+import type { IBehandling } from '@typer/behandling';
+import { createContext, type PropsWithChildren, useContext } from 'react';
 
 import { useHentOgSettBehandlingContext } from './HentOgSettBehandlingContext';
 

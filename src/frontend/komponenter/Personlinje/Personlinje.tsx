@@ -1,9 +1,8 @@
-import type { PropsWithChildren } from 'react';
-
 import { BodyShort, Box, CopyButton, HStack } from '@navikt/ds-react';
 import { kjønnType } from '@navikt/familie-typer';
+import type { PropsWithChildren } from 'react';
 
-import { type IPersonInfo } from '../../typer/person';
+import type { IPersonInfo } from '../../typer/person';
 import { formaterIdent, hentAlder } from '../../utils/formatter';
 import { erAdresseBeskyttet } from '../../utils/validators';
 import { PersonIkon } from '../PersonIkon';

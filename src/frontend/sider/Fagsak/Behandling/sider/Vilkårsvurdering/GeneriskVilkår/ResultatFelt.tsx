@@ -1,8 +1,7 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Radio, RadioGroup } from '@navikt/ds-react';
 import { Resultat } from '@typer/vilkår';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { Radio, RadioGroup } from '@navikt/ds-react';
 
 import { validerResultat } from '../validering';
 import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';

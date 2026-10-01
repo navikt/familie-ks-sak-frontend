@@ -1,6 +1,5 @@
-import { Link as ReactRouterLink } from 'react-router';
-
 import { Box, HStack, Link, Loader, LocalAlert, Table } from '@navikt/ds-react';
+import { Link as ReactRouterLink } from 'react-router';
 
 import { useHentBarnehagebarn } from '../../hooks/useHentBarnehagebarn';
 import type { BarnehagebarnRequestParams } from '../../typer/barnehagebarn';

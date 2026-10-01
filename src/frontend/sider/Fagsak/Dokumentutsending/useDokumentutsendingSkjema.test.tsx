@@ -1,5 +1,3 @@
-import type { PropsWithChildren } from 'react';
-
 import { useForhåndsvisBrevPåFagsak } from '@hooks/useForhåndsvisBrevPåFagsak';
 import { useSendInformasjonsbrev } from '@hooks/useSendInformasjonsbrev';
 import { act, renderHook, waitFor } from '@testing-library/react';
@@ -8,6 +6,7 @@ import { lagPerson } from '@testutils/testdata/personTestdata';
 import { TestProviders } from '@testutils/testrender';
 import { Adressebeskyttelsegradering, ForelderBarnRelasjonRolle } from '@typer/person';
 import { Målform } from '@typer/søknad';
+import type { PropsWithChildren } from 'react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { BrukerProvider } from '../BrukerContext';

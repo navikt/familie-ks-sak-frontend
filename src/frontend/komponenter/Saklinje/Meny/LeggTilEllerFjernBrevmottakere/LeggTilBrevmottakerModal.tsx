@@ -1,10 +1,8 @@
-import { useState } from 'react';
-
-import { useLocation } from 'react-router';
-
 import { InformationSquareIcon, PlusCircleIcon } from '@navikt/aksel-icons';
 import { Box, Button, Heading, InfoCard, Modal } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
+import { useState } from 'react';
+import { useLocation } from 'react-router';
 
 import BrevmottakerSkjema from './BrevmottakerSkjema';
 import BrevmottakerTabell from './BrevmottakerTabell';

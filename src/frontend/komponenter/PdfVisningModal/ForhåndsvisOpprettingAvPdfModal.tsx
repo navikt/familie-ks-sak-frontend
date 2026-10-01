@@ -1,8 +1,7 @@
 import { ModalType } from '@context/ModalContext';
 import { useModal } from '@hooks/useModal';
-import { type MutationKey, useMutationState } from '@tanstack/react-query';
-
 import { Heading, HStack, Loader, LocalAlert, Modal, VStack } from '@navikt/ds-react';
+import { type MutationKey, useMutationState } from '@tanstack/react-query';
 
 import styles from './ForhåndsvisOpprettingAvPdfModal.module.css';
 

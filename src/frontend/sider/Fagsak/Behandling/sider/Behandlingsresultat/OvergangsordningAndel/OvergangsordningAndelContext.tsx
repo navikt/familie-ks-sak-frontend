@@ -1,10 +1,8 @@
-import { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext, useState } from 'react';
-
-import deepEqual from 'deep-equal';
-
 import { useHttp } from '@navikt/familie-http';
 import { feil, type ISkjema, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
+import deepEqual from 'deep-equal';
+import { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext, useState } from 'react';
 
 import type { IBehandling } from '../../../../../../typer/behandling';
 import type {

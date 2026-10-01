@@ -1,14 +1,12 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useHentAlleBegrunnelser } from '@hooks/useHentAlleBegrunnelser';
 import { useSlettVilkårResultatIsPending } from '@hooks/useSlettVilkårResultatIsPending';
+import { ErrorMessage, LocalAlert, Stack, UNSAFE_Combobox } from '@navikt/ds-react';
 import type { VilkårType } from '@typer/vilkår';
 import { useController, useFormContext, useWatch } from 'react-hook-form';
-
-import { ErrorMessage, LocalAlert, Stack, UNSAFE_Combobox } from '@navikt/ds-react';
-
+import { validerAvslagBegrunnelser } from '../validering';
 import { finnAvslagsbegrunnelserForVilkår } from './finnAvslagsbegrunnelserForVilkår';
 import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';
-import { validerAvslagBegrunnelser } from '../validering';
 
 interface Props {
     vilkårResultatId: number;

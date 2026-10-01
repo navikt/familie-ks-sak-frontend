@@ -1,13 +1,11 @@
-import { useState } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
 import { useFagsak } from '@hooks/useFagsak';
 import { useOpprettManueltBrevPdf } from '@hooks/useOpprettManueltBrevPdf';
-import { Brevmal } from '@sider/Fagsak/Behandling/Høyremeny/Brev/typer';
-import type { IManueltBrevRequestPåBehandling } from '@typer/dokument';
-
 import { XMarkOctagonFillIcon } from '@navikt/aksel-icons';
 import { Dialog, ErrorMessage, Heading, HStack, Link, Loader } from '@navikt/ds-react';
+import { Brevmal } from '@sider/Fagsak/Behandling/Høyremeny/Brev/typer';
+import type { IManueltBrevRequestPåBehandling } from '@typer/dokument';
+import { useState } from 'react';
 
 import Styles from './ForhåndsvisBrevLenke.module.css';
 

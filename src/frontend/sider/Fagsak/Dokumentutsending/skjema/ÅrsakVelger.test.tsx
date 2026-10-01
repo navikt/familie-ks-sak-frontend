@@ -4,7 +4,7 @@ import { FagsakStatus } from '@typer/fagsak';
 import { Målform } from '@typer/søknad';
 import { describe, expect, test } from 'vitest';
 
-import { dokumentÅrsak, DokumentÅrsak } from '../dokumentÅrsakTyper';
+import { DokumentÅrsak, dokumentÅrsak } from '../dokumentÅrsakTyper';
 import { ÅrsakVelger } from './ÅrsakVelger';
 
 describe('ÅrsakVelger', () => {

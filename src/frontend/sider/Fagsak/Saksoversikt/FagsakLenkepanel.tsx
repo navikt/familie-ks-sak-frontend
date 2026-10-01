@@ -1,16 +1,14 @@
+import { BodyShort, Box, HStack, Link, LinkCard, VStack } from '@navikt/ds-react';
+import { Space64 } from '@navikt/ds-tokens/dist/tokens';
 import { BehandlingStatus } from '@typer/behandling';
 import type { IBehandlingstema } from '@typer/behandlingstema';
 import { tilBehandlingstema } from '@typer/behandlingstema';
 import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
 import { erFagsakLåst, hentAktivBehandlingPåMinimalFagsak, hentFagsakStatusVisning } from '@utils/fagsak';
 import { Link as ReactRouterLink } from 'react-router';
-
-import { BodyShort, Box, HStack, Link, LinkCard, VStack } from '@navikt/ds-react';
-import { Space64 } from '@navikt/ds-tokens/dist/tokens';
-
-import type { VisningBehandling } from './visningBehandling';
 import { useFagsakContext } from '../FagsakContext';
 import styles from './FagsakLenkepanel.module.css';
+import type { VisningBehandling } from './visningBehandling';
 
 function Innholdstabell() {
     const { fagsak } = useFagsakContext();

@@ -1,7 +1,6 @@
 import { useHentGenererteBrevbegrunnelser } from '@hooks/useHentGenererteBrevbegrunnelser';
-import { useVedtaksperiodeContext } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/VedtaksperiodeContext';
-
 import { BodyShort, ErrorMessage, HStack, Label, Loader, VStack } from '@navikt/ds-react';
+import { useVedtaksperiodeContext } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/VedtaksperiodeContext';
 
 export function GenererteBrevbegrunnelser() {
     const { vedtaksperiodeMedBegrunnelser } = useVedtaksperiodeContext();

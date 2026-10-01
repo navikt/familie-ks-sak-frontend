@@ -1,5 +1,5 @@
 import { apiClient } from '@api/client/apiClient';
-import { oppdaterBehandlendeEnhet, type OppdaterBehandlendeEnhetPayload } from '@api/oppdaterBehandlendeEnhet';
+import { type OppdaterBehandlendeEnhetPayload, oppdaterBehandlendeEnhet } from '@api/oppdaterBehandlendeEnhet';
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 

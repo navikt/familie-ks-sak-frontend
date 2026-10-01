@@ -1,7 +1,6 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useController, useFormContext } from 'react-hook-form';
-
 import { BodyShort, Checkbox } from '@navikt/ds-react';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';
 

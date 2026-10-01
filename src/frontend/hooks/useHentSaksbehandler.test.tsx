@@ -1,11 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-import { useHentSaksbehandler } from './useHentSaksbehandler';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { hentSaksbehandler } from '../api/hentSaksbehandler';
 import { lagISaksbehandler } from '../testutils/testdata/saksbehandlerTestdata';
 import { BehandlerRolle } from '../typer/behandling';
+import { useHentSaksbehandler } from './useHentSaksbehandler';
 
 vi.mock('../api/hentSaksbehandler', () => ({
     hentSaksbehandler: vi.fn(),

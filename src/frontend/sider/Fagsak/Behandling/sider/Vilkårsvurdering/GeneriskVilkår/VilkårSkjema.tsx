@@ -1,8 +1,7 @@
-import type { PropsWithChildren, ReactNode } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useSlettVilkårResultatError } from '@hooks/useSlettVilkårResultatError';
+import { Button, ErrorMessage, Fieldset, HStack, VStack } from '@navikt/ds-react';
 import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { BehandlingÅrsak } from '@typer/behandling';
 import type { IGrunnlagPerson } from '@typer/person';
@@ -14,23 +13,21 @@ import {
     type UtdypendeVilkårsvurdering,
 } from '@typer/vilkår';
 import type { IIsoDatoPeriode, IsoDatoString } from '@utils/dato';
+import type { PropsWithChildren, ReactNode } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-
-import { Button, ErrorMessage, Fieldset, HStack, VStack } from '@navikt/ds-react';
-
+import { SkjemaRamme } from '../SkjemaRamme';
 import { AvslagBegrunnelserFelt } from './AvslagBegrunnelserFelt';
 import { BegrunnelseFelt } from './BegrunnelseFelt';
 import { ErEksplisittAvslagPåSøknadFelt } from './ErEksplisittAvslagPåSøknadFelt';
 import { PeriodeFelt } from './PeriodeFelt';
 import { ResultatFelt } from './ResultatFelt';
 import { SlettVilkårResultat } from './SlettVilkårResultat';
-import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';
 import {
-    UtdypendeVilkårsvurderingerFelt,
     type UtdypendeVilkårsvurderingerAvhengigheter,
+    UtdypendeVilkårsvurderingerFelt,
 } from './UtdypendeVilkårsvurderingerFelt';
+import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';
 import { VurderesEtterFelt } from './VurderesEtterFelt';
-import { SkjemaRamme } from '../SkjemaRamme';
 
 export interface VilkårProps {
     lagretVilkårResultat: IVilkårResultat;

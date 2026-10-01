@@ -1,21 +1,4 @@
-import { type ChangeEvent, useEffect } from 'react';
-
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import type { IBehandling } from '@typer/behandling';
-import {
-    AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
-    AVSLAG_ALLEREDE_UTBETALT_SØKER,
-    IEndretUtbetalingAndelÅrsak,
-    årsaker,
-    årsakTekst,
-} from '@typer/utbetalingAndel';
-import type { Begrunnelse } from '@typer/vedtak';
-import type { IsoMånedString } from '@utils/dato';
-import { lagPersonLabel } from '@utils/formatter';
-import { hentFrontendFeilmelding } from '@utils/ressursUtils';
-import classNames from 'classnames';
-import styled from 'styled-components';
-
 import { TrashIcon } from '@navikt/aksel-icons';
 import {
     BodyShort,
@@ -31,11 +14,25 @@ import {
 } from '@navikt/ds-react';
 import { BorderAccent } from '@navikt/ds-tokens/dist/tokens';
 import type { ISkjema } from '@navikt/familie-skjema';
-
-import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
-import { type IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
+import type { IBehandling } from '@typer/behandling';
+import {
+    AVSLAG_ALLEREDE_UTBETALT_ANNEN_FORELDER,
+    AVSLAG_ALLEREDE_UTBETALT_SØKER,
+    IEndretUtbetalingAndelÅrsak,
+    årsaker,
+    årsakTekst,
+} from '@typer/utbetalingAndel';
+import type { Begrunnelse } from '@typer/vedtak';
+import type { IsoMånedString } from '@utils/dato';
+import { lagPersonLabel } from '@utils/formatter';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
+import classNames from 'classnames';
+import { type ChangeEvent, useEffect } from 'react';
+import styled from 'styled-components';
 import Datovelger from '../../../../../../komponenter/Datovelger/Datovelger';
 import MånedÅrVelger from '../../../../../../komponenter/MånedÅrInput/MånedÅrVelger';
+import { EndretUtbetalingAvslagBegrunnelse } from './EndretUtbetalingAvslagBegrunnelse';
+import type { IEndretUtbetalingAndelSkjema } from './useEndretUtbetalingAndel';
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: 1rem;

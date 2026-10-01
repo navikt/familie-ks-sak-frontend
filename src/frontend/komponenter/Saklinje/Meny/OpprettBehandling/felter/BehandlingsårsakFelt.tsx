@@ -2,10 +2,9 @@ import {
     OpprettBehandlingFelt,
     type OpprettBehandlingFormValues,
 } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
-import { behandlingÅrsak, BehandlingÅrsak, behandlingÅrsakerSomIkkeSkalSettesManuelt } from '@typer/behandling';
-import { useController, useFormContext } from 'react-hook-form';
-
 import { Select } from '@navikt/ds-react';
+import { BehandlingÅrsak, behandlingÅrsak, behandlingÅrsakerSomIkkeSkalSettesManuelt } from '@typer/behandling';
+import { useController, useFormContext } from 'react-hook-form';
 
 export function BehandlingsårsakFelt() {
     const { control } = useFormContext<OpprettBehandlingFormValues>();

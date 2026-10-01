@@ -1,8 +1,3 @@
-import { useState } from 'react';
-
-import { isAfter } from 'date-fns';
-import styled from 'styled-components';
-
 import { BodyShort, Box, Heading, LocalAlert, Switch, Table } from '@navikt/ds-react';
 import {
     BgNeutralSoft,
@@ -13,6 +8,9 @@ import {
     TextNeutral,
     TextSuccessSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
+import { isAfter } from 'date-fns';
+import { useState } from 'react';
+import styled from 'styled-components';
 
 import { NavigeringsRetning } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import TidslinjeNavigering from '../../../../../komponenter/Tidslinje/TidslinjeNavigering';

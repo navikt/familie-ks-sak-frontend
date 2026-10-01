@@ -1,6 +1,7 @@
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterValutakurs } from '@hooks/useOppdaterValutakurs';
 import { useSlettValutakurs } from '@hooks/useSlettValutakurs';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import type { OptionType } from '@typer/common';
 import type { IRestValutakurs } from '@typer/eøsPerioder';
 import {
@@ -11,8 +12,6 @@ import {
 } from '@utils/dato';
 import { isBefore } from 'date-fns';
 import { useForm, useWatch } from 'react-hook-form';
-
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { BehandlingÅrsak } from '../../../../../../../typer/behandling';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';

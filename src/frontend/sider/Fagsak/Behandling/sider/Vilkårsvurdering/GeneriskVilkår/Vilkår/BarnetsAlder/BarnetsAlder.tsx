@@ -11,8 +11,6 @@ import { sorterPåDato } from '@utils/formatter';
 import { utledLovverk } from '@utils/lovverk';
 import { isBefore } from 'date-fns';
 import { useWatch } from 'react-hook-form';
-
-import { AdopsjonsdatoFelt } from './AdopsjonsdatoFelt';
 import { validerBegrunnelseForBarnetsAlder } from '../../../validering';
 import { ResultatFelt } from '../../ResultatFelt';
 import {
@@ -20,8 +18,9 @@ import {
     utledAdopsjonsdatoFraPerson,
     VilkårResultatFelt,
 } from '../../useVilkårResultatSkjema';
-import { VilkårSkjema, type VilkårProps } from '../../VilkårSkjema';
+import { type VilkårProps, VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
+import { AdopsjonsdatoFelt } from './AdopsjonsdatoFelt';
 
 const MULIGE_UTDYPENDE_VILKÅRSVURDERINGER: UtdypendeVilkårsvurdering[] = [UtdypendeVilkårsvurderingGenerell.ADOPSJON];
 

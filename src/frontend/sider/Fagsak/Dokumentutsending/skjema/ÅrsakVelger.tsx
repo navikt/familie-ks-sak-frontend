@@ -1,14 +1,12 @@
-import type { ChangeEvent } from 'react';
-
 import { useBruker } from '@hooks/useBruker';
 import { useErLesevisningFagsak } from '@hooks/useErLesevisningFagsak';
+import { Select } from '@navikt/ds-react';
+import type { ChangeEvent } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { Select } from '@navikt/ds-react';
-
-import { dokumentÅrsak, DokumentÅrsak } from '../dokumentÅrsakTyper';
+import { DokumentÅrsak, dokumentÅrsak } from '../dokumentÅrsakTyper';
 import type { DokumentutsendingFormValues } from '../useDokumentutsendingSkjema';
-import { dokumentutsendingSkjemaStandardverdier, DokumentutsendingFeltnavn } from '../useDokumentutsendingSkjema';
+import { DokumentutsendingFeltnavn, dokumentutsendingSkjemaStandardverdier } from '../useDokumentutsendingSkjema';
 
 export function ÅrsakVelger() {
     const erLesevisning = useErLesevisningFagsak();

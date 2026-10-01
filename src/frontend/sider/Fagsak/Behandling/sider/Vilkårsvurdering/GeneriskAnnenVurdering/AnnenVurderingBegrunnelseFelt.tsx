@@ -1,7 +1,6 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useController, useFormContext } from 'react-hook-form';
-
 import { Textarea } from '@navikt/ds-react';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { AnnenVurderingFelt, type AnnenVurderingFormValues } from './useAnnenVurderingSkjema';
 

@@ -1,9 +1,8 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Select } from '@navikt/ds-react';
 import type { Regelverk } from '@typer/vilkår';
 import { alleRegelverk } from '@utils/vilkår';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { Select } from '@navikt/ds-react';
 
 import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';
 

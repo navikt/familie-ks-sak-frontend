@@ -1,11 +1,6 @@
-import type { PropsWithChildren } from 'react';
-
-import { describe, expect } from 'vitest';
-
 import { ActionMenu } from '@navikt/ds-react';
-
-import { HenleggBehandling } from './HenleggBehandling';
-import { HenleggBehandlingModal } from './HenleggBehandlingModal';
+import type { PropsWithChildren } from 'react';
+import { describe, expect } from 'vitest';
 import { ModalType } from '../../../../context/ModalContext';
 import { useModal } from '../../../../hooks/useModal';
 import { BehandlingProvider } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
@@ -18,6 +13,8 @@ import { render, TestProviders } from '../../../../testutils/testrender';
 import { BehandlingStatus, BehandlingSteg, type IBehandling, SettPåVentÅrsak } from '../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
 import { FeatureToggle, type FeatureToggles } from '../../../../typer/featureToggles';
+import { HenleggBehandling } from './HenleggBehandling';
+import { HenleggBehandlingModal } from './HenleggBehandlingModal';
 
 function ModalWrapper() {
     const { erModalÅpen } = useModal(ModalType.HENLEGG_BEHANDLING);

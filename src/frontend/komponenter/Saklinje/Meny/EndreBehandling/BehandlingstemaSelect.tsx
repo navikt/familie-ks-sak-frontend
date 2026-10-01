@@ -1,10 +1,8 @@
-import { useController, useFormContext } from 'react-hook-form';
-
 import { Select } from '@navikt/ds-react';
-
-import { EndreBehandlingstemaFelt, type EndreBehandlingstemaFormValues } from './useEndreBehandlingstemaSkjema';
+import { useController, useFormContext } from 'react-hook-form';
 import type { IBehandlingstema } from '../../../../typer/behandlingstema';
 import { behandlingstemaer } from '../../../../typer/behandlingstema';
+import { EndreBehandlingstemaFelt, type EndreBehandlingstemaFormValues } from './useEndreBehandlingstemaSkjema';
 
 interface Props {
     erLesevisning: boolean;

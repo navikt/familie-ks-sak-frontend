@@ -1,9 +1,7 @@
-import type { ChangeEvent } from 'react';
-
 import { useErLesevisningFagsak } from '@hooks/useErLesevisningFagsak';
-import { useController, useFormContext } from 'react-hook-form';
-
 import { Textarea } from '@navikt/ds-react';
+import type { ChangeEvent } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
 
 import type { DokumentutsendingFormValues } from '../useDokumentutsendingSkjema';
 import { DokumentutsendingFeltnavn } from '../useDokumentutsendingSkjema';
@@ -31,7 +29,6 @@ export function FritekstAvsnitt() {
             onChange={(event: ChangeEvent<HTMLTextAreaElement>) => field.onChange(event.target.value)}
             onBlur={field.onBlur}
             error={fieldState.error?.message}
-            /* eslint-disable-next-line jsx-a11y/no-autofocus */
             autoFocus
             resize={'vertical'}
             readOnly={erLesevisning || isSubmitting}

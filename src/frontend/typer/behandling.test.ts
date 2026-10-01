@@ -1,7 +1,6 @@
 import { describe, expect } from 'vitest';
-
-import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID, sjekkErBehandleneEnhetMidlertidig } from './behandling';
 import { lagBehandling } from '../testutils/testdata/behandlingTestdata';
+import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID, sjekkErBehandleneEnhetMidlertidig } from './behandling';
 
 describe('behandling', () => {
     describe('sjekkErBehandleneEnhetMidlertidig', () => {

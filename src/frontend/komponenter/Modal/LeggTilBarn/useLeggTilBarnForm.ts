@@ -1,14 +1,12 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
-
 import { useHttp } from '@navikt/familie-http';
 import { Adressebeskyttelsegradering } from '@navikt/familie-typer';
-
-import { useLeggTilBarnModalContext } from './LeggTilBarnModalContext';
+import { useQueryClient } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 import { hentPersonEnkel } from '../../../api/hentPersonEnkel';
 import { useOnFormSubmitSuccessful } from '../../../hooks/useOnFormSubmitSuccessful';
 import { adressebeskyttelsestyper } from '../../../typer/person';
 import { dateTilIsoDatoStringEllerUndefined } from '../../../utils/dato';
+import { useLeggTilBarnModalContext } from './LeggTilBarnModalContext';
 
 const påvirkerSystemLaster = false;
 

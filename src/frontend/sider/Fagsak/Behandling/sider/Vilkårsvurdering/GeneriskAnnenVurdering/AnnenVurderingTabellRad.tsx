@@ -1,14 +1,12 @@
-import { useState } from 'react';
-
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import VilkårResultatIkon from '@ikoner/VilkårResultatIkon';
+import { PersonIcon } from '@navikt/aksel-icons';
+import { BodyShort, HStack, Table, Tooltip } from '@navikt/ds-react';
 import type { IGrunnlagPerson } from '@typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '@typer/vilkår';
 import { Resultat, uiResultat } from '@typer/vilkår';
+import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
-
-import { PersonIcon } from '@navikt/aksel-icons';
-import { BodyShort, HStack, Table, Tooltip } from '@navikt/ds-react';
 
 import { AnnenVurderingSkjema } from './AnnenVurderingSkjema';
 import { annenVurderingFeilmeldingId } from './AnnenVurderingTabell';

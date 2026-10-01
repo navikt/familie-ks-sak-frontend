@@ -1,14 +1,12 @@
 import { useErLesevisningFagsak } from '@hooks/useErLesevisningFagsak';
+import { CheckboxGroup } from '@navikt/ds-react';
 import { type BarnIBrevÅrsak, barnIBrevÅrsakTilTittel } from '@sider/Fagsak/Dokumentutsending/barnIBrevÅrsak';
 import { sorterBarnEtterFødselsdato } from '@utils/formatter';
 import type { FieldPath } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
-
-import { CheckboxGroup } from '@navikt/ds-react';
-
-import { BarnCheckbox } from './BarnCheckbox';
 import type { DokumentutsendingFormValues } from '../useDokumentutsendingSkjema';
 import { DokumentutsendingFeltnavn } from '../useDokumentutsendingSkjema';
+import { BarnCheckbox } from './BarnCheckbox';
 import { useValgteBarnFieldArray } from './ValgteBarnFieldArrayContext';
 
 interface Props {

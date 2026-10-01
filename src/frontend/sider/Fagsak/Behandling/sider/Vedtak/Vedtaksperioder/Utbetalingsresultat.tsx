@@ -1,7 +1,6 @@
+import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import { useVedtaksperiodeContext } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/VedtaksperiodeContext';
 import { formaterBeløp, formaterIdent, sorterUtbetaling } from '@utils/formatter';
-
-import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 
 export function Utbetalingsresultat() {
     const { vedtaksperiodeMedBegrunnelser } = useVedtaksperiodeContext();

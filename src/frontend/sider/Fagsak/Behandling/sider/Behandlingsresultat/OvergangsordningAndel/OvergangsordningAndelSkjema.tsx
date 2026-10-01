@@ -1,16 +1,14 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { TrashIcon } from '@navikt/aksel-icons';
+import { Button, Checkbox, Fieldset, HStack, Label, Select, TextField } from '@navikt/ds-react';
+import { BorderAccent } from '@navikt/ds-tokens/dist/tokens';
 import { BehandlingÅrsak, type IBehandling } from '@typer/behandling';
 import { isNumeric } from '@utils/eøsValidators';
 import { lagPersonLabel } from '@utils/formatter';
 import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import styled from 'styled-components';
-
-import { TrashIcon } from '@navikt/aksel-icons';
-import { Button, Checkbox, Fieldset, HStack, Label, Select, TextField } from '@navikt/ds-react';
-import { BorderAccent } from '@navikt/ds-tokens/dist/tokens';
-
-import { useOvergangsordningAndelContext } from './OvergangsordningAndelContext';
 import Månedvelger, { DagIMåneden } from '../../../../../../komponenter/Datovelger/Månedvelger';
+import { useOvergangsordningAndelContext } from './OvergangsordningAndelContext';
 
 const StyledFieldset = styled(Fieldset)`
     margin-top: 1rem;

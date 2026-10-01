@@ -1,8 +1,17 @@
-import type { PropsWithChildren } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
-
 import { useHentFagsakPaaPerson } from '@hooks/useHentFagsakPaaPerson';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
+import { useHttp } from '@navikt/familie-http';
+import type { Avhengigheter, FeiloppsummeringFeil, Felt, FeltState, ISkjema } from '@navikt/familie-skjema';
+import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
+import type { IDokumentInfo, Ressurs } from '@navikt/familie-typer';
+import {
+    byggFeiletRessurs,
+    byggHenterRessurs,
+    byggTomRessurs,
+    hentDataFraRessurs,
+    Journalstatus,
+    RessursStatus,
+} from '@navikt/familie-typer';
 import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
 import type { IBehandlingstema } from '@typer/behandlingstema';
 import type { IMinimalFagsak } from '@typer/fagsak';
@@ -30,20 +39,9 @@ import { isoStringTilDate } from '@utils/dato';
 import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
 import type { AxiosError } from 'axios';
 import { differenceInMilliseconds } from 'date-fns';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-
-import { useHttp } from '@navikt/familie-http';
-import type { Avhengigheter, FeiloppsummeringFeil, Felt, FeltState, ISkjema } from '@navikt/familie-skjema';
-import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
-import type { IDokumentInfo, Ressurs } from '@navikt/familie-typer';
-import {
-    byggFeiletRessurs,
-    byggHenterRessurs,
-    byggTomRessurs,
-    hentDataFraRessurs,
-    Journalstatus,
-    RessursStatus,
-} from '@navikt/familie-typer';
 
 import useDokument from '../../hooks/useDokument';
 import type { VisningBehandling } from '../Fagsak/Saksoversikt/visningBehandling';
@@ -99,8 +97,9 @@ export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
     const [minimalFagsak, settMinimalFagsak] = useState<IMinimalFagsak | undefined>(undefined);
     const [klagebehandlinger, settKlagebehandlinger] = useState<Ressurs<IKlagebehandling[]>>(byggTomRessurs());
 
-    const [dataForManuellJournalføring, settDataForManuellJournalføring] =
-        useState(byggTomRessurs<IDataForManuellJournalføring>());
+    const [dataForManuellJournalføring, settDataForManuellJournalføring] = useState(
+        byggTomRessurs<IDataForManuellJournalføring>()
+    );
 
     const { mutateAsync: hentFagsakPaaPerson } = useHentFagsakPaaPerson({
         onSuccess: fagsak => settMinimalFagsak(fagsak),
@@ -333,7 +332,7 @@ export const ManuellJournalføringProvider = (props: PropsWithChildren) => {
     };
 
     const hentAktivBehandlingForJournalføring = (): VisningBehandling | undefined => {
-        let aktivBehandling = undefined;
+        let aktivBehandling;
         if (
             dataForManuellJournalføring.status === RessursStatus.SUKSESS &&
             dataForManuellJournalføring.data.minimalFagsak

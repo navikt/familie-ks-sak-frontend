@@ -2,13 +2,12 @@ import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useFagsakId } from '@hooks/useFagsakId';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterTilbakekreving } from '@hooks/useOppdaterTilbakekreving';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { useSimuleringContext } from '@sider/Fagsak/Behandling/sider/Simulering/SimuleringContext';
 import type { Tilbakekrevingsvalg } from '@typer/simulering';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { utledTilbakekreving } from './utledTilbakekreving';
 

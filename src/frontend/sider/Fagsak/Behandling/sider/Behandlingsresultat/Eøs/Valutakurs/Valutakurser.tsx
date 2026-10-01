@@ -1,10 +1,8 @@
-import styled from 'styled-components';
-
 import { Box, Heading, LocalAlert, Table } from '@navikt/ds-react';
-
-import ValutakursTabellRad from './ValutakursTabellRad';
+import styled from 'styled-components';
 import { BehandlingÅrsak, type IBehandling } from '../../../../../../../typer/behandling';
 import type { IRestValutakurs } from '../../../../../../../typer/eøsPerioder';
+import ValutakursTabellRad from './ValutakursTabellRad';
 
 const ValutakurserContainer = styled.div`
     margin-top: 5rem;

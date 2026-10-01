@@ -1,10 +1,9 @@
-import type { PropsWithChildren } from 'react';
+import { Fieldset } from '@navikt/ds-react';
 
 import { render } from '@testutils/testrender';
+import type { PropsWithChildren } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { describe, expect, test } from 'vitest';
-
-import { Fieldset } from '@navikt/ds-react';
 
 import { BegrunnelseField } from './BegrunnelseField';
 import { EndreBehandlendeEnhetFormFields, type EndreBehandlendeEnhetFormValues } from './useEndreBehandlendeEnhetForm';

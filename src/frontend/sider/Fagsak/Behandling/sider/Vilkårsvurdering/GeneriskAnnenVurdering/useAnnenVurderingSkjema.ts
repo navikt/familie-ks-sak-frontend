@@ -1,11 +1,10 @@
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterAnnenVurdering } from '@hooks/useOppdaterAnnenVurdering';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IAnnenVurdering, Resultat } from '@typer/vilkår';
 import { useForm } from 'react-hook-form';
-
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 export enum AnnenVurderingFelt {
     RESULTAT = 'resultat',

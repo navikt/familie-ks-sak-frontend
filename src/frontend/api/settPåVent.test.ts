@@ -3,7 +3,7 @@ import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { SettPåVentÅrsak } from '@typer/behandling';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import { settPåVent, type SettPåVentPayload } from './settPåVent';
+import { type SettPåVentPayload, settPåVent } from './settPåVent';
 
 vi.mock('@api/client/apiClient', () => ({
     apiClient: { request: vi.fn() },

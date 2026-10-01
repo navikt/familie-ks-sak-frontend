@@ -1,6 +1,5 @@
-import { useFormState } from 'react-hook-form';
-
 import { Box, ErrorSummary } from '@navikt/ds-react';
+import { useFormState } from 'react-hook-form';
 
 interface Props {
     heading?: string;

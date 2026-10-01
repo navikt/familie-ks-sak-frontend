@@ -1,9 +1,7 @@
-import type { PropsWithChildren } from 'react';
-
 import { Button, HStack } from '@navikt/ds-react';
-
-import { NavigeringsRetning } from './TidslinjeContext';
+import type { PropsWithChildren } from 'react';
 import FamilieChevron from '../../ikoner/FamilieChevron';
+import { NavigeringsRetning } from './TidslinjeContext';
 
 interface IProps extends PropsWithChildren {
     naviger: (retning: NavigeringsRetning) => void;

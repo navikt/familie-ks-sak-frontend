@@ -3,10 +3,9 @@ import { finnBarnIBrevÅrsak } from '@sider/Fagsak/Dokumentutsending/barnIBrevÅ
 import type { IManueltBrevRequestPåFagsak } from '@typer/dokument';
 import type { IPersonInfo } from '@typer/person';
 import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
-
+import { Informasjonsbrev } from '../Behandling/Høyremeny/Brev/typer';
 import { DokumentÅrsak } from './dokumentÅrsakTyper';
 import type { DokumentutsendingFormValues } from './useDokumentutsendingSkjema';
-import { Informasjonsbrev } from '../Behandling/Høyremeny/Brev/typer';
 
 interface TransformerSkjemaDataInput {
     skjemaverdier: DokumentutsendingFormValues;

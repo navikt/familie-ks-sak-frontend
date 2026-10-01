@@ -1,12 +1,14 @@
 import { useFagsak } from '@hooks/useFagsak';
 import { Fagsaklinje } from '@komponenter/Saklinje/Fagsaklinje';
+import { InformationSquareIcon } from '@navikt/aksel-icons';
+import { Box, Heading, InfoCard, Link, LocalAlert, VStack } from '@navikt/ds-react';
 import { BehandlingStatus, erBehandlingHenlagt } from '@typer/behandling';
 import { BehandlingKategori } from '@typer/behandlingstema';
 import { FagsakStatus } from '@typer/fagsak';
 import { Vedtaksperiodetype } from '@typer/vedtaksperiode';
 import {
-    dateTilFormatertString,
     Datoformat,
+    dateTilFormatertString,
     hentDagensDato,
     isoStringTilDate,
     periodeOverlapperMedValgtDato,
@@ -14,9 +16,6 @@ import {
 import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
 import { addMonths, differenceInMilliseconds, startOfMonth } from 'date-fns';
 import { Link as ReactRouterLink } from 'react-router';
-
-import { InformationSquareIcon } from '@navikt/aksel-icons';
-import { Box, Heading, InfoCard, Link, LocalAlert, VStack } from '@navikt/ds-react';
 
 import { Behandlinger } from './Behandlinger';
 import { FagsakLenkepanel, SaksoversiktPanelBredde } from './FagsakLenkepanel';

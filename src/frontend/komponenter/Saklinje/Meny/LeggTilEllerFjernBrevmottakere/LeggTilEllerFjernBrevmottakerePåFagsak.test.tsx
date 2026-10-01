@@ -1,12 +1,7 @@
-import { type PropsWithChildren } from 'react';
-
+import { ActionMenu, Heading } from '@navikt/ds-react';
+import type { PropsWithChildren } from 'react';
 import { Route, Routes } from 'react-router';
 import { describe, expect } from 'vitest';
-
-import { ActionMenu, Heading } from '@navikt/ds-react';
-
-import { LeggTilEllerFjernBrevmottakerePåFagsak } from './LeggTilEllerFjernBrevmottakerePåFagsak';
-import type { SkjemaBrevmottaker } from './useBrevmottakerSkjema';
 import { FagsakProvider } from '../../../../sider/Fagsak/FagsakContext';
 import { ManuelleBrevmottakerePåFagsakProvider } from '../../../../sider/Fagsak/ManuelleBrevmottakerePåFagsakContext';
 import { BrevmottakerTestdata } from '../../../../testutils/testdata/brevmottakerTestdata';
@@ -14,6 +9,8 @@ import { lagFagsak } from '../../../../testutils/testdata/fagsakTestdata';
 import { render, TestProviders } from '../../../../testutils/testrender';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
 import { FagsakStatus } from '../../../../typer/fagsak';
+import { LeggTilEllerFjernBrevmottakerePåFagsak } from './LeggTilEllerFjernBrevmottakerePåFagsak';
+import type { SkjemaBrevmottaker } from './useBrevmottakerSkjema';
 
 interface WrapperProps extends PropsWithChildren {
     initialEntries?: [{ pathname: string }];

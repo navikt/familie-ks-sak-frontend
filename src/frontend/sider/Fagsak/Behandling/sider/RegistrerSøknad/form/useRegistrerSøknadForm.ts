@@ -1,17 +1,15 @@
-import { useId } from 'react';
-
 import { useBruker } from '@hooks/useBruker';
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useFagsak } from '@hooks/useFagsak';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useRegistrerSøknad } from '@hooks/useRegistrerSøknad';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { useValgbareBarn } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useValgbareBarn';
 import type { IBarnMedOpplysninger, Målform } from '@typer/søknad';
+import { useId } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 export enum RegistrerSøknadFormField {
     BARN = 'barn',

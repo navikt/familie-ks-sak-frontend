@@ -1,10 +1,9 @@
-import type { OppgavetypeFilter } from '@typer/oppgave';
-import { oppgaveTypeFilter } from '@typer/oppgave';
-import { useNavigate } from 'react-router';
-
 import { ChevronLeftIcon } from '@navikt/aksel-icons';
 import { Box, Button, ErrorSummary, Heading, HStack, LocalAlert, VStack } from '@navikt/ds-react';
 import { RessursStatus } from '@navikt/familie-typer';
+import type { OppgavetypeFilter } from '@typer/oppgave';
+import { oppgaveTypeFilter } from '@typer/oppgave';
+import { useNavigate } from 'react-router';
 
 import { AvsenderPanel } from './AvsenderPanel';
 import { BrukerPanel } from './BrukerPanel';

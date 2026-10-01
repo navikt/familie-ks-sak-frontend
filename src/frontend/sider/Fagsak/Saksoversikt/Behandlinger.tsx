@@ -1,14 +1,13 @@
 import { BodyShort, Heading, HStack, LocalAlert, Skeleton, Switch, Table, VStack } from '@navikt/ds-react';
-
-import { Behandling } from './Behandling';
-import styles from './Behandlinger.module.css';
-import type { Saksoversiktsbehandling } from './utils';
-import { hentBehandlingerTilSaksoversikten, hentBehandlingId, skalRadVises } from './utils';
 import { useHentKlagebehandlinger } from '../../../hooks/useHentKlagebehandlinger';
 import { useHentKontantstøttebehandlinger } from '../../../hooks/useHentKontantstøttebehandlinger';
 import { useHentTilbakekrevingsbehandlinger } from '../../../hooks/useHentTilbakekrevingsbehandlinger';
 import { useToggle } from '../../../hooks/useToggle';
 import { useFagsakContext } from '../FagsakContext';
+import { Behandling } from './Behandling';
+import styles from './Behandlinger.module.css';
+import type { Saksoversiktsbehandling } from './utils';
+import { hentBehandlingerTilSaksoversikten, hentBehandlingId, skalRadVises } from './utils';
 
 function TableHeader() {
     return (

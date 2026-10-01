@@ -1,13 +1,12 @@
 import { Resultat, type UtdypendeVilkårsvurdering, UtdypendeVilkårsvurderingGenerell } from '@typer/vilkår';
 import { useWatch } from 'react-hook-form';
-
+import { useVilkårResultatSkjema, VilkårResultatFelt } from '../../useVilkårResultatSkjema';
+import { type VilkårProps, VilkårSkjema } from '../../VilkårSkjema';
+import { VilkårTabellRad } from '../../VilkårTabellRad';
 import { AntallTimerFelt } from './AntallTimerFelt';
 import { utledBarnehageplassResultat } from './BarnehageplassUtils';
 import { HarBarnehageplassFelt } from './HarBarnehageplassFelt';
 import { SøkerHarMeldtFraOmBarnehageplassFelt } from './SøkerHarMeldtFraOmBarnehageplassFelt';
-import { useVilkårResultatSkjema, VilkårResultatFelt } from '../../useVilkårResultatSkjema';
-import { VilkårSkjema, type VilkårProps } from '../../VilkårSkjema';
-import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 const MULIGE_UTDYPENDE_VILKÅRSVURDERINGER: UtdypendeVilkårsvurdering[] = [
     UtdypendeVilkårsvurderingGenerell.SOMMERFERIE,

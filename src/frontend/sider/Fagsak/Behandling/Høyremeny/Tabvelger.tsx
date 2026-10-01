@@ -1,12 +1,11 @@
 import { Tabs } from '@navikt/ds-react';
-
+import { useErLesevisning } from '../../../../hooks/useErLesevisning';
 import IkonHistorikk from './Ikoner/IkonHistorikk';
 import IkonMeldinger from './Ikoner/IkonMeldinger';
 import IkonTotrinnskontroll from './Ikoner/IkonTotrinnskontroll';
 import { Tab } from './TabContextProvider';
 import styles from './Tabvelger.module.css';
 import { useSkalViseTotrinnskontroll } from './useSkalViseTotrinnskontroll';
-import { useErLesevisning } from '../../../../hooks/useErLesevisning';
 
 export function Tabvelger() {
     const erLesevisning = useErLesevisning();

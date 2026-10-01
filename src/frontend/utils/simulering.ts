@@ -1,7 +1,6 @@
 import { addMonths, differenceInCalendarMonths, isAfter, isSameDay } from 'date-fns';
-
-import { dateTilIsoDatoString, isoStringTilDate, isoStringTilDateMedFallback, tidenesMorgen } from './dato';
 import type { ISimuleringDTO, ISimuleringPeriode } from '../typer/simulering';
+import { dateTilIsoDatoString, isoStringTilDate, isoStringTilDateMedFallback, tidenesMorgen } from './dato';
 
 export const hentPeriodelisteMedTommePerioder = (perioder: ISimuleringPeriode[]): ISimuleringPeriode[] => {
     const fomDatoerISimulering = hentSorterteFomdatoer(perioder);

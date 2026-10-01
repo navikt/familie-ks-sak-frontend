@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react';
+import { Fieldset } from '@navikt/ds-react';
 
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
@@ -8,10 +8,9 @@ import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
 import { render, TestProviders } from '@testutils/testrender';
 import type { IBehandling } from '@typer/behandling';
 import { behandlendeEnheter, UKJENT_ENHET } from '@typer/enhet';
+import type { PropsWithChildren } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { describe, expect, test } from 'vitest';
-
-import { Fieldset } from '@navikt/ds-react';
 
 import { EndreBehandlendeEnhetFormFields, type EndreBehandlendeEnhetFormValues } from './useEndreBehandlendeEnhetForm';
 import { VelgNyEnhetField } from './VelgNyEnhetField';

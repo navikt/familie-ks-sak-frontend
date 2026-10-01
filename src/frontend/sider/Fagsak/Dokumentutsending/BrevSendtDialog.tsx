@@ -1,7 +1,6 @@
 import { useFagsak } from '@hooks/useFagsak';
-import { useNavigate } from 'react-router';
-
 import { Button, Dialog, HStack } from '@navikt/ds-react';
+import { useNavigate } from 'react-router';
 
 interface Props {
     erBrevSendtDialogÅpen: boolean;

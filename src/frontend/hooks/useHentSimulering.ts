@@ -1,6 +1,6 @@
 import { hentSimulering } from '@api/hentSimulering';
 import { MetaKey } from '@hooks/meta/metaKey';
-import { type DefaultError, useQuery, type UseQueryOptions } from '@tanstack/react-query';
+import { type DefaultError, type UseQueryOptions, useQuery } from '@tanstack/react-query';
 import type { ISimuleringDTO } from '@typer/simulering';
 import { settPerioderTilIkkeUtbetaltOmForfallsdatoIkkePassert } from '@utils/simulering';
 
