@@ -1,5 +1,6 @@
 import { ainntektHandlers } from './ainntektHandlers';
 import { behandlingHandlers } from './behandlingHandlers';
+import { endretUtbetalingAndelHandlers } from './endretUtbetalingAndelHandlers';
 import { fagsakHandlers } from './fagsakHandlers';
 import { featureToggleHandlers } from './featureToggleHandlers';
 import { klageHandlers } from './klageHandlers';
@@ -18,4 +19,5 @@ export const handlers = [
     ...fagsakHandlers,
     ...ainntektHandlers,
     ...saksbehandlerHandlers,
+    ...endretUtbetalingAndelHandlers,
 ];

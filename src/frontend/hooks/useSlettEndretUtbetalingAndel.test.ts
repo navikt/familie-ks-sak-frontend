@@ -13,7 +13,7 @@ afterEach(() => {
     vi.clearAllMocks();
 });
 
-const parameters = { behandlingId: 123 };
+const parametre = { behandlingId: 123, endretUtbetalingAndelId: 456 };
 
 describe('useSlettEndretUtbetalingAndel', () => {
     test('kaller slettEndretUtbetalingAndel med riktige parametre', async () => {
@@ -21,10 +21,10 @@ describe('useSlettEndretUtbetalingAndel', () => {
         const behandling = lagBehandling({ behandlingId: 123 });
         vi.mocked(slettEndretUtbetalingAndel).mockResolvedValue(behandling);
 
-        const { result } = renderHook(() => useSlettEndretUtbetalingAndel(456), { wrapper: TestProviders });
+        const { result } = renderHook(() => useSlettEndretUtbetalingAndel(parametre), { wrapper: TestProviders });
 
         // Act
-        result.current.mutate(parameters);
+        result.current.mutate();
 
         // Assert
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -36,10 +36,10 @@ describe('useSlettEndretUtbetalingAndel', () => {
         // Arrange
         vi.mocked(slettEndretUtbetalingAndel).mockRejectedValue(new Error('Noe gikk galt'));
 
-        const { result } = renderHook(() => useSlettEndretUtbetalingAndel(456), { wrapper: TestProviders });
+        const { result } = renderHook(() => useSlettEndretUtbetalingAndel(parametre), { wrapper: TestProviders });
 
         // Act
-        result.current.mutate(parameters);
+        result.current.mutate();
 
         // Assert
         await waitFor(() => expect(result.current.isError).toBe(true));
@@ -53,7 +53,7 @@ describe('useSlettEndretUtbetalingAndel', () => {
 
         const { result } = renderHook(
             () => ({
-                mutation: useSlettEndretUtbetalingAndel(456),
+                mutation: useSlettEndretUtbetalingAndel(parametre),
                 isPending: useSlettEndretUtbetalingAndelIsPending(456),
                 annenIsPending: useSlettEndretUtbetalingAndelIsPending(789),
             }),
@@ -61,7 +61,7 @@ describe('useSlettEndretUtbetalingAndel', () => {
         );
 
         // Act
-        result.current.mutation.mutate(parameters);
+        result.current.mutation.mutate();
 
         // Assert
         await waitFor(() => expect(result.current.isPending).toBe(true));

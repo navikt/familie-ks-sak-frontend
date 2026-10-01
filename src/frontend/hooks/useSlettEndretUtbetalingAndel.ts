@@ -3,19 +3,29 @@ import { type DefaultError, type UseMutationOptions, useMutation } from '@tansta
 import type { IBehandling } from '@typer/behandling';
 
 export const SlettEndretUtbetalingAndelMutationKeyFactory = {
-    endretUtbetalingAndel: (endretUtbetalingAndelId: number) => ['slettEndretUtbetalingAndel', endretUtbetalingAndelId],
+    endretUtbetalingAndel: (endretUtbetalingAndelId: number | undefined) => [
+        'slettEndretUtbetalingAndel',
+        endretUtbetalingAndelId,
+    ],
 };
 
 interface Parameters {
     behandlingId: number;
+    endretUtbetalingAndelId?: number;
 }
 
-type Options = Omit<UseMutationOptions<IBehandling, DefaultError, Parameters>, 'mutationFn' | 'mutationKey'>;
+type Options = Omit<UseMutationOptions<IBehandling, DefaultError, void>, 'mutationFn' | 'mutationKey'>;
 
-export function useSlettEndretUtbetalingAndel(endretUtbetalingAndelId: number, options?: Options) {
+export function useSlettEndretUtbetalingAndel(
+    { behandlingId, endretUtbetalingAndelId }: Parameters,
+    options?: Options
+) {
+    if (endretUtbetalingAndelId === undefined) {
+        throw new Error('Kan ikke slette endretUtbetalingAndel uten id');
+    }
     return useMutation({
         mutationKey: SlettEndretUtbetalingAndelMutationKeyFactory.endretUtbetalingAndel(endretUtbetalingAndelId),
-        mutationFn: ({ behandlingId }: Parameters) => slettEndretUtbetalingAndel(behandlingId, endretUtbetalingAndelId),
+        mutationFn: () => slettEndretUtbetalingAndel(behandlingId, endretUtbetalingAndelId),
         ...options,
     });
 }

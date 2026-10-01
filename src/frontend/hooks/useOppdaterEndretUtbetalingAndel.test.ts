@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 const payload: IRestEndretUtbetalingAndel = { id: 456, prosent: 100 };
-const parameters = { behandlingId: 123, payload };
+const parametre = { behandlingId: 123, endretUtbetalingAndelId: 456 };
 
 describe('useOppdaterEndretUtbetalingAndel', () => {
     test('kaller oppdaterEndretUtbetalingAndel med riktige parametre', async () => {
@@ -23,10 +23,10 @@ describe('useOppdaterEndretUtbetalingAndel', () => {
         const behandling = lagBehandling({ behandlingId: 123 });
         vi.mocked(oppdaterEndretUtbetalingAndel).mockResolvedValue(behandling);
 
-        const { result } = renderHook(() => useOppdaterEndretUtbetalingAndel(456), { wrapper: TestProviders });
+        const { result } = renderHook(() => useOppdaterEndretUtbetalingAndel(parametre), { wrapper: TestProviders });
 
         // Act
-        result.current.mutate(parameters);
+        result.current.mutate(payload);
 
         // Assert
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -38,10 +38,10 @@ describe('useOppdaterEndretUtbetalingAndel', () => {
         // Arrange
         vi.mocked(oppdaterEndretUtbetalingAndel).mockRejectedValue(new Error('Noe gikk galt'));
 
-        const { result } = renderHook(() => useOppdaterEndretUtbetalingAndel(456), { wrapper: TestProviders });
+        const { result } = renderHook(() => useOppdaterEndretUtbetalingAndel(parametre), { wrapper: TestProviders });
 
         // Act
-        result.current.mutate(parameters);
+        result.current.mutate(payload);
 
         // Assert
         await waitFor(() => expect(result.current.isError).toBe(true));
@@ -55,7 +55,7 @@ describe('useOppdaterEndretUtbetalingAndel', () => {
 
         const { result } = renderHook(
             () => ({
-                mutation: useOppdaterEndretUtbetalingAndel(456),
+                mutation: useOppdaterEndretUtbetalingAndel(parametre),
                 isPending: useOppdaterEndretUtbetalingAndelIsPending(456),
                 annenIsPending: useOppdaterEndretUtbetalingAndelIsPending(789),
             }),
@@ -63,7 +63,7 @@ describe('useOppdaterEndretUtbetalingAndel', () => {
         );
 
         // Act
-        result.current.mutation.mutate(parameters);
+        result.current.mutation.mutate(payload);
 
         // Assert
         await waitFor(() => expect(result.current.isPending).toBe(true));

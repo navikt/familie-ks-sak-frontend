@@ -2,7 +2,7 @@ import { useMutationState } from '@tanstack/react-query';
 
 import { SlettEndretUtbetalingAndelMutationKeyFactory } from './useSlettEndretUtbetalingAndel';
 
-export function useSlettEndretUtbetalingAndelIsPending(endretUtbetalingAndelId: number) {
+export function useSlettEndretUtbetalingAndelIsPending(endretUtbetalingAndelId: number | undefined) {
     const states = useMutationState({
         filters: {
             mutationKey: SlettEndretUtbetalingAndelMutationKeyFactory.endretUtbetalingAndel(endretUtbetalingAndelId),

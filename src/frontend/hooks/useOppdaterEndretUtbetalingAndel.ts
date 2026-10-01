@@ -12,15 +12,24 @@ export const OppdaterEndretUtbetalingAndelMutationKeyFactory = {
 
 interface Parameters {
     behandlingId: number;
-    payload: IRestEndretUtbetalingAndel;
+    endretUtbetalingAndelId?: number;
 }
 
-type Options = Omit<UseMutationOptions<IBehandling, DefaultError, Parameters>, 'mutationFn' | 'mutationKey'>;
+type Options = Omit<
+    UseMutationOptions<IBehandling, DefaultError, IRestEndretUtbetalingAndel>,
+    'mutationFn' | 'mutationKey'
+>;
 
-export function useOppdaterEndretUtbetalingAndel(endretUtbetalingAndelId: number, options?: Options) {
+export function useOppdaterEndretUtbetalingAndel(
+    { behandlingId, endretUtbetalingAndelId }: Parameters,
+    options?: Options
+) {
+    if (endretUtbetalingAndelId === undefined) {
+        throw new Error('Kan ikke oppdatere endretUtbetalingAndel uten id');
+    }
     return useMutation({
         mutationKey: OppdaterEndretUtbetalingAndelMutationKeyFactory.endretUtbetalingAndel(endretUtbetalingAndelId),
-        mutationFn: ({ behandlingId, payload }: Parameters) =>
+        mutationFn: (payload: IRestEndretUtbetalingAndel) =>
             oppdaterEndretUtbetalingAndel(behandlingId, endretUtbetalingAndelId, payload),
         ...options,
     });
