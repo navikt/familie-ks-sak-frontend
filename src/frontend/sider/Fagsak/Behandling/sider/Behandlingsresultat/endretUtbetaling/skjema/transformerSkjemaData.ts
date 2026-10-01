@@ -10,7 +10,7 @@ export function transformerSkjemaData(
 ): IRestEndretUtbetalingAndel {
     return {
         id: lagretEndretUtbetalingAndel.id,
-        personIdent: values[EndretUtbetalingAndelFeltnavn.PERSON],
+        personIdenter: values[EndretUtbetalingAndelFeltnavn.PERSONER] ?? [],
         prosent: values[EndretUtbetalingAndelFeltnavn.PERIODE_SKAL_UTBETALES] ? 100 : 0,
         fom: values[EndretUtbetalingAndelFeltnavn.FOM] ?? undefined,
         tom: values[EndretUtbetalingAndelFeltnavn.TOM] ?? undefined,

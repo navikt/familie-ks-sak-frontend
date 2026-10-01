@@ -1,6 +1,6 @@
 import { useBehandling } from '@hooks/useBehandling';
 import StatusIkon, { Status } from '@ikoner/StatusIkon';
-import { HStack, Table } from '@navikt/ds-react';
+import { BodyShort, HStack, Table, VStack } from '@navikt/ds-react';
 import { årsakTekst } from '@typer/utbetalingAndel';
 import { Datoformat, isoMånedPeriodeTilFormatertString } from '@utils/dato';
 import { lagPersonLabel } from '@utils/formatter';
@@ -26,7 +26,9 @@ function utbetalingTilTekst(prosent: number): string {
 export function EndretUtbetalingAndelRadNy() {
     const behandling = useBehandling();
     const { endretUtbetalingAndel } = useEndretUtbetalingAndelContext();
-    const [erSkjemaEkspandert, settErSkjemaEkspandert] = useState(!endretUtbetalingAndel.personIdent);
+    const [erSkjemaEkspandert, settErSkjemaEkspandert] = useState(
+        (endretUtbetalingAndel.personIdenter ?? []).length === 0
+    );
 
     const lukkSkjema = () => settErSkjemaEkspandert(false);
 
@@ -40,7 +42,8 @@ export function EndretUtbetalingAndelRadNy() {
         }
     }
 
-    const { personIdent, fom, tom, årsak, prosent, erTilknyttetAndeler } = endretUtbetalingAndel;
+    const { fom, tom, årsak, prosent, erTilknyttetAndeler } = endretUtbetalingAndel;
+    const personIdenter = endretUtbetalingAndel.personIdenter ?? [];
 
     return (
         <Table.ExpandableRow
@@ -52,7 +55,15 @@ export function EndretUtbetalingAndelRadNy() {
             <Table.DataCell>
                 <HStack gap={'space-16'} wrap={false}>
                     <StatusIkon status={erTilknyttetAndeler ? Status.OK : Status.ADVARSEL} />
-                    {personIdent ? lagPersonLabel(personIdent, behandling.personer) : 'Ikke satt'}
+                    {personIdenter.length > 0 ? (
+                        <VStack>
+                            {personIdenter.map(ident => (
+                                <BodyShort key={ident}>{lagPersonLabel(ident, behandling.personer)}</BodyShort>
+                            ))}
+                        </VStack>
+                    ) : (
+                        'Ikke satt'
+                    )}
                 </HStack>
             </Table.DataCell>
             <Table.DataCell>

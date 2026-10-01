@@ -4,7 +4,7 @@ import type { Begrunnelse } from './vedtak';
 export interface IRestEndretUtbetalingAndel {
     id?: number;
     personIdent?: string;
-    personIdenter?: string[];
+    personIdenter?: string[] | null;
     prosent?: number;
     fom?: IsoMånedString;
     tom?: IsoMånedString;

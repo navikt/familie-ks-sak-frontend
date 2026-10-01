@@ -13,7 +13,7 @@ const lagretAndel = { id: 1, erTilknyttetAndeler: true };
 
 function lagFormValues(values: Partial<EndretUtbetalingAndelFormValues> = {}): EndretUtbetalingAndelFormValues {
     return {
-        [EndretUtbetalingAndelFeltnavn.PERSON]: '12345678910',
+        [EndretUtbetalingAndelFeltnavn.PERSONER]: ['12345678910', '10987654321'],
         [EndretUtbetalingAndelFeltnavn.FOM]: '2024-01',
         [EndretUtbetalingAndelFeltnavn.TOM]: '2024-06',
         [EndretUtbetalingAndelFeltnavn.ÅRSAK]: IEndretUtbetalingAndelÅrsak.ALLEREDE_UTBETALT,
@@ -30,7 +30,7 @@ describe('transformerSkjemaData', () => {
     test('skal mappe skjemaverdier til payload', () => {
         expect(transformerSkjemaData(lagFormValues(), lagretAndel)).toEqual({
             id: 1,
-            personIdent: '12345678910',
+            personIdenter: ['12345678910', '10987654321'],
             prosent: 100,
             fom: '2024-01',
             tom: '2024-06',
@@ -49,12 +49,6 @@ describe('transformerSkjemaData', () => {
             lagretAndel
         );
         expect(payload.prosent).toBe(0);
-    });
-
-    test('skal ikke sende med personIdenter', () => {
-        const payload = transformerSkjemaData(lagFormValues(), lagretAndel);
-        expect(payload).not.toHaveProperty('personIdenter');
-        expect(JSON.parse(JSON.stringify(payload))).not.toHaveProperty('personIdenter');
     });
 });
 

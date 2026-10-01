@@ -1,5 +1,5 @@
 import { useBehandling } from '@hooks/useBehandling';
-import { Select } from '@navikt/ds-react';
+import { UNSAFE_Combobox } from '@navikt/ds-react';
 import { lagPersonLabel } from '@utils/formatter';
 import { useController, useFormContext } from 'react-hook-form';
 
@@ -17,31 +17,37 @@ export function Personvelger({ erLesevisning }: StandardFeltProps) {
         field: { value, onChange, onBlur, ref },
         fieldState: { error },
     } = useController({
-        name: EndretUtbetalingAndelFeltnavn.PERSON,
+        name: EndretUtbetalingAndelFeltnavn.PERSONER,
         control,
-        rules: { required: 'Du må velge en person' },
+        rules: { validate: value => value.length > 0 || 'Du må velge minst én person' },
     });
 
     const identerMedAndeler = behandling.personerMedAndelerTilkjentYtelse.map(person => person.personIdent);
-    const personerMedAndeler = behandling.personer.filter(person => identerMedAndeler.includes(person.personIdent));
+    const tilgjengeligePersoner = behandling.personer
+        .filter(person => identerMedAndeler.includes(person.personIdent))
+        .map(person => ({
+            value: person.personIdent,
+            label: lagPersonLabel(person.personIdent, behandling.personer),
+        }));
+
+    const valgtePersoner = value.map(ident => ({
+        value: ident,
+        label: lagPersonLabel(ident, behandling.personer),
+    }));
 
     return (
-        <Select
+        <UNSAFE_Combobox
+            isMultiSelect
             label={'Velg hvem det gjelder'}
-            value={value}
-            onChange={event => onChange(event.target.value)}
+            options={tilgjengeligePersoner}
+            selectedOptions={valgtePersoner}
+            onToggleSelected={(ident, erValgt) =>
+                onChange(erValgt ? [...value, ident] : value.filter(valgtIdent => valgtIdent !== ident))
+            }
             onBlur={onBlur}
             ref={ref}
-            error={error?.message}
             readOnly={erLesevisning}
-            style={{ maxWidth: '20rem' }}
-        >
-            <option value={''}>Velg person</option>
-            {personerMedAndeler.map(person => (
-                <option value={person.personIdent} key={person.personIdent}>
-                    {lagPersonLabel(person.personIdent, behandling.personer)}
-                </option>
-            ))}
-        </Select>
+            error={error?.message}
+        />
     );
 }
