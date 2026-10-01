@@ -4,12 +4,12 @@ import type { Begrunnelse } from './vedtak';
 export interface IRestEndretUtbetalingAndel {
     id?: number;
     personIdent?: string;
+    personIdenter?: string[];
     prosent?: number;
     fom?: IsoMånedString;
     tom?: IsoMånedString;
     begrunnelse?: string;
     søknadstidspunkt?: IsoDatoString;
-    avtaletidspunktDeltBosted?: IsoDatoString;
     årsak?: IEndretUtbetalingAndelÅrsak;
     erTilknyttetAndeler?: boolean;
     erEksplisittAvslagPåSøknad?: boolean;
