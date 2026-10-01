@@ -27,9 +27,9 @@ const queryClient = new QueryClient({
 
 export function App() {
     return (
-        <TekniskFeilModalProvider>
-            <ManglerTilgangModalProvider>
-                <ErrorBoundary>
+        <ErrorBoundary>
+            <TekniskFeilModalProvider>
+                <ManglerTilgangModalProvider>
                     <QueryClientProvider client={queryClient}>
                         {!erProd() && <ReactQueryDevtools position={'right'} initialIsOpen={false} />}
                         <SaksbehandlerProvider>
@@ -46,8 +46,8 @@ export function App() {
                             </AuthContextProvider>
                         </SaksbehandlerProvider>
                     </QueryClientProvider>
-                </ErrorBoundary>
-            </ManglerTilgangModalProvider>
-        </TekniskFeilModalProvider>
+                </ManglerTilgangModalProvider>
+            </TekniskFeilModalProvider>
+        </ErrorBoundary>
     );
 }
