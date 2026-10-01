@@ -1,8 +1,6 @@
-import type { ChangeEvent } from 'react';
-
-import { useController, useFormContext } from 'react-hook-form';
-
 import { Select } from '@navikt/ds-react';
+import type { ChangeEvent } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { type Brevmal, type BrevtypeSelect, brevmaler } from './typer';
 import { type BrevModulFormValues, BrevmodulFeltnavn } from './useBrevModul';

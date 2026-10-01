@@ -1,8 +1,7 @@
 import { useBehandling } from '@hooks/useBehandling';
-import { BehandlingStatus, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
-
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { InfoCard } from '@navikt/ds-react';
+import { BehandlingStatus, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
 
 function finnAdvarseltekst(behandling: IBehandling): string | undefined {
     if (behandling.status === BehandlingStatus.AVSLUTTET) {

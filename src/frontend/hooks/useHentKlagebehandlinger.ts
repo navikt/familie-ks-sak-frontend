@@ -1,6 +1,6 @@
 import { hentKlagebehandlinger } from '@api/hentKlagebehandlinger';
 import { MetaKey } from '@hooks/meta/metaKey';
-import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
+import { type UseQueryOptions, useQuery } from '@tanstack/react-query';
 import type { IKlagebehandling } from '@typer/klage';
 
 type Options = Omit<UseQueryOptions<IKlagebehandling[]>, 'queryKey' | 'queryFn'>;

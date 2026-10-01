@@ -1,10 +1,9 @@
 import { ApiFeil } from '@api/client/apiClient';
 import { useOppdaterBehandlendeEnhet } from '@hooks/useOppdaterBehandlendeEnhet';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { behandlendeEnheter, UKJENT_ENHET } from '@typer/enhet';
 import { useForm } from 'react-hook-form';
-
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 export interface EndreBehandlendeEnhetFormValues {
     [EndreBehandlendeEnhetFormFields.ENHET_ID]: string;

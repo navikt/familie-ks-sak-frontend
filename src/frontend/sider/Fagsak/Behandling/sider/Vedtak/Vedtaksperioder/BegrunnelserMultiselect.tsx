@@ -4,14 +4,13 @@ import { HentGenererteBrevbegrunnelserQueryKeyFactory } from '@hooks/useHentGene
 import { HentVedtaksperioderQueryKeyFactory } from '@hooks/useHentVedtaksperioder';
 import { useOppdaterVedtaksperiodeMedBegrunnelser } from '@hooks/useOppdaterVedtaksperiodeMedBegrunnelser';
 import { useOppdaterVedtaksperiodeMedFriteksterIsPending } from '@hooks/useOppdaterVedtaksperiodeMedFriteksterIsPending';
+import { BodyShort, Box, Label } from '@navikt/ds-react';
+import type { ActionMeta, FormatOptionLabelMeta, GroupBase, StylesConfig } from '@navikt/familie-form-elements';
+import { FamilieReactSelect } from '@navikt/familie-form-elements';
 import { useQueryClient } from '@tanstack/react-query';
 import type { OptionType } from '@typer/common';
 import { type Begrunnelse, type BegrunnelseType, begrunnelseTyper, Standardbegrunnelse } from '@typer/vedtak';
 import { finnBegrunnelseType, hentBakgrunnsfarge, hentBorderfarge } from '@utils/vedtakUtils';
-
-import { BodyShort, Box, Label } from '@navikt/ds-react';
-import type { ActionMeta, FormatOptionLabelMeta, GroupBase, StylesConfig } from '@navikt/familie-form-elements';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
 
 import { useAlleBegrunnelserContext } from './AlleBegrunnelserContext';
 import Styles from './BegrunnelserMultiselect.module.css';

@@ -1,9 +1,8 @@
 import { isAfter } from 'date-fns';
-
-import { hentDagensDato, isoStringTilDateMedFallback, tidenesEnde } from './dato';
 import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
 import type { IMinimalFagsak } from '../typer/fagsak';
-import { fagsakStatus, FagsakStatus } from '../typer/fagsak';
+import { FagsakStatus, fagsakStatus } from '../typer/fagsak';
+import { hentDagensDato, isoStringTilDateMedFallback, tidenesEnde } from './dato';
 
 export const erFagsakLåst = (fagsak: Pick<IMinimalFagsak, 'status'>): boolean => fagsak.status === FagsakStatus.LÅST;
 

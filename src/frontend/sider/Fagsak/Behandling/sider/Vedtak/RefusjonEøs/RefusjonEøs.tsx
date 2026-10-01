@@ -1,7 +1,6 @@
-import { useRefusjonEøsTabellContext } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
-
 import { StarsEuIcon } from '@navikt/aksel-icons';
 import { ActionMenu } from '@navikt/ds-react';
+import { useRefusjonEøsTabellContext } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
 
 export function RefusjonEøs() {
     const { visRefusjonEøsTabell } = useRefusjonEøsTabellContext();

@@ -1,9 +1,8 @@
 import { useErLesevisningFagsak } from '@hooks/useErLesevisningFagsak';
-import { lagBarnLabel } from '@utils/formatter';
-import { type FieldArrayWithId, useFormContext } from 'react-hook-form';
-
 import { TrashIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, Button, Checkbox, HStack } from '@navikt/ds-react';
+import { lagBarnLabel } from '@utils/formatter';
+import { type FieldArrayWithId, useFormContext } from 'react-hook-form';
 
 import type { DokumentutsendingFeltnavn, DokumentutsendingFormValues } from '../useDokumentutsendingSkjema';
 

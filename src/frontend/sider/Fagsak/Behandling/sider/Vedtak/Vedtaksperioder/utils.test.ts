@@ -1,6 +1,4 @@
 import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
-
-import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
 import { BehandlingResultat, BehandlingStatus } from '../../../../../../typer/behandling';
 import { type IVedtaksperiodeMedBegrunnelser, Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
 import { dateTilIsoDatoString, hentDagensDato } from '../../../../../../utils/dato';
@@ -9,6 +7,7 @@ import {
     mockOpphørsperiode,
     mockUtbetalingsperiode,
 } from '../../../../../../utils/test/vedtak/vedtaksperiode.mock';
+import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
 
 describe('Vedtak utils', () => {
     describe('Test filtrerOgSorterPerioderMedBegrunnelseBehov', () => {

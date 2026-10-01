@@ -1,5 +1,5 @@
-import type { IPar } from './common';
 import type { IsoMånedString } from '../utils/dato';
+import type { IPar } from './common';
 
 export interface IPersonMedAndelerTilkjentYtelse {
     personIdent: string;

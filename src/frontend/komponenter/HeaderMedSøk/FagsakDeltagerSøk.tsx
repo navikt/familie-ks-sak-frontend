@@ -1,14 +1,6 @@
-import { type ReactNode, useState } from 'react';
-
 import { ModalType } from '@context/ModalContext';
 import { useModal } from '@hooks/useModal';
 import { useSkalObfuskereData } from '@hooks/useSkalObfuskereData';
-import { FagsakDeltagerRolle, type IFagsakDeltager, type ISøkParam } from '@typer/fagsakdeltager';
-import { erLokal } from '@utils/miljø';
-import { obfuskerFagsakDeltager } from '@utils/obfuskerData';
-import { erAdresseBeskyttet } from '@utils/validators';
-import { useNavigate } from 'react-router';
-
 import type { ISøkeresultat } from '@navikt/familie-header';
 import { Søk } from '@navikt/familie-header';
 import { useHttp } from '@navikt/familie-http';
@@ -22,6 +14,12 @@ import {
     RessursStatus,
 } from '@navikt/familie-typer';
 import { idnr } from '@navikt/fnrvalidator';
+import { FagsakDeltagerRolle, type IFagsakDeltager, type ISøkParam } from '@typer/fagsakdeltager';
+import { erLokal } from '@utils/miljø';
+import { obfuskerFagsakDeltager } from '@utils/obfuskerData';
+import { erAdresseBeskyttet } from '@utils/validators';
+import { type ReactNode, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { PersonIkon } from '../PersonIkon';
 

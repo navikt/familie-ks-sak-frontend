@@ -1,17 +1,14 @@
-import type { ChangeEvent } from 'react';
-
-import type { IBehandling } from '@typer/behandling';
-import { hentFrontendFeilmelding } from '@utils/ressursUtils';
-import { useLocation } from 'react-router';
-
 import { Fieldset, HGrid, InlineMessage, Select, TextField, VStack } from '@navikt/ds-react';
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
-
+import type { IBehandling } from '@typer/behandling';
+import { hentFrontendFeilmelding } from '@utils/ressursUtils';
+import type { ChangeEvent } from 'react';
+import { useLocation } from 'react-router';
+import { ALLE_LAND_REGIONKODER, RegionCombobox, type Regionkode } from '../../../FlaggCombobox';
 import styles from './BrevmottakerSkjema.module.css';
 import type { ILeggTilFjernBrevmottakerSkjemaFelter } from './useBrevmottakerSkjema';
 import { Mottaker, mottakerVisningsnavn } from './useBrevmottakerSkjema';
-import { ALLE_LAND_REGIONKODER, RegionCombobox, type Regionkode } from '../../../FlaggCombobox';
 
 interface Props {
     skjema: ISkjema<ILeggTilFjernBrevmottakerSkjemaFelter, IBehandling>;

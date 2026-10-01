@@ -1,9 +1,8 @@
 import { ModalType } from '@context/ModalContext';
 import { useFagsak } from '@hooks/useFagsak';
 import { useModal } from '@hooks/useModal';
-import { erFagsakLåst } from '@utils/fagsak';
-
 import { ActionMenu } from '@navikt/ds-react';
+import { erFagsakLåst } from '@utils/fagsak';
 
 export function LåsOppFagsak() {
     const fagsak = useFagsak();

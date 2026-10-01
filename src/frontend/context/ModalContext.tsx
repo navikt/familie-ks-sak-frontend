@@ -1,7 +1,6 @@
+import type { MutationKey } from '@tanstack/react-query';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { createContext, useCallback, useContext, useReducer } from 'react';
-
-import type { MutationKey } from '@tanstack/react-query';
 
 import type { HenleggÅrsak } from '../typer/behandling';
 
@@ -113,7 +112,10 @@ interface SettBreddeAction {
 }
 
 type Action<T extends keyof typeof ModalType> =
-    ÅpneModalAction<T> | LukkModalAction | SettBreddeAction | SettTittelAction;
+    | ÅpneModalAction<T>
+    | LukkModalAction
+    | SettBreddeAction
+    | SettTittelAction;
 
 function reducer<T extends keyof typeof ModalType>(state: State, action: Action<T>) {
     const { type, payload } = action;

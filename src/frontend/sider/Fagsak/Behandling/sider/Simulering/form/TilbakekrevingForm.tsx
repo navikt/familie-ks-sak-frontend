@@ -2,6 +2,7 @@ import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
 import { useHentHarÅpenTilbakekrevingError } from '@hooks/useHentHarÅpenTilbakekrevingError';
 import { Feilsammendrag } from '@komponenter/Skjema/Feilsammendrag';
+import { BodyShort, Box, Fieldset, Label, LocalAlert, Textarea, VStack } from '@navikt/ds-react';
 import { BegrunnelseField } from '@sider/Fagsak/Behandling/sider/Simulering/form/field/BegrunnelseField';
 import { TilbakekrevingsvalgField } from '@sider/Fagsak/Behandling/sider/Simulering/form/field/TilbakekrevingsvalgField';
 import styles from '@sider/Fagsak/Behandling/sider/Simulering/form/TilbakekrevingForm.module.css';
@@ -12,8 +13,6 @@ import {
 import { useSimuleringContext } from '@sider/Fagsak/Behandling/sider/Simulering/SimuleringContext';
 import { Tilbakekrevingsvalg, visTilbakekrevingsvalg } from '@typer/simulering';
 import { useFormContext, useWatch } from 'react-hook-form';
-
-import { BodyShort, Box, Fieldset, Label, LocalAlert, Textarea, VStack } from '@navikt/ds-react';
 
 export function TilbakekrevingForm() {
     const fagsakId = useFagsakId();

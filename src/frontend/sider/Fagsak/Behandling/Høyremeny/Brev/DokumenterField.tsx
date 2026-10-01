@@ -1,7 +1,6 @@
+import { HStack, Tag, UNSAFE_Combobox } from '@navikt/ds-react';
 import { målform } from '@typer/søknad';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { HStack, Tag, UNSAFE_Combobox } from '@navikt/ds-react';
 
 import styles from './Brevskjema.module.css';
 import { leggTilValuePåOption, opplysningsdokumenter } from './typer';

@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react';
+import { byggFunksjonellFeilRessurs, byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
@@ -13,10 +13,9 @@ import { BehandlingStatus, type IBehandling } from '@typer/behandling';
 import type { IMinimalFagsak } from '@typer/fagsak';
 import type { Saksbehandler } from '@typer/saksbehandler';
 import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '@utils/behandling';
-import { http, HttpResponse } from 'msw';
+import { HttpResponse, http } from 'msw';
+import type { PropsWithChildren } from 'react';
 import { describe, expect } from 'vitest';
-
-import { byggFunksjonellFeilRessurs, byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { EndreBehandlendeEnhetModal } from './EndreBehandlendeEnhetModal';
 

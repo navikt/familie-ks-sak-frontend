@@ -1,12 +1,11 @@
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsak } from '@hooks/useFagsak';
+import { PlusCircleIcon } from '@navikt/aksel-icons';
+import { Button, CopyButton, Heading, Stack, Table } from '@navikt/ds-react';
 import type { IBehandling } from '@typer/behandling';
 import type { IMinimalFagsak } from '@typer/fagsak';
 import { isoDatoPeriodeTilFormatertString } from '@utils/dato';
-
-import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { Button, CopyButton, Heading, Stack, Table } from '@navikt/ds-react';
 
 import { FeilutbetaltValutaRad } from './FeilutbetaltValutaRad';
 import { useFeilutbetaltValutaTabellContext } from './FeilutbetaltValutaTabellContext';

@@ -1,5 +1,5 @@
 import { oppdaterVedtaksperiodeMedBegrunnelser } from '@api/oppdaterVedtaksperiodeMedBegrunnelser';
-import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { Begrunnelse } from '@typer/vedtak';
 import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
 

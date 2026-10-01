@@ -1,6 +1,5 @@
-import { act, renderHook } from '@testing-library/react';
-
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
+import { act, renderHook } from '@testing-library/react';
 
 import generator from '../../testutils/testverktøy/fnr/fnr-generator';
 import { identValidator } from '../validators';

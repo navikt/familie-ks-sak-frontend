@@ -2,11 +2,10 @@ import { lagBrevmottaker } from '@testutils/testdata/brevmottakerTestdata';
 import { lagPerson } from '@testutils/testdata/personTestdata';
 import { Målform } from '@typer/søknad';
 import { describe, expect, test } from 'vitest';
-
+import { Informasjonsbrev } from '../Behandling/Høyremeny/Brev/typer';
 import { DokumentÅrsak } from './dokumentÅrsakTyper';
 import { transformerSkjemaData } from './transformerSkjemaData';
 import type { DokumentutsendingFormValues } from './useDokumentutsendingSkjema';
-import { Informasjonsbrev } from '../Behandling/Høyremeny/Brev/typer';
 
 const bruker = lagPerson({ personIdent: '12345678903', navn: 'Test Testersen' });
 

@@ -1,8 +1,6 @@
-import type { ChangeEvent } from 'react';
-
-import { useController, useFormContext } from 'react-hook-form';
-
 import { TextField } from '@navikt/ds-react';
+import type { ChangeEvent } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
 
 import styles from './Brevskjema.module.css';
 import { type BrevModulFormValues, BrevmodulFeltnavn } from './useBrevModul';

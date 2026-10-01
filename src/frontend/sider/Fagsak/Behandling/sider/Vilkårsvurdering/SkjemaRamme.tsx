@@ -1,9 +1,8 @@
-import type { PropsWithChildren } from 'react';
+import { VStack } from '@navikt/ds-react';
 
 import { Resultat } from '@typer/vilkår';
 import classNames from 'classnames';
-
-import { VStack } from '@navikt/ds-react';
+import type { PropsWithChildren } from 'react';
 
 import styles from './SkjemaRamme.module.css';
 

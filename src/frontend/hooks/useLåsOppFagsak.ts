@@ -1,5 +1,5 @@
-import { låsOppFagsak, type LåsOppFagsakPayload } from '@api/låsOppFagsak';
-import { type DefaultError, useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import { type LåsOppFagsakPayload, låsOppFagsak } from '@api/låsOppFagsak';
+import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { IMinimalFagsak } from '@typer/fagsak';
 
 type Parameters = LåsOppFagsakPayload;

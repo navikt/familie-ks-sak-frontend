@@ -1,11 +1,10 @@
-import { createContext, type PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import type { SideId } from '@sider/Fagsak/Behandling/sider/sider';
 import { finnSiderForBehandling, KontrollertStatus, type Kontrollside } from '@sider/Fagsak/Behandling/sider/sider';
 import { BehandlerRolle, BehandlingStatus } from '@typer/behandling';
 import { hentSideHref } from '@utils/miljø';
+import { createContext, type PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { useLocation } from 'react-router';
 
 interface KontrollsiderContext {

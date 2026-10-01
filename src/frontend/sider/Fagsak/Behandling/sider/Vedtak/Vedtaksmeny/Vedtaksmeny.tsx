@@ -1,6 +1,6 @@
-import { useState } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
+import { ChevronDownIcon } from '@navikt/aksel-icons';
+import { ActionMenu, Button, Stack } from '@navikt/ds-react';
 import { EndreEndringstidspunkt } from '@sider/Fagsak/Behandling/sider/Vedtak/Endringstidspunkt/EndreEndringstidspunkt';
 import { OppdaterEndringstidspunktModal } from '@sider/Fagsak/Behandling/sider/Vedtak/Endringstidspunkt/OppdaterEndringstidspunktModal';
 import { FeilutbetaltValuta } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValuta';
@@ -10,15 +10,12 @@ import { KorrigerVedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVe
 import { KorrigerVedtakModal } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/KorrigerVedtakModal';
 import { RefusjonEøs } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøs';
 import { useSkalViseRefusjonEøsMenyvalg } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/useSkalViseRefusjonEøsMenyvalg';
-
-import { ChevronDownIcon } from '@navikt/aksel-icons';
-import { ActionMenu, Button, Stack } from '@navikt/ds-react';
-
-import Styles from './Vedtaksmeny.module.css';
+import { useState } from 'react';
 import { AngreSammensattKontrollsak } from '../SammensattKontrollsak/AngreSammensattKontrollsak';
 import { OpprettSammensattKontrollsak } from '../SammensattKontrollsak/OpprettSammensattKontrollsak';
 import { useSammensattKontrollsakContext } from '../SammensattKontrollsak/SammensattKontrollsakContext';
 import { useSkalViseSammensattKontrollsakMenyvalg } from '../SammensattKontrollsak/useSkalViseSammensattKontrollsakMenyvalg';
+import Styles from './Vedtaksmeny.module.css';
 
 export function Vedtaksmeny() {
     const { sammensattKontrollsak } = useSammensattKontrollsakContext();

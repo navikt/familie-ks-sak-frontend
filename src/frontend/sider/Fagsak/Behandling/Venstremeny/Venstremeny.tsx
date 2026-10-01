@@ -1,17 +1,14 @@
-import { Activity } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
 import { useFagsakId } from '@hooks/useFagsakId';
-import { formaterIdent } from '@utils/formatter';
-import classNames from 'classnames';
-import { NavLink } from 'react-router';
-
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, Button, CopyButton, HStack, Stack, VStack } from '@navikt/ds-react';
-
+import { formaterIdent } from '@utils/formatter';
+import classNames from 'classnames';
+import { Activity } from 'react';
+import { NavLink } from 'react-router';
+import { erSidenAktiv, finnSiderForBehandling } from '../sider/sider';
 import { useVenstremeny } from './useVenstremeny';
 import Styles from './Venstremeny.module.css';
-import { erSidenAktiv, finnSiderForBehandling } from '../sider/sider';
 
 export function Venstremeny() {
     const fagsakId = useFagsakId();

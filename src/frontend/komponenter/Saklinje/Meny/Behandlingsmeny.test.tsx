@@ -1,12 +1,7 @@
+import { Heading } from '@navikt/ds-react';
 import type { PropsWithChildren } from 'react';
-
 import { Route, Routes } from 'react-router';
 import { describe, expect, type MockInstance, vi } from 'vitest';
-
-import { Heading } from '@navikt/ds-react';
-
-import { Behandlingsmeny } from './Behandlingsmeny';
-import { HenleggBehandlingModal } from './HenleggBehandling/HenleggBehandlingModal';
 import { BehandlingProvider } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '../../../sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { BrukerProvider } from '../../../sider/Fagsak/BrukerContext';
@@ -23,6 +18,8 @@ import {
     SettPåVentÅrsak,
 } from '../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../typer/fagsak';
+import { Behandlingsmeny } from './Behandlingsmeny';
+import { HenleggBehandlingModal } from './HenleggBehandling/HenleggBehandlingModal';
 
 interface WrapperProps extends PropsWithChildren {
     initialEntries?: [{ pathname: string }];

@@ -1,7 +1,6 @@
+import { Box, Table } from '@navikt/ds-react';
 import type { IGrunnlagPerson } from '@typer/person';
 import { type IVilkårConfig, type IVilkårResultat, VilkårType } from '@typer/vilkår';
-
-import { Box, Table } from '@navikt/ds-react';
 
 import { Barnehageplass } from './Vilkår/Barnehageplass/Barnehageplass';
 import { BarnetsAlder } from './Vilkår/BarnetsAlder/BarnetsAlder';

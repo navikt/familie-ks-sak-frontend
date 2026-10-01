@@ -1,17 +1,14 @@
-import { type PropsWithChildren, useRef } from 'react';
-
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { type DateValidationT, Fieldset, HelpText, HStack, Label } from '@navikt/ds-react';
 import type { IGrunnlagPerson } from '@typer/person';
 import type { VilkårType } from '@typer/vilkår';
 import type { IIsoDatoPeriode, IsoDatoString } from '@utils/dato';
+import { type PropsWithChildren, useRef } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { type DateValidationT, Fieldset, HelpText, HStack, Label } from '@navikt/ds-react';
-
+import { validerPeriode } from '../validering';
 import { FomDatoFelt } from './FomDatoFelt';
 import { TomDatoFelt } from './TomDatoFelt';
 import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';
-import { validerPeriode } from '../validering';
 
 const harUgyldigDatoInput = (validation: DateValidationT | undefined) =>
     !!validation && !validation.isEmpty && (validation.isInvalid || validation.isBefore || validation.isAfter);

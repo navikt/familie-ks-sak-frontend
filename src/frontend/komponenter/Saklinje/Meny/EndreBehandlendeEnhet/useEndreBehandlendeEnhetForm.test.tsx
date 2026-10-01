@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react';
+import { byggFunksjonellFeilRessurs, byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
@@ -11,10 +11,9 @@ import { TestProviders } from '@testutils/testrender';
 import type { IBehandling } from '@typer/behandling';
 import { UKJENT_ENHET } from '@typer/enhet';
 import type { IMinimalFagsak } from '@typer/fagsak';
-import { http, HttpResponse } from 'msw';
+import { HttpResponse, http } from 'msw';
+import type { PropsWithChildren } from 'react';
 import { describe, expect, test, vi } from 'vitest';
-
-import { byggFunksjonellFeilRessurs, byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { EndreBehandlendeEnhetFormFields, useEndreBehandlendeEnhetForm } from './useEndreBehandlendeEnhetForm';
 
@@ -41,7 +40,11 @@ function renderUseEndreBehandlendeEnhetForm({
     lukkModal = vi.fn(),
     fagsak,
     behandling,
-}: { lukkModal?: () => void; fagsak?: IMinimalFagsak; behandling?: IBehandling } = {}) {
+}: {
+    lukkModal?: () => void;
+    fagsak?: IMinimalFagsak;
+    behandling?: IBehandling;
+} = {}) {
     const hook = renderHook(() => useEndreBehandlendeEnhetForm({ lukkModal }), {
         wrapper: lagWrapper(fagsak, behandling),
     });

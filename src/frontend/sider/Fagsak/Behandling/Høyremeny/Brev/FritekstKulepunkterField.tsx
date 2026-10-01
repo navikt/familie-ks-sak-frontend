@@ -1,14 +1,11 @@
-import type { ChangeEvent } from 'react';
-
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { validerFritekstKulepunkt } from '@utils/fritekstfelter';
-import { useController, useFormContext } from 'react-hook-form';
-
 import { PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, HStack, Label, Textarea } from '@navikt/ds-react';
-
-import { erBrevmalMedObligatoriskFritekstKulepunkt } from './brevmalRegler';
+import { validerFritekstKulepunkt } from '@utils/fritekstfelter';
+import type { ChangeEvent } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
 import styles from './Brevskjema.module.css';
+import { erBrevmalMedObligatoriskFritekstKulepunkt } from './brevmalRegler';
 import type { Brevmal } from './typer';
 import { type BrevModulFormValues, BrevmodulFeltnavn } from './useBrevModul';
 import { useSkjemaErLåst } from './useSkjemaErLåst';
@@ -78,7 +75,6 @@ export function FritekstKulepunkterField({ leggTilFritekstKulepunkt }: Props) {
                                     )
                                 }
                                 error={feilmelding}
-                                /* eslint-disable-next-line jsx-a11y/no-autofocus */
                                 autoFocus
                             />
                             {!(erBrevmalMedObligatoriskFritekstKulepunkt(valgtBrevmal) && index === 0) && (

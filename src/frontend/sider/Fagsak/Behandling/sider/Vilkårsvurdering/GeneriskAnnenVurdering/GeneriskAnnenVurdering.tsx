@@ -1,7 +1,6 @@
+import { Box, Heading } from '@navikt/ds-react';
 import type { IGrunnlagPerson } from '@typer/person';
 import type { IAnnenVurdering, IAnnenVurderingConfig } from '@typer/vilkår';
-
-import { Box, Heading } from '@navikt/ds-react';
 
 import { AnnenVurderingTabell } from './AnnenVurderingTabell';
 

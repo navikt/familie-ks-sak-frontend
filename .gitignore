@@ -7,4 +7,3 @@ VERSION
 pnpm-debug.log
 .secrets.env
 secure.log
-.eslintcache

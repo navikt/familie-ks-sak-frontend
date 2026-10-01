@@ -1,10 +1,8 @@
-import { useState } from 'react';
-
 import { useBehandling } from '@hooks/useBehandling';
-import { sjekkErBehandleneEnhetMidlertidig } from '@typer/behandling';
-
 import { ChevronDownIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button } from '@navikt/ds-react';
+import { sjekkErBehandleneEnhetMidlertidig } from '@typer/behandling';
+import { useState } from 'react';
 
 import { AInntekt } from './AInntekt/AInntekt';
 import Styles from './Behandlingsmeny.module.css';

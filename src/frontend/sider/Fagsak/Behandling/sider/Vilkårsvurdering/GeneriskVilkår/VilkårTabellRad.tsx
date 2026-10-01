@@ -1,15 +1,13 @@
-import type { PropsWithChildren } from 'react';
-
 import { useBehandlingId } from '@hooks/useBehandlingId';
 import VilkårResultatIkon from '@ikoner/VilkårResultatIkon';
+import { CogIcon, CogRotationIcon, PersonIcon } from '@navikt/aksel-icons';
+import { BodyShort, HStack, Table, Tooltip } from '@navikt/ds-react';
 import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { type IVilkårResultat, uiResultat } from '@typer/vilkår';
 import { Datoformat, isoDatoPeriodeTilFormatertString, isoStringTilFormatertString } from '@utils/dato';
 import { alleRegelverk } from '@utils/vilkår';
+import type { PropsWithChildren } from 'react';
 import { FormProvider, type SubmitHandler, type UseFormReturn } from 'react-hook-form';
-
-import { CogIcon, CogRotationIcon, PersonIcon } from '@navikt/aksel-icons';
-import { BodyShort, HStack, Table, Tooltip } from '@navikt/ds-react';
 
 import type { VilkårResultatFormValues } from './useVilkårResultatSkjema';
 import { vilkårFeilmeldingId } from './VilkårTabell';

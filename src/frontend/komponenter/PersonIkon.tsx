@@ -1,11 +1,9 @@
-import classNames from 'classnames';
-
 import { GuttIkon, JenteIkon, KvinneIkon, MannIkon, NøytralPersonIkon } from '@navikt/familie-ikoner';
 import { kjønnType } from '@navikt/familie-typer';
-
-import styles from './PersonIkon.module.css';
+import classNames from 'classnames';
 import IkkeTilgang from '../ikoner/IkkeTilgang';
 import NavLogo from '../ikoner/NavLogo';
+import styles from './PersonIkon.module.css';
 
 interface PersonIkonProps {
     kjønn?: kjønnType;

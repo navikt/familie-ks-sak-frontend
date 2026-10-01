@@ -1,10 +1,9 @@
 import { useBehandling } from '@hooks/useBehandling';
 import { useFeatureToggles } from '@hooks/useFeatureToggles';
-import { erPåHenleggbartSteg, henleggÅrsak, HenleggÅrsak } from '@typer/behandling';
+import { Select } from '@navikt/ds-react';
+import { erPåHenleggbartSteg, HenleggÅrsak, henleggÅrsak } from '@typer/behandling';
 import { FeatureToggle } from '@typer/featureToggles';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { Select } from '@navikt/ds-react';
 
 import { HenleggBehandlingFormFields, type HenleggBehandlingFormValues } from './useHenleggBehandlingForm';
 

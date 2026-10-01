@@ -4,17 +4,15 @@ import { useFagsak } from '@hooks/useFagsak';
 import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
 import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
 import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
+import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
+import { Alert, Box, Button, Fieldset, Heading, HStack, InfoCard, VStack } from '@navikt/ds-react';
 import { erFagsakLåst } from '@utils/fagsak';
 import { FormProvider } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-
-import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
-import { Alert, Box, Button, Fieldset, Heading, HStack, InfoCard, VStack } from '@navikt/ds-react';
-
+import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
 import { finnBarnIBrevÅrsak } from './barnIBrevÅrsak';
 import { DokumentÅrsak } from './dokumentÅrsakTyper';
 import { LeggTilBarnKnapp } from './LeggTilBarnKnapp';
-import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
 import { BarnCheckboxGruppe } from './skjema/BarnCheckboxGruppe';
 import { FritekstAvsnitt } from './skjema/FritekstAvsnitt';
 import { MålformVelger } from './skjema/MålformVelger';

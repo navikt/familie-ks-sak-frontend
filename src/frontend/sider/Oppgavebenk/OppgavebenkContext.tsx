@@ -1,6 +1,3 @@
-import type { PropsWithChildren } from 'react';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-
 import { useVisTekniskFeilModal } from '@context/TekniskFeilModalContext';
 import { useToastContext } from '@context/ToastContext';
 import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
@@ -8,6 +5,11 @@ import { useHentFagsakPaaPerson } from '@hooks/useHentFagsakPaaPerson';
 import { useOpprettEllerHentFagsak } from '@hooks/useOpprettEllerHentFagsak';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { AlertType, ToastTyper } from '@komponenter/Toast/typer';
+import type { SortState } from '@navikt/ds-react';
+import { useHttp } from '@navikt/familie-http';
+import { Valideringsstatus } from '@navikt/familie-skjema';
+import type { Ressurs } from '@navikt/familie-typer';
+import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
 import { useQueryClient } from '@tanstack/react-query';
 import {
     BehandlingstypeFilter,
@@ -24,16 +26,12 @@ import { hentFnrFraOppgaveIdenter } from '@utils/oppgave';
 import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import { hentNesteSorteringsrekkefølge, hentSortState, Sorteringsrekkefølge } from '@utils/tabell';
 import type { AxiosError } from 'axios';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import type { SortState } from '@navikt/ds-react';
-import { useHttp } from '@navikt/familie-http';
-import { Valideringsstatus } from '@navikt/familie-skjema';
-import type { Ressurs } from '@navikt/familie-typer';
-import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
-
-import { initialOppgaveFelter, type IOppgaveFelt, type IOppgaveFelter } from './oppgavefelter';
-import { type IOppgaveRad, mapIOppgaverTilOppgaveRad, sorterEtterNøkkel, Sorteringsnøkkel } from './utils';
+import { type IOppgaveFelt, type IOppgaveFelter, initialOppgaveFelter } from './oppgavefelter';
+import { type IOppgaveRad, mapIOppgaverTilOppgaveRad, Sorteringsnøkkel, sorterEtterNøkkel } from './utils';
 
 const OPPGAVEBENK_SORTERINGSNØKKEL = 'OPPGAVEBENK_SORTERINGSNØKKEL';
 export const oppgaveSideLimit = 15;

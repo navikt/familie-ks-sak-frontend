@@ -1,6 +1,6 @@
-import type { ChangeEvent } from 'react';
-
 import { useFeatureToggles } from '@hooks/useFeatureToggles';
+import { Select } from '@navikt/ds-react';
+import type { Felt } from '@navikt/familie-skjema';
 import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
 import { BehandlingStatus, Behandlingstype, erBehandlingHenlagt } from '@typer/behandling';
 import { FagsakStatus, type IMinimalFagsak } from '@typer/fagsak';
@@ -8,9 +8,7 @@ import { FeatureToggle } from '@typer/featureToggles';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
 import { erFagsakLåst, hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
-
-import { Select } from '@navikt/ds-react';
-import type { Felt } from '@navikt/familie-skjema';
+import type { ChangeEvent } from 'react';
 
 interface IProps {
     behandlingstype: Felt<Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | ''>;

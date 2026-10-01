@@ -1,11 +1,7 @@
-import { type PropsWithChildren } from 'react';
-
+import { Heading } from '@navikt/ds-react';
+import type { PropsWithChildren } from 'react';
 import { Route, Routes } from 'react-router';
 import { describe, expect } from 'vitest';
-
-import { Heading } from '@navikt/ds-react';
-
-import { Fagsakmeny } from './Fagsakmeny';
 import { BrukerProvider } from '../../../sider/Fagsak/BrukerContext';
 import { FagsakProvider } from '../../../sider/Fagsak/FagsakContext';
 import { ManuelleBrevmottakerePåFagsakProvider } from '../../../sider/Fagsak/ManuelleBrevmottakerePåFagsakContext';
@@ -13,6 +9,7 @@ import { FagsakTestdata } from '../../../testutils/testdata/fagsakTestdata';
 import { lagPerson } from '../../../testutils/testdata/personTestdata';
 import { render, TestProviders } from '../../../testutils/testrender';
 import { FagsakStatus, type IMinimalFagsak } from '../../../typer/fagsak';
+import { Fagsakmeny } from './Fagsakmeny';
 
 interface WrapperProps extends PropsWithChildren {
     initialEntries?: [{ pathname: string }];

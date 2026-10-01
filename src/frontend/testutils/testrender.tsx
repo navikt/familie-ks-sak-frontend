@@ -1,5 +1,3 @@
-import type { PropsWithChildren } from 'react';
-
 import { AuthContextProvider } from '@context/AuthContext';
 import { FeatureTogglesProvider } from '@context/FeatureTogglesContext';
 import { HttpContextProvider } from '@context/HttpContext';
@@ -9,10 +7,11 @@ import { SaksbehandlerProvider } from '@context/SaksbehandlerContext';
 import { TekniskFeilModalProvider } from '@context/TekniskFeilModalContext';
 import { ToastProvider } from '@context/ToastContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render as rtlRender, type RenderOptions, screen as rtlScreen } from '@testing-library/react';
+import { type RenderOptions, render as rtlRender, screen as rtlScreen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { FeatureToggles } from '@typer/featureToggles';
 import type { Saksbehandler } from '@typer/saksbehandler';
+import type { PropsWithChildren } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { skruPåAlleToggles } from './mocks/handlers/featureToggleHandlers';

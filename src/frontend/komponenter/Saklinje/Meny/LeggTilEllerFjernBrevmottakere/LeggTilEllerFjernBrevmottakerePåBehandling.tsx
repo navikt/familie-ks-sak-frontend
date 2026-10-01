@@ -1,8 +1,7 @@
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { Behandlingstype } from '@typer/behandling';
-
 import { ActionMenu } from '@navikt/ds-react';
+import { Behandlingstype } from '@typer/behandling';
 
 import type { SkjemaBrevmottaker } from './useBrevmottakerSkjema';
 

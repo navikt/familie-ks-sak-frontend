@@ -1,6 +1,5 @@
-import { useState } from 'react';
-
 import { useSendBehandlingBrev } from '@hooks/useSendBehandlingBrev';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
 import { BehandlingKategori } from '@typer/behandlingstema';
@@ -10,9 +9,8 @@ import { PersonType } from '@typer/person';
 import type { IBarnMedOpplysninger } from '@typer/søknad';
 import type { IFritekstFelt } from '@utils/fritekstfelter';
 import { genererIdBasertPåAndreFritekstKulepunkter, lagInitiellFritekst } from '@utils/fritekstfelter';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { erBrevmalMedObligatoriskFritekstKulepunkt } from './brevmalRegler';
 import type { ISelectOptionMedBrevtekst } from './typer';
@@ -93,14 +91,16 @@ export interface BrevModulFormValues {
 const hentBarnBrevetGjelder = (personer: IGrunnlagPerson[]): IBarnMedOpplysninger[] =>
     personer
         .filter(person => person.type === PersonType.BARN)
-        .map((person: IGrunnlagPerson): IBarnMedOpplysninger => ({
-            ident: person.personIdent,
-            fødselsdato: person.fødselsdato,
-            navn: person.navn,
-            merket: false,
-            manueltRegistrert: false,
-            erFolkeregistrert: true,
-        }));
+        .map(
+            (person: IGrunnlagPerson): IBarnMedOpplysninger => ({
+                ident: person.personIdent,
+                fødselsdato: person.fødselsdato,
+                navn: person.navn,
+                merket: false,
+                manueltRegistrert: false,
+                erFolkeregistrert: true,
+            })
+        );
 
 export const brevmodulSkjemaStandardverdier = (behandling: IBehandling): BrevModulFormValues => ({
     [BrevmodulFeltnavn.MOTTAKER_IDENT]: '',

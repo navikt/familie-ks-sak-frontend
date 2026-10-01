@@ -1,15 +1,13 @@
-import { type Ref, useRef } from 'react';
-
 import { senesteRelevanteDato, tidligsteRelevanteDato } from '@komponenter/Datovelger/utils';
+import { DatePicker, type DateValidationT, useDatepicker } from '@navikt/ds-react';
 import { Resultat } from '@typer/vilkår';
 import {
     dateTilIsoDatoStringEllerUndefined,
     type IsoDatoString,
     isoStringTilDateEllerUndefinedHvisUgyldigDato,
 } from '@utils/dato';
+import { type Ref, useRef } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-
-import { DatePicker, type DateValidationT, useDatepicker } from '@navikt/ds-react';
 
 import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';
 

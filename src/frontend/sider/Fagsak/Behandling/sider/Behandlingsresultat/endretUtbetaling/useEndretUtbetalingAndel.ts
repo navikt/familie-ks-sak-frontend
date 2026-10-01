@@ -1,10 +1,8 @@
-import { useState } from 'react';
-
-import deepEqual from 'deep-equal';
-
 import { useHttp } from '@navikt/familie-http';
 import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
+import deepEqual from 'deep-equal';
+import { useState } from 'react';
 
 import type { IBehandling } from '../../../../../../typer/behandling';
 import { IEndretUtbetalingAndelÅrsak, type IRestEndretUtbetalingAndel } from '../../../../../../typer/utbetalingAndel';

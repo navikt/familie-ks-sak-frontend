@@ -1,5 +1,5 @@
 import { apiClient } from '@api/client/apiClient';
-import { henleggBehandling, type HenleggBehandlingPayload } from '@api/henleggBehandling';
+import { type HenleggBehandlingPayload, henleggBehandling } from '@api/henleggBehandling';
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { HenleggÅrsak } from '@typer/behandling';
 import { afterEach, describe, expect, test, vi } from 'vitest';

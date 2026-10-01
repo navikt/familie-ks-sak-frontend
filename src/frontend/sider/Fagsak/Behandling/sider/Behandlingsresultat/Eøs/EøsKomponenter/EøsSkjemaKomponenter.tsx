@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-
 import { BodyShort, Table } from '@navikt/ds-react';
+import styled from 'styled-components';
 
 import StatusIkon from '../../../../../../../ikoner/StatusIkon';
 import type { EøsPeriodeStatus } from '../../../../../../../typer/eøsPerioder';

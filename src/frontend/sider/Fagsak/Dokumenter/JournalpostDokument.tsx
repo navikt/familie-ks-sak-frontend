@@ -1,11 +1,9 @@
-import { useState } from 'react';
-
 import { useHentJournalpostDokumentPdf } from '@hooks/useHentJournalpostDokumentPdf';
-import type { ITilgangsstyrtJournalpost } from '@typer/journalpost';
-
 import { ExternalLinkIcon, PadlockLockedIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
 import { BodyShort, Dialog, ErrorMessage, Heading, HStack, Link, Loader, VStack } from '@navikt/ds-react';
 import type { IDokumentInfo } from '@navikt/familie-typer';
+import type { ITilgangsstyrtJournalpost } from '@typer/journalpost';
+import { useState } from 'react';
 
 import styles from './JournalpostDokument.module.css';
 

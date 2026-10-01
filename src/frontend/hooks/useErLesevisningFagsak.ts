@@ -1,6 +1,6 @@
+import { erFagsakLåst } from '../utils/fagsak';
 import { useFagsak } from './useFagsak';
 import { useSaksbehandler } from './useSaksbehandler';
-import { erFagsakLåst } from '../utils/fagsak';
 
 export function useErLesevisningFagsak() {
     const saksbehandler = useSaksbehandler();

@@ -1,6 +1,5 @@
-import { type PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
-
 import { apiClient } from '@api/client/apiClient';
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 interface Context {
     autentisert: boolean;

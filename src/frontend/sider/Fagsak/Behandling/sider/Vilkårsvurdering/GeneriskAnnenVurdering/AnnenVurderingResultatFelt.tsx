@@ -1,11 +1,9 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { Radio, RadioGroup } from '@navikt/ds-react';
 import { Resultat } from '@typer/vilkår';
 import { useController, useFormContext } from 'react-hook-form';
-
-import { Radio, RadioGroup } from '@navikt/ds-react';
-
-import { AnnenVurderingFelt, type AnnenVurderingFormValues } from './useAnnenVurderingSkjema';
 import { validerResultat } from '../validering';
+import { AnnenVurderingFelt, type AnnenVurderingFormValues } from './useAnnenVurderingSkjema';
 
 interface Props {
     legend: string;

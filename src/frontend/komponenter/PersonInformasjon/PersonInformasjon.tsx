@@ -3,10 +3,10 @@ import { BodyShort, CopyButton, Heading, HStack } from '@navikt/ds-react';
 import { useBruker } from '../../hooks/useBruker';
 import { type IGrunnlagPerson, type IPersonInfo, personTypeMap } from '../../typer/person';
 import { formaterIdent, hentAlder } from '../../utils/formatter';
+import { erAdresseBeskyttet } from '../../utils/validators';
 import DødsfallTag from '../DødsfallTag';
 import { PersonIkon } from '../PersonIkon';
 import Styles from './PersonInformasjon.module.css';
-import { erAdresseBeskyttet } from '../../utils/validators';
 
 function hentAdresseBeskyttelseGradering(bruker: IPersonInfo, personIdent: string): boolean | undefined {
     if (bruker.personIdent === personIdent) {

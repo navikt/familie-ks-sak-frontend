@@ -1,7 +1,6 @@
-import { useFeilutbetaltValutaTabellContext } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
-
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { ActionMenu } from '@navikt/ds-react';
+import { useFeilutbetaltValutaTabellContext } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 
 export function FeilutbetaltValuta() {
     const { visFeilutbetaltValutaTabell } = useFeilutbetaltValutaTabellContext();

@@ -1,17 +1,15 @@
-import type { ReactNode } from 'react';
-
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
 import { lagPerson } from '@testutils/testdata/personTestdata';
 import { lagSaksbehandler } from '@testutils/testdata/saksbehandlerTestdata';
 import { render, TestProviders } from '@testutils/testrender';
 import { BehandlingStatus, Behandlingstype, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
+import type { ReactNode } from 'react';
 import { describe, expect, test, vi } from 'vitest';
-
-import { Brevskjema } from './Brevskjema';
 import { FagsakProvider } from '../../../FagsakContext';
 import { BehandlingProvider } from '../../context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '../../context/HentOgSettBehandlingContext';
+import { Brevskjema } from './Brevskjema';
 
 const OBLIGATORISK_FEILMELDING = 'Dette kulepunktet er obligatorisk. Du må skrive tekst i feltet.';
 

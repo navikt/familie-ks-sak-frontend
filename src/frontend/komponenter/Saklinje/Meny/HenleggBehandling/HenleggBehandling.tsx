@@ -3,10 +3,9 @@ import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFeatureToggles } from '@hooks/useFeatureToggles';
 import { useModal } from '@hooks/useModal';
+import { ActionMenu } from '@navikt/ds-react';
 import { erPåHenleggbartSteg } from '@typer/behandling';
 import { FeatureToggle } from '@typer/featureToggles';
-
-import { ActionMenu } from '@navikt/ds-react';
 
 export function HenleggBehandling() {
     const toggles = useFeatureToggles();

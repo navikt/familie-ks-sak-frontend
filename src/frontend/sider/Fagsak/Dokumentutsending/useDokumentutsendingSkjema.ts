@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { useBruker } from '@hooks/useBruker';
 import { useFagsak } from '@hooks/useFagsak';
 import { useForhåndsvisBrevPåFagsak } from '@hooks/useForhåndsvisBrevPåFagsak';
@@ -12,6 +10,7 @@ import type { IPersonInfo } from '@typer/person';
 import { ForelderBarnRelasjonRolle } from '@typer/person';
 import { type IBarnMedOpplysninger, Målform } from '@typer/søknad';
 import deepEqual from 'deep-equal';
+import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
 import { transformerSkjemaData } from './transformerSkjemaData';
@@ -33,14 +32,16 @@ export interface DokumentutsendingFormValues {
 const hentBarnMedOpplysningerFraBruker = (bruker: IPersonInfo): IBarnMedOpplysninger[] =>
     bruker.forelderBarnRelasjon
         .filter(relasjon => relasjon.relasjonRolle === ForelderBarnRelasjonRolle.BARN)
-        .map((relasjon): IBarnMedOpplysninger => ({
-            merket: false,
-            ident: relasjon.personIdent,
-            navn: relasjon.navn,
-            fødselsdato: relasjon.fødselsdato,
-            manueltRegistrert: false,
-            erFolkeregistrert: true,
-        }));
+        .map(
+            (relasjon): IBarnMedOpplysninger => ({
+                merket: false,
+                ident: relasjon.personIdent,
+                navn: relasjon.navn,
+                fødselsdato: relasjon.fødselsdato,
+                manueltRegistrert: false,
+                erFolkeregistrert: true,
+            })
+        );
 
 export const dokumentutsendingSkjemaStandardverdier = (bruker: IPersonInfo): DokumentutsendingFormValues => ({
     [DokumentutsendingFeltnavn.ÅRSAK]: '',

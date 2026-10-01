@@ -1,6 +1,4 @@
-import type { PropsWithChildren, ReactNode } from 'react';
-import { useEffect } from 'react';
-
+import { Button } from '@navikt/ds-react';
 import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
 import { lagPerson } from '@testutils/testdata/personTestdata';
 import { lagSaksbehandler } from '@testutils/testdata/saksbehandlerTestdata';
@@ -9,14 +7,14 @@ import type { IMinimalFagsak } from '@typer/fagsak';
 import type { IPersonInfo } from '@typer/person';
 import type { Saksbehandler } from '@typer/saksbehandler';
 import { Målform } from '@typer/søknad';
-import { FormProvider, useForm, type UseFormReturn } from 'react-hook-form';
-
-import { Button } from '@navikt/ds-react';
+import type { PropsWithChildren, ReactNode } from 'react';
+import { useEffect } from 'react';
+import { FormProvider, type UseFormReturn, useForm } from 'react-hook-form';
 
 import { BrukerProvider } from '../../../BrukerContext';
 import { FagsakProvider } from '../../../FagsakContext';
-import { DokumentutsendingFeltnavn } from '../../useDokumentutsendingSkjema';
 import type { DokumentutsendingFormValues } from '../../useDokumentutsendingSkjema';
+import { DokumentutsendingFeltnavn } from '../../useDokumentutsendingSkjema';
 
 const standardDefaultValues: DokumentutsendingFormValues = {
     [DokumentutsendingFeltnavn.ÅRSAK]: '',

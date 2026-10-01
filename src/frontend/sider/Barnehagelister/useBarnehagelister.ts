@@ -1,7 +1,3 @@
-import { useState } from 'react';
-
-import type { AxiosError } from 'axios';
-
 import { useHttp } from '@navikt/familie-http';
 import {
     byggFeiletRessurs,
@@ -10,6 +6,8 @@ import {
     type Ressurs,
     RessursStatus,
 } from '@navikt/familie-typer';
+import type { AxiosError } from 'axios';
+import { useState } from 'react';
 
 import type { BarnehagebarnFilter, BarnehagebarnRequestParams, Barnehagekommune } from '../../typer/barnehagebarn';
 
@@ -41,8 +39,9 @@ export const useBarnehagelister = (): BarnehagebarnContext => {
         ...defaultBarnehagebarnRequestParams,
     });
 
-    const [barnehagekommunerRessurs, settBarnehagekommunerRessurs] =
-        useState<Ressurs<Barnehagekommune[]>>(byggTomRessurs<Barnehagekommune[]>());
+    const [barnehagekommunerRessurs, settBarnehagekommunerRessurs] = useState<Ressurs<Barnehagekommune[]>>(
+        byggTomRessurs<Barnehagekommune[]>()
+    );
 
     const hentAlleKommuner = () => {
         settBarnehagekommunerRessurs(byggHenterRessurs());

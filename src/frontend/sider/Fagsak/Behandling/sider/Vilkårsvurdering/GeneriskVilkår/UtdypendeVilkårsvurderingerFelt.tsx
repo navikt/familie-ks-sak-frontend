@@ -1,17 +1,16 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { UNSAFE_Combobox } from '@navikt/ds-react';
 import type { OptionType } from '@typer/common';
 import {
     type UtdypendeVilkårsvurdering,
-    type VilkårType,
     UtdypendeVilkårsvurderingDeltBosted,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
     UtdypendeVilkårsvurderingEøsBarnBosattIRiket,
     UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
     UtdypendeVilkårsvurderingGenerell,
+    type VilkårType,
 } from '@typer/vilkår';
 import { useController, useFormContext, useWatch } from 'react-hook-form';
-
-import { UNSAFE_Combobox } from '@navikt/ds-react';
 
 import { validerUtdypendeVilkårsvurderinger } from '../validering';
 import { VilkårResultatFelt, type VilkårResultatFormValues } from './useVilkårResultatSkjema';

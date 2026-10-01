@@ -1,9 +1,6 @@
-import type { PropsWithChildren } from 'react';
-
 import { HttpProvider } from '@navikt/familie-http';
-
+import type { PropsWithChildren } from 'react';
 import { useAuthContext } from './AuthContext';
-import { useSaksbehandler } from '../hooks/useSaksbehandler';
 
 interface Props extends PropsWithChildren {
     fjernRessursSomLasterTimeout?: number;
@@ -12,14 +9,8 @@ interface Props extends PropsWithChildren {
 export function HttpContextProvider({ fjernRessursSomLasterTimeout = 300, children }: Props) {
     const { settAutentisert } = useAuthContext();
 
-    const saksbehandler = useSaksbehandler();
-
     return (
-        <HttpProvider
-            innloggetSaksbehandler={saksbehandler}
-            settAutentisert={settAutentisert}
-            fjernRessursSomLasterTimeout={fjernRessursSomLasterTimeout}
-        >
+        <HttpProvider settAutentisert={settAutentisert} fjernRessursSomLasterTimeout={fjernRessursSomLasterTimeout}>
             {children}
         </HttpProvider>
     );

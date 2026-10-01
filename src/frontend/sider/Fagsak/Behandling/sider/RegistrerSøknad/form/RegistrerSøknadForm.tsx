@@ -4,6 +4,7 @@ import { useFagsak } from '@hooks/useFagsak';
 import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
 import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
 import { Feilsammendrag } from '@komponenter/Skjema/Feilsammendrag';
+import { Button, Fieldset, VStack } from '@navikt/ds-react';
 import { BarnaFieldArrayProvider } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/BarnaFieldArrayContext';
 import { BarnaField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/BarnaField';
 import { BegrunnelseField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/BegrunnelseField';
@@ -15,8 +16,6 @@ import {
 } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useRegistrerSøknadForm';
 import { FormProvider } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-
-import { Button, Fieldset, VStack } from '@navikt/ds-react';
 
 export function RegistrerSøknadForm() {
     const navigate = useNavigate();

@@ -1,12 +1,9 @@
-import { useState } from 'react';
-
-import { addDays, format, subDays } from 'date-fns';
-
 import { DatePicker, useDatepicker } from '@navikt/ds-react';
 import type { Felt } from '@navikt/familie-skjema';
-
-import { senesteRelevanteDato, tidligsteRelevanteDato } from './utils';
+import { addDays, format, subDays } from 'date-fns';
+import { useState } from 'react';
 import { Datoformat, hentDagensDato } from '../../utils/dato';
+import { senesteRelevanteDato, tidligsteRelevanteDato } from './utils';
 
 interface IProps {
     felt: Felt<Date | undefined>;

@@ -1,6 +1,5 @@
-import { useNavigate } from 'react-router';
-
 import { BodyLong, Button, Modal } from '@navikt/ds-react';
+import { useNavigate } from 'react-router';
 
 import { useFagsakContext } from '../../../../sider/Fagsak/FagsakContext';
 

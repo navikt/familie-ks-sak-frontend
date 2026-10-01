@@ -1,9 +1,7 @@
 import { isSameMonth } from 'date-fns/isSameMonth';
-
-import type { PersonType } from './person';
-import type { Vedtaksperiodetype } from './vedtaksperiode';
-import { type IUtbetalingsperiodeDetalj } from './vedtaksperiode';
 import { type IsoDatoString, isoStringTilDate } from '../utils/dato';
+import type { PersonType } from './person';
+import type { IUtbetalingsperiodeDetalj, Vedtaksperiodetype } from './vedtaksperiode';
 
 export type Utbetalingsperiode = {
     periodeFom: IsoDatoString;

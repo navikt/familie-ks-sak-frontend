@@ -1,10 +1,8 @@
-import type { ChangeEvent } from 'react';
-
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { useController, useFormContext } from 'react-hook-form';
-
 import { PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, HStack, Label, Textarea } from '@navikt/ds-react';
+import type { ChangeEvent } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
 
 import styles from './Brevskjema.module.css';
 import { type BrevModulFormValues, BrevmodulFeltnavn } from './useBrevModul';
@@ -61,7 +59,6 @@ export function FritekstAvsnittField({ visFritekstAvsnittTekstboks, settVisFrite
                             readOnly={skjemaErLåst}
                             onChange={(event: ChangeEvent<HTMLTextAreaElement>) => field.onChange(event.target.value)}
                             error={error?.message}
-                            /* eslint-disable-next-line jsx-a11y/no-autofocus */
                             autoFocus
                         />
                         <Button

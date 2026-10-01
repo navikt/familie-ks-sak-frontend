@@ -1,14 +1,12 @@
-import { useRef } from 'react';
-
 import { senesteRelevanteDato, tidligsteRelevanteDato } from '@komponenter/Datovelger/utils';
+import { DatePicker, type DateValidationT, useDatepicker } from '@navikt/ds-react';
 import { VilkårType } from '@typer/vilkår';
 import {
     dateTilIsoDatoStringEllerUndefined,
     type IsoDatoString,
     isoStringTilDateEllerUndefinedHvisUgyldigDato,
 } from '@utils/dato';
-
-import { DatePicker, type DateValidationT, useDatepicker } from '@navikt/ds-react';
+import { useRef } from 'react';
 
 interface Props {
     vilkårType: VilkårType;

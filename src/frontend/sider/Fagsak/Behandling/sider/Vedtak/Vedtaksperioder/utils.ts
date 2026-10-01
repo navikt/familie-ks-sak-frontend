@@ -1,3 +1,4 @@
+import type { GroupBase, OptionType } from '@navikt/familie-form-elements';
 import { BehandlingResultat, BehandlingStatus } from '@typer/behandling';
 import {
     type Begrunnelse,
@@ -15,8 +16,6 @@ import {
     tidenesMorgen,
 } from '@utils/dato';
 import { addMonths, differenceInMilliseconds, isAfter, isBefore, isSameMonth, startOfMonth } from 'date-fns';
-
-import type { GroupBase, OptionType } from '@navikt/familie-form-elements';
 
 export function grupperBegrunnelser(
     vedtaksperiodeMedBegrunnelser: IVedtaksperiodeMedBegrunnelser,

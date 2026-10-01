@@ -1,13 +1,11 @@
-import { Activity } from 'react';
-
 import { Skjermstørrelse, useSkjermstørrelse } from '@hooks/useSkjermstørrelse';
 import { PersonInformasjon } from '@komponenter/PersonInformasjon/PersonInformasjon';
+import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
+import { Box, Button, LocalAlert, Stack } from '@navikt/ds-react';
 import { useEkspanderbareVilkårsvurderingPaneler } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårsvurderingPanelerContext';
 import { PersonType } from '@typer/person';
 import { annenVurderingConfig, type IVilkårConfig, type IVilkårResultat, vilkårConfig } from '@typer/vilkår';
-
-import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
-import { Box, Button, LocalAlert, Stack } from '@navikt/ds-react';
+import { Activity } from 'react';
 
 import { GeneriskAnnenVurdering } from './GeneriskAnnenVurdering/GeneriskAnnenVurdering';
 import { GeneriskVilkår } from './GeneriskVilkår/GeneriskVilkår';

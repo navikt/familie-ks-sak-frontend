@@ -1,7 +1,6 @@
+import { BodyShort, Box, HStack } from '@navikt/ds-react';
 import type { IUtbetalingsperiodeDetalj } from '@typer/vedtaksperiode';
 import { formaterBeløp } from '@utils/formatter';
-
-import { BodyShort, Box, HStack } from '@navikt/ds-react';
 
 import { PersonInformasjonUtbetaling } from './PersonInformasjonUtbetaling';
 import styles from './PersonUtbetaling.module.css';

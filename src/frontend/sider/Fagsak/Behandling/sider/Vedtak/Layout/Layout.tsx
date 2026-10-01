@@ -1,11 +1,9 @@
-import type { PropsWithChildren } from 'react';
-import { useState } from 'react';
-
+import { ErrorMessage, HStack, VStack } from '@navikt/ds-react';
 import { Steg } from '@sider/Fagsak/Behandling/sider/Steg';
 import { useVisTilGodkjenning } from '@sider/Fagsak/Behandling/sider/Vedtak/Layout/useVisTilGodkjenning';
 import { SendtTilTotrinnskontrollModal } from '@sider/Fagsak/Behandling/sider/Vedtak/Totrinnskontroll/SendtTilTotrinnskontrollModal';
-
-import { ErrorMessage, HStack, VStack } from '@navikt/ds-react';
+import type { PropsWithChildren } from 'react';
+import { useState } from 'react';
 
 import { TilForrigeSteg } from './TilForrigeSteg';
 import { TilGodkjenning } from './TilGodkjenning';

@@ -8,7 +8,7 @@ import {
 } from '@typer/vilkår';
 
 import { useVilkårResultatSkjema } from '../../useVilkårResultatSkjema';
-import { VilkårSkjema, type VilkårProps } from '../../VilkårSkjema';
+import { type VilkårProps, VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 function bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
