@@ -1,7 +1,3 @@
-.svg {
-    enable-background: new 0 0 24 24;
-}
-
 .path {
     stroke-linejoin: round;
     stroke-miterlimit: 10;

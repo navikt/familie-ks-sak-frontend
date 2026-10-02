@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-
 import styles from './KontoSirkel.module.css';
 
 interface IKontoSirkel {
@@ -12,7 +10,6 @@ interface IKontoSirkel {
 export const KontoSirkel = ({ className, filled = false, width = 48, height = 48 }: IKontoSirkel) => {
     return filled ? (
         <svg
-            className={styles.svg}
             aria-labelledby={'kontosirkel'}
             version="1.1"
             id="Filled_Version"
@@ -39,7 +36,7 @@ export const KontoSirkel = ({ className, filled = false, width = 48, height = 48
         </svg>
     ) : (
         <svg
-            className={classNames(className, styles.svg)}
+            className={className}
             aria-labelledby={'kontosirkel'}
             version="1.1"
             id="Layer_1"

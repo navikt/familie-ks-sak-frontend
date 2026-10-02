@@ -23,7 +23,6 @@
             },
             "correctness": {
                 "noSwitchDeclarations": "off",
-                "noUnknownProperty": "warn",
                 "useExhaustiveDependencies": "warn",
                 "useJsxKeyInIterable": "warn"
             },
