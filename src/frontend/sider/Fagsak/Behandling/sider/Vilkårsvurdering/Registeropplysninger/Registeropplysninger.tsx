@@ -40,17 +40,13 @@ const Registeropplysninger = ({ opplysninger, fødselsdato }: IRegisteropplysnin
                 </Box>
             ) : (
                 <Box width={'32rem'}>
-                    <Detail
-                        textColor="subtle"
-                        style={{ marginBottom: Space16 }}
-                        children={
-                            'Sist hentet fra Folkeregisteret ' +
+                    <Detail textColor="subtle" style={{ marginBottom: Space16 }}>
+                        {'Sist hentet fra Folkeregisteret ' +
                             isoStringTilFormatertString({
                                 isoString: opplysninger.hentetTidspunkt,
                                 tilFormat: Datoformat.DATO_TID_SEKUNDER,
-                            })
-                        }
-                    />
+                            })}
+                    </Detail>
                     <RegisteropplysningerTabell
                         opplysningstype={Registeropplysning.FØDSELSDATO}
                         ikon={<CalendarIcon fontSize={'1.5rem'} title="Kalender-ikon" focusable="false" />}

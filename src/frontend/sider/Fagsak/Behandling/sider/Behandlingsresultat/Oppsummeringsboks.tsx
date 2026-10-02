@@ -172,7 +172,9 @@ const Oppsummeringsboks = ({
                                 {utbetalingsBeløpStatusMap.get(detalj.person.personIdent) ? (
                                     <BodyShort>{formaterBeløp(detalj.utbetaltPerMnd)}</BodyShort>
                                 ) : (
-                                    <InlineMessage status="warning" children={'Må beregnes'} size={'small'} />
+                                    <InlineMessage status="warning" size={'small'}>
+                                        Må beregnes
+                                    </InlineMessage>
                                 )}
                             </HGrid>
                         ))}

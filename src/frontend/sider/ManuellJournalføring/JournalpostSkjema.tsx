@@ -39,11 +39,15 @@ export const JournalpostSkjema = () => {
             <VStack gap={'space-40'}>
                 <Journalpost />
                 <VStack>
-                    <Heading size={'small'} level={'2'} children={'Dokumenter'} />
+                    <Heading size={'small'} level={'2'}>
+                        Dokumenter
+                    </Heading>
                     <Dokumenter />
                 </VStack>
                 <VStack gap={'space-16'}>
-                    <Heading size={'small'} level={'2'} children={'Bruker og avsender'} />
+                    <Heading size={'small'} level={'2'}>
+                        Bruker og avsender
+                    </Heading>
                     <BrukerPanel />
                     <AvsenderPanel />
                 </VStack>

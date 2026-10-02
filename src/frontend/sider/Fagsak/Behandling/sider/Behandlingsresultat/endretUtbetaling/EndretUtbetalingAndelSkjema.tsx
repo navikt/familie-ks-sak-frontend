@@ -239,10 +239,9 @@ const EndretUtbetalingAndelSkjema = ({
                 <Feltmargin>
                     {erLesevisning
                         ? skjema.felter.erEksplisittAvslagPåSøknad.verdi && (
-                              <BodyShort
-                                  className={classNames('skjemaelement', 'lese-felt')}
-                                  children="Vurderingen er et avslag"
-                              />
+                              <BodyShort className={classNames('skjemaelement', 'lese-felt')}>
+                                  Vurderingen er et avslag
+                              </BodyShort>
                           )
                         : skalViseEksplisittAvslagsfelt && (
                               <Checkbox

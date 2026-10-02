@@ -22,7 +22,6 @@
                 "useKeyWithClickEvents": "warn"
             },
             "correctness": {
-                "noChildrenProp": "warn",
                 "noSwitchDeclarations": "off",
                 "noUnknownProperty": "warn",
                 "useExhaustiveDependencies": "warn",

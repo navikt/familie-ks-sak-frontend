@@ -48,10 +48,7 @@ export const AvsenderPanel = () => {
             <ExpansionCard.Content className={styles.innerContent}>
                 {erLesevisning() ? (
                     brukerErAvsender ? (
-                        <BodyShort
-                            className={classNames('skjemaelement', 'lese-felt')}
-                            children={'Avsender er bruker'}
-                        />
+                        <BodyShort className={classNames('skjemaelement', 'lese-felt')}>Avsender er bruker</BodyShort>
                     ) : null
                 ) : (
                     <Checkbox

@@ -83,11 +83,12 @@ export const BrukerPanel = () => {
                                             settFeilMelding('Person ident er ugyldig');
                                         }
                                     }}
-                                    children={'Endre bruker'}
                                     loading={spinner}
                                     size="small"
                                     variant="secondary"
-                                />
+                                >
+                                    Endre bruker
+                                </Button>
                             </Box>
                         </HStack>
                         {hentFagsakPaaPersonError && (
