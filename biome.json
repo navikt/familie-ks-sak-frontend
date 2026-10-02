@@ -15,9 +15,6 @@
         "enabled": true,
         "rules": {
             "preset": "recommended",
-            "a11y": {
-                "useFocusableInteractive": "warn"
-            },
             "correctness": {
                 "useExhaustiveDependencies": "warn"
             },

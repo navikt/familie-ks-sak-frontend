@@ -513,6 +513,7 @@ export function FlaggCombobox<T extends string>(props: FlaggComboboxProps<T>) {
                                         : singleValue === option.value;
                                     return (
                                         // biome-ignore lint/a11y/useKeyWithClickEvents: Tastaturnavigasjon håndteres på input-feltet via aria-activedescendant.
+                                        // biome-ignore lint/a11y/useFocusableInteractive: Fokus skal bli på input-feltet, opsjoner markeres via aria-activedescendant.
                                         <div
                                             key={option.value}
                                             id={`${inputId}-option-${option.value}`}
