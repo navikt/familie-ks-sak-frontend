@@ -27,7 +27,7 @@ export function Behandling() {
     }
 
     switch (behandlingRessurs.status) {
-        case RessursStatus.SUKSESS:
+        case RessursStatus.SUKSESS: {
             const behandling = behandlingRessurs.data;
             return (
                 <BehandlingProvider key={behandling.behandlingId} behandling={behandling}>
@@ -56,6 +56,7 @@ export function Behandling() {
                     </KontrollsiderProvider>
                 </BehandlingProvider>
             );
+        }
         case RessursStatus.IKKE_TILGANG:
             return (
                 <GlobalAlert status={'warning'}>

@@ -22,7 +22,6 @@
                 "useKeyWithClickEvents": "warn"
             },
             "correctness": {
-                "noSwitchDeclarations": "off",
                 "useExhaustiveDependencies": "warn",
                 "useJsxKeyInIterable": "warn"
             },

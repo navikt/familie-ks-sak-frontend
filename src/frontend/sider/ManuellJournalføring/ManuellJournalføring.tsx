@@ -12,7 +12,7 @@ const ManuellJournalføringContent = () => {
     const { dataForManuellJournalføring } = useManuellJournalføringContext();
 
     switch (dataForManuellJournalføring.status) {
-        case RessursStatus.SUKSESS:
+        case RessursStatus.SUKSESS: {
             const viserAlert = dataForManuellJournalføring.data.journalpost.journalstatus !== Journalstatus.MOTTATT;
             return (
                 <>
@@ -39,6 +39,7 @@ const ManuellJournalføringContent = () => {
                     </div>
                 </>
             );
+        }
         case RessursStatus.FEILET:
         case RessursStatus.FUNKSJONELL_FEIL:
             return (
