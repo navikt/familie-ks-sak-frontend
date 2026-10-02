@@ -16,8 +16,7 @@
         "rules": {
             "preset": "recommended",
             "a11y": {
-                "useFocusableInteractive": "warn",
-                "useKeyWithClickEvents": "warn"
+                "useFocusableInteractive": "warn"
             },
             "correctness": {
                 "useExhaustiveDependencies": "warn"

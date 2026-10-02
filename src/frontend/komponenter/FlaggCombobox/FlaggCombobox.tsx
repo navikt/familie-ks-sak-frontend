@@ -512,6 +512,7 @@ export function FlaggCombobox<T extends string>(props: FlaggComboboxProps<T>) {
                                         ? multiValues.includes(option.value)
                                         : singleValue === option.value;
                                     return (
+                                        // biome-ignore lint/a11y/useKeyWithClickEvents: Tastaturnavigasjon håndteres på input-feltet via aria-activedescendant.
                                         <div
                                             key={option.value}
                                             id={`${inputId}-option-${option.value}`}
