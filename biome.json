@@ -29,7 +29,6 @@
                 "useJsxKeyInIterable": "warn"
             },
             "suspicious": {
-                "noDuplicateProperties": "warn",
                 "noDoubleEquals": "warn",
                 "noArrayIndexKey": "warn"
             }
