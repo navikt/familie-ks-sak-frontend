@@ -9,7 +9,7 @@ import {
 } from '@utils/dato';
 
 export enum EndretUtbetalingAndelFeltnavn {
-    PERSON = 'person',
+    PERSONER = 'personer',
     FOM = 'fom',
     TOM = 'tom',
     ÅRSAK = 'årsak',
@@ -21,7 +21,7 @@ export enum EndretUtbetalingAndelFeltnavn {
 }
 
 export interface EndretUtbetalingAndelFormValues {
-    [EndretUtbetalingAndelFeltnavn.PERSON]: string;
+    [EndretUtbetalingAndelFeltnavn.PERSONER]: string[];
     [EndretUtbetalingAndelFeltnavn.FOM]: IsoMånedString | null;
     [EndretUtbetalingAndelFeltnavn.TOM]: IsoMånedString | null;
     [EndretUtbetalingAndelFeltnavn.ÅRSAK]: IEndretUtbetalingAndelÅrsak | null;
@@ -59,7 +59,7 @@ export function endretUtbetalingAndelSkjemaStandardverdier(
     behandling: IBehandling
 ): EndretUtbetalingAndelFormValues {
     return {
-        [EndretUtbetalingAndelFeltnavn.PERSON]: endretUtbetalingAndel.personIdent ?? '',
+        [EndretUtbetalingAndelFeltnavn.PERSONER]: endretUtbetalingAndel.personIdenter ?? [],
         [EndretUtbetalingAndelFeltnavn.FOM]: endretUtbetalingAndel.fom ?? null,
         [EndretUtbetalingAndelFeltnavn.TOM]: endretUtbetalingAndel.tom ?? null,
         [EndretUtbetalingAndelFeltnavn.ÅRSAK]: endretUtbetalingAndel.årsak ?? null,

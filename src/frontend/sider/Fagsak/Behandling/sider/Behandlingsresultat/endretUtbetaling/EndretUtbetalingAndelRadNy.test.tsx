@@ -1,5 +1,6 @@
 import { Table } from '@navikt/ds-react';
 import { byggFunksjonellFeilRessurs, byggSuksessRessurs } from '@navikt/familie-typer';
+import { within } from '@testing-library/react';
 import { server } from '@testutils/mocks/node';
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
@@ -20,11 +21,12 @@ import { EndretUtbetalingAndelProvider } from './EndretUtbetalingAndelContext';
 import { EndretUtbetalingAndelRadNy } from './EndretUtbetalingAndelRadNy';
 
 const barnIdent = '12345678910';
+const annetBarnIdent = '10987654321';
 const url = '/familie-ks-sak/api/endretutbetalingandel/1/10';
 
 const endretUtbetalingAndel: IRestEndretUtbetalingAndel = {
     id: 10,
-    personIdent: barnIdent,
+    personIdenter: [barnIdent],
     prosent: 100,
     fom: '2024-01',
     tom: '2024-06',
@@ -40,9 +42,19 @@ const nyAndel: IRestEndretUtbetalingAndel = { id: 10, erTilknyttetAndeler: false
 
 function lagTestbehandling(behandling: Partial<IBehandling> = {}) {
     return lagBehandling({
-        personer: [lagGrunnlagPerson({ personIdent: barnIdent, type: PersonType.BARN, navn: 'Barn Barnesen' })],
+        personer: [
+            lagGrunnlagPerson({ personIdent: barnIdent, type: PersonType.BARN, navn: 'Barn Barnesen' }),
+            lagGrunnlagPerson({ personIdent: annetBarnIdent, type: PersonType.BARN, navn: 'Annet Barnesen' }),
+        ],
         personerMedAndelerTilkjentYtelse: [
             { personIdent: barnIdent, ytelsePerioder: [], beløp: 7500, stønadFom: '2023-01', stønadTom: '2025-12' },
+            {
+                personIdent: annetBarnIdent,
+                ytelsePerioder: [],
+                beløp: 7500,
+                stønadFom: '2023-01',
+                stønadTom: '2025-12',
+            },
         ],
         ...behandling,
     });
@@ -95,7 +107,7 @@ describe('EndretUtbetalingAndelRadNy', () => {
 
         // Assert
         expect(await screen.findByText('Du må velge om perioden skal utbetales')).toBeInTheDocument();
-        expect(screen.getByText('Du må velge en person')).toBeInTheDocument();
+        expect(screen.getByText('Du må velge minst én person')).toBeInTheDocument();
         expect(screen.getByText('Du må velge en årsak')).toBeInTheDocument();
         expect(screen.getByText('Du må velge f.o.m-dato')).toBeInTheDocument();
         expect(screen.getByText('Du må velge t.o.m-dato')).toBeInTheDocument();
@@ -117,7 +129,7 @@ describe('EndretUtbetalingAndelRadNy', () => {
         expect(screen.getByRole('textbox', { name: 'Begrunnelse' })).toHaveValue('Lagret begrunnelse');
     });
 
-    test('skal sende oppdatert andel uten personIdenter ved lagring', async () => {
+    test('skal sende alle valgte personer i personIdenter ved lagring', async () => {
         // Arrange
         let mottattPayload: Record<string, unknown> | undefined;
         server.use(
@@ -130,13 +142,39 @@ describe('EndretUtbetalingAndelRadNy', () => {
 
         // Act
         await åpneRad(user, screen);
+        await user.click(screen.getByRole('combobox', { name: 'Velg hvem det gjelder' }));
+        await user.click(await screen.findByRole('option', { name: /Annet Barnesen/ }));
         await user.click(screen.getByRole('radio', { name: 'Perioden skal ikke utbetales' }));
         await user.click(screen.getByRole('button', { name: 'Bekreft' }));
 
         // Assert
         await expect.poll(() => mottattPayload).toBeDefined();
-        expect(mottattPayload).toMatchObject({ id: 10, personIdent: barnIdent, prosent: 0, fom: '2024-01' });
-        expect(mottattPayload).not.toHaveProperty('personIdenter');
+        expect(mottattPayload).toMatchObject({
+            id: 10,
+            personIdenter: [barnIdent, annetBarnIdent],
+            prosent: 0,
+            fom: '2024-01',
+        });
+        expect(mottattPayload).not.toHaveProperty('personIdent');
+    });
+
+    test('skal vise alle personer på andelen i raden', () => {
+        // Arrange
+        const { screen } = renderRad({ ...endretUtbetalingAndel, personIdenter: [barnIdent, annetBarnIdent] });
+
+        // Assert
+        const rad = screen.getByRole('row');
+        expect(within(rad).getByText(/Barn Barnesen/)).toBeInTheDocument();
+        expect(within(rad).getByText(/Annet Barnesen/)).toBeInTheDocument();
+    });
+
+    test('skal vise "Ikke satt" og åpent skjema når andelen ikke har personer', () => {
+        // Arrange
+        const { screen } = renderRad({ ...endretUtbetalingAndel, personIdenter: [] });
+
+        // Assert
+        expect(screen.getByText('Ikke satt')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Bekreft' })).toBeInTheDocument();
     });
 
     test('skal kreve avslagsbegrunnelse når årsak er allerede utbetalt og vurderingen er et avslag', async () => {
