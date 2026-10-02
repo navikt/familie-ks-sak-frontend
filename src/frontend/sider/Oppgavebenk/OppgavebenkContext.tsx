@@ -319,7 +319,7 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
         settOppgaver(byggHenterRessurs());
 
         const saksbehandlerFilter = hentOppgaveFelt('tilordnetRessurs').filter?.selectedValue;
-        let tildeltRessurs;
+        let tildeltRessurs: boolean | undefined;
         switch (saksbehandlerFilter) {
             case SaksbehandlerFilter.FORDELTE:
                 tildeltRessurs = true;

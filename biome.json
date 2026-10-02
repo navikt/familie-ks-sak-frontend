@@ -15,25 +15,12 @@
         "enabled": true,
         "rules": {
             "preset": "recommended",
-            "a11y": {
-                "noSvgWithoutTitle": "warn",
-                "useButtonType": "warn",
-                "useFocusableInteractive": "warn",
-                "useKeyWithClickEvents": "warn"
-            },
             "correctness": {
-                "noChildrenProp": "warn",
-                "noSwitchDeclarations": "off",
-                "noUnknownProperty": "warn",
-                "useExhaustiveDependencies": "warn",
-                "useJsxKeyInIterable": "warn"
+                "useExhaustiveDependencies": "warn"
             },
             "suspicious": {
-                "noDuplicateProperties": "warn",
                 "noDoubleEquals": "warn",
-                "noImplicitAnyLet": "warn",
-                "noArrayIndexKey": "warn",
-                "useIterableCallbackReturn": "warn"
+                "noArrayIndexKey": "warn"
             }
         }
     },

@@ -95,7 +95,7 @@ export function Fritekstbegrunnelser() {
                 <Fieldset id={fieldsetId} legend={'Fritekst til kulepunkt i brev'} hideLegend={true}>
                     <ul>
                         {fields.map(field => (
-                            <li>{field.value}</li>
+                            <li key={field.id}>{field.value}</li>
                         ))}
                     </ul>
                 </Fieldset>

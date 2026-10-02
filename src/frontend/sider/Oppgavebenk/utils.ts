@@ -18,8 +18,8 @@ export enum Sorteringsnøkkel {
 }
 
 export const sorterEtterNøkkel = (a: IOppgaveRad, b: IOppgaveRad, sorteringsnøkkel: Sorteringsnøkkel): number => {
-    let aVerdi;
-    let bVerdi;
+    let aVerdi: IOppgaveRad[Sorteringsnøkkel];
+    let bVerdi: IOppgaveRad[Sorteringsnøkkel];
     if (sorteringsnøkkel === Sorteringsnøkkel.IDENT) {
         aVerdi = hentFnrFraOppgaveIdenter(b.ident) || 'Ukjent';
         bVerdi = hentFnrFraOppgaveIdenter(b.ident) || 'Ukjent';

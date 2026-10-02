@@ -118,6 +118,8 @@ export function VilkårTabell({ person, vilkårFraConfig, vilkårResultater, set
                                         settFokusPåLeggTilPeriodeKnapp={settFokusPåLeggTilPeriodeKnapp}
                                     />
                                 );
+                            default:
+                                return null;
                         }
                     })}
                 </Table.Body>
