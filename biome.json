@@ -16,7 +16,6 @@
         "rules": {
             "preset": "recommended",
             "a11y": {
-                "noSvgWithoutTitle": "warn",
                 "useFocusableInteractive": "warn",
                 "useKeyWithClickEvents": "warn"
             },
