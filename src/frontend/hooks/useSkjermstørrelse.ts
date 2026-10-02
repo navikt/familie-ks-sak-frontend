@@ -45,10 +45,14 @@ export function useSkjermstørrelse(): Skjermstørrelse {
             setStørrelse(utledSkjermstørrelse(window.innerWidth));
         };
 
-        mediaQueries.forEach(mq => mq.addEventListener('change', handleChange));
+        mediaQueries.forEach(mq => {
+            mq.addEventListener('change', handleChange);
+        });
 
         return () => {
-            mediaQueries.forEach(mq => mq.removeEventListener('change', handleChange));
+            mediaQueries.forEach(mq => {
+                mq.removeEventListener('change', handleChange);
+            });
         };
     }, []);
 

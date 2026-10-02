@@ -200,9 +200,9 @@ describe('KontrollsiderProvider', () => {
 
             act(() => result.current.settIkkeKontrollerteSiderTilManglerKontroll());
 
-            result.current.kontrollsider.forEach(side =>
-                expect(side.kontrollertStatus).toBe(KontrollertStatus.IKKE_KONTROLLERT)
-            );
+            result.current.kontrollsider.forEach(side => {
+                expect(side.kontrollertStatus).toBe(KontrollertStatus.IKKE_KONTROLLERT);
+            });
         });
     });
 

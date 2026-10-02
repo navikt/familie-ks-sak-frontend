@@ -29,7 +29,9 @@ export function SlettVilkårResultat({ personIdent, vilkårResultat }: Props) {
                 .map(it => it.id);
 
             const nylagedeIder = iderFraNyBehandling.filter(id => !iderFraGammelBehandling.includes(id));
-            nylagedeIder.forEach(id => ekspanderRad(id));
+            nylagedeIder.forEach(id => {
+                ekspanderRad(id);
+            });
 
             settÅpenBehandling(byggSuksessRessurs(nyBehandling));
         },

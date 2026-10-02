@@ -104,7 +104,9 @@ describe('Sider', () => {
             const testUrl = 'test-url/';
             Object.values(sider)
                 .map(side => side.href)
-                .forEach(sideUrl => expect(erViPåUdefinertFagsakSide(testUrl + sideUrl)).toBeFalsy());
+                .forEach(sideUrl => {
+                    expect(erViPåUdefinertFagsakSide(testUrl + sideUrl)).toBeFalsy();
+                });
             expect(erViPåUdefinertFagsakSide(testUrl + 'saksoversikt')).toBeFalsy();
             expect(erViPåUdefinertFagsakSide(testUrl + 'ny-behandling')).toBeFalsy();
 

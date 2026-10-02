@@ -83,7 +83,9 @@ export function FlaggCombobox<T extends string>(props: FlaggComboboxProps<T>) {
 
     const optionsMap = useMemo(() => {
         const map = new Map<T, FlaggComboboxOption<T>>();
-        options.forEach(opt => map.set(opt.value, opt));
+        options.forEach(opt => {
+            map.set(opt.value, opt);
+        });
         return map;
     }, [options]);
 
