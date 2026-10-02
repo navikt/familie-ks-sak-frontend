@@ -10,4 +10,5 @@ export enum FeatureToggle {
     skalObfuskereData = 'familie-ks-sak.anonymiser-persondata',
 
     // Release
+    brukNyttEndretUtbetalingAndelSkjema = 'familie-ks-sak.bruk-nytt-endret-utbetaling-andel-skjema',
 }
