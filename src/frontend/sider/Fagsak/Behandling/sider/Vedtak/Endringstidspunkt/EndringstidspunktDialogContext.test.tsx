@@ -69,7 +69,9 @@ describe('EndringstidspunktDialogContext', () => {
                 {({ erDialogÅpen, åpneDialog }) => (
                     <>
                         <span>{erDialogÅpen ? 'Åpen' : 'Lukket'}</span>
-                        <button onClick={åpneDialog}>Åpne</button>
+                        <button type={'button'} onClick={åpneDialog}>
+                            Åpne
+                        </button>
                     </>
                 )}
             </EndringstidspunktDialogProvider>

@@ -17,7 +17,6 @@
             "preset": "recommended",
             "a11y": {
                 "noSvgWithoutTitle": "warn",
-                "useButtonType": "warn",
                 "useFocusableInteractive": "warn",
                 "useKeyWithClickEvents": "warn"
             },
