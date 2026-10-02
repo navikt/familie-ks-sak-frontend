@@ -31,6 +31,6 @@ describe('hentSaksbehandler', () => {
         );
 
         // Act & assert
-        expect(hentSaksbehandler()).rejects.toThrow();
+        await expect(hentSaksbehandler()).rejects.toThrow();
     });
 });
