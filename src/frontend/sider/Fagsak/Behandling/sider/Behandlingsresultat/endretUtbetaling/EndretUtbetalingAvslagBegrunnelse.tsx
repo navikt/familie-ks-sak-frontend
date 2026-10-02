@@ -102,10 +102,12 @@ export const EndretUtbetalingAvslagBegrunnelse = ({ skjema }: IProps) => {
             <option disabled hidden value={''}>
                 Velg begrunnelse
             </option>
-            {grupperteBegrunnelser.map(optgroup => (
-                <optgroup label={optgroup.label}>
-                    {optgroup.options.map(option => (
-                        <option value={option.value}>{option.label}</option>
+            {grupperteBegrunnelser.map((optgroup, index) => (
+                <optgroup key={index} label={optgroup.label}>
+                    {optgroup.options.map((option, index) => (
+                        <option key={index} value={option.value}>
+                            {option.label}
+                        </option>
                     ))}
                 </optgroup>
             ))}
