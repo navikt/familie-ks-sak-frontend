@@ -11,15 +11,14 @@ export function finnAvslagsbegrunnelserForVilkår(
         return [];
     }
 
-    const gyldigeBegrunnelseTyper = [BegrunnelseType.AVSLAG];
-
-    if (regelverk === Regelverk.EØS_FORORDNINGEN) {
-        gyldigeBegrunnelseTyper.push(BegrunnelseType.EØS_AVSLAG);
-    }
-
-    return gyldigeBegrunnelseTyper.flatMap(begrunnelseType =>
+    const tilOptions = (begrunnelseType: BegrunnelseType) =>
         (alleBegrunnelser[begrunnelseType] ?? [])
             .filter(begrunnelse => begrunnelse.vilkår === vilkårType)
-            .map(begrunnelse => ({ label: begrunnelse.navn, value: begrunnelse.id }))
-    );
+            .map(begrunnelse => ({ label: begrunnelse.navn, value: begrunnelse.id }));
+
+    const eøsAvslagsbegrunnelser =
+        regelverk === Regelverk.EØS_FORORDNINGEN ? tilOptions(BegrunnelseType.EØS_AVSLAG) : [];
+
+    // Vilkår uten EØS-avslagsbegrunnelser (f.eks. medlemskap) må fortsatt kunne avslås eksplisitt under EØS.
+    return eøsAvslagsbegrunnelser.length > 0 ? eøsAvslagsbegrunnelser : tilOptions(BegrunnelseType.AVSLAG);
 }

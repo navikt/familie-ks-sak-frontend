@@ -21,9 +21,10 @@ export const IKKE_AKTUELT_ALTERNATIV: ResultatAlternativ = { verdi: Resultat.IKK
 interface Props {
     legend: string;
     alternativer?: ResultatAlternativ[];
+    onEndret?: (resultat: Resultat) => void;
 }
 
-export function ResultatFelt({ legend, alternativer = JA_NEI_ALTERNATIVER }: Props) {
+export function ResultatFelt({ legend, alternativer = JA_NEI_ALTERNATIVER, onEndret }: Props) {
     const erLesevisning = useErLesevisning();
 
     const { control, setValue } = useFormContext<VilkårResultatFormValues>();
@@ -55,6 +56,7 @@ export function ResultatFelt({ legend, alternativer = JA_NEI_ALTERNATIVER }: Pro
                     setValue(VilkårResultatFelt.ER_EKSPLISITT_AVSLAG_PÅ_SØKNAD, false, { shouldDirty: true });
                     setValue(VilkårResultatFelt.AVSLAG_BEGRUNNELSER, [], { shouldDirty: true });
                 }
+                onEndret?.(nyttResultat);
             }}
         >
             {alternativer.map(alternativ => (

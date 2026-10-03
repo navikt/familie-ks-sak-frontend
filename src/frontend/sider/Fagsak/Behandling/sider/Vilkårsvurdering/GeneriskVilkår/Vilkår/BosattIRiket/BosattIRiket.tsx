@@ -1,6 +1,7 @@
 import { type IGrunnlagPerson, PersonType } from '@typer/person';
 import {
     Regelverk,
+    Resultat,
     type UtdypendeVilkårsvurdering,
     UtdypendeVilkårsvurderingEøsBarnBosattIRiket,
     UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
@@ -13,9 +14,13 @@ import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 function bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
     vurderesEtter: Regelverk | null | undefined,
+    resultat: Resultat,
     person: IGrunnlagPerson
 ): UtdypendeVilkårsvurdering[] {
     if (vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
+        if (resultat === Resultat.IKKE_OPPFYLT) {
+            return [];
+        }
         if (person.type === PersonType.SØKER) {
             return [
                 UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING,
@@ -58,8 +63,8 @@ export function BosattIRiket({
                 person={person}
                 visVurderesEtter
                 visSpørsmål
-                bestemMuligeUtdypendeVilkårsvurderinger={({ vurderesEtter }) =>
-                    bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(vurderesEtter, person)
+                bestemMuligeUtdypendeVilkårsvurderinger={({ vurderesEtter, resultat }) =>
+                    bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(vurderesEtter, resultat, person)
                 }
             />
         </VilkårTabellRad>

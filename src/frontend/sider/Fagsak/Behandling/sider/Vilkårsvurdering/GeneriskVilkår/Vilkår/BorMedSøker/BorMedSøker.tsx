@@ -1,5 +1,6 @@
 import {
     Regelverk,
+    Resultat,
     type UtdypendeVilkårsvurdering,
     UtdypendeVilkårsvurderingDeltBosted,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
@@ -11,9 +12,13 @@ import { type VilkårProps, VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 function bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(
-    vurderesEtter: Regelverk | null | undefined
+    vurderesEtter: Regelverk | null | undefined,
+    resultat: Resultat
 ): UtdypendeVilkårsvurdering[] {
     if (vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
+        if (resultat === Resultat.IKKE_OPPFYLT) {
+            return [];
+        }
         return [
             UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_SØKER,
             UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_ANNEN_FORELDER,
@@ -53,8 +58,8 @@ export function BorMedSøker({
                 person={person}
                 visVurderesEtter
                 visSpørsmål
-                bestemMuligeUtdypendeVilkårsvurderinger={({ vurderesEtter }) =>
-                    bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vurderesEtter)
+                bestemMuligeUtdypendeVilkårsvurderinger={({ vurderesEtter, resultat }) =>
+                    bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vurderesEtter, resultat)
                 }
             />
         </VilkårTabellRad>
