@@ -8,6 +8,7 @@ import {
     UtdypendeVilkårsvurderingGenerell,
 } from '@typer/vilkår';
 
+import type { UtdypendeVilkårsvurderingerAvhengigheter } from '../../UtdypendeVilkårsvurderingerFelt';
 import { useVilkårResultatSkjema } from '../../useVilkårResultatSkjema';
 import { type VilkårProps, VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
@@ -49,10 +50,17 @@ export function BosattIRiket({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: VilkårProps) {
+    const bestemMuligeUtdypendeVilkårsvurderinger = ({
+        vurderesEtter,
+        resultat,
+    }: UtdypendeVilkårsvurderingerAvhengigheter) =>
+        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(vurderesEtter, resultat, person);
+
     const { form, onSubmit } = useVilkårResultatSkjema({
         lagretVilkårResultat,
         person,
         settFokusPåLeggTilPeriodeKnapp,
+        bestemMuligeUtdypendeVilkårsvurderinger,
     });
 
     return (
@@ -63,9 +71,7 @@ export function BosattIRiket({
                 person={person}
                 visVurderesEtter
                 visSpørsmål
-                bestemMuligeUtdypendeVilkårsvurderinger={({ vurderesEtter, resultat }) =>
-                    bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(vurderesEtter, resultat, person)
-                }
+                bestemMuligeUtdypendeVilkårsvurderinger={bestemMuligeUtdypendeVilkårsvurderinger}
             />
         </VilkårTabellRad>
     );

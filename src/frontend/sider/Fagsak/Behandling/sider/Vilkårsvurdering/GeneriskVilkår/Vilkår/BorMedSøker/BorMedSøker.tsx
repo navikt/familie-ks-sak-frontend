@@ -7,6 +7,7 @@ import {
     UtdypendeVilkårsvurderingGenerell,
 } from '@typer/vilkår';
 
+import type { UtdypendeVilkårsvurderingerAvhengigheter } from '../../UtdypendeVilkårsvurderingerFelt';
 import { useVilkårResultatSkjema } from '../../useVilkårResultatSkjema';
 import { type VilkårProps, VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
@@ -44,10 +45,17 @@ export function BorMedSøker({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: VilkårProps) {
+    const bestemMuligeUtdypendeVilkårsvurderinger = ({
+        vurderesEtter,
+        resultat,
+    }: UtdypendeVilkårsvurderingerAvhengigheter) =>
+        bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vurderesEtter, resultat);
+
     const { form, onSubmit } = useVilkårResultatSkjema({
         lagretVilkårResultat,
         person,
         settFokusPåLeggTilPeriodeKnapp,
+        bestemMuligeUtdypendeVilkårsvurderinger,
     });
 
     return (
@@ -58,9 +66,7 @@ export function BorMedSøker({
                 person={person}
                 visVurderesEtter
                 visSpørsmål
-                bestemMuligeUtdypendeVilkårsvurderinger={({ vurderesEtter, resultat }) =>
-                    bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vurderesEtter, resultat)
-                }
+                bestemMuligeUtdypendeVilkårsvurderinger={bestemMuligeUtdypendeVilkårsvurderinger}
             />
         </VilkårTabellRad>
     );

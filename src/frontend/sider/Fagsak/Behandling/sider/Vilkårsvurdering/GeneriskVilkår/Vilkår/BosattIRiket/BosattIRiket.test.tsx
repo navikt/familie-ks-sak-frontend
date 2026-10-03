@@ -7,7 +7,13 @@ import { lagGrunnlagPerson } from '@testutils/testdata/personTestdata';
 import { lagVilkårResultat, lagVilkårResultatUi } from '@testutils/testdata/vilkårResultatTestdata';
 import { BehandlingSteg } from '@typer/behandling';
 import { PersonType } from '@typer/person';
-import { Regelverk, Resultat, VilkårType, vilkårConfig } from '@typer/vilkår';
+import {
+    Regelverk,
+    Resultat,
+    UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
+    VilkårType,
+    vilkårConfig,
+} from '@typer/vilkår';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import { BosattIRiket } from './BosattIRiket';
@@ -33,10 +39,10 @@ const behandling = lagBehandling({
     personResultater: [lagPersonResultat({ personIdent: søker.personIdent, vilkårResultater: [lagretVilkårResultat] })],
 });
 
-function renderBosattIRiket() {
+function renderBosattIRiket(vilkårResultat = lagretVilkårResultat) {
     return renderIVilkårsvurdering(
         <BosattIRiket
-            lagretVilkårResultat={lagVilkårResultatUi(lagretVilkårResultat)}
+            lagretVilkårResultat={lagVilkårResultatUi(vilkårResultat)}
             vilkårFraConfig={vilkårConfig.BOSATT_I_RIKET}
             person={søker}
             settFokusPåLeggTilPeriodeKnapp={vi.fn()}
@@ -91,6 +97,31 @@ describe('BosattIRiket', () => {
                     resultat: Resultat.IKKE_OPPFYLT,
                     utdypendeVilkårsvurderinger: [],
                 }),
+            })
+        );
+    });
+
+    test('fjerner lagret utdypende vilkårsvurdering som ikke er mulig når vilkåret ikke er oppfylt etter EØS-forordningen', async () => {
+        // Arrange
+        const { screen, user } = renderBosattIRiket({
+            ...lagretVilkårResultat,
+            resultat: Resultat.IKKE_OPPFYLT,
+            vurderesEtter: Regelverk.EØS_FORORDNINGEN,
+            periodeFom: '2024-06-01',
+            begrunnelse: 'Søker bor ikke i Norge',
+            utdypendeVilkårsvurderinger: [UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING],
+        });
+        vi.mocked(oppdaterVilkårResultat).mockResolvedValue(behandling);
+
+        // Act
+        await user.click(screen.getByRole('button', { name: 'Ferdig' }));
+
+        // Assert
+        await waitFor(() => expect(oppdaterVilkårResultat).toHaveBeenCalledTimes(1));
+        expect(oppdaterVilkårResultat).toHaveBeenCalledWith(
+            behandling.behandlingId,
+            expect.objectContaining({
+                endretVilkårResultat: expect.objectContaining({ utdypendeVilkårsvurderinger: [] }),
             })
         );
     });
