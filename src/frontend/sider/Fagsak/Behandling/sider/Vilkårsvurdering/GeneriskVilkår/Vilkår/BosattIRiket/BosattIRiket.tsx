@@ -1,21 +1,27 @@
 import { type IGrunnlagPerson, PersonType } from '@typer/person';
 import {
     Regelverk,
+    Resultat,
     type UtdypendeVilkårsvurdering,
     UtdypendeVilkårsvurderingEøsBarnBosattIRiket,
     UtdypendeVilkårsvurderingEøsSøkerBosattIRiket,
     UtdypendeVilkårsvurderingGenerell,
 } from '@typer/vilkår';
 
+import type { UtdypendeVilkårsvurderingerAvhengigheter } from '../../UtdypendeVilkårsvurderingerFelt';
 import { useVilkårResultatSkjema } from '../../useVilkårResultatSkjema';
 import { type VilkårProps, VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 function bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(
     vurderesEtter: Regelverk | null | undefined,
+    resultat: Resultat,
     person: IGrunnlagPerson
 ): UtdypendeVilkårsvurdering[] {
     if (vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
+        if (resultat === Resultat.IKKE_OPPFYLT) {
+            return [];
+        }
         if (person.type === PersonType.SØKER) {
             return [
                 UtdypendeVilkårsvurderingEøsSøkerBosattIRiket.OMFATTET_AV_NORSK_LOVGIVNING,
@@ -44,10 +50,17 @@ export function BosattIRiket({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: VilkårProps) {
+    const bestemMuligeUtdypendeVilkårsvurderinger = ({
+        vurderesEtter,
+        resultat,
+    }: UtdypendeVilkårsvurderingerAvhengigheter) =>
+        bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(vurderesEtter, resultat, person);
+
     const { form, onSubmit } = useVilkårResultatSkjema({
         lagretVilkårResultat,
         person,
         settFokusPåLeggTilPeriodeKnapp,
+        bestemMuligeUtdypendeVilkårsvurderinger,
     });
 
     return (
@@ -58,9 +71,7 @@ export function BosattIRiket({
                 person={person}
                 visVurderesEtter
                 visSpørsmål
-                bestemMuligeUtdypendeVilkårsvurderinger={({ vurderesEtter }) =>
-                    bestemMuligeUtdypendeVilkårsvurderingerIBosattIRiketVilkår(vurderesEtter, person)
-                }
+                bestemMuligeUtdypendeVilkårsvurderinger={bestemMuligeUtdypendeVilkårsvurderinger}
             />
         </VilkårTabellRad>
     );

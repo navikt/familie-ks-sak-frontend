@@ -51,7 +51,7 @@ const tilOption = (utdypendeVilkårsvurdering: UtdypendeVilkårsvurdering): Opti
 
 export type UtdypendeVilkårsvurderingerAvhengigheter = Pick<
     VilkårResultatFormValues,
-    VilkårResultatFelt.VURDERES_ETTER | VilkårResultatFelt.HAR_BARNEHAGEPLASS
+    VilkårResultatFelt.VURDERES_ETTER | VilkårResultatFelt.RESULTAT | VilkårResultatFelt.HAR_BARNEHAGEPLASS
 >;
 
 interface Props {
@@ -71,9 +71,9 @@ export function UtdypendeVilkårsvurderingerFelt({
 
     const { control } = useFormContext<VilkårResultatFormValues>();
 
-    const [vurderesEtter, harBarnehageplass] = useWatch({
+    const [vurderesEtter, resultat, harBarnehageplass] = useWatch({
         control,
-        name: [VilkårResultatFelt.VURDERES_ETTER, VilkårResultatFelt.HAR_BARNEHAGEPLASS],
+        name: [VilkårResultatFelt.VURDERES_ETTER, VilkårResultatFelt.RESULTAT, VilkårResultatFelt.HAR_BARNEHAGEPLASS],
     });
 
     const {
@@ -96,6 +96,7 @@ export function UtdypendeVilkårsvurderingerFelt({
 
     const muligeUtdypendeVilkårsvurderinger = bestemMuligeUtdypendeVilkårsvurderinger({
         vurderesEtter,
+        resultat,
         harBarnehageplass,
     });
 
