@@ -53,11 +53,14 @@ export function utledAdopsjonsdatoFraPerson(person: IGrunnlagPerson): Date | nul
     return person.adopsjonsdato ? startOfDay(new Date(person.adopsjonsdato)) : null;
 }
 
+type BestemMuligeUtdypendeVilkårsvurderinger = (formValues: VilkårResultatFormValues) => UtdypendeVilkårsvurdering[];
+
 export function lagVilkårResultatFormValues(
     lagretVilkårResultat: IVilkårResultat,
-    person: IGrunnlagPerson
+    person: IGrunnlagPerson,
+    bestemMuligeUtdypendeVilkårsvurderinger?: BestemMuligeUtdypendeVilkårsvurderinger
 ): VilkårResultatFormValues {
-    return {
+    const formValues: VilkårResultatFormValues = {
         [VilkårResultatFelt.VURDERES_ETTER]: lagretVilkårResultat.vurderesEtter ?? null,
         [VilkårResultatFelt.RESULTAT]: lagretVilkårResultat.resultat,
         [VilkårResultatFelt.UTDYPENDE_VILKÅRSVURDERINGER]: lagretVilkårResultat.utdypendeVilkårsvurderinger,
@@ -70,6 +73,18 @@ export function lagVilkårResultatFormValues(
         [VilkårResultatFelt.SØKER_HAR_MELDT_FRA_OM_BARNEHAGEPLASS]:
             lagretVilkårResultat.søkerHarMeldtFraOmBarnehageplass ?? false,
         [VilkårResultatFelt.ADOPSJONSDATO]: utledAdopsjonsdatoFraPerson(person),
+    };
+
+    if (!bestemMuligeUtdypendeVilkårsvurderinger) {
+        return formValues;
+    }
+
+    const muligeUtdypendeVilkårsvurderinger = bestemMuligeUtdypendeVilkårsvurderinger(formValues);
+    return {
+        ...formValues,
+        [VilkårResultatFelt.UTDYPENDE_VILKÅRSVURDERINGER]: formValues.utdypendeVilkårsvurderinger.filter(
+            utdypendeVilkårsvurdering => muligeUtdypendeVilkårsvurderinger.includes(utdypendeVilkårsvurdering)
+        ),
     };
 }
 
@@ -109,15 +124,21 @@ interface Props {
     lagretVilkårResultat: IVilkårResultat;
     person: IGrunnlagPerson;
     settFokusPåLeggTilPeriodeKnapp: () => void;
+    bestemMuligeUtdypendeVilkårsvurderinger?: BestemMuligeUtdypendeVilkårsvurderinger;
 }
 
-export function useVilkårResultatSkjema({ lagretVilkårResultat, person, settFokusPåLeggTilPeriodeKnapp }: Props) {
+export function useVilkårResultatSkjema({
+    lagretVilkårResultat,
+    person,
+    settFokusPåLeggTilPeriodeKnapp,
+    bestemMuligeUtdypendeVilkårsvurderinger,
+}: Props) {
     const { behandling, settÅpenBehandling } = useBehandlingContext();
     const { kollapsRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
     const { mutateAsync: oppdaterVilkårResultat } = useOppdaterVilkårResultat();
 
     const form = useForm<VilkårResultatFormValues>({
-        values: lagVilkårResultatFormValues(lagretVilkårResultat, person),
+        values: lagVilkårResultatFormValues(lagretVilkårResultat, person, bestemMuligeUtdypendeVilkårsvurderinger),
     });
 
     const {
