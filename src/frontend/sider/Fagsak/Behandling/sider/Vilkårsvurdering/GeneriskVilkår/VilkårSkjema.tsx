@@ -79,8 +79,23 @@ export function VilkårSkjema({
     const {
         control,
         reset,
+        getValues,
+        setValue,
         formState: { isSubmitting, errors },
     } = useFormContext<VilkårResultatFormValues>();
+
+    const fjernUmuligeUtdypendeVilkårsvurderinger = () => {
+        const utdypendeVilkårsvurderinger = getValues(VilkårResultatFelt.UTDYPENDE_VILKÅRSVURDERINGER);
+        const muligeUtdypendeVilkårsvurderinger = bestemMuligeUtdypendeVilkårsvurderinger(getValues());
+        const gyldigeUtdypendeVilkårsvurderinger = utdypendeVilkårsvurderinger.filter(utdypendeVilkårsvurdering =>
+            muligeUtdypendeVilkårsvurderinger.includes(utdypendeVilkårsvurdering)
+        );
+        if (gyldigeUtdypendeVilkårsvurderinger.length !== utdypendeVilkårsvurderinger.length) {
+            setValue(VilkårResultatFelt.UTDYPENDE_VILKÅRSVURDERINGER, gyldigeUtdypendeVilkårsvurderinger, {
+                shouldDirty: true,
+            });
+        }
+    };
 
     const resultat = useWatch({ control, name: VilkårResultatFelt.RESULTAT });
     const erEksplisittAvslagPåSøknad = useWatch({ control, name: VilkårResultatFelt.ER_EKSPLISITT_AVSLAG_PÅ_SØKNAD });
@@ -108,10 +123,18 @@ export function VilkårSkjema({
             errorPropagation={false}
         >
             <SkjemaRamme lesevisning={erLesevisning} resultat={lagretVilkårResultat.resultat}>
-                {visVurderesEtter && <VurderesEtterFelt onEndret={onVurderesEtterEndret} />}
+                {visVurderesEtter && (
+                    <VurderesEtterFelt
+                        onEndret={nyttRegelverk => {
+                            fjernUmuligeUtdypendeVilkårsvurderinger();
+                            onVurderesEtterEndret?.(nyttRegelverk);
+                        }}
+                    />
+                )}
                 {visSpørsmål && (
                     <ResultatFelt
                         legend={vilkårFraConfig.spørsmål ? vilkårFraConfig.spørsmål(person.type.toLowerCase()) : ''}
+                        onEndret={fjernUmuligeUtdypendeVilkårsvurderinger}
                     />
                 )}
                 {children}

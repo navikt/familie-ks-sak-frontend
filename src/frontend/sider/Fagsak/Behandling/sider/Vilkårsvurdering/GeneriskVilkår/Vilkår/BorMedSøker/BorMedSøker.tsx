@@ -1,19 +1,25 @@
 import {
     Regelverk,
+    Resultat,
     type UtdypendeVilkårsvurdering,
     UtdypendeVilkårsvurderingDeltBosted,
     UtdypendeVilkårsvurderingEøsBarnBorMedSøker,
     UtdypendeVilkårsvurderingGenerell,
 } from '@typer/vilkår';
 
+import type { UtdypendeVilkårsvurderingerAvhengigheter } from '../../UtdypendeVilkårsvurderingerFelt';
 import { useVilkårResultatSkjema } from '../../useVilkårResultatSkjema';
 import { type VilkårProps, VilkårSkjema } from '../../VilkårSkjema';
 import { VilkårTabellRad } from '../../VilkårTabellRad';
 
 function bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(
-    vurderesEtter: Regelverk | null | undefined
+    vurderesEtter: Regelverk | null | undefined,
+    resultat: Resultat
 ): UtdypendeVilkårsvurdering[] {
     if (vurderesEtter === Regelverk.EØS_FORORDNINGEN) {
+        if (resultat === Resultat.IKKE_OPPFYLT) {
+            return [];
+        }
         return [
             UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_SØKER,
             UtdypendeVilkårsvurderingEøsBarnBorMedSøker.BARN_BOR_I_EØS_MED_ANNEN_FORELDER,
@@ -39,10 +45,17 @@ export function BorMedSøker({
     person,
     settFokusPåLeggTilPeriodeKnapp,
 }: VilkårProps) {
+    const bestemMuligeUtdypendeVilkårsvurderinger = ({
+        vurderesEtter,
+        resultat,
+    }: UtdypendeVilkårsvurderingerAvhengigheter) =>
+        bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vurderesEtter, resultat);
+
     const { form, onSubmit } = useVilkårResultatSkjema({
         lagretVilkårResultat,
         person,
         settFokusPåLeggTilPeriodeKnapp,
+        bestemMuligeUtdypendeVilkårsvurderinger,
     });
 
     return (
@@ -53,9 +66,7 @@ export function BorMedSøker({
                 person={person}
                 visVurderesEtter
                 visSpørsmål
-                bestemMuligeUtdypendeVilkårsvurderinger={({ vurderesEtter }) =>
-                    bestemMuligeUtdypendeVilkårsvurderingerIBorMedSøkerVilkår(vurderesEtter)
-                }
+                bestemMuligeUtdypendeVilkårsvurderinger={bestemMuligeUtdypendeVilkårsvurderinger}
             />
         </VilkårTabellRad>
     );
