@@ -2,7 +2,6 @@ import { XMarkIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, Button, Heading, HGrid, InlineMessage, VStack } from '@navikt/ds-react';
 import { Space16 } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
 import type { IBehandling } from '../../../../../typer/behandling';
@@ -84,8 +83,6 @@ const Oppsummeringsboks = ({
 }: IProps) => {
     const { settAktivEtikett } = useTidslinjeContext();
 
-    const [utbetalingsBeløpStatusMap, setUtbetalingsBeløpStatusMap] = useState(new Map<string, boolean>());
-
     const månedNavnOgÅr = () => {
         const navn = dateTilFormatertString({
             date: aktivEtikett.date,
@@ -110,11 +107,12 @@ const Oppsummeringsboks = ({
 
     const utbetalingsperiode = finnUtbetalingsperiodeForAktivEtikett(åpenBehandling.utbetalingsperioder);
 
-    useEffect(() => {
-        setUtbetalingsBeløpStatusMap(
-            finnUtbetalingsBeløpStatusMap(utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser)
-        );
-    }, [utbetalingsperiode, kompetanser, utbetaltAnnetLandBeløp, valutakurser]);
+    const utbetalingsBeløpStatusMap = finnUtbetalingsBeløpStatusMap(
+        utbetalingsperiode,
+        kompetanser,
+        utbetaltAnnetLandBeløp,
+        valutakurser
+    );
 
     const skalViseYtelseType =
         utbetalingsperiode &&

@@ -11,7 +11,7 @@ import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { BehandlingResultat, BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from '@typer/eøsPerioder';
 import { formaterIdent, slåSammenListeTilStreng } from '@utils/formatter';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
@@ -63,21 +63,9 @@ const Behandlingsresultat = () => {
 
     const [visFeilmeldinger, settVisFeilmeldinger] = useState(false);
 
-    const {
-        data: personerMedUgyldigEtterbetalingsperiode = [],
-        refetch: refetchPersonerMedUgyldigEtterbetalingsperiode,
-    } = useHentPersonerMedUgyldigEtterbetalingsperiode(behandling.behandlingId);
-
-    // Behandlingen kan endres på dette steget (f.eks. endret utbetaling og overgangsordning),
-    // og hvilke personer som har ugyldig etterbetalingsperiode må da hentes på nytt.
-    const erFørsteRender = useRef(true);
-    useEffect(() => {
-        if (erFørsteRender.current) {
-            erFørsteRender.current = false;
-            return;
-        }
-        refetchPersonerMedUgyldigEtterbetalingsperiode();
-    }, [behandling, refetchPersonerMedUgyldigEtterbetalingsperiode]);
+    const { data: personerMedUgyldigEtterbetalingsperiode = [] } = useHentPersonerMedUgyldigEtterbetalingsperiode(
+        behandling.behandlingId
+    );
 
     const {
         mutate: opprettEndretUtbetalingAndel,
