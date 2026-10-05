@@ -1,41 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useBehandling } from '@hooks/useBehandling';
+import { EøsPeriodeStatus, type IRestUtenlandskPeriodeBeløp } from '@typer/eøsPerioder';
 
-import type { IBehandling } from '../../../../../../../typer/behandling';
-import { EøsPeriodeStatus, type IRestUtenlandskPeriodeBeløp } from '../../../../../../../typer/eøsPerioder';
 import { sorterEøsPerioder } from '../utils';
 
-interface IProps {
-    åpenBehandling: IBehandling;
-}
+export function useUtenlandskPeriodeBeløp() {
+    const behandling = useBehandling();
 
-const useUtenlandskPeriodeBeløp = ({ åpenBehandling }: IProps) => {
-    const [utbetaltAnnetLandBeløp, settUtbetaltAnnetLandBeløp] = useState<IRestUtenlandskPeriodeBeløp[]>([]);
+    const utbetaltAnnetLandBeløp = behandling.utenlandskePeriodebeløp.toSorted((periodeA, periodeB) =>
+        sorterEøsPerioder(periodeA, periodeB, behandling.personer)
+    );
 
-    useEffect(() => {
-        if (åpenBehandling) {
-            settUtbetaltAnnetLandBeløp(
-                åpenBehandling.utenlandskePeriodebeløp.sort((periodeA, periodeB) =>
-                    sorterEøsPerioder(periodeA, periodeB, åpenBehandling.personer)
-                )
-            );
-        }
-    }, [åpenBehandling]);
-
-    const erUtbetaltAnnetLandBeløpGyldige = (): boolean => {
+    function erUtbetaltAnnetLandBeløpGyldige(): boolean {
         return hentUtbetaltAnnetLandBeløpMedFeil().length === 0;
-    };
+    }
 
-    const hentUtbetaltAnnetLandBeløpMedFeil = (): IRestUtenlandskPeriodeBeløp[] => {
+    function hentUtbetaltAnnetLandBeløpMedFeil(): IRestUtenlandskPeriodeBeløp[] {
         return utbetaltAnnetLandBeløp.filter(
             utenlandskPeriodeBeløp => utenlandskPeriodeBeløp.status !== EøsPeriodeStatus.OK
         );
-    };
+    }
 
     return {
         utbetaltAnnetLandBeløp,
         erUtbetaltAnnetLandBeløpGyldige,
         hentUtbetaltAnnetLandBeløpMedFeil,
     };
-};
-
-export { useUtenlandskPeriodeBeløp };
+}

@@ -131,7 +131,7 @@ const Behandlingsresultat = () => {
         valutakurser,
         erValutakurserGyldige,
         hentValutakurserMedFeil,
-    } = useEøs(behandling);
+    } = useEøs();
 
     const grunnlagPersoner = filterOgSorterGrunnlagPersonerMedAndeler(
         behandling.personer,
