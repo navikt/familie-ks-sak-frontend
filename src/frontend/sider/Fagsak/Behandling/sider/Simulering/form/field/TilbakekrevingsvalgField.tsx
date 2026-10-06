@@ -1,7 +1,5 @@
-import { useBehandling } from '@hooks/useBehandling';
 import { useBruker } from '@hooks/useBruker';
-import { useErLesevisning } from '@hooks/useErLesevisning';
-import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
+import { BrevmottakereBehandlingAdvarsel } from '@komponenter/Brevmottaker/BrevmottakereBehandlingAdvarsel';
 import { BodyLong, Box, Heading, HelpText, HStack, Radio, RadioGroup } from '@navikt/ds-react';
 import { FritekstVarselField } from '@sider/Fagsak/Behandling/sider/Simulering/form/field/FritekstVarselField';
 import styles from '@sider/Fagsak/Behandling/sider/Simulering/form/TilbakekrevingForm.module.css';
@@ -13,9 +11,7 @@ import { Tilbakekrevingsvalg } from '@typer/simulering';
 import { useController, useFormContext } from 'react-hook-form';
 
 export function TilbakekrevingsvalgField() {
-    const behandling = useBehandling();
     const bruker = useBruker();
-    const erLesevisning = useErLesevisning();
 
     const { control, clearErrors } = useFormContext<TilbakekrevingFormValues>();
 
@@ -81,13 +77,9 @@ export function TilbakekrevingsvalgField() {
                     </Radio>
                     {value === Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_MED_VARSEL && (
                         <>
-                            <BrevmottakereAlert
+                            <BrevmottakereBehandlingAdvarsel
+                                kilde={'simulering'}
                                 className={styles.brevmottakereAlert}
-                                bruker={bruker}
-                                erPåBehandling={true}
-                                erLesevisning={erLesevisning}
-                                åpenBehandling={behandling}
-                                brevmottakere={behandling.brevmottakere}
                             />
                             <FritekstVarselField />
                         </>

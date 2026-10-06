@@ -1,7 +1,6 @@
-import { useBruker } from '@hooks/useBruker';
 import { useErLesevisningFagsak } from '@hooks/useErLesevisningFagsak';
 import { useFagsak } from '@hooks/useFagsak';
-import { BrevmottakereAlert } from '@komponenter/BrevmottakereAlert';
+import { BrevmottakereFagsakAdvarsel } from '@komponenter/Brevmottaker/BrevmottakereFagsakAdvarsel';
 import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
 import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
 import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
@@ -26,7 +25,6 @@ interface Props {
 }
 
 export function DokumentutsendingSkjema({ åpneBrevSendtDialog, settForhåndsvisningUrl }: Props) {
-    const bruker = useBruker();
     const fagsak = useFagsak();
     const navigate = useNavigate();
 
@@ -71,15 +69,7 @@ export function DokumentutsendingSkjema({ åpneBrevSendtDialog, settForhåndsvis
                                         </Alert>
                                     </Box>
                                 )}
-                                {manuelleBrevmottakerePåFagsak.length > 0 && (
-                                    <Box marginBlock={'space-16'}>
-                                        <BrevmottakereAlert
-                                            erPåBehandling={false}
-                                            brevmottakere={manuelleBrevmottakerePåFagsak}
-                                            bruker={bruker}
-                                        />
-                                    </Box>
-                                )}
+                                <BrevmottakereFagsakAdvarsel />
                                 <Box asChild maxWidth={'30rem'} marginBlock={'space-32 space-0'}>
                                     <Fieldset
                                         error={errors.root?.message}

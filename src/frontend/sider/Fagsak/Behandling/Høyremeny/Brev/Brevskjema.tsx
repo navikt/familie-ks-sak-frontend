@@ -1,16 +1,14 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useOpprettManueltBrevPdf } from '@hooks/useOpprettManueltBrevPdf';
+import { BrevmottakerListe } from '@komponenter/Brevmottaker/BrevmottakerListe';
 import { FileTextIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
 import { Button, Dialog, ErrorMessage, Fieldset, Heading, HStack, Label, Loader, VStack } from '@navikt/ds-react';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import type { IPersonInfo } from '@typer/person';
 import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
-
 import { AntallUkerSvarfristField } from './AntallUkerSvarfristField';
 import { BarnBrevetGjelderField } from './BarnBrevetGjelderField';
 import { BrevmalSelect } from './BrevmalSelect';
-import BrevmottakerListe from './BrevmottakerListe';
 import styles from './Brevskjema.module.css';
 import {
     skalViseAntallUkerSvarfrist,
@@ -29,10 +27,9 @@ import { BrevmodulFeltnavn, useBrevModul } from './useBrevModul';
 
 interface IProps {
     onSubmitSuccess: () => void;
-    bruker: IPersonInfo;
 }
 
-export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
+export const Brevskjema = ({ onSubmitSuccess }: IProps) => {
     const { behandling } = useBehandlingContext();
     const erLesevisning = useErLesevisning();
 
@@ -77,7 +74,7 @@ export const Brevskjema = ({ onSubmitSuccess, bruker }: IProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Fieldset error={errors.root?.message} legend={'Send brev'} hideLegend>
                     <Label>Brev sendes til</Label>
-                    <BrevmottakerListe bruker={bruker} brevmottakere={brevmottakere} />
+                    <BrevmottakerListe brevmottakere={brevmottakere} />
                     <VStack gap={'space-16'}>
                         <MottakerSelect personer={personer} />
                         <BrevmalSelect brevMaler={brevMaler} onEndreBrevmal={onEndreBrevmal} />

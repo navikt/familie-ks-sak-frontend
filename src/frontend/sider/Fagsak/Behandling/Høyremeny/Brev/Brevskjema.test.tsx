@@ -1,3 +1,4 @@
+import { BrukerProvider } from '@sider/Fagsak/BrukerContext';
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
 import { lagPerson } from '@testutils/testdata/personTestdata';
@@ -26,9 +27,11 @@ function lagWrapper(behandling: IBehandling) {
         return (
             <TestProviders saksbehandler={superbruker}>
                 <FagsakProvider fagsak={lagFagsak()}>
-                    <HentOgSettBehandlingProvider>
-                        <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
-                    </HentOgSettBehandlingProvider>
+                    <BrukerProvider bruker={lagPerson()}>
+                        <HentOgSettBehandlingProvider>
+                            <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
+                        </HentOgSettBehandlingProvider>
+                    </BrukerProvider>
                 </FagsakProvider>
             </TestProviders>
         );
@@ -37,7 +40,7 @@ function lagWrapper(behandling: IBehandling) {
 
 describe('Brevskjema', () => {
     test('skal ikke vise valideringsfeil når skjemaet lastes', () => {
-        const { screen } = render(<Brevskjema onSubmitSuccess={vi.fn()} bruker={lagPerson()} />, {
+        const { screen } = render(<Brevskjema onSubmitSuccess={vi.fn()} />, {
             wrapper: lagWrapper(revurdering),
         });
 
@@ -47,7 +50,7 @@ describe('Brevskjema', () => {
     });
 
     test('skal vise valideringsfeil for obligatorisk kulepunkt ved innsending, og skjule den igjen når brevmal endres', async () => {
-        const { screen, user } = render(<Brevskjema onSubmitSuccess={vi.fn()} bruker={lagPerson()} />, {
+        const { screen, user } = render(<Brevskjema onSubmitSuccess={vi.fn()} />, {
             wrapper: lagWrapper(revurdering),
         });
 
@@ -70,7 +73,7 @@ describe('Brevskjema', () => {
             status: BehandlingStatus.AVSLUTTET,
         });
 
-        const { screen } = render(<Brevskjema onSubmitSuccess={vi.fn()} bruker={lagPerson()} />, {
+        const { screen } = render(<Brevskjema onSubmitSuccess={vi.fn()} />, {
             wrapper: lagWrapper(avsluttetBehandling),
         });
 
