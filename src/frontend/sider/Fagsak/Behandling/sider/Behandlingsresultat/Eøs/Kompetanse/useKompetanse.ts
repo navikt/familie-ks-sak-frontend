@@ -1,39 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useBehandling } from '@hooks/useBehandling';
+import { EøsPeriodeStatus, type IRestKompetanse } from '@typer/eøsPerioder';
 
-import type { IBehandling } from '../../../../../../../typer/behandling';
-import { EøsPeriodeStatus, type IRestKompetanse } from '../../../../../../../typer/eøsPerioder';
 import { sorterEøsPerioder } from '../utils';
 
-interface IProps {
-    åpenBehandling: IBehandling;
-}
+export function useKompetanse() {
+    const behandling = useBehandling();
 
-const useKompetanse = ({ åpenBehandling }: IProps) => {
-    const [kompetanser, settKompetanser] = useState<IRestKompetanse[]>([]);
+    const kompetanser = behandling.kompetanser.toSorted((periodeA, periodeB) =>
+        sorterEøsPerioder(periodeA, periodeB, behandling.personer)
+    );
 
-    useEffect(() => {
-        if (åpenBehandling.kompetanser.length > 0) {
-            settKompetanser(
-                åpenBehandling.kompetanser.sort((periodeA, periodeB) =>
-                    sorterEøsPerioder(periodeA, periodeB, åpenBehandling.personer)
-                )
-            );
-        }
-    }, [åpenBehandling]);
-
-    const erKompetanserGyldige = (): boolean => {
+    function erKompetanserGyldige(): boolean {
         return hentKompetanserMedFeil().length === 0;
-    };
+    }
 
-    const hentKompetanserMedFeil = (): IRestKompetanse[] => {
+    function hentKompetanserMedFeil(): IRestKompetanse[] {
         return kompetanser.filter(kompetanse => kompetanse.status !== EøsPeriodeStatus.OK);
-    };
+    }
 
     return {
         kompetanser,
         erKompetanserGyldige,
         hentKompetanserMedFeil,
     };
-};
-
-export { useKompetanse };
+}
