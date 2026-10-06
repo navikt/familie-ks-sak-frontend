@@ -36,8 +36,8 @@ importers:
         specifier: 17.0.5
         version: 17.0.5(@navikt/aksel-icons@8.16.2)(@navikt/ds-css@8.16.2)(@navikt/ds-react@8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(styled-components@6.5.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))
       '@navikt/familie-http':
-        specifier: 8.0.26
-        version: 8.0.26(axios@1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.0)
+        specifier: 8.0.27
+        version: 8.0.27(axios@1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.0)
       '@navikt/familie-ikoner':
         specifier: 9.1.6
         version: 9.1.6(react@19.3.0)
@@ -597,12 +597,6 @@ packages:
       '@navikt/ds-react': 8.x
       react: 18.x || 19.x
       styled-components: 5.x || 6.x
-
-  '@navikt/familie-http@8.0.26':
-    resolution: {integrity: sha512-qCjiCBaae6QX9x2crITs2CPLrTb8l8NyIWEWfok2H0ri7pswK/uUSZlSobBOwx/kHng/CkA0ALL7ELs4M1vWTg==, tarball: https://npm.pkg.github.com/download/@navikt/familie-http/8.0.26/c528ae3462b4ac1071843adc9b009b8731dca0fb}
-    peerDependencies:
-      axios: 1.x
-      react: 18.x || 19.x
 
   '@navikt/familie-http@8.0.27':
     resolution: {integrity: sha512-jaWxwo2sp/aiVpLI7ISV+hxYxbQwy2rN/rWP0QVxEatlIak8+c1XX2yuqX2IAtkNpb2OlLj8D0FHS3nM5vK5jA==, tarball: https://npm.pkg.github.com/download/@navikt/familie-http/8.0.27/820ea61f6f67fac11e2a73246da42ca59a710910}
@@ -3560,12 +3554,6 @@ snapshots:
       '@navikt/fnrvalidator': 2.2.0
       react: 19.3.0
       styled-components: 6.5.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-
-  '@navikt/familie-http@8.0.26(axios@1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.0)':
-    dependencies:
-      '@navikt/familie-typer': 8.0.7
-      axios: 1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      react: 19.3.0
 
   '@navikt/familie-http@8.0.27(axios@1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.0)':
     dependencies:
