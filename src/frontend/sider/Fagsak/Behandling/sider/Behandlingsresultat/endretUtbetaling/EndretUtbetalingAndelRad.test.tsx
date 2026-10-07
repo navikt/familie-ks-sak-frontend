@@ -18,7 +18,7 @@ import { FagsakProvider } from '../../../../FagsakContext';
 import { BehandlingProvider } from '../../../context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '../../../context/HentOgSettBehandlingContext';
 import { EndretUtbetalingAndelProvider } from './EndretUtbetalingAndelContext';
-import { EndretUtbetalingAndelRadNy } from './EndretUtbetalingAndelRadNy';
+import { EndretUtbetalingAndelRad } from './EndretUtbetalingAndelRad';
 
 const barnIdent = '12345678910';
 const annetBarnIdent = '10987654321';
@@ -78,7 +78,7 @@ function renderRad(endretUtbetalingAndel: IRestEndretUtbetalingAndel, behandling
     }
     return render(
         <EndretUtbetalingAndelProvider endretUtbetalingAndel={endretUtbetalingAndel}>
-            <EndretUtbetalingAndelRadNy />
+            <EndretUtbetalingAndelRad />
         </EndretUtbetalingAndelProvider>,
         { wrapper: Wrapper }
     );
@@ -88,7 +88,7 @@ async function åpneRad(user: ReturnType<typeof renderRad>['user'], screen: Retu
     await user.click(screen.getByRole('button', { name: /vis mer/i }));
 }
 
-describe('EndretUtbetalingAndelRadNy', () => {
+describe('EndretUtbetalingAndelRad', () => {
     test('skal vise skjemaet åpent uten forhåndsvalgt utbetaling for en ny andel', () => {
         // Arrange
         const { screen } = renderRad(nyAndel);

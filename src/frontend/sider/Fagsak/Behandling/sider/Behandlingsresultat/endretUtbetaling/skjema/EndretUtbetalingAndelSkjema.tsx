@@ -26,7 +26,7 @@ interface Props {
     lukkSkjema: () => void;
 }
 
-export function EndretUtbetalingAndelSkjemaNy({ form, onSubmit, lukkSkjema }: Props) {
+export function EndretUtbetalingAndelSkjema({ form, onSubmit, lukkSkjema }: Props) {
     const erLesevisning = useErLesevisning();
     const { endretUtbetalingAndel } = useEndretUtbetalingAndelContext();
     const sletter = useSlettEndretUtbetalingAndelIsPending(endretUtbetalingAndel.id);
