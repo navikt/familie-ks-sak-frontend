@@ -1,14 +1,13 @@
+import { BrevmottakereFagsakProvider } from '@sider/Fagsak/BrevmottakereFagsakContext';
+import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
+import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
+import { lagSaksbehandler } from '@testutils/testdata/saksbehandlerTestdata';
+import { render, TestProviders } from '@testutils/testrender';
+import type { IMinimalFagsak } from '@typer/fagsak';
+import type { Saksbehandler } from '@typer/saksbehandler';
 import type { PropsWithChildren } from 'react';
-
 import { Route, Routes } from 'react-router';
 import { describe, expect, test } from 'vitest';
-import { FagsakProvider } from '../../sider/Fagsak/FagsakContext';
-import { ManuelleBrevmottakerePåFagsakProvider } from '../../sider/Fagsak/ManuelleBrevmottakerePåFagsakContext';
-import { lagFagsak } from '../../testutils/testdata/fagsakTestdata';
-import { lagSaksbehandler } from '../../testutils/testdata/saksbehandlerTestdata';
-import { render, TestProviders } from '../../testutils/testrender';
-import type { IMinimalFagsak } from '../../typer/fagsak';
-import type { Saksbehandler } from '../../typer/saksbehandler';
 import { Fagsaklinje } from './Fagsaklinje';
 
 interface WrapperProps extends PropsWithChildren {
@@ -24,7 +23,7 @@ function Wrapper({ saksbehandler = lagSaksbehandler(), fagsak = lagFagsak(), chi
                     path={'/'}
                     element={
                         <FagsakProvider fagsak={fagsak}>
-                            <ManuelleBrevmottakerePåFagsakProvider>{children}</ManuelleBrevmottakerePåFagsakProvider>
+                            <BrevmottakereFagsakProvider>{children}</BrevmottakereFagsakProvider>
                         </FagsakProvider>
                     }
                 />

@@ -1,4 +1,4 @@
-import { lagBrevmottaker } from '@testutils/testdata/brevmottakerTestdata';
+import { lagBrevmottakerFagsak } from '@testutils/testdata/brevmottakerTestdata';
 import { lagPerson } from '@testutils/testdata/personTestdata';
 import { Målform } from '@typer/søknad';
 import { describe, expect, test } from 'vitest';
@@ -34,7 +34,7 @@ const standardSkjemaverdier: DokumentutsendingFormValues = {
     valgteBarn: [],
 };
 
-const manuelleBrevmottakerePåFagsak = [lagBrevmottaker()];
+const brevmottakereFagsak = [lagBrevmottakerFagsak()];
 
 const barnIBrevÅrsaker = [
     [
@@ -67,7 +67,7 @@ describe('transformerSkjemaData', () => {
             transformerSkjemaData({
                 skjemaverdier: standardSkjemaverdier,
                 bruker,
-                manuelleBrevmottakerePåFagsak: [],
+                brevmottakere: [],
             })
         ).toThrow('Årsak er ikke valgt og vi kan ikke sende inn skjema');
     });
@@ -80,7 +80,7 @@ describe('transformerSkjemaData', () => {
                 valgteBarn: [barn1, barn2],
             },
             bruker,
-            manuelleBrevmottakerePåFagsak,
+            brevmottakere: brevmottakereFagsak,
         });
 
         expect(request).toEqual({
@@ -90,7 +90,7 @@ describe('transformerSkjemaData', () => {
             multiselectVerdier: [],
             barnIBrev: [],
             brevmal,
-            manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
+            manuelleBrevmottakere: brevmottakereFagsak,
         });
     });
 
@@ -102,7 +102,7 @@ describe('transformerSkjemaData', () => {
                 valgteBarn: [barn1, barn2],
             },
             bruker,
-            manuelleBrevmottakerePåFagsak,
+            brevmottakere: brevmottakereFagsak,
         });
 
         expect(request).toEqual({
@@ -112,7 +112,7 @@ describe('transformerSkjemaData', () => {
             multiselectVerdier: ['Barn født 01.01.2010.'],
             barnIBrev: [barn1.ident],
             brevmal,
-            manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
+            manuelleBrevmottakere: brevmottakereFagsak,
         });
     });
 
@@ -124,7 +124,7 @@ describe('transformerSkjemaData', () => {
                 fritekstAvsnitt: 'Dette er en fritekst.',
             },
             bruker,
-            manuelleBrevmottakerePåFagsak,
+            brevmottakere: brevmottakereFagsak,
         });
 
         expect(request).toEqual({
@@ -134,7 +134,7 @@ describe('transformerSkjemaData', () => {
             multiselectVerdier: [],
             barnIBrev: [],
             brevmal,
-            manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
+            manuelleBrevmottakere: brevmottakereFagsak,
             fritekstAvsnitt: 'Dette er en fritekst.',
         });
     });
@@ -147,7 +147,7 @@ describe('transformerSkjemaData', () => {
                 målform: Målform.NN,
             },
             bruker,
-            manuelleBrevmottakerePåFagsak: [],
+            brevmottakere: [],
         });
 
         expect(request.mottakerMålform).toBe(Målform.NN);
@@ -160,7 +160,7 @@ describe('transformerSkjemaData', () => {
             transformerSkjemaData({
                 skjemaverdier: { ...standardSkjemaverdier, årsak: ukjentÅrsak },
                 bruker,
-                manuelleBrevmottakerePåFagsak: [],
+                brevmottakere: [],
             })
         ).toThrow(`Fant ingen brevmal for årsak ${ukjentÅrsak}`);
     });

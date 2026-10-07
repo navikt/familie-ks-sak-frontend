@@ -6,11 +6,10 @@ import { NotFound } from '@komponenter/Error/NotFound';
 import { Personlinje } from '@komponenter/Personlinje/Personlinje';
 import { Box, GlobalAlert, HStack, Loader } from '@navikt/ds-react';
 import { Outlet } from 'react-router';
-
+import { BrevmottakereFagsakProvider } from './BrevmottakereFagsakContext';
 import { BrukerProvider } from './BrukerContext';
 import Styles from './Fagsak.module.css';
 import { FagsakProvider } from './FagsakContext';
-import { ManuelleBrevmottakerePåFagsakProvider } from './ManuelleBrevmottakerePåFagsakContext';
 
 export function Fagsak() {
     const fagsakIdParam = useFagsakIdParam();
@@ -75,12 +74,12 @@ export function Fagsak() {
 
     return (
         <Box className={Styles.container}>
-            <FagsakProvider fagsak={fagsak}>
-                <BrukerProvider bruker={bruker}>
-                    <ManuelleBrevmottakerePåFagsakProvider key={fagsak.id}>
+            <FagsakProvider key={fagsak.id} fagsak={fagsak}>
+                <BrukerProvider key={bruker.personIdent} bruker={bruker}>
+                    <BrevmottakereFagsakProvider>
                         <Personlinje bruker={bruker} />
                         <Outlet />
-                    </ManuelleBrevmottakerePåFagsakProvider>
+                    </BrevmottakereFagsakProvider>
                 </BrukerProvider>
             </FagsakProvider>
         </Box>

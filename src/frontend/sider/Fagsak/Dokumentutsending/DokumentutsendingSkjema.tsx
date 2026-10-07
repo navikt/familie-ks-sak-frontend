@@ -8,7 +8,7 @@ import { Alert, Box, Button, Fieldset, Heading, HStack, InfoCard, VStack } from 
 import { erFagsakLåst } from '@utils/fagsak';
 import { FormProvider } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { useManuelleBrevmottakerePåFagsakContext } from '../ManuelleBrevmottakerePåFagsakContext';
+import { useBrevmottakereFagsakContext } from '../BrevmottakereFagsakContext';
 import { finnBarnIBrevÅrsak } from './barnIBrevÅrsak';
 import { DokumentÅrsak } from './dokumentÅrsakTyper';
 import { LeggTilBarnKnapp } from './LeggTilBarnKnapp';
@@ -28,7 +28,7 @@ export function DokumentutsendingSkjema({ åpneBrevSendtDialog, settForhåndsvis
     const fagsak = useFagsak();
     const navigate = useNavigate();
 
-    const { manuelleBrevmottakerePåFagsak } = useManuelleBrevmottakerePåFagsakContext();
+    const { brevmottakere } = useBrevmottakereFagsakContext();
 
     const { form, onSubmit, hentForhåndsvisning, forhåndsvisningLaster, visForhåndsvisningBeskjed } =
         useDokumentutsendingSkjema({ åpneBrevSendtDialog, settForhåndsvisningUrl });
@@ -51,7 +51,7 @@ export function DokumentutsendingSkjema({ åpneBrevSendtDialog, settForhåndsvis
                 <LeggTilBarnModalContextProvider
                     barn={valgteBarn}
                     onLeggTilBarn={barn => leggTilBarn(barn, { shouldFocus: false })}
-                    harBrevmottaker={manuelleBrevmottakerePåFagsak.length > 0}
+                    harBrevmottaker={brevmottakere.length > 0}
                 >
                     <LeggTilBarnModal />
                     <Box padding={'space-32'} overflow={'auto'}>
