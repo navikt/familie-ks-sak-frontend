@@ -1,5 +1,5 @@
-import type { SkjemaBrevmottaker } from '@komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
 import { finnBarnIBrevÅrsak } from '@sider/Fagsak/Dokumentutsending/barnIBrevÅrsak';
+import type { BrevmottakerFagsak } from '@typer/brevmottaker';
 import type { IManueltBrevRequestPåFagsak } from '@typer/dokument';
 import type { IPersonInfo } from '@typer/person';
 import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
@@ -10,7 +10,7 @@ import type { DokumentutsendingFormValues } from './useDokumentutsendingSkjema';
 interface TransformerSkjemaDataInput {
     skjemaverdier: DokumentutsendingFormValues;
     bruker: IPersonInfo;
-    manuelleBrevmottakerePåFagsak: SkjemaBrevmottaker[];
+    brevmottakere: BrevmottakerFagsak[];
 }
 
 interface SkjemaDataInput extends TransformerSkjemaDataInput {
@@ -38,12 +38,12 @@ const brevmalPerÅrsak: Record<DokumentÅrsak, Informasjonsbrev> = {
 const hentFellesBrevfelter = ({
     skjemaverdier,
     bruker,
-    manuelleBrevmottakerePåFagsak,
+    brevmottakere,
 }: TransformerSkjemaDataInput): FellesBrevfelter => ({
     mottakerIdent: bruker.personIdent,
     mottakerNavn: bruker.navn,
     mottakerMålform: skjemaverdier.målform,
-    manuelleBrevmottakere: manuelleBrevmottakerePåFagsak,
+    manuelleBrevmottakere: brevmottakere,
 });
 
 const hentEnkeltInformasjonsbrevRequest = ({ brevmal, ...input }: SkjemaDataInput): IManueltBrevRequestPåFagsak => ({
@@ -87,7 +87,7 @@ const hentInnhenteOpplysningerKlageSkjemaData = ({
 export const transformerSkjemaData = ({
     skjemaverdier,
     bruker,
-    manuelleBrevmottakerePåFagsak,
+    brevmottakere,
 }: TransformerSkjemaDataInput): IManueltBrevRequestPåFagsak => {
     const { årsak } = skjemaverdier;
     if (!årsak) {
@@ -102,7 +102,7 @@ export const transformerSkjemaData = ({
     const input = {
         skjemaverdier,
         bruker,
-        manuelleBrevmottakerePåFagsak,
+        brevmottakere,
         brevmal,
     };
 

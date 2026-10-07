@@ -1,18 +1,17 @@
+import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
+import { BrevmottakereFagsakProvider } from '@sider/Fagsak/BrevmottakereFagsakContext';
+import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
+import { lagBehandling, lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
+import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
+import { lagSaksbehandler } from '@testutils/testdata/saksbehandlerTestdata';
+import { render, TestProviders } from '@testutils/testrender';
+import type { IBehandling } from '@typer/behandling';
+import { FagsakStatus, type IMinimalFagsak } from '@typer/fagsak';
+import type { Saksbehandler } from '@typer/saksbehandler';
 import type { PropsWithChildren } from 'react';
-
 import { Route, Routes } from 'react-router';
 import { describe, expect, test } from 'vitest';
-import { BehandlingProvider } from '../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { HentOgSettBehandlingProvider } from '../../sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
-import { FagsakProvider } from '../../sider/Fagsak/FagsakContext';
-import { ManuelleBrevmottakerePåFagsakProvider } from '../../sider/Fagsak/ManuelleBrevmottakerePåFagsakContext';
-import { lagBehandling, lagVisningBehandling } from '../../testutils/testdata/behandlingTestdata';
-import { lagFagsak } from '../../testutils/testdata/fagsakTestdata';
-import { lagSaksbehandler } from '../../testutils/testdata/saksbehandlerTestdata';
-import { render, TestProviders } from '../../testutils/testrender';
-import type { IBehandling } from '../../typer/behandling';
-import { FagsakStatus, type IMinimalFagsak } from '../../typer/fagsak';
-import type { Saksbehandler } from '../../typer/saksbehandler';
 import { Behandlingslinje } from './Behandlingslinje';
 
 interface WrapperProps extends PropsWithChildren {
@@ -37,11 +36,11 @@ function Wrapper({
                     path={'/fagsak/:fagsakId/:behandlingId/*'}
                     element={
                         <FagsakProvider fagsak={fagsak}>
-                            <ManuelleBrevmottakerePåFagsakProvider>
+                            <BrevmottakereFagsakProvider>
                                 <HentOgSettBehandlingProvider>
                                     <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
                                 </HentOgSettBehandlingProvider>
-                            </ManuelleBrevmottakerePåFagsakProvider>
+                            </BrevmottakereFagsakProvider>
                         </FagsakProvider>
                     }
                 />
