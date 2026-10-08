@@ -1,16 +1,17 @@
+import { useBruker } from '@hooks/useBruker';
 import {
     Mottaker,
     type SkjemaBrevmottaker,
-} from '../../../../../komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
-import type { IPersonInfo } from '../../../../../typer/person';
-import { formaterIdent, lagBrukerLabel } from '../../../../../utils/formatter';
+} from '@komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import { formaterIdent, lagBrukerLabel } from '@utils/formatter';
 
-interface IProps {
-    bruker: IPersonInfo;
+interface Props {
     brevmottakere: SkjemaBrevmottaker[];
 }
 
-const BrevmottakerListe = ({ bruker, brevmottakere }: IProps) => {
+export function BrevmottakerListe({ brevmottakere }: Props) {
+    const bruker = useBruker();
+
     const harUtenlandskAdresse = brevmottakere.some(
         mottaker => mottaker.type === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE
     );
@@ -42,6 +43,4 @@ const BrevmottakerListe = ({ bruker, brevmottakere }: IProps) => {
                     .map(mottaker => <li key={`verge-${mottaker.navn}`}>{mottaker.navn} | Verge</li>)}
         </ul>
     );
-};
-
-export default BrevmottakerListe;
+}
