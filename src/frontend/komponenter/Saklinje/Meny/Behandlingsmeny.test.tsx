@@ -1,23 +1,23 @@
 import { Heading } from '@navikt/ds-react';
-import type { PropsWithChildren } from 'react';
-import { Route, Routes } from 'react-router';
-import { describe, expect, type MockInstance, vi } from 'vitest';
-import { BehandlingProvider } from '../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { HentOgSettBehandlingProvider } from '../../../sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
-import { BrukerProvider } from '../../../sider/Fagsak/BrukerContext';
-import { FagsakProvider } from '../../../sider/Fagsak/FagsakContext';
-import { ManuelleBrevmottakerePåFagsakProvider } from '../../../sider/Fagsak/ManuelleBrevmottakerePåFagsakContext';
-import { lagBehandling, lagVisningBehandling } from '../../../testutils/testdata/behandlingTestdata';
-import { lagFagsak } from '../../../testutils/testdata/fagsakTestdata';
-import { lagPerson } from '../../../testutils/testdata/personTestdata';
-import { render, TestProviders } from '../../../testutils/testrender';
+import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
+import { BrevmottakereFagsakProvider } from '@sider/Fagsak/BrevmottakereFagsakContext';
+import { BrukerProvider } from '@sider/Fagsak/BrukerContext';
+import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
+import { lagBehandling, lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
+import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
+import { lagPerson } from '@testutils/testdata/personTestdata';
+import { render, TestProviders } from '@testutils/testrender';
 import {
     BehandlingÅrsak,
     type IBehandling,
     MIDLERTIDIG_BEHANDLENDE_ENHET_ID,
     SettPåVentÅrsak,
-} from '../../../typer/behandling';
-import type { IMinimalFagsak } from '../../../typer/fagsak';
+} from '@typer/behandling';
+import type { IMinimalFagsak } from '@typer/fagsak';
+import type { PropsWithChildren } from 'react';
+import { Route, Routes } from 'react-router';
+import { describe, expect, type MockInstance, vi } from 'vitest';
 import { Behandlingsmeny } from './Behandlingsmeny';
 import { HenleggBehandlingModal } from './HenleggBehandling/HenleggBehandlingModal';
 
@@ -37,7 +37,7 @@ function Wrapper({
         <TestProviders initialEntries={initialEntries}>
             <FagsakProvider fagsak={fagsak}>
                 <BrukerProvider bruker={lagPerson()}>
-                    <ManuelleBrevmottakerePåFagsakProvider>
+                    <BrevmottakereFagsakProvider>
                         <Routes>
                             <Route
                                 path={'/fagsak/:fagsakId/dokumentutsending'}
@@ -61,7 +61,7 @@ function Wrapper({
                                 }
                             />
                         </Routes>
-                    </ManuelleBrevmottakerePåFagsakProvider>
+                    </BrevmottakereFagsakProvider>
                 </BrukerProvider>
             </FagsakProvider>
         </TestProviders>

@@ -2,7 +2,9 @@ import {
     type IRestBrevmottaker,
     Mottaker,
     type SkjemaBrevmottaker,
-} from '../../komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+} from '@komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import type { BrevmottakerFagsak } from '@typer/brevmottaker';
+import { randomUUID } from '@utils/commons';
 
 export function lagBrevmottaker(brevmottaker?: Partial<SkjemaBrevmottaker>): SkjemaBrevmottaker {
     return {
@@ -14,6 +16,14 @@ export function lagBrevmottaker(brevmottaker?: Partial<SkjemaBrevmottaker>): Skj
         poststed: 'Oslo',
         landkode: 'NO',
         ...(brevmottaker ?? {}),
+    };
+}
+
+export function lagBrevmottakerFagsak(brevmottaker?: Partial<BrevmottakerFagsak>): BrevmottakerFagsak {
+    return {
+        ...lagBrevmottaker(),
+        uuid: randomUUID(),
+        ...brevmottaker,
     };
 }
 
