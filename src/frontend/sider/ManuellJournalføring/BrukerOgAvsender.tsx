@@ -1,7 +1,6 @@
+import { Heading, VStack } from '@navikt/ds-react';
 import { AvsenderPanel } from '@sider/ManuellJournalføring/AvsenderPanel';
 import { BrukerPanel } from '@sider/ManuellJournalføring/BrukerPanel';
-
-import { Heading, VStack } from '@navikt/ds-react';
 
 export function BrukerOgAvsender() {
     return (

@@ -1,94 +1,75 @@
-import {
-  BodyShort,
-  Box,
-  ExpansionCard,
-  Heading,
-  UNSAFE_Combobox,
-} from "@navikt/ds-react";
-import { RessursStatus } from "@navikt/familie-typer";
-import { JournalpostTittel } from "@typer/manuell-journalføring";
-import { Datoformat, isoStringTilFormatertString } from "@utils/dato";
-import { useManuellJournalføringContext } from "./ManuellJournalføringContext";
-import { OppgavetypeFilter, oppgaveTypeFilter } from "@typer/oppgave";
+import { BodyShort, Box, ExpansionCard, Heading, UNSAFE_Combobox } from '@navikt/ds-react';
+import { RessursStatus } from '@navikt/familie-typer';
+import { JournalpostTittel } from '@typer/manuell-journalføring';
+import { type OppgavetypeFilter, oppgaveTypeFilter } from '@typer/oppgave';
+import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
+import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 
 function EndreJournalpost() {
-  const { skjema, erLesevisning } = useManuellJournalføringContext();
+    const { skjema, erLesevisning } = useManuellJournalføringContext();
 
-  return (
-    <UNSAFE_Combobox
-      error={
-        skjema.felter.journalpostTittel.hentNavInputProps(
-          skjema.visFeilmeldinger,
-        ).error
-      }
-      allowNewValues
-      readOnly={erLesevisning()}
-      label={"Endre journalposttittel"}
-      placeholder={"Skriv fritekst for å endre tittel..."}
-      isMultiSelect={false}
-      options={Object.values(JournalpostTittel)}
-      selectedOptions={
-        skjema.felter.journalpostTittel.verdi === ""
-          ? []
-          : [skjema.felter.journalpostTittel.verdi]
-      }
-      onToggleSelected={(value, isSelected) => {
-        if (isSelected) {
-          skjema.felter.journalpostTittel.validerOgSettFelt(value);
-        } else {
-          skjema.felter.journalpostTittel.nullstill();
-        }
-      }}
-    />
-  );
+    return (
+        <UNSAFE_Combobox
+            error={skjema.felter.journalpostTittel.hentNavInputProps(skjema.visFeilmeldinger).error}
+            allowNewValues
+            readOnly={erLesevisning()}
+            label={'Endre journalposttittel'}
+            placeholder={'Skriv fritekst for å endre tittel...'}
+            isMultiSelect={false}
+            options={Object.values(JournalpostTittel)}
+            selectedOptions={
+                skjema.felter.journalpostTittel.verdi === '' ? [] : [skjema.felter.journalpostTittel.verdi]
+            }
+            onToggleSelected={(value, isSelected) => {
+                if (isSelected) {
+                    skjema.felter.journalpostTittel.validerOgSettFelt(value);
+                } else {
+                    skjema.felter.journalpostTittel.nullstill();
+                }
+            }}
+        />
+    );
 }
 
 export function Journalpost() {
-  const { dataForManuellJournalføring, skjema } =
-    useManuellJournalføringContext();
+    const { dataForManuellJournalføring, skjema } = useManuellJournalføringContext();
 
-  const journalpostOverskrift =
-    dataForManuellJournalføring.status === RessursStatus.SUKSESS
-      ? oppgaveTypeFilter[
-          dataForManuellJournalføring.data.oppgave
-            .oppgavetype as keyof typeof OppgavetypeFilter
-        ].navn
-      : undefined;
+    const journalpostOverskrift =
+        dataForManuellJournalføring.status === RessursStatus.SUKSESS
+            ? oppgaveTypeFilter[dataForManuellJournalføring.data.oppgave.oppgavetype as keyof typeof OppgavetypeFilter]
+                  .navn
+            : undefined;
 
-  const datoMottatt =
-    dataForManuellJournalføring.status === RessursStatus.SUKSESS
-      ? dataForManuellJournalføring.data.journalpost.datoMottatt
-      : undefined;
+    const datoMottatt =
+        dataForManuellJournalføring.status === RessursStatus.SUKSESS
+            ? dataForManuellJournalføring.data.journalpost.datoMottatt
+            : undefined;
 
-  return (
-    <>
-      <Heading spacing size={"medium"} level={"2"}>
-        {journalpostOverskrift}
-      </Heading>
-      <ExpansionCard
-        id={skjema.felter.journalpostTittel.id}
-        size={"small"}
-        aria-label={"journalpost"}
-      >
-        <ExpansionCard.Header>
-          <ExpansionCard.Title size={"small"} as={"h2"}>
-            {skjema.felter.journalpostTittel.verdi || "Ingen tittel"}
-          </ExpansionCard.Title>
-        </ExpansionCard.Header>
-        <ExpansionCard.Content>
-          <Box marginBlock={"space-0 space-20"}>
-            <BodyShort>
-              Mottatt:{" "}
-              {isoStringTilFormatertString({
-                isoString: datoMottatt,
-                tilFormat: Datoformat.DATO,
-                defaultString: "Ingen mottatt dato",
-              })}
-            </BodyShort>
-          </Box>
-          <EndreJournalpost />
-        </ExpansionCard.Content>
-      </ExpansionCard>
-    </>
-  );
+    return (
+        <>
+            <Heading spacing size={'medium'} level={'2'}>
+                {journalpostOverskrift}
+            </Heading>
+            <ExpansionCard id={skjema.felter.journalpostTittel.id} size={'small'} aria-label={'journalpost'}>
+                <ExpansionCard.Header>
+                    <ExpansionCard.Title size={'small'} as={'h2'}>
+                        {skjema.felter.journalpostTittel.verdi || 'Ingen tittel'}
+                    </ExpansionCard.Title>
+                </ExpansionCard.Header>
+                <ExpansionCard.Content>
+                    <Box marginBlock={'space-0 space-20'}>
+                        <BodyShort>
+                            Mottatt:{' '}
+                            {isoStringTilFormatertString({
+                                isoString: datoMottatt,
+                                tilFormat: Datoformat.DATO,
+                                defaultString: 'Ingen mottatt dato',
+                            })}
+                        </BodyShort>
+                    </Box>
+                    <EndreJournalpost />
+                </ExpansionCard.Content>
+            </ExpansionCard>
+        </>
+    );
 }

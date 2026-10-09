@@ -1,10 +1,9 @@
+import { Checkbox, Heading, LocalAlert, Table, VStack } from '@navikt/ds-react';
 import { useManuellJournalføringContext } from '@sider/ManuellJournalføring/ManuellJournalføringContext';
 import { behandlingsstatuser, behandlingstyper } from '@typer/behandling';
 import { finnVisningstekstForJournalføringsbehandlingsårsak } from '@typer/journalføringsbehandling';
 import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
 import { ressursHarFeilet } from '@utils/ressursUtils';
-
-import { Checkbox, Heading, LocalAlert, Table, VStack } from '@navikt/ds-react';
 
 export function KnyttTilTidligereBehandling() {
     const { skjema, hentSorterteJournalføringsbehandlinger, kanKnytteJournalpostTilBehandling, klageStatus } =

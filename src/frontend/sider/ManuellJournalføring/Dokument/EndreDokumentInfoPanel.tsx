@@ -1,7 +1,6 @@
-import { BrevkodeMap, DokumentTittel, JournalpostTittel } from '@typer/manuell-journalføring';
-
 import { UNSAFE_Combobox } from '@navikt/ds-react';
 import type { IDokumentInfo, ILogiskVedlegg } from '@navikt/familie-typer';
+import { BrevkodeMap, DokumentTittel, JournalpostTittel } from '@typer/manuell-journalføring';
 
 import { useManuellJournalføringContext } from '../ManuellJournalføringContext';
 
