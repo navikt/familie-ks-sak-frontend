@@ -9,7 +9,7 @@ import styles from './AvsenderPanel.module.css';
 import { DeltagerInfo } from './DeltagerInfo';
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 
-export const AvsenderPanel = () => {
+export function AvsenderPanel() {
     const { skjema, erLesevisning, settAvsenderLikBruker, tilbakestillAvsender } = useManuellJournalføringContext();
     const [åpen, settÅpen] = useState(false);
     const [brukerErAvsender, settBrukerErAvsender] = useState(false);
@@ -89,4 +89,4 @@ export const AvsenderPanel = () => {
             </ExpansionCard.Content>
         </ExpansionCard>
     );
-};
+}
