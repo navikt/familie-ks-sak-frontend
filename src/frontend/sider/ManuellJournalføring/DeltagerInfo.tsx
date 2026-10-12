@@ -9,7 +9,7 @@ interface DeltagerProps {
     children?: ReactNode | ReactNode[];
 }
 
-export const DeltagerInfo = ({ ikon, navn, undertittel, ident }: DeltagerProps) => {
+export function DeltagerInfo({ ikon, navn, undertittel, ident }: DeltagerProps) {
     return (
         <HStack gap={'space-16'}>
             {ikon}
@@ -21,4 +21,4 @@ export const DeltagerInfo = ({ ikon, navn, undertittel, ident }: DeltagerProps) 
             </VStack>
         </HStack>
     );
-};
+}
