@@ -65,7 +65,7 @@ export function AvsenderPanel() {
                                 settBrukerErAvsender(!brukerErAvsender);
                             }}
                         >
-                            {'Avsender er bruker'}
+                            Avsender er bruker
                         </Checkbox>
                         <br />
                     </>
