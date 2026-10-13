@@ -1,10 +1,11 @@
 import { EmailIkon } from '@ikoner/EmailIkon';
-import { BodyShort, Checkbox, ExpansionCard, TextField } from '@navikt/ds-react';
+import { BodyShort, Checkbox, ExpansionCard } from '@navikt/ds-react';
 import { Valideringsstatus } from '@navikt/familie-skjema';
+import { AvsenderIdentFelt } from '@sider/ManuellJournalføring/felter/AvsenderIdentFelt';
+import { AvsenderNavnFelt } from '@sider/ManuellJournalføring/felter/AvsenderNavnFelt';
 import { formaterIdent } from '@utils/formatter';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-
 import styles from './AvsenderPanel.module.css';
 import { DeltagerInfo } from './DeltagerInfo';
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
@@ -51,41 +52,27 @@ export function AvsenderPanel() {
                         <BodyShort className={classNames('skjemaelement', 'lese-felt')}>Avsender er bruker</BodyShort>
                     ) : null
                 ) : (
-                    <Checkbox
-                        value={'Avsender er bruker'}
-                        checked={brukerErAvsender}
-                        onChange={() => {
-                            if (brukerErAvsender) {
-                                tilbakestillAvsender();
-                            } else {
-                                settAvsenderLikBruker();
-                            }
-                            settBrukerErAvsender(!brukerErAvsender);
-                        }}
-                    >
-                        {' '}
-                        {'Avsender er bruker'}
-                    </Checkbox>
+                    <>
+                        <Checkbox
+                            value={'Avsender er bruker'}
+                            checked={brukerErAvsender}
+                            onChange={() => {
+                                if (brukerErAvsender) {
+                                    tilbakestillAvsender();
+                                } else {
+                                    settAvsenderLikBruker();
+                                }
+                                settBrukerErAvsender(!brukerErAvsender);
+                            }}
+                        >
+                            {'Avsender er bruker'}
+                        </Checkbox>
+                        <br />
+                    </>
                 )}
+                <AvsenderNavnFelt brukerErAvsender={brukerErAvsender} />
                 <br />
-                <TextField
-                    {...skjema.felter.avsenderNavn.hentNavInputProps(skjema.visFeilmeldinger)}
-                    readOnly={erLesevisning()}
-                    label={'Navn'}
-                    size={'medium'}
-                    placeholder={'navn'}
-                    disabled={brukerErAvsender}
-                />
-
-                <br />
-                <TextField
-                    {...skjema.felter.avsenderIdent.hentNavInputProps(skjema.visFeilmeldinger)}
-                    readOnly={erLesevisning()}
-                    label={'Ident'}
-                    size={'medium'}
-                    placeholder={'Fnr/dnr/orgnr'}
-                    disabled={brukerErAvsender}
-                />
+                <AvsenderIdentFelt brukerErAvsender={brukerErAvsender} />
             </ExpansionCard.Content>
         </ExpansionCard>
     );
