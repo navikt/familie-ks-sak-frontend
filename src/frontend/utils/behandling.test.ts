@@ -1,11 +1,11 @@
 import { skruPåAlleToggles } from '@testutils/mocks/handlers/featureToggleHandlers';
 import { lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
 import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
-import { Behandlingstype } from '@typer/behandling';
+import { Behandlingstype, BehandlingÅrsak, behandlingÅrsakerSomIkkeSkalSettesManuelt } from '@typer/behandling';
 import { FagsakStatus } from '@typer/fagsak';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
-import { hentTilgjengeligeBehandlingstyper } from '@utils/behandling';
+import { hentTilgjengeligeBehandlingstyper, hentTilgjengeligeBehandlingsårsaker } from '@utils/behandling';
 
 describe('hentTilgjengeligeBehandlingstyper', () => {
     const toggles = skruPåAlleToggles();
@@ -44,5 +44,60 @@ describe('hentTilgjengeligeBehandlingstyper', () => {
         const tilgjengeligeBehandlingstyper = hentTilgjengeligeBehandlingstyper(fagsak, toggles);
 
         expect(tilgjengeligeBehandlingstyper).not.toContain(Klagebehandlingstype.KLAGE);
+    });
+
+    test('skal inneholde forventede behandlingstyper ved manuell journalføring med fagsak', () => {
+        const fagsak = lagFagsak();
+        const erManuellJournalføring = true;
+
+        const tilgjengeligeBehandlingstyper = hentTilgjengeligeBehandlingstyper(
+            fagsak,
+            toggles,
+            erManuellJournalføring
+        );
+        const forventedeBehandlingstyper = [Behandlingstype.FØRSTEGANGSBEHANDLING, Klagebehandlingstype.KLAGE];
+
+        expect(new Set(tilgjengeligeBehandlingstyper)).toEqual(new Set(forventedeBehandlingstyper));
+    });
+
+    test('skal inneholde forventede behandlingstyper ved manuell journalføring uten fagsak', () => {
+        const erManuellJournalføring = true;
+
+        const tilgjengeligeBehandlingstyper = hentTilgjengeligeBehandlingstyper(
+            undefined,
+            toggles,
+            erManuellJournalføring
+        );
+        // TODO: må avklare med funksjonelle om det er ønskelig å kunne opprette klage uten fagsak. Eksisterende logikk tillater det, men ikke i BA-sak
+        const forventedeBehandlingstyper = [Behandlingstype.FØRSTEGANGSBEHANDLING];
+
+        expect(new Set(tilgjengeligeBehandlingstyper)).toEqual(new Set(forventedeBehandlingstyper));
+    });
+});
+
+describe('hentTilgjengeligeBehandlingsårsaker', () => {
+    test('skal kun inneholde årsaker som kan settes manuelt', () => {
+        const tilgjengeligeBehandlingsårsaker = hentTilgjengeligeBehandlingsårsaker();
+        const årsakerSomIkkeSkalSettesManuelt = behandlingÅrsakerSomIkkeSkalSettesManuelt();
+        const overlappendeÅrsaker = tilgjengeligeBehandlingsårsaker.some(årsak =>
+            årsakerSomIkkeSkalSettesManuelt.includes(årsak)
+        );
+
+        expect(overlappendeÅrsaker).toBe(false);
+    });
+
+    test('skal inneholde forventede årsaker', () => {
+        const tilgjengeligeBehandlingsårsaker = hentTilgjengeligeBehandlingsårsaker();
+        const forventedeÅrsaker = [
+            BehandlingÅrsak.SØKNAD,
+            BehandlingÅrsak.ÅRLIG_KONTROLL,
+            BehandlingÅrsak.DØDSFALL,
+            BehandlingÅrsak.NYE_OPPLYSNINGER,
+            BehandlingÅrsak.OVERGANGSORDNING_2024,
+            BehandlingÅrsak.IVERKSETTE_KA_VEDTAK,
+            BehandlingÅrsak.BARNEHAGELISTE,
+            BehandlingÅrsak.TEKNISK_ENDRING,
+        ];
+        expect(new Set(tilgjengeligeBehandlingsårsaker)).toEqual(new Set(forventedeÅrsaker));
     });
 });
