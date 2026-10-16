@@ -3,7 +3,8 @@ import {
     type OpprettBehandlingFormValues,
 } from '@komponenter/Saklinje/Meny/OpprettBehandling/useOpprettBehandlingSkjema';
 import { Select } from '@navikt/ds-react';
-import { BehandlingÅrsak, behandlingÅrsak, behandlingÅrsakerSomIkkeSkalSettesManuelt } from '@typer/behandling';
+import { behandlingÅrsak } from '@typer/behandling';
+import { hentTilgjengeligeBehandlingsårsaker } from '@utils/behandling';
 import { useController, useFormContext } from 'react-hook-form';
 
 export function BehandlingsårsakFelt() {
@@ -31,15 +32,13 @@ export function BehandlingsårsakFelt() {
             <option disabled={true} value={''}>
                 Velg
             </option>
-            {Object.values(BehandlingÅrsak)
-                .filter(behandlingsårsak => !behandlingÅrsakerSomIkkeSkalSettesManuelt().includes(behandlingsårsak))
-                .map(årsak => {
-                    return (
-                        <option key={årsak} aria-selected={value === årsak} value={årsak}>
-                            {behandlingÅrsak[årsak]}
-                        </option>
-                    );
-                })}
+            {hentTilgjengeligeBehandlingsårsaker().map(årsak => {
+                return (
+                    <option key={årsak} aria-selected={value === årsak} value={årsak}>
+                        {behandlingÅrsak[årsak]}
+                    </option>
+                );
+            })}
         </Select>
     );
 }

@@ -17,7 +17,7 @@ describe('Behandlingstester', () => {
     });
 });
 
-describe('behandlingÅrsakerSomIkkeSkalSettesManuelt inneholde alle behandlingsårsaker som ikke skal kunne velges manuelt', () => {
+describe('behandlingÅrsakerSomIkkeSkalSettesManuelt inneholder alle behandlingsårsaker som ikke skal kunne velges manuelt', () => {
     test('Inneholder forventede behandlingsårsaker', () => {
         // Arrange
         const forventedeBehandlingsårsaker = new Set([
@@ -32,11 +32,11 @@ describe('behandlingÅrsakerSomIkkeSkalSettesManuelt inneholde alle behandlings�
         // Assert
         const behandlingsårsakerSet = new Set(behandlingsårsaker);
         const forventedeBehandlingsårsakerSet = new Set(forventedeBehandlingsårsaker);
-        expect(behandlingsårsakerSet.size == forventedeBehandlingsårsakerSet.size);
+        expect(behandlingsårsakerSet.size === forventedeBehandlingsårsakerSet.size).toBe(true);
         expect(
             [...behandlingsårsakerSet].every(behandlingÅrsak =>
                 [...forventedeBehandlingsårsakerSet].includes(behandlingÅrsak)
             )
-        );
+        ).toBe(true);
     });
 });

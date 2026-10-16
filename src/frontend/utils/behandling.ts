@@ -1,4 +1,11 @@
-import { BehandlingStatus, Behandlingstype, erBehandlingHenlagt, type IBehandling } from '@typer/behandling';
+import {
+    BehandlingStatus,
+    Behandlingstype,
+    BehandlingÅrsak,
+    behandlingÅrsakerSomIkkeSkalSettesManuelt,
+    erBehandlingHenlagt,
+    type IBehandling,
+} from '@typer/behandling';
 import { FagsakStatus, type IMinimalFagsak } from '@typer/fagsak';
 import { FeatureToggle, type FeatureToggles } from '@typer/featureToggles';
 import { Klagebehandlingstype } from '@typer/klage';
@@ -23,23 +30,36 @@ const TILGJENGELIGE_BEHANDLINGSTYPER = [
     Klagebehandlingstype.KLAGE,
 ];
 
-export function hentTilgjengeligeBehandlingstyper(fagsak: IMinimalFagsak, toggles: FeatureToggles) {
-    const behandling = hentAktivBehandlingPåMinimalFagsak(fagsak);
-    const alleBehandlingerErHenlagt = fagsak.behandlinger.every(behandling => erBehandlingHenlagt(behandling.resultat));
+export function hentTilgjengeligeBehandlingstyper(
+    fagsak: IMinimalFagsak | undefined,
+    toggles: FeatureToggles,
+    erManuellJournalføring?: boolean
+) {
+    const behandling = fagsak ? hentAktivBehandlingPåMinimalFagsak(fagsak) : undefined;
+    const harIkkeAktivBehandling = !behandling || behandling?.status === BehandlingStatus.AVSLUTTET;
+    const alleBehandlingerErHenlagt = fagsak?.behandlinger.every(behandling =>
+        erBehandlingHenlagt(behandling.resultat)
+    );
 
-    const kanOppretteNyBehandling = !behandling || behandling?.status === BehandlingStatus.AVSLUTTET;
     const kanOppretteFørstegangsbehandling =
-        !erFagsakLåst(fagsak) && fagsak.status !== FagsakStatus.LØPENDE && kanOppretteNyBehandling;
-    const kanOppretteRevurdering = !erFagsakLåst(fagsak) && !alleBehandlingerErHenlagt && kanOppretteNyBehandling;
+        fagsak === undefined ||
+        (!erFagsakLåst(fagsak) && fagsak.status !== FagsakStatus.LØPENDE && harIkkeAktivBehandling);
+    const kanOppretteRevurdering =
+        fagsak !== undefined && !erFagsakLåst(fagsak) && !alleBehandlingerErHenlagt && harIkkeAktivBehandling;
     const kanOppretteTekniskEndring = kanOppretteRevurdering && toggles[FeatureToggle.kanBehandleTekniskEndring];
-    const kanOppretteKlagebehandling = !fagsak.finnesStrengtFortroligPersonIFagsak;
+    const kanOppretteKlagebehandling = fagsak !== undefined && !fagsak.finnesStrengtFortroligPersonIFagsak;
+    const kanOppretteTilbakekreving = !erManuellJournalføring;
 
     return TILGJENGELIGE_BEHANDLINGSTYPER.filter(
         type =>
             (kanOppretteFørstegangsbehandling && type === Behandlingstype.FØRSTEGANGSBEHANDLING) ||
             (kanOppretteRevurdering && type === Behandlingstype.REVURDERING) ||
             (kanOppretteTekniskEndring && type === Behandlingstype.TEKNISK_ENDRING) ||
-            type === Tilbakekrevingsbehandlingstype.TILBAKEKREVING ||
+            (kanOppretteTilbakekreving && type === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) ||
             (kanOppretteKlagebehandling && type === Klagebehandlingstype.KLAGE)
     );
+}
+
+export function hentTilgjengeligeBehandlingsårsaker() {
+    return Object.values(BehandlingÅrsak).filter(årsak => !behandlingÅrsakerSomIkkeSkalSettesManuelt().includes(årsak));
 }
