@@ -10,6 +10,7 @@ import { SaksbehandlerProvider } from '@context/SaksbehandlerContext';
 import { TekniskFeilModalProvider } from '@context/TekniskFeilModalContext';
 import { ToastProvider } from '@context/ToastContext';
 import { ErrorBoundary } from '@komponenter/Error/ErrorBoundary';
+import { captureRouteException } from '@komponenter/Error/RouteError';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { erProd } from '@utils/miljø';
@@ -38,7 +39,12 @@ export function App() {
                                     <FeatureTogglesProvider>
                                         <ModalProvider>
                                             <ToastProvider>
-                                                <RouterProvider router={appRoutes} />
+                                                <RouterProvider
+                                                    router={appRoutes}
+                                                    onError={(error, { errorInfo, pattern }) =>
+                                                        captureRouteException(error, errorInfo?.componentStack, pattern)
+                                                    }
+                                                />
                                             </ToastProvider>
                                         </ModalProvider>
                                     </FeatureTogglesProvider>
