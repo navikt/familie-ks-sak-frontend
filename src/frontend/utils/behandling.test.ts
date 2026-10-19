@@ -51,7 +51,7 @@ describe('hentTilgjengeligeBehandlingstyper', () => {
         expect(tilgjengeligeBehandlingstyper).not.toContain(Klagebehandlingstype.KLAGE);
     });
 
-    test('skal inneholde forventede behandlingstyper ved manuell journalføring med fagsak', () => {
+    test('skal inneholde førstegangsbehandling og klage ved manuell journalføring med fagsak', () => {
         const fagsak = lagFagsak();
         const erManuellJournalføring = true;
 
@@ -82,7 +82,7 @@ describe('hentTilgjengeligeBehandlingstyper', () => {
         expect(new Set(tilgjengeligeBehandlingstyper)).toEqual(new Set(forventedeBehandlingstyper));
     });
 
-    test('skal inneholde forventede behandlingstyper ved manuell journalføring uten fagsak', () => {
+    test('skal kun inneholde førstegangsbehandling ved manuell journalføring uten fagsak', () => {
         const erManuellJournalføring = true;
 
         const tilgjengeligeBehandlingstyper = hentTilgjengeligeBehandlingstyper(
