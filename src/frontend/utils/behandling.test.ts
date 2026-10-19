@@ -1,7 +1,12 @@
 import { skruPåAlleToggles } from '@testutils/mocks/handlers/featureToggleHandlers';
 import { lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
 import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
-import { Behandlingstype, BehandlingÅrsak, behandlingÅrsakerSomIkkeSkalSettesManuelt } from '@typer/behandling';
+import {
+    BehandlingStatus,
+    Behandlingstype,
+    BehandlingÅrsak,
+    behandlingÅrsakerSomIkkeSkalSettesManuelt,
+} from '@typer/behandling';
 import { FagsakStatus } from '@typer/fagsak';
 import { Klagebehandlingstype } from '@typer/klage';
 import { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
@@ -60,6 +65,23 @@ describe('hentTilgjengeligeBehandlingstyper', () => {
         expect(new Set(tilgjengeligeBehandlingstyper)).toEqual(new Set(forventedeBehandlingstyper));
     });
 
+    test('skal kun inneholde klage ved manuell journalføring med fagsak som har aktiv behandling', () => {
+        const fagsak = lagFagsak({
+            status: FagsakStatus.LØPENDE,
+            behandlinger: [lagVisningBehandling({ status: BehandlingStatus.UTREDES })],
+        });
+        const erManuellJournalføring = true;
+
+        const tilgjengeligeBehandlingstyper = hentTilgjengeligeBehandlingstyper(
+            fagsak,
+            toggles,
+            erManuellJournalføring
+        );
+        const forventedeBehandlingstyper = [Klagebehandlingstype.KLAGE];
+
+        expect(new Set(tilgjengeligeBehandlingstyper)).toEqual(new Set(forventedeBehandlingstyper));
+    });
+
     test('skal inneholde forventede behandlingstyper ved manuell journalføring uten fagsak', () => {
         const erManuellJournalføring = true;
 
@@ -68,7 +90,6 @@ describe('hentTilgjengeligeBehandlingstyper', () => {
             toggles,
             erManuellJournalføring
         );
-        // TODO: må avklare med funksjonelle om det er ønskelig å kunne opprette klage uten fagsak. Eksisterende logikk tillater det, men ikke i BA-sak
         const forventedeBehandlingstyper = [Behandlingstype.FØRSTEGANGSBEHANDLING];
 
         expect(new Set(tilgjengeligeBehandlingstyper)).toEqual(new Set(forventedeBehandlingstyper));
