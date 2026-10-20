@@ -1,14 +1,14 @@
 import { Heading } from '@navikt/ds-react';
+import { BrevmottakereFagsakProvider } from '@sider/Fagsak/BrevmottakereFagsakContext';
+import { BrukerProvider } from '@sider/Fagsak/BrukerContext';
+import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
+import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
+import { lagPerson } from '@testutils/testdata/personTestdata';
+import { render, TestProviders } from '@testutils/testrender';
+import { FagsakStatus, type IMinimalFagsak } from '@typer/fagsak';
 import type { PropsWithChildren } from 'react';
 import { Route, Routes } from 'react-router';
 import { describe, expect } from 'vitest';
-import { BrukerProvider } from '../../../sider/Fagsak/BrukerContext';
-import { FagsakProvider } from '../../../sider/Fagsak/FagsakContext';
-import { ManuelleBrevmottakerePåFagsakProvider } from '../../../sider/Fagsak/ManuelleBrevmottakerePåFagsakContext';
-import { FagsakTestdata } from '../../../testutils/testdata/fagsakTestdata';
-import { lagPerson } from '../../../testutils/testdata/personTestdata';
-import { render, TestProviders } from '../../../testutils/testrender';
-import { FagsakStatus, type IMinimalFagsak } from '../../../typer/fagsak';
 import { Fagsakmeny } from './Fagsakmeny';
 
 interface WrapperProps extends PropsWithChildren {
@@ -16,16 +16,12 @@ interface WrapperProps extends PropsWithChildren {
     fagsak?: IMinimalFagsak;
 }
 
-function Wrapper({
-    initialEntries = [{ pathname: '/fagsak/1' }],
-    fagsak = FagsakTestdata.lagFagsak(),
-    children,
-}: WrapperProps) {
+function Wrapper({ initialEntries = [{ pathname: '/fagsak/1' }], fagsak = lagFagsak(), children }: WrapperProps) {
     return (
         <TestProviders initialEntries={initialEntries}>
             <FagsakProvider fagsak={fagsak}>
                 <BrukerProvider bruker={lagPerson()}>
-                    <ManuelleBrevmottakerePåFagsakProvider>
+                    <BrevmottakereFagsakProvider>
                         <Routes>
                             <Route
                                 path={'/fagsak/:fagsakId/dokumentutsending'}
@@ -40,7 +36,7 @@ function Wrapper({
                             />
                             <Route path={'/fagsak/:fagsakId'} element={<>{children}</>} />
                         </Routes>
-                    </ManuelleBrevmottakerePåFagsakProvider>
+                    </BrevmottakereFagsakProvider>
                 </BrukerProvider>
             </FagsakProvider>
         </TestProviders>
@@ -123,7 +119,7 @@ describe('Fagsakmeny', () => {
 
     test('skal kun vise lås opp fagsak når fagsaken er låst', async () => {
         const { screen, user } = render(<Fagsakmeny />, {
-            wrapper: props => <Wrapper {...props} fagsak={FagsakTestdata.lagFagsak({ status: FagsakStatus.LÅST })} />,
+            wrapper: props => <Wrapper {...props} fagsak={lagFagsak({ status: FagsakStatus.LÅST })} />,
         });
 
         const meny = screen.getByRole('button', { name: 'Meny' });

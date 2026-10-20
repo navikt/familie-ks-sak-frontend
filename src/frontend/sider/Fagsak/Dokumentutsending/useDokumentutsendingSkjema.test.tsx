@@ -8,10 +8,9 @@ import { Adressebeskyttelsegradering, ForelderBarnRelasjonRolle } from '@typer/p
 import { Målform } from '@typer/søknad';
 import type { PropsWithChildren } from 'react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-
+import { BrevmottakereFagsakProvider } from '../BrevmottakereFagsakContext';
 import { BrukerProvider } from '../BrukerContext';
 import { FagsakProvider } from '../FagsakContext';
-import { ManuelleBrevmottakerePåFagsakProvider } from '../ManuelleBrevmottakerePåFagsakContext';
 import { DokumentÅrsak } from './dokumentÅrsakTyper';
 import { DokumentutsendingFeltnavn, useDokumentutsendingSkjema } from './useDokumentutsendingSkjema';
 
@@ -42,7 +41,7 @@ function lagWrapper(bruker: ReturnType<typeof lagPerson>) {
             <TestProviders>
                 <FagsakProvider fagsak={lagFagsak()}>
                     <BrukerProvider bruker={bruker}>
-                        <ManuelleBrevmottakerePåFagsakProvider>{children}</ManuelleBrevmottakerePåFagsakProvider>
+                        <BrevmottakereFagsakProvider>{children}</BrevmottakereFagsakProvider>
                     </BrukerProvider>
                 </FagsakProvider>
             </TestProviders>
