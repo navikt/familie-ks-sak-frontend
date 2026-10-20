@@ -46,7 +46,7 @@ import { useNavigate, useParams } from 'react-router';
 import useDokument from '../../hooks/useDokument';
 import type { VisningBehandling } from '../Fagsak/Saksoversikt/visningBehandling';
 
-interface ManuellJournalføringSkjemaFelter {
+export interface ManuellJournalføringSkjemaFelter {
     behandlingstype: Behandlingstype | Tilbakekrevingsbehandlingstype | Klagebehandlingstype | '';
     behandlingsårsak: BehandlingÅrsak | '';
     behandlingstema: IBehandlingstema | undefined;

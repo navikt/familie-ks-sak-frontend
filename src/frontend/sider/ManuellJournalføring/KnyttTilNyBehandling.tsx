@@ -1,18 +1,16 @@
 import { Box, Checkbox, Fieldset, Heading } from '@navikt/ds-react';
-import { BehandlingstemaSelect } from '@sider/ManuellJournalføring/BehandlingstemaSelect';
-import BehandlingstypeFelt from '@sider/ManuellJournalføring/BehandlingstypeFelt';
-import { BehandlingårsakFelt } from '@sider/ManuellJournalføring/BehandlingsårsakFelt';
+import { BehandlingstemaFelt } from '@sider/ManuellJournalføring/felter/BehandlingstemaFelt';
+import { BehandlingstypeFelt } from '@sider/ManuellJournalføring/felter/BehandlingstypeFelt';
+import { BehandlingårsakFelt } from '@sider/ManuellJournalføring/felter/BehandlingsårsakFelt';
 
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 
-/**
- * Legger inn lesevisning slik at på sikt
- * så kan man kanskje sjekke hvilken behandling
- * journalposten er journalført på slik at man kan klikke seg inn på behandlingen
- */
 export function KnyttTilNyBehandling() {
-    const { skjema, minimalFagsak, kanKnytteJournalpostTilBehandling } = useManuellJournalføringContext();
-    const { knyttTilNyBehandling, behandlingstype, behandlingstema } = skjema.felter;
+    const { skjema, kanKnytteJournalpostTilBehandling } = useManuellJournalføringContext();
+    const { knyttTilNyBehandling, behandlingstype, behandlingstema, behandlingsårsak } = skjema.felter;
+
+    const erLesevisning = !kanKnytteJournalpostTilBehandling();
+
     return (
         <Box marginBlock={'space-32 space-0'}>
             <Fieldset legend="Knytt til ny behandling" hideLegend>
@@ -26,37 +24,14 @@ export function KnyttTilNyBehandling() {
                     onChange={() => {
                         knyttTilNyBehandling.validerOgSettFelt(!knyttTilNyBehandling.verdi);
                     }}
-                    readOnly={!kanKnytteJournalpostTilBehandling()}
+                    readOnly={erLesevisning}
                 >
-                    {'Knytt til ny behandling'}
+                    Knytt til ny behandling
                 </Checkbox>
-                {behandlingstype.erSynlig && (
-                    <BehandlingstypeFelt
-                        behandlingstype={skjema.felter.behandlingstype}
-                        visFeilmeldinger={skjema.visFeilmeldinger}
-                        minimalFagsak={minimalFagsak}
-                        erLesevisning={!kanKnytteJournalpostTilBehandling()}
-                        manuellJournalfør
-                    />
-                )}
 
-                {skjema.felter.behandlingsårsak.erSynlig && (
-                    <BehandlingårsakFelt
-                        behandlingsårsak={skjema.felter.behandlingsårsak}
-                        visFeilmeldinger={skjema.visFeilmeldinger}
-                        erLesevisning={!kanKnytteJournalpostTilBehandling()}
-                    />
-                )}
-
-                {behandlingstema.erSynlig && (
-                    <BehandlingstemaSelect
-                        behandlingstema={behandlingstema}
-                        readOnly={!kanKnytteJournalpostTilBehandling()}
-                        visFeilmeldinger={skjema.visFeilmeldinger}
-                        name="Behandlingstema"
-                        label="Velg behandlingstema"
-                    />
-                )}
+                {behandlingstype.erSynlig && <BehandlingstypeFelt erLesevisning={erLesevisning} />}
+                {behandlingsårsak.erSynlig && <BehandlingårsakFelt erLesevisning={erLesevisning} />}
+                {behandlingstema.erSynlig && <BehandlingstemaFelt erLesevisning={erLesevisning} />}
             </Fieldset>
         </Box>
     );
