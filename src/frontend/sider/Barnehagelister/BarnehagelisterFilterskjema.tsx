@@ -6,12 +6,16 @@ import {
     Fieldset,
     HelpText,
     HStack,
+    Select,
     TextField,
     UNSAFE_Combobox,
     VStack,
 } from '@navikt/ds-react';
 import type { BarnehagebarnFilter, BarnehagebarnRequestParams, Barnehagekommune } from '@typer/barnehagebarn';
+import { useEffect } from 'react';
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
+
+import { useHentBydeler } from '../../hooks/useHentBydeler';
 
 interface BarnehagebarnFilterSkjemaProps {
     oppdaterFiltrering: (filter: BarnehagebarnFilter) => void;
@@ -19,11 +23,15 @@ interface BarnehagebarnFilterSkjemaProps {
     barnehagebarnRequestParams: BarnehagebarnRequestParams;
 }
 
+const erOslo = (kommuneNavn?: string) => kommuneNavn?.toLowerCase() === 'oslo';
+
 const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
     const { oppdaterFiltrering, barnehageKommuner } = props;
 
+    const { data: bydeler, isError: harFeiletÅHenteBydeler } = useHentBydeler();
+
     const { register, handleSubmit, reset, control, watch, setValue } = useForm<BarnehagebarnFilter>({
-        defaultValues: { ident: '', kommuneNavn: '', kunLøpendeAndel: false },
+        defaultValues: { ident: '', kommuneNavn: '', kunLøpendeAndel: false, bydelOrgNummer: '' },
     });
 
     const onSubmit: SubmitHandler<BarnehagebarnFilter> = barnehagebarnFilter => {
@@ -31,6 +39,13 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
     };
 
     const ident = watch('ident');
+    const kommuneNavn = watch('kommuneNavn');
+
+    useEffect(() => {
+        if (!erOslo(kommuneNavn)) {
+            setValue('bydelOrgNummer', '');
+        }
+    }, [kommuneNavn, setValue]);
 
     if (ident && ident.length > 0) {
         setValue('kommuneNavn', undefined);
@@ -78,6 +93,31 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
                                         }}
                                         shouldAutocomplete={true}
                                     />
+                                )}
+                            />
+                            <Controller
+                                control={control}
+                                name={'bydelOrgNummer'}
+                                render={({ field }) => (
+                                    <Select
+                                        label="Bydel (Kun Oslo)"
+                                        title="Filtrer på bydel i Oslo"
+                                        size="medium"
+                                        disabled={!erOslo(kommuneNavn)}
+                                        error={harFeiletÅHenteBydeler ? 'Klarte ikke å hente bydeler' : undefined}
+                                        ref={field.ref}
+                                        name={field.name}
+                                        onBlur={field.onBlur}
+                                        onChange={field.onChange}
+                                        value={field.value}
+                                    >
+                                        <option value="">Alle bydeler</option>
+                                        {bydeler?.map(bydel => (
+                                            <option key={bydel.organisasjonsnummer} value={bydel.organisasjonsnummer}>
+                                                {bydel.navn}
+                                            </option>
+                                        ))}
+                                    </Select>
                                 )}
                             />
                             <HStack gap="space-16" align="center">
