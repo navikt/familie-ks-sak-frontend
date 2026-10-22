@@ -19,10 +19,13 @@ pnpm start:hybrid                                                               
 
 # Validate before finishing a task
 pnpm validate                                                                        # typecheck + Biome check
-pnpm typecheck                                                                       # tsc --noEmit on both src/backend and src/frontend
+pnpm typecheck                                                                       # tsc --noEmit on src/backend, src/frontend and playwright
 pnpm test                                                                            # test:backend + test:frontend (vitest)
 pnpm test:frontend                                                                   # vitest -c src/frontend/vitest.config.ts --run
 pnpm exec vitest --config src/frontend/vitest.config.ts --run path/to/file.test.tsx  # single file
+pnpm exec playwright install chromium                                                # one-time: download browser for Playwright
+pnpm test:playwright                                                                 # Playwright UI tests (builds frontend, mocked API)
+pnpm test:playwright:ui                                                              # Playwright in interactive UI mode
 pnpm lint:fix
 pnpm format:fix
 pnpm check:fix
@@ -58,6 +61,14 @@ src/frontend/
   ikoner/                          # SVG icon components
   public/                          # Static assets (favicon)
   App.tsx                          # QueryClient + context providers + RouterProvider
+
+playwright/                        # Playwright UI tests, run against `vite preview` with mocked API (config in playwright.config.ts)
+  fixtures.ts                      # `test`/`expect` with the auto `apiMock` fixture — import from here, not @playwright/test
+  apiMock.ts                       # page.route() -> msw getResponse() with handlers from testutils/mocks/handlers
+  behandlingsmock.ts               # lagBehandlingsmock(): stateful behandling + fagsak mock that moves through steg
+  behandlingsdata.ts               # Shared testdata for behandlinger (personer, vilkår, tilkjent ytelse, beslutter/veileder)
+  kontrollsider.ts                 # kontrollerAlleSider() for beslutter in totrinnskontroll
+  tester/                          # *.spec.ts test files
 ```
 
 Path aliases (use these in new code): `@api/*`, `@context/*`, `@hooks/*`, `@ikoner/*`, `@komponenter/*`,
@@ -127,10 +138,36 @@ the "Legacy" column exists in older files and is being phased out — do not ext
 - Style: Norwegian `describe('<navn>')` / `test('skal ...')`, role-based queries
   (`getByRole('button', { name: '...' })`), interactions via `await user.click(...)`.
 
+### Playwright (UI tests)
+
+- Files: `playwright/tester/*.spec.ts`. Import `test`/`expect` from `../fixtures`, not from `@playwright/test`.
+- The frontend is built with `--mode playwright` and served by `vite preview` on port 8101 — no BFF, no auth.
+  In this mode `erPlaywright()` (`utils/miljø.ts`) is true, and the global «Systemet laster» spinner is removed
+  immediately after requests finish (no 300 ms delay), like `testrender.tsx` does in vitest.
+- API calls (`/familie-ks-sak/**`, `/user/**`, `/version`, `/logg`, `/redirect/**`) are answered by the same msw
+  handlers as vitest (`testutils/mocks/handlers/`). Unmocked API calls fail the test; other external requests are
+  blocked (except Aksel fonts). Override per test with `apiMock.use(http.get(...))`, like `server.use()` in vitest.
+- Inspect request payloads with `page.waitForRequest(...)`, and reuse `lagX()` factories from `testutils/testdata/`.
+- msw matches against the URL-encoded path, so handler paths containing æøå must be wrapped in `encodeURI(...)`.
+  Path parameter names must be ASCII (`:vilkaarId`, not `:vilkårId`).
+- Code under `playwright/` runs in Node: only import types/enums, `testutils/testdata` and msw from the frontend.
+  Modules that pull in `@navikt/familie-http` (e.g. `@utils/dato`) crash with `window is not defined`.
+- Tests that go through behandlingssteg use `lagBehandlingsmock(lagBehandlingPåSteg(...))`: steg POSTs update the
+  mocked behandling (and the fagsak it belongs to), and `hent()` exposes the current state for assertions.
+  The behandling must be part of the mocked fagsak, otherwise the app redirects to the saksoversikt.
+- Beslutter is decided by AD groups in `/user/profile`, not the `rolle` field — use `innloggetSomBeslutter`.
+  Use `innloggetSomVeileder` for read-only access (and obfuscated person data when the toggle is on).
+- Known app bugs are covered with `test.fail(true, 'Kjent feil: ...')`, so the test starts failing once the bug is
+  fixed and the marker can be removed.
+- `tilgjengelighet.spec.ts` runs axe (`@axe-core/playwright`, WCAG 2.1 AA) on key pages. Existing violations are
+  listed per page in `kjenteBrudd` — remove the rule from the list when the violation is fixed.
+
 ## CI & Deploy
 
 - Pull requests run a reusable pnpm workflow from `navikt/familie-baks-gha-workflows@main`
   (`pull-request-pnpm.yaml`, Node 24) — the actual build/test steps live in that external repo, not here.
+  A separate `playwright` job in `pull_request.yaml` runs `pnpm test:playwright` (Chromium) and uploads the
+  HTML report as the `playwright-rapport` artifact.
 - Pushing to `main` runs two independent chains **in parallel**, with no manual gate or approval step:
   build+deploy to dev-gcp (`.nais/app-dev.yaml`) and build+deploy to prod-gcp (`.nais/app-prod.yaml`).
   A `varsle-slack` job notifies on failure of either chain.
