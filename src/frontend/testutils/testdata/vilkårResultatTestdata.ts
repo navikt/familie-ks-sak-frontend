@@ -1,5 +1,4 @@
 import { type IRestVilkårResultat, type IVilkårResultat, Resultat, VilkårType } from '@typer/vilkår';
-import { nyIsoDatoPeriode } from '@utils/dato';
 
 export function lagVilkårResultat(vilkårResultat: Partial<IRestVilkårResultat>): IRestVilkårResultat {
     return {
@@ -26,5 +25,8 @@ export function lagVilkårResultat(vilkårResultat: Partial<IRestVilkårResultat
 
 export function lagVilkårResultatUi(vilkårResultat: Partial<IRestVilkårResultat> = {}): IVilkårResultat {
     const { periodeFom, periodeTom, ...rest } = lagVilkårResultat(vilkårResultat);
-    return { ...rest, periode: nyIsoDatoPeriode(periodeFom, periodeTom) };
+    // Bygger perioden direkte i stedet for med nyIsoDatoPeriode, fordi @utils/dato ikke kan importeres i Playwright.
+    return { ...rest, periode: { fom: periodeFom || undefined, tom: periodeTom || undefined } };
 }
+
+export * as VilkårResultatTestdata from './vilkårResultatTestdata';
