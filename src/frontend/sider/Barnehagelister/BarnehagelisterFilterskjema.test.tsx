@@ -19,7 +19,7 @@ const barnehagebarnRequestParams: BarnehagebarnRequestParams = {
     ident: '',
     kommuneNavn: '',
     kunLøpendeAndel: false,
-    bydelOrgNummer: '',
+    bydelOrganisasjonsnummer: '',
     sortBy: 'kommuneNavn',
     sortAsc: false,
 };

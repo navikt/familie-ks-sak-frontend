@@ -9,7 +9,7 @@ export interface BarnehagebarnFilter {
     ident?: string;
     kommuneNavn?: string;
     kunLøpendeAndel: boolean;
-    bydelOrgNummer?: string;
+    bydelOrganisasjonsnummer?: string;
 }
 
 export interface Barnehagebarn {

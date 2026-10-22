@@ -31,7 +31,7 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
     const { data: bydeler, isError: harFeiletÅHenteBydeler } = useHentBydeler();
 
     const { register, handleSubmit, reset, control, watch, setValue } = useForm<BarnehagebarnFilter>({
-        defaultValues: { ident: '', kommuneNavn: '', kunLøpendeAndel: false, bydelOrgNummer: '' },
+        defaultValues: { ident: '', kommuneNavn: '', kunLøpendeAndel: false, bydelOrganisasjonsnummer: '' },
     });
 
     const onSubmit: SubmitHandler<BarnehagebarnFilter> = barnehagebarnFilter => {
@@ -43,7 +43,7 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
 
     useEffect(() => {
         if (!erOslo(kommuneNavn)) {
-            setValue('bydelOrgNummer', '');
+            setValue('bydelOrganisasjonsnummer', '');
         }
     }, [kommuneNavn, setValue]);
 
@@ -97,7 +97,7 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
                             />
                             <Controller
                                 control={control}
-                                name={'bydelOrgNummer'}
+                                name={'bydelOrganisasjonsnummer'}
                                 render={({ field }) => (
                                     <Select
                                         label="Bydel (Kun Oslo)"
