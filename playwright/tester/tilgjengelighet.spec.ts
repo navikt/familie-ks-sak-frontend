@@ -20,10 +20,10 @@ interface Side {
     overskrift: string;
     steg?: BehandlingSteg;
     /**
-     * axe-regler siden bryter i dag. De slås av for siden, slik at testen fanger opp nye brudd. Fjern regelen herfra når
-     * bruddet er rettet.
+     * Antall elementer per axe-regel som bryter i dag. Testen feiler hvis antallet endrer seg, slik at nye brudd fanges
+     * opp også for regler siden allerede bryter. Tell ned når et brudd er rettet, og fjern regelen når alle er rettet.
      */
-    kjenteBrudd?: string[];
+    kjenteBrudd?: Record<string, number>;
 }
 
 const SIDER: Side[] = [
@@ -34,59 +34,59 @@ const SIDER: Side[] = [
         navn: 'Saksoversikt',
         url: '/fagsak/1/saksoversikt',
         overskrift: 'Saksoversikt',
-        kjenteBrudd: [IKONER_UTEN_TEKST],
+        kjenteBrudd: { [IKONER_UTEN_TEKST]: 3 },
     },
     {
         navn: 'Dokumenter',
         url: '/fagsak/1/dokumenter',
         overskrift: 'Dokumentoversikt',
-        kjenteBrudd: [IKONER_UTEN_TEKST],
+        kjenteBrudd: { [IKONER_UTEN_TEKST]: 3 },
     },
     {
         navn: 'Send informasjonsbrev',
         url: '/fagsak/1/dokumentutsending',
         overskrift: 'Send informasjonsbrev',
-        kjenteBrudd: [IKONER_UTEN_TEKST],
+        kjenteBrudd: { [IKONER_UTEN_TEKST]: 4 },
     },
     {
         navn: 'Registrer søknad',
         url: '/fagsak/1/1/registrer-soknad',
         overskrift: 'Registrer opplysninger fra søknaden',
         steg: BehandlingSteg.REGISTRERE_SØKNAD,
-        kjenteBrudd: [IKONER_UTEN_TEKST],
+        kjenteBrudd: { [IKONER_UTEN_TEKST]: 4 },
     },
     {
         navn: 'Vilkårsvurdering',
         url: '/fagsak/1/1/vilkaarsvurdering',
         overskrift: 'Vilkårsvurdering',
         steg: BehandlingSteg.VILKÅRSVURDERING,
-        kjenteBrudd: [IKONER_UTEN_TEKST],
+        kjenteBrudd: { [IKONER_UTEN_TEKST]: 4 },
     },
     {
         navn: 'Behandlingsresultat',
         url: '/fagsak/1/1/tilkjent-ytelse',
         overskrift: 'Behandlingsresultat',
         steg: BehandlingSteg.BEHANDLINGSRESULTAT,
-        kjenteBrudd: [IKONER_UTEN_TEKST, KNAPP_UTEN_TEKST],
+        kjenteBrudd: { [IKONER_UTEN_TEKST]: 5, [KNAPP_UTEN_TEKST]: 1 },
     },
     {
         navn: 'Simulering',
         url: '/fagsak/1/1/simulering',
         overskrift: 'Simulering',
         steg: BehandlingSteg.SIMULERING,
-        kjenteBrudd: [IKONER_UTEN_TEKST],
+        kjenteBrudd: { [IKONER_UTEN_TEKST]: 3 },
     },
     {
         navn: 'Vedtak',
         url: '/fagsak/1/1/vedtak',
         overskrift: 'Vedtak',
         steg: BehandlingSteg.VEDTAK,
-        kjenteBrudd: [IKONER_UTEN_TEKST],
+        kjenteBrudd: { [IKONER_UTEN_TEKST]: 4 },
     },
 ];
 
 test.describe('Tilgjengelighet', () => {
-    for (const { navn, url, overskrift, steg, kjenteBrudd = [] } of SIDER) {
+    for (const { navn, url, overskrift, steg, kjenteBrudd = {} } of SIDER) {
         test(`${navn} skal ikke ha nye brudd på WCAG 2.1 AA`, async ({ page, apiMock }) => {
             if (steg) {
                 apiMock.use(...lagBehandlingsmock(lagBehandlingPåSteg(steg)).handlers);
@@ -95,12 +95,13 @@ test.describe('Tilgjengelighet', () => {
             await page.goto(url);
             await expect(page.getByRole('heading', { name: overskrift, exact: true }).first()).toBeVisible();
 
-            const { violations } = await new AxeBuilder({ page })
-                .withTags(WCAG_21_AA)
-                .disableRules(kjenteBrudd)
-                .analyze();
+            const { violations } = await new AxeBuilder({ page }).withTags(WCAG_21_AA).analyze();
 
-            expect(violations.map(({ id, help, nodes }) => `${id}: ${help} (${nodes.length} element)`)).toEqual([]);
+            const antallBruddPerRegel = Object.fromEntries(violations.map(({ id, nodes }) => [id, nodes.length]));
+            const beskrivelse = violations
+                .map(({ id, help, nodes }) => `${id}: ${help}\n${nodes.map(({ target }) => `  ${target}`).join('\n')}`)
+                .join('\n');
+            expect(antallBruddPerRegel, beskrivelse).toEqual(kjenteBrudd);
         });
     }
 });
