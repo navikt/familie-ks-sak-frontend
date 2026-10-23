@@ -11,7 +11,7 @@ export default defineConfig({
     fullyParallel: true,
     forbidOnly: erCI,
     retries: erCI ? 2 : 0,
-    workers: erCI ? 1 : undefined,
+    workers: erCI ? 2 : undefined,
     reporter: [[erCI ? 'github' : 'list'], ['html', { outputFolder: './playwright/rapport', open: 'never' }]],
     use: {
         baseURL,
