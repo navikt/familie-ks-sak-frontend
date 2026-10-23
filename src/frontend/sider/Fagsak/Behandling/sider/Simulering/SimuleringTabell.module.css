@@ -1,0 +1,32 @@
+.switch {
+    width: fit-content;
+}
+
+.table {
+    width: unset;
+}
+
+.firstColumn {
+    width: 10rem;
+}
+
+.dataCell {
+    width: var(--ax-space-72);
+}
+
+.dashedBorder {
+    border-left: 1px dashed;
+}
+
+.negativeAmount {
+    color: var(--ax-text-danger-subtle);
+}
+
+.nextPeriodAmount {
+    color: var(--ax-text-success-subtle);
+    font-weight: var(--ax-font-weight-bold);
+}
+
+.manuellPosteringRad {
+    background-color: var(--ax-bg-neutral-soft);
+}

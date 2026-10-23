@@ -1,10 +1,9 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Box, Button, Fieldset, HGrid, Link, LocalAlert } from '@navikt/ds-react';
+import { Bleed, Box, Button, Fieldset, HGrid, HStack, Link, LocalAlert, VStack } from '@navikt/ds-react';
 import type { OptionType } from '@typer/common';
 import { EøsPeriodeStatus, type IRestValutakurs } from '@typer/eøsPerioder';
 import { useFormContext } from 'react-hook-form';
-import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
 import type { ValutakursFormValues } from './useValutakursSkjema';
 import { ValutakursBarnFelt } from './ValutakursBarnFelt';
 import { ValutakursDatoFelt } from './ValutakursDatoFelt';
@@ -43,17 +42,15 @@ const ValutakursTabellRadEndre = ({
 
     return (
         <Fieldset error={errors.root?.message} legend={'Endre valutakurs'} hideLegend>
-            <EøsPeriodeSkjemaContainer $lesevisning={erLesevisning} $status={valutakurs.status}>
-                <ValutakursBarnFelt tilgjengeligeBarn={tilgjengeligeBarn} lesevisning={erLesevisning} />
-                <Box marginBlock={'space-24 space-0'}>
+            <Bleed asChild marginInline={'space-48 space-0'}>
+                <VStack maxWidth={'40rem'} paddingInline={'space-32 space-0'} gap="space-24">
+                    <ValutakursBarnFelt tilgjengeligeBarn={tilgjengeligeBarn} lesevisning={erLesevisning} />
                     <ValutakursPeriodeFelt
                         initiellFom={initiellFom}
                         periodeFeilmeldingId={periodeFeilmeldingId}
                         lesevisning={erLesevisning}
                         behandlingsÅrsakErOvergangsordning={behandlingsÅrsakErOvergangsordning}
                     />
-                </Box>
-                <Box marginBlock={'space-24 space-0'}>
                     <Fieldset legend={'Registrer valutakursdato'}>
                         <HGrid columns={'1fr 2fr 1fr'} gap={'space-12'}>
                             <ValutakursDatoFelt readOnly={erLesevisning} />
@@ -84,40 +81,40 @@ const ValutakursTabellRadEndre = ({
                             </Box>
                         )}
                     </Fieldset>
-                </Box>
-                {!erLesevisning && (
-                    <Knapperad>
-                        <div>
-                            <Button type={'submit'} size="small" variant={'primary'} loading={isSubmitting}>
-                                Ferdig
-                            </Button>
-                            <Button
-                                type={'button'}
-                                style={{ marginLeft: '1rem' }}
-                                onClick={onAvbryt}
-                                size="small"
-                                variant="tertiary"
-                            >
-                                Avbryt
-                            </Button>
-                        </div>
+                    {!erLesevisning && (
+                        <HStack justify={'space-between'} marginBlock={'space-32 space-16'}>
+                            <div>
+                                <Button type={'submit'} size="small" variant={'primary'} loading={isSubmitting}>
+                                    Ferdig
+                                </Button>
+                                <Button
+                                    type={'button'}
+                                    style={{ marginLeft: '1rem' }}
+                                    onClick={onAvbryt}
+                                    size="small"
+                                    variant="tertiary"
+                                >
+                                    Avbryt
+                                </Button>
+                            </div>
 
-                        {valutakurs.status !== EøsPeriodeStatus.IKKE_UTFYLT && (
-                            <Button
-                                type={'button'}
-                                variant={'tertiary'}
-                                onClick={slettValutakurs}
-                                id={`slett_valutakurs_${valutakurs.barnIdenter.map(barn => `${barn}-`)}_${initiellFom}`}
-                                loading={sletterValutakurs}
-                                size={'small'}
-                                icon={<TrashIcon />}
-                            >
-                                Fjern
-                            </Button>
-                        )}
-                    </Knapperad>
-                )}
-            </EøsPeriodeSkjemaContainer>
+                            {valutakurs.status !== EøsPeriodeStatus.IKKE_UTFYLT && (
+                                <Button
+                                    type={'button'}
+                                    variant={'tertiary'}
+                                    onClick={slettValutakurs}
+                                    id={`slett_valutakurs_${valutakurs.barnIdenter.map(barn => `${barn}-`)}_${initiellFom}`}
+                                    loading={sletterValutakurs}
+                                    size={'small'}
+                                    icon={<TrashIcon />}
+                                >
+                                    Fjern
+                                </Button>
+                            )}
+                        </HStack>
+                    )}
+                </VStack>
+            </Bleed>
         </Fieldset>
     );
 };
