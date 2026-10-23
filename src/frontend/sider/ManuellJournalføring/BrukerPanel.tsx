@@ -1,6 +1,5 @@
-import { useHentFagsakPaaPersonError } from '@hooks/useHentFagsakPaaPersonError';
 import { KontoSirkel } from '@ikoner/KontoSirkel';
-import { ExpansionCard, LocalAlert } from '@navikt/ds-react';
+import { ExpansionCard } from '@navikt/ds-react';
 import { useFelt, Valideringsstatus } from '@navikt/familie-skjema';
 import { EndreBrukerSkjema } from '@sider/ManuellJournalføring/EndreBrukerSkjema';
 import { formaterIdent } from '@utils/formatter';
@@ -18,8 +17,6 @@ export function BrukerPanel() {
         verdi: '',
         valideringsfunksjon: identValidator,
     });
-
-    const hentFagsakPaaPersonError = useHentFagsakPaaPersonError(nyIdent.verdi);
 
     useEffect(() => {
         if (skjema.visFeilmeldinger && skjema.felter.bruker.valideringsstatus === Valideringsstatus.FEIL) {
@@ -45,19 +42,7 @@ export function BrukerPanel() {
                 />
             </ExpansionCard.Header>
             <ExpansionCard.Content className={styles.innerContent}>
-                {!erLesevisning() && (
-                    <>
-                        <EndreBrukerSkjema nyIdent={nyIdent} />
-                        {hentFagsakPaaPersonError && (
-                            <LocalAlert status={'error'}>
-                                <LocalAlert.Header>
-                                    <LocalAlert.Title>Klarte ikke å endre bruker</LocalAlert.Title>
-                                </LocalAlert.Header>
-                                <LocalAlert.Content>{hentFagsakPaaPersonError?.message}</LocalAlert.Content>
-                            </LocalAlert>
-                        )}
-                    </>
-                )}
+                {!erLesevisning() && <EndreBrukerSkjema nyIdent={nyIdent} />}
             </ExpansionCard.Content>
         </ExpansionCard>
     );
