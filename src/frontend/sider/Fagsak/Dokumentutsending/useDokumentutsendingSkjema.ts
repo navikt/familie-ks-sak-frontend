@@ -3,8 +3,8 @@ import { useFagsak } from '@hooks/useFagsak';
 import { useForhåndsvisBrevPåFagsak } from '@hooks/useForhåndsvisBrevPåFagsak';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useSendInformasjonsbrev } from '@hooks/useSendInformasjonsbrev';
+import { useBrevmottakereFagsakContext } from '@sider/Fagsak/BrevmottakereFagsakContext';
 import type { DokumentÅrsak } from '@sider/Fagsak/Dokumentutsending/dokumentÅrsakTyper';
-import { useManuelleBrevmottakerePåFagsakContext } from '@sider/Fagsak/ManuelleBrevmottakerePåFagsakContext';
 import type { IManueltBrevRequestPåFagsak } from '@typer/dokument';
 import type { IPersonInfo } from '@typer/person';
 import { ForelderBarnRelasjonRolle } from '@typer/person';
@@ -59,8 +59,7 @@ export function useDokumentutsendingSkjema({ åpneBrevSendtDialog, settForhånds
     const bruker = useBruker();
     const fagsak = useFagsak();
 
-    const { manuelleBrevmottakerePåFagsak, settManuelleBrevmottakerePåFagsak } =
-        useManuelleBrevmottakerePåFagsakContext();
+    const { brevmottakere, slettAlleBrevmottakere } = useBrevmottakereFagsakContext();
 
     const form = useForm<DokumentutsendingFormValues>({
         defaultValues: dokumentutsendingSkjemaStandardverdier(bruker),
@@ -80,7 +79,7 @@ export function useDokumentutsendingSkjema({ åpneBrevSendtDialog, settForhånds
         trigger().then(skjemaErGyldig => {
             if (skjemaErGyldig) {
                 const skjemaverdier = getValues();
-                const brevRequest = transformerSkjemaData({ skjemaverdier, bruker, manuelleBrevmottakerePåFagsak });
+                const brevRequest = transformerSkjemaData({ skjemaverdier, bruker, brevmottakere });
                 return forhåndsvisBrev(brevRequest)
                     .then(url => settForhåndsvisningUrl(url))
                     .then(() => settSistForhåndsvisteBrevRequest(brevRequest))
@@ -89,10 +88,10 @@ export function useDokumentutsendingSkjema({ åpneBrevSendtDialog, settForhånds
         });
 
     const onSubmit = async (skjemaverdier: DokumentutsendingFormValues) => {
-        return sendInformasjonsbrev(transformerSkjemaData({ skjemaverdier, bruker, manuelleBrevmottakerePåFagsak }))
+        return sendInformasjonsbrev(transformerSkjemaData({ skjemaverdier, bruker, brevmottakere }))
             .then(() => {
                 åpneBrevSendtDialog();
-                settManuelleBrevmottakerePåFagsak([]);
+                slettAlleBrevmottakere();
                 settSistForhåndsvisteBrevRequest(undefined);
             })
             .catch(error => setError('root', { message: error.message }));
@@ -101,10 +100,7 @@ export function useDokumentutsendingSkjema({ åpneBrevSendtDialog, settForhånds
     const skjemaverdier = getValues();
     const visForhåndsvisningBeskjed =
         !!skjemaverdier.årsak &&
-        !deepEqual(
-            transformerSkjemaData({ skjemaverdier, bruker, manuelleBrevmottakerePåFagsak }),
-            sistForhåndsvisteBrevRequest
-        );
+        !deepEqual(transformerSkjemaData({ skjemaverdier, bruker, brevmottakere }), sistForhåndsvisteBrevRequest);
 
     return {
         form,
