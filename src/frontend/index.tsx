@@ -5,12 +5,12 @@ import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { initApm } from './apm';
-import { erLokal } from './utils/miljø';
+import { erLokal, erPlaywright } from './utils/miljø';
 
 // Setter default locale til norsk bokmål for date-fns
 setDefaultOptions({ locale: nb });
 
-if (!erLokal()) {
+if (!erLokal() && !erPlaywright()) {
     initApm();
 }
 
