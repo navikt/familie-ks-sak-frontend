@@ -9,14 +9,14 @@ import styles from './ManuellJournalføring.module.css';
 import { ManuellJournalføringProvider, useManuellJournalføringContext } from './ManuellJournalføringContext';
 
 function ManuellJournalføringContent() {
-    const { dataForManuellJournalføring } = useManuellJournalføringContext();
+    const { dataForManuellJournalføring, skjema } = useManuellJournalføringContext();
 
     switch (dataForManuellJournalføring.status) {
         case RessursStatus.SUKSESS: {
             const viserAlert = dataForManuellJournalføring.data.journalpost.journalstatus !== Journalstatus.MOTTATT;
             return (
                 <>
-                    <Personlinje bruker={dataForManuellJournalføring.data.person} />
+                    <Personlinje bruker={skjema.felter.bruker.verdi} />
 
                     {viserAlert && (
                         <>
