@@ -1,4 +1,5 @@
 import { ainntektHandlers } from './ainntektHandlers';
+import { barnehagebarnHandlers } from './barnehagebarnHandlers';
 import { behandlingHandlers } from './behandlingHandlers';
 import { endretUtbetalingAndelHandlers } from './endretUtbetalingAndelHandlers';
 import { fagsakHandlers } from './fagsakHandlers';
@@ -22,4 +23,5 @@ export const handlers = [
     ...saksbehandlerHandlers,
     ...endretUtbetalingAndelHandlers,
     ...loggHandlers,
+    ...barnehagebarnHandlers,
 ];

@@ -15,6 +15,7 @@ const defaultBarnehagebarnRequestParams: BarnehagebarnRequestParams = {
     ident: '',
     kommuneNavn: '',
     kunLøpendeAndel: false,
+    bydelOrganisasjonsnummer: '',
     limit: 20,
     offset: 0,
     sortBy: 'kommuneNavn',
@@ -107,6 +108,7 @@ export const useBarnehagelister = (): BarnehagebarnContext => {
                 ident: oppdatertBarnehagebarnFilter.ident,
                 kommuneNavn: oppdatertBarnehagebarnFilter.kommuneNavn,
                 kunLøpendeAndel: oppdatertBarnehagebarnFilter.kunLøpendeAndel,
+                bydelOrganisasjonsnummer: oppdatertBarnehagebarnFilter.bydelOrganisasjonsnummer,
             });
         }
     };
@@ -116,6 +118,7 @@ export const useBarnehagelister = (): BarnehagebarnContext => {
             ident: barnehagebarnRequestParams.ident,
             kommuneNavn: barnehagebarnRequestParams.kommuneNavn,
             kunLøpendeAndel: barnehagebarnRequestParams.kunLøpendeAndel,
+            bydelOrganisasjonsnummer: barnehagebarnRequestParams.bydelOrganisasjonsnummer,
         };
         return JSON.stringify(barnehagebarnFilter) !== JSON.stringify(oppdatertBarnehagebarnFilter);
     };
