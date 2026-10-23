@@ -13,7 +13,7 @@ import { ErrorBoundary } from '@komponenter/Error/ErrorBoundary';
 import { captureRouteException } from '@komponenter/Error/RouteError';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { erProd } from '@utils/miljø';
+import { erPlaywright, erProd } from '@utils/miljø';
 import { RouterProvider } from 'react-router';
 
 import { appRoutes } from './AppRoutes';
@@ -32,7 +32,9 @@ export function App() {
             <TekniskFeilModalProvider>
                 <ManglerTilgangModalProvider>
                     <QueryClientProvider client={queryClient}>
-                        {!erProd() && <ReactQueryDevtools position={'right'} initialIsOpen={false} />}
+                        {!erProd() && !erPlaywright() && (
+                            <ReactQueryDevtools position={'right'} initialIsOpen={false} />
+                        )}
                         <SaksbehandlerProvider>
                             <AuthContextProvider>
                                 <HttpContextProvider>

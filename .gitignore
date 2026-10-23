@@ -7,3 +7,6 @@ VERSION
 pnpm-debug.log
 .secrets.env
 secure.log
+playwright/.bygg
+playwright/resultater
+playwright/rapport

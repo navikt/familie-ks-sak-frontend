@@ -9,4 +9,11 @@ export const tilbakekrevingHandlers = [
     }>('/familie-ks-sak/api/tilbakekreving/fagsak/:fagsakId', () => {
         return HttpResponse.json(byggSuksessRessurs([TilbakekrevingTestdata.lagTilbakekrevingbehandling()]));
     }),
+    // msw matcher mot URL-kodet sti, så æøå må kodes.
+    http.get<{ fagsakId: string }>(
+        encodeURI('/familie-ks-sak/api/fagsaker/:fagsakId/har-åpen-tilbakekrevingsbehandling'),
+        () => {
+            return HttpResponse.json(byggSuksessRessurs(false));
+        }
+    ),
 ];

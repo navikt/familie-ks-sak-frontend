@@ -13,3 +13,5 @@ export function lagAnnenVurdering(annenVurdering: Partial<IRestAnnenVurdering> =
         ...annenVurdering,
     };
 }
+
+export * as AnnenVurderingTestdata from './annenVurderingTestdata';
