@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 
 import { lagBehandlingPåSteg, SØKER_IDENT } from '../behandlingsdata';
 import { lagBehandlingsmock } from '../behandlingsmock';
-import { expect, test } from '../fixtures';
+import { expect, I_DAG, test } from '../fixtures';
 
 const OPPRETT_BEHANDLING_URL = '/familie-ks-sak/api/behandlinger';
 const NY_BEHANDLING_ID = 2;
@@ -58,8 +58,7 @@ test.describe('Opprett behandling', () => {
 
         await behandlingstype.selectOption({ label: 'Førstegangsbehandling' });
         await modal.getByLabel('Velg behandlingstema').selectOption({ label: 'Nasjonal' });
-        const iDag = new Date();
-        await modal.getByLabel('Søknad mottatt dato').fill(format(iDag, 'dd.MM.yyyy'));
+        await modal.getByLabel('Søknad mottatt dato').fill(format(I_DAG, 'dd.MM.yyyy'));
 
         const opprettRequest = page.waitForRequest(
             request => request.method() === 'POST' && new URL(request.url()).pathname === OPPRETT_BEHANDLING_URL
@@ -72,7 +71,7 @@ test.describe('Opprett behandling', () => {
             kategori: BehandlingKategori.NASJONAL,
             saksbehandlerIdent: 'A1',
             søkersIdent: SØKER_IDENT,
-            søknadMottattDato: format(iDag, 'yyyy-MM-dd'),
+            søknadMottattDato: format(I_DAG, 'yyyy-MM-dd'),
         });
         await expect(page).toHaveURL(`/fagsak/1/${NY_BEHANDLING_ID}/registrer-soknad`);
         await expect(page.getByRole('heading', { name: 'Registrer opplysninger fra søknaden' })).toBeVisible();

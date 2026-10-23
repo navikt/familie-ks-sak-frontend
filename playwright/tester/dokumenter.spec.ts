@@ -20,7 +20,7 @@ const VEDTAKSBREV = JournalpostTestdata.lagTilgangsstyrtJournalpost({
     journalpostId: '2',
     journalposttype: Journalposttype.U,
     tittel: 'Vedtak om kontantstøtte',
-    datoMottatt: '2026-11-15T12:00:00',
+    datoMottatt: '2026-10-03T12:00:00',
     journalstatus: Journalstatus.FERDIGSTILT,
     sak: { fagsaksystem: 'KONT', fagsakId: '1' },
     dokumenter: [JournalpostTestdata.lagDokumentInfo({ dokumentInfoId: '2', tittel: 'Vedtak om kontantstøtte' })],
@@ -56,7 +56,7 @@ test.describe('Dokumenter', () => {
         await expect(vedtaksrad.getByRole('img', { name: 'Utgående' })).toBeVisible();
         await expect(vedtaksrad.getByRole('cell')).toHaveText([
             /U$/,
-            '15.11.26 12:00',
+            '03.10.26 12:00',
             'Vedtak om kontantstøtte',
             'Nav Kontantstøtte | 1',
             'Søker Testersen',

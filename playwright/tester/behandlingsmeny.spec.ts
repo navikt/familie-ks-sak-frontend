@@ -14,7 +14,7 @@ import { HttpResponse, http } from 'msw';
 
 import { BARN_IDENT, lagBehandlingPåSteg } from '../behandlingsdata';
 import { type Behandlingsmock, lagBehandlingsmock } from '../behandlingsmock';
-import { expect, test } from '../fixtures';
+import { expect, I_DAG, test } from '../fixtures';
 
 const HENLEGG_URL = '/familie-ks-sak/api/behandlinger/1/henlegg';
 const SETT_PÅ_VENT_URL = encodeURI('/familie-ks-sak/api/behandlinger/:behandlingId/sett-på-vent');
@@ -103,7 +103,7 @@ test.describe('Behandlingsmeny', () => {
         await page.getByRole('menuitem', { name: 'Sett behandling på vent' }).click();
 
         const modal = page.getByRole('dialog', { name: 'Sett behandling på vent' });
-        const standardfrist = addDays(new Date(), 21);
+        const standardfrist = addDays(I_DAG, 21);
         await expect(modal.getByLabel('Frist')).toHaveValue(format(standardfrist, 'dd.MM.yyyy'));
 
         await modal.getByRole('button', { name: 'Bekreft' }).click();

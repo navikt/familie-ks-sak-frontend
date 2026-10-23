@@ -5,8 +5,6 @@ import { VedtaksperiodeTestdata } from '@testutils/testdata/vedtaksperiodeTestda
 import { BehandlingSteg, type IBehandling } from '@typer/behandling';
 import { YtelseType } from '@typer/beregning';
 import { IEndretUtbetalingAndelÅrsak, type IRestEndretUtbetalingAndel } from '@typer/utbetalingAndel';
-import { addMonths, endOfMonth, format, startOfMonth, subMonths } from 'date-fns';
-import { nb } from 'date-fns/locale';
 import { HttpResponse, http } from 'msw';
 
 import {
@@ -30,20 +28,17 @@ function lagBehandlingsresultatMock(endringer: Partial<IBehandling> = {}) {
 }
 
 /**
- * Oppsummeringen under tidslinjen viser utbetalingen for inneværende måned, så her får barnet kontantstøtte fra to
- * måneder tilbake til tre måneder fram i tid, uansett når testen kjøres.
+ * Oppsummeringen under tidslinjen viser utbetalingen for inneværende måned (oktober 2026, se `I_DAG`), så her får
+ * barnet kontantstøtte fra august 2026 til januar 2027.
  */
 function lagTilkjentYtelseRundtDenneMåneden(): Partial<IBehandling> {
-    const iDag = new Date();
-    const fom = startOfMonth(subMonths(iDag, 2));
-    const tom = endOfMonth(addMonths(iDag, 3));
-    const stønadFom = format(fom, 'yyyy-MM');
-    const stønadTom = format(tom, 'yyyy-MM');
+    const stønadFom = '2026-08';
+    const stønadTom = '2027-01';
     return {
         utbetalingsperioder: [
             VedtaksperiodeTestdata.lagUtbetalingsperiode({
-                periodeFom: format(fom, 'yyyy-MM-dd'),
-                periodeTom: format(tom, 'yyyy-MM-dd'),
+                periodeFom: '2026-08-01',
+                periodeTom: '2027-01-31',
                 utbetalingsperiodeDetaljer: [
                     VedtaksperiodeTestdata.lagUtbetalingsperiodeDetalj({
                         person: lagPersoner()[1],
@@ -79,9 +74,7 @@ test.describe('Behandlingsresultat', () => {
         await page.goto('/fagsak/1/1/tilkjent-ytelse');
         await expect(page.getByRole('heading', { name: 'Behandlingsresultat', level: 1 })).toBeVisible();
 
-        const måned = format(new Date(), 'MMMM yyyy', { locale: nb });
-        const månedstittel = måned.charAt(0).toUpperCase() + måned.slice(1);
-        await expect(page.getByRole('heading', { name: månedstittel, level: 3 })).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'Oktober 2026', level: 3 })).toBeVisible();
         await expect(page.getByText(new RegExp(`^${BARN_NAVN} \\(.*\\) \\| 100224 12345$`))).toBeVisible();
         await expect(page.getByText('Ingen plass')).toBeVisible();
         await expect(page.getByText('Totalt utbetalt per mnd')).toBeVisible();

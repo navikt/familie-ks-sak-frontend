@@ -19,7 +19,7 @@ import {
     lagVedtaksperiodemock,
 } from '../behandlingsdata';
 import { lagBehandlingsmock } from '../behandlingsmock';
-import { expect, test } from '../fixtures';
+import { expect, I_DAG, test } from '../fixtures';
 import { KONTROLLSIDER, kontrollerAlleSider } from '../kontrollsider';
 
 // Barnet må finnes i søkers relasjoner for å kunne velges når søknaden registreres.
@@ -71,7 +71,7 @@ test.describe('Behandlingsflyt', () => {
             const modal = page.getByRole('dialog', { name: 'Opprett ny behandling' });
             await modal.getByLabel('Velg type behandling').selectOption({ label: 'Førstegangsbehandling' });
             await modal.getByLabel('Velg behandlingstema').selectOption({ label: 'Nasjonal' });
-            await modal.getByLabel('Søknad mottatt dato').fill(format(new Date(), 'dd.MM.yyyy'));
+            await modal.getByLabel('Søknad mottatt dato').fill(format(I_DAG, 'dd.MM.yyyy'));
             await modal.getByRole('button', { name: 'Bekreft' }).click();
 
             await expect(page).toHaveURL(/\/fagsak\/1\/1\/registrer-soknad$/);
