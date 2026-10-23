@@ -6,14 +6,13 @@ import { useOpprettEndretUtbetalingAndel } from '@hooks/useOpprettEndretUtbetali
 import { useOpprettOvergangsordningAndel } from '@hooks/useOpprettOvergangsordningAndel';
 import { useTidslinjeContext } from '@komponenter/Tidslinje/TidslinjeContext';
 import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons';
-import { Box, Button, ErrorMessage, ErrorSummary, Label, LocalAlert } from '@navikt/ds-react';
+import { Box, Button, ErrorMessage, ErrorSummary, HStack, Label, LocalAlert } from '@navikt/ds-react';
 import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { BehandlingResultat, BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from '@typer/eøsPerioder';
 import { formaterIdent, slåSammenListeTilStreng } from '@utils/formatter';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 import KompetanseSkjema from './Eøs/Kompetanse/KompetanseSkjema';
@@ -28,31 +27,6 @@ import { FulltidBarnehageplassAugust2024Alert } from './FulltidBarnehageplassAug
 import { Oppsummeringsboks } from './Oppsummeringsboks';
 import OvergangsordningAndelTabell from './OvergangsordningAndel/OvergangsordningAndelTabell';
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
-
-const EndretUtbetalingAndel = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-`;
-
-const OvergangsordningAndel = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-`;
-
-const StyledEditIkon = styled(PencilIcon)`
-    margin-right: 0.5rem;
-`;
-
-const StyledPlusIkon = styled(PlusCircleIcon)`
-    margin-right: 0.5rem;
-`;
-
-const StyledErrorSummary = styled(ErrorSummary)`
-    margin-top: 5rem;
-`;
 
 const Behandlingsresultat = () => {
     const { behandling, settÅpenBehandling } = useBehandlingContext();
@@ -152,7 +126,9 @@ const Behandlingsresultat = () => {
                 } else if (harEøs && !erEøsInformasjonGyldig()) {
                     settVisFeilmeldinger(true);
                 } else {
-                    oppdaterBehandlingsresultat({ behandlingId: behandling.behandlingId });
+                    oppdaterBehandlingsresultat({
+                        behandlingId: behandling.behandlingId,
+                    });
                 }
             }}
             maxWidthStyle={'80rem'}
@@ -178,12 +154,20 @@ const Behandlingsresultat = () => {
             )}
             <TilkjentYtelseTidslinje grunnlagPersoner={grunnlagPersoner} tidslinjePersoner={tidslinjePersoner} />
             {!erLesevisning && (
-                <EndretUtbetalingAndel>
+                <HStack justify={'end'} marginBlock={'space-0 space-16'}>
                     <Button
                         variant="tertiary"
                         size="small"
-                        onClick={() => opprettEndretUtbetalingAndel({ behandlingId: behandling.behandlingId })}
-                        icon={<StyledEditIkon />}
+                        onClick={() =>
+                            opprettEndretUtbetalingAndel({
+                                behandlingId: behandling.behandlingId,
+                            })
+                        }
+                        icon={
+                            <Box asChild marginInline={'space-0 space-8'}>
+                                <PencilIcon />
+                            </Box>
+                        }
                         disabled={opprettEndretUtbetalingAndelIsPending}
                         loading={opprettEndretUtbetalingAndelIsPending}
                     >
@@ -192,7 +176,7 @@ const Behandlingsresultat = () => {
                     {opprettEndretUtbetalingAndelError && (
                         <ErrorMessage>{opprettEndretUtbetalingAndelError.message}</ErrorMessage>
                     )}
-                </EndretUtbetalingAndel>
+                </HStack>
             )}
             {aktivEtikett && (
                 <Oppsummeringsboks
@@ -211,12 +195,20 @@ const Behandlingsresultat = () => {
                 <>
                     <OvergangsordningAndelTabell åpenBehandling={behandling} />
                     {behandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024 && !erLesevisning && (
-                        <OvergangsordningAndel>
+                        <HStack justify={'center'} marginBlock={'space-16'}>
                             <Button
                                 variant="primary"
                                 size="medium"
-                                onClick={() => opprettOvergangsordningAndel({ behandlingId: behandling.behandlingId })}
-                                icon={<StyledPlusIkon />}
+                                onClick={() =>
+                                    opprettOvergangsordningAndel({
+                                        behandlingId: behandling.behandlingId,
+                                    })
+                                }
+                                icon={
+                                    <Box asChild marginInline={'space-0 space-8'}>
+                                        <PlusCircleIcon />
+                                    </Box>
+                                }
                                 disabled={opprettOvergangsordningAndelIsPending}
                                 loading={opprettOvergangsordningAndelIsPending}
                             >
@@ -225,7 +217,7 @@ const Behandlingsresultat = () => {
                             {opprettOvergangsordningAndelError && (
                                 <ErrorMessage>{opprettOvergangsordningAndelError.message}</ErrorMessage>
                             )}
-                        </OvergangsordningAndel>
+                        </HStack>
                     )}
                 </>
             )}
@@ -253,28 +245,30 @@ const Behandlingsresultat = () => {
                 />
             )}
             {visFeilmeldinger && !erEøsInformasjonGyldig() && (
-                <StyledErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
-                    {[
-                        ...hentKompetanserMedFeil().map((kompetanse: IRestKompetanse) => ({
-                            feilmelding: `Kompetanse barn: ${kompetanse.barnIdenter}, f.o.m.: ${kompetanse.fom} er ikke fullstendig.`,
-                            skjemaelementId: kompetanseFeilmeldingId(kompetanse),
-                        })),
-                        ...hentUtbetaltAnnetLandBeløpMedFeil().map(
-                            (utenlandskPeriodeBeløp: IRestUtenlandskPeriodeBeløp) => ({
-                                feilmelding: `Utenlandsk beløp barn: ${utenlandskPeriodeBeløp.barnIdenter}, f.o.m.: ${utenlandskPeriodeBeløp.fom} er ikke fullstendig.`,
-                                skjemaelementId: utenlandskPeriodeBeløpFeilmeldingId(utenlandskPeriodeBeløp),
-                            })
-                        ),
-                        ...hentValutakurserMedFeil().map((valutakurs: IRestValutakurs) => ({
-                            feilmelding: `Valutakurs barn: ${valutakurs.barnIdenter}, f.o.m.: ${valutakurs.fom} er ikke fullstendig.`,
-                            skjemaelementId: valutakursFeilmeldingId(valutakurs),
-                        })),
-                    ].map(item => (
-                        <ErrorSummary.Item key={item.skjemaelementId} href={`#${item.skjemaelementId}`}>
-                            {item.feilmelding}
-                        </ErrorSummary.Item>
-                    ))}
-                </StyledErrorSummary>
+                <Box asChild marginBlock={'space-80 space-0'}>
+                    <ErrorSummary heading={'For å gå videre må du rette opp følgende:'}>
+                        {[
+                            ...hentKompetanserMedFeil().map((kompetanse: IRestKompetanse) => ({
+                                feilmelding: `Kompetanse barn: ${kompetanse.barnIdenter}, f.o.m.: ${kompetanse.fom} er ikke fullstendig.`,
+                                skjemaelementId: kompetanseFeilmeldingId(kompetanse),
+                            })),
+                            ...hentUtbetaltAnnetLandBeløpMedFeil().map(
+                                (utenlandskPeriodeBeløp: IRestUtenlandskPeriodeBeløp) => ({
+                                    feilmelding: `Utenlandsk beløp barn: ${utenlandskPeriodeBeløp.barnIdenter}, f.o.m.: ${utenlandskPeriodeBeløp.fom} er ikke fullstendig.`,
+                                    skjemaelementId: utenlandskPeriodeBeløpFeilmeldingId(utenlandskPeriodeBeløp),
+                                })
+                            ),
+                            ...hentValutakurserMedFeil().map((valutakurs: IRestValutakurs) => ({
+                                feilmelding: `Valutakurs barn: ${valutakurs.barnIdenter}, f.o.m.: ${valutakurs.fom} er ikke fullstendig.`,
+                                skjemaelementId: valutakursFeilmeldingId(valutakurs),
+                            })),
+                        ].map(item => (
+                            <ErrorSummary.Item key={item.skjemaelementId} href={`#${item.skjemaelementId}`}>
+                                {item.feilmelding}
+                            </ErrorSummary.Item>
+                        ))}
+                    </ErrorSummary>
+                </Box>
             )}
         </Skjemasteg>
     );

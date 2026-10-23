@@ -1,21 +1,15 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { TrashIcon } from '@navikt/aksel-icons';
-import { BodyShort, Button, Fieldset, HGrid, InlineMessage, VStack } from '@navikt/ds-react';
+import { Bleed, BodyShort, Button, Fieldset, HGrid, HStack, InlineMessage, VStack } from '@navikt/ds-react';
 import type { OptionType } from '@typer/common';
 import { EøsPeriodeStatus, type IRestUtenlandskPeriodeBeløp } from '@typer/eøsPerioder';
 import { useFormContext } from 'react-hook-form';
-import styled from 'styled-components';
-import { EøsPeriodeSkjemaContainer, Knapperad } from '../EøsKomponenter/EøsSkjemaKomponenter';
 import { UtenlandskPeriodeBeløpBarnFelt } from './UtenlandskPeriodeBeløpBarnFelt';
 import { UtenlandskPeriodeBeløpBeløpFelt } from './UtenlandskPeriodeBeløpBeløpFelt';
 import { UtenlandskPeriodeBeløpIntervallFelt } from './UtenlandskPeriodeBeløpIntervallFelt';
 import { UtenlandskPeriodeBeløpPeriodeFelt } from './UtenlandskPeriodeBeløpPeriodeFelt';
 import { UtenlandskPeriodeBeløpValutaFelt } from './UtenlandskPeriodeBeløpValutaFelt';
 import type { UtenlandskPeriodeBeløpFormValues } from './useUtenlandskPeriodeBeløpSkjema';
-
-const UtbetaltBeløpText = styled(BodyShort)`
-    font-weight: bold;
-`;
 
 interface Props {
     utenlandskPeriodeBeløp: IRestUtenlandskPeriodeBeløp;
@@ -48,12 +42,12 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
 
     return (
         <Fieldset error={errors.root?.message} legend={'Endre utenlandsk periodebeløp'} hideLegend>
-            <EøsPeriodeSkjemaContainer $lesevisning={erLesevisning} $status={utenlandskPeriodeBeløp.status}>
-                <VStack gap={'space-24'}>
+            <Bleed asChild marginInline={'space-48 space-0'}>
+                <VStack maxWidth={'40rem'} paddingInline={'space-32 space-0'} gap="space-24">
                     <InlineMessage status="info">
-                        <UtbetaltBeløpText size="small">
+                        <BodyShort weight={'semibold'} size="small">
                             Dersom det er ulike beløp per barn utbetalt i det andre landet, må barna registreres separat
-                        </UtbetaltBeløpText>
+                        </BodyShort>
                     </InlineMessage>
                     <UtenlandskPeriodeBeløpBarnFelt tilgjengeligeBarn={tilgjengeligeBarn} lesevisning={erLesevisning} />
                     <UtenlandskPeriodeBeløpPeriodeFelt
@@ -75,7 +69,7 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                     </Fieldset>
 
                     {!erLesevisning && (
-                        <Knapperad>
+                        <HStack justify={'space-between'} marginBlock={'space-0 space-16'}>
                             <div>
                                 <Button type={'submit'} size="small" variant={'primary'} loading={isSubmitting}>
                                     Ferdig
@@ -106,10 +100,10 @@ const UtenlandskPeriodeBeløpTabellRadEndre = ({
                                     Fjern
                                 </Button>
                             )}
-                        </Knapperad>
+                        </HStack>
                     )}
                 </VStack>
-            </EøsPeriodeSkjemaContainer>
+            </Bleed>
         </Fieldset>
     );
 };

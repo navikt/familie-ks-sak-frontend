@@ -1,21 +1,13 @@
 import { Table } from '@navikt/ds-react';
-import styled from 'styled-components';
-import type { IBehandling } from '../../../../../../typer/behandling';
-import { Datoformat, isoMånedPeriodeTilFormatertString } from '../../../../../../utils/dato';
-import { lagPersonLabel } from '../../../../../../utils/formatter';
+import type { IBehandling } from '@typer/behandling';
+import { Datoformat, isoMånedPeriodeTilFormatertString } from '@utils/dato';
+import { lagPersonLabel } from '@utils/formatter';
 import { useOvergangsordningAndelContext } from './OvergangsordningAndelContext';
 import OvergangsordningAndelSkjema from './OvergangsordningAndelSkjema';
 
 interface IOvergangsordningRadProps {
     åpenBehandling: IBehandling;
 }
-
-const PersonCelle = styled.div`
-    display: flex;
-    svg {
-        margin-right: 1rem;
-    }
-`;
 
 const OvergangsordningAndelRad = ({ åpenBehandling }: IOvergangsordningRadProps) => {
     const {
@@ -46,11 +38,9 @@ const OvergangsordningAndelRad = ({ åpenBehandling }: IOvergangsordningRadProps
             }
         >
             <Table.DataCell>
-                <PersonCelle>
-                    {overgangsordningAndel.personIdent
-                        ? lagPersonLabel(overgangsordningAndel.personIdent, åpenBehandling.personer)
-                        : 'Ikke satt'}
-                </PersonCelle>
+                {overgangsordningAndel.personIdent
+                    ? lagPersonLabel(overgangsordningAndel.personIdent, åpenBehandling.personer)
+                    : 'Ikke satt'}
             </Table.DataCell>
             <Table.DataCell>
                 {overgangsordningAndel.fom
