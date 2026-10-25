@@ -14,10 +14,11 @@ metadata:
   labels:
     team: teamfamilie
 spec:
-  logoutUrl: "http://localhost:8000"
+  logoutUrl: "http://localhost:8010"
   tenant: trygdeetaten.no
   replyUrls:
     - url: "http://localhost:8000/auth/openid/callback"
+    - url: "http://localhost:8010/auth/openid/callback"
   secretName: azuread-familie-ks-sak-frontend-lokal
   claims:
     groups:

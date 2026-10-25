@@ -13,7 +13,7 @@ import { prometheusTellere } from './metrikker.js';
 import { attachToken, doProxy, doRedirectProxy } from './proxy.js';
 import setupRouter from './router.js';
 
-const port = 8000;
+const port = erLokal() ? 8010 : 8000;
 
 backend(sessionConfig, prometheusTellere, appConfig).then(async ({ app, azureAuthConfig, router }: IApp) => {
     app.use((req: Request, _res: Response, next: NextFunction) => {
