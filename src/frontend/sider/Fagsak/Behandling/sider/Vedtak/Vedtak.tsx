@@ -1,7 +1,7 @@
 import { useBehandling } from '@hooks/useBehandling';
 import { useOpprettSammensattKontrollsakError } from '@hooks/useOpprettSammensattKontrollsakError';
 import { useSlettSammensattKontrollsakError } from '@hooks/useSlettSammensattKontrollsakError';
-import { BrevmottakereBehandlingAdvarsel } from '@komponenter/Brevmottaker/BrevmottakereBehandlingAdvarsel';
+import { RegistrerteBrevmottakereBehandling } from '@komponenter/Brevmottaker/Behandling/RegistrerteBrevmottakereBehandling';
 import { Box, LocalAlert, VStack } from '@navikt/ds-react';
 import { Layout } from '@sider/Fagsak/Behandling/sider/Vedtak/Layout/Layout';
 
@@ -63,7 +63,7 @@ export function Vedtak() {
                     )}
                     {behandling.korrigertEtterbetaling && <KorrigertEtterbetalingAdvarsel />}
                     {behandling.korrigertVedtak && <KorrigertVedtakAdvarsel />}
-                    <BrevmottakereBehandlingAdvarsel kilde={'vedtak'} />
+                    <RegistrerteBrevmottakereBehandling kilde={'vedtak'} />
                     {!erBehandlingMedVedtaksbrevbygger && <IngenVedtaksbrevbyggerAdvarsel />}
                     {erBehandlingMedVedtaksbrevbygger && (
                         <Box marginBlock={'space-12 space-40'}>
