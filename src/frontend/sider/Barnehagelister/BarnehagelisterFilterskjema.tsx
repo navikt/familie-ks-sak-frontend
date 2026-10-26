@@ -1,20 +1,10 @@
 import { FileResetIcon, FunnelIcon } from '@navikt/aksel-icons';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Fieldset,
-    HelpText,
-    HStack,
-    TextField,
-    UNSAFE_Combobox,
-    VStack,
-} from '@navikt/ds-react';
+import { Box, Button, Checkbox, Fieldset, HelpText, HStack, TextField, VStack } from '@navikt/ds-react';
 import type { BarnehagebarnFilter, BarnehagebarnRequestParams, Barnehagekommune } from '@typer/barnehagebarn';
-import { Controller, FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 
 import { BydelFelt } from './BydelFelt';
-import { erOslo } from './utils';
+import { KommuneFelt } from './KommuneFelt';
 
 interface BarnehagebarnFilterSkjemaProps {
     oppdaterFiltrering: (filter: BarnehagebarnFilter) => void;
@@ -28,7 +18,7 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
     const form = useForm<BarnehagebarnFilter>({
         defaultValues: { ident: '', kommuneNavn: '', kunLøpendeAndel: false, bydelOrganisasjonsnummer: '' },
     });
-    const { register, handleSubmit, reset, control, setValue } = form;
+    const { register, handleSubmit, reset, setValue } = form;
 
     const onSubmit: SubmitHandler<BarnehagebarnFilter> = barnehagebarnFilter => {
         oppdaterFiltrering(barnehagebarnFilter);
@@ -62,34 +52,7 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
                                     })}
                                 />
                                 <Box width={'20rem'}>
-                                    <Controller
-                                        control={control}
-                                        name={'kommuneNavn'}
-                                        render={({ field }) => (
-                                            <UNSAFE_Combobox
-                                                label="Kommunenavn"
-                                                selectedOptions={field.value != undefined ? [field.value] : []}
-                                                options={barnehageKommuner()}
-                                                title="Filtrer på kommunenavn"
-                                                size="medium"
-                                                ref={field.ref}
-                                                name={field.name}
-                                                onBlur={field.onBlur}
-                                                onToggleSelected={(option, isSelected): void => {
-                                                    setValue('ident', undefined);
-                                                    if (!isSelected || !erOslo(option)) {
-                                                        setValue('bydelOrganisasjonsnummer', '');
-                                                    }
-                                                    if (isSelected) {
-                                                        field.onChange(option);
-                                                    } else {
-                                                        field.onChange(null);
-                                                    }
-                                                }}
-                                                shouldAutocomplete={true}
-                                            />
-                                        )}
-                                    />
+                                    <KommuneFelt kommuner={barnehageKommuner()} />
                                 </Box>
                                 <Box width={'20rem'}>
                                     <BydelFelt />
