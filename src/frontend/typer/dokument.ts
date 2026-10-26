@@ -1,4 +1,4 @@
-import type { SkjemaBrevmottaker } from '../komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import type { Brevmottaker } from '@typer/brevmottaker';
 import type { Brevmal, Informasjonsbrev } from '../sider/Fagsak/Behandling/Høyremeny/Brev/typer';
 import type { BehandlingKategori } from './behandlingstema';
 import type { Målform } from './søknad';
@@ -24,7 +24,7 @@ export interface IManueltBrevRequestPåFagsak {
     brevmal: Brevmal | Informasjonsbrev;
     behandlingKategori?: undefined;
     antallUkerSvarfrist?: undefined;
-    manuelleBrevmottakere: SkjemaBrevmottaker[];
+    manuelleBrevmottakere: Brevmottaker[];
     fritekstAvsnitt?: string;
     mottakerlandSed?: undefined;
 }

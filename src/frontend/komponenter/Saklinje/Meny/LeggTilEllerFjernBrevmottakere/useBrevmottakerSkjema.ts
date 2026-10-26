@@ -3,26 +3,17 @@ import { feil, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import type { Avhengigheter, UseSkjemaVerdi } from '@navikt/familie-skjema/dist/typer';
 import { useBrukerContext } from '@sider/Fagsak/BrukerContext';
 import type { IBehandling } from '@typer/behandling';
-import {
-    type Brevmottaker,
-    type BrevmottakerBehandling,
-    Brevmottakertype,
-    brevmottakertypeVisningsnavn,
-} from '@typer/brevmottaker';
+import { type Brevmottaker, Brevmottakertype, brevmottakertypeVisningsnavn } from '@typer/brevmottaker';
 import { useEffect, useState } from 'react';
 
 export type BrevmottakerUseSkjema = UseSkjemaVerdi<ILeggTilFjernBrevmottakerSkjemaFelter, IBehandling>;
 
 interface Props {
-    eksisterendeMottakere: SkjemaBrevmottaker[];
+    eksisterendeMottakere: Brevmottaker[];
 }
 
-export const Mottaker = Brevmottakertype;
-export type Mottaker = Brevmottakertype;
-export const mottakerVisningsnavn = brevmottakertypeVisningsnavn;
-
 export interface ILeggTilFjernBrevmottakerSkjemaFelter {
-    mottaker: Mottaker | '';
+    mottaker: Brevmottakertype | '';
     navn: string;
     adresselinje1: string;
     adresselinje2: string;
@@ -31,11 +22,8 @@ export interface ILeggTilFjernBrevmottakerSkjemaFelter {
     land: string;
 }
 
-export type SkjemaBrevmottaker = Brevmottaker;
-export type IRestBrevmottaker = BrevmottakerBehandling;
-
-const preutfyltNavnFixed = (mottaker: Mottaker | '', land: string, navn: string) => {
-    if (mottaker === Mottaker.DØDSBO) {
+const preutfyltNavnFixed = (mottaker: Brevmottakertype | '', land: string, navn: string) => {
+    if (mottaker === Brevmottakertype.DØDSBO) {
         return !land || land === 'NO' ? `${navn} v/dødsbo` : `Estate of ${navn}`;
     }
     return navn;
@@ -44,33 +32,36 @@ const preutfyltNavnFixed = (mottaker: Mottaker | '', land: string, navn: string)
 export const useBrevmottakerSkjema = ({ eksisterendeMottakere }: Props) => {
     const { bruker: søker } = useBrukerContext();
 
-    const mottaker = useFelt<Mottaker | ''>({
+    const mottaker = useFelt<Brevmottakertype | ''>({
         verdi: '',
         avhengigheter: { eksisterendeMottakere },
         valideringsfunksjon: (felt, avhengigheter) => {
-            const eksisterendeMottakere: IRestBrevmottaker[] = avhengigheter?.eksisterendeMottakere;
+            const eksisterendeMottakere: Brevmottaker[] = avhengigheter?.eksisterendeMottakere;
             if (felt.verdi === '') {
                 return feil(felt, 'Feltet er påkrevd');
             }
             if (eksisterendeMottakere.length) {
                 const eksisterendeBrevmottakerType = eksisterendeMottakere[0].type;
                 if (felt.verdi === eksisterendeBrevmottakerType) {
-                    return feil(felt, `${mottakerVisningsnavn[felt.verdi]} er allerede lagt til`);
+                    return feil(felt, `${brevmottakertypeVisningsnavn[felt.verdi]} er allerede lagt til`);
                 }
-                if (felt.verdi === Mottaker.DØDSBO || eksisterendeBrevmottakerType === Mottaker.DØDSBO) {
+                if (
+                    felt.verdi === Brevmottakertype.DØDSBO ||
+                    eksisterendeBrevmottakerType === Brevmottakertype.DØDSBO
+                ) {
                     return feil(felt, 'Dødsbo kan ikke kombineres med andre brevmottakere');
                 }
                 if (
-                    felt.verdi === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE ||
-                    eksisterendeBrevmottakerType === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE
+                    felt.verdi === Brevmottakertype.BRUKER_MED_UTENLANDSK_ADRESSE ||
+                    eksisterendeBrevmottakerType === Brevmottakertype.BRUKER_MED_UTENLANDSK_ADRESSE
                 ) {
                     return ok(felt);
                 }
                 return feil(
                     felt,
                     `${
-                        mottakerVisningsnavn[eksisterendeBrevmottakerType]
-                    } kan ikke kombineres med ${mottakerVisningsnavn[felt.verdi].toLowerCase()}.`
+                        brevmottakertypeVisningsnavn[eksisterendeBrevmottakerType]
+                    } kan ikke kombineres med ${brevmottakertypeVisningsnavn[felt.verdi].toLowerCase()}.`
                 );
             }
             return ok(felt);
@@ -89,7 +80,7 @@ export const useBrevmottakerSkjema = ({ eksisterendeMottakere }: Props) => {
         verdi: '',
         valideringsfunksjon: (felt, avhengigheter) => {
             const norgeErUlovligValgt =
-                avhengigheter?.mottaker.verdi === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE && felt.verdi === 'NO';
+                avhengigheter?.mottaker.verdi === Brevmottakertype.BRUKER_MED_UTENLANDSK_ADRESSE && felt.verdi === 'NO';
             if (norgeErUlovligValgt) {
                 return feil(felt, 'Norge kan ikke være satt for bruker med utenlandsk adresse');
             }
@@ -147,7 +138,7 @@ export const useBrevmottakerSkjema = ({ eksisterendeMottakere }: Props) => {
     const [navnErPreutfylt, settNavnErPreutfylt] = useState(false);
 
     const skalNavnVærePreutfylt =
-        mottaker.verdi === Mottaker.DØDSBO || mottaker.verdi === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE;
+        mottaker.verdi === Brevmottakertype.DØDSBO || mottaker.verdi === Brevmottakertype.BRUKER_MED_UTENLANDSK_ADRESSE;
 
     useEffect(() => {
         if (skalNavnVærePreutfylt || skalNavnVærePreutfylt !== navnErPreutfylt) {
@@ -185,7 +176,7 @@ export const useBrevmottakerSkjema = ({ eksisterendeMottakere }: Props) => {
 
 export const felterTilSkjemaBrevmottaker = (
     felter: FieldDictionary<ILeggTilFjernBrevmottakerSkjemaFelter>
-): SkjemaBrevmottaker => {
+): Brevmottaker => {
     if (felter.mottaker.verdi !== '') {
         return {
             type: felter.mottaker.verdi,

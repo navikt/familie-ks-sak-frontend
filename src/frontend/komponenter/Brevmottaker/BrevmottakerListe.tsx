@@ -1,23 +1,20 @@
 import { useBruker } from '@hooks/useBruker';
-import {
-    Mottaker,
-    type SkjemaBrevmottaker,
-} from '@komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import { type Brevmottaker, Brevmottakertype } from '@typer/brevmottaker';
 import { formaterIdent, lagBrukerLabel } from '@utils/formatter';
 
 interface Props {
-    brevmottakere: SkjemaBrevmottaker[];
+    brevmottakere: Brevmottaker[];
 }
 
 export function BrevmottakerListe({ brevmottakere }: Props) {
     const bruker = useBruker();
 
     const harUtenlandskAdresse = brevmottakere.some(
-        mottaker => mottaker.type === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE
+        mottaker => mottaker.type === Brevmottakertype.BRUKER_MED_UTENLANDSK_ADRESSE
     );
-    const harFullmektig = brevmottakere.some(mottaker => mottaker.type === Mottaker.FULLMEKTIG);
-    const harVerge = brevmottakere.some(mottaker => mottaker.type === Mottaker.VERGE);
-    const harManuellDødsboadresse = brevmottakere.some(mottaker => mottaker.type === Mottaker.DØDSBO);
+    const harFullmektig = brevmottakere.some(mottaker => mottaker.type === Brevmottakertype.FULLMEKTIG);
+    const harVerge = brevmottakere.some(mottaker => mottaker.type === Brevmottakertype.VERGE);
+    const harManuellDødsboadresse = brevmottakere.some(mottaker => mottaker.type === Brevmottakertype.DØDSBO);
 
     const skalViseSøker = !harManuellDødsboadresse && !harUtenlandskAdresse;
 
@@ -35,11 +32,11 @@ export function BrevmottakerListe({ brevmottakere }: Props) {
             {harManuellDødsboadresse && <li key="dødsbo">{bruker.navn} | Dødsbo</li>}
             {harFullmektig &&
                 brevmottakere
-                    .filter(mottaker => mottaker.type === Mottaker.FULLMEKTIG)
+                    .filter(mottaker => mottaker.type === Brevmottakertype.FULLMEKTIG)
                     .map(mottaker => <li key={`fullmektig-${mottaker.navn}`}>{mottaker.navn} | Fullmektig</li>)}
             {harVerge &&
                 brevmottakere
-                    .filter(mottaker => mottaker.type === Mottaker.VERGE)
+                    .filter(mottaker => mottaker.type === Brevmottakertype.VERGE)
                     .map(mottaker => <li key={`verge-${mottaker.navn}`}>{mottaker.navn} | Verge</li>)}
         </ul>
     );

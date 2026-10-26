@@ -1,4 +1,4 @@
-import type { IRestBrevmottaker } from '@komponenter/Saklinje/Meny/LeggTilEllerFjernBrevmottakere/useBrevmottakerSkjema';
+import type { BrevmottakerBehandling } from '@typer/brevmottaker';
 import type { IsoDatoString } from '@utils/dato';
 
 import type { BehandlingKategori } from './behandlingstema';
@@ -242,7 +242,7 @@ export interface IBehandling {
     sisteVedtaksperiodeVisningDato?: IsoDatoString;
     feilutbetaltValuta: IRestFeilutbetaltValuta[];
     refusjonEøs: IRestRefusjonEøs[];
-    brevmottakere: IRestBrevmottaker[];
+    brevmottakere: BrevmottakerBehandling[];
     manglendeSvalbardmerking: ManglendeSvalbardmerking[];
 }
 

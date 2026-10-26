@@ -4,8 +4,9 @@ import type { Ressurs } from '@navikt/familie-typer';
 import { byggHenterRessurs, RessursStatus } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import type { IBehandling } from '@typer/behandling';
+import type { BrevmottakerBehandling } from '@typer/brevmottaker';
 import { AlertType, ToastTyper } from '../../../Toast/typer';
-import type { BrevmottakerUseSkjema, IRestBrevmottaker } from './useBrevmottakerSkjema';
+import type { BrevmottakerUseSkjema } from './useBrevmottakerSkjema';
 
 interface Props {
     behandlingId: number;
@@ -52,7 +53,7 @@ export const useLagreEllerFjernMottakerPåBehandling = ({ behandlingId }: Props)
         }
     };
 
-    const fjernMottaker = (mottaker: IRestBrevmottaker) => {
+    const fjernMottaker = (mottaker: BrevmottakerBehandling) => {
         return request<void, IBehandling>({
             method: 'DELETE',
             url: `/familie-ks-sak/api/brevmottaker/${behandlingId}/${mottaker.id}`,
