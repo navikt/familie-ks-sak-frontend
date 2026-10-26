@@ -2,13 +2,13 @@ import { Fieldset, HGrid, InlineMessage, Select, TextField, VStack } from '@navi
 import type { ISkjema } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { IBehandling } from '@typer/behandling';
+import { Brevmottakertype, brevmottakertypeVisningsnavn } from '@typer/brevmottaker';
 import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import type { ChangeEvent } from 'react';
 import { useLocation } from 'react-router';
 import { ALLE_LAND_REGIONKODER, RegionCombobox, type Regionkode } from '../../../FlaggCombobox';
 import styles from './BrevmottakerSkjema.module.css';
 import type { ILeggTilFjernBrevmottakerSkjemaFelter } from './useBrevmottakerSkjema';
-import { Mottaker, mottakerVisningsnavn } from './useBrevmottakerSkjema';
 
 interface Props {
     skjema: ISkjema<ILeggTilFjernBrevmottakerSkjemaFelter, IBehandling>;
@@ -20,8 +20,8 @@ const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) =
     const erPåDokumentutsendingPåFagsak = useLocation().pathname.includes('dokumentutsending');
 
     const gyldigeMottakerTyper = erPåDokumentutsendingPåFagsak
-        ? Object.values(Mottaker).filter(mottakerType => mottakerType !== Mottaker.DØDSBO)
-        : Object.values(Mottaker);
+        ? Object.values(Brevmottakertype).filter(mottakerType => mottakerType !== Brevmottakertype.DØDSBO)
+        : Object.values(Brevmottakertype);
 
     return (
         <>
@@ -36,13 +36,13 @@ const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) =
                         readOnly={erLesevisning}
                         label="Mottaker"
                         onChange={(event: ChangeEvent<HTMLSelectElement>): void => {
-                            skjema.felter.mottaker.validerOgSettFelt(event.target.value as Mottaker);
+                            skjema.felter.mottaker.validerOgSettFelt(event.target.value as Brevmottakertype);
                         }}
                     >
                         <option value="">Velg</option>
                         {gyldigeMottakerTyper.map(mottaker => (
                             <option value={mottaker} key={mottaker}>
-                                {mottakerVisningsnavn[mottaker]}
+                                {brevmottakertypeVisningsnavn[mottaker]}
                             </option>
                         ))}
                     </Select>
@@ -58,7 +58,7 @@ const BrevmottakerSkjema = ({ erLesevisning, skjema, navnErPreutfylt }: Props) =
                         label={'Land'}
                         value={(skjema.felter.land.verdi !== '' ? skjema.felter.land.verdi : undefined) as Regionkode}
                         options={ALLE_LAND_REGIONKODER.filter(regionkode => {
-                            if (skjema.felter.mottaker.verdi === Mottaker.BRUKER_MED_UTENLANDSK_ADRESSE) {
+                            if (skjema.felter.mottaker.verdi === Brevmottakertype.BRUKER_MED_UTENLANDSK_ADRESSE) {
                                 return regionkode !== 'NO' && regionkode !== 'XU';
                             }
                             return regionkode !== 'XU';

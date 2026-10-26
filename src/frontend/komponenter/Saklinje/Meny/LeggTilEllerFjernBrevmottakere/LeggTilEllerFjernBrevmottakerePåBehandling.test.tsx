@@ -5,7 +5,7 @@ import { BehandlingProvider } from '../../../../sider/Fagsak/Behandling/context/
 import { HentOgSettBehandlingProvider } from '../../../../sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { FagsakProvider } from '../../../../sider/Fagsak/FagsakContext';
 import { lagBehandling } from '../../../../testutils/testdata/behandlingTestdata';
-import { lagRestBrevmottaker } from '../../../../testutils/testdata/brevmottakerTestdata';
+import { lagBrevmottakerBehandling } from '../../../../testutils/testdata/brevmottakerTestdata';
 import { lagFagsak } from '../../../../testutils/testdata/fagsakTestdata';
 import { render, TestProviders } from '../../../../testutils/testrender';
 import { Behandlingstype, type IBehandling, SettPåVentÅrsak } from '../../../../typer/behandling';
@@ -46,7 +46,7 @@ describe('LeggTilEllerFjernBrevmottakerePåBehandling', () => {
         const åpneModal = vi.fn();
         const { screen } = render(<LeggTilEllerFjernBrevmottakerePåBehandling åpneModal={åpneModal} />, {
             wrapper: props => (
-                <Wrapper {...props} behandling={lagBehandling({ brevmottakere: [lagRestBrevmottaker()] })} />
+                <Wrapper {...props} behandling={lagBehandling({ brevmottakere: [lagBrevmottakerBehandling()] })} />
             ),
         });
         expect(screen.getByRole('menuitem', { name: 'Legg til eller fjern brevmottaker' })).toBeInTheDocument();
@@ -58,7 +58,9 @@ describe('LeggTilEllerFjernBrevmottakerePåBehandling', () => {
             wrapper: props => (
                 <Wrapper
                     {...props}
-                    behandling={lagBehandling({ brevmottakere: [lagRestBrevmottaker(), lagRestBrevmottaker()] })}
+                    behandling={lagBehandling({
+                        brevmottakere: [lagBrevmottakerBehandling(), lagBrevmottakerBehandling()],
+                    })}
                 />
             ),
         });
@@ -103,7 +105,7 @@ describe('LeggTilEllerFjernBrevmottakerePåBehandling', () => {
                     {...props}
                     behandling={lagBehandling({
                         type: Behandlingstype.REVURDERING,
-                        brevmottakere: [lagRestBrevmottaker()],
+                        brevmottakere: [lagBrevmottakerBehandling()],
                         behandlingPåVent: {
                             frist: '2025-10-10',
                             årsak: SettPåVentÅrsak.AVVENTER_DOKUMENTASJON,
@@ -140,7 +142,7 @@ describe('LeggTilEllerFjernBrevmottakerePåBehandling', () => {
                     {...props}
                     behandling={lagBehandling({
                         type: Behandlingstype.TEKNISK_ENDRING,
-                        brevmottakere: [lagRestBrevmottaker()],
+                        brevmottakere: [lagBrevmottakerBehandling()],
                         behandlingPåVent: undefined,
                     })}
                 />
