@@ -61,35 +61,39 @@ const BarnehagelisterFilterskjema = (props: BarnehagebarnFilterSkjemaProps) => {
                                         },
                                     })}
                                 />
-                                <Controller
-                                    control={control}
-                                    name={'kommuneNavn'}
-                                    render={({ field }) => (
-                                        <UNSAFE_Combobox
-                                            label="Kommunenavn"
-                                            selectedOptions={field.value != undefined ? [field.value] : []}
-                                            options={barnehageKommuner()}
-                                            title="Filtrer på kommunenavn"
-                                            size="medium"
-                                            ref={field.ref}
-                                            name={field.name}
-                                            onBlur={field.onBlur}
-                                            onToggleSelected={(option, isSelected): void => {
-                                                setValue('ident', undefined);
-                                                if (!isSelected || !erOslo(option)) {
-                                                    setValue('bydelOrganisasjonsnummer', '');
-                                                }
-                                                if (isSelected) {
-                                                    field.onChange(option);
-                                                } else {
-                                                    field.onChange(null);
-                                                }
-                                            }}
-                                            shouldAutocomplete={true}
-                                        />
-                                    )}
-                                />
-                                <BydelFelt />
+                                <Box width={'20rem'}>
+                                    <Controller
+                                        control={control}
+                                        name={'kommuneNavn'}
+                                        render={({ field }) => (
+                                            <UNSAFE_Combobox
+                                                label="Kommunenavn"
+                                                selectedOptions={field.value != undefined ? [field.value] : []}
+                                                options={barnehageKommuner()}
+                                                title="Filtrer på kommunenavn"
+                                                size="medium"
+                                                ref={field.ref}
+                                                name={field.name}
+                                                onBlur={field.onBlur}
+                                                onToggleSelected={(option, isSelected): void => {
+                                                    setValue('ident', undefined);
+                                                    if (!isSelected || !erOslo(option)) {
+                                                        setValue('bydelOrganisasjonsnummer', '');
+                                                    }
+                                                    if (isSelected) {
+                                                        field.onChange(option);
+                                                    } else {
+                                                        field.onChange(null);
+                                                    }
+                                                }}
+                                                shouldAutocomplete={true}
+                                            />
+                                        )}
+                                    />
+                                </Box>
+                                <Box width={'20rem'}>
+                                    <BydelFelt />
+                                </Box>
                                 <HStack gap="space-16" align="center">
                                     <Checkbox
                                         id="kun-loepende-andel"
