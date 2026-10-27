@@ -1,6 +1,6 @@
 import { useErLesevisningFagsak } from '@hooks/useErLesevisningFagsak';
 import { useFagsak } from '@hooks/useFagsak';
-import { BrevmottakereFagsakAdvarsel } from '@komponenter/Brevmottaker/BrevmottakereFagsakAdvarsel';
+import { RegistrerteBrevmottakereFagsak } from '@komponenter/Brevmottaker/Fagsak/RegistrerteBrevmottakereFagsak';
 import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModal';
 import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
 import { FileTextIcon, InformationSquareIcon } from '@navikt/aksel-icons';
@@ -55,89 +55,93 @@ export function DokumentutsendingSkjema({ åpneBrevSendtDialog, settForhåndsvis
                 >
                     <LeggTilBarnModal />
                     <Box padding={'space-32'} overflow={'auto'}>
-                        <FormProvider {...form}>
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <Heading size={'large'} level={'1'}>
-                                    Send informasjonsbrev
-                                </Heading>
-                                {erFagsakLåst(fagsak) && (
-                                    <Box marginBlock={'space-16'}>
-                                        <Alert variant={'info'}>
-                                            Fagsaken er låst etter arkivlovens kasseringsregler, og det er ikke mulig å
-                                            sende brev. Lås opp fagsaken fra menyen i saksoversikten hvis du likevel
-                                            skal sende brev.
-                                        </Alert>
-                                    </Box>
-                                )}
-                                <BrevmottakereFagsakAdvarsel />
-                                <Box asChild maxWidth={'30rem'} marginBlock={'space-32 space-0'}>
-                                    <Fieldset
-                                        error={errors.root?.message}
-                                        errorPropagation={false}
-                                        legend="Send informasjonsbrev"
-                                        hideLegend
-                                    >
-                                        <VStack gap="space-16">
-                                            <ÅrsakVelger />
-
-                                            {barnIBrevÅrsak !== undefined && (
-                                                <Box>
-                                                    <BarnCheckboxGruppe barnIBrevÅrsak={barnIBrevÅrsak} />
-                                                    <LeggTilBarnKnapp />
-                                                </Box>
-                                            )}
-
-                                            {årsak === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE && <FritekstAvsnitt />}
-
-                                            <MålformVelger />
-
-                                            {visForhåndsvisningBeskjed && (
-                                                <InfoCard data-color="info">
-                                                    <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                                                        Du har gjort endringer i brevet som ikke er forhåndsvist
-                                                    </InfoCard.Message>
-                                                </InfoCard>
-                                            )}
-                                        </VStack>
-                                    </Fieldset>
+                        <VStack gap={'space-8'}>
+                            <Heading size={'large'} level={'1'}>
+                                Send informasjonsbrev
+                            </Heading>
+                            {erFagsakLåst(fagsak) && (
+                                <Box marginBlock={'space-16'}>
+                                    <Alert variant={'info'}>
+                                        Fagsaken er låst etter arkivlovens kasseringsregler, og det er ikke mulig å
+                                        sende brev. Lås opp fagsaken fra menyen i saksoversikten hvis du likevel skal
+                                        sende brev.
+                                    </Alert>
                                 </Box>
-                                <HStack justify={'space-between'} marginBlock={'space-24 space-0'}>
-                                    <HStack gap={'space-16'}>
-                                        <Button
-                                            size="medium"
-                                            variant="primary"
-                                            type={'submit'}
-                                            loading={isSubmitting}
-                                            disabled={skjemaErLåst}
+                            )}
+                            <RegistrerteBrevmottakereFagsak />
+                            <FormProvider {...form}>
+                                <form onSubmit={handleSubmit(onSubmit)}>
+                                    <Box asChild maxWidth={'30rem'} marginBlock={'space-32 space-0'}>
+                                        <Fieldset
+                                            error={errors.root?.message}
+                                            errorPropagation={false}
+                                            legend="Send informasjonsbrev"
+                                            hideLegend
                                         >
-                                            Send brev
-                                        </Button>
+                                            <VStack gap="space-16">
+                                                <ÅrsakVelger />
 
+                                                {barnIBrevÅrsak !== undefined && (
+                                                    <Box>
+                                                        <BarnCheckboxGruppe barnIBrevÅrsak={barnIBrevÅrsak} />
+                                                        <LeggTilBarnKnapp />
+                                                    </Box>
+                                                )}
+
+                                                {årsak === DokumentÅrsak.INNHENTE_OPPLYSNINGER_KLAGE && (
+                                                    <FritekstAvsnitt />
+                                                )}
+
+                                                <MålformVelger />
+
+                                                {visForhåndsvisningBeskjed && (
+                                                    <InfoCard data-color="info">
+                                                        <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                                                            Du har gjort endringer i brevet som ikke er forhåndsvist
+                                                        </InfoCard.Message>
+                                                    </InfoCard>
+                                                )}
+                                            </VStack>
+                                        </Fieldset>
+                                    </Box>
+                                    <HStack justify={'space-between'} marginBlock={'space-24 space-0'}>
+                                        <HStack gap={'space-16'}>
+                                            <Button
+                                                size="medium"
+                                                variant="primary"
+                                                type={'submit'}
+                                                loading={isSubmitting}
+                                                disabled={skjemaErLåst}
+                                            >
+                                                Send brev
+                                            </Button>
+
+                                            <Button
+                                                size="medium"
+                                                variant="tertiary"
+                                                type={'button'}
+                                                disabled={isSubmitting || forhåndsvisningLaster}
+                                                onClick={() => navigate(`/fagsak/${fagsak.id}/saksoversikt`)}
+                                            >
+                                                Avbryt
+                                            </Button>
+                                        </HStack>
                                         <Button
-                                            size="medium"
-                                            variant="tertiary"
+                                            variant={'tertiary'}
                                             type={'button'}
-                                            disabled={isSubmitting || forhåndsvisningLaster}
-                                            onClick={() => navigate(`/fagsak/${fagsak.id}/saksoversikt`)}
+                                            id={'forhandsvis-vedtaksbrev'}
+                                            size={'medium'}
+                                            loading={forhåndsvisningLaster}
+                                            disabled={skjemaErLåst}
+                                            onClick={hentForhåndsvisning}
+                                            icon={<FileTextIcon />}
                                         >
-                                            Avbryt
+                                            Forhåndsvis
                                         </Button>
                                     </HStack>
-                                    <Button
-                                        variant={'tertiary'}
-                                        type={'button'}
-                                        id={'forhandsvis-vedtaksbrev'}
-                                        size={'medium'}
-                                        loading={forhåndsvisningLaster}
-                                        disabled={skjemaErLåst}
-                                        onClick={hentForhåndsvisning}
-                                        icon={<FileTextIcon />}
-                                    >
-                                        Forhåndsvis
-                                    </Button>
-                                </HStack>
-                            </form>
-                        </FormProvider>
+                                </form>
+                            </FormProvider>
+                        </VStack>
                     </Box>
                 </LeggTilBarnModalContextProvider>
             )}

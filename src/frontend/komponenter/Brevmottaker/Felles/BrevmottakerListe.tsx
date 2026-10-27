@@ -20,16 +20,14 @@ export function BrevmottakerListe({ brevmottakere }: Props) {
 
     return (
         <ul>
-            {skalViseSøker && <li key="søker">{lagBrukerLabel(bruker)}</li>}
-            {harUtenlandskAdresse && !harFullmektig && (
-                <li key="utenlandsk-adresse">{lagBrukerLabel(bruker)} | Utenlandsk adresse</li>
-            )}
+            {skalViseSøker && <li>{lagBrukerLabel(bruker)}</li>}
+            {harUtenlandskAdresse && !harFullmektig && <li>{lagBrukerLabel(bruker)} | Utenlandsk adresse</li>}
             {harUtenlandskAdresse && harFullmektig && (
-                <li key="kort-utenlandsk-adresse">
+                <li>
                     {bruker.navn} | {formaterIdent(bruker.personIdent)} | Utenlandsk adresse
                 </li>
             )}
-            {harManuellDødsboadresse && <li key="dødsbo">{bruker.navn} | Dødsbo</li>}
+            {harManuellDødsboadresse && <li>{bruker.navn} | Dødsbo</li>}
             {harFullmektig &&
                 brevmottakere
                     .filter(mottaker => mottaker.type === Brevmottakertype.FULLMEKTIG)
