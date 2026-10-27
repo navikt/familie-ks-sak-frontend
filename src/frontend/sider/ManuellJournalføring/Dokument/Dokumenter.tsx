@@ -6,6 +6,9 @@ import { DokumentVelger } from './DokumentVelger';
 export function Dokumenter() {
     const { skjema } = useManuellJournalføringContext();
 
+    const finnesDokumentFeilmeldinger =
+        skjema.visFeilmeldinger && skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL;
+
     return skjema.felter.dokumenter.verdi.length === 0 ? (
         <LocalAlert status="warning">
             <LocalAlert.Header>
@@ -19,17 +22,10 @@ export function Dokumenter() {
             </Heading>
             <div id={skjema.felter.dokumenter.id}>
                 {skjema.felter.dokumenter.verdi.map((dokument, index) => (
-                    <DokumentVelger
-                        dokument={dokument}
-                        key={index}
-                        visFeilmeldinger={
-                            skjema.visFeilmeldinger &&
-                            skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL
-                        }
-                    />
+                    <DokumentVelger dokument={dokument} key={index} visFeilmeldinger={finnesDokumentFeilmeldinger} />
                 ))}
 
-                {skjema.visFeilmeldinger && skjema.felter.dokumenter.valideringsstatus === Valideringsstatus.FEIL && (
+                {finnesDokumentFeilmeldinger && (
                     <>
                         <br />
                         <ErrorMessage>{skjema.felter.dokumenter.feilmelding}</ErrorMessage>
