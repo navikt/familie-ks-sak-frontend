@@ -1,11 +1,16 @@
 import { useBehandling } from '@hooks/useBehandling';
+import { useFeatureToggles } from '@hooks/useFeatureToggles';
+import { BrevmottakerDialogBehandling } from '@komponenter/Brevmottaker/Behandling/BrevmottakerDialogBehandling';
+import { useBrevmottakerDialogContext } from '@komponenter/Brevmottaker/Felles/BrevmottakerDialogContext';
 import { ChevronDownIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button } from '@navikt/ds-react';
 import { sjekkErBehandleneEnhetMidlertidig } from '@typer/behandling';
+import { FeatureToggle } from '@typer/featureToggles';
 import { useState } from 'react';
 
 import { AInntekt } from './AInntekt/AInntekt';
 import Styles from './Behandlingsmeny.module.css';
+import { LeggTilEllerFjernBrevmottakerPåBehandling } from './Brevmottaker/LeggTilEllerFjernBrevmottakerPåBehandling';
 import { EndreBehandlendeEnhet } from './EndreBehandlendeEnhet/EndreBehandlendeEnhet';
 import { EndreBehandlendeEnhetModal } from './EndreBehandlendeEnhet/EndreBehandlendeEnhetModal';
 import { EndreBehandlingstema } from './EndreBehandling/EndreBehandlingstema';
@@ -26,6 +31,7 @@ import { SendInformasjonsbrev } from './SendInformasjonsbrev/SendInformasjonsbre
 
 export function Behandlingsmeny() {
     const behandling = useBehandling();
+    const toggles = useFeatureToggles();
 
     const erBehandleneEnhetMidlertidig = sjekkErBehandleneEnhetMidlertidig(behandling);
     const erBehandlingPåVent = !!behandling.behandlingPåVent;
@@ -38,7 +44,12 @@ export function Behandlingsmeny() {
     const [visLeggTilBarnPåBehandlingaModal, settVisLeggTilBarnPåBehandlingaModal] = useState(false);
     const [visBehandlingPåVentModal, settVisBehandlingPåVentModal] = useState(erBehandlingPåVent);
     const [visTaBehandlingAvVentModal, settVisTaBehandlingAvVentModal] = useState(false);
-    const [visLeggTilBrevmottakerPåBehandlingModal, settVisLeggTilBrevmottakerPåBehandlingModal] = useState(false);
+
+    const {
+        erDialogÅpen: erBrevmottakerDialogÅpen,
+        åpneDialog: åpneBrevmottakerDialog,
+        lukkDialog: lukkBrevmottakerDialog,
+    } = useBrevmottakerDialogContext();
 
     return (
         <>
@@ -68,11 +79,12 @@ export function Behandlingsmeny() {
             {visTaBehandlingAvVentModal && (
                 <TaBehandlingAvVentModal lukkModal={() => settVisTaBehandlingAvVentModal(false)} />
             )}
-            {visLeggTilBrevmottakerPåBehandlingModal && (
-                <LeggTilBrevmottakerModalBehandling
-                    lukkModal={() => settVisLeggTilBrevmottakerPåBehandlingModal(false)}
-                />
-            )}
+            {erBrevmottakerDialogÅpen &&
+                (toggles[FeatureToggle.brukNyttBrevmottakerSkjema] ? (
+                    <BrevmottakerDialogBehandling />
+                ) : (
+                    <LeggTilBrevmottakerModalBehandling lukkModal={lukkBrevmottakerDialog} />
+                ))}
             <ActionMenu>
                 <ActionMenu.Trigger>
                     <Button variant={'secondary'} size={'small'} iconPosition={'right'} icon={<ChevronDownIcon />}>
@@ -92,9 +104,11 @@ export function Behandlingsmeny() {
                         <LeggTilBarnPåBehandling åpneModal={() => settVisLeggTilBarnPåBehandlingaModal(true)} />
                         <SettEllerOppdaterVenting åpneModal={() => settVisBehandlingPåVentModal(true)} />
                         <TaBehandlingAvVent åpneModal={() => settVisTaBehandlingAvVentModal(true)} />
-                        <LeggTilEllerFjernBrevmottakerePåBehandling
-                            åpneModal={() => settVisLeggTilBrevmottakerPåBehandlingModal(true)}
-                        />
+                        {toggles[FeatureToggle.brukNyttBrevmottakerSkjema] ? (
+                            <LeggTilEllerFjernBrevmottakerPåBehandling />
+                        ) : (
+                            <LeggTilEllerFjernBrevmottakerePåBehandling åpneModal={åpneBrevmottakerDialog} />
+                        )}
                         <AInntekt />
                     </ActionMenu.Group>
                 </ActionMenu.Content>
