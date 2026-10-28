@@ -1,6 +1,11 @@
+import { useFeatureToggles } from '@hooks/useFeatureToggles';
+import { BrevmottakerDialogFagsak } from '@komponenter/Brevmottaker/Fagsak/BrevmottakerDialogFagsak';
+import { useBrevmottakerDialogContext } from '@komponenter/Brevmottaker/Felles/BrevmottakerDialogContext';
 import { ChevronDownIcon } from '@navikt/aksel-icons';
 import { ActionMenu, Button } from '@navikt/ds-react';
+import { FeatureToggle } from '@typer/featureToggles';
 import { useState } from 'react';
+import { LeggTilEllerFjernBrevmottakerPåFagsak } from './Brevmottaker/LeggTilEllerFjernBrevmottakerPåFagsak';
 
 import Styles from './Fagsakmeny.module.css';
 import { LeggTilBrevmottakerModalFagsak } from './LeggTilEllerFjernBrevmottakere/LeggTilBrevmottakerModalFagsak';
@@ -13,10 +18,17 @@ import { TilbakekrevingsbehandlingOpprettetModal } from './OpprettBehandling/Til
 import { SendInformasjonsbrev } from './SendInformasjonsbrev/SendInformasjonsbrev';
 
 export function Fagsakmeny() {
+    const toggles = useFeatureToggles();
+
     const [visOpprettBehandlingModal, settVisOpprettBehandlingModal] = useState(false);
     const [visTilbakekrevingsbehandlingOpprettetModal, settVisTilbakekrevingsbehandlingOpprettetModal] =
         useState(false);
-    const [visLeggTilBrevmottakerModal, settVisLeggTilBrevmottakerModal] = useState(false);
+
+    const {
+        erDialogÅpen: erBrevmottakerDialogÅpen,
+        åpneDialog: åpneBrevmottakerDialog,
+        lukkDialog: lukkBrevmottakerDialog,
+    } = useBrevmottakerDialogContext();
 
     return (
         <>
@@ -31,9 +43,12 @@ export function Fagsakmeny() {
                     lukkModal={() => settVisTilbakekrevingsbehandlingOpprettetModal(false)}
                 />
             )}
-            {visLeggTilBrevmottakerModal && (
-                <LeggTilBrevmottakerModalFagsak lukkModal={() => settVisLeggTilBrevmottakerModal(false)} />
-            )}
+            {erBrevmottakerDialogÅpen &&
+                (toggles[FeatureToggle.brukNyttBrevmottakerSkjema] ? (
+                    <BrevmottakerDialogFagsak />
+                ) : (
+                    <LeggTilBrevmottakerModalFagsak lukkModal={lukkBrevmottakerDialog} />
+                ))}
             <LåsOppFagsakModal />
             <ActionMenu>
                 <ActionMenu.Trigger>
@@ -44,9 +59,11 @@ export function Fagsakmeny() {
                 <ActionMenu.Content>
                     <ActionMenu.Group className={Styles.group} aria-label={'Fagsak'}>
                         <OpprettBehandling åpneModal={() => settVisOpprettBehandlingModal(true)} />
-                        <LeggTilEllerFjernBrevmottakerePåFagsak
-                            åpneModal={() => settVisLeggTilBrevmottakerModal(true)}
-                        />
+                        {toggles[FeatureToggle.brukNyttBrevmottakerSkjema] ? (
+                            <LeggTilEllerFjernBrevmottakerPåFagsak />
+                        ) : (
+                            <LeggTilEllerFjernBrevmottakerePåFagsak åpneModal={åpneBrevmottakerDialog} />
+                        )}
                         <SendInformasjonsbrev />
                         <LåsOppFagsak />
                     </ActionMenu.Group>
