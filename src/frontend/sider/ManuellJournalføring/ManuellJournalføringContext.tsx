@@ -21,11 +21,10 @@ import {
     opprettJournalføringsbehandlingFraKontantstøttebehandling,
 } from '@typer/journalføringsbehandling';
 import { type IKlagebehandling, Klagebehandlingstype } from '@typer/klage';
-import {
-    type IDataForManuellJournalføring,
-    type IRestJournalføring,
-    JournalpostKanal,
-    type TilknyttetBehandling,
+import type {
+    IDataForManuellJournalføring,
+    IRestJournalføring,
+    TilknyttetBehandling,
 } from '@typer/manuell-journalføring';
 import {
     finnBehandlingstemaFraOppgave,
@@ -36,6 +35,7 @@ import { Adressebeskyttelsegradering, type IPersonInfo } from '@typer/person';
 import type { ISamhandlerInfo } from '@typer/samhandler';
 import type { Tilbakekrevingsbehandlingstype } from '@typer/tilbakekrevingsbehandling';
 import { isoStringTilDate } from '@utils/dato';
+import { lagJournalpostDokumenterForJournalføring } from '@utils/dokumentinfo';
 import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
 import type { AxiosError } from 'axios';
 import { differenceInMilliseconds } from 'date-fns';
@@ -367,8 +367,6 @@ export function ManuellJournalføringProvider(props: PropsWithChildren) {
 
     const journalfør = () => {
         if (dataForManuellJournalføring.status === RessursStatus.SUKSESS) {
-            const erDigitalKanal = dataForManuellJournalføring.data.journalpost.kanal === JournalpostKanal.NAV_NO;
-
             const nyBehandlingstype =
                 skjema.felter.behandlingstype.verdi === ''
                     ? Behandlingstype.FØRSTEGANGSBEHANDLING
@@ -376,7 +374,6 @@ export function ManuellJournalføringProvider(props: PropsWithChildren) {
             const nyBehandlingsårsak = skjema.felter.behandlingsårsak.verdi;
             const { verdi: behandlingstema } = skjema.felter.behandlingstema;
 
-            //SKAN_IM-kanalen benytter logiske vedlegg, NAV_NO-kanalen gjør ikke. For sistnevnte må titlene konkateneres.
             onSubmit<IRestJournalføring>(
                 {
                     method: 'POST',
@@ -393,23 +390,7 @@ export function ManuellJournalføringProvider(props: PropsWithChildren) {
                             id: skjema.felter.avsenderIdent.verdi,
                         },
                         datoMottatt: dataForManuellJournalføring.data.journalpost.datoMottatt,
-                        dokumenter: skjema.felter.dokumenter.verdi.map(dokument => {
-                            const exsisterendeLogiskeVedlegg =
-                                dataForManuellJournalføring.data.journalpost.dokumenter?.find(
-                                    it => it.dokumentInfoId === dokument.dokumentInfoId
-                                )?.logiskeVedlegg;
-
-                            const tittelsammenkobling = dokument.logiskeVedlegg
-                                .map(current => current.tittel)
-                                .reduce((previous, current) => `${previous}, ${current}`, dokument.tittel ?? '');
-
-                            return {
-                                dokumentTittel: erDigitalKanal ? tittelsammenkobling : dokument.tittel,
-                                dokumentInfoId: dokument.dokumentInfoId || '0',
-                                eksisterendeLogiskeVedlegg: exsisterendeLogiskeVedlegg,
-                                logiskeVedlegg: erDigitalKanal ? exsisterendeLogiskeVedlegg : dokument.logiskeVedlegg,
-                            };
-                        }),
+                        dokumenter: lagJournalpostDokumenterForJournalføring(skjema.felter.dokumenter.verdi),
                         tilknyttedeBehandlinger: skjema.felter.tilknyttedeBehandlinger.verdi,
                         opprettOgKnyttTilNyBehandling: skjema.felter.knyttTilNyBehandling.verdi,
 
