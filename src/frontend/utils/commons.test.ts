@@ -1,4 +1,4 @@
-import { fjernWhitespace } from '../commons';
+import { fjernWhitespace } from './commons';
 
 type whitespace = { unicodeDecimalValue: number; navn: string };
 

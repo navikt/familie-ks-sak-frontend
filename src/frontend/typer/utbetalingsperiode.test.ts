@@ -1,14 +1,14 @@
 import { kjønnType } from '@navikt/familie-typer';
 
-import { YtelseType } from '../beregning';
-import { type IGrunnlagPerson, PersonType } from '../person';
-import { Målform } from '../søknad';
+import { YtelseType } from './beregning';
+import { type IGrunnlagPerson, PersonType } from './person';
+import { Målform } from './søknad';
 import {
     finnUnikeIdenterForPersonTypeIUtbetalingsperioder,
     finnUtbetalingsperioderHvorTomErEnBestemtMåned,
     type Utbetalingsperiode,
-} from '../utbetalingsperiode';
-import { type IUtbetalingsperiodeDetalj, Vedtaksperiodetype } from '../vedtaksperiode';
+} from './utbetalingsperiode';
+import { type IUtbetalingsperiodeDetalj, Vedtaksperiodetype } from './vedtaksperiode';
 
 describe('Tester for metoden finnUnikeIdenterForPersonTypeIUtbetalingsperioder', () => {
     test('skal finne unike identer for person type i utbetalingsperioder', () => {

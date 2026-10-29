@@ -4,13 +4,13 @@ import { useOppdaterVilkårsvurdering } from '@hooks/useOppdaterVilkårsvurderin
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { BodyShort, ErrorMessage, ErrorSummary, InfoCard, List } from '@navikt/ds-react';
 import { byggSuksessRessurs } from '@navikt/familie-typer';
+import Skjemasteg, { MAX_SKJEMASTEG_BREDDE } from '@sider/Fagsak/Behandling/sider/Skjemasteg';
 import { BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
 import { defaultFunksjonellFeil } from '@typer/feilmeldinger';
 import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
 import { erProd } from '@utils/miljø';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import Skjemasteg, { MAX_SKJEMASTEG_BREDDE } from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import { useBehandlingContext } from '../../context/BehandlingContext';
 import { FyllUtVilkårsvurderingITestmiljøKnapp } from './FyllUtVilkårsvurderingITestmiljøKnapp';
 import { OppdaterRegisteropplysninger } from './OppdaterRegisteropplysninger';

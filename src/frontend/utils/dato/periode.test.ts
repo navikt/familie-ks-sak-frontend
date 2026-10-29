@@ -1,4 +1,4 @@
-import { periodeOverlapperMedValgtDato } from '..';
+import { periodeOverlapperMedValgtDato } from './periode';
 
 describe('Periode', () => {
     describe('Periode overlapper med valgt dato', () => {

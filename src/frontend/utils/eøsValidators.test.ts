@@ -1,9 +1,9 @@
 import type { FeltState } from '@navikt/familie-skjema';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 
-import type { IIsoMånedPeriode } from '../dato';
-import { nyIsoMånedPeriode } from '../dato';
-import { erEøsPeriodeGyldig, isEmpty, isNumeric, tellAntallDesimaler } from '../eøsValidators';
+import type { IIsoMånedPeriode } from './dato';
+import { nyIsoMånedPeriode } from './dato';
+import { erEøsPeriodeGyldig, isEmpty, isNumeric, tellAntallDesimaler } from './eøsValidators';
 
 describe('utils/eøsValidators', () => {
     const nyFeltState = <T>(verdi: T): FeltState<T> => ({
