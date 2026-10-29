@@ -1,8 +1,9 @@
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
+import { lagGrunnlagPerson } from '@testutils/testdata/personTestdata';
 import { Behandlingstype, BehandlingÅrsak } from '@typer/behandling';
+import { PersonType } from '@typer/person';
 import { Målform } from '@typer/søknad';
-import { mockBarn, mockSøker } from '@utils/test/person/person.mock';
 
 import { Brevmal } from './typer';
 import { hentMuligeBrevmalerImplementering } from './useBrevModul';
@@ -53,8 +54,9 @@ describe('useBrevModul', () => {
 
     describe('mottakersMålformImplementering', () => {
         const personIdent = '12345678930';
-        const personerNB = [mockBarn, mockSøker({ målform: Målform.NB, personIdent })];
-        const personerNN = [mockBarn, mockSøker({ målform: Målform.NN, personIdent })];
+        const barn = lagGrunnlagPerson({ type: PersonType.BARN });
+        const personerNB = [barn, lagGrunnlagPerson({ målform: Målform.NB, personIdent })];
+        const personerNN = [barn, lagGrunnlagPerson({ målform: Målform.NN, personIdent })];
         test('Skal returnere NB når søkers målform er NB', () => {
             expect(mottakersMålformImplementering(personerNB, Valideringsstatus.OK, personIdent)).toEqual(Målform.NB);
         });

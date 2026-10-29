@@ -1,5 +1,5 @@
-import type { IPersonResultat } from '../../../typer/vilkår';
-import { hentFeilIVilkårsvurdering } from '../hentFeilIVilkårsvurdering';
+import type { IPersonResultat } from '@typer/vilkår';
+import { hentFeilIVilkårsvurdering } from './hentFeilIVilkårsvurdering';
 import barnehageperiodeErEtterBarnetsAlderMenIPeriodeForOvergangsordning from './testcaser/barnehageperiodeErEtterBarnetsAlderMenIPeriodeForOvergangsordning.json';
 import barnehageperiodeStarterEtter2årEllerSkole from './testcaser/barnehageperiodeStarterEtter2årEllerSkole.json';
 import bosattIRiketIkkeUtfylt from './testcaser/bosattIRiketIkkeUtfylt.json';

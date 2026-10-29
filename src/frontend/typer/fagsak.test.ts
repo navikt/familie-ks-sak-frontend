@@ -1,15 +1,14 @@
 import { kjønnType } from '@navikt/familie-typer';
+import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
+import { YtelseType } from '@typer/beregning';
+import { PersonType } from '@typer/person';
+import { Målform } from '@typer/søknad';
+import { Vedtaksperiodetype } from '@typer/vedtaksperiode';
+import { dateTilIsoDatoString, hentDagensDato } from '@utils/dato';
+import { hentBarnMedLøpendeUtbetaling } from '@utils/fagsak';
 import { addYears } from 'date-fns';
 
-import { YtelseType } from '../../typer/beregning';
-import { PersonType } from '../../typer/person';
-import { Målform } from '../../typer/søknad';
-import { Vedtaksperiodetype } from '../../typer/vedtaksperiode';
-import { dateTilIsoDatoString, hentDagensDato } from '../../utils/dato';
-import { hentBarnMedLøpendeUtbetaling } from '../../utils/fagsak';
-import { mockMinimalFagsak } from '../../utils/test/minimalFagsak/minimalFagsak.mock';
-
-describe('SøknadContext', () => {
+describe('hentBarnMedLøpendeUtbetaling', () => {
     test('Hent barn med løpende utbetalinger på fagsak', () => {
         const barnFnr = '12345678910';
         const person = {
@@ -21,7 +20,7 @@ describe('SøknadContext', () => {
             type: PersonType.BARN,
         };
 
-        const fagsak = mockMinimalFagsak({
+        const fagsak = lagFagsak({
             gjeldendeUtbetalingsperioder: [
                 {
                     periodeFom: '2020-01-01',

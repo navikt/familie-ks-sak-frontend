@@ -46,12 +46,6 @@ export interface IPersonResultat {
     person: IGrunnlagPerson;
 }
 
-export function harPersonIkkeVurdertVilkår(personResultat: IPersonResultat) {
-    return personResultat.vilkårResultater.some(
-        vilkårResultatFelt => vilkårResultatFelt.resultat === Resultat.IKKE_VURDERT
-    );
-}
-
 export interface IAnnenVurdering {
     id: number;
     begrunnelse: string;

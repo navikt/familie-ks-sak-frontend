@@ -1,4 +1,4 @@
-import { enhetsgrupper, harTilgangTilEnhet } from '../enhet';
+import { enhetsgrupper, harTilgangTilEnhet } from './enhet';
 
 describe('Enhet typer', () => {
     test('Skal sjekke tilgangsstyring på enheter', () => {

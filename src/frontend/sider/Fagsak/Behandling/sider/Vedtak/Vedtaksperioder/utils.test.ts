@@ -1,12 +1,10 @@
+import { lagVedtaksperiodeMedBegrunnelser } from '@testutils/testdata/vedtaksperiodeTestdata';
+import { BehandlingResultat, BehandlingStatus } from '@typer/behandling';
+import { BegrunnelseType } from '@typer/vedtak';
+import { type IVedtaksperiodeMedBegrunnelser, Vedtaksperiodetype } from '@typer/vedtaksperiode';
+import { dateTilIsoDatoString, hentDagensDato } from '@utils/dato';
 import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
-import { BehandlingResultat, BehandlingStatus } from '../../../../../../typer/behandling';
-import { type IVedtaksperiodeMedBegrunnelser, Vedtaksperiodetype } from '../../../../../../typer/vedtaksperiode';
-import { dateTilIsoDatoString, hentDagensDato } from '../../../../../../utils/dato';
-import {
-    mockAvslagsperiode,
-    mockOpphørsperiode,
-    mockUtbetalingsperiode,
-} from '../../../../../../utils/test/vedtak/vedtaksperiode.mock';
+
 import { filtrerOgSorterPerioderMedBegrunnelseBehov } from './utils';
 
 describe('Vedtak utils', () => {
@@ -17,9 +15,9 @@ describe('Vedtak utils', () => {
 
         test(`Test at returnerte perioder er sortert på fom-dato.`, () => {
             const vedtaksperioder: IVedtaksperiodeMedBegrunnelser[] = [
-                mockOpphørsperiode({ fom: opphørFom }),
-                mockUtbetalingsperiode({ fom: fom, tom: tom }),
-                mockAvslagsperiode({ fom: fom, tom: tom }),
+                lagVedtaksperiodeMedBegrunnelser({ type: Vedtaksperiodetype.OPPHØR, fom: opphørFom }),
+                lagVedtaksperiodeMedBegrunnelser({ fom: fom, tom: tom }),
+                lagVedtaksperiodeMedBegrunnelser({ type: Vedtaksperiodetype.AVSLAG, fom: fom, tom: tom }),
             ];
             const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                 vedtaksperioder,
@@ -36,8 +34,18 @@ describe('Vedtak utils', () => {
         describe('Test lesevisning', () => {
             test(`Test at ubegrunnede perioder ikke returneres ved avsluttet behandling`, () => {
                 const vedtaksperioder: IVedtaksperiodeMedBegrunnelser[] = [
-                    mockOpphørsperiode({ fom: opphørFom }),
-                    mockUtbetalingsperiode({ fom: fom, tom: tom, begrunnelser: [] }),
+                    lagVedtaksperiodeMedBegrunnelser({
+                        type: Vedtaksperiodetype.OPPHØR,
+                        fom: opphørFom,
+                        begrunnelser: [
+                            {
+                                begrunnelse: 'Test',
+                                begrunnelseType: BegrunnelseType.INNVILGET,
+                                støtterFritekst: false,
+                            },
+                        ],
+                    }),
+                    lagVedtaksperiodeMedBegrunnelser({ fom: fom, tom: tom, begrunnelser: [] }),
                 ];
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                     vedtaksperioder,
@@ -56,7 +64,7 @@ describe('Vedtak utils', () => {
                 const toMndFremITidTom = addMonths(endOfMonth(hentDagensDato()), 2);
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                     [
-                        mockUtbetalingsperiode({
+                        lagVedtaksperiodeMedBegrunnelser({
                             fom: dateTilIsoDatoString(toMndFremITidFom),
                             tom: dateTilIsoDatoString(toMndFremITidTom),
                         }),
@@ -73,7 +81,7 @@ describe('Vedtak utils', () => {
 
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                     [
-                        mockUtbetalingsperiode({
+                        lagVedtaksperiodeMedBegrunnelser({
                             fom: dateTilIsoDatoString(treMndFremITidFom),
                             tom: dateTilIsoDatoString(treMndFremITidTom),
                         }),
@@ -86,9 +94,9 @@ describe('Vedtak utils', () => {
             });
             test(`Test at opphør kun gir én periode`, () => {
                 const vedtaksperioder: IVedtaksperiodeMedBegrunnelser[] = [
-                    mockOpphørsperiode({ fom: opphørFom }),
-                    mockUtbetalingsperiode({ fom: fom, tom: tom }),
-                    mockAvslagsperiode({ fom: fom, tom: tom }),
+                    lagVedtaksperiodeMedBegrunnelser({ type: Vedtaksperiodetype.OPPHØR, fom: opphørFom }),
+                    lagVedtaksperiodeMedBegrunnelser({ fom: fom, tom: tom }),
+                    lagVedtaksperiodeMedBegrunnelser({ type: Vedtaksperiodetype.AVSLAG, fom: fom, tom: tom }),
                 ];
                 const perioder = filtrerOgSorterPerioderMedBegrunnelseBehov(
                     vedtaksperioder,

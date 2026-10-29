@@ -1,9 +1,5 @@
-import { addDays, addMonths, endOfMonth, isAfter, isSameDay, startOfMonth } from 'date-fns';
-
-import { annenVurderingFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskAnnenVurdering/AnnenVurderingTabell';
-import { vilkårFeilmeldingId } from '../../sider/Fagsak/Behandling/sider/Vilkårsvurdering/GeneriskVilkår/VilkårTabell';
-import type { IAnnenVurdering, IPersonResultat, IVilkårResultat } from '../../typer/vilkår';
-import { annenVurderingConfig, Resultat, VilkårType, vilkårConfig } from '../../typer/vilkår';
+import type { IAnnenVurdering, IPersonResultat, IVilkårResultat } from '@typer/vilkår';
+import { annenVurderingConfig, Resultat, VilkårType, vilkårConfig } from '@typer/vilkår';
 import {
     erEtterEllerSammeDato,
     erFørEllerSammeDato,
@@ -13,7 +9,11 @@ import {
     parseTilOgMedDato,
     tidenesEnde,
     tidenesMorgen,
-} from '../../utils/dato';
+} from '@utils/dato';
+import { addDays, addMonths, endOfMonth, isAfter, isSameDay, startOfMonth } from 'date-fns';
+
+import { annenVurderingFeilmeldingId } from './GeneriskAnnenVurdering/AnnenVurderingTabell';
+import { vilkårFeilmeldingId } from './GeneriskVilkår/VilkårTabell';
 
 export interface FeiloppsummeringFeil {
     skjemaelementId: string;
