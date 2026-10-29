@@ -14,12 +14,11 @@ export interface IDataForManuellJournalføring {
     minimalFagsak?: IMinimalFagsak;
 }
 
-interface IRestJournalpostDokument {
+export interface IRestJournalpostDokument {
     dokumentTittel?: string;
     dokumentInfoId: string;
     brevkode?: string;
     logiskeVedlegg?: ILogiskVedlegg[];
-    eksisterendeLogiskeVedlegg?: ILogiskVedlegg[];
 }
 
 export interface IRestJournalføring {
@@ -83,11 +82,6 @@ export enum DokumentTittel {
     UTTALELSE = 'Uttalelse',
     UTTALELSE_TILBAKEKREVING = 'Uttalelse tilbakekreving',
     VIGSELSATTEST = 'Vigselsattest',
-}
-
-export enum JournalpostKanal {
-    NAV_NO = 'NAV_NO',
-    SCAN_IM = 'SCAN_IM',
 }
 
 export type TilknyttetBehandling = {
