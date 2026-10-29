@@ -8,8 +8,6 @@ export function erDefinert<T extends NonNullable<unknown>>(value: T | undefined 
     return value !== undefined && value !== null;
 }
 
-export const fjernWhitespace = (streng: string) => streng.replace(/\s/g, '').replace(/[ \u0085]/g, '');
-
 // Skamløst knabba herfra https://gist.github.com/zachlysobey/71ac85046d0d533287ed85e1caa64660
 export function partition<T>(predicate: (val: T) => boolean, arr: Array<T>): [Array<T>, Array<T>] {
     const partitioned: [Array<T>, Array<T>] = [[], []];
