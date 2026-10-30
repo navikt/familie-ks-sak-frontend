@@ -1,0 +1,10 @@
+.personEtiketter {
+    gap: 2.125rem;
+    padding-top: 4.8rem;
+}
+
+/* biome-ignore lint/correctness/noUnknownPseudoClass: module css får ikke fher*/
+:global(.tidslinje) {
+    margin: 0;
+    overflow-x: hidden;
+}
