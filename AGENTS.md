@@ -8,7 +8,8 @@ Owned by team-baks (`teamfamilie` namespace). Only outbound API dependency: `fam
 
 ```bash
 # Setup
-nvm use                                                                              # Node 24
+nvm use                                                                              # Node 26
+npm install -g corepack                                                              # Corepack is no longer bundled with Node
 corepack enable                                                                      # activates pnpm version from packageManager
 pnpm install
 
@@ -130,7 +131,7 @@ the "Legacy" column exists in older files and is being phased out — do not ext
 ## CI & Deploy
 
 - Pull requests run a reusable pnpm workflow from `navikt/familie-baks-gha-workflows@main`
-  (`pull-request-pnpm.yaml`, Node 24) — the actual build/test steps live in that external repo, not here.
+  (`pull-request-pnpm.yaml`, Node 26) — the actual build/test steps live in that external repo, not here.
 - Pushing to `main` runs two independent chains **in parallel**, with no manual gate or approval step:
   build+deploy to dev-gcp (`.nais/app-dev.yaml`) and build+deploy to prod-gcp (`.nais/app-prod.yaml`).
   A `varsle-slack` job notifies on failure of either chain.
