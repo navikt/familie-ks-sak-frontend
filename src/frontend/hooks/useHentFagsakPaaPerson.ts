@@ -11,9 +11,11 @@ interface Parameters {
     ident: string;
 }
 
-type Options = Omit<UseMutationOptions<IMinimalFagsak, DefaultError, Parameters>, 'mutationFn'>;
+type Options = Omit<UseMutationOptions<IMinimalFagsak, DefaultError, Parameters>, 'mutationFn'> & {
+    visSystemetLaster?: boolean;
+};
 
-export function useHentFagsakPaaPerson(options?: Options) {
+export function useHentFagsakPaaPerson({ visSystemetLaster = true, ...rest }: Options = {}) {
     return useMutation({
         mutationKey: HentFagsakPaaPersonMutationKeyFactory.hentFagsakPaaPerson(),
         mutationFn: (parameters: Parameters) => {
@@ -21,7 +23,7 @@ export function useHentFagsakPaaPerson(options?: Options) {
             const payload = { ident };
             return hentFagsakPaaPerson(payload);
         },
-        meta: { [MetaKey.VIS_SYSTEMET_LASTER]: true },
-        ...options,
+        meta: { [MetaKey.VIS_SYSTEMET_LASTER]: visSystemetLaster },
+        ...rest,
     });
 }
