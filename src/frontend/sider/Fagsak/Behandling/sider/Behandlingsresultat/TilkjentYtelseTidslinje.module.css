@@ -1,18 +1,10 @@
-.container {
-    & .tidslinje {
-        margin: 0;
-        overflow-x: hidden;
-    }
+.personEtiketter {
+    gap: 2.125rem;
+    padding-top: 4.8rem;
+}
 
-    & .aksel-body-short {
-        &:first-child {
-            margin-top: 4.8rem;
-        }
-    }
-
-    & .aksel-body-short {
-        &:not(:first-child) {
-            margin-top: 2.125rem;
-        }
-    }
+/* biome-ignore lint/correctness/noUnknownPseudoClass: module css får ikke fher*/
+:global(.tidslinje) {
+    margin: 0;
+    overflow-x: hidden;
 }

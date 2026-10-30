@@ -18,7 +18,7 @@ interface IProps {
 const TilkjentYtelseTidslinje = ({ grunnlagPersoner, tidslinjePersoner }: IProps) => {
     const { genererFormatertÅrstall, genererRader, aktivEtikett, aktivtTidslinjeVindu, naviger } =
         useTidslinjeContext();
-    const tidslinjeRader = genererRader(tidslinjePersoner);
+    const tidslinjeRader = genererRader([...tidslinjePersoner, ...tidslinjePersoner, ...tidslinjePersoner]);
 
     return (
         <>
@@ -31,28 +31,30 @@ const TilkjentYtelseTidslinje = ({ grunnlagPersoner, tidslinjePersoner }: IProps
                     <TidslinjeNavigering naviger={naviger} />
                 </VStack>
             </HStack>
-            <HStack className={Styles.container}>
-                <Box minWidth={'7rem'}>
-                    {grunnlagPersoner.map((person, index) => {
+            <HStack>
+                <VStack minWidth={'7rem'} className={Styles.personEtiketter}>
+                    {[...grunnlagPersoner, ...grunnlagPersoner, ...grunnlagPersoner].map((person, index) => {
                         return (
                             <BodyShort key={index} title={person.navn}>
                                 {formaterIdent(person.personIdent)}
                             </BodyShort>
                         );
                     })}
-                </Box>
-                <Tidslinje
-                    rader={tidslinjeRader}
-                    etikettRender={(etikett: Etikett) => <TidslinjeEtikett etikett={etikett} />}
-                    startDato={aktivtTidslinjeVindu.startDato}
-                    sluttDato={aktivtTidslinjeVindu.sluttDato}
-                    aktivtUtsnitt={
-                        aktivEtikett && {
-                            fom: aktivEtikett.date,
-                            tom: endOfMonth(aktivEtikett.date),
+                </VStack>
+                <Box asChild marginInline={'space-80'}>
+                    <Tidslinje
+                        rader={tidslinjeRader}
+                        etikettRender={(etikett: Etikett) => <TidslinjeEtikett etikett={etikett} />}
+                        startDato={aktivtTidslinjeVindu.startDato}
+                        sluttDato={aktivtTidslinjeVindu.sluttDato}
+                        aktivtUtsnitt={
+                            aktivEtikett && {
+                                fom: aktivEtikett.date,
+                                tom: endOfMonth(aktivEtikett.date),
+                            }
                         }
-                    }
-                />
+                    />
+                </Box>
             </HStack>
         </>
     );

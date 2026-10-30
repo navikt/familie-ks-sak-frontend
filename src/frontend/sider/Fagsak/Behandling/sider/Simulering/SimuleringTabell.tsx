@@ -192,8 +192,8 @@ const SimuleringTabell = ({ simulering }: ISimuleringProps) => {
                                     <Table.DataCell
                                         className={classNames(Styles.dataCell, {
                                             [Styles.dashedBorder]: erNestePeriode(periode),
-                                            [Styles.negativeAmount]: !!periode.resultat && periode.resultat < 0,
                                             [Styles.nextPeriodAmount]: erNestePeriode(periode),
+                                            [Styles.negativeAmount]: !!periode.resultat && periode.resultat < 0,
                                         })}
                                         key={'resultat - ' + periode.fom}
                                         align={'center'}
