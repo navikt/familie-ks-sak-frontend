@@ -43,8 +43,6 @@ interface OppgavebenkContextValue {
     hentOppgaver: () => void;
     oppgaveFelter: IOppgaveFelter;
     oppgaver: Ressurs<IHentOppgaveDto>;
-    side: number;
-    settSide: (side: number) => void;
     settVerdiPåOppgaveFelt: (oppgaveFelt: IOppgaveFelt, nyVerdi: string) => void;
     tilbakestillFordelingPåOppgave: (oppgave: IOppgave) => void;
     tilbakestillOppgaveFelter: () => void;
@@ -80,7 +78,6 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
     });
 
     const [hentOppgaverVedSidelast, settHentOppgaverVedSidelast] = useState(true);
-    const [side, settSide] = useState<number>(1);
 
     const [oppgaver, settOppgaver] = useState<Ressurs<IHentOppgaveDto>>(byggTomRessurs<IHentOppgaveDto>());
 
@@ -403,8 +400,6 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
                 hentOppgaver,
                 oppgaveFelter,
                 oppgaver,
-                side,
-                settSide,
                 settVerdiPåOppgaveFelt,
                 tilbakestillFordelingPåOppgave,
                 tilbakestillOppgaveFelter,
