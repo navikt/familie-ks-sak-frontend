@@ -18,13 +18,13 @@
     border-left: 1px dashed;
 }
 
-.negativeAmount {
-    color: var(--ax-text-danger-subtle);
-}
-
 .nextPeriodAmount {
     color: var(--ax-text-success-subtle);
     font-weight: var(--ax-font-weight-bold);
+}
+
+.negativeAmount {
+    color: var(--ax-text-danger-subtle);
 }
 
 .manuellPosteringRad {
