@@ -1,4 +1,5 @@
 import { opprettEllerHentFagsak } from '@api/opprettEllerHentFagsak';
+import { MetaKey } from '@hooks/meta/metaKey';
 import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { IMinimalFagsak } from '@typer/fagsak';
 
@@ -20,6 +21,7 @@ export function useOpprettEllerHentFagsak(options?: Options) {
             const payload = { aktørId };
             return opprettEllerHentFagsak(payload);
         },
+        meta: { [MetaKey.VIS_SYSTEMET_LASTER]: true },
         ...options,
     });
 }
