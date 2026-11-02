@@ -11,7 +11,7 @@ Frontend app for kontantstøtte
 * Aktiver riktig pnpm-versjon med `corepack enable` (henter versjonen fra `packageManager` i package.json)
 * Installere avhengigheter `pnpm install`
 * Starte dev-server `pnpm start:dev` Se ([Miljøvariabler](#milj%C3%B8variabler)) for andre måter å kjøre appen.
-* Åpne `http://localhost:8000` i nettleseren din
+* Åpne `http://localhost:8001` i nettleseren din (8001 lokalt slik at appen kan kjøre samtidig med familie-ba-sak-frontend på 8000)
 
 For å kjøre tester, kjør: `pnpm test`.
 

@@ -21,7 +21,7 @@ export default defineConfig(() => {
                 hmr: {
                     port: 24679,
                 },
-                port: 8000,
+                port: 8001,
             },
             resolve: {
                 tsconfigPaths: true,
