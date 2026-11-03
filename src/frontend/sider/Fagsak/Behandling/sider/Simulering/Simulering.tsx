@@ -6,10 +6,10 @@ import { Box, InfoCard, LocalAlert } from '@navikt/ds-react';
 import { TilbakekrevingForm } from '@sider/Fagsak/Behandling/sider/Simulering/form/TilbakekrevingForm';
 import { useTilbakekrevingForm } from '@sider/Fagsak/Behandling/sider/Simulering/form/useTilbakekrevingForm';
 import { useSimuleringContext } from '@sider/Fagsak/Behandling/sider/Simulering/SimuleringContext';
+import Skjemasteg from '@sider/Fagsak/Behandling/sider/Skjemasteg';
 import { BehandlingResultat, BehandlingSteg } from '@typer/behandling';
 import { FormProvider } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import Skjemasteg from '../../../../../komponenter/Skjemasteg/Skjemasteg';
 import SimuleringPanel from './SimuleringPanel';
 import SimuleringTabell from './SimuleringTabell';
 

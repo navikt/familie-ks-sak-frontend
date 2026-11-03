@@ -1,5 +1,4 @@
-import type { IIsoDatoPeriode, IIsoMånedPeriode, IsoDatoString, IsoMånedString } from '../utils/dato';
-import type { OptionType } from './common';
+import type { IsoDatoString, IsoMånedString } from '@utils/dato';
 
 export type KompetanseAktivitet = SøkersAktivitet | AnnenForelderAktivitet;
 
@@ -93,20 +92,6 @@ export interface IRestKompetanse extends IRestEøsPeriode {
     erAnnenForelderOmfattetAvNorskLovgivning: boolean;
 }
 
-export interface IKompetanse extends IEøsPeriodeStatus {
-    periodeId: string;
-    id: number;
-    initielFom: IsoMånedString;
-    periode: IIsoMånedPeriode;
-    barnIdenter: OptionType[];
-    søkersAktivitet: KompetanseAktivitet | undefined;
-    søkersAktivitetsland: string | undefined;
-    annenForeldersAktivitet: KompetanseAktivitet | undefined;
-    annenForeldersAktivitetsland: string | undefined;
-    barnetsBostedsland: string | undefined;
-    resultat: KompetanseResultat | undefined;
-}
-
 export enum UtenlandskPeriodeBeløpIntervall {
     ÅRLIG = 'ÅRLIG',
     KVARTALSVIS = 'KVARTALSVIS',
@@ -128,32 +113,8 @@ export interface IRestUtenlandskPeriodeBeløp extends IRestEøsPeriode {
     kalkulertMånedligBeløp?: string;
 }
 
-export interface IUtenlandskPeriodeBeløp {
-    periodeId: string;
-    id: number;
-    status: EøsPeriodeStatus;
-    initielFom: IsoMånedString;
-    periode: IIsoMånedPeriode;
-    barnIdenter: OptionType[];
-    beløp?: string | undefined;
-    valutakode?: string | undefined;
-    intervall?: UtenlandskPeriodeBeløpIntervall | undefined;
-}
-
 export interface IRestValutakurs extends IRestEøsPeriode {
     valutakode?: string;
     valutakursdato?: IsoDatoString;
     kurs?: string;
-}
-
-export interface IValutakurs {
-    periodeId: string;
-    id: number;
-    status: EøsPeriodeStatus;
-    initielFom: IsoMånedString;
-    periode: IIsoDatoPeriode;
-    barnIdenter: OptionType[];
-    valutakode: string | undefined;
-    valutakursdato: Date | undefined;
-    kurs: string | undefined;
 }

@@ -1,8 +1,8 @@
 import { addDays, setDefaultOptions, subDays, subYears } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
-import { dateTilIsoDatoString, hentDagensDato } from '../dato';
-import { formaterIdent, formaterIdenter, hentAlder, kunSiffer, sorterBarnEtterFødselsdato } from '../formatter';
+import { dateTilIsoDatoString, hentDagensDato } from './dato';
+import { formaterIdent, formaterIdenter, hentAlder, kunSiffer, sorterBarnEtterFødselsdato } from './formatter';
 
 describe('utils/formatter', () => {
     beforeAll(() => {

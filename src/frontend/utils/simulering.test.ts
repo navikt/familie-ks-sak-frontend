@@ -4,7 +4,7 @@ import {
     hentPeriodelisteMedTommePerioder,
     hentÅrISimuleringen,
     settPerioderTilIkkeUtbetaltOmForfallsdatoIkkePassert,
-} from '../../simulering';
+} from './simulering';
 
 describe('utils/simulering', () => {
     test('Første dag i året havnet innenfor rett år ved hentÅrISimuleringen', () => {

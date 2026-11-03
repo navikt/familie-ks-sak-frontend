@@ -1,13 +1,12 @@
 import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
+import { BehandlingPåVentAlert } from '@komponenter/Alert/BehandlingPåVentAlert';
+import { MidlertidigEnhetAlert } from '@komponenter/Alert/MidlertidigEnhetAlert';
 import { Box, Button, ErrorMessage, Heading, Stack, VStack } from '@navikt/ds-react';
 import { BehandlingSteg } from '@typer/behandling';
 import { behandlingErEtterSteg } from '@utils/steg';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { useEffect } from 'react';
-
-import { BehandlingPåVentAlert } from '../Alert/BehandlingPåVentAlert';
-import { MidlertidigEnhetAlert } from '../Alert/MidlertidigEnhetAlert';
 
 export const MAX_SKJEMASTEG_BREDDE = '1440px';
 
