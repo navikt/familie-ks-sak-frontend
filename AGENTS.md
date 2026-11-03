@@ -37,7 +37,7 @@ Note: the backend has zero test files (`passWithNoTests: true` in `src/backend/v
 
 ```text
 src/backend/                       # Express BFF, 7 source files
-  server.ts                        # Entrypoint (port 8001 lokalt, 8000 i Nais), mounts proxy/router/error middleware
+  server.ts                        # Entrypoint (port 8001), mounts proxy/router/error middleware
   router.ts                        # /version, /error, /logg-feil, SPA catch-all with ensureAuthenticated
   proxy.ts                         # doProxy() -> PROXY_URL, attachToken() (OBO token), doRedirectProxy()
   config.ts                        # appConfig, sessionConfig (Redis/Valkey), oboConfig, redirectRecords
