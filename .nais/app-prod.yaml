@@ -11,7 +11,7 @@ spec:
     min: 2
     max: 2
     cpuThresholdPercentage: 50
-  port: 8000
+  port: 8001
   liveness:
     path: /isAlive
     initialDelay: 5
