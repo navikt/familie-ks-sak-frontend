@@ -11,7 +11,8 @@ import { DeltagerInfo } from './DeltagerInfo';
 import { useManuellJournalføringContext } from './ManuellJournalføringContext';
 
 export function AvsenderPanel() {
-    const { skjema, erLesevisning, settAvsenderLikBruker, tilbakestillAvsender } = useManuellJournalføringContext();
+    const { skjema, erLesevisning, settAvsenderLikBruker, tilbakestillAvsender, erDigitaltInnsendtDokument } =
+        useManuellJournalføringContext();
     const [åpen, settÅpen] = useState(false);
     const [brukerErAvsender, settBrukerErAvsender] = useState(false);
 
@@ -28,6 +29,8 @@ export function AvsenderPanel() {
         skjema.felter.avsenderNavn.valideringsstatus,
         skjema.felter.avsenderIdent.valideringsstatus,
     ]);
+
+    const lesevisning = erLesevisning() || erDigitaltInnsendtDokument;
 
     return (
         <ExpansionCard
@@ -47,7 +50,7 @@ export function AvsenderPanel() {
                 />
             </ExpansionCard.Header>
             <ExpansionCard.Content className={styles.innerContent}>
-                {erLesevisning() ? (
+                {lesevisning ? (
                     brukerErAvsender ? (
                         <BodyShort className={classNames('skjemaelement', 'lese-felt')}>Avsender er bruker</BodyShort>
                     ) : null
