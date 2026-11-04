@@ -86,6 +86,7 @@ interface ManuellJournalføringContextValue {
     lukkOppgaveOgKnyttJournalpostTilBehandling: () => void;
     kanKnytteJournalpostTilBehandling: () => boolean;
     klageStatus: RessursStatus;
+    erDigitaltInnsendtDokument: boolean | undefined;
 }
 
 const ManuellJournalføringContext = createContext<ManuellJournalføringContextValue | undefined>(undefined);
@@ -102,6 +103,7 @@ export function ManuellJournalføringProvider(props: PropsWithChildren) {
 
     const [minimalFagsak, settMinimalFagsak] = useState<IMinimalFagsak | undefined>(undefined);
     const [klagebehandlinger, settKlagebehandlinger] = useState<Ressurs<IKlagebehandling[]>>(byggTomRessurs());
+    const [erDigitaltInnsendtDokument, settErDigialtInnsendtDokument] = useState<boolean | undefined>(undefined);
 
     const [dataForManuellJournalføring, settDataForManuellJournalføring] = useState(
         byggTomRessurs<IDataForManuellJournalføring>()
@@ -291,6 +293,10 @@ export function ManuellJournalføringProvider(props: PropsWithChildren) {
                 settDataForManuellJournalføring(hentetDataForManuellJournalføring);
 
                 if (hentetDataForManuellJournalføring.status === RessursStatus.SUKSESS) {
+                    settErDigialtInnsendtDokument(
+                        hentetDataForManuellJournalføring.data.journalpost.kanal === JournalpostKanal.NAV_NO
+                    );
+
                     const førsteDokument = hentetDataForManuellJournalføring.data.journalpost.dokumenter?.find(
                         () => true
                     );
@@ -299,10 +305,13 @@ export function ManuellJournalføringProvider(props: PropsWithChildren) {
                         hentetDataForManuellJournalføring.data.journalpost.journalpostId,
                         førsteDokument?.dokumentInfoId
                     );
+                } else {
+                    settErDigialtInnsendtDokument(undefined);
                 }
             })
             .catch((_error: AxiosError) => {
                 settDataForManuellJournalføring(byggFeiletRessurs('Ukjent feil ved henting av oppgave'));
+                settErDigialtInnsendtDokument(undefined);
             });
     };
 
@@ -557,6 +566,7 @@ export function ManuellJournalføringProvider(props: PropsWithChildren) {
                 lukkOppgaveOgKnyttJournalpostTilBehandling,
                 kanKnytteJournalpostTilBehandling,
                 klageStatus: klagebehandlinger.status,
+                erDigitaltInnsendtDokument,
             }}
         >
             {props.children}
