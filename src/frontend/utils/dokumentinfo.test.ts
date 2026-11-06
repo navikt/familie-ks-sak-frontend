@@ -1,7 +1,12 @@
 import { lagDokumentInfo } from '@testutils/testdata/dokumentInfoTestdata';
+import { lagJournalpost } from '@testutils/testdata/journalpostTestdata';
+import { JournalpostKanal } from '@typer/manuell-journalføring';
 import { describe, expect, test } from 'vitest';
 
-import { lagJournalpostDokumenterForJournalføring } from './dokumentinfo';
+import {
+    lagJournalpostDokumenterForJournalføring,
+    lagJournalpostDokumenterMedEksisterendeLogiskeVedlegg,
+} from './dokumentinfo';
 
 describe('lagJournalpostDokumenterForJournalføring', () => {
     test('skal sende valgte titler som logiske vedlegg og beholde dokumenttittelen uendret', () => {
@@ -112,5 +117,73 @@ describe('lagJournalpostDokumenterForJournalføring', () => {
 
         // Assert
         expect(journalpostDokumenter).toEqual([]);
+    });
+});
+
+describe('lagJournalpostDokumenterMedEksisterendeLogiskeVedlegg', () => {
+    test('skal sende valgte og eksisterende logiske vedlegg når journalposten er skannet', () => {
+        // Arrange
+        const eksisterendeLogiskeVedlegg = [{ logiskVedleggId: '11', tittel: 'Pass/ID-papirer' }];
+        const valgteLogiskeVedlegg = [{ logiskVedleggId: '0', tittel: 'Vigselsattest' }];
+        const journalpost = lagJournalpost({
+            kanal: JournalpostKanal.SCAN_IM,
+            dokumenter: [lagDokumentInfo({ dokumentInfoId: '1', logiskeVedlegg: eksisterendeLogiskeVedlegg })],
+        });
+        const dokument = lagDokumentInfo({
+            dokumentInfoId: '1',
+            tittel: 'Klage',
+            logiskeVedlegg: valgteLogiskeVedlegg,
+        });
+
+        // Act
+        const [journalpostDokument] = lagJournalpostDokumenterMedEksisterendeLogiskeVedlegg([dokument], journalpost);
+
+        // Assert
+        expect(journalpostDokument).toEqual({
+            dokumentTittel: 'Klage',
+            dokumentInfoId: '1',
+            eksisterendeLogiskeVedlegg,
+            logiskeVedlegg: valgteLogiskeVedlegg,
+        });
+    });
+
+    test('skal slå sammen titlene med dokumenttittelen og beholde eksisterende logiske vedlegg når journalposten er digital', () => {
+        // Arrange
+        const eksisterendeLogiskeVedlegg = [{ logiskVedleggId: '11', tittel: 'Pass/ID-papirer' }];
+        const journalpost = lagJournalpost({
+            kanal: JournalpostKanal.NAV_NO,
+            dokumenter: [lagDokumentInfo({ dokumentInfoId: '1', logiskeVedlegg: eksisterendeLogiskeVedlegg })],
+        });
+        const dokument = lagDokumentInfo({
+            dokumentInfoId: '1',
+            tittel: 'Klage',
+            logiskeVedlegg: [
+                { logiskVedleggId: '0', tittel: 'Vigselsattest' },
+                { logiskVedleggId: '0', tittel: 'Uttalelse' },
+            ],
+        });
+
+        // Act
+        const [journalpostDokument] = lagJournalpostDokumenterMedEksisterendeLogiskeVedlegg([dokument], journalpost);
+
+        // Assert
+        expect(journalpostDokument).toEqual({
+            dokumentTittel: 'Klage, Vigselsattest, Uttalelse',
+            dokumentInfoId: '1',
+            eksisterendeLogiskeVedlegg,
+            logiskeVedlegg: eksisterendeLogiskeVedlegg,
+        });
+    });
+
+    test('skal ikke sende eksisterende logiske vedlegg når dokumentet ikke finnes i journalposten', () => {
+        // Arrange
+        const journalpost = lagJournalpost({ kanal: JournalpostKanal.SCAN_IM, dokumenter: [] });
+        const dokument = lagDokumentInfo({ dokumentInfoId: '1' });
+
+        // Act
+        const [journalpostDokument] = lagJournalpostDokumenterMedEksisterendeLogiskeVedlegg([dokument], journalpost);
+
+        // Assert
+        expect(journalpostDokument.eksisterendeLogiskeVedlegg).toBeUndefined();
     });
 });
