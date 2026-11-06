@@ -14,7 +14,7 @@ export interface IDataForManuellJournalføring {
     minimalFagsak?: IMinimalFagsak;
 }
 
-interface IRestJournalpostDokument {
+export interface IRestJournalpostDokument {
     dokumentTittel?: string;
     dokumentInfoId: string;
     brevkode?: string;

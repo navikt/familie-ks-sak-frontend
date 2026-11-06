@@ -11,4 +11,5 @@ export enum FeatureToggle {
 
     // Release
     brukNyttBrevmottakerSkjema = 'familie-ks-sak.bruk-nytt-brevmottaker-skjema',
+    bulkOppdaterLogiskeVedlegg = 'familie-ks-sak.bulk-oppdater-logiske-vedlegg',
 }
