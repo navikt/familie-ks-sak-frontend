@@ -22,20 +22,22 @@ const revurdering = lagBehandling({
     årsak: BehandlingÅrsak.NYE_OPPLYSNINGER,
 });
 
+function Wrapper({ behandling, children }: { behandling: IBehandling; children: ReactNode }) {
+    return (
+        <TestProviders saksbehandler={superbruker}>
+            <FagsakProvider fagsak={lagFagsak()}>
+                <BrukerProvider bruker={lagPerson()}>
+                    <HentOgSettBehandlingProvider>
+                        <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
+                    </HentOgSettBehandlingProvider>
+                </BrukerProvider>
+            </FagsakProvider>
+        </TestProviders>
+    );
+}
+
 function lagWrapper(behandling: IBehandling) {
-    return function Wrapper({ children }: { children: ReactNode }) {
-        return (
-            <TestProviders saksbehandler={superbruker}>
-                <FagsakProvider fagsak={lagFagsak()}>
-                    <BrukerProvider bruker={lagPerson()}>
-                        <HentOgSettBehandlingProvider>
-                            <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
-                        </HentOgSettBehandlingProvider>
-                    </BrukerProvider>
-                </FagsakProvider>
-            </TestProviders>
-        );
-    };
+    return ({ children }: { children: ReactNode }) => <Wrapper behandling={behandling}>{children}</Wrapper>;
 }
 
 describe('Brevskjema', () => {
