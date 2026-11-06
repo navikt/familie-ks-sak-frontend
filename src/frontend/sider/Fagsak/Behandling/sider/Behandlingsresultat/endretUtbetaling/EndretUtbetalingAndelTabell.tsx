@@ -1,5 +1,4 @@
-import { Heading, Table } from '@navikt/ds-react';
-import styled from 'styled-components';
+import { Box, Heading, Table } from '@navikt/ds-react';
 import type { IBehandling } from '../../../../../../typer/behandling';
 import { EndretUtbetalingAndelProvider } from './EndretUtbetalingAndelContext';
 import { EndretUtbetalingAndelRad } from './EndretUtbetalingAndelRad';
@@ -8,15 +7,11 @@ interface IEndretUtbetalingAndelTabellProps {
     åpenBehandling: IBehandling;
 }
 
-const EndredePerioder = styled.div`
-    margin-top: 6rem;
-`;
-
 const EndretUtbetalingAndelTabell = ({ åpenBehandling }: IEndretUtbetalingAndelTabellProps) => {
     const endretUtbetalingAndeler = åpenBehandling.endretUtbetalingAndeler;
 
     return (
-        <EndredePerioder>
+        <Box marginBlock={'space-96 space-0'}>
             <Heading spacing size="medium" level="3">
                 Endrede utbetalingsperioder
             </Heading>
@@ -41,7 +36,7 @@ const EndretUtbetalingAndelTabell = ({ åpenBehandling }: IEndretUtbetalingAndel
                     ))}
                 </Table.Body>
             </Table>
-        </EndredePerioder>
+        </Box>
     );
 };
 
