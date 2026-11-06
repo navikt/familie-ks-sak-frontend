@@ -10,7 +10,7 @@ on:
       - '**.MD'
       - '.github/**.yaml'
       - '.gitignore'
-      - 'biome.json'
+      - 'biome.jsonc'
       - 'CODEOWNERS'
       - 'LICENSE'
 
