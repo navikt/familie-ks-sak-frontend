@@ -35,18 +35,20 @@ const morRelasjon = {
 const forhåndsvisBrev = vi.fn();
 const sendInformasjonsbrev = vi.fn();
 
+function Wrapper({ bruker, children }: PropsWithChildren<{ bruker: ReturnType<typeof lagPerson> }>) {
+    return (
+        <TestProviders>
+            <FagsakProvider fagsak={lagFagsak()}>
+                <BrukerProvider bruker={bruker}>
+                    <BrevmottakereFagsakProvider>{children}</BrevmottakereFagsakProvider>
+                </BrukerProvider>
+            </FagsakProvider>
+        </TestProviders>
+    );
+}
+
 function lagWrapper(bruker: ReturnType<typeof lagPerson>) {
-    return function Wrapper({ children }: PropsWithChildren) {
-        return (
-            <TestProviders>
-                <FagsakProvider fagsak={lagFagsak()}>
-                    <BrukerProvider bruker={bruker}>
-                        <BrevmottakereFagsakProvider>{children}</BrevmottakereFagsakProvider>
-                    </BrukerProvider>
-                </FagsakProvider>
-            </TestProviders>
-        );
-    };
+    return ({ children }: PropsWithChildren) => <Wrapper bruker={bruker}>{children}</Wrapper>;
 }
 
 function renderSkjema(bruker = lagPerson({ forelderBarnRelasjon: [] })) {

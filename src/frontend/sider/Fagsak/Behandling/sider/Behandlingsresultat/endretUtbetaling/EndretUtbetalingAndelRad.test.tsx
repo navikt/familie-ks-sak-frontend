@@ -60,27 +60,28 @@ function lagTestbehandling(behandling: Partial<IBehandling> = {}) {
     });
 }
 
+function Wrapper({ behandling, children }: { behandling: IBehandling; children: ReactNode }) {
+    return (
+        <TestProviders saksbehandler={lagSaksbehandler({ harSuperbrukertilgang: true })}>
+            <FagsakProvider fagsak={lagFagsak()}>
+                <HentOgSettBehandlingProvider>
+                    <BehandlingProvider behandling={behandling}>
+                        <Table>
+                            <Table.Body>{children}</Table.Body>
+                        </Table>
+                    </BehandlingProvider>
+                </HentOgSettBehandlingProvider>
+            </FagsakProvider>
+        </TestProviders>
+    );
+}
+
 function renderRad(endretUtbetalingAndel: IRestEndretUtbetalingAndel, behandling = lagTestbehandling()) {
-    function Wrapper({ children }: { children: ReactNode }) {
-        return (
-            <TestProviders saksbehandler={lagSaksbehandler({ harSuperbrukertilgang: true })}>
-                <FagsakProvider fagsak={lagFagsak()}>
-                    <HentOgSettBehandlingProvider>
-                        <BehandlingProvider behandling={behandling}>
-                            <Table>
-                                <Table.Body>{children}</Table.Body>
-                            </Table>
-                        </BehandlingProvider>
-                    </HentOgSettBehandlingProvider>
-                </FagsakProvider>
-            </TestProviders>
-        );
-    }
     return render(
         <EndretUtbetalingAndelProvider endretUtbetalingAndel={endretUtbetalingAndel}>
             <EndretUtbetalingAndelRad />
         </EndretUtbetalingAndelProvider>,
-        { wrapper: Wrapper }
+        { wrapper: ({ children }) => <Wrapper behandling={behandling}>{children}</Wrapper> }
     );
 }
 
