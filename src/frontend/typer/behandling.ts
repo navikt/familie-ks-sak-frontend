@@ -244,6 +244,7 @@ export interface IBehandling {
     refusjonEøs: IRestRefusjonEøs[];
     brevmottakere: BrevmottakerBehandling[];
     manglendeSvalbardmerking: ManglendeSvalbardmerking[];
+    registeropplysningerErEndret?: boolean;
 }
 
 interface IArbeidsfordelingPåBehandling {
