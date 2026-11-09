@@ -1,9 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
-export const randomUUID = (): string => {
-    return uuidv4();
-};
-
 export function erDefinert<T extends NonNullable<unknown>>(value: T | undefined | null): value is T {
     return value !== undefined && value !== null;
 }
