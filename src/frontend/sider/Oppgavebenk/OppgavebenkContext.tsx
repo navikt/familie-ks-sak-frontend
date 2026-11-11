@@ -1,29 +1,17 @@
-import { useVisTekniskFeilModal } from '@context/TekniskFeilModalContext';
-import { useToastContext } from '@context/ToastContext';
-import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
-import { useHentFagsakPaaPerson } from '@hooks/useHentFagsakPaaPerson';
-import { useOpprettEllerHentFagsak } from '@hooks/useOpprettEllerHentFagsak';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
-import { AlertType, ToastTyper } from '@komponenter/Toast/typer';
 import type { SortState } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
 import { Valideringsstatus } from '@navikt/familie-skjema';
 import type { Ressurs } from '@navikt/familie-typer';
 import { byggFeiletRessurs, byggHenterRessurs, byggTomRessurs, RessursStatus } from '@navikt/familie-typer';
-import { useQueryClient } from '@tanstack/react-query';
 import {
-    BehandlingstypeFilter,
     EnhetFilter,
     type IFinnOppgaveRequest,
     type IHentOppgaveDto,
     type IOppgave,
-    OppgavetypeFilter,
     SaksbehandlerFilter,
 } from '@typer/oppgave';
 import { erIsoStringGyldig } from '@utils/dato';
-import { hentAktivBehandlingPåMinimalFagsak } from '@utils/fagsak';
-import { hentFnrFraOppgaveIdenter } from '@utils/oppgave';
-import { hentFrontendFeilmelding } from '@utils/ressursUtils';
 import { hentNesteSorteringsrekkefølge, hentSortState, Sorteringsrekkefølge } from '@utils/tabell';
 import type { AxiosError } from 'axios';
 import type { PropsWithChildren } from 'react';
@@ -39,14 +27,11 @@ export const oppgaveSideLimit = 15;
 const maksAntallOppgaver = 150;
 
 interface OppgavebenkContextValue {
-    fordelOppgave: (oppgave: IOppgave, saksbehandler: string) => void;
     hentOppgaver: () => void;
     oppgaveFelter: IOppgaveFelter;
     oppgaver: Ressurs<IHentOppgaveDto>;
-    side: number;
-    settSide: (side: number) => void;
     settVerdiPåOppgaveFelt: (oppgaveFelt: IOppgaveFelt, nyVerdi: string) => void;
-    tilbakestillFordelingPåOppgave: (oppgave: IOppgave) => void;
+    oppdaterOppgave: (oppgave: IOppgave) => void;
     tilbakestillOppgaveFelter: () => void;
     validerSkjema: () => boolean;
     sortering: SortState | undefined;
@@ -57,30 +42,12 @@ interface OppgavebenkContextValue {
 const OppgavebenkContext = createContext<OppgavebenkContextValue | undefined>(undefined);
 
 export const OppgavebenkProvider = (props: PropsWithChildren) => {
-    const { settToast } = useToastContext();
     const { request } = useHttp();
 
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
-    const visTekniskFeilModal = useVisTekniskFeilModal();
     const saksbehandler = useSaksbehandler();
 
-    const { mutateAsync: hentFagsakPaaPerson } = useHentFagsakPaaPerson();
-
-    const { mutateAsync: opprettEllerHentFagsak } = useOpprettEllerHentFagsak({
-        onSuccess: fagsak => {
-            queryClient.setQueryData(HentFagsakQueryKeyFactory.fagsak(fagsak.id), fagsak);
-            const aktivBehandling = hentAktivBehandlingPåMinimalFagsak(fagsak);
-            if (aktivBehandling) {
-                navigate(`/fagsak/${fagsak.id}/${aktivBehandling.behandlingId}`);
-            } else {
-                navigate(`/fagsak/${fagsak.id}/saksoversikt`);
-            }
-        },
-    });
-
     const [hentOppgaverVedSidelast, settHentOppgaverVedSidelast] = useState(true);
-    const [side, settSide] = useState<number>(1);
 
     const [oppgaver, settOppgaver] = useState<Ressurs<IHentOppgaveDto>>(byggTomRessurs<IHentOppgaveDto>());
 
@@ -210,75 +177,6 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
         settOppgaveFelter(initialOppgaveFelter(saksbehandler));
     };
 
-    const fordelOppgave = (oppgave: IOppgave, saksbehandler: string) => {
-        request<void, string>({
-            method: 'POST',
-            url: `/familie-ks-sak/api/oppgave/${oppgave.id}/fordel?saksbehandler=${saksbehandler}`,
-            påvirkerSystemLaster: true,
-        })
-            .then(async (oppgaveId: Ressurs<string>) => {
-                if (oppgaveId.status === RessursStatus.SUKSESS) {
-                    const oppgavetypeFilter = OppgavetypeFilter[oppgave.oppgavetype as keyof typeof OppgavetypeFilter];
-                    if (
-                        oppgavetypeFilter === OppgavetypeFilter.JFR ||
-                        oppgavetypeFilter === OppgavetypeFilter.BEH_SED
-                    ) {
-                        navigate(`/oppgaver/journalfor/${oppgave.id}`);
-                    } else {
-                        if (oppgave.behandlingstype === BehandlingstypeFilter.ae0161) {
-                            // tilbakekreving
-                            gåTilTilbakekreving(oppgave);
-                        } else if (oppgave.aktoerId) {
-                            try {
-                                await opprettEllerHentFagsak({ aktørId: oppgave.aktoerId });
-                            } catch (error) {
-                                visTekniskFeilModal(error);
-                            }
-                        }
-                    }
-                } else {
-                    settToast(ToastTyper.OPPGAVE_PLUKKET, {
-                        alertType: AlertType.ERROR,
-                        tekst: hentFrontendFeilmelding(oppgaveId) ?? 'Fordeling av oppgave feilet',
-                    });
-                }
-            })
-            .catch((_error: AxiosError) => {
-                settToast(ToastTyper.OPPGAVE_PLUKKET, {
-                    alertType: AlertType.ERROR,
-                    tekst: 'Fordeling av oppgave feilet',
-                });
-            });
-    };
-
-    const tilbakestillFordelingPåOppgave = (oppgave: IOppgave) => {
-        request<string, IOppgave>({
-            method: 'POST',
-            url: `/familie-ks-sak/api/oppgave/${oppgave.id}/tilbakestill`,
-            påvirkerSystemLaster: true,
-        })
-            .then((oppgaverRes: Ressurs<IOppgave>) => {
-                if (oppgaverRes.status === RessursStatus.SUKSESS) {
-                    oppdaterOppgave(oppgaverRes.data);
-                    settToast(ToastTyper.OPPGAVE_TILBAKESTILT, {
-                        alertType: AlertType.SUCCESS,
-                        tekst: 'Oppgave er tilbakestilt',
-                    });
-                } else {
-                    settToast(ToastTyper.OPPGAVE_TILBAKESTILT, {
-                        alertType: AlertType.ERROR,
-                        tekst: hentFrontendFeilmelding(oppgaverRes) ?? 'Tilbakestilling av oppgave feilet',
-                    });
-                }
-            })
-            .catch((_error: AxiosError) => {
-                settToast(ToastTyper.OPPGAVE_TILBAKESTILT, {
-                    alertType: AlertType.ERROR,
-                    tekst: 'Tilbakestilling av oppgave feilet',
-                });
-            });
-    };
-
     const validerSkjema = () => {
         const opprettetTidspunktGyldig =
             oppgaveFelter.opprettetTidspunkt.filter?.selectedValue === '' ||
@@ -384,29 +282,14 @@ export const OppgavebenkProvider = (props: PropsWithChildren) => {
             });
     };
 
-    async function gåTilTilbakekreving(oppgave: IOppgave) {
-        const brukerident = hentFnrFraOppgaveIdenter(oppgave.identer);
-        if (brukerident) {
-            try {
-                const fagsak = await hentFagsakPaaPerson({ ident: brukerident });
-                window.location.href = `/redirect/familie-tilbake/fagsystem/KS/fagsak/${fagsak.id}/behandling/${oppgave.saksreferanse}`;
-            } catch (error) {
-                visTekniskFeilModal(error);
-            }
-        }
-    }
-
     return (
         <OppgavebenkContext.Provider
             value={{
-                fordelOppgave,
                 hentOppgaver,
                 oppgaveFelter,
                 oppgaver,
-                side,
-                settSide,
                 settVerdiPåOppgaveFelt,
-                tilbakestillFordelingPåOppgave,
+                oppdaterOppgave,
                 tilbakestillOppgaveFelter,
                 validerSkjema,
                 sortering,

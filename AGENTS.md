@@ -13,7 +13,7 @@ corepack enable                                                                 
 pnpm install
 
 # Run locally (needs naisdevice + `nais login -y` for secrets)
-pnpm start:dev                                                                       # = start:lokalt-mot-preprod, http://localhost:8000
+pnpm start:dev                                                                       # = start:lokalt-mot-preprod, http://localhost:8001
 pnpm start:lokal                                                                     # local frontend + local backend
 pnpm start:hybrid                                                                    # local frontend + local backend against preprod
 
@@ -37,7 +37,7 @@ Note: the backend has zero test files (`passWithNoTests: true` in `src/backend/v
 
 ```text
 src/backend/                       # Express BFF, 7 source files
-  server.ts                        # Entrypoint (port 8000), mounts proxy/router/error middleware
+  server.ts                        # Entrypoint (port 8001), mounts proxy/router/error middleware
   router.ts                        # /version, /error, /logg-feil, SPA catch-all with ensureAuthenticated
   proxy.ts                         # doProxy() -> PROXY_URL, attachToken() (OBO token), doRedirectProxy()
   config.ts                        # appConfig, sessionConfig (Redis/Valkey), oboConfig, redirectRecords

@@ -1,7 +1,6 @@
 import { useAuthContext } from '@context/AuthContext';
 import { useVisSystemetLaster } from '@hooks/useVisSystemetLaster';
 import { HeaderMedSøk } from '@komponenter/HeaderMedSøk/HeaderMedSøk';
-import { FeilmeldingModal } from '@komponenter/Modal/FeilmeldingModal';
 import { UgyldigSesjon } from '@komponenter/Modal/SesjonUtløpt';
 import { ForhåndsvisOpprettingAvPdfModal } from '@komponenter/PdfVisningModal/ForhåndsvisOpprettingAvPdfModal';
 import { Box } from '@navikt/ds-react';
@@ -31,7 +30,6 @@ export function AppContainer() {
             <Box as={'div'} className={classNames({ [Styles.systemLaster]: visSystemetLaster })}>
                 <Toasts />
                 <OpprettFagsakModal />
-                <FeilmeldingModal />
                 <ForhåndsvisOpprettingAvPdfModal />
                 <HeaderMedSøk />
                 <Outlet />

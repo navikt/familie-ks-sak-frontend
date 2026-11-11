@@ -1,0 +1,59 @@
+import type { IPersonResultat } from '@typer/vilkår';
+import { hentFeilIVilkårsvurdering } from './hentFeilIVilkårsvurdering';
+import barnehageperiodeErEtterBarnetsAlderMenIPeriodeForOvergangsordning from './testcaser/barnehageperiodeErEtterBarnetsAlderMenIPeriodeForOvergangsordning.json';
+import barnehageperiodeStarterEtter2årEllerSkole from './testcaser/barnehageperiodeStarterEtter2årEllerSkole.json';
+import bosattIRiketIkkeUtfylt from './testcaser/bosattIRiketIkkeUtfylt.json';
+import flereBarnehageperioderMedMeldtBarnehageplass from './testcaser/flereBarnehageperioderMedMeldtBarnehageplass.json';
+import happyCase from './testcaser/happyCase.json';
+import manglerBarnehageplassBarnetsAlderVilkårsvurdering from './testcaser/manglerBarnehageplassBarnetsAlderVilkårsvurdering.json';
+
+describe('hentFeilIVilkårsvurdering', () => {
+    test('Skal gi feilmelding dersom "Barnets alder"-vilkåret ikke har en barnehageperiode i samme tidsrom', () => {
+        const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
+            manglerBarnehageplassBarnetsAlderVilkårsvurdering as unknown as IPersonResultat[]
+        );
+
+        expect(feilIVilkåarsvurdering.length).toEqual(1);
+        expect(feilIVilkåarsvurdering[0].skjemaelementId.includes('BARNETS_ALDER')).toBe(true);
+    });
+
+    test('Skal gi feilmelding dersom en barnehageperiode starter etter siste periode for "barnets alder"-vilkåret', () => {
+        const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
+            barnehageperiodeStarterEtter2årEllerSkole as unknown as IPersonResultat[]
+        );
+
+        expect(feilIVilkåarsvurdering.length).toEqual(1);
+        expect(feilIVilkåarsvurdering[0].skjemaelementId.includes('BARNEHAGEPLASS')).toBe(true);
+    });
+
+    test('Skal ikke gi feilmelding dersom en barnehageperiode starter etter siste periode for "barnets alder"-vilkåret, men innenfor periode for overgangsordning', () => {
+        const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
+            barnehageperiodeErEtterBarnetsAlderMenIPeriodeForOvergangsordning as unknown as IPersonResultat[]
+        );
+
+        expect(feilIVilkåarsvurdering.length).toEqual(0);
+    });
+
+    test('Skal gi feilmelding dersom ett av vilkårene ikke er utfylt', () => {
+        const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
+            bosattIRiketIkkeUtfylt as unknown as IPersonResultat[]
+        );
+
+        expect(feilIVilkåarsvurdering.length).toEqual(1);
+        expect(feilIVilkåarsvurdering[0].skjemaelementId.includes('BOSATT_I_RIKET')).toBe(true);
+    });
+
+    test('Skal ikke gi feilmelding dersom ingenting er galt', () => {
+        const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(happyCase as unknown as IPersonResultat[]);
+
+        expect(feilIVilkåarsvurdering.length).toEqual(0);
+    });
+
+    test('Skal ikke gi feilmelding ved flere barnehageperioder der en mellom periode og siste periode har meldt barnehageplass', () => {
+        const feilIVilkåarsvurdering = hentFeilIVilkårsvurdering(
+            flereBarnehageperioderMedMeldtBarnehageplass as unknown as IPersonResultat[]
+        );
+
+        expect(feilIVilkåarsvurdering.length).toEqual(0);
+    });
+});

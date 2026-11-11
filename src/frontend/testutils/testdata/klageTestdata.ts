@@ -7,7 +7,6 @@ import {
     KlageStatus,
     KlageÅrsak,
 } from '../../typer/klage';
-import { randomUUID } from '../../utils/commons';
 
 export function lagAnkeKlageinstansEventTyper(): KlageinstansEventType[] {
     return Object.keys(KlageinstansEventType)
@@ -64,8 +63,8 @@ export function lagKlageinstansResultat(klageinstansResultat: Partial<Klageinsta
 
 export function lagKlagebehandling(klagebehandling?: Partial<IKlagebehandling>): IKlagebehandling {
     return {
-        id: randomUUID(),
-        fagsakId: randomUUID(),
+        id: crypto.randomUUID(),
+        fagsakId: crypto.randomUUID(),
         status: KlageStatus.FERDIGSTILT,
         opprettet: '2025-09-29T15:00:00.00',
         mottattDato: '2025-09-29',

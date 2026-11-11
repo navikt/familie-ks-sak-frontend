@@ -1,9 +1,7 @@
 import './konfigurerApp.js'; // Må importeres først
-
 import { default as backend, ensureAuthenticated, type IApp } from '@navikt/familie-backend';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 
 import { appConfig, frontendPath, sessionConfig } from './config.js';
 import { envVar, erLokal } from './env.js';
@@ -13,11 +11,11 @@ import { prometheusTellere } from './metrikker.js';
 import { attachToken, doProxy, doRedirectProxy } from './proxy.js';
 import setupRouter from './router.js';
 
-const port = 8000;
+const port = 8001;
 
 backend(sessionConfig, prometheusTellere, appConfig).then(async ({ app, azureAuthConfig, router }: IApp) => {
     app.use((req: Request, _res: Response, next: NextFunction) => {
-        req.headers['nav-call-id'] = uuidv4();
+        req.headers['nav-call-id'] = crypto.randomUUID();
         req.headers['nav-consumer-id'] = 'familie-ks-sak-front';
         next();
     });
