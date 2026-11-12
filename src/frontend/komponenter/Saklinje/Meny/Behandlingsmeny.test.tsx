@@ -1,14 +1,12 @@
 import { RegistrerteBrevmottakereBehandling } from '@komponenter/Brevmottaker/Behandling/RegistrerteBrevmottakereBehandling';
 import { BrevmottakerDialogProvider } from '@komponenter/Brevmottaker/Felles/BrevmottakerDialogContext';
 import { Heading } from '@navikt/ds-react';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { BrevmottakereFagsakProvider } from '@sider/Fagsak/BrevmottakereFagsakContext';
 import { BrukerProvider } from '@sider/Fagsak/BrukerContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
 import { skruPåAlleToggles } from '@testutils/mocks/handlers/featureToggleHandlers';
-import { server } from '@testutils/mocks/node';
 import { lagBehandling, lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
 import { lagBrevmottakerBehandling } from '@testutils/testdata/brevmottakerTestdata';
 import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
@@ -21,8 +19,7 @@ import {
     SettPåVentÅrsak,
 } from '@typer/behandling';
 import type { IMinimalFagsak } from '@typer/fagsak';
-import { FeatureToggle, type FeatureToggles } from '@typer/featureToggles';
-import { HttpResponse, http } from 'msw';
+import type { FeatureToggles } from '@typer/featureToggles';
 import type { PropsWithChildren } from 'react';
 import { Route, Routes } from 'react-router';
 import { describe, expect, type MockInstance, vi } from 'vitest';
@@ -221,15 +218,8 @@ describe('Behandlingsmeny', () => {
         expect(screen.getByRole('dialog', { name: 'Fortsett behandling' })).toBeInTheDocument();
     });
 
-    test.each([true, false, undefined])('skal velge brevmottakerdialog med toggle %s', async brukNyBrevmottaker => {
-        const featureToggles: FeatureToggles =
-            brukNyBrevmottaker === undefined ? {} : { [FeatureToggle.brukNyttBrevmottakerSkjema]: brukNyBrevmottaker };
-        server.use(
-            http.post('/familie-ks-sak/api/featuretoggles', () => HttpResponse.json(byggSuksessRessurs(featureToggles)))
-        );
-        const { screen, user } = render(<Behandlingsmeny />, {
-            wrapper: props => <Wrapper {...props} featureToggles={featureToggles} />,
-        });
+    test('skal åpne brevmottakerdialog', async () => {
+        const { screen, user } = render(<Behandlingsmeny />, { wrapper: Wrapper });
 
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
@@ -237,33 +227,19 @@ describe('Behandlingsmeny', () => {
         const menuitem = screen.getByRole('menuitem', { name: 'Legg til brevmottaker' });
         await user.click(menuitem);
 
-        expect(
-            screen.getByRole('dialog', { name: brukNyBrevmottaker ? 'Brevmottaker' : 'Legg til brevmottaker' })
-        ).toBeInTheDocument();
+        expect(screen.getByRole('dialog', { name: 'Brevmottaker' })).toBeInTheDocument();
     });
 
-    test.each([true, false])('skal velge brevmottakerdialog fra detaljer med toggle %s', async brukNyBrevmottaker => {
-        const featureToggles = { [FeatureToggle.brukNyttBrevmottakerSkjema]: brukNyBrevmottaker };
-        server.use(
-            http.post('/familie-ks-sak/api/featuretoggles', () => HttpResponse.json(byggSuksessRessurs(featureToggles)))
-        );
+    test('skal åpne brevmottakerdialog fra detaljer', async () => {
         const { screen, user } = render(<RegistrerteBrevmottakereBehandling kilde={'vedtak'} />, {
             wrapper: props => (
-                <Wrapper
-                    {...props}
-                    behandling={lagBehandling({ brevmottakere: [lagBrevmottakerBehandling()] })}
-                    featureToggles={featureToggles}
-                />
+                <Wrapper {...props} behandling={lagBehandling({ brevmottakere: [lagBrevmottakerBehandling()] })} />
             ),
         });
 
         await user.click(screen.getByRole('button', { name: 'Se detaljer' }));
 
-        expect(
-            screen.getByRole('dialog', {
-                name: brukNyBrevmottaker ? 'Brevmottaker' : 'Legg til eller fjern brevmottaker',
-            })
-        ).toBeInTheDocument();
+        expect(screen.getByRole('dialog', { name: 'Brevmottaker' })).toBeInTheDocument();
     });
 
     test('skal kunne åpne a-inntekt', async () => {
