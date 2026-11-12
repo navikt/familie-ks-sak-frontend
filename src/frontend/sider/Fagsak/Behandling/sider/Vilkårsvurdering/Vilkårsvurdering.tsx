@@ -3,7 +3,6 @@ import { useFagsak } from '@hooks/useFagsak';
 import { useOppdaterVilkårsvurdering } from '@hooks/useOppdaterVilkårsvurdering';
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { BodyShort, ErrorMessage, ErrorSummary, InfoCard, List } from '@navikt/ds-react';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import Skjemasteg, { MAX_SKJEMASTEG_BREDDE } from '@sider/Fagsak/Behandling/sider/Skjemasteg';
 import { BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
 import { defaultFunksjonellFeil } from '@typer/feilmeldinger';
@@ -32,7 +31,7 @@ export function Vilkårsvurdering() {
         error: oppdaterVilkårsvurderingError,
     } = useOppdaterVilkårsvurdering({
         onSuccess: behandling => {
-            settÅpenBehandling(byggSuksessRessurs(behandling));
+            settÅpenBehandling(behandling);
             navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/tilkjent-ytelse`);
         },
     });

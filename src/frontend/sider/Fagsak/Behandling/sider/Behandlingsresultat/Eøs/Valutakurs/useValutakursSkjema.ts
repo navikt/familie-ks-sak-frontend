@@ -1,7 +1,6 @@
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterValutakurs } from '@hooks/useOppdaterValutakurs';
 import { useSlettValutakurs } from '@hooks/useSlettValutakurs';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import type { OptionType } from '@typer/common';
 import type { IRestValutakurs } from '@typer/eøsPerioder';
 import {
@@ -87,7 +86,7 @@ export const useValutakursSkjema = ({ valutakurs, barnIValutakurs, lukkSkjema }:
                 valutakursdato: dateTilIsoDatoStringEllerUndefined(values.valutakursdato),
                 kurs: konverterSkjemaverdiTilDesimal(values.kurs),
             });
-            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+            settÅpenBehandling(oppdatertBehandling);
             lukkSkjema();
         } catch (error) {
             setError('root', {
@@ -102,7 +101,7 @@ export const useValutakursSkjema = ({ valutakurs, barnIValutakurs, lukkSkjema }:
                 behandlingId: behandling.behandlingId,
                 valutakursId: valutakurs.id,
             });
-            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+            settÅpenBehandling(oppdatertBehandling);
             lukkSkjema();
         } catch (error) {
             setError('root', {
