@@ -1,7 +1,6 @@
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterEndringstidspunkt } from '@hooks/useOppdaterEndringstidspunkt';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { useEndringstidspunktDialogContext } from '@sider/Fagsak/Behandling/sider/Vedtak/Endringstidspunkt/EndringstidspunktDialogContext';
 import type { IsoDatoString } from '@utils/dato';
@@ -47,7 +46,7 @@ export function useEndringstidspunktForm() {
         const { endringstidspunkt } = formValues;
         try {
             const oppdatertBehandling = await oppdaterEndringstidspunkt({ endringstidspunkt });
-            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+            settÅpenBehandling(oppdatertBehandling);
             lukkDialog();
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : 'En ukjent feil oppstod.';

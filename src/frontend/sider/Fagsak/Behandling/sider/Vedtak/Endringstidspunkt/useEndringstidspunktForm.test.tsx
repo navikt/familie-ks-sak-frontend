@@ -1,4 +1,4 @@
-import { byggFunksjonellFeilRessurs, byggSuksessRessurs, type Ressurs } from '@navikt/familie-typer';
+import { byggFunksjonellFeilRessurs, byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
@@ -20,20 +20,20 @@ interface Props extends PropsWithChildren {
     fagsak?: IMinimalFagsak;
     behandling?: IBehandling;
     initialErÅpen?: boolean;
-    settBehandlingRessurs?: (behandling: Ressurs<IBehandling>) => void;
+    settBehandling?: (behandling: IBehandling) => void;
 }
 
 function Wrapper({
     fagsak = lagFagsak(),
     behandling = lagBehandling(),
     initialErÅpen = true,
-    settBehandlingRessurs = () => {},
+    settBehandling = () => {},
     children,
 }: Props) {
     return (
         <TestProviders>
             <FagsakProvider fagsak={fagsak}>
-                <BehandlingProvider behandling={behandling} settBehandlingRessurs={settBehandlingRessurs}>
+                <BehandlingProvider behandling={behandling} settBehandling={settBehandling}>
                     <EndringstidspunktDialogProvider initialErÅpen={initialErÅpen}>
                         {children}
                     </EndringstidspunktDialogProvider>
@@ -44,7 +44,7 @@ function Wrapper({
 }
 
 function renderUseEndringstidspunktForm(fagsak?: IMinimalFagsak, behandling?: IBehandling) {
-    const settBehandlingRessurs = vi.fn<(behandling: Ressurs<IBehandling>) => void>();
+    const settBehandling = vi.fn<(behandling: IBehandling) => void>();
     const rendret = renderHook(
         () => {
             const { form, onSubmit } = useEndringstidspunktForm();
@@ -65,13 +65,13 @@ function renderUseEndringstidspunktForm(fagsak?: IMinimalFagsak, behandling?: IB
         },
         {
             wrapper: ({ children }) => (
-                <Wrapper fagsak={fagsak} behandling={behandling} settBehandlingRessurs={settBehandlingRessurs}>
+                <Wrapper fagsak={fagsak} behandling={behandling} settBehandling={settBehandling}>
                     {children}
                 </Wrapper>
             ),
         }
     );
-    return { ...rendret, settBehandlingRessurs };
+    return { ...rendret, settBehandling };
 }
 
 describe('useEndringstidspunktForm', () => {
@@ -91,16 +91,14 @@ describe('useEndringstidspunktForm', () => {
             )
         );
 
-        const { result, settBehandlingRessurs } = renderUseEndringstidspunktForm(undefined, behandling);
+        const { result, settBehandling } = renderUseEndringstidspunktForm(undefined, behandling);
 
         act(() => result.current.form.setValue(Feltnavn.ENDRINGSTIDSPUNKT, '2024-01-01', { shouldDirty: true }));
 
         await act(() => result.current.form.handleSubmit(result.current.onSubmit)());
 
         await waitFor(() => expect(result.current.dialog.erDialogÅpen).toBe(false));
-        await waitFor(() =>
-            expect(settBehandlingRessurs).toHaveBeenCalledWith(byggSuksessRessurs(oppdatertBehandling))
-        );
+        await waitFor(() => expect(settBehandling).toHaveBeenCalledWith(oppdatertBehandling));
         await waitFor(() => expect(result.current.form.getValues()).toEqual({ [Feltnavn.ENDRINGSTIDSPUNKT]: null }));
     });
 

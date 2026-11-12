@@ -7,7 +7,6 @@ import { useOpprettOvergangsordningAndel } from '@hooks/useOpprettOvergangsordni
 import { useTidslinjeContext } from '@komponenter/Tidslinje/TidslinjeContext';
 import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons';
 import { Box, Button, ErrorMessage, ErrorSummary, HStack, Label, LocalAlert } from '@navikt/ds-react';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import Skjemasteg from '@sider/Fagsak/Behandling/sider/Skjemasteg';
 import { BehandlingResultat, BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from '@typer/eøsPerioder';
@@ -48,7 +47,7 @@ const Behandlingsresultat = () => {
     } = useOpprettEndretUtbetalingAndel({
         onSuccess: oppdatertBehandling => {
             settVisFeilmeldinger(false);
-            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+            settÅpenBehandling(oppdatertBehandling);
         },
         onError: () => settVisFeilmeldinger(true),
     });
@@ -60,7 +59,7 @@ const Behandlingsresultat = () => {
     } = useOpprettOvergangsordningAndel({
         onSuccess: oppdatertBehandling => {
             settVisFeilmeldinger(false);
-            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+            settÅpenBehandling(oppdatertBehandling);
         },
         onError: () => settVisFeilmeldinger(true),
     });
@@ -71,7 +70,7 @@ const Behandlingsresultat = () => {
         error: oppdaterBehandlingsresultatError,
     } = useOppdaterBehandlingsresultat({
         onSuccess: behandling => {
-            settÅpenBehandling(byggSuksessRessurs(behandling));
+            settÅpenBehandling(behandling);
             if (behandling.resultat !== BehandlingResultat.AVSLÅTT) {
                 navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/simulering`);
             } else {

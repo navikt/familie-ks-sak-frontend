@@ -1,7 +1,6 @@
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterVilkårResultat } from '@hooks/useOppdaterVilkårResultat';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import type { IGrunnlagPerson } from '@typer/person';
@@ -158,7 +157,7 @@ export function useVilkårResultatSkjema({
                 behandlingId: behandling.behandlingId,
                 endreVilkårResultat: tilEndreVilkårResultat(lagretVilkårResultat, person, values),
             });
-            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+            settÅpenBehandling(oppdatertBehandling);
             kollapsRad();
             settFokusPåLeggTilPeriodeKnapp();
         } catch (error) {

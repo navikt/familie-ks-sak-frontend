@@ -1,5 +1,4 @@
 import { useSendBehandlingBrev } from '@hooks/useSendBehandlingBrev';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
 import { BehandlingKategori } from '@typer/behandlingstema';
@@ -201,7 +200,7 @@ export const useBrevModul = ({ onSubmitSuccess }: Props) => {
         try {
             const oppdatertBehandling = await sendBrev(hentSkjemaData(values));
             onSubmitSuccess();
-            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+            settÅpenBehandling(oppdatertBehandling);
         } catch (error) {
             const message = error instanceof Error ? error.message : 'En ukjent feil oppstod.';
             setError('root', { message });
