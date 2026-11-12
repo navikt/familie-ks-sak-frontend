@@ -16,7 +16,6 @@ import { describe, expect, test } from 'vitest';
 
 import { FagsakProvider } from '../../../../FagsakContext';
 import { BehandlingProvider } from '../../../context/BehandlingContext';
-import { HentOgSettBehandlingProvider } from '../../../context/HentOgSettBehandlingContext';
 import { EndretUtbetalingAndelProvider } from './EndretUtbetalingAndelContext';
 import { EndretUtbetalingAndelRad } from './EndretUtbetalingAndelRad';
 
@@ -64,13 +63,11 @@ function Wrapper({ behandling, children }: { behandling: IBehandling; children: 
     return (
         <TestProviders saksbehandler={lagSaksbehandler({ harSuperbrukertilgang: true })}>
             <FagsakProvider fagsak={lagFagsak()}>
-                <HentOgSettBehandlingProvider>
-                    <BehandlingProvider behandling={behandling}>
-                        <Table>
-                            <Table.Body>{children}</Table.Body>
-                        </Table>
-                    </BehandlingProvider>
-                </HentOgSettBehandlingProvider>
+                <BehandlingProvider behandling={behandling}>
+                    <Table>
+                        <Table.Body>{children}</Table.Body>
+                    </Table>
+                </BehandlingProvider>
             </FagsakProvider>
         </TestProviders>
     );

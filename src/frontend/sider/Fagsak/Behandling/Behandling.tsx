@@ -1,16 +1,22 @@
 import { useBehandlingIdParam } from '@hooks/useBehandlingIdParam';
+import { useNavigerTilFagsakHvisBehandlingIkkeTilhørerFagsak } from '@hooks/useNavigerTilFagsakHvisBehandlingIkkeTilhørerFagsak';
+import { useSkalObfuskereData } from '@hooks/useSkalObfuskereData';
 import { NotFound } from '@komponenter/Error/NotFound';
 import { Behandlingslinje } from '@komponenter/Saklinje/Behandlingslinje';
 import { HenleggBehandlingModal } from '@komponenter/Saklinje/Meny/HenleggBehandling/HenleggBehandlingModal';
 import { HenleggBehandlingVeivalgModal } from '@komponenter/Saklinje/Meny/HenleggBehandling/HenleggBehandlingVeivalgModal';
 import { Box, GlobalAlert, HStack, VStack } from '@navikt/ds-react';
-import { RessursStatus } from '@navikt/familie-typer';
+import { useHttp } from '@navikt/familie-http';
+import { byggFeiletRessurs, byggTomRessurs, type Ressurs, RessursStatus } from '@navikt/familie-typer';
 import { KontrollsiderProvider } from '@sider/Fagsak/Behandling/KontrollsiderContext';
+import type { IBehandling } from '@typer/behandling';
+import { obfuskerBehandling } from '@utils/obfuskerData';
+import type { AxiosError } from 'axios';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 
 import Styles from './Behandling.module.css';
 import { BehandlingProvider } from './context/BehandlingContext';
-import { useHentOgSettBehandlingContext } from './context/HentOgSettBehandlingContext';
 import { Høyremeny } from './Høyremeny/Høyremeny';
 import { TabContextProvider } from './Høyremeny/TabContextProvider';
 import { TotrinnskontrollModalContextProvider } from './Høyremeny/Totrinnskontroll/TotrinnskontrollModalContextProvider';
@@ -18,9 +24,34 @@ import { KorrigerEtterbetalingModal } from './sider/Vedtak/KorrigerEtterbetaling
 import { Venstremeny } from './Venstremeny/Venstremeny';
 
 export function Behandling() {
-    const { behandlingRessurs } = useHentOgSettBehandlingContext();
+    const { request } = useHttp();
 
+    const skalObfuskereData = useSkalObfuskereData();
     const behandlingIdParam = useBehandlingIdParam();
+
+    const [behandlingRessurs, settBehandlingRessurs] = useState<Ressurs<IBehandling>>(byggTomRessurs());
+
+    useNavigerTilFagsakHvisBehandlingIkkeTilhørerFagsak({ behandlingIdParam });
+
+    useEffect(() => {
+        settBehandlingRessurs(byggTomRessurs());
+        if (behandlingIdParam) {
+            request<void, IBehandling>({
+                method: 'GET',
+                url: `/familie-ks-sak/api/behandlinger/${behandlingIdParam}`,
+                påvirkerSystemLaster: true,
+            })
+                .then(response => {
+                    if (skalObfuskereData) {
+                        obfuskerBehandling(response);
+                    }
+                    settBehandlingRessurs(response);
+                })
+                .catch((_error: AxiosError) => {
+                    settBehandlingRessurs(byggFeiletRessurs('Ukjent ved innhenting av behandling'));
+                });
+        }
+    }, [behandlingIdParam]);
 
     if (!behandlingIdParam) {
         return <NotFound />;
@@ -30,7 +61,11 @@ export function Behandling() {
         case RessursStatus.SUKSESS: {
             const behandling = behandlingRessurs.data;
             return (
-                <BehandlingProvider key={behandling.behandlingId} behandling={behandling}>
+                <BehandlingProvider
+                    key={behandling.behandlingId}
+                    behandling={behandling}
+                    settBehandlingRessurs={settBehandlingRessurs}
+                >
                     <KontrollsiderProvider>
                         <HenleggBehandlingModal />
                         <HenleggBehandlingVeivalgModal />

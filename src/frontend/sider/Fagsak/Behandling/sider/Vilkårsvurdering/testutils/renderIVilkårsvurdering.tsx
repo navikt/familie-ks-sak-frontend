@@ -1,7 +1,6 @@
 import { Table } from '@navikt/ds-react';
 
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { EkspanderbareVilkårResultatRaderProvider } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import { VilkårsvurderingProvider } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/VilkårsvurderingContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
@@ -18,17 +17,15 @@ function Wrapper({ behandling, children }: { behandling: IBehandling; children: 
     return (
         <TestProviders>
             <FagsakProvider fagsak={lagFagsak()}>
-                <HentOgSettBehandlingProvider>
-                    <BehandlingProvider behandling={behandling}>
-                        <VilkårsvurderingProvider>
-                            <EkspanderbareVilkårResultatRaderProvider>
-                                <Table>
-                                    <Table.Body>{children}</Table.Body>
-                                </Table>
-                            </EkspanderbareVilkårResultatRaderProvider>
-                        </VilkårsvurderingProvider>
-                    </BehandlingProvider>
-                </HentOgSettBehandlingProvider>
+                <BehandlingProvider behandling={behandling}>
+                    <VilkårsvurderingProvider>
+                        <EkspanderbareVilkårResultatRaderProvider>
+                            <Table>
+                                <Table.Body>{children}</Table.Body>
+                            </Table>
+                        </EkspanderbareVilkårResultatRaderProvider>
+                    </VilkårsvurderingProvider>
+                </BehandlingProvider>
             </FagsakProvider>
         </TestProviders>
     );
