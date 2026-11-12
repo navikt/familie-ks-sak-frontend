@@ -4,7 +4,6 @@ import { describe, expect } from 'vitest';
 import { ModalType } from '../../../../context/ModalContext';
 import { useModal } from '../../../../hooks/useModal';
 import { BehandlingProvider } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
-import { HentOgSettBehandlingProvider } from '../../../../sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { FagsakProvider } from '../../../../sider/Fagsak/FagsakContext';
 import { skruPåAlleToggles } from '../../../../testutils/mocks/handlers/featureToggleHandlers';
 import { lagBehandling } from '../../../../testutils/testdata/behandlingTestdata';
@@ -39,14 +38,12 @@ function Wrapper({
     return (
         <TestProviders featureToggles={featureToggles}>
             <FagsakProvider fagsak={fagsak}>
-                <HentOgSettBehandlingProvider>
-                    <BehandlingProvider behandling={behandling}>
-                        <ModalWrapper />
-                        <ActionMenu open={true}>
-                            <ActionMenu.Content>{children}</ActionMenu.Content>
-                        </ActionMenu>
-                    </BehandlingProvider>
-                </HentOgSettBehandlingProvider>
+                <BehandlingProvider behandling={behandling}>
+                    <ModalWrapper />
+                    <ActionMenu open={true}>
+                        <ActionMenu.Content>{children}</ActionMenu.Content>
+                    </ActionMenu>
+                </BehandlingProvider>
             </FagsakProvider>
         </TestProviders>
     );
