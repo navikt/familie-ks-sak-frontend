@@ -1,28 +1,22 @@
+import { useTidslinjeContext } from '@komponenter/Tidslinje/TidslinjeContext';
 import { XMarkIcon } from '@navikt/aksel-icons';
 import { BodyShort, Box, Button, Heading, HGrid, InlineMessage, VStack } from '@navikt/ds-react';
-import { Space16 } from '@navikt/ds-tokens/dist/tokens';
 import type { Etikett } from '@navikt/familie-tidslinje';
-import styled from 'styled-components';
-import { useTidslinjeContext } from '../../../../../komponenter/Tidslinje/TidslinjeContext';
-import type { IBehandling } from '../../../../../typer/behandling';
-import { YtelseType, ytelsetype } from '../../../../../typer/beregning';
+import type { IBehandling } from '@typer/behandling';
+import { YtelseType, ytelsetype } from '@typer/beregning';
 import type {
     IEøsPeriodeStatus,
     IRestEøsPeriode,
     IRestKompetanse,
     IRestUtenlandskPeriodeBeløp,
     IRestValutakurs,
-} from '../../../../../typer/eøsPerioder';
-import { EøsPeriodeStatus, KompetanseResultat } from '../../../../../typer/eøsPerioder';
-import type { Utbetalingsperiode } from '../../../../../typer/utbetalingsperiode';
-import { Datoformat, dateTilFormatertString, periodeOverlapperMedValgtDato } from '../../../../../utils/dato';
-import { formaterBeløp, formaterIdent, hentAlderSomString, sorterUtbetaling } from '../../../../../utils/formatter';
+} from '@typer/eøsPerioder';
+import { EøsPeriodeStatus, KompetanseResultat } from '@typer/eøsPerioder';
+import type { Utbetalingsperiode } from '@typer/utbetalingsperiode';
+import { Datoformat, dateTilFormatertString, periodeOverlapperMedValgtDato } from '@utils/dato';
+import { formaterBeløp, formaterIdent, hentAlderSomString, sorterUtbetaling } from '@utils/formatter';
+import Styles from './Oppsummeringsboks.module.css';
 import { hentBarnehageplassBeskrivelse } from './OppsummeringsboksUtils';
-
-const TotaltUtbetaltRad = styled(HGrid)`
-    border-top: 1px dashed;
-    padding-top: ${Space16};
-`;
 
 interface IProps {
     åpenBehandling: IBehandling;
@@ -141,52 +135,52 @@ const Oppsummeringsboks = ({
             {utbetalingsperiode === undefined ? (
                 <BodyShort spacing>Ingen utbetalinger</BodyShort>
             ) : (
-                <>
-                    <VStack gap="space-16" paddingInline={'space-0 space-40'} paddingBlock={'space-24 space-16'}>
+                <VStack gap="space-16" paddingInline={'space-0 space-40'} paddingBlock={'space-24 space-16'}>
+                    <HGrid
+                        columns={skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem'}
+                        gap={'space-16'}
+                    >
+                        <BodyShort>Person</BodyShort>
+                        <BodyShort>Barnehageplass</BodyShort>
+                        <BodyShort>Kontantstøtte</BodyShort>
+                        {skalViseYtelseType && <BodyShort>Ytelsetype</BodyShort>}
+                        <BodyShort>Beløp</BodyShort>
+                    </HGrid>
+                    {utbetalingsperiode.utbetalingsperiodeDetaljer.sort(sorterUtbetaling).map(detalj => (
                         <HGrid
+                            key={detalj.person.navn}
                             columns={skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem'}
                             gap={'space-16'}
                         >
-                            <BodyShort>Person</BodyShort>
-                            <BodyShort>Barnehageplass</BodyShort>
-                            <BodyShort>Kontantstøtte</BodyShort>
-                            {skalViseYtelseType && <BodyShort>Ytelsetype</BodyShort>}
-                            <BodyShort>Beløp</BodyShort>
+                            <BodyShort>{`${detalj.person.navn} (${hentAlderSomString(
+                                detalj.person.fødselsdato
+                            )}) | ${formaterIdent(detalj.person.personIdent)}`}</BodyShort>
+                            <BodyShort>
+                                {hentBarnehageplassBeskrivelse(detalj.prosent, detalj.erPåvirketAvEndring)}
+                            </BodyShort>
+                            <BodyShort>{detalj.prosent + '% '}</BodyShort>
+                            {skalViseYtelseType && <BodyShort>{ytelsetype[detalj.ytelseType].navn}</BodyShort>}
+                            {utbetalingsBeløpStatusMap.get(detalj.person.personIdent) ? (
+                                <BodyShort>{formaterBeløp(detalj.utbetaltPerMnd)}</BodyShort>
+                            ) : (
+                                <InlineMessage status="warning" size={'small'}>
+                                    Må beregnes
+                                </InlineMessage>
+                            )}
                         </HGrid>
-                        {utbetalingsperiode.utbetalingsperiodeDetaljer.sort(sorterUtbetaling).map(detalj => (
-                            <HGrid
-                                key={detalj.person.navn}
-                                columns={skalViseYtelseType ? '1fr 10rem 9rem 12rem 5rem' : '1fr 10rem 9rem 5rem'}
-                                gap={'space-16'}
-                            >
-                                <BodyShort>{`${detalj.person.navn} (${hentAlderSomString(
-                                    detalj.person.fødselsdato
-                                )}) | ${formaterIdent(detalj.person.personIdent)}`}</BodyShort>
-                                <BodyShort>
-                                    {hentBarnehageplassBeskrivelse(detalj.prosent, detalj.erPåvirketAvEndring)}
-                                </BodyShort>
-                                <BodyShort>{detalj.prosent + '% '}</BodyShort>
-                                {skalViseYtelseType && <BodyShort>{ytelsetype[detalj.ytelseType].navn}</BodyShort>}
-                                {utbetalingsBeløpStatusMap.get(detalj.person.personIdent) ? (
-                                    <BodyShort>{formaterBeløp(detalj.utbetaltPerMnd)}</BodyShort>
-                                ) : (
-                                    <InlineMessage status="warning" size={'small'}>
-                                        Må beregnes
-                                    </InlineMessage>
-                                )}
-                            </HGrid>
-                        ))}
-                        <TotaltUtbetaltRad columns="1fr 5rem">
+                    ))}
+                    <Box borderWidth={'1 0 0 0'} className={Styles.calculationLine} asChild>
+                        <HGrid columns="1fr 5rem" paddingBlock={'space-16 space-0'}>
                             <BodyShort weight="semibold">Totalt utbetalt per mnd</BodyShort>
                             <BodyShort weight="semibold">{formaterBeløp(utbetalingsperiode.utbetaltPerMnd)}</BodyShort>
-                        </TotaltUtbetaltRad>
-                        {erAndelForPraksisendring && (
-                            <InlineMessage status={'info'}>
-                                Utbetaling i tråd med fastsatt praksis ifm lovendring 2024.
-                            </InlineMessage>
-                        )}
-                    </VStack>
-                </>
+                        </HGrid>
+                    </Box>
+                    {erAndelForPraksisendring && (
+                        <InlineMessage status={'info'}>
+                            Utbetaling i tråd med fastsatt praksis ifm lovendring 2024.
+                        </InlineMessage>
+                    )}
+                </VStack>
             )}
         </Box>
     );

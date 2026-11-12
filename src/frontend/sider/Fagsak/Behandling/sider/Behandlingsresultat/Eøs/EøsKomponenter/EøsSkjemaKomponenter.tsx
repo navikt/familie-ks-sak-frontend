@@ -1,43 +1,10 @@
-import { BodyShort, Table } from '@navikt/ds-react';
-import styled from 'styled-components';
-
+import { BodyShort, HStack, Table } from '@navikt/ds-react';
+import type { EøsPeriodeStatus } from '@typer/eøsPerioder';
+import type { IGrunnlagPerson } from '@typer/person';
+import { Datoformat, type IIsoMånedPeriode, isoMånedPeriodeTilFormatertString } from '@utils/dato';
+import { lagPersonLabel } from '@utils/formatter';
 import StatusIkon from '../../../../../../../ikoner/StatusIkon';
-import type { EøsPeriodeStatus } from '../../../../../../../typer/eøsPerioder';
-import type { IGrunnlagPerson } from '../../../../../../../typer/person';
-import { Datoformat, type IIsoMånedPeriode, isoMånedPeriodeTilFormatertString } from '../../../../../../../utils/dato';
-import { lagPersonLabel } from '../../../../../../../utils/formatter';
 import { mapEøsPeriodeStatusTilStatus } from '../utils';
-
-interface IEøsPeriodeSkjemaContainerProps {
-    $lesevisning: boolean;
-    $status: EøsPeriodeStatus;
-}
-
-export const EøsPeriodeSkjemaContainer = styled.div<IEøsPeriodeSkjemaContainerProps>`
-    max-width: 40rem;
-    padding-left: 2rem;
-    margin-left: -3rem;
-`;
-
-export const Knapperad = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin: 1rem 0;
-    margin-top: 2rem;
-`;
-
-const EøsPeriodeVurdertCelle = styled.div`
-    display: flex;
-
-    svg {
-        margin-right: 1rem;
-    }
-`;
-
-const BarnDiv = styled.div`
-    display: inline-block;
-    margin-top: 1px;
-`;
 
 interface IStatusBarnCelleOgPeriodeCelleProps {
     status: EøsPeriodeStatus;
@@ -50,18 +17,14 @@ export const StatusBarnCelleOgPeriodeCelle = (props: IStatusBarnCelleOgPeriodeCe
     return (
         <>
             <Table.DataCell>
-                <EøsPeriodeVurdertCelle>
-                    <div>
-                        <StatusIkon status={mapEøsPeriodeStatusTilStatus[props.status]} />
-                    </div>
-                    <BarnDiv>
-                        {props.barnIdenter.map(barn => (
-                            <BodyShort size="small" key={barn}>
-                                {lagPersonLabel(barn, props.personer)}
-                            </BodyShort>
-                        ))}
-                    </BarnDiv>
-                </EøsPeriodeVurdertCelle>
+                <HStack gap={'space-16'} wrap={false}>
+                    <StatusIkon status={mapEøsPeriodeStatusTilStatus[props.status]} />
+                    {props.barnIdenter.map(barn => (
+                        <BodyShort size="small" key={barn}>
+                            {lagPersonLabel(barn, props.personer)}
+                        </BodyShort>
+                    ))}
+                </HStack>
             </Table.DataCell>
             <Table.DataCell>
                 <BodyShort size="small">
