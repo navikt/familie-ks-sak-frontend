@@ -1,5 +1,4 @@
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { BrevmottakereFagsakProvider } from '@sider/Fagsak/BrevmottakereFagsakContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
 import { lagBehandling, lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
@@ -37,9 +36,7 @@ function Wrapper({
                     element={
                         <FagsakProvider fagsak={fagsak}>
                             <BrevmottakereFagsakProvider>
-                                <HentOgSettBehandlingProvider>
-                                    <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
-                                </HentOgSettBehandlingProvider>
+                                <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
                             </BrevmottakereFagsakProvider>
                         </FagsakProvider>
                     }
