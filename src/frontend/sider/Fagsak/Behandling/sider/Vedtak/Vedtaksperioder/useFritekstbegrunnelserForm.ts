@@ -74,7 +74,6 @@ export function useFritekstbegrunnelserForm() {
                     vedtaksperioderMedBegrunnelser
                 );
             },
-            onError: error => setError('root', { message: error.message ?? 'En ukjent feil oppstod.' }),
         }
     );
 
@@ -105,9 +104,14 @@ export function useFritekstbegrunnelserForm() {
         return true;
     }
 
-    function onSubmit({ fritekstbegrunnelser }: FormValues) {
+    async function onSubmit({ fritekstbegrunnelser }: FormValues) {
         const fritekster = fritekstbegrunnelser.map(fritekstbegrunnelse => fritekstbegrunnelse.value);
-        return oppdaterVedtaksperiodeMedFritekster({ fritekster });
+        try {
+            await oppdaterVedtaksperiodeMedFritekster({ fritekster });
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : 'En ukjent feil oppstod.';
+            setError('root', { message });
+        }
     }
 
     return {
