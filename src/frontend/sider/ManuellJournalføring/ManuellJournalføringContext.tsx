@@ -23,10 +23,11 @@ import {
     opprettJournalføringsbehandlingFraKontantstøttebehandling,
 } from '@typer/journalføringsbehandling';
 import { type IKlagebehandling, Klagebehandlingstype } from '@typer/klage';
-import type {
-    IDataForManuellJournalføring,
-    IRestJournalføring,
-    TilknyttetBehandling,
+import {
+    type IDataForManuellJournalføring,
+    type IRestJournalføring,
+    JournalpostKanal,
+    type TilknyttetBehandling,
 } from '@typer/manuell-journalføring';
 import {
     finnBehandlingstemaFraOppgave,
