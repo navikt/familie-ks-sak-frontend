@@ -7,7 +7,13 @@ import { HenleggBehandlingModal } from '@komponenter/Saklinje/Meny/HenleggBehand
 import { HenleggBehandlingVeivalgModal } from '@komponenter/Saklinje/Meny/HenleggBehandling/HenleggBehandlingVeivalgModal';
 import { Box, GlobalAlert, HStack, VStack } from '@navikt/ds-react';
 import { useHttp } from '@navikt/familie-http';
-import { byggFeiletRessurs, byggTomRessurs, type Ressurs, RessursStatus } from '@navikt/familie-typer';
+import {
+    byggFeiletRessurs,
+    byggSuksessRessurs,
+    byggTomRessurs,
+    type Ressurs,
+    RessursStatus,
+} from '@navikt/familie-typer';
 import { KontrollsiderProvider } from '@sider/Fagsak/Behandling/KontrollsiderContext';
 import type { IBehandling } from '@typer/behandling';
 import { obfuskerBehandling } from '@utils/obfuskerData';
@@ -42,8 +48,8 @@ export function Behandling() {
                 påvirkerSystemLaster: true,
             })
                 .then(response => {
-                    if (skalObfuskereData) {
-                        obfuskerBehandling(response);
+                    if (skalObfuskereData && response.status === RessursStatus.SUKSESS) {
+                        obfuskerBehandling(response.data);
                     }
                     settBehandlingRessurs(response);
                 })
@@ -64,7 +70,7 @@ export function Behandling() {
                 <BehandlingProvider
                     key={behandling.behandlingId}
                     behandling={behandling}
-                    settBehandlingRessurs={settBehandlingRessurs}
+                    settBehandling={behandling => settBehandlingRessurs(byggSuksessRessurs(behandling))}
                 >
                     <KontrollsiderProvider>
                         <HenleggBehandlingModal />

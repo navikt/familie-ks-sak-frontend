@@ -1,6 +1,5 @@
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useOppdaterBehandlingstema } from '@hooks/useOppdaterBehandlingstema';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { type IBehandlingstema, tilBehandlingstema } from '@typer/behandlingstema';
 import { useForm } from 'react-hook-form';
@@ -46,7 +45,7 @@ export const useEndreBehandlingstemaSkjema = ({ lukkModal }: Props) => {
 
         return oppdaterBehandlingstema(oppdaterBehandlingstemaParameters)
             .then(behandling => {
-                settÅpenBehandling(byggSuksessRessurs(behandling));
+                settÅpenBehandling(behandling);
                 lukkModal();
             })
             .catch((e: unknown) =>

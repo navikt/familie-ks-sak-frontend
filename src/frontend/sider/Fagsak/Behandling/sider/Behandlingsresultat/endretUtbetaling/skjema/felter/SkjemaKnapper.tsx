@@ -1,7 +1,6 @@
 import { useSlettEndretUtbetalingAndel } from '@hooks/useSlettEndretUtbetalingAndel';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, HStack } from '@navikt/ds-react';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useFormContext } from 'react-hook-form';
 
 import { useBehandlingContext } from '../../../../../context/BehandlingContext';
@@ -33,7 +32,7 @@ export function SkjemaKnapper({ lukkSkjema }: Props) {
 
     function slettEndretUtbetalingAndel() {
         return slett()
-            .then(oppdatertBehandling => settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling)))
+            .then(oppdatertBehandling => settÅpenBehandling(oppdatertBehandling))
             .catch(e => {
                 const message = e instanceof Error ? e.message : 'En ukjent feil oppstod.';
                 setError('root', { message });

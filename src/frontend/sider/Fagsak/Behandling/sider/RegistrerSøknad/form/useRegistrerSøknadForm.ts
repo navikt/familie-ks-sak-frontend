@@ -3,7 +3,6 @@ import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useFagsak } from '@hooks/useFagsak';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useRegistrerSøknad } from '@hooks/useRegistrerSøknad';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { useValgbareBarn } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useValgbareBarn';
 import type { IBarnMedOpplysninger, Målform } from '@typer/søknad';
@@ -87,7 +86,7 @@ export function useRegistrerSøknadForm() {
                 },
                 bekreftEndringerViaFrontend: false,
             });
-            settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+            settÅpenBehandling(oppdatertBehandling);
             navigate(`/fagsak/${fagsak.id}/${oppdatertBehandling.behandlingId}/vilkaarsvurdering`);
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : 'En ukjent feil oppstod.';

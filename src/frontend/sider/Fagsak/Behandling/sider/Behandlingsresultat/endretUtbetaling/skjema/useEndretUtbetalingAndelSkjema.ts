@@ -1,6 +1,5 @@
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterEndretUtbetalingAndel } from '@hooks/useOppdaterEndretUtbetalingAndel';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import type { IRestEndretUtbetalingAndel } from '@typer/utbetalingAndel';
 import { useForm } from 'react-hook-form';
 import { useBehandlingContext } from '../../../../context/BehandlingContext';
@@ -36,7 +35,7 @@ export function useEndretUtbetalingAndelSkjema(
         return oppdaterEndretUtbetalingAndel(transformerSkjemaData(values, endretUtbetalingAndel))
             .then(oppdatertBehandling => {
                 lukkSkjema();
-                settÅpenBehandling(byggSuksessRessurs(oppdatertBehandling));
+                settÅpenBehandling(oppdatertBehandling);
             })
             .catch(e => {
                 const message = e instanceof Error ? e.message : 'En ukjent feil oppstod.';

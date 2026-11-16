@@ -97,7 +97,7 @@ export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children 
                 (behandling: Ressurs<IBehandling>) => {
                     if (behandling.status === RessursStatus.SUKSESS) {
                         tilbakestillOgLukkOvergangsordningAndel();
-                        settÅpenBehandling(behandling);
+                        settÅpenBehandling(behandling.data);
                     }
                 }
             );
@@ -109,7 +109,11 @@ export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children 
             method: 'DELETE',
             url: `/familie-ks-sak/api/overgangsordningandel/${behandlingId}/${overgangsordningAndel.id}`,
             påvirkerSystemLaster: true,
-        }).then((behandling: Ressurs<IBehandling>) => settÅpenBehandling(behandling));
+        }).then((behandling: Ressurs<IBehandling>) => {
+            if (behandling.status === RessursStatus.SUKSESS) {
+                settÅpenBehandling(behandling.data);
+            }
+        });
     };
 
     const erOvergangsordningAndelForandret = () => !deepEqual(overgangsordningAndel, hentSkjemaData());

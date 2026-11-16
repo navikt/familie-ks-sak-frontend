@@ -1,7 +1,6 @@
 import { useSlettVilkårResultat } from '@hooks/useSlettVilkårResultat';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
-import { byggSuksessRessurs } from '@navikt/familie-typer';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
 import { useEkspanderbareVilkårResultatRader } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import type { IVilkårResultat } from '@typer/vilkår';
@@ -33,7 +32,7 @@ export function SlettVilkårResultat({ personIdent, vilkårResultat }: Props) {
                 ekspanderRad(id);
             });
 
-            settÅpenBehandling(byggSuksessRessurs(nyBehandling));
+            settÅpenBehandling(nyBehandling);
         },
     });
 
