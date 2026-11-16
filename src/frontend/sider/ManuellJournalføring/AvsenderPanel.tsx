@@ -73,9 +73,9 @@ export function AvsenderPanel() {
                         <br />
                     </>
                 )}
-                <AvsenderNavnFelt brukerErAvsender={brukerErAvsender} />
+                <AvsenderNavnFelt lesevisning={lesevisning} brukerErAvsender={brukerErAvsender} />
                 <br />
-                <AvsenderIdentFelt brukerErAvsender={brukerErAvsender} />
+                <AvsenderIdentFelt lesevisning={lesevisning} brukerErAvsender={brukerErAvsender} />
             </ExpansionCard.Content>
         </ExpansionCard>
     );
