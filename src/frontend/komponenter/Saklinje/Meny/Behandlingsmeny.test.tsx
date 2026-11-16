@@ -2,7 +2,6 @@ import { RegistrerteBrevmottakereBehandling } from '@komponenter/Brevmottaker/Be
 import { BrevmottakerDialogProvider } from '@komponenter/Brevmottaker/Felles/BrevmottakerDialogContext';
 import { Heading } from '@navikt/ds-react';
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { BrevmottakereFagsakProvider } from '@sider/Fagsak/BrevmottakereFagsakContext';
 import { BrukerProvider } from '@sider/Fagsak/BrukerContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
@@ -59,12 +58,10 @@ function Wrapper({
                             <Route
                                 path={`/fagsak/:fagsakId/:behandlingId/registrer-soknad`}
                                 element={
-                                    <HentOgSettBehandlingProvider>
-                                        <BehandlingProvider behandling={behandling}>
-                                            <HenleggBehandlingModal />
-                                            <BrevmottakerDialogProvider>{children}</BrevmottakerDialogProvider>
-                                        </BehandlingProvider>
-                                    </HentOgSettBehandlingProvider>
+                                    <BehandlingProvider behandling={behandling}>
+                                        <HenleggBehandlingModal />
+                                        <BrevmottakerDialogProvider>{children}</BrevmottakerDialogProvider>
+                                    </BehandlingProvider>
                                 }
                             />
                         </Routes>

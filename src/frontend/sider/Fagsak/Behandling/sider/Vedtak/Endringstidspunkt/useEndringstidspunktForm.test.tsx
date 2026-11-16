@@ -1,10 +1,6 @@
-import { byggFunksjonellFeilRessurs, byggSuksessRessurs } from '@navikt/familie-typer';
+import { byggFunksjonellFeilRessurs, byggSuksessRessurs, type Ressurs } from '@navikt/familie-typer';
 
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import {
-    HentOgSettBehandlingProvider,
-    useHentOgSettBehandlingContext,
-} from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { server } from '@testutils/mocks/node';
@@ -15,7 +11,7 @@ import type { IBehandling } from '@typer/behandling';
 import type { IMinimalFagsak } from '@typer/fagsak';
 import { HttpResponse, http } from 'msw';
 import type { PropsWithChildren } from 'react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { EndringstidspunktDialogProvider, useEndringstidspunktDialogContext } from './EndringstidspunktDialogContext';
 import { Feltnavn, useEndringstidspunktForm } from './useEndringstidspunktForm';
@@ -24,31 +20,36 @@ interface Props extends PropsWithChildren {
     fagsak?: IMinimalFagsak;
     behandling?: IBehandling;
     initialErÅpen?: boolean;
+    settBehandlingRessurs?: (behandling: Ressurs<IBehandling>) => void;
 }
 
-function Wrapper({ fagsak = lagFagsak(), behandling = lagBehandling(), initialErÅpen = true, children }: Props) {
+function Wrapper({
+    fagsak = lagFagsak(),
+    behandling = lagBehandling(),
+    initialErÅpen = true,
+    settBehandlingRessurs = () => {},
+    children,
+}: Props) {
     return (
         <TestProviders>
             <FagsakProvider fagsak={fagsak}>
-                <HentOgSettBehandlingProvider>
-                    <BehandlingProvider behandling={behandling}>
-                        <EndringstidspunktDialogProvider initialErÅpen={initialErÅpen}>
-                            {children}
-                        </EndringstidspunktDialogProvider>
-                    </BehandlingProvider>
-                </HentOgSettBehandlingProvider>
+                <BehandlingProvider behandling={behandling} settBehandlingRessurs={settBehandlingRessurs}>
+                    <EndringstidspunktDialogProvider initialErÅpen={initialErÅpen}>
+                        {children}
+                    </EndringstidspunktDialogProvider>
+                </BehandlingProvider>
             </FagsakProvider>
         </TestProviders>
     );
 }
 
 function renderUseEndringstidspunktForm(fagsak?: IMinimalFagsak, behandling?: IBehandling) {
-    return renderHook(
+    const settBehandlingRessurs = vi.fn<(behandling: Ressurs<IBehandling>) => void>();
+    const rendret = renderHook(
         () => {
             const { form, onSubmit } = useEndringstidspunktForm();
 
             const endringstidspunktDialogContext = useEndringstidspunktDialogContext();
-            const hentOgSettBehandlingContext = useHentOgSettBehandlingContext();
 
             // react-hook-form bruker en proxy for å avgjøre hvilke deler av formState den skal
             // abonnere på. Vi må lese errors under render for at endringer i setError skal føre
@@ -60,17 +61,17 @@ function renderUseEndringstidspunktForm(fagsak?: IMinimalFagsak, behandling?: IB
                 onSubmit,
                 errors,
                 dialog: endringstidspunktDialogContext,
-                behandlingRessurs: hentOgSettBehandlingContext.behandlingRessurs,
             };
         },
         {
             wrapper: ({ children }) => (
-                <Wrapper fagsak={fagsak} behandling={behandling}>
+                <Wrapper fagsak={fagsak} behandling={behandling} settBehandlingRessurs={settBehandlingRessurs}>
                     {children}
                 </Wrapper>
             ),
         }
     );
+    return { ...rendret, settBehandlingRessurs };
 }
 
 describe('useEndringstidspunktForm', () => {
@@ -90,14 +91,16 @@ describe('useEndringstidspunktForm', () => {
             )
         );
 
-        const { result } = renderUseEndringstidspunktForm(undefined, behandling);
+        const { result, settBehandlingRessurs } = renderUseEndringstidspunktForm(undefined, behandling);
 
         act(() => result.current.form.setValue(Feltnavn.ENDRINGSTIDSPUNKT, '2024-01-01', { shouldDirty: true }));
 
         await act(() => result.current.form.handleSubmit(result.current.onSubmit)());
 
         await waitFor(() => expect(result.current.dialog.erDialogÅpen).toBe(false));
-        await waitFor(() => expect(result.current.behandlingRessurs).toEqual(byggSuksessRessurs(oppdatertBehandling)));
+        await waitFor(() =>
+            expect(settBehandlingRessurs).toHaveBeenCalledWith(byggSuksessRessurs(oppdatertBehandling))
+        );
         await waitFor(() => expect(result.current.form.getValues()).toEqual({ [Feltnavn.ENDRINGSTIDSPUNKT]: null }));
     });
 

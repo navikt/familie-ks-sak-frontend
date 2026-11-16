@@ -1,7 +1,6 @@
 import { opprettBehandling } from '@api/opprettBehandling';
 import { OpprettBehandlingModal } from '@komponenter/Saklinje/Meny/OpprettBehandling/OpprettBehandlingModal';
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
-import { HentOgSettBehandlingProvider } from '@sider/Fagsak/Behandling/context/HentOgSettBehandlingContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
 import type { RenderOptions } from '@testing-library/react';
 import { lagBehandling, lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
@@ -30,9 +29,7 @@ function Wrapper({ fagsak = lagFagsak(), behandling = lagBehandling(), children 
     return (
         <TestProviders>
             <FagsakProvider fagsak={fagsak}>
-                <HentOgSettBehandlingProvider>
-                    <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
-                </HentOgSettBehandlingProvider>
+                <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
             </FagsakProvider>
         </TestProviders>
     );
