@@ -2,15 +2,16 @@ import { TextField } from '@navikt/ds-react';
 import { useManuellJournalføringContext } from '../ManuellJournalføringContext';
 
 interface AvsenderNavnFeltProps {
+    lesevisning: boolean | undefined;
     brukerErAvsender: boolean;
 }
 
-export function AvsenderNavnFelt({ brukerErAvsender }: AvsenderNavnFeltProps) {
-    const { skjema, erLesevisning } = useManuellJournalføringContext();
+export function AvsenderNavnFelt({ lesevisning, brukerErAvsender }: AvsenderNavnFeltProps) {
+    const { skjema } = useManuellJournalføringContext();
     return (
         <TextField
             {...skjema.felter.avsenderNavn.hentNavInputProps(skjema.visFeilmeldinger)}
-            readOnly={erLesevisning()}
+            readOnly={lesevisning}
             label={'Navn'}
             size={'medium'}
             placeholder={'navn'}
