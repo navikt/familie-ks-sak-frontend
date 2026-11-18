@@ -1,4 +1,5 @@
 import { hentBehandling } from '@api/hentBehandling';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { MetaKey } from '@hooks/meta/metaKey';
 import { useSkalObfuskereData } from '@hooks/useSkalObfuskereData';
 import { useQuery } from '@tanstack/react-query';
@@ -69,10 +70,6 @@ function obfuskerBehandling(behandling: IBehandling): IBehandling {
     };
 }
 
-export const HentBehandlingQueryKeyFactory = {
-    behandling: (behandlingId: number | undefined) => ['behandling', behandlingId],
-};
-
 export function useHentBehandling(behandlingId: number | undefined) {
     const skalObfuskereData = useSkalObfuskereData();
 
@@ -82,7 +79,7 @@ export function useHentBehandling(behandlingId: number | undefined) {
     );
 
     return useQuery({
-        queryKey: HentBehandlingQueryKeyFactory.behandling(behandlingId),
+        queryKey: queryKeys.behandling(behandlingId),
         queryFn: () => {
             if (behandlingId === undefined) {
                 throw new Error('Kan ikke hente behandling uten behandlingId.');
