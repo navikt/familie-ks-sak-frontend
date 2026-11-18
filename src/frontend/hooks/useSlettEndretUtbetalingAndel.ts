@@ -1,13 +1,7 @@
 import { slettEndretUtbetalingAndel } from '@api/slettEndretUtbetalingAndel';
+import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { IBehandling } from '@typer/behandling';
-
-export const SlettEndretUtbetalingAndelMutationKeyFactory = {
-    endretUtbetalingAndel: (endretUtbetalingAndelId: number | undefined) => [
-        'slettEndretUtbetalingAndel',
-        endretUtbetalingAndelId,
-    ],
-};
 
 interface Parameters {
     behandlingId: number;
@@ -24,7 +18,7 @@ export function useSlettEndretUtbetalingAndel(
         throw new Error('Kan ikke slette endretUtbetalingAndel uten id');
     }
     return useMutation({
-        mutationKey: SlettEndretUtbetalingAndelMutationKeyFactory.endretUtbetalingAndel(endretUtbetalingAndelId),
+        mutationKey: mutationKeys.slettEndretUtbetalingAndel(endretUtbetalingAndelId),
         mutationFn: () => slettEndretUtbetalingAndel(behandlingId, endretUtbetalingAndelId),
         ...options,
     });

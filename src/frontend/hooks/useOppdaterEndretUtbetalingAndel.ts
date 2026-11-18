@@ -1,14 +1,8 @@
 import { oppdaterEndretUtbetalingAndel } from '@api/oppdaterEndretUtbetalingAndel';
+import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { IBehandling } from '@typer/behandling';
 import type { IRestEndretUtbetalingAndel } from '@typer/utbetalingAndel';
-
-export const OppdaterEndretUtbetalingAndelMutationKeyFactory = {
-    endretUtbetalingAndel: (endretUtbetalingAndelId: number) => [
-        'oppdaterEndretUtbetalingAndel',
-        endretUtbetalingAndelId,
-    ],
-};
 
 interface Parameters {
     behandlingId: number;
@@ -28,7 +22,7 @@ export function useOppdaterEndretUtbetalingAndel(
         throw new Error('Kan ikke oppdatere endretUtbetalingAndel uten id');
     }
     return useMutation({
-        mutationKey: OppdaterEndretUtbetalingAndelMutationKeyFactory.endretUtbetalingAndel(endretUtbetalingAndelId),
+        mutationKey: mutationKeys.oppdaterEndretUtbetalingAndel(endretUtbetalingAndelId),
         mutationFn: (payload: IRestEndretUtbetalingAndel) =>
             oppdaterEndretUtbetalingAndel(behandlingId, endretUtbetalingAndelId, payload),
         ...options,

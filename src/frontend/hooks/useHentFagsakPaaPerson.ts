@@ -1,21 +1,18 @@
 import { hentFagsakPaaPerson } from '@api/hentFagsakPaaPerson';
+import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { MetaKey } from '@hooks/meta/metaKey';
 import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { IMinimalFagsak } from '@typer/fagsak';
-
-export const HentFagsakPaaPersonMutationKeyFactory = {
-    hentFagsakPaaPerson: () => ['hent_fagsak_paa_person'],
-};
 
 interface Parameters {
     ident: string;
 }
 
-type Options = Omit<UseMutationOptions<IMinimalFagsak, DefaultError, Parameters>, 'mutationFn'>;
+type Options = Omit<UseMutationOptions<IMinimalFagsak, DefaultError, Parameters>, 'mutationKey' | 'mutationFn'>;
 
 export function useHentFagsakPaaPerson(options?: Options) {
     return useMutation({
-        mutationKey: HentFagsakPaaPersonMutationKeyFactory.hentFagsakPaaPerson(),
+        mutationKey: mutationKeys.hentFagsakPaaPerson(),
         mutationFn: (parameters: Parameters) => {
             const { ident } = parameters;
             const payload = { ident };
