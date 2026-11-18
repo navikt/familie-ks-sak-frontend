@@ -37,7 +37,7 @@ importers:
         version: 17.1.0(@navikt/aksel-icons@8.22.1)(@navikt/ds-css@8.22.1)(@navikt/ds-react@8.22.1(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)(styled-components@6.6.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))
       '@navikt/familie-http':
         specifier: 8.0.30
-        version: 8.0.30(axios@1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.1)
+        version: 8.0.30(axios@1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.1)
       '@navikt/familie-ikoner':
         specifier: 9.1.8
         version: 9.1.8(react@19.3.1)
@@ -46,7 +46,7 @@ importers:
         version: 7.0.11
       '@navikt/familie-skjema':
         specifier: 8.2.56
-        version: 8.2.56(axios@1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.1)
+        version: 8.2.56(axios@1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.1)
       '@navikt/familie-tidslinje':
         specifier: 11.0.8
         version: 11.0.8(@navikt/ds-css@8.22.1)(@navikt/ds-react@8.22.1(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react@19.3.0)(dayjs@1.11.23)(react@19.3.1)(styled-components@6.6.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))
@@ -75,8 +75,8 @@ importers:
         specifier: 3.14.26
         version: 3.14.26(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       axios:
-        specifier: 1.21.0
-        version: 1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 1.21.1
+        version: 1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       classnames:
         specifier: 2.5.1
         version: 2.5.1
@@ -1390,8 +1390,8 @@ packages:
     resolution: {integrity: sha512-9WTZxEjsZ7b13TH8JPmbV2z8CHbl80/2hm3XPEG4JgNdQLK81IBRXmSxHfMAOkSqQeRxT/0dwNDz2GOm3zzpcQ==}
     engines: {node: '>=4'}
 
-  axios@1.21.0:
-    resolution: {integrity: sha512-YCzXMB53Q9PZBsh7yN7wtapit4WepwcHS2fP8QhGsBxSz5YtgYobV7GGlWlAJi+RxfU77GQTQi2DSLUma42EYA==}
+  axios@1.21.1:
+    resolution: {integrity: sha512-6eI5Q/Y4u/Um9dDlsRoq5pY2rxnUTv+L4PpLitnbk/i4jb3MxLZ5CsN5Ih3IysbeRYK4pR+P7qfMsOQl9fwwFQ==}
 
   babel-plugin-macros@3.1.0:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
@@ -3556,10 +3556,10 @@ snapshots:
       react: 19.3.1
       styled-components: 6.6.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
 
-  '@navikt/familie-http@8.0.30(axios@1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.1)':
+  '@navikt/familie-http@8.0.30(axios@1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.1)':
     dependencies:
       '@navikt/familie-typer': 8.0.9
-      axios: 1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      axios: 1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       react: 19.3.1
 
   '@navikt/familie-ikoner@9.1.8(react@19.3.1)':
@@ -3571,9 +3571,9 @@ snapshots:
     dependencies:
       winston: 3.19.0
 
-  '@navikt/familie-skjema@8.2.56(axios@1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.1)':
+  '@navikt/familie-skjema@8.2.56(axios@1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.1)':
     dependencies:
-      '@navikt/familie-http': 8.0.30(axios@1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.1)
+      '@navikt/familie-http': 8.0.30(axios@1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0))(react@19.3.1)
       '@navikt/familie-typer': 8.0.9
       '@types/deep-equal': 1.0.4
       deep-equal: 2.2.3
@@ -4260,7 +4260,7 @@ snapshots:
 
   axe-core@4.14.0: {}
 
-  axios@1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0):
+  axios@1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
       follow-redirects: 1.16.3(debug@4.4.3(supports-color@7.2.0))
       form-data: 4.0.6
