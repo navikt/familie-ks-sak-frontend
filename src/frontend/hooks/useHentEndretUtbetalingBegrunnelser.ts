@@ -1,13 +1,10 @@
 import { hentEndretUtbetalingBegrunnelser } from '@api/hentEndretUtbetalingBegrunnelser';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useQuery } from '@tanstack/react-query';
-
-export const HentEndretUtbetalingBegrunnelserQueryKeyFactory = {
-    endretUtbetalingBegrunnelser: () => ['endretUtbetalingBegrunnelser'],
-};
 
 export function useHentEndretUtbetalingBegrunnelser() {
     return useQuery({
-        queryKey: HentEndretUtbetalingBegrunnelserQueryKeyFactory.endretUtbetalingBegrunnelser(),
+        queryKey: queryKeys.endretUtbetalingBegrunnelser(),
         queryFn: () => hentEndretUtbetalingBegrunnelser(),
     });
 }

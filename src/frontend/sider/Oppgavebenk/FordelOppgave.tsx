@@ -1,7 +1,7 @@
 import { useVisManglerTilgangModal } from '@context/ManglerTilgangModalContext';
 import { useVisTekniskFeilModal } from '@context/TekniskFeilModalContext';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useFordelOppgave } from '@hooks/useFordelOppgave';
-import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
 import { useHentFagsakPaaPerson } from '@hooks/useHentFagsakPaaPerson';
 import { useOpprettEllerHentFagsak } from '@hooks/useOpprettEllerHentFagsak';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
@@ -80,7 +80,7 @@ export function FordelOppgave({ oppgave }: Props) {
 
             if (oppgave.aktoerId) {
                 const fagsak = await opprettEllerHentFagsak({ aktørId: oppgave.aktoerId });
-                queryClient.setQueryData(HentFagsakQueryKeyFactory.fagsak(fagsak.id), fagsak);
+                queryClient.setQueryData(queryKeys.fagsak(fagsak.id), fagsak);
                 const aktivBehandling = fagsak.behandlinger.find(behandling => behandling.aktiv);
                 navigerer = true;
                 navigate(`/fagsak/${fagsak.id}/${aktivBehandling?.behandlingId ?? 'saksoversikt'}`);

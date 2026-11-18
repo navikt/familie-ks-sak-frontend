@@ -1,4 +1,5 @@
 import { hentKlagebehandlinger } from '@api/hentKlagebehandlinger';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { MetaKey } from '@hooks/meta/metaKey';
 import { QueryClient } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
@@ -7,7 +8,7 @@ import { TestProviders } from '@testutils/testrender';
 import type { IKlagebehandling } from '@typer/klage';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import { HentKlagebehandlingerQueryKeyFactory, useHentKlagebehandlinger } from './useHentKlagebehandlinger';
+import { useHentKlagebehandlinger } from './useHentKlagebehandlinger';
 
 vi.mock('@api/hentKlagebehandlinger');
 
@@ -59,9 +60,7 @@ describe('useHentKlagebehandlinger', () => {
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
         // Assert
-        const query = queryClient
-            .getQueryCache()
-            .find({ queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(1) });
+        const query = queryClient.getQueryCache().find({ queryKey: queryKeys.klagebehandlinger(1) });
         expect(query?.meta?.[MetaKey.VIS_SYSTEMET_LASTER]).toBe(true);
     });
 });

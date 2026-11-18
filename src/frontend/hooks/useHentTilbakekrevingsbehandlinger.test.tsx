@@ -1,4 +1,5 @@
 import { hentTilbakekrevingsbehandlinger } from '@api/hentTilbakekrevingsbehandlinger';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { MetaKey } from '@hooks/meta/metaKey';
 import { QueryClient } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
@@ -7,10 +8,7 @@ import { TestProviders } from '@testutils/testrender';
 import type { ITilbakekrevingsbehandling } from '@typer/tilbakekrevingsbehandling';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import {
-    HentTilbakekrevingsbehandlingerQueryKeyFactory,
-    useHentTilbakekrevingsbehandlinger,
-} from './useHentTilbakekrevingsbehandlinger';
+import { useHentTilbakekrevingsbehandlinger } from './useHentTilbakekrevingsbehandlinger';
 
 vi.mock('@api/hentTilbakekrevingsbehandlinger');
 
@@ -62,9 +60,7 @@ describe('useHentTilbakekrevingsbehandlinger', () => {
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
         // Assert
-        const query = queryClient
-            .getQueryCache()
-            .find({ queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(1) });
+        const query = queryClient.getQueryCache().find({ queryKey: queryKeys.tilbakekrevingsbehandlinger(1) });
         expect(query?.meta?.[MetaKey.VIS_SYSTEMET_LASTER]).toBe(true);
     });
 });
