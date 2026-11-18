@@ -1,4 +1,5 @@
 import { hentFagsak } from '@api/hentFagsak';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { MetaKey } from '@hooks/meta/metaKey';
 import { useSkalObfuskereData } from '@hooks/useSkalObfuskereData';
 import { useQuery } from '@tanstack/react-query';
@@ -19,14 +20,10 @@ function obfuskerFagsak(fagsak: IMinimalFagsak) {
     });
 }
 
-export const HentFagsakQueryKeyFactory = {
-    fagsak: (fagsakId: number | undefined) => ['fagsak', fagsakId],
-};
-
 export function useHentFagsak(fagsakId: number | undefined) {
     const skalObfuskereData = useSkalObfuskereData();
     return useQuery({
-        queryKey: HentFagsakQueryKeyFactory.fagsak(fagsakId),
+        queryKey: queryKeys.fagsak(fagsakId),
         queryFn: () => {
             if (fagsakId === undefined) {
                 throw new Error('Kan ikke hente fagsak uten fagsakId.');

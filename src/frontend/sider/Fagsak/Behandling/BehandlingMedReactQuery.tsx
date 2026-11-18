@@ -1,5 +1,6 @@
 import { ApiFeil, RessursStatus } from '@api/client/apiClient';
-import { HentBehandlingQueryKeyFactory, useHentBehandling } from '@hooks/useHentBehandling';
+import { queryKeys } from '@hooks/keys/queryKeys';
+import { useHentBehandling } from '@hooks/useHentBehandling';
 import { Behandlingslinje } from '@komponenter/Saklinje/Behandlingslinje';
 import { HenleggBehandlingModal } from '@komponenter/Saklinje/Meny/HenleggBehandling/HenleggBehandlingModal';
 import { HenleggBehandlingVeivalgModal } from '@komponenter/Saklinje/Meny/HenleggBehandling/HenleggBehandlingVeivalgModal';
@@ -31,7 +32,7 @@ export function BehandlingMedReactQuery({ behandlingId }: Props) {
     } = useHentBehandling(behandlingId);
 
     function settBehandling(oppdatertBehandling: IBehandling) {
-        queryClient.setQueryData(HentBehandlingQueryKeyFactory.behandling(behandlingId), oppdatertBehandling);
+        queryClient.setQueryData(queryKeys.behandling(behandlingId), oppdatertBehandling);
     }
 
     if (behandlingIsPending) {

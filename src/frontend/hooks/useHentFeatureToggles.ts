@@ -1,3 +1,4 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useHttp } from '@navikt/familie-http';
 import { type DefaultError, type UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { logger, tilLoggFeil } from '@utils/logger';
@@ -13,10 +14,6 @@ function skruAvAlleToggles(): FeatureToggles {
     }, {});
 }
 
-export const HentFeatureTogglesQueryKeyFactory = {
-    toggles: () => ['toggles'],
-};
-
 type Options = Omit<
     UseQueryOptions<FeatureToggles, DefaultError, FeatureToggles>,
     'queryKey' | 'queryFn' | 'gcTime' | 'staleTime'
@@ -28,7 +25,7 @@ export function useHentFeatureToggles(options?: Options) {
     const { påvirkerSystemLaster = true, ...rest } = options ?? {};
     const { request } = useHttp();
     return useQuery({
-        queryKey: HentFeatureTogglesQueryKeyFactory.toggles(),
+        queryKey: queryKeys.featureToggles(),
         queryFn: async () => {
             try {
                 return await hentFeatureToggles(request, påvirkerSystemLaster);

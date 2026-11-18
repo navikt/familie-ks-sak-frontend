@@ -1,3 +1,4 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useHttp } from '@navikt/familie-http';
 import { Adressebeskyttelsegradering } from '@navikt/familie-typer';
 import { useQueryClient } from '@tanstack/react-query';
@@ -81,7 +82,7 @@ export function useLeggTilBarnForm() {
         if (erFolkeregistrert) {
             try {
                 const person = await queryClient.fetchQuery({
-                    queryKey: ['person_enkel', fødselsnummer],
+                    queryKey: queryKeys.personEnkel(fødselsnummer),
                     queryFn: () => hentPersonEnkel(request, fødselsnummer, påvirkerSystemLaster),
                 });
                 if (

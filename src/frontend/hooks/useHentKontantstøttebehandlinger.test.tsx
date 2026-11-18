@@ -1,4 +1,5 @@
 import { hentKontantstøtteBehandlinger } from '@api/hentKontantstøtteBehandlinger';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { MetaKey } from '@hooks/meta/metaKey';
 import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
 import { QueryClient } from '@tanstack/react-query';
@@ -7,10 +8,7 @@ import { lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
 import { TestProviders } from '@testutils/testrender';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import {
-    HentKontantstøttebehandlingerQueryKeyFactory,
-    useHentKontantstøttebehandlinger,
-} from './useHentKontantstøttebehandlinger';
+import { useHentKontantstøttebehandlinger } from './useHentKontantstøttebehandlinger';
 
 vi.mock('@api/hentKontantstøtteBehandlinger');
 
@@ -62,9 +60,7 @@ describe('useHentKontantstøttebehandlinger', () => {
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
         // Assert
-        const query = queryClient
-            .getQueryCache()
-            .find({ queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(1) });
+        const query = queryClient.getQueryCache().find({ queryKey: queryKeys.kontantstøttebehandlinger(1) });
         expect(query?.meta?.[MetaKey.VIS_SYSTEMET_LASTER]).toBe(true);
     });
 });

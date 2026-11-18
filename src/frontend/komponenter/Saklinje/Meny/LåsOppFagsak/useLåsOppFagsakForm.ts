@@ -1,6 +1,6 @@
 import { ModalType } from '@context/ModalContext';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useFagsak } from '@hooks/useFagsak';
-import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
 import { useLåsOppFagsak } from '@hooks/useLåsOppFagsak';
 import { useModal } from '@hooks/useModal';
 import { useQueryClient } from '@tanstack/react-query';
@@ -39,9 +39,7 @@ export function useLåsOppFagsakForm() {
             setError('root', { message: (error as Error).message });
             return;
         }
-        await queryClient.invalidateQueries({
-            queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id),
-        });
+        await queryClient.invalidateQueries({ queryKey: queryKeys.fagsak(fagsak.id) });
         lukkModal();
     }
 

@@ -1,4 +1,5 @@
 import { hentBehandling } from '@api/hentBehandling';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useSkalObfuskereData } from '@hooks/useSkalObfuskereData';
 import { QueryClient } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
@@ -12,7 +13,7 @@ import { PersonType } from '@typer/person';
 import { Målform } from '@typer/søknad';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { HentBehandlingQueryKeyFactory, useHentBehandling } from './useHentBehandling';
+import { useHentBehandling } from './useHentBehandling';
 
 vi.mock('@api/hentBehandling');
 vi.mock('@hooks/useSkalObfuskereData');
@@ -87,9 +88,7 @@ describe('useHentBehandling', () => {
             'Søker Søkersen',
         ]);
         expect(behandling).toEqual(originalBehandling);
-        expect(queryClient.getQueryData(HentBehandlingQueryKeyFactory.behandling(behandling.behandlingId))).toEqual(
-            originalBehandling
-        );
+        expect(queryClient.getQueryData(queryKeys.behandling(behandling.behandlingId))).toEqual(originalBehandling);
 
         vi.mocked(useSkalObfuskereData).mockReturnValue(false);
         rerender();
@@ -204,9 +203,7 @@ describe('useHentBehandling', () => {
             },
         ]);
         expect(behandling).toEqual(originalBehandling);
-        expect(queryClient.getQueryData(HentBehandlingQueryKeyFactory.behandling(behandling.behandlingId))).toEqual(
-            originalBehandling
-        );
+        expect(queryClient.getQueryData(queryKeys.behandling(behandling.behandlingId))).toEqual(originalBehandling);
     });
 
     test('skal kunne obfuskere behandling uten søknadsgrunnlag, registerhistorikk eller brevmottakere', async () => {
