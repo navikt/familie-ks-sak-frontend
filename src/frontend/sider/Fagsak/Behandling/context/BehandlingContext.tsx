@@ -3,10 +3,8 @@ import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
 import { HentHistorikkinnslagQueryKeyFactory } from '@hooks/useHentHistorikkinnslag';
 import { HentPersonerMedUgyldigEtterbetalingsperiodeQueryKeyFactory } from '@hooks/useHentPersonerMedUgyldigEtterbetalingsperiode';
 import { useNavigerAutomatiskTilSideForBehandlingssteg } from '@hooks/useNavigerAutomatiskTilSideForBehandlingssteg';
-import { useSkalObfuskereData } from '@hooks/useSkalObfuskereData';
 import { useQueryClient } from '@tanstack/react-query';
 import type { IBehandling } from '@typer/behandling';
-import { obfuskerBehandling } from '@utils/obfuskerData';
 import { createContext, type PropsWithChildren, useContext } from 'react';
 
 interface Props extends PropsWithChildren {
@@ -23,7 +21,6 @@ const BehandlingContext = createContext<BehandlingContextValue | undefined>(unde
 
 export function BehandlingProvider({ behandling, settBehandling = () => {}, children }: Props) {
     const fagsak = useFagsak();
-    const skalObfuskereData = useSkalObfuskereData();
     const queryClient = useQueryClient();
 
     useNavigerAutomatiskTilSideForBehandlingssteg({ behandling });
@@ -40,9 +37,6 @@ export function BehandlingProvider({ behandling, settBehandling = () => {}, chil
         });
         if (oppdaterMinimalFagsak) {
             queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
-        }
-        if (skalObfuskereData) {
-            obfuskerBehandling(behandling);
         }
         settBehandling(behandling);
     };
