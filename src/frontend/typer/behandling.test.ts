@@ -2,9 +2,11 @@ import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { describe, expect } from 'vitest';
 import {
     BehandlingResultat,
+    BehandlingSteg,
     BehandlingÅrsak,
     behandlingÅrsakerSomIkkeSkalSettesManuelt,
     erBehandlingHenlagt,
+    hentStegnummer,
     MIDLERTIDIG_BEHANDLENDE_ENHET_ID,
     sjekkErBehandleneEnhetMidlertidig,
 } from './behandling';
@@ -48,6 +50,27 @@ describe('erBehandlingHenlagt', () => {
                 expect(erBehandlingHenlagt(resultat)).toBe(false);
             }
         });
+    });
+});
+
+describe('hentStegnummer', () => {
+    test.each([
+        [BehandlingSteg.REGISTRERE_PERSONGRUNNLAG, 1],
+        [BehandlingSteg.REGISTRERE_SØKNAD, 2],
+        [BehandlingSteg.VILKÅRSVURDERING, 3],
+        [BehandlingSteg.BEHANDLINGSRESULTAT, 4],
+        [BehandlingSteg.SIMULERING, 5],
+        [BehandlingSteg.VEDTAK, 6],
+        [BehandlingSteg.BESLUTTE_VEDTAK, 7],
+        [BehandlingSteg.IVERKSETT_MOT_OPPDRAG, 8],
+        [BehandlingSteg.JOURNALFØR_VEDTAKSBREV, 9],
+        [BehandlingSteg.AVSLUTT_BEHANDLING, 10],
+    ])('skal returnere riktig stegnummer for %s', (steg, forventetStegnummer) => {
+        expect(hentStegnummer(steg)).toBe(forventetStegnummer);
+    });
+
+    test('skal returnere 0 for ukjent steg', () => {
+        expect(hentStegnummer('UKJENT_STEG' as BehandlingSteg)).toBe(0);
     });
 });
 

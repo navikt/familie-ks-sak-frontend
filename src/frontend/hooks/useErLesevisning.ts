@@ -1,7 +1,7 @@
-import { BehandlingStatus, BehandlingSteg, BehandlingÅrsak, hentStegNummer } from '@typer/behandling';
+import { useErViPåUgyldigSideForBehandling } from '@hooks/useErViPåUgyldigSideForBehandling';
+import { BehandlingStatus, BehandlingSteg, BehandlingÅrsak, hentStegnummer } from '@typer/behandling';
 import { harTilgangTilEnhet } from '@typer/enhet';
 import { MIDLERTIDIG_BEHANDLENDE_ENHET_ID } from '@utils/behandling';
-
 import { useBehandling } from './useBehandling';
 import { useErLesevisningFagsak } from './useErLesevisningFagsak';
 import { useSaksbehandler } from './useSaksbehandler';
@@ -20,8 +20,13 @@ export function useErLesevisning({
     const saksbehandler = useSaksbehandler();
     const behandling = useBehandling();
     const erLesevisningFagsak = useErLesevisningFagsak();
+    const erViPåUgyldigSideForBehandling = useErViPåUgyldigSideForBehandling(behandling);
 
     if (erLesevisningFagsak) {
+        return true;
+    }
+
+    if (erViPåUgyldigSideForBehandling) {
         return true;
     }
 
@@ -32,7 +37,7 @@ export function useErLesevisning({
     const erBehandlingenPåMidlertidigEnhet = behandlendeEnhetId === MIDLERTIDIG_BEHANDLENDE_ENHET_ID;
     const harAlleTilgangTilBehandlingen = ÅRSAKER_ÅPEN_FOR_ALLE.has(behandling.årsak);
     const harSaksbehandlerTilgangTilEnhet = harTilgangTilEnhet(behandlendeEnhetId, saksbehandler.groups);
-    const erEtterBeslutteVedtak = hentStegNummer(behandling.steg) >= hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK);
+    const erEtterBeslutteVedtak = hentStegnummer(behandling.steg) >= hentStegnummer(BehandlingSteg.BESLUTTE_VEDTAK);
 
     if (erBehandlingenAvsluttet) {
         return true;
