@@ -1,6 +1,6 @@
 import { ModalType } from '@context/ModalContext';
+import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { useFagsak } from '@hooks/useFagsak';
-import { LåsOppFagsakMutationKeyFactory } from '@hooks/useLåsOppFagsak';
 import { useModal } from '@hooks/useModal';
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { Button, Fieldset, InfoCard, Modal, Textarea, VStack } from '@navikt/ds-react';
@@ -19,7 +19,7 @@ export function LåsOppFagsakModal() {
     const { erModalÅpen, tittel, lukkModal, bredde } = useModal(ModalType.LÅS_OPP_FAGSAK);
 
     const antallPågåendeOpplåsinger = useIsMutating({
-        mutationKey: LåsOppFagsakMutationKeyFactory.låsOppFagsak(fagsak.id),
+        mutationKey: mutationKeys.låsOppFagsak(fagsak.id),
     });
 
     return (

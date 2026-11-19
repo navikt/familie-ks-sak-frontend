@@ -1,21 +1,18 @@
 import { opprettEllerHentFagsak } from '@api/opprettEllerHentFagsak';
+import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { MetaKey } from '@hooks/meta/metaKey';
 import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { IMinimalFagsak } from '@typer/fagsak';
-
-export const OpprettEllerHentFagsakMutationKeyFactory = {
-    opprettEllerHentFagsak: () => ['opprett_eller_hent_fagsak'],
-};
 
 interface Parameters {
     aktørId: string;
 }
 
-type Options = Omit<UseMutationOptions<IMinimalFagsak, DefaultError, Parameters>, 'mutationFn'>;
+type Options = Omit<UseMutationOptions<IMinimalFagsak, DefaultError, Parameters>, 'mutationKey' | 'mutationFn'>;
 
 export function useOpprettEllerHentFagsak(options?: Options) {
     return useMutation({
-        mutationKey: OpprettEllerHentFagsakMutationKeyFactory.opprettEllerHentFagsak(),
+        mutationKey: mutationKeys.opprettEllerHentFagsak(),
         mutationFn: (parameters: Parameters) => {
             const { aktørId } = parameters;
             const payload = { aktørId };
