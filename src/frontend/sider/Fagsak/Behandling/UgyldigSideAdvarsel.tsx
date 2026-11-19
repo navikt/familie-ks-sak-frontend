@@ -3,11 +3,12 @@ import { useErViPåUgyldigSideForBehandling } from '@hooks/useErViPåUgyldigSide
 import { useFagsak } from '@hooks/useFagsak';
 import { BodyLong, Box, Button, GlobalAlert, VStack } from '@navikt/ds-react';
 import { finnSideForBehandlingssteg } from '@sider/Fagsak/Behandling/sider/sider';
-import { Link as ReactRouterLink } from 'react-router';
+import { matchPath, Link as ReactRouterLink, useLocation } from 'react-router';
 
 export function UgyldigSideAdvarsel() {
     const fagsak = useFagsak();
     const behandling = useBehandling();
+    const location = useLocation();
     const erViPåUgyldigSideForBehandling = useErViPåUgyldigSideForBehandling(behandling);
 
     if (!erViPåUgyldigSideForBehandling) {
@@ -15,6 +16,16 @@ export function UgyldigSideAdvarsel() {
     }
 
     const side = finnSideForBehandlingssteg(behandling);
+
+    const erPåBehandlingensRotside = matchPath(
+        { path: '/fagsak/:fagsakId/:behandlingId', end: true },
+        location.pathname
+    );
+    if (side && erPåBehandlingensRotside) {
+        // Saksbehandler blir automatisk navigert videre til siden for behandlingssteget, så advarselen skal ikke blinke.
+        // TODO : Fjern dette når vi navigerer til riktig side med en gang via loaders
+        return null;
+    }
 
     return (
         <GlobalAlert status={'warning'} centered={false}>

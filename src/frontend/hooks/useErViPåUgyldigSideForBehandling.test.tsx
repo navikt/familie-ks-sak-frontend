@@ -97,14 +97,24 @@ describe('useErViPåUgyldigSideForBehandling', () => {
         expect(result.current).toBe(true);
     });
 
-    test('skal returnere false når saksbehandler er på en underside av behandlingens steg', () => {
+    test('skal returnere true når saksbehandler er på en underside av behandlingens steg', () => {
         const behandling = lagBehandling({ steg: BehandlingSteg.VILKÅRSVURDERING });
 
         const { result } = renderHook(() => useErViPåUgyldigSideForBehandling(behandling), {
             wrapper: lagWrapper('/fagsak/1/1/vilkaarsvurdering/underside'),
         });
 
-        expect(result.current).toBe(false);
+        expect(result.current).toBe(true);
+    });
+
+    test('skal returnere true når behandlingens steg ligger under et ukjent segment i stien', () => {
+        const behandling = lagBehandling({ steg: BehandlingSteg.VILKÅRSVURDERING });
+
+        const { result } = renderHook(() => useErViPåUgyldigSideForBehandling(behandling), {
+            wrapper: lagWrapper('/fagsak/1/1/old/vilkaarsvurdering'),
+        });
+
+        expect(result.current).toBe(true);
     });
 
     test('skal returnere false når saksbehandler er på vedtak og behandlingen er forbi vedtakssteget', () => {

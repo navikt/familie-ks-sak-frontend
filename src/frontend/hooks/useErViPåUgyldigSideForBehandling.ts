@@ -1,24 +1,30 @@
 import { finnSideForBehandlingssteg, finnSiderForBehandling } from '@sider/Fagsak/Behandling/sider/sider';
 import { hentStegnummer, type IBehandling } from '@typer/behandling';
-import { useLocation } from 'react-router';
+import { matchPath, useLocation } from 'react-router';
+
+const BASE_PATH = `/fagsak/:fagsakId/:behandlingId/`;
 
 export function useErViPåUgyldigSideForBehandling(behandling: IBehandling): boolean {
     const location = useLocation();
 
-    const segmenter = location.pathname.split('/');
     const siderForBehandling = finnSiderForBehandling(behandling);
+    const siderForBehandlingssteg = finnSideForBehandlingssteg(behandling);
 
-    const nåværendeSide = siderForBehandling.find(side => segmenter.includes(side.href));
+    const nåværendeSide = siderForBehandling.find(side => {
+        const path = `${BASE_PATH}${side.href}`;
+        const pathname = location.pathname;
+        return matchPath({ path, end: true }, pathname);
+    });
+
     if (nåværendeSide === undefined) {
         // Ukjent side, eller en side som er skjult for denne behandlingen.
         return true;
     }
 
-    const behandlingSide = finnSideForBehandlingssteg(behandling);
-    if (behandlingSide === undefined) {
+    if (siderForBehandlingssteg === undefined) {
         // Steget har ingen synlig side (f.eks. REGISTRERE_PERSONGRUNNLAG), så ingen sider er gyldige.
         return true;
     }
 
-    return hentStegnummer(nåværendeSide.steg) > hentStegnummer(behandlingSide.steg);
+    return hentStegnummer(nåværendeSide.steg) > hentStegnummer(siderForBehandlingssteg.steg);
 }

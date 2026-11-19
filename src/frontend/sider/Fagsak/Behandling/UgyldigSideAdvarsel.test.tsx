@@ -39,6 +39,27 @@ describe('UgyldigSideAdvarsel', () => {
         expect(screen.queryByText(advarselstittel)).not.toBeInTheDocument();
     });
 
+    test.each(['/fagsak/10/20', '/fagsak/10/20/'])(
+        'skal ikke vise advarsel på behandlingens rotside %s siden saksbehandler blir navigert videre',
+        pathname => {
+            useBehandlingMock.mockReturnValue(
+                lagBehandling({
+                    behandlingId: 20,
+                    årsak: BehandlingÅrsak.SØKNAD,
+                    steg: BehandlingSteg.VILKÅRSVURDERING,
+                })
+            );
+
+            const { screen } = render(<UgyldigSideAdvarsel />, {
+                wrapper: ({ children }: PropsWithChildren) => (
+                    <TestProviders initialEntries={[{ pathname }]}>{children}</TestProviders>
+                ),
+            });
+
+            expect(screen.queryByText(advarselstittel)).not.toBeInTheDocument();
+        }
+    );
+
     test('skal vise advarsel med lenke til steget behandlingen står på når siden er etter behandlingens steg', () => {
         useBehandlingMock.mockReturnValue(
             lagBehandling({

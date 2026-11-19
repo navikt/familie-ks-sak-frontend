@@ -90,7 +90,7 @@ export function useHentBehandling(behandlingId: number | undefined) {
         enabled: behandlingId !== undefined,
         // Behandlingen skal ikke vises fra cache når man åpner den på nytt, siden steget kan ha endret seg. Ellers rendres
         // sidene og automatisk navigering til riktig steg skjer ut fra en utdatert behandling. Forms vil også rendre med
-        // cached behandling, som er et problem hvis de ikke bruker "values" (eller noe tilsvarende) fra RHF
+        // cached behandling, som er et problem hvis de ikke bruker "values" (eller noe tilsvarende) fra RHF.
         // Dette må sees mer på før vi eventuelt fjerner gcTime herfra.
         gcTime: 0,
         // Behandlingen oppdateres eksplisitt via settÅpenBehandling. Automatisk refetch kan nullstille skjemaer
