@@ -1,5 +1,5 @@
 import { Box, Checkbox, CheckboxGroup, InlineMessage } from '@navikt/ds-react';
-import { BehandlingSteg, hentStegNummer } from '../../../../../typer/behandling';
+import { BehandlingSteg, hentStegnummer } from '../../../../../typer/behandling';
 import type { IBarnMedOpplysninger } from '../../../../../typer/søknad';
 import { lagBarnLabel, sorterBarnEtterFødselsdato } from '../../../../../utils/formatter';
 import styles from './BarnBrevetGjelder.module.css';
@@ -21,7 +21,7 @@ export const BarnBrevetGjelder = ({
 }: IProps) => {
     const skalViseVarselOmManglendeBarn =
         behandlingsSteg &&
-        hentStegNummer(behandlingsSteg) <= hentStegNummer(BehandlingSteg.REGISTRERE_SØKNAD) &&
+        hentStegnummer(behandlingsSteg) <= hentStegnummer(BehandlingSteg.REGISTRERE_SØKNAD) &&
         barnBrevetGjelder.length === 0;
 
     const sorterteBarn = sorterBarnEtterFødselsdato(barnBrevetGjelder);

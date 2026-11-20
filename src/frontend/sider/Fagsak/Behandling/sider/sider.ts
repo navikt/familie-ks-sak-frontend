@@ -1,4 +1,4 @@
-import { BehandlingSteg, BehandlingÅrsak, hentStegNummer, type IBehandling } from '@typer/behandling';
+import { BehandlingSteg, BehandlingÅrsak, hentStegnummer, type IBehandling } from '@typer/behandling';
 import { Resultat } from '@typer/vilkår';
 
 import { mapFraRestPersonResultatTilPersonResultat } from './Vilkårsvurdering/utils';
@@ -117,7 +117,8 @@ export function erSidenAktiv(side: Side, behandling: IBehandling): boolean {
     if (!steg) {
         return false;
     }
-    return hentStegNummer(side.steg) <= hentStegNummer(steg);
+
+    return hentStegnummer(side.steg) <= hentStegnummer(steg);
 }
 
 export function finnSiderForBehandling(behandling: IBehandling) {
@@ -127,41 +128,17 @@ export function finnSiderForBehandling(behandling: IBehandling) {
 export function finnSideForBehandlingssteg(behandling: IBehandling): Side | undefined {
     const steg = behandling.steg;
 
-    if (hentStegNummer(steg) >= hentStegNummer(BehandlingSteg.VEDTAK)) {
-        if (sider.VEDTAK.visSide && sider.VEDTAK.visSide(behandling)) {
+    if (hentStegnummer(steg) >= hentStegnummer(BehandlingSteg.VEDTAK)) {
+        if (sider.VEDTAK.visSide?.(behandling)) {
             return sider.VEDTAK;
         }
-        if (sider.SIMULERING.visSide && sider.SIMULERING.visSide(behandling)) {
+        if (sider.SIMULERING.visSide?.(behandling)) {
             return sider.SIMULERING;
         }
         return sider.BEHANDLINGRESULTAT;
     }
 
-    const sideForSteg = Object.entries(sider).find(([_, side]) => side.steg === steg);
+    const siderForBehandling = finnSiderForBehandling(behandling);
 
-    return sideForSteg ? sideForSteg[1] : undefined;
-}
-
-export function erViPåUdefinertFagsakSide(pathname: string) {
-    return (
-        Object.values(sider).filter((side: Side) => pathname.includes(side.href)).length === 0 &&
-        !pathname.includes('saksoversikt') &&
-        !pathname.includes('ny-behandling')
-    );
-}
-
-export function erViPåUlovligSteg(pathname: string, behandlingSide?: Side) {
-    if (!behandlingSide) {
-        return false;
-    }
-
-    const ønsketSteg = Object.values(sider).find((side: Side) => pathname.includes(side.href));
-
-    if (ønsketSteg) {
-        if (hentStegNummer(ønsketSteg?.steg) > hentStegNummer(behandlingSide.steg)) {
-            return true;
-        }
-    }
-
-    return false;
+    return siderForBehandling.find(side => side.steg === steg);
 }

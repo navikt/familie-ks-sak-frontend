@@ -3,7 +3,7 @@ import { useHentEllerOpprettVedtaksbrevPdf } from '@hooks/useHentEllerOpprettVed
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { FileTextIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
 import { Button, Dialog, ErrorMessage, Heading, HStack, Loader } from '@navikt/ds-react';
-import { BehandlerRolle, BehandlingSteg, hentStegNummer } from '@typer/behandling';
+import { BehandlerRolle, BehandlingSteg, hentStegnummer } from '@typer/behandling';
 import { useState } from 'react';
 
 import Styles from './ForhåndsvisVedtaksbrev.module.css';
@@ -25,7 +25,7 @@ export function ForhåndsvisVedtaksbrev() {
         const { behandlingId, steg } = behandling;
 
         const erMinstSaksbehandler = saksbehandler.rolle >= BehandlerRolle.SAKSBEHANDLER;
-        const erPåEllerFørBeslutteVedtak = hentStegNummer(steg) <= hentStegNummer(BehandlingSteg.BESLUTTE_VEDTAK);
+        const erPåEllerFørBeslutteVedtak = hentStegnummer(steg) <= hentStegnummer(BehandlingSteg.BESLUTTE_VEDTAK);
         const skalLagreBrev = erMinstSaksbehandler && erPåEllerFørBeslutteVedtak;
 
         const httpMethod = skalLagreBrev ? 'POST' : 'GET';

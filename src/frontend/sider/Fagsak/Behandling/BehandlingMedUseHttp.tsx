@@ -24,6 +24,7 @@ import { Høyremeny } from './Høyremeny/Høyremeny';
 import { TabContextProvider } from './Høyremeny/TabContextProvider';
 import { TotrinnskontrollModalContextProvider } from './Høyremeny/Totrinnskontroll/TotrinnskontrollModalContextProvider';
 import { KorrigerEtterbetalingModal } from './sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetalingModal';
+import { UgyldigSideAdvarsel } from './UgyldigSideAdvarsel';
 import { Venstremeny } from './Venstremeny/Venstremeny';
 
 interface Props {
@@ -75,6 +76,7 @@ export function BehandlingMedUseHttp({ behandlingId }: Props) {
                         <KorrigerEtterbetalingModal />
                         <VStack className={Styles.skrollbarStack}>
                             <Behandlingslinje />
+                            <UgyldigSideAdvarsel />
                             <HStack className={Styles.skrollbarStack}>
                                 <Box className={Styles.venstreKolonne}>
                                     <Venstremeny />
