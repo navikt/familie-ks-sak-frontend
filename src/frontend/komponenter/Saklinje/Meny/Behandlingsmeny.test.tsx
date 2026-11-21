@@ -35,7 +35,9 @@ interface WrapperProps extends PropsWithChildren {
 function Wrapper({
     initialEntries = [{ pathname: '/fagsak/1/1/registrer-soknad' }],
     behandling = lagBehandling({ årsak: BehandlingÅrsak.NYE_OPPLYSNINGER }),
-    fagsak = lagFagsak({ behandlinger: [lagVisningBehandling({ behandlingId: behandling?.behandlingId })] }),
+    fagsak = lagFagsak({
+        behandlinger: [lagVisningBehandling({ behandlingId: behandling?.behandlingId })],
+    }),
     featureToggles = skruPåAlleToggles(),
     children,
 }: WrapperProps) {
@@ -111,7 +113,9 @@ describe('Behandlingsmeny', () => {
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
 
-        const menuitem = screen.getByRole('menuitem', { name: 'Opprett behandling' });
+        const menuitem = screen.getByRole('menuitem', {
+            name: 'Opprett behandling',
+        });
         await user.click(menuitem);
 
         expect(screen.getByRole('dialog', { name: 'Opprett ny behandling' })).toBeInTheDocument();
@@ -125,7 +129,9 @@ describe('Behandlingsmeny', () => {
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
 
-        const menuitem = screen.getByRole('menuitem', { name: 'Send informasjonsbrev' });
+        const menuitem = screen.getByRole('menuitem', {
+            name: 'Send informasjonsbrev',
+        });
         await user.click(menuitem);
 
         expect(screen.getByRole('heading', { name: 'Dokumentutsending' })).toBeInTheDocument();
@@ -137,7 +143,9 @@ describe('Behandlingsmeny', () => {
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
 
-        const menuitem = screen.getByRole('menuitem', { name: 'Henlegg behandling' });
+        const menuitem = screen.getByRole('menuitem', {
+            name: 'Henlegg behandling',
+        });
         await user.click(menuitem);
 
         expect(screen.getByRole('dialog', { name: 'Henlegg behandling' })).toBeInTheDocument();
@@ -149,10 +157,16 @@ describe('Behandlingsmeny', () => {
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
 
-        const menuitem = screen.getByRole('menuitem', { name: 'Endre behandlende enhet' });
+        const menuitem = screen.getByRole('menuitem', {
+            name: 'Endre behandlende enhet',
+        });
         await user.click(menuitem);
 
-        expect(screen.getByRole('dialog', { name: 'Endre enhet for denne behandlingen' })).toBeInTheDocument();
+        expect(
+            screen.getByRole('dialog', {
+                name: 'Endre enhet for denne behandlingen',
+            })
+        ).toBeInTheDocument();
     });
 
     test('skal kunne åpne endre behandlingstema modal', async () => {
@@ -161,7 +175,9 @@ describe('Behandlingsmeny', () => {
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
 
-        const menuitem = screen.getByRole('menuitem', { name: 'Endre behandlingstema' });
+        const menuitem = screen.getByRole('menuitem', {
+            name: 'Endre behandlingstema',
+        });
         await user.click(menuitem);
 
         expect(screen.getByRole('dialog', { name: 'Endre behandlingstema' })).toBeInTheDocument();
@@ -185,7 +201,9 @@ describe('Behandlingsmeny', () => {
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
 
-        const menuitem = screen.getByRole('menuitem', { name: 'Sett behandling på vent' });
+        const menuitem = screen.getByRole('menuitem', {
+            name: 'Sett behandling på vent',
+        });
         await user.click(menuitem);
 
         expect(screen.getByRole('dialog', { name: 'Sett behandling på vent' })).toBeInTheDocument();
@@ -205,11 +223,13 @@ describe('Behandlingsmeny', () => {
                 />
             ),
         });
-
+        await user.click(screen.getByRole('button', { name: 'Avbryt' }));
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
 
-        const menuitem = screen.getByRole('menuitem', { name: 'Fortsett behandling' });
+        const menuitem = screen.getByRole('menuitem', {
+            name: 'Fortsett behandling',
+        });
         await user.click(menuitem);
 
         expect(screen.getByRole('dialog', { name: 'Fortsett behandling' })).toBeInTheDocument();
@@ -221,7 +241,9 @@ describe('Behandlingsmeny', () => {
         const meny = screen.getByRole('button', { name: 'Meny' });
         await user.click(meny);
 
-        const menuitem = screen.getByRole('menuitem', { name: 'Legg til brevmottaker' });
+        const menuitem = screen.getByRole('menuitem', {
+            name: 'Legg til brevmottaker',
+        });
         await user.click(menuitem);
 
         expect(screen.getByRole('dialog', { name: 'Brevmottaker' })).toBeInTheDocument();
@@ -230,7 +252,12 @@ describe('Behandlingsmeny', () => {
     test('skal åpne brevmottakerdialog fra detaljer', async () => {
         const { screen, user } = render(<RegistrerteBrevmottakereBehandling kilde={'vedtak'} />, {
             wrapper: props => (
-                <Wrapper {...props} behandling={lagBehandling({ brevmottakere: [lagBrevmottakerBehandling()] })} />
+                <Wrapper
+                    {...props}
+                    behandling={lagBehandling({
+                        brevmottakere: [lagBrevmottakerBehandling()],
+                    })}
+                />
             ),
         });
 
@@ -270,7 +297,11 @@ describe('Behandlingsmeny', () => {
                 />
             ),
         });
-        expect(screen.getByRole('dialog', { name: 'Endre enhet for denne behandlingen' })).toBeInTheDocument();
+        expect(
+            screen.getByRole('dialog', {
+                name: 'Endre enhet for denne behandlingen',
+            })
+        ).toBeInTheDocument();
     });
 
     test('skal vise behandling på vent modal med en gang hvis behandlingen er på vent', () => {

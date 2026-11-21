@@ -1,4 +1,4 @@
-import { BodyLong, Button, Modal } from '@navikt/ds-react';
+import { BodyLong, Button, Dialog } from '@navikt/ds-react';
 import { useNavigate } from 'react-router';
 
 import { useFagsakContext } from '../../../../sider/Fagsak/FagsakContext';
@@ -22,27 +22,26 @@ export function TilbakekrevingsbehandlingOpprettetModal({ lukkModal }: Props) {
     }
 
     return (
-        <Modal
-            open={true}
-            width={'45rem'}
-            portal={true}
-            header={{ heading: 'Tilbakekrevingsbehandling opprettes' }}
-            onClose={() => lukkModal()}
-        >
-            <Modal.Body>
-                <BodyLong>
-                    Tilbakekrevingsbehandling opprettes, men det kan ta litt tid (ca 30 sekunder) før den blir
-                    tilgjengelig i saksoversikten og oppgavebenken.
-                </BodyLong>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant={'primary'} onClick={navigerTilOppgaver}>
-                    Gå til oppgavebenken
-                </Button>
-                <Button variant={'secondary'} onClick={navigerTilSaksoversikt}>
-                    Gå til saksoversikten
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <Dialog open={true} onOpenChange={åpen => !åpen && lukkModal()}>
+            <Dialog.Popup width={'45rem'}>
+                <Dialog.Header>
+                    <Dialog.Title>Tilbakekrevingsbehandling opprettes</Dialog.Title>
+                </Dialog.Header>
+                <Dialog.Body>
+                    <BodyLong>
+                        Tilbakekrevingsbehandling opprettes, men det kan ta litt tid (ca 30 sekunder) før den blir
+                        tilgjengelig i saksoversikten og oppgavebenken.
+                    </BodyLong>
+                </Dialog.Body>
+                <Dialog.Footer>
+                    <Button variant={'primary'} onClick={navigerTilOppgaver}>
+                        Gå til oppgavebenken
+                    </Button>
+                    <Button variant={'secondary'} onClick={navigerTilSaksoversikt}>
+                        Gå til saksoversikten
+                    </Button>
+                </Dialog.Footer>
+            </Dialog.Popup>
+        </Dialog>
     );
 }

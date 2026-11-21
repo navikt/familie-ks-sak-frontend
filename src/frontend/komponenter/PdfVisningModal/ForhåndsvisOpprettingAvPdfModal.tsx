@@ -1,6 +1,6 @@
 import { ModalType } from '@context/ModalContext';
 import { useModal } from '@hooks/useModal';
-import { Heading, HStack, Loader, LocalAlert, Modal, VStack } from '@navikt/ds-react';
+import { Dialog, Heading, HStack, Loader, LocalAlert, VStack } from '@navikt/ds-react';
 import { type MutationKey, useMutationState } from '@tanstack/react-query';
 
 import styles from './ForhåndsvisOpprettingAvPdfModal.module.css';
@@ -11,16 +11,18 @@ export function ForhåndsvisOpprettingAvPdfModal() {
     const mutationKey = args?.mutationKey ?? [];
 
     return (
-        <Modal
-            className={styles.modal}
-            open={erModalÅpen}
-            onClose={lukkModal}
-            header={{ heading: tittel, closeButton: true }}
-            width={bredde}
-            portal={true}
-        >
-            {erModalÅpen && <Innhold mutationKey={mutationKey} />}
-        </Modal>
+        <Dialog open={erModalÅpen} onOpenChange={åpen => !åpen && lukkModal()}>
+            <Dialog.Popup className={styles.modal} width={bredde}>
+                <Dialog.Header>
+                    <Dialog.Title>{tittel}</Dialog.Title>
+                </Dialog.Header>
+                {erModalÅpen && (
+                    <Dialog.Body className={styles.body}>
+                        <Innhold mutationKey={mutationKey} />
+                    </Dialog.Body>
+                )}
+            </Dialog.Popup>
+        </Dialog>
     );
 }
 

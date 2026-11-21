@@ -1,4 +1,4 @@
-import { Button, Modal, VStack } from '@navikt/ds-react';
+import { Button, Dialog, VStack } from '@navikt/ds-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useFagsakContext } from '../../../FagsakContext';
@@ -32,16 +32,21 @@ export function Brev() {
         <VStack marginBlock={'space-16'} marginInline={'space-20'}>
             <Brevskjema onSubmitSuccess={() => settVisInnsendtBrevModal(true)} />
             {visInnsendtBrevModal && (
-                <Modal open={true} onClose={onClose} header={{ heading: 'Brevet er sendt' }} portal={true}>
-                    <Modal.Footer>
-                        <Button variant={'secondary'} size={'medium'} onClick={navigerTilSaksoversikt}>
-                            Se saksoversikt
-                        </Button>
-                        <Button variant={'secondary'} size={'medium'} onClick={navigerTilOppgaver}>
-                            Se oppgavebenk
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <Dialog open={true} onOpenChange={åpen => !åpen && onClose()}>
+                    <Dialog.Popup>
+                        <Dialog.Header>
+                            <Dialog.Title>Brevet er sendt</Dialog.Title>
+                        </Dialog.Header>
+                        <Dialog.Footer>
+                            <Button variant={'secondary'} size={'medium'} onClick={navigerTilSaksoversikt}>
+                                Se saksoversikt
+                            </Button>
+                            <Button variant={'secondary'} size={'medium'} onClick={navigerTilOppgaver}>
+                                Se oppgavebenk
+                            </Button>
+                        </Dialog.Footer>
+                    </Dialog.Popup>
+                </Dialog>
             )}
         </VStack>
     );

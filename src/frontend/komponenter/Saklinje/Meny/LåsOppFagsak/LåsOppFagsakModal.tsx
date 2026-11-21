@@ -3,7 +3,7 @@ import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { useFagsak } from '@hooks/useFagsak';
 import { useModal } from '@hooks/useModal';
 import { InformationSquareIcon } from '@navikt/aksel-icons';
-import { Button, Fieldset, InfoCard, Modal, Textarea, VStack } from '@navikt/ds-react';
+import { Button, Dialog, Fieldset, InfoCard, Textarea, VStack } from '@navikt/ds-react';
 import { useIsMutating } from '@tanstack/react-query';
 import { FormProvider, useController, useFormContext } from 'react-hook-form';
 
@@ -23,17 +23,22 @@ export function LåsOppFagsakModal() {
     });
 
     return (
-        <Modal
+        <Dialog
             open={erModalÅpen}
-            width={bredde}
-            onClose={lukkModal}
-            // Hindrer at Escape og lukkeknappen avmonterer skjemaet mens opplåsingen er underveis.
-            onBeforeClose={() => antallPågåendeOpplåsinger === 0}
-            header={{ heading: tittel, size: 'medium' }}
-            portal={true}
+            onOpenChange={åpen => {
+                if (!åpen && antallPågåendeOpplåsinger === 0) {
+                    lukkModal();
+                }
+            }}
+            size={'medium'}
         >
-            {erModalÅpen && <Innhold />}
-        </Modal>
+            <Dialog.Popup width={bredde} closeOnOutsideClick={false}>
+                <Dialog.Header>
+                    <Dialog.Title>{tittel}</Dialog.Title>
+                </Dialog.Header>
+                {erModalÅpen && <Innhold />}
+            </Dialog.Popup>
+        </Dialog>
     );
 }
 
@@ -47,7 +52,7 @@ function Innhold() {
     } = form;
     return (
         <>
-            <Modal.Body>
+            <Dialog.Body>
                 <VStack gap={'space-16'}>
                     <InfoCard data-color="info">
                         <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
@@ -63,8 +68,8 @@ function Innhold() {
                         </form>
                     </FormProvider>
                 </VStack>
-            </Modal.Body>
-            <Modal.Footer>
+            </Dialog.Body>
+            <Dialog.Footer>
                 <Button
                     form={LÅS_OPP_FAGSAK_FORM_ID}
                     variant={'primary'}
@@ -77,7 +82,7 @@ function Innhold() {
                 <Button variant={'tertiary'} size={'small'} onClick={() => lukkModal()} disabled={isSubmitting}>
                     Avbryt
                 </Button>
-            </Modal.Footer>
+            </Dialog.Footer>
         </>
     );
 }

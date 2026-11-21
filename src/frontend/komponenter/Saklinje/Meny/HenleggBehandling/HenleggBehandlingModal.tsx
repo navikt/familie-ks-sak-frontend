@@ -1,5 +1,5 @@
 import { InformationSquareIcon } from '@navikt/aksel-icons';
-import { Button, Fieldset, InfoCard, Modal, VStack } from '@navikt/ds-react';
+import { Button, Dialog, Fieldset, InfoCard, VStack } from '@navikt/ds-react';
 import { FormProvider } from 'react-hook-form';
 import { ModalType } from '../../../../context/ModalContext';
 import { useModal } from '../../../../hooks/useModal';
@@ -17,15 +17,14 @@ import { ÅrsakFelt } from './ÅrsakFelt';
 export function HenleggBehandlingModal() {
     const { erModalÅpen, tittel, lukkModal, bredde } = useModal(ModalType.HENLEGG_BEHANDLING);
     return (
-        <Modal
-            open={erModalÅpen}
-            width={bredde}
-            onClose={lukkModal}
-            header={{ heading: tittel, size: 'medium' }}
-            portal={true}
-        >
-            {erModalÅpen && <Innhold />}
-        </Modal>
+        <Dialog open={erModalÅpen} onOpenChange={åpen => !åpen && lukkModal()} size={'medium'}>
+            <Dialog.Popup width={bredde} closeOnOutsideClick={false}>
+                <Dialog.Header>
+                    <Dialog.Title>{tittel}</Dialog.Title>
+                </Dialog.Header>
+                {erModalÅpen && <Innhold />}
+            </Dialog.Popup>
+        </Dialog>
     );
 }
 
@@ -46,7 +45,7 @@ function Innhold() {
 
     return (
         <>
-            <Modal.Body>
+            <Dialog.Body>
                 <VStack gap={'space-16'}>
                     <InfoCard data-color="info">
                         <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
@@ -70,8 +69,8 @@ function Innhold() {
                         </form>
                     </FormProvider>
                 </VStack>
-            </Modal.Body>
-            <Modal.Footer>
+            </Dialog.Body>
+            <Dialog.Footer>
                 <Button
                     form={HENLEGG_BEHANDLING_FORM_ID}
                     variant={'primary'}
@@ -86,7 +85,7 @@ function Innhold() {
                     Avbryt
                 </Button>
                 {valgtÅrsak === HenleggÅrsak.SØKNAD_TRUKKET && <ForhåndsvisBrevLenke />}
-            </Modal.Footer>
+            </Dialog.Footer>
         </>
     );
 }

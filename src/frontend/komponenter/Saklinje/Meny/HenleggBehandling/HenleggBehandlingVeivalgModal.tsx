@@ -1,4 +1,4 @@
-import { BodyShort, Button, LocalAlert, Modal } from '@navikt/ds-react';
+import { BodyShort, Button, Dialog, LocalAlert } from '@navikt/ds-react';
 import { useNavigate } from 'react-router';
 
 import { ModalType } from '../../../../context/ModalContext';
@@ -10,28 +10,27 @@ export function HenleggBehandlingVeivalgModal() {
     const { args, erModalÅpen, tittel, lukkModal, bredde } = useModal(ModalType.HENLEGG_BEHANDLING_VEIVALG);
 
     return (
-        <Modal
-            open={erModalÅpen}
-            width={bredde}
-            header={{ heading: tittel, size: 'medium' }}
-            onClose={() => lukkModal()}
-            portal={true}
-        >
-            {erModalÅpen && (
-                <>
-                    {args === undefined && (
-                        <Modal.Body>
-                            <LocalAlert status="error">
-                                <LocalAlert.Header>
-                                    <LocalAlert.Title>En feil oppstod ved innlasting av modalen.</LocalAlert.Title>
-                                </LocalAlert.Header>
-                            </LocalAlert>
-                        </Modal.Body>
-                    )}
-                    {args !== undefined && <Innhold årsak={args.årsak} />}
-                </>
-            )}
-        </Modal>
+        <Dialog open={erModalÅpen} onOpenChange={åpen => !åpen && lukkModal()} size={'medium'}>
+            <Dialog.Popup width={bredde}>
+                <Dialog.Header>
+                    <Dialog.Title>{tittel}</Dialog.Title>
+                </Dialog.Header>
+                {erModalÅpen && (
+                    <>
+                        {args === undefined && (
+                            <Dialog.Body>
+                                <LocalAlert status="error">
+                                    <LocalAlert.Header>
+                                        <LocalAlert.Title>En feil oppstod ved innlasting av modalen.</LocalAlert.Title>
+                                    </LocalAlert.Header>
+                                </LocalAlert>
+                            </Dialog.Body>
+                        )}
+                        {args !== undefined && <Innhold årsak={args.årsak} />}
+                    </>
+                )}
+            </Dialog.Popup>
+        </Dialog>
     );
 }
 
@@ -56,21 +55,21 @@ function Innhold({ årsak }: InnholdProps) {
 
     return (
         <>
-            <Modal.Body>
+            <Dialog.Body>
                 <BodyShort>
                     {årsak === HenleggÅrsak.SØKNAD_TRUKKET
                         ? 'Behandlingen er henlagt og brev til bruker er sendt.'
                         : 'Behandlingen er henlagt.'}
                 </BodyShort>
-            </Modal.Body>
-            <Modal.Footer>
+            </Dialog.Body>
+            <Dialog.Footer>
                 <Button variant={'secondary'} size={'medium'} onClick={gåTilSaksoversikt}>
                     Se saksoversikt
                 </Button>
                 <Button variant={'secondary'} size={'medium'} onClick={gåTilOppgaver}>
                     Se oppgavebenk
                 </Button>
-            </Modal.Footer>
+            </Dialog.Footer>
         </>
     );
 }
