@@ -1,9 +1,11 @@
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { Button, Fieldset, Modal } from '@navikt/ds-react';
+import { Button, Dialog, Fieldset } from '@navikt/ds-react';
 import { FormProvider } from 'react-hook-form';
 
 import { BehandlingstemaSelect } from './BehandlingstemaSelect';
 import { useEndreBehandlingstemaSkjema } from './useEndreBehandlingstemaSkjema';
+
+const FORM_ID = 'endre-behandlingstema-form';
 
 interface Props {
     lukkModal: () => void;
@@ -20,36 +22,36 @@ export const EndreBehandlingstemaModal = ({ lukkModal }: Props) => {
     } = form;
 
     return (
-        <Modal
-            open
-            header={{ heading: 'Endre behandlingstema', size: 'small' }}
-            onClose={lukkModal}
-            width={'35rem'}
-            portal
-        >
-            <FormProvider {...form}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Modal.Body>
-                        <Fieldset error={errors.root?.message} legend={'Endre behandlingstema'} hideLegend>
-                            <BehandlingstemaSelect erLesevisning={erLesevisning} />
-                        </Fieldset>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            type={'submit'}
-                            variant="primary"
-                            size="small"
-                            loading={isSubmitting}
-                            disabled={erLesevisning}
-                        >
-                            Bekreft
-                        </Button>
-                        <Button variant="secondary" size="small" onClick={lukkModal}>
-                            Avbryt
-                        </Button>
-                    </Modal.Footer>
-                </form>
-            </FormProvider>
-        </Modal>
+        <Dialog open onOpenChange={åpen => !åpen && lukkModal()} size={'small'}>
+            <Dialog.Popup width={'35rem'} closeOnOutsideClick={false}>
+                <Dialog.Header>
+                    <Dialog.Title>Endre behandlingstema</Dialog.Title>
+                </Dialog.Header>
+                <Dialog.Body>
+                    <FormProvider {...form}>
+                        <form id={FORM_ID} onSubmit={handleSubmit(onSubmit)}>
+                            <Fieldset error={errors.root?.message} legend={'Endre behandlingstema'} hideLegend>
+                                <BehandlingstemaSelect erLesevisning={erLesevisning} />
+                            </Fieldset>
+                        </form>
+                    </FormProvider>
+                </Dialog.Body>
+                <Dialog.Footer>
+                    <Button
+                        form={FORM_ID}
+                        type={'submit'}
+                        variant="primary"
+                        size="small"
+                        loading={isSubmitting}
+                        disabled={erLesevisning}
+                    >
+                        Bekreft
+                    </Button>
+                    <Button variant="secondary" size="small" onClick={lukkModal}>
+                        Avbryt
+                    </Button>
+                </Dialog.Footer>
+            </Dialog.Popup>
+        </Dialog>
     );
 };

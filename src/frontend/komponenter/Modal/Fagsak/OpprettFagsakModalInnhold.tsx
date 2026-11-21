@@ -1,4 +1,4 @@
-import { BodyShort, Button, LocalAlert, Modal, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, Dialog, LocalAlert, VStack } from '@navikt/ds-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -29,7 +29,7 @@ export function OpprettFagsakModalInnhold({ personIdent, personNavn }: Props) {
 
     return (
         <>
-            <Modal.Body>
+            <Dialog.Body>
                 <VStack gap={'space-16'}>
                     <BodyShort>Ønsker du å opprette fagsak for denne personen?</BodyShort>
                     <BodyShort>{`${personNavn} (${formaterIdent(personIdent)})`}</BodyShort>
@@ -42,15 +42,15 @@ export function OpprettFagsakModalInnhold({ personIdent, personNavn }: Props) {
                         </LocalAlert>
                     )}
                 </VStack>
-            </Modal.Body>
-            <Modal.Footer>
+            </Dialog.Body>
+            <Dialog.Footer>
                 <Button variant={'primary'} onClick={() => mutate({ personIdent })} loading={isPending}>
                     Opprett fagsak
                 </Button>
                 <Button type={'button'} variant={'tertiary'} onClick={lukkModal}>
                     Avbryt
                 </Button>
-            </Modal.Footer>
+            </Dialog.Footer>
         </>
     );
 }

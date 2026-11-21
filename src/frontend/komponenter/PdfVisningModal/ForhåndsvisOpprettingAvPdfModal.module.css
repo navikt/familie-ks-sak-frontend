@@ -2,10 +2,18 @@
     width: 80%;
     height: 80%;
     overflow: hidden;
+}
 
-    section {
-        height: 100%;
+.body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+
+    iframe {
         width: 90%;
-        margin: 0 auto;
+        min-height: 0;
+        margin-inline: auto;
+        flex: 1;
     }
 }
