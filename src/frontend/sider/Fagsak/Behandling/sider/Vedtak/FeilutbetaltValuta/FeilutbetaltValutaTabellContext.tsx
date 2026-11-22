@@ -1,10 +1,9 @@
-import { useBehandling } from '@hooks/useBehandling';
+import type { IRestFeilutbetaltValuta } from '@typer/eøs-feilutbetalt-valuta';
 import { createContext, type PropsWithChildren, useCallback, useContext, useState } from 'react';
 
 interface FeilutbetaltValutaTabellContext {
+    feilutbetaltValutaPerioder: IRestFeilutbetaltValuta[];
     erFeilutbetaltValutaTabellSynlig: boolean;
-    visFeilutbetaltValutaTabell: () => void;
-    skjulFeilutbetaltValutaTabell: () => void;
     erLeggTilFeilutbetaltValutaFormÅpen: boolean;
     visLeggTilFeilutbetaltValutaForm: () => void;
     skjulLeggTilFeilutbetaltValutaForm: () => void;
@@ -12,15 +11,15 @@ interface FeilutbetaltValutaTabellContext {
 
 const FeilutbetaltValutaTabellContext = createContext<FeilutbetaltValutaTabellContext | undefined>(undefined);
 
-export function FeilutbetaltValutaTabellProvider({ children }: PropsWithChildren) {
-    const behandling = useBehandling();
+interface Props extends PropsWithChildren {
+    feilutbetaltValutaPerioder: IRestFeilutbetaltValuta[];
+}
 
-    const harFeilutbetaltValuta = behandling.feilutbetaltValuta.length !== 0;
-
-    const [erFeilutbetaltValutaTabellSynlig, settErFeilutbetaltValutaTabellSynlig] = useState(
-        behandling.feilutbetaltValuta.length > 0
-    );
+export function FeilutbetaltValutaTabellProvider({ feilutbetaltValutaPerioder, children }: Props) {
     const [erLeggTilFeilutbetaltValutaFormÅpen, settErLeggTilFeilutbetaltValutaFormÅpen] = useState(false);
+
+    const erFeilutbetaltValutaTabellSynlig =
+        feilutbetaltValutaPerioder.length > 0 || erLeggTilFeilutbetaltValutaFormÅpen;
 
     const visLeggTilFeilutbetaltValutaForm = useCallback(() => {
         settErLeggTilFeilutbetaltValutaFormÅpen(true);
@@ -30,24 +29,11 @@ export function FeilutbetaltValutaTabellProvider({ children }: PropsWithChildren
         settErLeggTilFeilutbetaltValutaFormÅpen(false);
     }, []);
 
-    const visFeilutbetaltValutaTabell = useCallback(() => {
-        if (!harFeilutbetaltValuta) {
-            visLeggTilFeilutbetaltValutaForm();
-        }
-        settErFeilutbetaltValutaTabellSynlig(true);
-    }, [harFeilutbetaltValuta, visLeggTilFeilutbetaltValutaForm]);
-
-    const skjulFeilutbetaltValutaTabell = useCallback(() => {
-        skjulLeggTilFeilutbetaltValutaForm();
-        settErFeilutbetaltValutaTabellSynlig(false);
-    }, [skjulLeggTilFeilutbetaltValutaForm]);
-
     return (
         <FeilutbetaltValutaTabellContext.Provider
             value={{
+                feilutbetaltValutaPerioder,
                 erFeilutbetaltValutaTabellSynlig,
-                visFeilutbetaltValutaTabell,
-                skjulFeilutbetaltValutaTabell,
                 erLeggTilFeilutbetaltValutaFormÅpen,
                 visLeggTilFeilutbetaltValutaForm,
                 skjulLeggTilFeilutbetaltValutaForm,

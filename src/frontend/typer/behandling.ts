@@ -4,7 +4,6 @@ import type { IsoDatoString } from '@utils/dato';
 import type { BehandlingKategori } from './behandlingstema';
 import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
-import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
 import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { ManglendeSvalbardmerking } from './ManglendeSvalbardmerking';
@@ -240,7 +239,6 @@ export interface IBehandling {
     korrigertVedtak?: IRestKorrigertVedtak;
     korrigertEtterbetaling?: IRestKorrigertEtterbetaling;
     sisteVedtaksperiodeVisningDato?: IsoDatoString;
-    feilutbetaltValuta: IRestFeilutbetaltValuta[];
     refusjonEøs: IRestRefusjonEøs[];
     brevmottakere: BrevmottakerBehandling[];
     manglendeSvalbardmerking: ManglendeSvalbardmerking[];

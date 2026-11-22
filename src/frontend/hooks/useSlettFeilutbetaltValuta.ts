@@ -1,9 +1,9 @@
 import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { useHttp } from '@navikt/familie-http';
 import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
+import type { IRestFeilutbetaltValuta } from '@typer/eøs-feilutbetalt-valuta';
 
 import { slettFeilutbetaltValuta } from '../api/slettFeilutbetaltValuta';
-import type { IBehandling } from '../typer/behandling';
 
 interface Parameters {
     behandlingId: number;
@@ -11,7 +11,7 @@ interface Parameters {
 }
 
 type Options = Omit<
-    UseMutationOptions<IBehandling, DefaultError, Parameters, unknown>,
+    UseMutationOptions<IRestFeilutbetaltValuta[], DefaultError, Parameters>,
     'mutationKey' | 'mutationFn'
 > & {
     feilutbetaltValutaId: number;

@@ -66,6 +66,9 @@ export const queryKeys = {
 
     // Behandling
     behandling: behandlingQueryKey,
+    feilutbetaltValuta: (behandlingId: number) => {
+        return [...behandlingQueryKey(behandlingId), 'feilutbetalt-valuta'] as const;
+    },
     historikkinnslag: (behandlingId: number) => {
         return [...behandlingQueryKey(behandlingId), 'historikkinnslag'] as const;
     },
