@@ -21,7 +21,7 @@ import type {
 import type { ITotrinnskontroll } from './totrinnskontroll';
 import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
 import type { Utbetalingsperiode } from './utbetalingsperiode';
-import type { IRestKorrigertVedtak, IVedtakForBehandling } from './vedtak';
+import type { IVedtakForBehandling } from './vedtak';
 import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 
 export const MIDLERTIDIG_BEHANDLENDE_ENHET_ID = '4863';
@@ -236,7 +236,6 @@ export interface IBehandling {
     kompetanser: IRestKompetanse[];
     utenlandskePeriodebeløp: IRestUtenlandskPeriodeBeløp[];
     valutakurser: IRestValutakurs[];
-    korrigertVedtak?: IRestKorrigertVedtak;
     sisteVedtaksperiodeVisningDato?: IsoDatoString;
     refusjonEøs: IRestRefusjonEøs[];
     brevmottakere: BrevmottakerBehandling[];

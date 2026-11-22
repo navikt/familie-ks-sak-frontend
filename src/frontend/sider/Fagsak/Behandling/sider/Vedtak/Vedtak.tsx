@@ -13,6 +13,7 @@ import { IngenVedtaksbrevbyggerAdvarsel } from './IngenVedtaksbrevbyggerAdvarsel
 import { KorrigertEtterbetalingAdvarsel } from './KorrigerEtterbetaling/KorrigertEtterbetalingAdvarsel';
 import { useKorrigertEtterbetalingContext } from './KorrigerEtterbetaling/KorrigertEtterbetalingContext';
 import { KorrigertVedtakAdvarsel } from './KorrigerVedtak/KorrigertVedtakAdvarsel';
+import { useKorrigertVedtakContext } from './KorrigerVedtak/KorrigertVedtakContext';
 import { RefusjonEøsTabell } from './RefusjonEøs/RefusjonEøsTabell';
 import { useRefusjonEøsTabellContext } from './RefusjonEøs/RefusjonEøsTabellContext';
 import { SammensattKontrollsak } from './SammensattKontrollsak/SammensattKontrollsak';
@@ -27,6 +28,7 @@ export function Vedtak() {
 
     const { sammensattKontrollsak } = useSammensattKontrollsakContext();
     const { korrigertEtterbetaling } = useKorrigertEtterbetalingContext();
+    const { korrigertVedtak } = useKorrigertVedtakContext();
     const { erFeilutbetaltValutaTabellSynlig } = useFeilutbetaltValutaTabellContext();
     const { erRefusjonEøsTabellSynlig } = useRefusjonEøsTabellContext();
 
@@ -64,7 +66,7 @@ export function Vedtak() {
                         </LocalAlert>
                     )}
                     {korrigertEtterbetaling && <KorrigertEtterbetalingAdvarsel />}
-                    {behandling.korrigertVedtak && <KorrigertVedtakAdvarsel />}
+                    {korrigertVedtak && <KorrigertVedtakAdvarsel />}
                     <RegistrerteBrevmottakereBehandling kilde={'vedtak'} />
                     {!erBehandlingMedVedtaksbrevbygger && <IngenVedtaksbrevbyggerAdvarsel />}
                     {erBehandlingMedVedtaksbrevbygger && (
