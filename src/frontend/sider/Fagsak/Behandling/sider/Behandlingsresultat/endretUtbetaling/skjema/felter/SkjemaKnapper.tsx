@@ -3,7 +3,7 @@ import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, HStack } from '@navikt/ds-react';
 import { useFormContext } from 'react-hook-form';
 
-import { useBehandlingContext } from '../../../../../context/BehandlingContext';
+import { useBehandlingContext } from '../../../../../BehandlingContext';
 import { useEndretUtbetalingAndelContext } from '../../EndretUtbetalingAndelContext';
 import type { EndretUtbetalingAndelFormValues } from '../endretUtbetalingAndelSkjemaTyper';
 

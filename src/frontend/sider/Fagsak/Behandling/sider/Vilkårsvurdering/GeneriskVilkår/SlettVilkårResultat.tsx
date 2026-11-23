@@ -1,7 +1,7 @@
 import { useSlettVilkårResultat } from '@hooks/useSlettVilkårResultat';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { useEkspanderbareVilkårResultatRader } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
 import type { IVilkårResultat } from '@typer/vilkår';
 

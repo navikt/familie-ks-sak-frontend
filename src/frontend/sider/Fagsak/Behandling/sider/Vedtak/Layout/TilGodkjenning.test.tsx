@@ -32,7 +32,7 @@ const {
     invalidateQueriesMock: vi.fn(),
 }));
 
-vi.mock('@sider/Fagsak/Behandling/context/BehandlingContext', () => ({
+vi.mock('@sider/Fagsak/Behandling/BehandlingContext', () => ({
     useBehandlingContext: useBehandlingContextMock,
 }));
 vi.mock('@sider/Fagsak/Behandling/sider/Vedtak/Totrinnskontroll/SendtTilTotrinnskontrollModalContext', () => ({

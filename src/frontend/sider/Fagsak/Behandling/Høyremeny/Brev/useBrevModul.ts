@@ -1,5 +1,5 @@
 import { useSendBehandlingBrev } from '@hooks/useSendBehandlingBrev';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
 import { BehandlingKategori } from '@typer/behandlingstema';
 import type { IManueltBrevRequestPåBehandling } from '@typer/dokument';

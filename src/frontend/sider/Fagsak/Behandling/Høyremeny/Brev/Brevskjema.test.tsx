@@ -14,7 +14,7 @@ import {
 import type { ReactNode } from 'react';
 import { describe, expect, test, vi } from 'vitest';
 import { FagsakProvider } from '../../../FagsakContext';
-import { BehandlingProvider } from '../../context/BehandlingContext';
+import { BehandlingProvider } from '../../BehandlingContext';
 import { Brevskjema } from './Brevskjema';
 
 const OBLIGATORISK_FEILMELDING = 'Dette kulepunktet er obligatorisk. Du må skrive tekst i feltet.';

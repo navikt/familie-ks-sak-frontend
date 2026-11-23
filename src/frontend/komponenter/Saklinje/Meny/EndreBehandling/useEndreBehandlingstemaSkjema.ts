@@ -1,6 +1,6 @@
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useOppdaterBehandlingstema } from '@hooks/useOppdaterBehandlingstema';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { type IBehandlingstema, tilBehandlingstema } from '@typer/behandlingstema';
 import { useForm } from 'react-hook-form';
 

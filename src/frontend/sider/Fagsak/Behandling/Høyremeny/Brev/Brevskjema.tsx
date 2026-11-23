@@ -3,7 +3,7 @@ import { useOpprettManueltBrevPdf } from '@hooks/useOpprettManueltBrevPdf';
 import { BrevmottakerListe } from '@komponenter/Brevmottaker/Felles/BrevmottakerListe';
 import { FileTextIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
 import { Button, Dialog, ErrorMessage, Fieldset, Heading, HStack, Label, Loader, VStack } from '@navikt/ds-react';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { AntallUkerSvarfristField } from './AntallUkerSvarfristField';

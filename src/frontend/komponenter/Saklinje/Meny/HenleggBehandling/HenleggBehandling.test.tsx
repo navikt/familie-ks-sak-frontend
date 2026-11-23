@@ -3,7 +3,7 @@ import type { PropsWithChildren } from 'react';
 import { describe, expect } from 'vitest';
 import { ModalType } from '../../../../context/ModalContext';
 import { useModal } from '../../../../hooks/useModal';
-import { BehandlingProvider } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
+import { BehandlingProvider } from '../../../../sider/Fagsak/Behandling/BehandlingContext';
 import { FagsakProvider } from '../../../../sider/Fagsak/FagsakContext';
 import { skruPåAlleToggles } from '../../../../testutils/mocks/handlers/featureToggleHandlers';
 import { lagBehandling } from '../../../../testutils/testdata/behandlingTestdata';
