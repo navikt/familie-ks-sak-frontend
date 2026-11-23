@@ -14,7 +14,7 @@ import { render, TestProviders } from '@testutils/testrender';
 import { BegrunnelseType, type IRestKorrigertVedtak } from '@typer/vedtak';
 import { delay, HttpResponse, http } from 'msw';
 import { type PropsWithChildren, useState } from 'react';
-import { beforeEach, describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { KorrigertVedtakAdvarsel } from './KorrigertVedtakAdvarsel';
 import { useKorrigertVedtakContext } from './KorrigertVedtakContext';
@@ -109,9 +109,23 @@ describe('KorrigerVedtak', () => {
         expect(screen.getByRole('button', { name: 'Oppdater' })).toBeInTheDocument();
     });
 
+    test('skal vise feilmelding når korrigert vedtak ikke kan hentes', async () => {
+        server.use(http.get(KORRIGERT_VEDTAK_URL, () => HttpResponse.error()));
+
+        const { screen } = renderVedtaksside();
+
+        expect(await screen.findByText('Klarte ikke å hente inn vedtak.')).toBeInTheDocument();
+    });
+
     test('skal vise korrigeringen fra svaret når en korrigering lagres', async () => {
         mockKorrigertVedtak(null);
-        server.use(http.post(KORRIGERT_VEDTAK_URL, () => HttpResponse.json(byggSuksessRessurs(korrigertVedtak))));
+        const korrigerForespørsel = vi.fn();
+        server.use(
+            http.post(KORRIGERT_VEDTAK_URL, async ({ params, request }) => {
+                korrigerForespørsel({ params, body: await request.json() });
+                return HttpResponse.json(byggSuksessRessurs(korrigertVedtak));
+            })
+        );
         const { screen, user, erHistorikkinnslagInvalidert } = renderVedtaksside();
 
         await user.click(await screen.findByRole('button', { name: 'Vedtaksmeny' }));
@@ -122,12 +136,22 @@ describe('KorrigerVedtak', () => {
 
         expect(await screen.findByText('Vedtaket er korrigert etter § 35')).toBeInTheDocument();
         expect(screen.queryByRole('textbox', { name: 'Vedtaksdato' })).not.toBeInTheDocument();
+        expect(korrigerForespørsel).toHaveBeenCalledExactlyOnceWith({
+            params: { behandlingId: '1' },
+            body: { vedtaksdato: '2024-02-01', begrunnelse: 'Feil i tidligere vedtak' },
+        });
         expect(erHistorikkinnslagInvalidert()).toBe(true);
     });
 
     test('skal skjule korrigeringen når den fjernes', async () => {
         mockKorrigertVedtak(korrigertVedtak);
-        server.use(http.patch(KORRIGERT_VEDTAK_URL, () => HttpResponse.json(byggSuksessRessurs(korrigertVedtak))));
+        const angreForespørsel = vi.fn();
+        server.use(
+            http.patch(KORRIGERT_VEDTAK_URL, ({ params }) => {
+                angreForespørsel(params);
+                return HttpResponse.json(byggSuksessRessurs(korrigertVedtak));
+            })
+        );
         const { screen, user, erHistorikkinnslagInvalidert } = renderVedtaksside();
 
         await user.click(await screen.findByRole('button', { name: 'Vedtaksmeny' }));
@@ -136,6 +160,7 @@ describe('KorrigerVedtak', () => {
 
         await waitFor(() => expect(screen.queryByText('Vedtaket er korrigert etter § 35')).not.toBeInTheDocument());
         expect(screen.queryByRole('textbox', { name: 'Vedtaksdato' })).not.toBeInTheDocument();
+        expect(angreForespørsel).toHaveBeenCalledExactlyOnceWith({ behandlingId: '1' });
         expect(erHistorikkinnslagInvalidert()).toBe(true);
     });
 

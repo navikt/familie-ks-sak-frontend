@@ -15,4 +15,7 @@ export const behandlingHandlers = [
     http.get<{ behandlingId: string }>('/familie-ks-sak/api/korrigertetterbetaling/behandling/:behandlingId', () => {
         return HttpResponse.json(byggSuksessRessurs(null));
     }),
+    http.get<{ behandlingId: string }>('/familie-ks-sak/api/korrigertvedtak/behandling/:behandlingId', () => {
+        return HttpResponse.json(byggSuksessRessurs(null));
+    }),
 ];
