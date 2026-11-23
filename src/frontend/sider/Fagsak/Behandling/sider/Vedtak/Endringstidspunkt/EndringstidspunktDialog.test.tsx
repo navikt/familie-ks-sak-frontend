@@ -1,6 +1,6 @@
 import { byggSuksessRessurs } from '@navikt/familie-typer';
 
-import { BehandlingProvider } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { BehandlingProvider } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
 import { waitFor } from '@testing-library/dom';
 import { server } from '@testutils/mocks/node';

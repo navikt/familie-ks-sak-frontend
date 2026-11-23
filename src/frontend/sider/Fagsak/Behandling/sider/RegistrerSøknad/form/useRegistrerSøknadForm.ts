@@ -3,7 +3,7 @@ import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useFagsak } from '@hooks/useFagsak';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useRegistrerSøknad } from '@hooks/useRegistrerSøknad';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { useValgbareBarn } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useValgbareBarn';
 import type { IBarnMedOpplysninger, Målform } from '@typer/søknad';
 import { useId } from 'react';

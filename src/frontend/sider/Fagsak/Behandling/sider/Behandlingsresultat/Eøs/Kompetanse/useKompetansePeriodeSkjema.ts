@@ -7,7 +7,7 @@ import { type IIsoMånedPeriode, nyIsoMånedPeriode } from '@utils/dato';
 import { useForm } from 'react-hook-form';
 
 import { BehandlingÅrsak } from '../../../../../../../typer/behandling';
-import { useBehandlingContext } from '../../../../context/BehandlingContext';
+import { useBehandlingContext } from '../../../../BehandlingContext';
 
 export enum KompetanseFelt {
     BARN = 'barnIdenter',
