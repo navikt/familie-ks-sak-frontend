@@ -4,7 +4,13 @@ import { lagFagsak } from '@testutils/testdata/fagsakTestdata';
 import { lagPerson } from '@testutils/testdata/personTestdata';
 import { lagSaksbehandler } from '@testutils/testdata/saksbehandlerTestdata';
 import { render, TestProviders } from '@testutils/testrender';
-import { BehandlingStatus, Behandlingstype, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
+import {
+    BehandlingStatus,
+    BehandlingSteg,
+    Behandlingstype,
+    BehandlingÅrsak,
+    type IBehandling,
+} from '@typer/behandling';
 import type { ReactNode } from 'react';
 import { describe, expect, test, vi } from 'vitest';
 import { FagsakProvider } from '../../../FagsakContext';
@@ -19,11 +25,15 @@ const superbruker = lagSaksbehandler({ harSuperbrukertilgang: true });
 const revurdering = lagBehandling({
     type: Behandlingstype.REVURDERING,
     årsak: BehandlingÅrsak.NYE_OPPLYSNINGER,
+    steg: BehandlingSteg.VILKÅRSVURDERING,
 });
 
 function Wrapper({ behandling, children }: { behandling: IBehandling; children: ReactNode }) {
     return (
-        <TestProviders saksbehandler={superbruker}>
+        <TestProviders
+            saksbehandler={superbruker}
+            initialEntries={[{ pathname: `/fagsak/1/${behandling.behandlingId}/vilkaarsvurdering` }]}
+        >
             <FagsakProvider fagsak={lagFagsak()}>
                 <BrukerProvider bruker={lagPerson()}>
                     <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>

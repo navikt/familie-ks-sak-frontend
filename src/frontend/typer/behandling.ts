@@ -126,7 +126,7 @@ export enum BehandlingStegStatus {
     IKKE_UTFØRT = 'IKKE_UTFØRT',
 }
 
-export const hentStegNummer = (steg: BehandlingSteg): number => {
+export function hentStegnummer(steg: BehandlingSteg): number {
     switch (steg) {
         case BehandlingSteg.REGISTRERE_PERSONGRUNNLAG:
             return 1;
@@ -151,7 +151,7 @@ export const hentStegNummer = (steg: BehandlingSteg): number => {
         default:
             return 0;
     }
-};
+}
 
 export enum BehandlingStatus {
     OPPRETTET = 'OPPRETTET',
