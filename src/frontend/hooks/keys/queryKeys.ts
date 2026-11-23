@@ -1,10 +1,11 @@
 import type { BarnehagebarnRequestParams } from '@typer/barnehagebarn';
+import type { FagsakId } from '@typer/fagsak';
 
 function personQueryKey(ident: string | undefined) {
     return ['person', ident] as const;
 }
 
-function fagsakQueryKey(fagsakId: number | undefined) {
+function fagsakQueryKey(fagsakId: FagsakId | undefined) {
     return ['fagsak', fagsakId] as const;
 }
 
@@ -51,16 +52,16 @@ export const queryKeys = {
 
     // Fagsak
     fagsak: fagsakQueryKey,
-    kontantstøttebehandlinger: (fagsakId: number) => {
+    kontantstøttebehandlinger: (fagsakId: FagsakId) => {
         return [...fagsakQueryKey(fagsakId), 'kontantstottebehandlinger'] as const;
     },
-    harÅpenTilbakekreving: (fagsakId: number) => {
+    harÅpenTilbakekreving: (fagsakId: FagsakId) => {
         return [...fagsakQueryKey(fagsakId), 'har-apen-tilbakekreving'] as const;
     },
-    klagebehandlinger: (fagsakId: number) => {
+    klagebehandlinger: (fagsakId: FagsakId) => {
         return [...fagsakQueryKey(fagsakId), 'klagebehandlinger'] as const;
     },
-    tilbakekrevingsbehandlinger: (fagsakId: number) => {
+    tilbakekrevingsbehandlinger: (fagsakId: FagsakId) => {
         return [...fagsakQueryKey(fagsakId), 'tilbakekrevingsbehandlinger'] as const;
     },
 

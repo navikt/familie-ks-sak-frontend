@@ -1,8 +1,8 @@
-import { FagsakStatus, type IMinimalFagsak } from '../../typer/fagsak';
+import { FagsakId, FagsakStatus, type IMinimalFagsak } from '../../typer/fagsak';
 
 export function lagFagsak(fagsak?: Partial<IMinimalFagsak>): IMinimalFagsak {
     return {
-        id: 1,
+        id: FagsakId.fra(1),
         opprettetTidspunkt: 'string',
         saksnummer: '1234',
         status: FagsakStatus.OPPRETTET,

@@ -5,6 +5,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import { lagKlagebehandling } from '@testutils/testdata/klageTestdata';
 import { TestProviders } from '@testutils/testrender';
+import { FagsakId } from '@typer/fagsak';
 import type { IKlagebehandling } from '@typer/klage';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
@@ -24,7 +25,7 @@ describe('useHentKlagebehandlinger', () => {
         vi.mocked(hentKlagebehandlinger).mockResolvedValue(klagebehandlinger);
 
         // Act
-        const { result } = renderHook(() => useHentKlagebehandlinger(1), {
+        const { result } = renderHook(() => useHentKlagebehandlinger(FagsakId.fra(1)), {
             wrapper: TestProviders,
         });
 
@@ -39,7 +40,7 @@ describe('useHentKlagebehandlinger', () => {
         vi.mocked(hentKlagebehandlinger).mockRejectedValue(new Error('Noe gikk galt'));
 
         // Act
-        const { result } = renderHook(() => useHentKlagebehandlinger(1), {
+        const { result } = renderHook(() => useHentKlagebehandlinger(FagsakId.fra(1)), {
             wrapper: TestProviders,
         });
 
@@ -54,13 +55,13 @@ describe('useHentKlagebehandlinger', () => {
         const queryClient = new QueryClient();
 
         // Act
-        const { result } = renderHook(() => useHentKlagebehandlinger(1), {
+        const { result } = renderHook(() => useHentKlagebehandlinger(FagsakId.fra(1)), {
             wrapper: ({ children }) => <TestProviders queryClient={queryClient}>{children}</TestProviders>,
         });
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
         // Assert
-        const query = queryClient.getQueryCache().find({ queryKey: queryKeys.klagebehandlinger(1) });
+        const query = queryClient.getQueryCache().find({ queryKey: queryKeys.klagebehandlinger(FagsakId.fra(1)) });
         expect(query?.meta?.[MetaKey.VIS_SYSTEMET_LASTER]).toBe(true);
     });
 });

@@ -1,5 +1,6 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { HStack, Link, Tooltip } from '@navikt/ds-react';
+import type { FagsakId } from '@typer/fagsak';
 import { differenceInMilliseconds } from 'date-fns';
 import type { ReactNode } from 'react';
 import { Link as ReactRouterLink } from 'react-router';
@@ -116,7 +117,7 @@ export const hentBehandlingerTilSaksoversikten = (
     );
 };
 
-export const lagLenkePåType = (fagsakId: number, behandling: Saksoversiktsbehandling): ReactNode => {
+export const lagLenkePåType = (fagsakId: FagsakId, behandling: Saksoversiktsbehandling): ReactNode => {
     switch (behandling.saksoversiktstype) {
         case Saksoversiktstype.KONTANTSTØTTE:
             if (behandling.status === BehandlingStatus.AVSLUTTET) {
@@ -152,7 +153,7 @@ export const lagLenkePåType = (fagsakId: number, behandling: Saksoversiktsbehan
     }
 };
 
-export const lagLenkePåResultat = (fagsakId: number, behandling: Saksoversiktsbehandling): ReactNode => {
+export const lagLenkePåResultat = (fagsakId: FagsakId, behandling: Saksoversiktsbehandling): ReactNode => {
     if (!behandling.resultat) {
         return '-';
     }

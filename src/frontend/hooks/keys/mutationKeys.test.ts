@@ -1,44 +1,40 @@
 import { type MutationKey, QueryClient } from '@tanstack/react-query';
+import { FagsakId } from '@typer/fagsak';
 import { describe, expect, test } from 'vitest';
 
 import { mutationKeys } from './mutationKeys';
 
+function lagGruppe<Id>(navn: string, lagId: (id: number) => Id, operasjoner: ((id: Id) => MutationKey)[]) {
+    return {
+        navn,
+        operasjoner,
+        lagNøkler: (id: number) => operasjoner.map(operasjon => operasjon(lagId(id))),
+    };
+}
+
+const somTall = (id: number) => id;
+
 const grupper = [
-    {
-        navn: 'fagsak',
-        operasjoner: [
-            mutationKeys.forhåndsvisBrevPåFagsak,
-            mutationKeys.sendInformasjonsbrev,
-            mutationKeys.låsOppFagsak,
-        ],
-    },
-    {
-        navn: 'behandling',
-        operasjoner: [
-            mutationKeys.sendBehandlingBrev,
-            mutationKeys.opprettSammensattKontrollsak,
-            mutationKeys.slettSammensattKontrollsak,
-        ],
-    },
-    {
-        navn: 'vedtaksperiode',
-        operasjoner: [
-            mutationKeys.oppdaterVedtaksperiodeMedBegrunnelser,
-            mutationKeys.oppdaterVedtaksperiodeMedFritekster,
-        ],
-    },
-    {
-        navn: 'endret utbetaling',
-        operasjoner: [mutationKeys.oppdaterEndretUtbetalingAndel, mutationKeys.slettEndretUtbetalingAndel],
-    },
-    {
-        navn: 'refusjon EØS',
-        operasjoner: [mutationKeys.slettRefusjonEøs],
-    },
-    {
-        navn: 'feilutbetalt valuta',
-        operasjoner: [mutationKeys.slettFeilutbetaltValuta],
-    },
+    lagGruppe('fagsak', FagsakId.fra, [
+        mutationKeys.forhåndsvisBrevPåFagsak,
+        mutationKeys.sendInformasjonsbrev,
+        mutationKeys.låsOppFagsak,
+    ]),
+    lagGruppe('behandling', somTall, [
+        mutationKeys.sendBehandlingBrev,
+        mutationKeys.opprettSammensattKontrollsak,
+        mutationKeys.slettSammensattKontrollsak,
+    ]),
+    lagGruppe('vedtaksperiode', somTall, [
+        mutationKeys.oppdaterVedtaksperiodeMedBegrunnelser,
+        mutationKeys.oppdaterVedtaksperiodeMedFritekster,
+    ]),
+    lagGruppe('endret utbetaling', somTall, [
+        mutationKeys.oppdaterEndretUtbetalingAndel,
+        mutationKeys.slettEndretUtbetalingAndel,
+    ]),
+    lagGruppe('refusjon EØS', somTall, [mutationKeys.slettRefusjonEøs]),
+    lagGruppe('feilutbetalt valuta', somTall, [mutationKeys.slettFeilutbetaltValuta]),
 ];
 
 const frittståendeOperasjoner = [
@@ -56,15 +52,13 @@ function leggTilMutasjoner(queryClient: QueryClient, nøkler: MutationKey[]) {
 }
 
 describe('mutationKeys', () => {
-    test.each(grupper)('skal skille mellom operasjoner og ressurser for $navn', ({ operasjoner }) => {
+    test.each(grupper)('skal skille mellom operasjoner og ressurser for $navn', gjeldendeGruppe => {
         const queryClient = new QueryClient();
-        const nøkler = operasjoner.map(operasjon => operasjon(1));
+        const nøkler = gjeldendeGruppe.lagNøkler(1);
         const mutasjoner = leggTilMutasjoner(queryClient, nøkler);
         leggTilMutasjoner(queryClient, [
-            ...grupper.flatMap(gruppe => gruppe.operasjoner.map(operasjon => operasjon(2))),
-            ...grupper
-                .filter(gruppe => gruppe.operasjoner !== operasjoner)
-                .flatMap(gruppe => gruppe.operasjoner.map(operasjon => operasjon(1))),
+            ...grupper.flatMap(gruppe => gruppe.lagNøkler(2)),
+            ...grupper.filter(gruppe => gruppe !== gjeldendeGruppe).flatMap(gruppe => gruppe.lagNøkler(1)),
             ...frittståendeNøkler,
         ]);
 
@@ -78,7 +72,7 @@ describe('mutationKeys', () => {
         const mutasjoner = leggTilMutasjoner(queryClient, frittståendeNøkler);
         leggTilMutasjoner(
             queryClient,
-            grupper.flatMap(gruppe => gruppe.operasjoner.flatMap(operasjon => [operasjon(1), operasjon(2)]))
+            grupper.flatMap(gruppe => [...gruppe.lagNøkler(1), ...gruppe.lagNøkler(2)])
         );
 
         for (const [indeks, mutationKey] of frittståendeNøkler.entries()) {

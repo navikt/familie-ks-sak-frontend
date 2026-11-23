@@ -11,9 +11,21 @@ export enum FagsakStatus {
     LÅST = 'LÅST',
 }
 
+export type FagsakId = number & { readonly __brand: 'FagsakId' };
+
+export const FagsakId = {
+    erGyldig: (id: number): id is FagsakId => Number.isSafeInteger(id) && id > 0,
+    fra: (id: number): FagsakId => {
+        if (!FagsakId.erGyldig(id)) {
+            throw new Error(`Ugyldig fagsakId: ${id}`);
+        }
+        return id;
+    },
+};
+
 // Interface
 interface IBaseFagsak {
-    id: number;
+    id: FagsakId;
     opprettetTidspunkt: string;
     saksnummer: string;
     status: FagsakStatus;
