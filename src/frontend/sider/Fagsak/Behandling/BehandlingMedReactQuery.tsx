@@ -15,7 +15,6 @@ import { BehandlingProvider } from './BehandlingContext';
 import { Høyremeny } from './Høyremeny/Høyremeny';
 import { TabContextProvider } from './Høyremeny/TabContextProvider';
 import { TotrinnskontrollModalContextProvider } from './Høyremeny/Totrinnskontroll/TotrinnskontrollModalContextProvider';
-import { KorrigerEtterbetalingModal } from './sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetalingModal';
 import { UgyldigSideAdvarsel } from './UgyldigSideAdvarsel';
 import { Venstremeny } from './Venstremeny/Venstremeny';
 
@@ -79,7 +78,6 @@ export function BehandlingMedReactQuery({ behandlingId }: Props) {
             <KontrollsiderProvider>
                 <HenleggBehandlingModal />
                 <HenleggBehandlingVeivalgModal />
-                <KorrigerEtterbetalingModal />
                 <VStack className={Styles.skrollbarStack}>
                     <Behandlingslinje />
                     <UgyldigSideAdvarsel />

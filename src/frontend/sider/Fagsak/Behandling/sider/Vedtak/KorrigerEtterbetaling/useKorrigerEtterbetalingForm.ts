@@ -1,15 +1,17 @@
 import { ModalType } from '@context/ModalContext';
 import { useToastContext } from '@context/ToastContext';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useAngreKorrigertEtterbetaling } from '@hooks/useAngreKorrigertEtterbetaling';
+import { useBehandlingId } from '@hooks/useBehandlingId';
 import { useKorrigerEtterbetaling } from '@hooks/useKorrigerEtterbetaling';
 import { useModal } from '@hooks/useModal';
 import { AlertType, ToastTyper } from '@komponenter/Toast/typer';
-import type { IBehandling } from '@typer/behandling';
+import { useQueryClient } from '@tanstack/react-query';
 import type { OptionType } from '@typer/common';
 import { KorrigertEtterbetalingÅrsak } from '@typer/vedtak';
 import { useForm } from 'react-hook-form';
 
-import { useBehandlingContext } from '../../../BehandlingContext';
+import { useKorrigertEtterbetalingContext } from './KorrigertEtterbetalingContext';
 
 interface KorrigerEtterbetalingFormValues {
     årsak: string;
@@ -36,9 +38,10 @@ export const årsaker: OptionType[] = [
     },
 ];
 
-export function useKorrigerEtterbetalingForm(behandling: IBehandling) {
-    const { settÅpenBehandling } = useBehandlingContext();
-    const korrigertEtterbetaling = behandling.korrigertEtterbetaling;
+export function useKorrigerEtterbetalingForm() {
+    const queryClient = useQueryClient();
+    const behandlingId = useBehandlingId();
+    const { korrigertEtterbetaling } = useKorrigertEtterbetalingContext();
 
     const { settToast } = useToastContext();
 
@@ -77,16 +80,17 @@ export function useKorrigerEtterbetalingForm(behandling: IBehandling) {
             årsak,
             beløp: Number(beløp),
             begrunnelse,
-            behandlingId: behandling.behandlingId,
+            behandlingId,
         };
 
         return korrigerEtterbetalingAsync(korrigerEtterbetalingParameters)
-            .then(behandling => {
+            .then(lagretKorrigertEtterbetaling => {
                 settToast(ToastTyper.ETTERBETALING_KORRIGERT, {
                     alertType: AlertType.SUCCESS,
                     tekst: 'Etterbetalingsbeløp i brevet er korrigert',
                 });
-                settÅpenBehandling(behandling);
+                queryClient.setQueryData(queryKeys.korrigertEtterbetaling(behandlingId), lagretKorrigertEtterbetaling);
+                queryClient.invalidateQueries({ queryKey: queryKeys.historikkinnslag(behandlingId) });
                 lukkModal();
             })
             .catch(_ => {
@@ -100,13 +104,14 @@ export function useKorrigerEtterbetalingForm(behandling: IBehandling) {
         if (korrigerEtterbetalingPending) {
             return;
         }
-        return angreKorrigertEtterbetalingAsync(behandling.behandlingId)
-            .then(behandling => {
+        return angreKorrigertEtterbetalingAsync(behandlingId)
+            .then(() => {
                 settToast(ToastTyper.ETTERBETALING_KORRIGERT, {
                     alertType: AlertType.SUCCESS,
                     tekst: 'Korrigering av etterbetalingsbeløp fjernet',
                 });
-                settÅpenBehandling(behandling);
+                queryClient.setQueryData(queryKeys.korrigertEtterbetaling(behandlingId), null);
+                queryClient.invalidateQueries({ queryKey: queryKeys.historikkinnslag(behandlingId) });
                 lukkModal();
             })
             .catch(_ => {
