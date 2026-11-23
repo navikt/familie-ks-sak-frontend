@@ -9,6 +9,7 @@ import { loggHandlers } from './loggHandlers';
 import { personHandlers } from './personHandlers';
 import { saksbehandlerHandlers } from './saksbehandlerHandlers';
 import { tilbakekrevingHandlers } from './tilbakekrevingHandlers';
+import { vedtakHandlers } from './vedtakHandlers';
 import { versionHandlers } from './versionHandlers';
 
 export const handlers = [
@@ -24,4 +25,5 @@ export const handlers = [
     ...endretUtbetalingAndelHandlers,
     ...loggHandlers,
     ...barnehagebarnHandlers,
+    ...vedtakHandlers,
 ];
