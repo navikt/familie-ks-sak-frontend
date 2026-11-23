@@ -24,6 +24,7 @@ const behandlingsnøkler = {
     genererteBrevbegrunnelser: queryKeys.genererteBrevbegrunnelser(behandlingId, vedtaksperiodeId),
     historikkinnslag: queryKeys.historikkinnslag(behandlingId),
     korrigertEtterbetaling: queryKeys.korrigertEtterbetaling(behandlingId),
+    korrigertVedtak: queryKeys.korrigertVedtak(behandlingId),
     personerMedUgyldigEtterbetalingsperiode: queryKeys.personerMedUgyldigEtterbetalingsperiode(behandlingId),
     sammensattKontrollsak: queryKeys.sammensattKontrollsak(behandlingId),
     simulering: queryKeys.simulering(behandlingId),
