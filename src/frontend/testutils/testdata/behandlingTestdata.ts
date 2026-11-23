@@ -57,7 +57,6 @@ export function lagBehandling(behandling?: Partial<IBehandling>): IBehandling {
         kompetanser: [],
         utenlandskePeriodebeløp: [],
         valutakurser: [],
-        korrigertEtterbetaling: undefined,
         korrigertVedtak: undefined,
         sisteVedtaksperiodeVisningDato: undefined,
         refusjonEøs: [],

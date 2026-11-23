@@ -1,5 +1,4 @@
 import { ModalType } from '@context/ModalContext';
-import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useModal } from '@hooks/useModal';
 
@@ -17,11 +16,11 @@ import {
     VStack,
 } from '@navikt/ds-react';
 
+import { useKorrigertEtterbetalingContext } from './KorrigertEtterbetalingContext';
 import { useKorrigerEtterbetalingForm, årsaker } from './useKorrigerEtterbetalingForm';
 import { erEtterbetalingsbeløpGyldig, erÅrsakForKorrigeringGyldig } from './validering';
 
 export function KorrigerEtterbetalingModal() {
-    const behandling = useBehandling();
     const erLesevisning = useErLesevisning();
 
     const {
@@ -30,11 +29,11 @@ export function KorrigerEtterbetalingModal() {
         angreKorrigertEtterbetaling,
         korrigerEtterbetalingPending,
         angreKorrigertEtterbetalingPending,
-    } = useKorrigerEtterbetalingForm(behandling);
+    } = useKorrigerEtterbetalingForm();
 
     const { lukkModal, erModalÅpen, tittel, bredde } = useModal(ModalType.KORRIGER_ETTERBETALING);
 
-    const korrigertEtterbetaling = behandling.korrigertEtterbetaling;
+    const { korrigertEtterbetaling } = useKorrigertEtterbetalingContext();
 
     function handleLukkModal() {
         form.reset();
