@@ -5,6 +5,7 @@ import type { BehandlingKategori } from './behandlingstema';
 import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
+import type { FagsakId } from './fagsak';
 import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { ManglendeSvalbardmerking } from './ManglendeSvalbardmerking';
 import type { IRestOvergangsordningAndel } from './overgangsordningAndel';
@@ -209,7 +210,7 @@ export enum BehandlerRolle {
 }
 
 export interface IBehandling {
-    fagsakId: number;
+    fagsakId: FagsakId;
     arbeidsfordelingPåBehandling: IArbeidsfordelingPåBehandling;
     behandlingId: number;
     endretAv: string;
