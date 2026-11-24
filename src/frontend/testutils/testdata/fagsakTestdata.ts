@@ -1,8 +1,9 @@
-import { FagsakId, FagsakStatus, type IMinimalFagsak } from '../../typer/fagsak';
+import type { NoBrand } from '@typer/brand';
+import { FagsakId, FagsakStatus, type IMinimalFagsak } from '@typer/fagsak';
 
-export function lagFagsak(fagsak?: Partial<IMinimalFagsak>): IMinimalFagsak {
+export function lagFagsak(fagsak: Partial<NoBrand<IMinimalFagsak>> = {}): IMinimalFagsak {
+    const { id = 1, ...resten } = fagsak;
     return {
-        id: FagsakId.fra(1),
         opprettetTidspunkt: 'string',
         saksnummer: '1234',
         status: FagsakStatus.OPPRETTET,
@@ -12,7 +13,8 @@ export function lagFagsak(fagsak?: Partial<IMinimalFagsak>): IMinimalFagsak {
         behandlinger: [],
         gjeldendeUtbetalingsperioder: [],
         finnesStrengtFortroligPersonIFagsak: false,
-        ...fagsak,
+        ...resten,
+        id: FagsakId.fra(id),
     };
 }
 

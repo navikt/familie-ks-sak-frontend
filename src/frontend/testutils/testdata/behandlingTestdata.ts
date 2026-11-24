@@ -1,14 +1,16 @@
-import type { VisningBehandling } from '../../sider/Fagsak/Saksoversikt/visningBehandling';
+import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
 import {
+    BehandlingId,
     BehandlingResultat,
     BehandlingStatus,
     BehandlingSteg,
     Behandlingstype,
     BehandlingÅrsak,
     type IBehandling,
-} from '../../typer/behandling';
-import { BehandlingKategori } from '../../typer/behandlingstema';
-import { FagsakId } from '../../typer/fagsak';
+} from '@typer/behandling';
+import { BehandlingKategori } from '@typer/behandlingstema';
+import type { NoBrand } from '@typer/brand';
+import { FagsakId } from '@typer/fagsak';
 
 export function lagVisningBehandling(visningBehandling?: Partial<VisningBehandling>): VisningBehandling {
     return {
@@ -25,15 +27,14 @@ export function lagVisningBehandling(visningBehandling?: Partial<VisningBehandli
     };
 }
 
-export function lagBehandling(behandling?: Partial<IBehandling>): IBehandling {
+export function lagBehandling(behandling: Partial<NoBrand<IBehandling>> = {}): IBehandling {
+    const { behandlingId = 1, fagsakId = 1, ...resten } = behandling;
     return {
-        fagsakId: FagsakId.fra(1),
         arbeidsfordelingPåBehandling: {
             behandlendeEnhetId: '4833',
             behandlendeEnhetNavn: 'Oslo',
             manueltOverstyrt: false,
         },
-        behandlingId: 1,
         endretAv: 'Sak Saksbehanlder',
         kategori: BehandlingKategori.NASJONAL,
         opprettetTidspunkt: '2025-01-01T13:00:00.000',
@@ -63,7 +64,9 @@ export function lagBehandling(behandling?: Partial<IBehandling>): IBehandling {
         refusjonEøs: [],
         brevmottakere: [],
         manglendeSvalbardmerking: [],
-        ...behandling,
+        ...resten,
+        behandlingId: BehandlingId.fra(behandlingId),
+        fagsakId: FagsakId.fra(fagsakId),
     };
 }
 

@@ -1,5 +1,6 @@
-import type { VisningBehandling } from '../sider/Fagsak/Saksoversikt/visningBehandling';
+import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
 import type { BehandlingKategori } from './behandlingstema';
+import { type Brand, lagBrandedIdFactory } from './brand';
 import type { INøkkelPar } from './common';
 import type { Utbetalingsperiode } from './utbetalingsperiode';
 
@@ -11,17 +12,8 @@ export enum FagsakStatus {
     LÅST = 'LÅST',
 }
 
-export type FagsakId = number & { readonly __brand: 'FagsakId' };
-
-export const FagsakId = {
-    erGyldig: (id: number): id is FagsakId => Number.isSafeInteger(id) && id > 0,
-    fra: (id: number): FagsakId => {
-        if (!FagsakId.erGyldig(id)) {
-            throw new Error(`Ugyldig fagsakId: ${id}`);
-        }
-        return id;
-    },
-};
+export type FagsakId = Brand<number, 'FagsakId'>;
+export const FagsakId = lagBrandedIdFactory('FagsakId');
 
 // Interface
 interface IBaseFagsak {
