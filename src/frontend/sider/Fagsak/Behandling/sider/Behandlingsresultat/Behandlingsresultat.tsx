@@ -1,3 +1,4 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsakId } from '@hooks/useFagsakId';
 import { useHentPersonerMedUgyldigEtterbetalingsperiode } from '@hooks/useHentPersonerMedUgyldigEtterbetalingsperiode';
@@ -8,6 +9,7 @@ import { useTidslinjeContext } from '@komponenter/Tidslinje/TidslinjeContext';
 import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons';
 import { Box, Button, ErrorMessage, ErrorSummary, HStack, Label, LocalAlert } from '@navikt/ds-react';
 import Skjemasteg from '@sider/Fagsak/Behandling/sider/Skjemasteg';
+import { useQueryClient } from '@tanstack/react-query';
 import { BehandlingResultat, BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from '@typer/eøsPerioder';
 import { formaterIdent, slåSammenListeTilStreng } from '@utils/formatter';
@@ -28,6 +30,8 @@ import OvergangsordningAndelTabell from './OvergangsordningAndel/Overgangsordnin
 import TilkjentYtelseTidslinje from './TilkjentYtelseTidslinje';
 
 const Behandlingsresultat = () => {
+    const queryClient = useQueryClient();
+
     const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const fagsakId = useFagsakId();
@@ -47,6 +51,7 @@ const Behandlingsresultat = () => {
     } = useOpprettEndretUtbetalingAndel({
         onSuccess: oppdatertBehandling => {
             settVisFeilmeldinger(false);
+            queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
             settÅpenBehandling(oppdatertBehandling);
         },
         onError: () => settVisFeilmeldinger(true),
@@ -59,6 +64,7 @@ const Behandlingsresultat = () => {
     } = useOpprettOvergangsordningAndel({
         onSuccess: oppdatertBehandling => {
             settVisFeilmeldinger(false);
+            queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
             settÅpenBehandling(oppdatertBehandling);
         },
         onError: () => settVisFeilmeldinger(true),
@@ -70,6 +76,7 @@ const Behandlingsresultat = () => {
         error: oppdaterBehandlingsresultatError,
     } = useOppdaterBehandlingsresultat({
         onSuccess: behandling => {
+            queryClient.setQueryData(queryKeys.behandling(behandling), behandling);
             settÅpenBehandling(behandling);
             if (behandling.resultat !== BehandlingResultat.AVSLÅTT) {
                 navigate(`/fagsak/${fagsakId}/${behandling.behandlingId}/simulering`);

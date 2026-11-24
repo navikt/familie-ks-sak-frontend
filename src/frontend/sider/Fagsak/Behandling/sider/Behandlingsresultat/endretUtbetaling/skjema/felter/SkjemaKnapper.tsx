@@ -1,6 +1,8 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useSlettEndretUtbetalingAndel } from '@hooks/useSlettEndretUtbetalingAndel';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, HStack } from '@navikt/ds-react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
 import { useBehandlingContext } from '../../../../../BehandlingContext';
@@ -12,6 +14,8 @@ interface Props {
 }
 
 export function SkjemaKnapper({ lukkSkjema }: Props) {
+    const queryClient = useQueryClient();
+
     const { behandling, settÅpenBehandling } = useBehandlingContext();
     const { endretUtbetalingAndel } = useEndretUtbetalingAndelContext();
     const {
@@ -32,7 +36,10 @@ export function SkjemaKnapper({ lukkSkjema }: Props) {
 
     function slettEndretUtbetalingAndel() {
         return slett()
-            .then(oppdatertBehandling => settÅpenBehandling(oppdatertBehandling))
+            .then(oppdatertBehandling => {
+                queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
+                settÅpenBehandling(oppdatertBehandling);
+            })
             .catch(e => {
                 const message = e instanceof Error ? e.message : 'En ukjent feil oppstod.';
                 setError('root', { message });

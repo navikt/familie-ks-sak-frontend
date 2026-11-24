@@ -1,7 +1,9 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { byggFunksjonellFeilRessurs, byggSuksessRessurs } from '@navikt/familie-typer';
 
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
+import { QueryClient } from '@tanstack/react-query';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { server } from '@testutils/mocks/node';
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
@@ -21,6 +23,7 @@ interface Props extends PropsWithChildren {
     behandling?: IBehandling;
     initialErÅpen?: boolean;
     settBehandling?: (behandling: IBehandling) => void;
+    queryClient?: QueryClient;
 }
 
 function Wrapper({
@@ -28,10 +31,11 @@ function Wrapper({
     behandling = lagBehandling(),
     initialErÅpen = true,
     settBehandling = () => {},
+    queryClient,
     children,
 }: Props) {
     return (
-        <TestProviders>
+        <TestProviders queryClient={queryClient}>
             <FagsakProvider fagsak={fagsak}>
                 <BehandlingProvider behandling={behandling} settBehandling={settBehandling}>
                     <EndringstidspunktDialogProvider initialErÅpen={initialErÅpen}>
@@ -45,6 +49,7 @@ function Wrapper({
 
 function renderUseEndringstidspunktForm(fagsak?: IMinimalFagsak, behandling?: IBehandling) {
     const settBehandling = vi.fn<(behandling: IBehandling) => void>();
+    const queryClient = new QueryClient();
     const rendret = renderHook(
         () => {
             const { form, onSubmit } = useEndringstidspunktForm();
@@ -65,13 +70,18 @@ function renderUseEndringstidspunktForm(fagsak?: IMinimalFagsak, behandling?: IB
         },
         {
             wrapper: ({ children }) => (
-                <Wrapper fagsak={fagsak} behandling={behandling} settBehandling={settBehandling}>
+                <Wrapper
+                    fagsak={fagsak}
+                    behandling={behandling}
+                    settBehandling={settBehandling}
+                    queryClient={queryClient}
+                >
                     {children}
                 </Wrapper>
             ),
         }
     );
-    return { ...rendret, settBehandling };
+    return { ...rendret, settBehandling, queryClient };
 }
 
 describe('useEndringstidspunktForm', () => {
@@ -91,7 +101,7 @@ describe('useEndringstidspunktForm', () => {
             )
         );
 
-        const { result, settBehandling } = renderUseEndringstidspunktForm(undefined, behandling);
+        const { result, settBehandling, queryClient } = renderUseEndringstidspunktForm(undefined, behandling);
 
         act(() => result.current.form.setValue(Feltnavn.ENDRINGSTIDSPUNKT, '2024-01-01', { shouldDirty: true }));
 
@@ -99,6 +109,7 @@ describe('useEndringstidspunktForm', () => {
 
         await waitFor(() => expect(result.current.dialog.erDialogÅpen).toBe(false));
         await waitFor(() => expect(settBehandling).toHaveBeenCalledWith(oppdatertBehandling));
+        expect(queryClient.getQueryData(queryKeys.behandling(1))).toEqual(oppdatertBehandling);
         await waitFor(() => expect(result.current.form.getValues()).toEqual({ [Feltnavn.ENDRINGSTIDSPUNKT]: null }));
     });
 

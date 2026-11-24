@@ -1,5 +1,7 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useSendBehandlingBrev } from '@hooks/useSendBehandlingBrev';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
+import { useQueryClient } from '@tanstack/react-query';
 import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
 import { BehandlingKategori } from '@typer/behandlingstema';
 import type { IManueltBrevRequestPåBehandling } from '@typer/dokument';
@@ -117,6 +119,8 @@ interface Props {
 }
 
 export const useBrevModul = ({ onSubmitSuccess }: Props) => {
+    const queryClient = useQueryClient();
+
     const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const [visFritekstAvsnittTekstboks, settVisFritekstAvsnittTekstboks] = useState(false);
@@ -200,6 +204,7 @@ export const useBrevModul = ({ onSubmitSuccess }: Props) => {
         try {
             const oppdatertBehandling = await sendBrev(hentSkjemaData(values));
             onSubmitSuccess();
+            queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
             settÅpenBehandling(oppdatertBehandling);
         } catch (error) {
             const message = error instanceof Error ? error.message : 'En ukjent feil oppstod.';

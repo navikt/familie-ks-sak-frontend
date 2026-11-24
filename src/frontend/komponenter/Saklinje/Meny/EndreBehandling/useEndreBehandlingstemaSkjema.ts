@@ -1,6 +1,8 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useOppdaterBehandlingstema } from '@hooks/useOppdaterBehandlingstema';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
+import { useQueryClient } from '@tanstack/react-query';
 import { type IBehandlingstema, tilBehandlingstema } from '@typer/behandlingstema';
 import { useForm } from 'react-hook-form';
 
@@ -17,6 +19,8 @@ interface Props {
 }
 
 export const useEndreBehandlingstemaSkjema = ({ lukkModal }: Props) => {
+    const queryClient = useQueryClient();
+
     const { behandling, settÅpenBehandling } = useBehandlingContext();
     const { mutateAsync: oppdaterBehandlingstema } = useOppdaterBehandlingstema();
 
@@ -45,6 +49,7 @@ export const useEndreBehandlingstemaSkjema = ({ lukkModal }: Props) => {
 
         return oppdaterBehandlingstema(oppdaterBehandlingstemaParameters)
             .then(behandling => {
+                queryClient.setQueryData(queryKeys.behandling(behandling), behandling);
                 settÅpenBehandling(behandling);
                 lukkModal();
             })

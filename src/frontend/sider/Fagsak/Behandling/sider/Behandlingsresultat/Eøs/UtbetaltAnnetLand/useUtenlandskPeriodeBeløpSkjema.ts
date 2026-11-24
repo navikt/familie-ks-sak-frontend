@@ -1,6 +1,8 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterUtenlandskPeriodeBeløp } from '@hooks/useOppdaterUtenlandskPeriodeBeløp';
 import { useSlettUtenlandskPeriodeBeløp } from '@hooks/useSlettUtenlandskPeriodeBeløp';
+import { useQueryClient } from '@tanstack/react-query';
 import type { OptionType } from '@typer/common';
 import type { IRestUtenlandskPeriodeBeløp, UtenlandskPeriodeBeløpIntervall } from '@typer/eøsPerioder';
 import { type IIsoMånedPeriode, nyIsoMånedPeriode } from '@utils/dato';
@@ -40,6 +42,8 @@ export const useUtenlandskPeriodeBeløpSkjema = ({
     barnIUtenlandskPeriodeBeløp,
     lukkSkjema,
 }: Props) => {
+    const queryClient = useQueryClient();
+
     const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const behandlingsÅrsakErOvergangsordning = behandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024;
@@ -77,6 +81,7 @@ export const useUtenlandskPeriodeBeløpSkjema = ({
                 valutakode: values.valutakode,
                 intervall: values.intervall,
             });
+            queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
             settÅpenBehandling(oppdatertBehandling);
             lukkSkjema();
         } catch (error) {
@@ -93,6 +98,7 @@ export const useUtenlandskPeriodeBeløpSkjema = ({
                 behandlingId: behandling.behandlingId,
                 utenlandskPeriodeBeløpId: utenlandskPeriodeBeløp.id,
             });
+            queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
             settÅpenBehandling(oppdatertBehandling);
             lukkSkjema();
         } catch (error) {
