@@ -60,7 +60,6 @@ export function lagBehandling(behandling?: Partial<IBehandling>): IBehandling {
         utenlandskePeriodebeløp: [],
         valutakurser: [],
         sisteVedtaksperiodeVisningDato: undefined,
-        refusjonEøs: [],
         brevmottakere: [],
         manglendeSvalbardmerking: [],
         ...behandling,

@@ -10,7 +10,6 @@ import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { ManglendeSvalbardmerking } from './ManglendeSvalbardmerking';
 import type { IRestOvergangsordningAndel } from './overgangsordningAndel';
 import { type IGrunnlagPerson, PersonType } from './person';
-import type { IRestRefusjonEøs } from './refusjon-eøs';
 import type { ITilbakekreving } from './simulering';
 import { type ISøknadDTO, Målform } from './søknad';
 import type {
@@ -239,7 +238,6 @@ export interface IBehandling {
     utenlandskePeriodebeløp: IRestUtenlandskPeriodeBeløp[];
     valutakurser: IRestValutakurs[];
     sisteVedtaksperiodeVisningDato?: IsoDatoString;
-    refusjonEøs: IRestRefusjonEøs[];
     brevmottakere: BrevmottakerBehandling[];
     manglendeSvalbardmerking: ManglendeSvalbardmerking[];
 }

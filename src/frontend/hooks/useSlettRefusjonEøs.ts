@@ -1,19 +1,16 @@
 import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { useHttp } from '@navikt/familie-http';
 import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
+import type { IRestRefusjonEøs } from '@typer/refusjon-eøs';
 
 import { slettRefusjonEøs } from '../api/slettRefusjonEøs';
-import type { IBehandling } from '../typer/behandling';
 
 interface Parameters {
     behandlingId: number;
     refusjonEøsId: number;
 }
 
-type Options = Omit<
-    UseMutationOptions<IBehandling, DefaultError, Parameters, unknown>,
-    'mutationKey' | 'mutationFn'
-> & {
+type Options = Omit<UseMutationOptions<IRestRefusjonEøs[], DefaultError, Parameters>, 'mutationKey' | 'mutationFn'> & {
     refusjonEøsId: number;
 };
 

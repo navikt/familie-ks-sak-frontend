@@ -1,15 +1,15 @@
 import { useHttp } from '@navikt/familie-http';
 import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
+import type { IRestRefusjonEøs } from '@typer/refusjon-eøs';
 
 import { type OpprettRefusjonEøsPayload, opprettRefusjonEøs } from '../api/opprettRefusjonEøs';
-import type { IBehandling } from '../typer/behandling';
 
 interface Parameters {
     behandlingId: number;
     payload: OpprettRefusjonEøsPayload;
 }
 
-type Options = Omit<UseMutationOptions<IBehandling, DefaultError, Parameters, unknown>, 'mutationFn'>;
+type Options = Omit<UseMutationOptions<IRestRefusjonEøs[], DefaultError, Parameters>, 'mutationFn'>;
 
 export function useOpprettRefusjonEøs(options: Options = {}) {
     const { request } = useHttp();

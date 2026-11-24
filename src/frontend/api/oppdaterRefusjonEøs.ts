@@ -1,6 +1,6 @@
 import type { FamilieRequest } from '@navikt/familie-http/dist/HttpProvider';
+import type { IRestRefusjonEøs } from '@typer/refusjon-eøs';
 
-import type { IBehandling } from '../typer/behandling';
 import { RessursResolver } from '../utils/ressursResolver';
 
 export interface OppdaterRefusjonEøsPayload {
@@ -17,7 +17,7 @@ export async function oppdaterRefusjonEøs(
     refusjonEøsId: number,
     payload: OppdaterRefusjonEøsPayload
 ) {
-    const ressurs = await request<OppdaterRefusjonEøsPayload, IBehandling>({
+    const ressurs = await request<OppdaterRefusjonEøsPayload, IRestRefusjonEøs[]>({
         method: 'PUT',
         url: `/familie-ks-sak/api/refusjon-eøs/behandlinger/${behandlingId}/perioder/${refusjonEøsId}`,
         data: payload,
