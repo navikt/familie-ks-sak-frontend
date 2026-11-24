@@ -5,6 +5,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import { lagTilbakekrevingbehandling } from '@testutils/testdata/tilbakekrevingTestdata';
 import { TestProviders } from '@testutils/testrender';
+import { FagsakId } from '@typer/fagsak';
 import type { ITilbakekrevingsbehandling } from '@typer/tilbakekrevingsbehandling';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
@@ -24,7 +25,7 @@ describe('useHentTilbakekrevingsbehandlinger', () => {
         vi.mocked(hentTilbakekrevingsbehandlinger).mockResolvedValue(tilbakekrevingsbehandlinger);
 
         // Act
-        const { result } = renderHook(() => useHentTilbakekrevingsbehandlinger(1), {
+        const { result } = renderHook(() => useHentTilbakekrevingsbehandlinger(FagsakId.fra(1)), {
             wrapper: TestProviders,
         });
 
@@ -39,7 +40,7 @@ describe('useHentTilbakekrevingsbehandlinger', () => {
         vi.mocked(hentTilbakekrevingsbehandlinger).mockRejectedValue(new Error('Noe gikk galt'));
 
         // Act
-        const { result } = renderHook(() => useHentTilbakekrevingsbehandlinger(1), {
+        const { result } = renderHook(() => useHentTilbakekrevingsbehandlinger(FagsakId.fra(1)), {
             wrapper: TestProviders,
         });
 
@@ -54,13 +55,15 @@ describe('useHentTilbakekrevingsbehandlinger', () => {
         const queryClient = new QueryClient();
 
         // Act
-        const { result } = renderHook(() => useHentTilbakekrevingsbehandlinger(1), {
+        const { result } = renderHook(() => useHentTilbakekrevingsbehandlinger(FagsakId.fra(1)), {
             wrapper: ({ children }) => <TestProviders queryClient={queryClient}>{children}</TestProviders>,
         });
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
         // Assert
-        const query = queryClient.getQueryCache().find({ queryKey: queryKeys.tilbakekrevingsbehandlinger(1) });
+        const query = queryClient
+            .getQueryCache()
+            .find({ queryKey: queryKeys.tilbakekrevingsbehandlinger(FagsakId.fra(1)) });
         expect(query?.meta?.[MetaKey.VIS_SYSTEMET_LASTER]).toBe(true);
     });
 });

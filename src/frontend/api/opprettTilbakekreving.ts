@@ -1,7 +1,8 @@
 import { apiClient } from '@api/client/apiClient';
+import type { FagsakId } from '@typer/fagsak';
 
 export interface OpprettTilbakekrevingPayload {
-    fagsakId: number;
+    fagsakId: FagsakId;
 }
 
 export async function opprettTilbakekreving(payload: OpprettTilbakekrevingPayload) {

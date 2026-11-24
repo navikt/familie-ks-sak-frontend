@@ -1,5 +1,6 @@
 import type { kjønnType } from '@navikt/familie-typer';
 
+import type { FagsakId } from './fagsak';
 import type { Målform } from './søknad';
 import type { Avvisningskode } from './tilgang';
 
@@ -57,7 +58,7 @@ export interface IPersonInfo {
     personIdent: string;
     type: PersonType;
     dødsfallDato?: string;
-    fagsakId?: number;
+    fagsakId?: FagsakId;
     bostedsadresse?: IBostedsadresse;
     erEgenAnsatt?: boolean;
     harFalskIdentitet: boolean;

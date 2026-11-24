@@ -1,4 +1,6 @@
-function fagsakMutationKey(fagsakId: number) {
+import type { FagsakId } from '@typer/fagsak';
+
+function fagsakMutationKey(fagsakId: FagsakId) {
     return ['fagsak', fagsakId] as const;
 }
 
@@ -33,13 +35,13 @@ export const mutationKeys = {
     },
 
     // Fagsak
-    forhåndsvisBrevPåFagsak: (fagsakId: number) => {
+    forhåndsvisBrevPåFagsak: (fagsakId: FagsakId) => {
         return [...fagsakMutationKey(fagsakId), 'forhandsvis-brev'] as const;
     },
-    sendInformasjonsbrev: (fagsakId: number) => {
+    sendInformasjonsbrev: (fagsakId: FagsakId) => {
         return [...fagsakMutationKey(fagsakId), 'send-informasjonsbrev'] as const;
     },
-    låsOppFagsak: (fagsakId: number) => {
+    låsOppFagsak: (fagsakId: FagsakId) => {
         return [...fagsakMutationKey(fagsakId), 'las-opp'] as const;
     },
 

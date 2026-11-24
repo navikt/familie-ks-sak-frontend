@@ -3,7 +3,7 @@ import { queryKeys } from '@hooks/keys/queryKeys';
 import { MetaKey } from '@hooks/meta/metaKey';
 import { useSkalObfuskereData } from '@hooks/useSkalObfuskereData';
 import { useQuery } from '@tanstack/react-query';
-import type { IMinimalFagsak } from '@typer/fagsak';
+import type { FagsakId, IMinimalFagsak } from '@typer/fagsak';
 import { PersonType } from '@typer/person';
 import { sammenlignFødselsdato } from '@utils/obfuskerData';
 
@@ -20,7 +20,7 @@ function obfuskerFagsak(fagsak: IMinimalFagsak) {
     });
 }
 
-export function useHentFagsak(fagsakId: number | undefined) {
+export function useHentFagsak(fagsakId: FagsakId | undefined) {
     const skalObfuskereData = useSkalObfuskereData();
     return useQuery({
         queryKey: queryKeys.fagsak(fagsakId),

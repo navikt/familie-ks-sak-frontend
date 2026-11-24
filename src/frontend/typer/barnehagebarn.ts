@@ -1,3 +1,5 @@
+import type { FagsakId } from './fagsak';
+
 export interface BarnehagebarnRequestParams extends BarnehagebarnFilter {
     limit?: number;
     offset?: number;
@@ -21,7 +23,7 @@ export interface Barnehagebarn {
     avvik?: boolean;
     kommuneNavn: string;
     kommuneNr: string;
-    fagsakId?: number;
+    fagsakId?: FagsakId;
     fagsakstatus?: string;
     endretTid: string;
 }
