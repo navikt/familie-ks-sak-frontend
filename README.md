@@ -8,7 +8,7 @@ Frontend app for kontantstøtte
 * Logg deg på naisdevice og kjør `nais login -y`
 * Installer [NVM] (https://github.com/nvm-sh/nvm).
 * Kjør `nvm use`
-* Aktiver riktig pnpm-versjon med `corepack enable` (henter versjonen fra `packageManager` i package.json)
+* Installer Corepack med `npm install -g corepack` (følger ikke lenger med Node) og aktiver riktig pnpm-versjon med `corepack enable` (henter versjonen fra `packageManager` i package.json)
 * Installere avhengigheter `pnpm install`
 * Starte dev-server `pnpm start:dev` Se ([Miljøvariabler](#milj%C3%B8variabler)) for andre måter å kjøre appen.
 * Åpne `http://localhost:8001` i nettleseren din (8001 lokalt slik at appen kan kjøre samtidig med familie-ba-sak-frontend på 8000)
