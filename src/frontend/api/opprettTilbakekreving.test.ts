@@ -1,5 +1,6 @@
 import { apiClient } from '@api/client/apiClient';
 import { opprettTilbakekreving } from '@api/opprettTilbakekreving';
+import { FagsakId } from '@typer/fagsak';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 vi.mock('@api/client/apiClient', () => ({
@@ -14,7 +15,7 @@ afterEach(() => {
 
 describe('opprettTilbakekreving', () => {
     test('skal sende forespørsel om opprettelse av tilbakekreving', async () => {
-        const payload = { fagsakId: 123 };
+        const payload = { fagsakId: FagsakId.fra(123) };
 
         vi.mocked(apiClient.post).mockResolvedValueOnce(undefined);
 
@@ -31,7 +32,7 @@ describe('opprettTilbakekreving', () => {
     test('skal håndtere feil', async () => {
         vi.mocked(apiClient.post).mockRejectedValue(new Error('Noe gikk galt'));
 
-        const payload = { fagsakId: 123 };
+        const payload = { fagsakId: FagsakId.fra(123) };
 
         await expect(opprettTilbakekreving(payload)).rejects.toThrow('Noe gikk galt');
     });

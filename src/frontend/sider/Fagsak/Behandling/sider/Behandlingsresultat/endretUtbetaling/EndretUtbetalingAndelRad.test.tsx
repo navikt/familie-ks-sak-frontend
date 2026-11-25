@@ -15,7 +15,7 @@ import type { ReactNode } from 'react';
 import { describe, expect, test } from 'vitest';
 
 import { FagsakProvider } from '../../../../FagsakContext';
-import { BehandlingProvider } from '../../../context/BehandlingContext';
+import { BehandlingProvider } from '../../../BehandlingContext';
 import { EndretUtbetalingAndelProvider } from './EndretUtbetalingAndelContext';
 import { EndretUtbetalingAndelRad } from './EndretUtbetalingAndelRad';
 

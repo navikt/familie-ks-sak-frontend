@@ -59,6 +59,7 @@ src/frontend/
   ikoner/                          # SVG icon components
   public/                          # Static assets (favicon)
   App.tsx                          # QueryClient + context providers + RouterProvider
+  queryClient.ts                   # App QueryClient instance + registrerQueryClientLyttere (cache listeners)
 ```
 
 Path aliases (use these in new code): `@api/*`, `@context/*`, `@hooks/*`, `@ikoner/*`, `@komponenter/*`,
@@ -103,8 +104,14 @@ the "Legacy" column exists in older files and is being phased out — do not ext
   });
   ```
 - **Hooks** (`src/frontend/hooks/`): one hook per api file — `useHentX` wraps `useQuery`, `useOpprettX` /
-  `useOppdaterX` / `useSlettX` wrap `useMutation`. Query keys are exposed via `XQueryKeyFactory` objects.
+  `useOppdaterX` / `useSlettX` wrap `useMutation`. Query keys are defined in the single `queryKeys` factory
+  in `hooks/keys/queryKeys.ts` (e.g. `queryKeys.behandling(behandlingId)`).
+  Mutation keys are defined in the single `mutationKeys` factory in `hooks/keys/mutationKeys.ts`;
+  use the same factory in mutation hooks and their pending/error consumers.
   Mark queries/mutations that should trigger the global spinner with `meta: { [MetaKey.VIS_SYSTEMET_LASTER]: true }`.
+  When the behandling in the cache is updated (any `setQueryData`, or a refetch — not the first fetch),
+  `registrerQueryClientLyttere` (`src/frontend/queryClient.ts`) automatically invalidates queries that depend on it
+  (the fagsak, `historikkinnslag`, `personerMedUgyldigEtterbetalingsperiode`). Add new dependencies there.
 - **Ressurs envelope**: backend responses are wrapped in a `Ressurs` envelope
   (`SUKSESS | FEILET | IKKE_TILGANG | FUNKSJONELL_FEIL`), locally typed in `api/client/apiClient.ts` — error
   statuses can arrive with HTTP 200. `apiClient` unwraps this via `pakkUtRessursResponse()` and throws

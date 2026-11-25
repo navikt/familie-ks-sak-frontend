@@ -1,7 +1,6 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useBehandlingId } from '@hooks/useBehandlingId';
 import { useErLesevisning } from '@hooks/useErLesevisning';
-import { HentGenererteBrevbegrunnelserQueryKeyFactory } from '@hooks/useHentGenererteBrevbegrunnelser';
-import { HentVedtaksperioderQueryKeyFactory } from '@hooks/useHentVedtaksperioder';
 import { useOppdaterVedtaksperiodeMedBegrunnelser } from '@hooks/useOppdaterVedtaksperiodeMedBegrunnelser';
 import { useOppdaterVedtaksperiodeMedFriteksterIsPending } from '@hooks/useOppdaterVedtaksperiodeMedFriteksterIsPending';
 import { BodyShort, Box, Label } from '@navikt/ds-react';
@@ -35,12 +34,9 @@ export function BegrunnelserMultiselect() {
     } = useOppdaterVedtaksperiodeMedBegrunnelser(vedtaksperiodeMedBegrunnelser.id, {
         onSuccess: async vedtaksperioderMedBegrunnelser => {
             await queryClient.invalidateQueries({
-                queryKey: HentGenererteBrevbegrunnelserQueryKeyFactory.vedtaksperiode(vedtaksperiodeMedBegrunnelser.id),
+                queryKey: queryKeys.genererteBrevbegrunnelser(behandlingId, vedtaksperiodeMedBegrunnelser.id),
             });
-            queryClient.setQueryData(
-                HentVedtaksperioderQueryKeyFactory.behandling(behandlingId),
-                vedtaksperioderMedBegrunnelser
-            );
+            queryClient.setQueryData(queryKeys.vedtaksperioder(behandlingId), vedtaksperioderMedBegrunnelser);
         },
     });
 

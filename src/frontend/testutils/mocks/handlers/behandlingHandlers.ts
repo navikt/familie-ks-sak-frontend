@@ -12,4 +12,10 @@ export const behandlingHandlers = [
         const behandlingId = Number(url.searchParams.get('behandlingId') ?? '1');
         return HttpResponse.json(byggSuksessRessurs([BehandlingTestdata.lagBehandling({ behandlingId })]));
     }),
+    http.get<{ behandlingId: string }>('/familie-ks-sak/api/korrigertetterbetaling/behandling/:behandlingId', () => {
+        return HttpResponse.json(byggSuksessRessurs(null));
+    }),
+    http.get<{ behandlingId: string }>('/familie-ks-sak/api/korrigertvedtak/behandling/:behandlingId', () => {
+        return HttpResponse.json(byggSuksessRessurs(null));
+    }),
 ];

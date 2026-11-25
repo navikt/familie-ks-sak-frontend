@@ -1,15 +1,17 @@
+import { useBehandlingId } from '@hooks/useBehandlingId';
 import { useHentGenererteBrevbegrunnelser } from '@hooks/useHentGenererteBrevbegrunnelser';
 import { BodyShort, ErrorMessage, HStack, Label, Loader, VStack } from '@navikt/ds-react';
 import { useVedtaksperiodeContext } from '@sider/Fagsak/Behandling/sider/Vedtak/Vedtaksperioder/VedtaksperiodeContext';
 
 export function GenererteBrevbegrunnelser() {
     const { vedtaksperiodeMedBegrunnelser } = useVedtaksperiodeContext();
+    const behandlingId = useBehandlingId();
 
     const {
         data: genererteBrevbegrunnelser,
         isPending: genererteBrevbegrunnelserIsPending,
         error: genererteBrevbegrunnelserError,
-    } = useHentGenererteBrevbegrunnelser(vedtaksperiodeMedBegrunnelser.id);
+    } = useHentGenererteBrevbegrunnelser(behandlingId, vedtaksperiodeMedBegrunnelser.id);
 
     if (genererteBrevbegrunnelserIsPending) {
         return (

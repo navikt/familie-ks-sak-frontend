@@ -1,4 +1,5 @@
 import { opprettSammensattKontrollsak } from '@api/opprettSammensattKontrollsak';
+import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { OpprettSammensattKontrollsakDto, SammensattKontrollsakDto } from '@typer/sammensatt-kontrollsak';
 
@@ -9,13 +10,9 @@ type Options = Omit<
     'mutationKey' | 'mutationFn'
 >;
 
-export const OpprettSammensattKontrollsakMutationKeyFactory = {
-    opprettSammensattKontrollsak: (behandlingId: number) => ['opprettSammensattKontrollsak', behandlingId],
-};
-
 export function useOpprettSammensattKontrollsak(behandlingId: number, options?: Options) {
     return useMutation({
-        mutationKey: OpprettSammensattKontrollsakMutationKeyFactory.opprettSammensattKontrollsak(behandlingId),
+        mutationKey: mutationKeys.opprettSammensattKontrollsak(behandlingId),
         mutationFn: (parameters: Parameters) => opprettSammensattKontrollsak(parameters),
         ...options,
     });

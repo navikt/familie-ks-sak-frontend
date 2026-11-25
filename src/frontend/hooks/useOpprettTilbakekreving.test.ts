@@ -2,6 +2,7 @@ import { opprettTilbakekreving } from '@api/opprettTilbakekreving';
 import { useOpprettTilbakekreving } from '@hooks/useOpprettTilbakekreving';
 import { renderHook, waitFor } from '@testing-library/react';
 import { TestProviders } from '@testutils/testrender';
+import { FagsakId } from '@typer/fagsak';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 vi.mock('@api/opprettTilbakekreving');
@@ -13,7 +14,7 @@ afterEach(() => {
 describe('useOpprettTilbakekreving', () => {
     test('kaller opprettTilbakekreving med riktig fagsakId', async () => {
         // Arrange
-        const fagsakId = 123;
+        const fagsakId = FagsakId.fra(123);
         vi.mocked(opprettTilbakekreving).mockResolvedValue(undefined);
 
         const { result } = renderHook(() => useOpprettTilbakekreving(), {
@@ -31,7 +32,7 @@ describe('useOpprettTilbakekreving', () => {
 
     test('skal kalle onSuccess-callback ved vellykket mutasjon', async () => {
         // Arrange
-        const fagsakId = 123;
+        const fagsakId = FagsakId.fra(123);
         const onSuccess = vi.fn();
         vi.mocked(opprettTilbakekreving).mockResolvedValue(undefined);
 
@@ -49,7 +50,7 @@ describe('useOpprettTilbakekreving', () => {
 
     test('skal sette isError dersom opprettTilbakekreving feiler', async () => {
         // Arrange
-        const fagsakId = 123;
+        const fagsakId = FagsakId.fra(123);
         const feilmelding = new Error('Noe gikk galt');
         vi.mocked(opprettTilbakekreving).mockRejectedValueOnce(feilmelding);
 

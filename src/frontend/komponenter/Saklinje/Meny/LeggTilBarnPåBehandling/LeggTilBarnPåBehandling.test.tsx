@@ -1,12 +1,12 @@
 import { ActionMenu } from '@navikt/ds-react';
 import type { PropsWithChildren } from 'react';
 import { describe, expect } from 'vitest';
-import { BehandlingProvider } from '../../../../sider/Fagsak/Behandling/context/BehandlingContext';
+import { BehandlingProvider } from '../../../../sider/Fagsak/Behandling/BehandlingContext';
 import { FagsakProvider } from '../../../../sider/Fagsak/FagsakContext';
 import { lagBehandling } from '../../../../testutils/testdata/behandlingTestdata';
 import { lagFagsak } from '../../../../testutils/testdata/fagsakTestdata';
 import { render, TestProviders } from '../../../../testutils/testrender';
-import { BehandlingÅrsak, type IBehandling, SettPåVentÅrsak } from '../../../../typer/behandling';
+import { BehandlingSteg, BehandlingÅrsak, type IBehandling, SettPåVentÅrsak } from '../../../../typer/behandling';
 import type { IMinimalFagsak } from '../../../../typer/fagsak';
 import { LeggTilBarnPåBehandling } from './LeggTilBarnPåBehandling';
 
@@ -20,11 +20,12 @@ function Wrapper({
     behandling = lagBehandling({
         behandlingPåVent: undefined,
         årsak: BehandlingÅrsak.NYE_OPPLYSNINGER,
+        steg: BehandlingSteg.VILKÅRSVURDERING,
     }),
     children,
 }: WrapperProps) {
     return (
-        <TestProviders>
+        <TestProviders initialEntries={[{ pathname: '/fagsak/1/1/vilkaarsvurdering' }]}>
             <FagsakProvider fagsak={fagsak}>
                 <BehandlingProvider behandling={behandling}>
                     <ActionMenu open={true}>

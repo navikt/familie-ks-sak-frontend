@@ -13,7 +13,7 @@ import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } f
 import { formaterIdent, slåSammenListeTilStreng } from '@utils/formatter';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useBehandlingContext } from '../../context/BehandlingContext';
+import { useBehandlingContext } from '../../BehandlingContext';
 import KompetanseSkjema from './Eøs/Kompetanse/KompetanseSkjema';
 import { kompetanseFeilmeldingId } from './Eøs/Kompetanse/useKompetansePeriodeSkjema';
 import UtbetaltAnnetLand from './Eøs/UtbetaltAnnetLand/UtbetaltAnnetLand';

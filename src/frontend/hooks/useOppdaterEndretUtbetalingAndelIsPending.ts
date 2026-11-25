@@ -1,11 +1,10 @@
+import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { useMutationState } from '@tanstack/react-query';
-
-import { OppdaterEndretUtbetalingAndelMutationKeyFactory } from './useOppdaterEndretUtbetalingAndel';
 
 export function useOppdaterEndretUtbetalingAndelIsPending(endretUtbetalingAndelId: number) {
     const states = useMutationState({
         filters: {
-            mutationKey: OppdaterEndretUtbetalingAndelMutationKeyFactory.endretUtbetalingAndel(endretUtbetalingAndelId),
+            mutationKey: mutationKeys.oppdaterEndretUtbetalingAndel(endretUtbetalingAndelId),
         },
         select: mutation => mutation.state,
     });

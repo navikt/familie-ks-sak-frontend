@@ -4,8 +4,8 @@ import type { IsoDatoString } from '@utils/dato';
 import type { BehandlingKategori } from './behandlingstema';
 import type { IPersonMedAndelerTilkjentYtelse } from './beregning';
 import type { INøkkelPar } from './common';
-import type { IRestFeilutbetaltValuta } from './eøs-feilutbetalt-valuta';
 import type { IRestKompetanse, IRestUtenlandskPeriodeBeløp, IRestValutakurs } from './eøsPerioder';
+import type { FagsakId } from './fagsak';
 import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { ManglendeSvalbardmerking } from './ManglendeSvalbardmerking';
 import type { IRestOvergangsordningAndel } from './overgangsordningAndel';
@@ -22,7 +22,7 @@ import type {
 import type { ITotrinnskontroll } from './totrinnskontroll';
 import type { IRestEndretUtbetalingAndel } from './utbetalingAndel';
 import type { Utbetalingsperiode } from './utbetalingsperiode';
-import type { IRestKorrigertEtterbetaling, IRestKorrigertVedtak, IVedtakForBehandling } from './vedtak';
+import type { IVedtakForBehandling } from './vedtak';
 import type { IRestPersonResultat, IRestStegTilstand } from './vilkår';
 
 export const MIDLERTIDIG_BEHANDLENDE_ENHET_ID = '4863';
@@ -126,7 +126,7 @@ export enum BehandlingStegStatus {
     IKKE_UTFØRT = 'IKKE_UTFØRT',
 }
 
-export const hentStegNummer = (steg: BehandlingSteg): number => {
+export function hentStegnummer(steg: BehandlingSteg): number {
     switch (steg) {
         case BehandlingSteg.REGISTRERE_PERSONGRUNNLAG:
             return 1;
@@ -151,7 +151,7 @@ export const hentStegNummer = (steg: BehandlingSteg): number => {
         default:
             return 0;
     }
-};
+}
 
 export enum BehandlingStatus {
     OPPRETTET = 'OPPRETTET',
@@ -210,6 +210,7 @@ export enum BehandlerRolle {
 }
 
 export interface IBehandling {
+    fagsakId: FagsakId;
     arbeidsfordelingPåBehandling: IArbeidsfordelingPåBehandling;
     behandlingId: number;
     endretAv: string;
@@ -237,10 +238,7 @@ export interface IBehandling {
     kompetanser: IRestKompetanse[];
     utenlandskePeriodebeløp: IRestUtenlandskPeriodeBeløp[];
     valutakurser: IRestValutakurs[];
-    korrigertVedtak?: IRestKorrigertVedtak;
-    korrigertEtterbetaling?: IRestKorrigertEtterbetaling;
     sisteVedtaksperiodeVisningDato?: IsoDatoString;
-    feilutbetaltValuta: IRestFeilutbetaltValuta[];
     refusjonEøs: IRestRefusjonEøs[];
     brevmottakere: BrevmottakerBehandling[];
     manglendeSvalbardmerking: ManglendeSvalbardmerking[];

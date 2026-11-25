@@ -2,7 +2,7 @@ import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterEndretUtbetalingAndel } from '@hooks/useOppdaterEndretUtbetalingAndel';
 import type { IRestEndretUtbetalingAndel } from '@typer/utbetalingAndel';
 import { useForm } from 'react-hook-form';
-import { useBehandlingContext } from '../../../../context/BehandlingContext';
+import { useBehandlingContext } from '../../../../BehandlingContext';
 import {
     EndretUtbetalingAndelFeltnavn,
     type EndretUtbetalingAndelFormValues,

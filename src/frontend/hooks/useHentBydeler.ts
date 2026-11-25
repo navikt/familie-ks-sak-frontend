@@ -1,13 +1,10 @@
 import { hentBydeler } from '@api/hentBydeler';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useQuery } from '@tanstack/react-query';
-
-export const HentBydelerQueryKeyFactory = {
-    bydeler: () => ['bydeler'],
-};
 
 export function useHentBydeler() {
     return useQuery({
-        queryKey: HentBydelerQueryKeyFactory.bydeler(),
+        queryKey: queryKeys.bydeler(),
         queryFn: () => hentBydeler(),
     });
 }

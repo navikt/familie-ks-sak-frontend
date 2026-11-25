@@ -1,6 +1,7 @@
 import { apiClient } from '@api/client/apiClient';
 import { sendInformasjonsbrev } from '@api/sendInformasjonsbrev';
 import type { IManueltBrevRequestPåFagsak } from '@typer/dokument';
+import { FagsakId } from '@typer/fagsak';
 import { Målform } from '@typer/søknad';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
@@ -30,7 +31,7 @@ describe('sendInformasjonsbrev', () => {
 
         vi.mocked(apiClient.post).mockResolvedValueOnce(undefined);
 
-        await sendInformasjonsbrev(1, payload);
+        await sendInformasjonsbrev(FagsakId.fra(1), payload);
 
         expect(apiClient.post).toHaveBeenCalledTimes(1);
         expect(apiClient.post).toHaveBeenCalledWith({
@@ -52,6 +53,6 @@ describe('sendInformasjonsbrev', () => {
             manuelleBrevmottakere: [],
         };
 
-        await expect(sendInformasjonsbrev(1, payload)).rejects.toThrow('Noe gikk galt');
+        await expect(sendInformasjonsbrev(FagsakId.fra(1), payload)).rejects.toThrow('Noe gikk galt');
     });
 });

@@ -1,6 +1,7 @@
 import { apiClient } from '@api/client/apiClient';
 import { forhåndsvisBrevPåFagsak } from '@api/forhåndsvisBrevPåFagsak';
 import type { IManueltBrevRequestPåFagsak } from '@typer/dokument';
+import { FagsakId } from '@typer/fagsak';
 import { Målform } from '@typer/søknad';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
@@ -30,7 +31,7 @@ describe('forhåndsvisBrevPåFagsak', () => {
 
         vi.mocked(apiClient.post).mockResolvedValueOnce('base64==');
 
-        const svar = await forhåndsvisBrevPåFagsak(1, payload);
+        const svar = await forhåndsvisBrevPåFagsak(FagsakId.fra(1), payload);
 
         expect(apiClient.post).toHaveBeenCalledTimes(1);
         expect(apiClient.post).toHaveBeenCalledWith({
@@ -53,6 +54,6 @@ describe('forhåndsvisBrevPåFagsak', () => {
             manuelleBrevmottakere: [],
         };
 
-        await expect(forhåndsvisBrevPåFagsak(1, payload)).rejects.toThrow('Noe gikk galt');
+        await expect(forhåndsvisBrevPåFagsak(FagsakId.fra(1), payload)).rejects.toThrow('Noe gikk galt');
     });
 });

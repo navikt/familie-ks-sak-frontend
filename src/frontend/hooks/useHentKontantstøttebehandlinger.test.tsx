@@ -1,16 +1,15 @@
 import { hentKontantstøtteBehandlinger } from '@api/hentKontantstøtteBehandlinger';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { MetaKey } from '@hooks/meta/metaKey';
 import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
 import { QueryClient } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import { lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
 import { TestProviders } from '@testutils/testrender';
+import { FagsakId } from '@typer/fagsak';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import {
-    HentKontantstøttebehandlingerQueryKeyFactory,
-    useHentKontantstøttebehandlinger,
-} from './useHentKontantstøttebehandlinger';
+import { useHentKontantstøttebehandlinger } from './useHentKontantstøttebehandlinger';
 
 vi.mock('@api/hentKontantstøtteBehandlinger');
 
@@ -26,7 +25,7 @@ describe('useHentKontantstøttebehandlinger', () => {
         vi.mocked(hentKontantstøtteBehandlinger).mockResolvedValue(behandlinger);
 
         // Act
-        const { result } = renderHook(() => useHentKontantstøttebehandlinger(1), {
+        const { result } = renderHook(() => useHentKontantstøttebehandlinger(FagsakId.fra(1)), {
             wrapper: TestProviders,
         });
 
@@ -41,7 +40,7 @@ describe('useHentKontantstøttebehandlinger', () => {
         vi.mocked(hentKontantstøtteBehandlinger).mockRejectedValue(new Error('Noe gikk galt'));
 
         // Act
-        const { result } = renderHook(() => useHentKontantstøttebehandlinger(1), {
+        const { result } = renderHook(() => useHentKontantstøttebehandlinger(FagsakId.fra(1)), {
             wrapper: TestProviders,
         });
 
@@ -56,7 +55,7 @@ describe('useHentKontantstøttebehandlinger', () => {
         const queryClient = new QueryClient();
 
         // Act
-        const { result } = renderHook(() => useHentKontantstøttebehandlinger(1), {
+        const { result } = renderHook(() => useHentKontantstøttebehandlinger(FagsakId.fra(1)), {
             wrapper: ({ children }) => <TestProviders queryClient={queryClient}>{children}</TestProviders>,
         });
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -64,7 +63,7 @@ describe('useHentKontantstøttebehandlinger', () => {
         // Assert
         const query = queryClient
             .getQueryCache()
-            .find({ queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(1) });
+            .find({ queryKey: queryKeys.kontantstøttebehandlinger(FagsakId.fra(1)) });
         expect(query?.meta?.[MetaKey.VIS_SYSTEMET_LASTER]).toBe(true);
     });
 });

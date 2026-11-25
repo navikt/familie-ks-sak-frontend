@@ -7,6 +7,7 @@ import { useEndringstidspunktDialogContext } from '@sider/Fagsak/Behandling/side
 import { FeilutbetaltValuta } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValuta';
 import { useSkalViseFeilutbetaltValutaMenyvalg } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/useSkalViseFeilutbetaltValutaMenyvalg';
 import { KorrigerEtterbetaling } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetaling';
+import { KorrigerEtterbetalingModal } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerEtterbetaling/KorrigerEtterbetalingModal';
 import { KorrigerVedtak } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/KorrigerVedtak';
 import { KorrigerVedtakModal } from '@sider/Fagsak/Behandling/sider/Vedtak/KorrigerVedtak/KorrigerVedtakModal';
 import { RefusjonEøs } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøs';
@@ -32,6 +33,7 @@ export function Vedtaksmeny() {
 
     return (
         <Stack width={'100%'} justify={'end'} align={'center'}>
+            <KorrigerEtterbetalingModal />
             {visKorrigerVedtakModal && <KorrigerVedtakModal lukkModal={() => settVisKorrigerVedtakModal(false)} />}
             {erEndringstidspunktDialogÅpen && <EndringstidspunktDialog />}
             <ActionMenu>

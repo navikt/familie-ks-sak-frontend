@@ -1,16 +1,13 @@
 import { oppdaterVedtaksperiodeMedBegrunnelser } from '@api/oppdaterVedtaksperiodeMedBegrunnelser';
+import { mutationKeys } from '@hooks/keys/mutationKeys';
 import { type DefaultError, type UseMutationOptions, useMutation } from '@tanstack/react-query';
 import type { Begrunnelse } from '@typer/vedtak';
 import type { IVedtaksperiodeMedBegrunnelser } from '@typer/vedtaksperiode';
 
-export const OppdaterVedtaksperiodeMedBegrunnelserMutationKeyFactory = {
-    vedtaksperiodeMedBegrunnelser: (vedtaksperiodeMedBegrunnelserId: number) => [
-        'vedtaksperiodeMedBegrunnelser',
-        vedtaksperiodeMedBegrunnelserId,
-    ],
-};
-
-type Options = Omit<UseMutationOptions<IVedtaksperiodeMedBegrunnelser[], DefaultError, Parameters>, 'mutationFn'>;
+type Options = Omit<
+    UseMutationOptions<IVedtaksperiodeMedBegrunnelser[], DefaultError, Parameters>,
+    'mutationKey' | 'mutationFn'
+>;
 
 interface Parameters {
     begrunnelser: Begrunnelse[];
@@ -22,9 +19,7 @@ export function useOppdaterVedtaksperiodeMedBegrunnelser(vedtaksperiodeMedBegrun
             const { begrunnelser } = parameters;
             return oppdaterVedtaksperiodeMedBegrunnelser(vedtaksperiodeMedBegrunnelserId, { begrunnelser });
         },
-        mutationKey: OppdaterVedtaksperiodeMedBegrunnelserMutationKeyFactory.vedtaksperiodeMedBegrunnelser(
-            vedtaksperiodeMedBegrunnelserId
-        ),
+        mutationKey: mutationKeys.oppdaterVedtaksperiodeMedBegrunnelser(vedtaksperiodeMedBegrunnelserId),
         ...options,
     });
 }

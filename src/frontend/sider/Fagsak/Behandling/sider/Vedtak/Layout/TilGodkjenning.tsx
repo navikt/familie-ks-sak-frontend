@@ -1,8 +1,8 @@
-import { HentVedtaksperioderQueryKeyFactory } from '@hooks/useHentVedtaksperioder';
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useSaksbehandler } from '@hooks/useSaksbehandler';
 import { useSendVedtakTilBeslutter } from '@hooks/useSendVedtakTilBeslutter';
 import { Button } from '@navikt/ds-react';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { useFeilutbetaltValutaTabellContext } from '@sider/Fagsak/Behandling/sider/Vedtak/FeilutbetaltValuta/FeilutbetaltValutaTabellContext';
 import { useRefusjonEøsTabellContext } from '@sider/Fagsak/Behandling/sider/Vedtak/RefusjonEøs/RefusjonEøsTabellContext';
 import { useSammensattKontrollsakContext } from '@sider/Fagsak/Behandling/sider/Vedtak/SammensattKontrollsak/SammensattKontrollsakContext';
@@ -45,9 +45,7 @@ export function TilGodkjenning({ settFeilmelding }: Props) {
 
     const { mutate: sendVedtakTilBeslutter, isPending: sendVedtakTilBeslutterIsPending } = useSendVedtakTilBeslutter({
         onSuccess: async behandling => {
-            await queryClient.invalidateQueries({
-                queryKey: HentVedtaksperioderQueryKeyFactory.behandling(behandling.behandlingId),
-            });
+            await queryClient.invalidateQueries({ queryKey: queryKeys.vedtaksperioder(behandling.behandlingId) });
             settÅpenBehandling(behandling);
             åpneVisSendtTilTotrinnskontrollModal();
         },

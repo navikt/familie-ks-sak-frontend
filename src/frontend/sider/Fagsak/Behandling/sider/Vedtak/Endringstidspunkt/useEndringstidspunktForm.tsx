@@ -1,7 +1,7 @@
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterEndringstidspunkt } from '@hooks/useOppdaterEndringstidspunkt';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { useEndringstidspunktDialogContext } from '@sider/Fagsak/Behandling/sider/Vedtak/Endringstidspunkt/EndringstidspunktDialogContext';
 import type { IsoDatoString } from '@utils/dato';
 import { useForm } from 'react-hook-form';

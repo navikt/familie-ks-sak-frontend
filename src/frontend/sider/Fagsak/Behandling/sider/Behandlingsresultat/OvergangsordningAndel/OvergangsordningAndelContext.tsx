@@ -10,7 +10,7 @@ import type {
     IRestOvergangsordningAndel,
 } from '../../../../../../typer/overgangsordningAndel';
 import { dateTilIsoMånedÅrString, validerGyldigDato } from '../../../../../../utils/dato';
-import { useBehandlingContext } from '../../../context/BehandlingContext';
+import { useBehandlingContext } from '../../../BehandlingContext';
 
 interface Props extends PropsWithChildren {
     overgangsordningAndel: IRestOvergangsordningAndel;

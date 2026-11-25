@@ -1,6 +1,7 @@
 import { apiClient } from '@api/client/apiClient';
 import type { VisningBehandling } from '@sider/Fagsak/Saksoversikt/visningBehandling';
 import { lagVisningBehandling } from '@testutils/testdata/behandlingTestdata';
+import { FagsakId } from '@typer/fagsak';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import { hentKontantstøtteBehandlinger } from './hentKontantstøtteBehandlinger';
@@ -21,7 +22,7 @@ describe('hentKontantstøtteBehandlinger', () => {
         vi.mocked(apiClient.get).mockResolvedValue(behandlinger);
 
         // Act
-        const result = await hentKontantstøtteBehandlinger(1);
+        const result = await hentKontantstøtteBehandlinger(FagsakId.fra(1));
 
         // Assert
         expect(apiClient.get).toHaveBeenCalledWith({
@@ -35,6 +36,6 @@ describe('hentKontantstøtteBehandlinger', () => {
         vi.mocked(apiClient.get).mockRejectedValue(new Error('Noe gikk galt'));
 
         // Act & assert
-        await expect(hentKontantstøtteBehandlinger(1)).rejects.toThrow();
+        await expect(hentKontantstøtteBehandlinger(FagsakId.fra(1))).rejects.toThrow();
     });
 });

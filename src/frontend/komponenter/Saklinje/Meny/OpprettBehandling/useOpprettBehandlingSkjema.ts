@@ -1,8 +1,5 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useFagsak } from '@hooks/useFagsak';
-import { HentFagsakQueryKeyFactory } from '@hooks/useHentFagsak';
-import { HentKlagebehandlingerQueryKeyFactory } from '@hooks/useHentKlagebehandlinger';
-import { HentKontantstøttebehandlingerQueryKeyFactory } from '@hooks/useHentKontantstøttebehandlinger';
-import { HentTilbakekrevingsbehandlingerQueryKeyFactory } from '@hooks/useHentTilbakekrevingsbehandlinger';
 import { useOpprettBehandling } from '@hooks/useOpprettBehandling';
 import { useOpprettKlagebehandling } from '@hooks/useOpprettKlagebehandling';
 import { useOpprettTilbakekreving } from '@hooks/useOpprettTilbakekreving';
@@ -80,9 +77,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
         if (behandlingstype === Klagebehandlingstype.KLAGE) {
             try {
                 await opprettKlagebehandling({ klageMottattDato, fagsakId: fagsak.id });
-                await queryClient.invalidateQueries({
-                    queryKey: HentKlagebehandlingerQueryKeyFactory.klagebehandlinger(fagsak.id),
-                });
+                await queryClient.invalidateQueries({ queryKey: queryKeys.fagsak(fagsak.id) });
                 lukkModal();
             } catch (error) {
                 setError('root', {
@@ -92,9 +87,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
         } else if (behandlingstype === Tilbakekrevingsbehandlingstype.TILBAKEKREVING) {
             try {
                 await opprettTilbakekreving({ fagsakId: fagsak.id });
-                await queryClient.invalidateQueries({
-                    queryKey: HentTilbakekrevingsbehandlingerQueryKeyFactory.tilbakekrevingsbehandlinger(fagsak.id),
-                });
+                await queryClient.invalidateQueries({ queryKey: queryKeys.fagsak(fagsak.id) });
                 onTilbakekrevingsbehandlingOpprettet();
                 lukkModal();
             } catch (error) {
@@ -113,10 +106,7 @@ export function useOpprettBehandlingSkjema({ lukkModal, onTilbakekrevingsbehandl
                     søknadMottattDato: søknadMottattDato || undefined,
                 };
                 const behandling = await opprettBehandling(opprettBehandlingParameters);
-                queryClient.invalidateQueries({
-                    queryKey: HentKontantstøttebehandlingerQueryKeyFactory.kontantstøttebehandlinger(fagsak.id),
-                });
-                await queryClient.invalidateQueries({ queryKey: HentFagsakQueryKeyFactory.fagsak(fagsak.id) });
+                await queryClient.invalidateQueries({ queryKey: queryKeys.fagsak(fagsak.id) });
                 lukkModal();
 
                 if (behandling.årsak === BehandlingÅrsak.SØKNAD) {

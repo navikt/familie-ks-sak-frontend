@@ -1,5 +1,5 @@
 import { Valideringsstatus } from '@navikt/familie-skjema';
-import { useBehandlingContext } from '@sider/Fagsak/Behandling/context/BehandlingContext';
+import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import type { IGrunnlagPerson } from '@typer/person';
 import { PersonType } from '@typer/person';
 import { Målform } from '@typer/søknad';

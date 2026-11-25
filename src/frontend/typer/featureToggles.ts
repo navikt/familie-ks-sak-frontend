@@ -11,4 +11,5 @@ export enum FeatureToggle {
 
     // Release
     bulkOppdaterLogiskeVedlegg = 'familie-ks-sak.bulk-oppdater-logiske-vedlegg',
+    brukReactQueryForBehandling = 'familie-ks-sak.bruk-react-query-for-behandling',
 }
