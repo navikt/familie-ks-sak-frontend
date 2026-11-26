@@ -9,4 +9,7 @@ export const tilbakekrevingHandlers = [
     }>('/familie-ks-sak/api/tilbakekreving/fagsak/:fagsakId', () => {
         return HttpResponse.json(byggSuksessRessurs([TilbakekrevingTestdata.lagTilbakekrevingbehandling()]));
     }),
+    http.get<{ behandlingId: string }>('/familie-ks-sak/api/tilbakekreving/behandling/:behandlingId', () => {
+        return HttpResponse.json(byggSuksessRessurs(null));
+    }),
 ];
