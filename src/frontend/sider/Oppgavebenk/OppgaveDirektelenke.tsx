@@ -26,43 +26,51 @@ export function OppgaveDirektelenke({ oppgave }: Props) {
 
     async function navigerTilJournalføring() {
         settLaster(true);
-        const brukerIdent = hentFnrFraOppgaveIdenter(oppgave.identer);
-        if (brukerIdent) {
-            try {
-                const tilgangsreusltat = await sjekkSaksbehandlertilgangTilIdent({ brukerIdent });
-                if (tilgangsreusltat.saksbehandlerHarTilgang) {
-                    navigate(`/oppgaver/journalfor/${oppgave.id}`);
-                } else {
-                    visManglerTilgangModal(tilgangsreusltat);
+        let navigerer = false;
+        try {
+            const brukerIdent = hentFnrFraOppgaveIdenter(oppgave.identer);
+            if (brukerIdent) {
+                const tilgangsresultat = await sjekkSaksbehandlertilgangTilIdent({ brukerIdent });
+                if (!tilgangsresultat.saksbehandlerHarTilgang) {
+                    visManglerTilgangModal(tilgangsresultat);
+                    return;
                 }
-            } catch (error) {
-                visTekniskFeilModal(error);
             }
-        } else {
             navigate(`/oppgaver/journalfor/${oppgave.id}`);
+            navigerer = true;
+        } catch (error) {
+            visTekniskFeilModal(error);
+        } finally {
+            if (!navigerer) {
+                settLaster(false);
+            }
         }
-        settLaster(false);
     }
 
     async function navigerTilFagsak() {
         settLaster(true);
-        const brukerIdent = hentFnrFraOppgaveIdenter(oppgave.identer);
-        if (brukerIdent) {
-            try {
-                const tilgangsreusltat = await sjekkSaksbehandlertilgangTilIdent({ brukerIdent });
-                if (tilgangsreusltat.saksbehandlerHarTilgang) {
-                    const fagsak = await hentFagsakPaaPerson({ ident: brukerIdent });
-                    navigate(`/fagsak/${fagsak.id}/saksoversikt`);
-                } else {
-                    visManglerTilgangModal(tilgangsreusltat);
-                }
-            } catch (error) {
-                visTekniskFeilModal(error);
+        let navigerer = false;
+        try {
+            const brukerIdent = hentFnrFraOppgaveIdenter(oppgave.identer);
+            if (!brukerIdent) {
+                visManglerTilgangModal();
+                return;
             }
-        } else {
-            visManglerTilgangModal();
+            const tilgangsresultat = await sjekkSaksbehandlertilgangTilIdent({ brukerIdent });
+            if (!tilgangsresultat.saksbehandlerHarTilgang) {
+                visManglerTilgangModal(tilgangsresultat);
+                return;
+            }
+            const fagsak = await hentFagsakPaaPerson({ ident: brukerIdent });
+            navigate(`/fagsak/${fagsak.id}/saksoversikt`);
+            navigerer = true;
+        } catch (error) {
+            visTekniskFeilModal(error);
+        } finally {
+            if (!navigerer) {
+                settLaster(false);
+            }
         }
-        settLaster(false);
     }
 
     const oppgavetype = oppgaveTypeFilter[oppgave.oppgavetype as OppgavetypeFilter]?.id;
