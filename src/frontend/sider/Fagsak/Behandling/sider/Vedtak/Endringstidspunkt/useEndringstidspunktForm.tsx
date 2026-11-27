@@ -1,8 +1,10 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterEndringstidspunkt } from '@hooks/useOppdaterEndringstidspunkt';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { useEndringstidspunktDialogContext } from '@sider/Fagsak/Behandling/sider/Vedtak/Endringstidspunkt/EndringstidspunktDialogContext';
+import { useQueryClient } from '@tanstack/react-query';
 import type { IsoDatoString } from '@utils/dato';
 import { useForm } from 'react-hook-form';
 
@@ -19,6 +21,8 @@ export enum Feltnavn {
 }
 
 export function useEndringstidspunktForm() {
+    const queryClient = useQueryClient();
+
     const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const { lukkDialog } = useEndringstidspunktDialogContext();
@@ -46,6 +50,7 @@ export function useEndringstidspunktForm() {
         const { endringstidspunkt } = formValues;
         try {
             const oppdatertBehandling = await oppdaterEndringstidspunkt({ endringstidspunkt });
+            queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
             settÅpenBehandling(oppdatertBehandling);
             lukkDialog();
         } catch (error: unknown) {

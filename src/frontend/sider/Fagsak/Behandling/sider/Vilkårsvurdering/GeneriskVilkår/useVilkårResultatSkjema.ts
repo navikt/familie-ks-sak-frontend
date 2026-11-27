@@ -1,8 +1,10 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterVilkårResultat } from '@hooks/useOppdaterVilkårResultat';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { useEkspanderbarVilkårResultatRad } from '@sider/Fagsak/Behandling/sider/Vilkårsvurdering/EkspanderbareVilkårResultatRaderContext';
+import { useQueryClient } from '@tanstack/react-query';
 import type { IGrunnlagPerson } from '@typer/person';
 import type { Begrunnelse } from '@typer/vedtak';
 import {
@@ -132,6 +134,8 @@ export function useVilkårResultatSkjema({
     settFokusPåLeggTilPeriodeKnapp,
     bestemMuligeUtdypendeVilkårsvurderinger,
 }: Props) {
+    const queryClient = useQueryClient();
+
     const { behandling, settÅpenBehandling } = useBehandlingContext();
     const { kollapsRad } = useEkspanderbarVilkårResultatRad(lagretVilkårResultat.id);
     const { mutateAsync: oppdaterVilkårResultat } = useOppdaterVilkårResultat();
@@ -157,6 +161,7 @@ export function useVilkårResultatSkjema({
                 behandlingId: behandling.behandlingId,
                 endreVilkårResultat: tilEndreVilkårResultat(lagretVilkårResultat, person, values),
             });
+            queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
             settÅpenBehandling(oppdatertBehandling);
             kollapsRad();
             settFokusPåLeggTilPeriodeKnapp();

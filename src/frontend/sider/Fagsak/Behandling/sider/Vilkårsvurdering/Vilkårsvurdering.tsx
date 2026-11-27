@@ -1,9 +1,11 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useFagsak } from '@hooks/useFagsak';
 import { useOppdaterVilkårsvurdering } from '@hooks/useOppdaterVilkårsvurdering';
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { BodyShort, ErrorMessage, ErrorSummary, InfoCard, List } from '@navikt/ds-react';
 import Skjemasteg, { MAX_SKJEMASTEG_BREDDE } from '@sider/Fagsak/Behandling/sider/Skjemasteg';
+import { useQueryClient } from '@tanstack/react-query';
 import { BehandlingSteg, BehandlingÅrsak } from '@typer/behandling';
 import { defaultFunksjonellFeil } from '@typer/feilmeldinger';
 import { Datoformat, isoStringTilFormatertString } from '@utils/dato';
@@ -18,6 +20,8 @@ import { useVilkårsvurderingContext } from './VilkårsvurderingContext';
 import VilkårsvurderingSkjema from './VilkårsvurderingSkjema';
 
 export function Vilkårsvurdering() {
+    const queryClient = useQueryClient();
+
     const { behandling, settÅpenBehandling } = useBehandlingContext();
     const { vilkårsvurdering, feiloppsummeringFeil } = useVilkårsvurderingContext();
 
@@ -31,6 +35,7 @@ export function Vilkårsvurdering() {
         error: oppdaterVilkårsvurderingError,
     } = useOppdaterVilkårsvurdering({
         onSuccess: behandling => {
+            queryClient.setQueryData(queryKeys.behandling(behandling), behandling);
             settÅpenBehandling(behandling);
             navigate(`/fagsak/${fagsak.id}/${behandling.behandlingId}/tilkjent-ytelse`);
         },

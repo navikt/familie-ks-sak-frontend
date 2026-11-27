@@ -1,6 +1,8 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterKompetanse } from '@hooks/useOppdaterKompetanse';
 import { useSlettKompetanse } from '@hooks/useSlettKompetanse';
+import { useQueryClient } from '@tanstack/react-query';
 import type { OptionType } from '@typer/common';
 import type { IRestKompetanse, KompetanseAktivitet, KompetanseResultat } from '@typer/eøsPerioder';
 import { type IIsoMånedPeriode, nyIsoMånedPeriode } from '@utils/dato';
@@ -41,6 +43,8 @@ interface Props {
 }
 
 export const useKompetansePeriodeSkjema = ({ kompetanse, barnIKompetanse, lukkSkjema }: Props) => {
+    const queryClient = useQueryClient();
+
     const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const behandlingsÅrsakErOvergangsordning = behandling.årsak === BehandlingÅrsak.OVERGANGSORDNING_2024;
@@ -81,6 +85,7 @@ export const useKompetansePeriodeSkjema = ({ kompetanse, barnIKompetanse, lukkSk
                 resultat: values.resultat,
                 erAnnenForelderOmfattetAvNorskLovgivning: kompetanse.erAnnenForelderOmfattetAvNorskLovgivning,
             });
+            queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
             settÅpenBehandling(oppdatertBehandling);
             lukkSkjema();
         } catch (error) {
@@ -96,6 +101,7 @@ export const useKompetansePeriodeSkjema = ({ kompetanse, barnIKompetanse, lukkSk
                 behandlingId: behandling.behandlingId,
                 kompetanseId: kompetanse.id,
             });
+            queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
             settÅpenBehandling(oppdatertBehandling);
             lukkSkjema();
         } catch (error) {

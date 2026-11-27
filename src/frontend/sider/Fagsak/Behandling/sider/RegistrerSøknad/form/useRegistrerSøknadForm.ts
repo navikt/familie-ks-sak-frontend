@@ -1,3 +1,4 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useBruker } from '@hooks/useBruker';
 import { useConfirmBrowserRefresh } from '@hooks/useConfirmBrowserRefresh';
 import { useFagsak } from '@hooks/useFagsak';
@@ -5,6 +6,7 @@ import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useRegistrerSøknad } from '@hooks/useRegistrerSøknad';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
 import { useValgbareBarn } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/useValgbareBarn';
+import { useQueryClient } from '@tanstack/react-query';
 import type { IBarnMedOpplysninger, Målform } from '@typer/søknad';
 import { useId } from 'react';
 import { useForm } from 'react-hook-form';
@@ -29,6 +31,8 @@ export interface TransformedRegistrerSøknadFormValues {
 }
 
 export function useRegistrerSøknadForm() {
+    const queryClient = useQueryClient();
+
     const id = useId();
     const fagsak = useFagsak();
     const bruker = useBruker();
@@ -86,6 +90,7 @@ export function useRegistrerSøknadForm() {
                 },
                 bekreftEndringerViaFrontend: false,
             });
+            queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
             settÅpenBehandling(oppdatertBehandling);
             navigate(`/fagsak/${fagsak.id}/${oppdatertBehandling.behandlingId}/vilkaarsvurdering`);
         } catch (error: unknown) {

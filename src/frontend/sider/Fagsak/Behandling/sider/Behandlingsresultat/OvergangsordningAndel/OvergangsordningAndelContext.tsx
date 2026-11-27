@@ -1,6 +1,8 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useHttp } from '@navikt/familie-http';
 import { feil, type ISkjema, ok, useFelt, useSkjema } from '@navikt/familie-skjema';
 import { type Ressurs, RessursStatus } from '@navikt/familie-typer';
+import { useQueryClient } from '@tanstack/react-query';
 import deepEqual from 'deep-equal';
 import { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext, useState } from 'react';
 
@@ -30,6 +32,8 @@ interface OvergangsordningAndelContextValue {
 const OvergangsordningAndelContext = createContext<OvergangsordningAndelContextValue | undefined>(undefined);
 
 export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children }: Props) => {
+    const queryClient = useQueryClient();
+
     const { request } = useHttp();
     const { behandling, settÅpenBehandling } = useBehandlingContext();
 
@@ -97,6 +101,7 @@ export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children 
                 (behandling: Ressurs<IBehandling>) => {
                     if (behandling.status === RessursStatus.SUKSESS) {
                         tilbakestillOgLukkOvergangsordningAndel();
+                        queryClient.setQueryData(queryKeys.behandling(behandling.data), behandling.data);
                         settÅpenBehandling(behandling.data);
                     }
                 }
@@ -111,6 +116,7 @@ export const OvergangsordningAndelProvider = ({ overgangsordningAndel, children 
             påvirkerSystemLaster: true,
         }).then((behandling: Ressurs<IBehandling>) => {
             if (behandling.status === RessursStatus.SUKSESS) {
+                queryClient.setQueryData(queryKeys.behandling(behandling.data), behandling.data);
                 settÅpenBehandling(behandling.data);
             }
         });

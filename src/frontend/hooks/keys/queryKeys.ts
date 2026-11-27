@@ -1,4 +1,5 @@
 import type { BarnehagebarnRequestParams } from '@typer/barnehagebarn';
+import type { IBehandling } from '@typer/behandling';
 import type { FagsakId } from '@typer/fagsak';
 
 function personQueryKey(ident: string | undefined) {
@@ -9,7 +10,8 @@ function fagsakQueryKey(fagsakId: FagsakId | undefined) {
     return ['fagsak', fagsakId] as const;
 }
 
-function behandlingQueryKey(behandlingId: number | undefined) {
+function behandlingQueryKey(behandlingEllerId: IBehandling | number | undefined) {
+    const behandlingId = typeof behandlingEllerId === 'object' ? behandlingEllerId.behandlingId : behandlingEllerId;
     return ['behandling', behandlingId] as const;
 }
 

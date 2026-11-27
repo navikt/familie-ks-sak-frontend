@@ -1,5 +1,7 @@
+import { queryKeys } from '@hooks/keys/queryKeys';
 import { useOnFormSubmitSuccessful } from '@hooks/useOnFormSubmitSuccessful';
 import { useOppdaterEndretUtbetalingAndel } from '@hooks/useOppdaterEndretUtbetalingAndel';
+import { useQueryClient } from '@tanstack/react-query';
 import type { IRestEndretUtbetalingAndel } from '@typer/utbetalingAndel';
 import { useForm } from 'react-hook-form';
 import { useBehandlingContext } from '../../../../BehandlingContext';
@@ -16,6 +18,8 @@ export function useEndretUtbetalingAndelSkjema(
     endretUtbetalingAndel: IRestEndretUtbetalingAndel,
     lukkSkjema: () => void
 ) {
+    const queryClient = useQueryClient();
+
     const { behandling, settÅpenBehandling } = useBehandlingContext();
 
     const form = useForm<EndretUtbetalingAndelFormValues>({
@@ -35,6 +39,7 @@ export function useEndretUtbetalingAndelSkjema(
         return oppdaterEndretUtbetalingAndel(transformerSkjemaData(values, endretUtbetalingAndel))
             .then(oppdatertBehandling => {
                 lukkSkjema();
+                queryClient.setQueryData(queryKeys.behandling(oppdatertBehandling), oppdatertBehandling);
                 settÅpenBehandling(oppdatertBehandling);
             })
             .catch(e => {
