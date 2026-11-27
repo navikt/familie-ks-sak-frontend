@@ -2,6 +2,7 @@ import { RegistrerteBrevmottakereBehandling } from '@komponenter/Brevmottaker/Be
 import { BrevmottakerDialogProvider } from '@komponenter/Brevmottaker/Felles/BrevmottakerDialogContext';
 import { Heading } from '@navikt/ds-react';
 import { BehandlingProvider } from '@sider/Fagsak/Behandling/BehandlingContext';
+import { BrevmottakereBehandlingProvider } from '@sider/Fagsak/Behandling/BrevmottakereBehandlingContext';
 import { BrevmottakereFagsakProvider } from '@sider/Fagsak/BrevmottakereFagsakContext';
 import { BrukerProvider } from '@sider/Fagsak/BrukerContext';
 import { FagsakProvider } from '@sider/Fagsak/FagsakContext';
@@ -18,6 +19,7 @@ import {
     MIDLERTIDIG_BEHANDLENDE_ENHET_ID,
     SettPåVentÅrsak,
 } from '@typer/behandling';
+import type { BrevmottakerBehandling } from '@typer/brevmottaker';
 import type { IMinimalFagsak } from '@typer/fagsak';
 import type { FeatureToggles } from '@typer/featureToggles';
 import type { PropsWithChildren } from 'react';
@@ -30,6 +32,7 @@ interface WrapperProps extends PropsWithChildren {
     initialEntries?: [{ pathname: string }];
     fagsak?: IMinimalFagsak;
     behandling?: IBehandling;
+    brevmottakere?: BrevmottakerBehandling[];
     featureToggles?: FeatureToggles;
 }
 
@@ -37,6 +40,7 @@ function Wrapper({
     initialEntries = [{ pathname: '/fagsak/1/1/registrer-soknad' }],
     behandling = lagBehandling({ årsak: BehandlingÅrsak.NYE_OPPLYSNINGER, steg: BehandlingSteg.VILKÅRSVURDERING }),
     fagsak = lagFagsak({ behandlinger: [lagVisningBehandling({ behandlingId: behandling?.behandlingId })] }),
+    brevmottakere = [],
     featureToggles = skruPåAlleToggles(),
     children,
 }: WrapperProps) {
@@ -60,8 +64,10 @@ function Wrapper({
                                 path={`/fagsak/:fagsakId/:behandlingId/*`}
                                 element={
                                     <BehandlingProvider behandling={behandling}>
-                                        <HenleggBehandlingModal />
-                                        <BrevmottakerDialogProvider>{children}</BrevmottakerDialogProvider>
+                                        <BrevmottakereBehandlingProvider brevmottakere={brevmottakere}>
+                                            <HenleggBehandlingModal />
+                                            <BrevmottakerDialogProvider>{children}</BrevmottakerDialogProvider>
+                                        </BrevmottakereBehandlingProvider>
                                     </BehandlingProvider>
                                 }
                             />
@@ -230,9 +236,7 @@ describe('Behandlingsmeny', () => {
 
     test('skal åpne brevmottakerdialog fra detaljer', async () => {
         const { screen, user } = render(<RegistrerteBrevmottakereBehandling kilde={'vedtak'} />, {
-            wrapper: props => (
-                <Wrapper {...props} behandling={lagBehandling({ brevmottakere: [lagBrevmottakerBehandling()] })} />
-            ),
+            wrapper: props => <Wrapper {...props} brevmottakere={[lagBrevmottakerBehandling()]} />,
         });
 
         await user.click(screen.getByRole('button', { name: 'Se detaljer' }));

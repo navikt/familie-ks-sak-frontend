@@ -5,6 +5,7 @@ import { LeggTilBarnModal } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModa
 import { LeggTilBarnModalContextProvider } from '@komponenter/Modal/LeggTilBarn/LeggTilBarnModalContext';
 import { Feilsammendrag } from '@komponenter/Skjema/Feilsammendrag';
 import { Button, Fieldset, VStack } from '@navikt/ds-react';
+import { useBrevmottakereBehandling } from '@sider/Fagsak/Behandling/BrevmottakereBehandlingContext';
 import { BarnaFieldArrayProvider } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/BarnaFieldArrayContext';
 import { BarnaField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/BarnaField';
 import { BegrunnelseField } from '@sider/Fagsak/Behandling/sider/RegistrerSøknad/form/field/BegrunnelseField';
@@ -19,9 +20,11 @@ import { useNavigate } from 'react-router';
 
 export function RegistrerSøknadForm() {
     const navigate = useNavigate();
+
     const fagsak = useFagsak();
     const behandling = useBehandling();
     const erLesevisning = useErLesevisning();
+    const brevmottakere = useBrevmottakereBehandling();
 
     const form = useRegistrerSøknadForm();
 
@@ -36,7 +39,7 @@ export function RegistrerSøknadForm() {
 
     const barn = watch(RegistrerSøknadFormField.BARN);
 
-    const harBrevmottaker = behandling.brevmottakere.length > 0;
+    const harBrevmottaker = brevmottakere.length > 0;
 
     function submitEllerNaviger(event: React.FormEvent<HTMLFormElement>) {
         if (erLesevisning) {

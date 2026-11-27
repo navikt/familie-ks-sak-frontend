@@ -1,13 +1,12 @@
 import { hentBehandling } from '@api/hentBehandling';
 import { queryKeys } from '@hooks/keys/queryKeys';
 import { useSkalObfuskereData } from '@hooks/useSkalObfuskereData';
-import { QueryClient } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import { lagBehandling } from '@testutils/testdata/behandlingTestdata';
 import { lagBrevmottakerBehandling } from '@testutils/testdata/brevmottakerTestdata';
 import { lagGrunnlagPerson } from '@testutils/testdata/personTestdata';
 import { lagUtbetalingsperiode, lagUtbetalingsperiodeDetalj } from '@testutils/testdata/utbetalingsperiodeTestdata';
-import { TestProviders } from '@testutils/testrender';
+import { lagTestQueryClient, TestProviders } from '@testutils/testrender';
 import { Brevmottakertype } from '@typer/brevmottaker';
 import { PersonType } from '@typer/person';
 import { Målform } from '@typer/søknad';
@@ -73,7 +72,7 @@ describe('useHentBehandling', () => {
             ],
         });
         const originalBehandling = structuredClone(behandling);
-        const queryClient = new QueryClient();
+        const queryClient = lagTestQueryClient();
         vi.mocked(hentBehandling).mockResolvedValue(behandling);
         vi.mocked(useSkalObfuskereData).mockReturnValue(true);
 
@@ -157,7 +156,7 @@ describe('useHentBehandling', () => {
             ],
         });
         const originalBehandling = structuredClone(behandling);
-        const queryClient = new QueryClient();
+        const queryClient = lagTestQueryClient();
         vi.mocked(hentBehandling).mockResolvedValue(behandling);
         vi.mocked(useSkalObfuskereData).mockReturnValue(true);
 

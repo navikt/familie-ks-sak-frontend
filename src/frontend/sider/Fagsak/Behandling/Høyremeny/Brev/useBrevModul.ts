@@ -1,6 +1,7 @@
 import { queryKeys } from '@hooks/keys/queryKeys';
 import { useSendBehandlingBrev } from '@hooks/useSendBehandlingBrev';
 import { useBehandlingContext } from '@sider/Fagsak/Behandling/BehandlingContext';
+import { useBrevmottakereBehandling } from '@sider/Fagsak/Behandling/BrevmottakereBehandlingContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { Behandlingstype, BehandlingÅrsak, type IBehandling } from '@typer/behandling';
 import { BehandlingKategori } from '@typer/behandlingstema';
@@ -126,7 +127,7 @@ export const useBrevModul = ({ onSubmitSuccess }: Props) => {
     const [visFritekstAvsnittTekstboks, settVisFritekstAvsnittTekstboks] = useState(false);
 
     const behandlingKategori = behandling.kategori;
-    const brevmottakere = behandling.brevmottakere;
+    const brevmottakere = useBrevmottakereBehandling();
     const personer = behandling.personer;
 
     const form = useForm<BrevModulFormValues>({
