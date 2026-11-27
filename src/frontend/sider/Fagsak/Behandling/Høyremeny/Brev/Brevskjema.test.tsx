@@ -15,6 +15,7 @@ import type { ReactNode } from 'react';
 import { describe, expect, test, vi } from 'vitest';
 import { FagsakProvider } from '../../../FagsakContext';
 import { BehandlingProvider } from '../../BehandlingContext';
+import { BrevmottakereBehandlingProvider } from '../../BrevmottakereBehandlingContext';
 import { Brevskjema } from './Brevskjema';
 
 const OBLIGATORISK_FEILMELDING = 'Dette kulepunktet er obligatorisk. Du må skrive tekst i feltet.';
@@ -36,7 +37,9 @@ function Wrapper({ behandling, children }: { behandling: IBehandling; children: 
         >
             <FagsakProvider fagsak={lagFagsak()}>
                 <BrukerProvider bruker={lagPerson()}>
-                    <BehandlingProvider behandling={behandling}>{children}</BehandlingProvider>
+                    <BehandlingProvider behandling={behandling}>
+                        <BrevmottakereBehandlingProvider brevmottakere={[]}>{children}</BrevmottakereBehandlingProvider>
+                    </BehandlingProvider>
                 </BrukerProvider>
             </FagsakProvider>
         </TestProviders>

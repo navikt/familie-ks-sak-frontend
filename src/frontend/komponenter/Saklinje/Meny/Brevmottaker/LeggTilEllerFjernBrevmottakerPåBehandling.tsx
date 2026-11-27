@@ -2,6 +2,7 @@ import { useBehandling } from '@hooks/useBehandling';
 import { useErLesevisning } from '@hooks/useErLesevisning';
 import { useBrevmottakerDialogContext } from '@komponenter/Brevmottaker/Felles/BrevmottakerDialogContext';
 import { ActionMenu } from '@navikt/ds-react';
+import { useBrevmottakereBehandling } from '@sider/Fagsak/Behandling/BrevmottakereBehandlingContext';
 import { Behandlingstype } from '@typer/behandling';
 import type { BrevmottakerBehandling } from '@typer/brevmottaker';
 
@@ -23,6 +24,7 @@ const relevanteBehandlingstyper = [Behandlingstype.FØRSTEGANGSBEHANDLING, Behan
 export function LeggTilEllerFjernBrevmottakerPåBehandling() {
     const behandling = useBehandling();
     const erLesevisning = useErLesevisning();
+    const brevmottakere = useBrevmottakereBehandling();
 
     const { åpneDialog } = useBrevmottakerDialogContext();
 
@@ -32,13 +34,11 @@ export function LeggTilEllerFjernBrevmottakerPåBehandling() {
         return null;
     }
 
-    const harBrevmottaker = behandling.brevmottakere.length > 0;
+    const harBrevmottaker = brevmottakere.length > 0;
 
     if (erLesevisning && !harBrevmottaker) {
         return null;
     }
 
-    return (
-        <ActionMenu.Item onSelect={åpneDialog}>{utledLabel(behandling.brevmottakere, erLesevisning)}</ActionMenu.Item>
-    );
+    return <ActionMenu.Item onSelect={åpneDialog}>{utledLabel(brevmottakere, erLesevisning)}</ActionMenu.Item>;
 }
