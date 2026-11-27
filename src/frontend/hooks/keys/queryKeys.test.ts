@@ -22,6 +22,7 @@ const fagsaknøkler = {
 };
 
 const behandlingsnøkler = {
+    brevmottakere: queryKeys.brevmottakere(behandlingId),
     feilutbetaltValuta: queryKeys.feilutbetaltValuta(behandlingId),
     genererteBrevbegrunnelser: queryKeys.genererteBrevbegrunnelser(behandlingId, vedtaksperiodeId),
     historikkinnslag: queryKeys.historikkinnslag(behandlingId),
