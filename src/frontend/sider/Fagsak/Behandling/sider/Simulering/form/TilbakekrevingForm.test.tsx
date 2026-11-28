@@ -82,6 +82,30 @@ describe('TilbakekrevingForm', () => {
         );
     });
 
+    test('skal ikke hente tilbakekreving når simuleringen ikke har feilutbetaling', async () => {
+        let harHentetTilbakekreving = false;
+        server.use(
+            http.get('/familie-ks-sak/api/behandlinger/:behandlingId/simulering', () =>
+                HttpResponse.json(byggSuksessRessurs(SimuleringTestdata.lagSimulering({ feilutbetaling: 0 })))
+            ),
+            http.get(TILBAKEKREVING_URL, () => {
+                harHentetTilbakekreving = true;
+                return HttpResponse.json(
+                    byggSuksessRessurs(
+                        lagTilbakekreving({ valg: Tilbakekrevingsvalg.OPPRETT_TILBAKEKREVING_UTEN_VARSEL })
+                    )
+                );
+            })
+        );
+
+        const { screen } = renderTilbakekrevingsskjema();
+
+        expect(
+            await screen.findByRole('radio', { name: 'Opprett tilbakekreving, ikke send varsel' })
+        ).not.toBeChecked();
+        expect(harHentetTilbakekreving).toBe(false);
+    });
+
     test('skal vise feilmelding når tilbakekrevingen ikke kan hentes', async () => {
         server.use(
             http.get(TILBAKEKREVING_URL, () =>
