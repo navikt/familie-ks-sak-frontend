@@ -53,7 +53,6 @@ export function lagBehandling(behandling: Partial<NoBrand<IBehandling>> = {}): I
         overgangsordningAndeler: [],
         personerMedAndelerTilkjentYtelse: [],
         årsak: BehandlingÅrsak.SØKNAD,
-        tilbakekreving: undefined,
         søknadMottattDato: undefined,
         behandlingPåVent: undefined,
         endringstidspunkt: undefined,

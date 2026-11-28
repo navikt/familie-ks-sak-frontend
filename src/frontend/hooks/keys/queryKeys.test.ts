@@ -31,6 +31,7 @@ const behandlingsnøkler = {
     refusjonEøs: queryKeys.refusjonEøs(behandlingId),
     sammensattKontrollsak: queryKeys.sammensattKontrollsak(behandlingId),
     simulering: queryKeys.simulering(behandlingId),
+    tilbakekreving: queryKeys.tilbakekreving(behandlingId),
     vedtaksperioder: queryKeys.vedtaksperioder(behandlingId),
 };
 

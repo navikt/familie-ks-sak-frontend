@@ -2,6 +2,7 @@ import { useBehandling } from '@hooks/useBehandling';
 import { useFagsakId } from '@hooks/useFagsakId';
 import { useHentHarÅpenTilbakekreving } from '@hooks/useHentHarÅpenTilbakekreving';
 import { useHentSimulering } from '@hooks/useHentSimulering';
+import { useHentTilbakekreving } from '@hooks/useHentTilbakekreving';
 import { BodyShort, Box, ErrorMessage, Loader, LocalAlert, Stack, VStack } from '@navikt/ds-react';
 import { SimuleringProvider } from '@sider/Fagsak/Behandling/sider/Simulering/SimuleringContext';
 import { erDefinert } from '@utils/commons';
@@ -17,15 +18,24 @@ export function SimuleringContainer({ children }: PropsWithChildren) {
         error: simuleringError,
     } = useHentSimulering(behandling.behandlingId);
 
-    // Åpen tilbakekreving er kun relevant når simuleringen har en feilutbetaling.
+    // Tilbakekrevingen og åpen tilbakekreving er kun relevante når simuleringen har en feilutbetaling.
     const skalHenteHarÅpenTilbakekreving = erDefinert(simulering) && simulering.feilutbetaling > 0;
+
+    const {
+        data: tilbakekreving,
+        isPending: tilbakekrevingIsPending,
+        error: tilbakekrevingError,
+    } = useHentTilbakekreving(behandling.behandlingId, { enabled: skalHenteHarÅpenTilbakekreving });
 
     const { data: harÅpenTilbakekreving, isPending: harÅpenTilbakekrevingIsPending } = useHentHarÅpenTilbakekreving(
         fagsakId,
         { enabled: skalHenteHarÅpenTilbakekreving }
     );
 
-    if (simuleringIsPending || (skalHenteHarÅpenTilbakekreving && harÅpenTilbakekrevingIsPending)) {
+    if (
+        simuleringIsPending ||
+        (skalHenteHarÅpenTilbakekreving && (tilbakekrevingIsPending || harÅpenTilbakekrevingIsPending))
+    ) {
         return (
             <Box margin={'space-48'}>
                 <Stack direction={'row'} justify={'center'} align={'center'} gap={'space-8'}>
@@ -37,7 +47,8 @@ export function SimuleringContainer({ children }: PropsWithChildren) {
     }
 
     // En feil på åpen tilbakekreving skal ikke skjule simuleringen. TilbakekrevingForm leser den selv fra spørringen.
-    if (simuleringError) {
+    if (simuleringError || tilbakekrevingError) {
+        const errors = [simuleringError, tilbakekrevingError].filter(error => erDefinert(error));
         return (
             <Box margin={'space-48'}>
                 <LocalAlert status={'error'}>
@@ -47,7 +58,9 @@ export function SimuleringContainer({ children }: PropsWithChildren) {
                     <LocalAlert.Content>
                         <VStack gap={'space-16'}>
                             Klarte ikke å hente inn simuleringen.
-                            <ErrorMessage>{simuleringError.message}</ErrorMessage>
+                            {errors.map(error => (
+                                <ErrorMessage key={error.message}>{error.message}</ErrorMessage>
+                            ))}
                         </VStack>
                     </LocalAlert.Content>
                 </LocalAlert>
@@ -56,7 +69,11 @@ export function SimuleringContainer({ children }: PropsWithChildren) {
     }
 
     return (
-        <SimuleringProvider simulering={simulering} harÅpenTilbakekreving={harÅpenTilbakekreving ?? false}>
+        <SimuleringProvider
+            simulering={simulering}
+            tilbakekreving={tilbakekreving ?? undefined}
+            harÅpenTilbakekreving={harÅpenTilbakekreving ?? false}
+        >
             {children}
         </SimuleringProvider>
     );

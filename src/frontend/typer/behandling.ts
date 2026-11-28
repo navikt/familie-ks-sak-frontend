@@ -11,7 +11,6 @@ import type { KlageResultat, KlageStatus, KlageÅrsak } from './klage';
 import type { ManglendeSvalbardmerking } from './ManglendeSvalbardmerking';
 import type { IRestOvergangsordningAndel } from './overgangsordningAndel';
 import { type IGrunnlagPerson, PersonType } from './person';
-import type { ITilbakekreving } from './simulering';
 import { type ISøknadDTO, Målform } from './søknad';
 import type {
     Behandlingsstatus,
@@ -234,7 +233,6 @@ export interface IBehandling {
     overgangsordningAndeler: IRestOvergangsordningAndel[];
     personerMedAndelerTilkjentYtelse: IPersonMedAndelerTilkjentYtelse[];
     årsak: BehandlingÅrsak;
-    tilbakekreving?: ITilbakekreving;
     behandlingPåVent?: IBehandlingPåVent;
     søknadMottattDato?: string;
     endringstidspunkt?: string;

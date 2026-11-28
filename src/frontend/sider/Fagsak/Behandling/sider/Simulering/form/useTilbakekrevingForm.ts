@@ -33,11 +33,9 @@ export function useTilbakekrevingForm() {
     const fagsakId = useFagsakId();
 
     const { behandling, settÅpenBehandling } = useBehandlingContext();
-    const { erFeilutbetaling } = useSimuleringContext();
+    const { erFeilutbetaling, tilbakekreving } = useSimuleringContext();
 
     const { mutateAsync: oppdaterTilbakekreving } = useOppdaterTilbakekreving();
-
-    const tilbakekreving = behandling.tilbakekreving;
 
     const form = useForm<TilbakekrevingFormValues>({
         values: {

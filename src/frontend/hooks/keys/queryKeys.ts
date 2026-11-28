@@ -93,6 +93,9 @@ export const queryKeys = {
     simulering: (behandlingId: number) => {
         return [...behandlingQueryKey(behandlingId), 'simulering'] as const;
     },
+    tilbakekreving: (behandlingId: number) => {
+        return [...behandlingQueryKey(behandlingId), 'tilbakekreving'] as const;
+    },
 
     // Vedtaksperioder
     vedtaksperioder: vedtaksperioderQueryKey,
